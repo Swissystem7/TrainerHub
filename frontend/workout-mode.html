@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrainerHub — מצב אימון</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f13;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* ── Header ── */
+    .top-bar {
+      background: #1a1a2e;
+      border-bottom: 1px solid #2a2a4a;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .top-bar h1 { font-size: 1.1rem; color: #7c3aed; font-weight: 700; }
+    .top-bar .workout-title { color: #a78bfa; font-size: 0.85rem; margin-top: 2px; max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .exit-btn {
+      background: none; border: 1px solid #3a3a5a; color: #6b7280;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+    }
+    .exit-btn:hover { border-color: #7f1d1d; color: #f87171; }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      padding: 12px 24px 0;
+      flex-shrink: 0;
+    }
+    .progress-info {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: #6b7280; margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 6px; background: #2a2a4a; border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      border-radius: 3px; transition: width 0.5s ease;
+    }
+
+    /* ── Main stage ── */
+    .stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-label {
+      font-size: 0.78rem; color: #6b7280; text-transform: uppercase;
+      letter-spacing: 1.5px; font-weight: 600;
+    }
+
+    .exercise-name {
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      font-weight: 800;
+      color: #f0f0f0;
+      line-height: 1.2;
+    }
+
+    .set-indicator {
+      font-size: 0.9rem; color: #a78bfa;
+      background: #2a2a4a; padding: 6px 18px; border-radius: 20px;
+    }
+
+    .reps-display {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      color: #c4b5fd;
+      font-weight: 600;
+    }
+
+    /* Clock */
+    .clock-ring {
+      position: relative;
+      width: 180px; height: 180px;
+    }
+    .clock-ring svg { transform: rotate(-90deg); }
+    .clock-bg { fill: none; stroke: #2a2a4a; stroke-width: 10; }
+    .clock-arc {
+      fill: none; stroke: #7c3aed; stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .clock-text {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; font-weight: 800; color: #f0f0f0;
+    }
+
+    /* Rest mode */
+    .rest-mode .clock-arc { stroke: #10b981; }
+    .rest-mode .clock-text { color: #10b981; }
+    .rest-label {
+      font-size: 2rem; font-weight: 800; color: #10b981; letter-spacing: 2px;
+    }
+    .next-preview {
+      background: #1a1a2e; border: 1px solid #2a2a4a;
+      border-radius: 12px; padding: 14px 24px; max-width: 340px; width: 100%;
+    }
+    .next-preview .label { font-size: 0.75rem; color: #6b7280; margin-bottom: 4px; }
+    .next-preview .name { font-size: 1.05rem; color: #a78bfa; font-weight: 700; }
+    .next-preview .detail { font-size: 0.82rem; color: #6b7280; margin-top: 4px; }
+
+    /* Exercise notes */
+    .ex-notes {
+      font-size: 0.85rem; color: #6b7280; max-width: 340px;
+      background: #1a1a2e; border-radius: 10px; padding: 10px 16px;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      flex-shrink: 0;
+      padding: 20px 24px 32px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ctrl-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      background: #1a1a2e; border: 1px solid #2a2a4a;
+      border-radius: 16px; padding: 14px 20px; cursor: pointer;
+      transition: all 0.2s; min-width: 72px; color: #f0f0f0;
+    }
+    .ctrl-btn .icon { font-size: 1.5rem; }
+    .ctrl-btn .label { font-size: 0.72rem; color: #6b7280; }
+    .ctrl-btn:hover { border-color: #7c3aed; background: #1e1b3a; }
+    .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .ctrl-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; }
+    .ctrl-btn.primary:hover { opacity: 0.9; }
+
+    /* ── No workout / Error ── */
+    .empty-state {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px; color: #4a4a6a;
+      padding: 32px;
+    }
+    .empty-state .big { font-size: 4rem; }
+    .empty-state p { text-align: center; max-width: 300px; line-height: 1.6; }
+    .go-back {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white;
+      border: none; padding: 12px 28px; border-radius: 12px; cursor: pointer;
+      font-size: 0.95rem; font-weight: 700; margin-top: 8px;
+    }
+
+    /* ── Completion screen ── */
+    #completionScreen {
+      display: none;
+      flex: 1; flex-direction: column; align-items: center; justify-content: center;
+      padding: 32px; text-align: center; gap: 20px;
+    }
+    #completionScreen.active { display: flex; }
+    .confetti-row { font-size: 3rem; letter-spacing: 8px; }
+    .complete-title { font-size: 2.2rem; font-weight: 800; color: #7c3aed; }
+    .complete-subtitle { color: #a78bfa; font-size: 1rem; }
+    .stats-grid {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 8px 0;
+    }
+    .stat-card {
+      background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 14px;
+      padding: 16px 24px; min-width: 110px;
+    }
+    .stat-card .val { font-size: 1.8rem; font-weight: 800; color: #a78bfa; }
+    .stat-card .lbl { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+    .done-btn {
+      background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white;
+      border: none; padding: 14px 40px; border-radius: 14px; cursor: pointer;
+      font-size: 1rem; font-weight: 700; margin-top: 8px; transition: opacity 0.2s;
+    }
+    .done-btn:hover { opacity: 0.9; }
+
+    /* Elapsed bar */
+    .elapsed-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 24px 0; flex-shrink: 0;
+    }
+    .elapsed-label { font-size: 0.75rem; color: #6b7280; white-space: nowrap; }
+    .elapsed-val { font-size: 0.82rem; color: #a78bfa; font-weight: 600; white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar" id="topBar">
+  <div>
+    <h1>🏋️ TrainerHub</h1>
+    <div class="workout-title" id="workoutTitleBar">טוען אימון...</div>
+  </div>
+  <button class="exit-btn" onclick="exitWorkout()">✕ יציאה</button>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-wrap" id="progressWrap" style="display:none">
+  <div class="progress-info">
+    <span id="progressLabel">תרגיל 0 מתוך 0</span>
+    <span id="totalTimeLabel">⏱ 0:00</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- Elapsed total time -->
+<div class="elapsed-bar" id="elapsedBar" style="display:none">
+  <span class="elapsed-label">זמן אימון:</span>
+  <span class="elapsed-val" id="elapsedVal">0:00</span>
+</div>
+
+<!-- Stage (main exercise display) -->
+<div class="stage" id="stage">
+  <div class="empty-state" id="emptyState">
+    <div class="big">🏋️</div>
+    <p>לא נמצא אימון פעיל.<br>חזור ל-Creator Studio ובחר אימון.</p>
+    <button class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controlsWrap" style="display:none">
+  <button class="ctrl-btn" id="btnBack" onclick="goBack()" title="חזור">
+    <span class="icon">⏮</span><span class="label">חזור</span>
+  </button>
+  <button class="ctrl-btn primary" id="btnStartPause" onclick="togglePause()">
+    <span class="icon" id="startPauseIcon">▶</span>
+    <span class="label" id="startPauseLabel">התחל</span>
+  </button>
+  <button class="ctrl-btn" id="btnSkip" onclick="skipCurrent()" title="דלג">
+    <span class="icon">⏭</span><span class="label">דלג</span>
+  </button>
+  <button class="ctrl-btn" id="btnDone" onclick="markSetDone()" title="סיים סט">
+    <span class="icon">✅</span><span class="label">סיימתי</span>
+  </button>
+</div>
+
+<!-- Completion screen -->
+<div id="completionScreen">
+  <div class="confetti-row">🎉🏆🎉</div>
+  <div class="complete-title">כל הכבוד!</div>
+  <div class="complete-subtitle">סיימת את האימון בהצלחה</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="val" id="statTime">—</div><div class="lbl">זמן כולל</div></div>
+    <div class="stat-card"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
+    <div class="stat-card"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
+  </div>
+  <div style="color:#6b7280;font-size:0.9rem">💪 עבודה מצוינת!</div>
+  <button class="done-btn" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA LOADING & FLATTENING
+═══════════════════════════════════════════ */
+
+const PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
+
+function loadWorkout() {
+  try {
+    const raw = localStorage.getItem('trainerhub_active_workout');
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+// Flatten workout into a linear list of "steps"
+// Each step: { type: 'exercise'|'rest', ... }
+function buildSteps(workout) {
+  const steps = [];
+  const phases = workout.phases || [];
+
+  phases.forEach(phase => {
+    const phaseLabel = PHASE_LABELS[phase.name] || phase.name;
+    const exercises = phase.exercises || [];
+
+    exercises.forEach((ex, exIdx) => {
+      const sets = ex.sets || 1;
+      const hasDuration = !!ex.duration_seconds;
+
+      for (let s = 1; s <= sets; s++) {
+        // Exercise step
+        steps.push({
+          type: 'exercise',
+          name: ex.name,
+          phase: phaseLabel,
+          set: s,
+          totalSets: sets,
+          reps: ex.reps || null,
+          duration: hasDuration ? ex.duration_seconds : null,
+          notes: ex.notes || null,
+          isLastSet: s === sets,
+          isLastExercise: exIdx === exercises.length - 1
+        });
+
+        // Rest step (after each set except the last set of the last exercise)
+        const restSeconds = ex.rest_seconds || 0;
+        const isVeryLast = (s === sets) && (exIdx === exercises.length - 1) && (phase === phases[phases.length - 1]);
+
+        if (!isVeryLast && restSeconds > 0) {
+          // Find next exercise for preview
+          let nextName = null, nextDetail = null;
+          if (s < sets) {
+            nextName = ex.name;
+            nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : '';
+          } else {
+            // next exercise
+            const nextEx = exercises[exIdx + 1];
+            if (nextEx) {
+              nextName = nextEx.name;
+              nextDetail = nextEx.reps ? `${nextEx.sets || 1}×${nextEx.reps}` : nextEx.duration_seconds ? `${nextEx.duration_seconds}″` : '';
+            }
+          }
+          steps.push({
+            type: 'rest',
+            duration: restSeconds,
+            nextName,
+            nextDetail
+          });
+        }
+      }
+    });
+  });
+
+  return steps;
+}
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+
+let workout = null;
+let steps = [];
+let stepIdx = 0;
+let paused = true;
+let started = false;
+let countdown = 0;     // remaining seconds for current timed step
+let countdownMax = 0;
+let countdownInterval = null;
+let elapsedSeconds = 0;
+let elapsedInterval = null;
+let completedSets = 0;
+let completedExercises = 0;
+let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  workout = loadWorkout();
+
+  if (!workout) {
+    document.getElementById('emptyState').style.display = 'flex';
+    return;
+  }
+
+  steps = buildSteps(workout);
+  exerciseStepIndices = steps.map((s, i) => s.type === 'exercise' ? i : -1).filter(i => i >= 0);
+
+  if (steps.length === 0) {
+    document.getElementById('emptyState').style.display = 'flex';
+    return;
+  }
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('workoutTitleBar').textContent = workout.title || 'אימון';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('elapsedBar').style.display = 'flex';
+  document.getElementById('controlsWrap').style.display = 'flex';
+
+  renderStep();
+});
+
+/* ═══════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════ */
+
+function renderStep() {
+  if (stepIdx >= steps.length) {
+    finishWorkout();
+    return;
+  }
+
+  const step = steps[stepIdx];
+  updateProgress();
+
+  if (step.type === 'exercise') {
+    renderExercise(step);
+  } else {
+    renderRest(step);
+  }
+}
+
+function renderExercise(step) {
+  const stage = document.getElementById('stage');
+  stage.className = 'stage';
+
+  const setInfo = step.totalSets > 1
+    ? `<div class="set-indicator">סט ${step.set} מתוך ${step.totalSets}</div>` : '';
+
+  const repsOrTime = step.duration
+    ? `<div class="clock-ring" id="clockRing">${buildClockSVG()}<div class="clock-text" id="clockText">${step.duration}</div></div>`
+    : step.reps
+      ? `<div class="reps-display">${step.reps} חזרות</div>` : '';
+
+  const notes = step.notes ? `<div class="ex-notes">💡 ${step.notes}</div>` : '';
+
+  stage.innerHTML = `
+    <div class="phase-label">${step.phase}</div>
+    <div class="exercise-name">${step.name}</div>
+    ${setInfo}
+    ${repsOrTime}
+    ${notes}
+  `;
+
+  // Update done button label
+  const btnDone = document.getElementById('btnDone');
+  btnDone.style.display = '';
+  btnDone.querySelector('.label').textContent = step.duration ? 'דלג' : 'סיימתי סט';
+
+  // Start timer if duration
+  clearCountdown();
+  if (step.duration && !paused && started) {
+    startCountdown(step.duration, () => markSetDone());
+  } else if (step.duration) {
+    countdown = step.duration;
+    countdownMax = step.duration;
+    updateClockDisplay(countdown, countdownMax);
+  }
+}
+
+function renderRest(step) {
+  const stage = document.getElementById('stage');
+  stage.className = 'stage rest-mode';
+
+  const nextHtml = step.nextName ? `
+    <div class="next-preview">
+      <div class="label">הבא:</div>
+      <div class="name">${step.nextName}</div>
+      ${step.nextDetail ? `<div class="detail">${step.nextDetail}</div>` : ''}
+    </div>` : '';
+
+  stage.innerHTML = `
+    <div class="rest-label">מנוחה</div>
+    <div class="clock-ring" id="clockRing">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" style="color:#10b981">${step.duration}</div></div>
+    ${nextHtml}
+  `;
+
+  document.getElementById('btnDone').style.display = 'none';
+
+  clearCountdown();
+  if (!paused && started) {
+    startCountdown(step.duration, () => advance());
+  } else {
+    countdown = step.duration;
+    countdownMax = step.duration;
+    updateClockDisplay(countdown, countdownMax);
+  }
+}
+
+function buildClockSVG(color = '#7c3aed') {
+  const r = 80, cx = 90, cy = 90;
+  const circ = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 180 180" width="180" height="180">
+    <circle class="clock-bg" cx="${cx}" cy="${cy}" r="${r}"/>
+    <circle class="clock-arc" id="clockArc" cx="${cx}" cy="${cy}" r="${r}"
+      stroke="${color}"
+      stroke-dasharray="${circ}"
+      stroke-dashoffset="0"/>
+  </svg>`;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════ */
+
+function updateProgress() {
+  // Count how many exercise steps we've passed
+  const exStepsSoFar = exerciseStepIndices.filter(i => i < stepIdx).length;
+  const totalExSteps = exerciseStepIndices.length;
+
+  document.getElementById('progressLabel').textContent =
+    `תרגיל ${exStepsSoFar} מתוך ${totalExSteps}`;
+
+  const pct = totalExSteps > 0 ? (exStepsSoFar / totalExSteps) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+/* ═══════════════════════════════════════════
+   TIMER / COUNTDOWN
+═══════════════════════════════════════════ */
+
+function startCountdown(seconds, onDone) {
+  countdown = seconds;
+  countdownMax = seconds;
+  updateClockDisplay(countdown, countdownMax);
+
+  countdownInterval = setInterval(() => {
+    countdown--;
+    updateClockDisplay(countdown, countdownMax);
+    if (countdown <= 0) {
+      clearCountdown();
+      onDone();
+    }
+  }, 1000);
+}
+
+function clearCountdown() {
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+}
+
+function updateClockDisplay(val, max) {
+  const textEl = document.getElementById('clockText');
+  const arcEl  = document.getElementById('clockArc');
+  if (!textEl) return;
+
+  textEl.textContent = Math.max(0, val);
+
+  if (arcEl) {
+    const r = 80;
+    const circ = 2 * Math.PI * r;
+    const frac = max > 0 ? Math.max(0, val) / max : 0;
+    arcEl.style.strokeDashoffset = circ * (1 - frac);
+  }
+}
+
+function startElapsedTimer() {
+  elapsedInterval = setInterval(() => {
+    elapsedSeconds++;
+    document.getElementById('elapsedVal').textContent = formatTime(elapsedSeconds);
+    document.getElementById('totalTimeLabel').textContent = '⏱ ' + formatTime(elapsedSeconds);
+  }, 1000);
+}
+
+function pauseElapsedTimer() {
+  if (elapsedInterval) { clearInterval(elapsedInterval); elapsedInterval = null; }
+}
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+/* ═══════════════════════════════════════════
+   CONTROLS
+═══════════════════════════════════════════ */
+
+function togglePause() {
+  if (!started) {
+    started = true;
+    paused = false;
+    startElapsedTimer();
+    document.getElementById('startPauseIcon').textContent = '⏸';
+    document.getElementById('startPauseLabel').textContent = 'עצור';
+    // Start current step timer if needed
+    resumeCurrentStep();
+    return;
+  }
+
+  paused = !paused;
+  if (paused) {
+    clearCountdown();
+    pauseElapsedTimer();
+    document.getElementById('startPauseIcon').textContent = '▶';
+    document.getElementById('startPauseLabel').textContent = 'המשך';
+  } else {
+    startElapsedTimer();
+    document.getElementById('startPauseIcon').textContent = '⏸';
+    document.getElementById('startPauseLabel').textContent = 'עצור';
+    resumeCurrentStep();
+  }
+}
+
+function resumeCurrentStep() {
+  const step = steps[stepIdx];
+  if (!step) return;
+  if (step.type === 'exercise' && step.duration) {
+    startCountdown(countdown || step.duration, () => markSetDone());
+  } else if (step.type === 'rest') {
+    startCountdown(countdown || step.duration, () => advance());
+  }
+}
+
+function markSetDone() {
+  // Called when user taps "סיימתי" or duration expires
+  const step = steps[stepIdx];
+  if (step && step.type === 'exercise') {
+    completedSets++;
+    if (step.set === step.totalSets) completedExercises++;
+  }
+  clearCountdown();
+  advance();
+}
+
+function advance() {
+  clearCountdown();
+  stepIdx++;
+  if (stepIdx >= steps.length) {
+    finishWorkout();
+  } else {
+    renderStep();
+    if (!paused && started) {
+      resumeCurrentStep();
+    }
+  }
+}
+
+function skipCurrent() {
+  clearCountdown();
+  const step = steps[stepIdx];
+  if (step && step.type === 'exercise') completedExercises++; // partial credit
+  stepIdx++;
+  if (stepIdx >= steps.length) {
+    finishWorkout();
+  } else {
+    renderStep();
+    if (!paused && started) resumeCurrentStep();
+  }
+}
+
+function goBack() {
+  clearCountdown();
+  if (stepIdx > 0) {
+    stepIdx--;
+    // Re-init countdown to full
+    countdown = 0;
+    renderStep();
+    if (!paused && started) resumeCurrentStep();
+  }
+}
+
+/* ═══════════════════════════════════════════
+   COMPLETION
+═══════════════════════════════════════════ */
+
+function finishWorkout() {
+  clearCountdown();
+  pauseElapsedTimer();
+
+  document.getElementById('stage').style.display = 'none';
+  document.getElementById('controlsWrap').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('elapsedBar').style.display = 'none';
+
+  document.getElementById('statTime').textContent = formatTime(elapsedSeconds);
+  document.getElementById('statExercises').textContent = completedExercises;
+  document.getElementById('statSets').textContent = completedSets;
+
+  document.getElementById('completionScreen').classList.add('active');
+
+  // Clear active workout from storage
+  localStorage.removeItem('trainerhub_active_workout');
+}
+
+function exitWorkout() {
+  if (confirm('לצאת מהאימון?')) {
+    clearCountdown();
+    pauseElapsedTimer();
+    localStorage.removeItem('trainerhub_active_workout');
+    window.location.href = 'index.html';
+  }
+}
+</script>
+
+</body>
+</html>

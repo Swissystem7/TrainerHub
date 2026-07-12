@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TrainerHub — פלטפורמת AI למאמני כושר: המרת תיאורי אימון לכרטיסיות מקצועיות, Marketplace קהילתי וניהול פרופיל מאמן.">
+  <meta property="og:title" content="TrainerHub — GitHub למאמנים">
+  <meta property="og:description" content="המר כל תיאור אימון לכרטיסייה מקצועית עם AI, שתף בקהילת המאמנים וגדל את העסק שלך.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#7c3aed">
+  <title>TrainerHub — Creator Studio</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f13;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #2a2a4a;
+    }
+
+    header h1 { font-size: 1.6rem; font-weight: 700; color: #7c3aed; }
+    header span { color: #a78bfa; font-size: 0.9rem; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: #1a1a2e;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #2a2a4a;
+    }
+
+    .panel h2 {
+      font-size: 1rem;
+      color: #a78bfa;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      background: #0f0f13;
+      border: 1px solid #3a3a5a;
+      border-radius: 10px;
+      padding: 16px;
+      color: #f0f0f0;
+      font-size: 0.95rem;
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.6;
+      direction: rtl;
+    }
+
+    textarea:focus { outline: none; border-color: #7c3aed; }
+
+    .example-btn {
+      margin-top: 8px;
+      background: none;
+      border: 1px solid #3a3a5a;
+      color: #a78bfa;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .example-btn:hover { border-color: #7c3aed; }
+
+    .parse-btn {
+      width: 100%;
+      margin-top: 16px;
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .parse-btn:hover { opacity: 0.9; }
+    .parse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .card-empty {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a4a6a;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .workout-card { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card-header {
+      background: linear-gradient(135deg, #7c3aed22, #5b21b622);
+      border: 1px solid #7c3aed44;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #a78bfa;
+      margin-bottom: 8px;
+    }
+
+    .card-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .badge {
+      background: #2a2a4a;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      color: #c4b5fd;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .intensity-high { background: #7f1d1d33; color: #fca5a5; border: 1px solid #7f1d1d; }
+    .intensity-medium { background: #78350f33; color: #fcd34d; border: 1px solid #78350f; }
+    .intensity-low { background: #14532d33; color: #86efac; border: 1px solid #14532d; }
+
+    .phase {
+      margin-bottom: 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2a2a4a;
+    }
+
+    .phase-header {
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phase-warmup { background: #1e3a5f; color: #93c5fd; }
+    .phase-main { background: #3b1f5e; color: #c4b5fd; }
+    .phase-cooldown { background: #1a3a2a; color: #86efac; }
+
+    .exercise {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #2a2a4a;
+      font-size: 0.88rem;
+    }
+
+    .exercise:hover { background: #ffffff08; }
+    .exercise-name { font-weight: 600; }
+
+    .exercise-details {
+      display: flex;
+      gap: 10px;
+      color: #a78bfa;
+      font-size: 0.8rem;
+    }
+
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .tag {
+      background: #2a2a4a;
+      color: #818cf8;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 16px;
+      color: #a78bfa;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #2a2a4a;
+      border-top-color: #7c3aed;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      background: #7f1d1d22;
+      border: 1px solid #7f1d1d;
+      border-radius: 10px;
+      padding: 16px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+
+    .equipment-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    /* Action bar */
+    .action-bar {
+      display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+    }
+    .action-btn {
+      flex: 1; padding: 10px 14px; border-radius: 10px; border: 1px solid #3a3a5a;
+      background: #0f0f13; color: #a78bfa; font-size: 0.85rem; cursor: pointer;
+      transition: all 0.2s; min-width: 100px;
+    }
+    .action-btn:hover { border-color: #7c3aed; background: #1a1a2e; }
+
+    /* History */
+    .history-panel { margin-top: 20px; }
+    .history-title { font-size: 0.8rem; color: #6b7280; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .history-item {
+      padding: 10px 14px; border: 1px solid #2a2a4a; border-radius: 10px;
+      margin-bottom: 8px; cursor: pointer; transition: background 0.2s;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-item:hover { background: #1a1a2e; }
+    .history-name { font-size: 0.88rem; font-weight: 600; }
+    .history-meta { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+    .history-del {
+      color: #4a4a6a; font-size: 0.8rem; cursor: pointer;
+      padding: 2px 8px; border-radius: 6px; border: 1px solid transparent;
+    }
+    .history-del:hover { color: #f87171; border-color: #7f1d1d; }
+
+    /* ── Skeleton loading ── */
+    .skeleton-card { animation: fadeIn 0.3s ease; }
+    .skeleton-block {
+      background: linear-gradient(90deg, #2a2a4a 25%, #3a3a5a 50%, #2a2a4a 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .sk-header { height: 80px; margin-bottom: 16px; border-radius: 12px; }
+    .sk-phase  { height: 44px; margin-bottom: 10px; }
+    .sk-ex     { height: 36px; margin-bottom: 8px; }
+
+    /* ── History empty state ── */
+    .history-empty {
+      text-align: center; padding: 24px 16px; color: #4a4a6a;
+      font-size: 0.88rem; line-height: 1.7;
+    }
+    .history-empty .empty-icon { font-size: 2.2rem; margin-bottom: 8px; }
+    .history-empty .empty-arrow {
+      display: inline-block; font-size: 1.4rem; color: #7c3aed;
+      animation: bounceUp 1.2s ease-in-out infinite;
+    }
+    @keyframes bounceUp {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+    /* ── Success toast ── */
+    #saveToast {
+      display: none; position: fixed; top: 72px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #14532d; border: 1px solid #22c55e; color: #86efac;
+      padding: 12px 24px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;
+      z-index: 1000; white-space: nowrap; box-shadow: 0 6px 24px rgba(34,197,94,0.25);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    #saveToast.visible {
+      display: block; opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+    #saveToast.hiding {
+      opacity: 0; transform: translateX(-50%) translateY(-12px);
+    }
+
+    /* ── Tab animated underline ── */
+    .nav-tab { position: relative; }
+    .nav-tab::after {
+      content: ''; position: absolute; bottom: -2px; right: 50%;
+      width: 0; height: 2px; background: #7c3aed; border-radius: 2px;
+      transition: width 0.25s ease, right 0.25s ease;
+    }
+    .nav-tab.active::after { width: 80%; right: 10%; }
+
+    /* ── Action btn disabled / loading ── */
+    .action-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .action-btn .btn-spinner {
+      display: inline-block; width: 10px; height: 10px;
+      border: 2px solid rgba(167,139,250,.4); border-top-color: #a78bfa;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-left: 5px;
+    }
+
+    /* ── Styled error state ── */
+    .error-card {
+      background: #7f1d1d22; border: 1px solid #7f1d1d44;
+      border-radius: 14px; padding: 24px; text-align: center; color: #fca5a5;
+    }
+    .error-card .error-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .error-card .error-hint  { font-size: 0.82rem; color: #6b7280; margin-top: 8px; }
+    .error-retry {
+      margin-top: 14px; background: none; border: 1px solid #7f1d1d;
+      color: #fca5a5; padding: 8px 20px; border-radius: 8px; cursor: pointer;
+      font-size: 0.85rem; transition: background 0.2s;
+    }
+    .error-retry:hover { background: #7f1d1d44; }
+
+    /* ── Mobile responsive header ── */
+    @media (max-width: 600px) {
+      .nav-tab .tab-label { display: none; }
+      .nav-tab { padding: 8px 12px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:20px;flex:1">
+    <div>
+      <h1>🏋️ TrainerHub</h1>
+      <span>GitHub למאמנים — AI Workout Creator</span>
+    </div>
+    <nav style="display:flex;gap:4px;margin-inline-start:32px">
+      <button class="nav-tab active" onclick="switchTab('studio',this)">✍️ <span class="tab-label">Creator Studio</span></button>
+      <button class="nav-tab" onclick="switchTab('marketplace',this)">🛒 <span class="tab-label">Marketplace</span></button>
+      <button class="nav-tab" onclick="switchTab('clients',this)">👥 <span class="tab-label">המתאמנים שלי</span></button>
+      <button class="nav-tab" onclick="switchTab('profile',this)">👤 <span class="tab-label">הפרופיל שלי</span></button>
+    </nav>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="background:#2a2a4a;border-radius:20px;padding:6px 14px;font-size:0.8rem;color:#a78bfa;display:flex;align-items:center;gap:6px">
+      🌟 Trainer Pro
+      <span style="background:#374151;color:#9ca3af;border-radius:10px;padding:1px 7px;font-size:0.72rem;font-weight:700;letter-spacing:.5px">FREE</span>
+    </div>
+    <button onclick="openPricing()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">Upgrade ⚡</button>
+    <button id="loginBtn" class="login-btn" onclick="openAuth()">התחבר</button>
+    <div id="avatarWrap" style="position:relative;display:none">
+      <div id="userAvatar" onclick="toggleUserMenu(event)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;cursor:pointer;color:#fff">👤</div>
+      <div id="userMenu" class="user-menu">
+        <div class="user-menu-name" id="userMenuName"></div>
+        <button onclick="alert('החשבון שלי — בקרוב!')">👤 החשבון שלי</button>
+        <button onclick="logoutUser()">🚪 התנתק</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Pricing Modal ─────────────────────────────────────────────── -->
+<div id="pricingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:36px;max-width:720px;width:95%;position:relative;max-height:90vh;overflow-y:auto">
+    <button onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#6b7280;font-size:1.3rem;cursor:pointer">✕</button>
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:1.6rem;font-weight:800;color:#f0f0f0;margin-bottom:6px">⚡ שדרג את TrainerHub שלך</div>
+      <div style="color:#6b7280;font-size:0.9rem">בחר תוכנית שמתאימה לצרכים שלך</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <!-- Free -->
+      <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
+        <div style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Free</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪0</div>
+        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לנצח</div>
+        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
+          <li>✓ עד 5 אימונים/חודש</li>
+          <li>✓ כרטיסיות בסיסיות</li>
+          <li>✓ היסטוריה מקומית</li>
+          <li style="color:#4a4a6a">✗ Marketplace</li>
+          <li style="color:#4a4a6a">✗ ייצוא PDF</li>
+          <li style="color:#4a4a6a">✗ Analytics</li>
+        </ul>
+        <button style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#6b7280;cursor:default;font-size:0.85rem">תוכנית נוכחית</button>
+      </div>
+      <!-- Pro -->
+      <div style="background:linear-gradient(180deg,#2d1f5e,#1a1230);border:2px solid #7c3aed;border-radius:14px;padding:22px;text-align:center;position:relative">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:0.72rem;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.5px">הכי פופולרי</div>
+        <div style="font-size:0.75rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Pro</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪49</div>
+        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לחודש</div>
+        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
+          <li>✓ אימונים ללא הגבלה</li>
+          <li>✓ גישה מלאה ל-Marketplace</li>
+          <li>✓ ייצוא PDF</li>
+          <li>✓ Analytics בסיסי</li>
+          <li>✓ תמיכה מועדפת</li>
+          <li style="color:#4a4a6a">✗ Multi-trainer</li>
+        </ul>
+        <button onclick="track('upgrade_click',{plan:'pro'});closePricing()" style="width:100%;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem">בחר Pro ⚡</button>
+      </div>
+      <!-- Studio -->
+      <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
+        <div style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Studio</div>
+        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪149</div>
+        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לחודש</div>
+        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
+          <li>✓ הכל ב-Pro</li>
+          <li>✓ Multi-trainer (עד 10)</li>
+          <li>✓ White-label</li>
+          <li>✓ Analytics מתקדם</li>
+          <li>✓ API גישה</li>
+          <li>✓ מנהל לקוחות</li>
+        </ul>
+        <button onclick="track('upgrade_click',{plan:'studio'});closePricing()" style="width:100%;padding:10px;border-radius:10px;border:1px solid #7c3aed;background:transparent;color:#a78bfa;cursor:pointer;font-size:0.85rem;font-weight:600">בחר Studio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Save Toast ────────────────────────────────────────────────── -->
+<div id="saveToast">✅ האימון נשמר בהצלחה!</div>
+
+<!-- ── Upgrade Toast ─────────────────────────────────────────────── -->
+<div id="upgradeToast" style="display:none;position:fixed;bottom:28px;right:28px;background:#1a1a2e;border:1px solid #7c3aed;border-radius:14px;padding:16px 20px;z-index:999;max-width:320px;box-shadow:0 8px 32px rgba(124,58,237,.3)">
+  <div style="font-size:0.9rem;font-weight:700;color:#f0f0f0;margin-bottom:6px">⚠️ הגעת למגבלת Free (3/5 אימונים)</div>
+  <div style="font-size:0.82rem;color:#a78bfa;margin-bottom:12px">שדרג ל-Pro לאימונים ללא הגבלה</div>
+  <div style="display:flex;gap:8px">
+    <button onclick="openPricing();hideToast()" style="flex:1;background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:8px;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:700">שדרג ⚡</button>
+    <button onclick="hideToast()" style="background:none;border:1px solid #3a3a5a;color:#6b7280;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem">אחר כך</button>
+  </div>
+</div>
+
+<style>
+.nav-tab{padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#6b7280;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all.2s}
+.nav-tab:hover{color:#a78bfa;background:rgba(124,58,237,.08)}
+.nav-tab.active{background:rgba(124,58,237,.15);color:#a78bfa}
+.tab-section{display:none}
+.tab-section.active{display:block}
+
+/* Marketplace styles */
+.marketplace-wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
+.mkt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.mkt-filters{display:flex;gap:8px;flex-wrap:wrap}
+.mkt-filter{padding:6px 16px;border-radius:20px;border:1px solid #2a2a4a;background:transparent;color:#6b7280;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all.2s}
+.mkt-filter.active,.mkt-filter:hover{border-color:#7c3aed;color:#a78bfa;background:rgba(124,58,237,.08)}
+.mkt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.mkt-card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;overflow:hidden;transition:all.2s;cursor:pointer}
+.mkt-card:hover{border-color:#7c3aed;transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.15)}
+.mkt-card-header{padding:16px;border-bottom:1px solid #2a2a4a}
+.mkt-card-title{font-size:1rem;font-weight:700;margin-bottom:8px}
+.mkt-card-meta{display:flex;gap:8px;flex-wrap:wrap}
+.mkt-trainer{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #2a2a4a}
+.trainer-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#fff;flex-shrink:0}
+.trainer-name{font-size:0.85rem;font-weight:600}
+.trainer-cred{font-size:0.72rem;color:#6b7280}
+.mkt-card-body{padding:12px 16px}
+.mkt-actions{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid #2a2a4a}
+.mkt-stat{display:flex;align-items:center;gap:5px;font-size:0.78rem;color:#6b7280}
+.mkt-btn-row{display:flex;gap:6px}
+.mkt-btn{padding:5px 14px;border-radius:8px;border:1px solid #3a3a5a;background:transparent;color:#a78bfa;font-size:0.78rem;cursor:pointer;font-family:inherit;transition:all.2s}
+.mkt-btn:hover{border-color:#7c3aed;background:rgba(124,58,237,.08)}
+.mkt-btn.primary{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#7c3aed;color:#fff}
+.exercise-preview{font-size:0.78rem;color:#8b949e;line-height:1.6}
+.phase-label-small{font-size:0.7rem;text-transform:uppercase;letter-spacing:.5px;color:#a78bfa;margin-top:6px;margin-bottom:2px}
+.price-tag{font-size:0.82rem;font-weight:700;color:#22c55e}
+
+/* Profile */
+.profile-wrap{max-width:800px;margin:0 auto;padding:24px 20px}
+.profile-hero{background:linear-gradient(135deg,#1a1a2e,#0f0f2a);border:1px solid #2a2a4a;border-radius:16px;padding:28px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
+.profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.profile-stat{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:16px;text-align:center}
+.profile-stat-n{font-size:1.6rem;font-weight:800;color:#a78bfa}
+.profile-stat-l{font-size:0.72rem;color:#6b7280;margin-top:3px}
+.earned-badge{display:inline-flex;align-items:center;gap:6px;background:#2a2a4a;border-radius:20px;padding:6px 14px;font-size:0.8rem;margin:4px}
+</style>
+
+<div id="tab-studio" class="tab-section active">
+<div class="container">
+  <!-- Input Panel -->
+  <div class="panel">
+    <h2>✍️ הכנס תיאור אימון</h2>
+    <textarea id="workoutInput" placeholder="כתוב/הדבק כאן כל תיאור אימון בטקסט חופשי...
+
+לדוגמה:
+אימון תחנות ל-10 אנשים, 45 דקות.
+חימום 10 דקות - ריצה קלה + מתיחות.
+תחנה 1: סקוואט קפיצה 45 שניות.
+תחנה 2: פוש אפס 45 שניות.
+מנוחה 15 שניות בין תחנות.
+שחרור 5 דקות."></textarea>
+
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+      <button class="example-btn" onclick="loadExample(1)">דוגמה: אימון פונקציונלי</button>
+      <button class="example-btn" onclick="loadExample(2)">דוגמה: אימון כוח</button>
+      <button class="example-btn" onclick="loadExample(3)">דוגמה: HIIT</button>
+    </div>
+
+    <button class="parse-btn" onclick="parseWorkout()" id="parseBtn">
+      🤖 המר לכרטיסיית אימון
+    </button>
+
+    <!-- History -->
+    <div class="history-panel" id="historyPanel" style="display:none">
+      <div class="history-title">📂 אימונים שמורים</div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- Card Panel -->
+  <div class="panel" id="cardPanel">
+    <h2>🃏 כרטיסיית אימון</h2>
+    <div class="card-empty" id="cardEmpty">
+      <div>
+        <div style="font-size:3rem;margin-bottom:12px">💪</div>
+        <div>הזן תיאור אימון ולחץ המר</div>
+        <div style="font-size:0.8rem;margin-top:6px;color:#3a3a5a">ה-AI יבנה עבורך כרטיסיית אימון מקצועית</div>
+      </div>
+    </div>
+    <div id="cardContent" style="display:none"></div>
+    <div class="action-bar" id="actionBar" style="display:none">
+      <button class="action-btn" onclick="saveWorkout()">💾 שמור</button>
+      <button class="action-btn" onclick="shareToMarketplace()">🛒 שתף</button>
+      <button class="action-btn" onclick="downloadJSON()">📥 ייצא JSON</button>
+      <button class="action-btn" onclick="printCard()">🖨️ הדפס</button>
+      <button class="action-btn" onclick="copyText()">📋 העתק</button>
+      <button class="action-btn" onclick="startWorkout()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#7c3aed;color:#fff;font-weight:700;">▶️ התחל אימון</button>
+    </div>
+  </div>
+</div>
+</div><!-- /tab-studio -->
+
+<!-- MARKETPLACE TAB -->
+<div id="tab-marketplace" class="tab-section">
+<div class="marketplace-wrap">
+  <div class="mkt-header">
+    <div>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px">🛒 Marketplace</h2>
+      <p style="color:#6b7280;font-size:0.85rem">אימונים של מאמנים מהקהילה — סנן, שמור, השתמש</p>
+    </div>
+    <div class="mkt-filters" id="mktFilters">
+      <button class="mkt-filter active" onclick="filterMkt('all',this)">הכל</button>
+      <button class="mkt-filter" onclick="filterMkt('חוזק',this)">💪 כוח</button>
+      <button class="mkt-filter" onclick="filterMkt('קבוצתי',this)">👥 קבוצתי</button>
+      <button class="mkt-filter" onclick="filterMkt('HIIT',this)">🔥 HIIT</button>
+      <button class="mkt-filter" onclick="filterMkt('ריצה',this)">🏃 ריצה</button>
+      <button class="mkt-filter" onclick="filterMkt('מתחילים',this)">🌱 מתחילים</button>
+    </div>
+  </div>
+  <div class="mkt-grid" id="mktGrid"></div>
+</div>
+</div><!-- /tab-marketplace -->
+
+<!-- PROFILE TAB -->
+<div id="tab-profile" class="tab-section">
+<div class="profile-wrap">
+  <div class="profile-hero">
+    <div class="profile-avatar">🏋️</div>
+    <div style="flex:1">
+      <div style="font-size:1.4rem;font-weight:800;margin-bottom:4px">המאמן שלי</div>
+      <div style="color:#a78bfa;font-size:0.9rem;margin-bottom:8px">Trainer Pro · אישור ISSA</div>
+      <div style="color:#6b7280;font-size:0.83rem;line-height:1.6">מאמן כושר אישי ומאמן קבוצות. מתמחה באימוני כוח, HIIT ופונקציונלי. 8 שנות ניסיון עם מגוון אוכלוסיות.</div>
+    </div>
+    <button class="mkt-btn primary" style="align-self:flex-start">✏️ ערוך פרופיל</button>
+  </div>
+  <div class="profile-stats">
+    <div class="profile-stat"><div class="profile-stat-n" id="ps-workouts">0</div><div class="profile-stat-l">אימונים שנוצרו</div></div>
+    <div class="profile-stat"><div class="profile-stat-n" id="ps-shared">3</div><div class="profile-stat-l">שותפו בקהילה</div></div>
+    <div class="profile-stat"><div class="profile-stat-n">142</div><div class="profile-stat-l">לייקים</div></div>
+    <div class="profile-stat"><div class="profile-stat-n">28</div><div class="profile-stat-l">עוקבים</div></div>
+  </div>
+  <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:20px;margin-bottom:16px">
+    <div style="font-size:0.85rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">🏅 תגים שהרווחתי</div>
+    <div>
+      <span class="earned-badge">🔥 100 אימונים</span>
+      <span class="earned-badge">🌟 מאמן מוביל</span>
+      <span class="earned-badge">💪 מומחה כוח</span>
+      <span class="earned-badge">👥 מאמן קבוצות</span>
+      <span class="earned-badge">⚡ HIIT Pro</span>
+    </div>
+  </div>
+  <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:20px">
+    <div style="font-size:0.85rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">📂 האימונים ששיתפתי</div>
+    <div id="mySharedList"></div>
+  </div>
+</div>
+</div><!-- /tab-profile -->
+
+<script>
+const EXAMPLES = {
+  1: `אימון פונקציונלי לקבוצה של 12 אנשים, 50 דקות, ציוד: גומיות וכדורי ולשין.
+חימום 10 דקות: ריצה קלה, הליכה בצד, מתיחות דינמיות.
+עיקר האימון 35 דקות - 4 תחנות, 3 סבבים:
+תחנה 1: סקוואט עם גומייה על הכתפיים, 15 חזרות.
+תחנה 2: לאנג'ים הליכה 20 מטר.
+תחנה 3: זריקת כדור ולשין לקיר, 12 חזרות.
+תחנה 4: בורפי, 10 חזרות.
+מנוחה 45 שניות בין תחנות.
+שחרור 5 דקות: מתיחות סטטיות.`,
+  2: `אימון כוח עליון, 60 דקות, ציוד: מוט ומשקולות.
+חימום 10 דקות קל.
+כפיפות חזה - 4 סטים של 8 חזרות.
+שכיבות שמיכה - 3 סטים של 12.
+חתירה עם מוט - 4 סטים של 10.
+כפיפות מרפק - 3 סטים של 12.
+לחיצת כתפיים - 3 סטים של 10.
+מנוחה 90 שניות בין סטים.
+שחרור.`,
+  3: `HIIT 30 דקות עצימות גבוהה, ללא ציוד.
+חימום 5 דקות.
+8 סבבים: 20 שניות עבודה, 10 שניות מנוחה.
+תרגיל 1: ג'אמפינג ג'קס.
+תרגיל 2: סקוואט קפיצה.
+תרגיל 3: בורפי.
+תרגיל 4: מאונטיין קליימר.
+חזור על הסבב פעמיים.
+שחרור 5 דקות.`
+};
+
+let currentWorkout = null;
+
+function loadExample(num) {
+  document.getElementById('workoutInput').value = EXAMPLES[num];
+}
+
+async function parseWorkout() {
+  if (!getUser()) { openAuth('צור חשבון חינם כדי להמשיך'); return; }
+  const text = document.getElementById('workoutInput').value.trim();
+  if (!text) return alert('אנא הזן תיאור אימון');
+  track('convert_workout', { length: text.length });
+
+  const btn = document.getElementById('parseBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-spinner"></span> ממיר...';
+
+  // Disable action buttons during fetch
+  document.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+
+  document.getElementById('cardEmpty').style.display = 'none';
+  document.getElementById('cardContent').style.display = 'block';
+  document.getElementById('actionBar').style.display = 'none';
+
+  // Skeleton loader
+  document.getElementById('cardContent').innerHTML = `
+    <div class="skeleton-card">
+      <div class="skeleton-block sk-header"></div>
+      <div class="skeleton-block sk-phase"></div>
+      <div class="skeleton-block sk-ex"></div>
+      <div class="skeleton-block sk-ex" style="width:80%"></div>
+      <div class="skeleton-block sk-phase" style="margin-top:14px"></div>
+      <div class="skeleton-block sk-ex"></div>
+      <div class="skeleton-block sk-ex" style="width:65%"></div>
+      <div class="skeleton-block sk-ex" style="width:75%"></div>
+    </div>`;
+
+  try {
+    const res = await fetch('http://localhost:8001/api/parse-workout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.detail || 'שגיאה בניתוח האימון');
+    }
+
+    currentWorkout = data.workout;
+    renderCard(currentWorkout);
+    document.getElementById('actionBar').style.display = 'flex';
+    checkFreeLimit();
+  } catch (err) {
+    const isNetwork = err.message.includes('fetch') || err.message.includes('Failed') || err.message.includes('NetworkError') || err.message.includes('שרת');
+    document.getElementById('cardContent').innerHTML = `
+      <div class="error-card">
+        <div class="error-title">⚠️ שרת ה-AI לא זמין כרגע</div>
+        <div style="font-size:0.85rem;margin-top:4px">${err.message}</div>
+        <button class="error-retry" onclick="parseWorkout()">🔄 נסה שוב</button>
+        <div class="error-hint">או השתמש באחת מהדוגמאות ↑</div>
+      </div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🤖 המר לכרטיסיית אימון';
+    document.querySelectorAll('.action-btn').forEach(b => b.disabled = false);
+  }
+}
+
+function renderCard(w) {
+  const intensityClass = { high: 'intensity-high', medium: 'intensity-medium', low: 'intensity-low' }[w.intensity] || '';
+  const intensityLabel = { high: '🔥 עצימות גבוהה', medium: '⚡ עצימות בינונית', low: '🌿 עצימות נמוכה' }[w.intensity] || '';
+
+  const phases = (w.phases || []).map(phase => {
+    const phaseClass = { 'Warm-up': 'phase-warmup', 'Main': 'phase-main', 'Cool-down': 'phase-cooldown' }[phase.name] || 'phase-main';
+    const phaseLabel = { 'Warm-up': '🔆 חימום', 'Main': '💥 עיקר', 'Cool-down': '🌙 שחרור' }[phase.name] || phase.name;
+
+    const exercises = (phase.exercises || []).map(ex => {
+      const details = [];
+      if (ex.sets && ex.reps) details.push(`${ex.sets}×${ex.reps}`);
+      else if (ex.reps) details.push(`${ex.reps} חזרות`);
+      if (ex.duration_seconds) details.push(`${ex.duration_seconds}″`);
+      if (ex.rest_seconds) details.push(`מנוחה ${ex.rest_seconds}″`);
+
+      return `<div class="exercise">
+        <div>
+          <div class="exercise-name">${ex.name}</div>
+          ${ex.notes ? `<div style="color:#6b7280;font-size:0.78rem;margin-top:2px">${ex.notes}</div>` : ''}
+        </div>
+        <div class="exercise-details">${details.join(' · ')}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="phase">
+      <div class="phase-header ${phaseClass}">
+        <span>${phaseLabel}</span>
+        ${phase.duration_minutes ? `<span>${phase.duration_minutes} דקות</span>` : ''}
+      </div>
+      ${exercises}
+    </div>`;
+  }).join('');
+
+  const equipment = w.equipment?.length
+    ? `<div class="equipment-list">${w.equipment.map(e => `<span class="badge">🏋️ ${e}</span>`).join('')}</div>` : '';
+  const tags = w.tags?.length
+    ? `<div class="tags">${w.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : '';
+
+  document.getElementById('cardContent').innerHTML = `
+    <div class="workout-card" id="printArea">
+      <div class="card-header">
+        <div class="card-title">${w.title || 'אימון'}</div>
+        <div class="card-meta">
+          ${w.duration_minutes ? `<span class="badge">⏱️ ${w.duration_minutes} דקות</span>` : ''}
+          ${w.participants ? `<span class="badge">👥 ${w.participants} משתתפים</span>` : ''}
+          ${w.intensity ? `<span class="badge ${intensityClass}">${intensityLabel}</span>` : ''}
+        </div>
+        ${equipment}
+        ${tags}
+      </div>
+      ${phases}
+    </div>`;
+}
+
+// ── Actions ──────────────────────────────────────────────────────────────
+
+function saveWorkout() {
+  if (!currentWorkout) return;
+  const saved = JSON.parse(localStorage.getItem('trainerhub_workouts') || '[]');
+  const entry = { ...currentWorkout, savedAt: new Date().toLocaleString('he-IL') };
+  saved.unshift(entry);
+  localStorage.setItem('trainerhub_workouts', JSON.stringify(saved.slice(0, 20)));
+  renderHistory();
+  showSaveToast();
+}
+
+function showSaveToast() {
+  const t = document.getElementById('saveToast');
+  t.classList.remove('hiding');
+  t.classList.add('visible');
+  setTimeout(() => {
+    t.classList.add('hiding');
+    setTimeout(() => { t.classList.remove('visible','hiding'); }, 300);
+  }, 2500);
+}
+
+function downloadJSON() {
+  if (!currentWorkout) return;
+  const blob = new Blob([JSON.stringify(currentWorkout, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${currentWorkout.title || 'workout'}.json`;
+  a.click();
+}
+
+function printCard() {
+  const area = document.getElementById('printArea');
+  if (!area) return;
+  const w = window.open('', '_blank');
+  w.document.write(`<html dir="rtl"><head><style>
+    body{font-family:'Segoe UI',sans-serif;padding:24px;direction:rtl}
+    .card-title{font-size:1.4rem;font-weight:700;margin-bottom:8px}
+    .badge{display:inline-block;background:#eee;padding:2px 10px;border-radius:20px;font-size:0.8rem;margin:2px}
+    .phase-header{font-weight:700;padding:8px;margin:10px 0 4px;background:#f5f5f5}
+    .exercise{padding:6px 8px;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+    .tag{display:inline-block;background:#e8e0ff;padding:2px 8px;border-radius:20px;font-size:0.75rem;margin:2px}
+  </style></head><body>${area.innerHTML}</body></html>`);
+  w.document.close();
+  w.print();
+}
+
+function copyText() {
+  if (!currentWorkout) return;
+  const w = currentWorkout;
+  let text = `${w.title}\n`;
+  if (w.duration_minutes) text += `⏱ ${w.duration_minutes} דקות`;
+  if (w.participants) text += ` · 👥 ${w.participants} משתתפים`;
+  text += '\n\n';
+  (w.phases || []).forEach(p => {
+    const label = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[p.name] || p.name;
+    text += `── ${label} ──\n`;
+    (p.exercises || []).forEach(ex => {
+      let line = ex.name;
+      if (ex.sets && ex.reps) line += ` | ${ex.sets}×${ex.reps}`;
+      if (ex.duration_seconds) line += ` | ${ex.duration_seconds}″`;
+      text += line + '\n';
+    });
+    text += '\n';
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ הועתק!';
+    setTimeout(() => btn.textContent = '📋 העתק טקסט', 1500);
+  });
+}
+
+function renderHistory() {
+  const saved = JSON.parse(localStorage.getItem('trainerhub_workouts') || '[]');
+  const panel = document.getElementById('historyPanel');
+  const list  = document.getElementById('historyList');
+  panel.style.display = 'block';
+  if (!saved.length) {
+    list.innerHTML = `
+      <div class="history-empty">
+        <div class="empty-icon">📂</div>
+        <div>עדיין אין אימונים שמורים</div>
+        <div style="font-size:0.8rem;margin-top:4px">המר את האימון הראשון שלך ושמור אותו כאן</div>
+        <div class="empty-arrow" style="margin-top:8px">↑</div>
+      </div>`;
+    return;
+  }
+  list.innerHTML = saved.map((w, i) => `
+    <div class="history-item" onclick="loadSaved(${i})">
+      <div>
+        <div class="history-name">${w.title || 'אימון'}</div>
+        <div class="history-meta">${w.savedAt} · ${w.duration_minutes || '?'} דקות</div>
+      </div>
+      <span class="history-del" onclick="deleteSaved(event,${i})">🗑</span>
+    </div>`).join('');
+}
+
+function loadSaved(i) {
+  const saved = JSON.parse(localStorage.getItem('trainerhub_workouts') || '[]');
+  currentWorkout = saved[i];
+  document.getElementById('cardEmpty').style.display = 'none';
+  document.getElementById('cardContent').style.display = 'block';
+  document.getElementById('actionBar').style.display = 'flex';
+  renderCard(currentWorkout);
+}
+
+function deleteSaved(e, i) {
+  e.stopPropagation();
+  const saved = JSON.parse(localStorage.getItem('trainerhub_workouts') || '[]');
+  saved.splice(i, 1);
+  localStorage.setItem('trainerhub_workouts', JSON.stringify(saved));
+  renderHistory();
+}
+
+function startWorkout() {
+  if (!currentWorkout) return;
+  localStorage.setItem('trainerhub_active_workout', JSON.stringify(currentWorkout));
+  window.location.href = 'workout-mode.html';
+}
+
+renderHistory();
+
+// ── Pricing modal ────────────────────────────────────────────────
+function openPricing() {
+  track('open_pricing');
+  document.getElementById('pricingModal').style.display = 'flex';
+}
+function closePricing() {
+  document.getElementById('pricingModal').style.display = 'none';
+}
+document.getElementById('pricingModal').addEventListener('click', function(e) {
+  if (e.target === this) closePricing();
+});
+
+// ── Upgrade toast ────────────────────────────────────────────────
+let freeConversions = parseInt(localStorage.getItem('th_free_conv') || '0');
+
+function checkFreeLimit() {
+  freeConversions++;
+  localStorage.setItem('th_free_conv', freeConversions);
+  if (freeConversions === 3) {
+    document.getElementById('upgradeToast').style.display = 'block';
+  }
+}
+function hideToast() {
+  document.getElementById('upgradeToast').style.display = 'none';
+}
+
+// ── Tab navigation ────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'marketplace') renderMarketplace();
+  if (id === 'profile') renderProfileStats();
+}
+
+// ── Marketplace data ──────────────────────────────────────────────────────
+const MKT_WORKOUTS = [
+  { id:1, title:'אימון כוח עליון — מתקדמים', trainer:'נועם כץ', cred:'NSCA-CPT', avatar:'#7c3aed', avatarTxt:'נ', duration:60, participants:1, intensity:'high', tags:['חוזק','מתקדמים'], price:0, pro:false, likes:87, downloads:234, phases:[{name:'Warm-up',exs:['ריצה קלה 5 דקות','מעגלי כתפיים']},{name:'Main',exs:['לחיצת חזה 4×8','חתירה עם מוט 4×10','כפיפות מרפק 3×12']},{name:'Cool-down',exs:['מתיחות 5 דקות']}]},
+  { id:2, title:'HIIT קבוצתי — 30 דקות אש', trainer:'מיכל לוי', cred:'Les Mills Certified', avatar:'#e11d48', avatarTxt:'מ', duration:30, participants:15, intensity:'high', tags:['HIIT','קבוצתי'], price:0, pro:false, likes:213, downloads:891, phases:[{name:'Warm-up',exs:['ג\'אמפינג ג\'קס','הליכה דינמית']},{name:'Main',exs:['סקוואט קפיצה 8×20″','בורפי 8×20″','מאונטיין קליימר 8×20″']},{name:'Cool-down',exs:['נשימות','מתיחות רגליים']}]},
+  { id:3, title:'אימון ריצה אינטרוולים', trainer:'עידו שפירא', cred:'מאמן ריצה מוסמך', avatar:'#059669', avatarTxt:'ע', duration:45, participants:1, intensity:'medium', tags:['ריצה','אירובי'], price:0, pro:true, likes:54, downloads:167, phases:[{name:'Warm-up',exs:['ריצה קלה 10 דקות']},{name:'Main',exs:['6×400מ בקצב מהיר','מנוחה 90 שניות בין חזרות']},{name:'Cool-down',exs:['ריצה קלה 5 דקות','מתיחות']}]},
+  { id:4, title:'אימון פונקציונלי למתחילים', trainer:'שירה גבאי', cred:'ACE Personal Trainer', avatar:'#d97706', avatarTxt:'ש', duration:40, participants:10, intensity:'low', tags:['מתחילים','קבוצתי','פונקציונלי'], price:0, pro:false, likes:132, downloads:445, phases:[{name:'Warm-up',exs:['הליכה מהירה','מתיחות דינמיות']},{name:'Main',exs:['סקוואט ×15','לאנג\'ים ×12','פוש אפ על הברכיים ×10']},{name:'Cool-down',exs:['מתיחות סטטיות 5 דקות']}]},
+  { id:5, title:'אימון TRX מלא — גוף שלם', trainer:'אריאל מזרחי', cred:'TRX Certified', avatar:'#7c3aed', avatarTxt:'א', duration:50, participants:8, intensity:'medium', tags:['TRX','חוזק','קבוצתי'], price:0, pro:true, likes:76, downloads:203, phases:[{name:'Warm-up',exs:['מוביליטי מפרקים']},{name:'Main',exs:['TRX Row 3×12','TRX Squat 3×15','TRX Plank 3×45″']},{name:'Cool-down',exs:['מתיחות']}]},
+  { id:6, title:'HIIT אבסולוט — ללא ציוד', trainer:'מיכל לוי', cred:'Les Mills Certified', avatar:'#e11d48', avatarTxt:'מ', duration:25, participants:1, intensity:'high', tags:['HIIT','ביתי','ללא ציוד'], price:0, pro:true, likes:301, downloads:1204, phases:[{name:'Warm-up',exs:['קפיצות קטנות']},{name:'Main',exs:['ברפי 4×10','סקוואט קפיצה 4×12','ספרינט במקום 4×30″']},{name:'Cool-down',exs:['נשימות','מתיחות']}]},
+];
+
+let mktFilter = 'all';
+let likedIds = new Set(JSON.parse(localStorage.getItem('th_liked') || '[]'));
+let savedMktIds = new Set(JSON.parse(localStorage.getItem('th_saved_mkt') || '[]'));
+
+function filterMkt(tag, btn) {
+  mktFilter = tag;
+  document.querySelectorAll('.mkt-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMarketplace();
+}
+
+function renderMarketplace() {
+  const list = mktFilter === 'all' ? MKT_WORKOUTS : MKT_WORKOUTS.filter(w => w.tags.includes(mktFilter));
+  const intensityLabel = { high:'🔥 גבוהה', medium:'⚡ בינונית', low:'🌿 נמוכה' };
+  document.getElementById('mktGrid').innerHTML = list.map(w => `
+    <div class="mkt-card" style="${w.pro?'position:relative':''}" onclick="${w.pro?'openPricing()':''}">
+      ${w.pro ? `<div style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;z-index:1;letter-spacing:.5px">PRO 🔒</div>` : ''}
+      <div class="mkt-card-header" style="${w.pro?'filter:blur(0px)':''}">
+        <div class="mkt-card-title">${w.title}</div>
+        <div class="mkt-card-meta">
+          <span class="badge">⏱️ ${w.duration} דקות</span>
+          ${w.participants > 1 ? `<span class="badge">👥 ${w.participants}</span>` : ''}
+          <span class="badge ${w.intensity==='high'?'intensity-high':w.intensity==='low'?'intensity-low':'intensity-medium'}">${intensityLabel[w.intensity]}</span>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${w.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
+      </div>
+      <div class="mkt-trainer">
+        <div class="trainer-avatar" style="background:${w.avatar}">${w.avatarTxt}</div>
+        <div><div class="trainer-name">${w.trainer}</div><div class="trainer-cred">${w.cred}</div></div>
+      </div>
+      <div class="mkt-card-body" style="${w.pro?'filter:blur(3px);pointer-events:none;user-select:none':''}">
+        ${w.phases.map(p=>`<div class="phase-label-small">${{Warmup:'חימום','Warm-up':'חימום',Main:'עיקר','Cool-down':'שחרור'}[p.name]||p.name}</div><div class="exercise-preview">${p.exs.join(' · ')}</div>`).join('')}
+      </div>
+      <div class="mkt-actions">
+        <div style="display:flex;gap:12px">
+          <span class="mkt-stat" onclick="event.stopPropagation();toggleLike(${w.id},this)" style="cursor:pointer">
+            <span>${likedIds.has(w.id)?'❤️':'🤍'}</span><span id="likes-${w.id}">${w.likes + (likedIds.has(w.id)?1:0)}</span>
+          </span>
+          <span class="mkt-stat">⬇️ ${w.downloads}</span>
+        </div>
+        <div class="mkt-btn-row">
+          ${w.pro
+            ? `<button class="mkt-btn primary" onclick="event.stopPropagation();openPricing()">🔓 שדרג לPro</button>`
+            : `<button class="mkt-btn" onclick="event.stopPropagation();useMktWorkout(${w.id})" title="פתח ב-Creator Studio">🔁 השתמש</button>
+               <button class="mkt-btn ${savedMktIds.has(w.id)?'primary':''}" onclick="event.stopPropagation();saveMkt(${w.id},this)" title="שמור">
+                 ${savedMktIds.has(w.id)?'✅ שמור':'🔖 שמור'}
+               </button>`
+          }
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleLike(id, el) {
+  if (likedIds.has(id)) { likedIds.delete(id); } else { likedIds.add(id); }
+  localStorage.setItem('th_liked', JSON.stringify([...likedIds]));
+  renderMarketplace();
+}
+
+function saveMkt(id, btn) {
+  if (savedMktIds.has(id)) { savedMktIds.delete(id); } else { savedMktIds.add(id); }
+  localStorage.setItem('th_saved_mkt', JSON.stringify([...savedMktIds]));
+  renderMarketplace();
+}
+
+function useMktWorkout(id) {
+  const w = MKT_WORKOUTS.find(x => x.id === id);
+  if (!w) return;
+  const text = w.title + '\n' + w.duration + ' דקות\n\n' +
+    w.phases.map(p => (p.name==='Warm-up'?'חימום':p.name==='Main'?'עיקר':'שחרור') + ':\n' + p.exs.join('\n')).join('\n\n');
+  document.getElementById('workoutInput').value = text;
+  switchTab('studio', document.querySelector('.nav-tab'));
+}
+
+// ── Share to marketplace ─────────────────────────────────────────────────
+function shareToMarketplace() {
+  if (!currentWorkout) return;
+  const btn = event.target;
+  btn.textContent = '⏳ משתף...';
+  setTimeout(() => {
+    btn.textContent = '✅ שותף!';
+    setTimeout(() => btn.textContent = '🛒 שתף', 2000);
+    const shared = JSON.parse(localStorage.getItem('th_my_shared') || '[]');
+    shared.unshift({ title: currentWorkout.title, sharedAt: new Date().toLocaleString('he-IL') });
+    localStorage.setItem('th_my_shared', JSON.stringify(shared.slice(0,10)));
+  }, 800);
+}
+
+// ── Profile stats ────────────────────────────────────────────────────────
+function renderProfileStats() {
+  const saved = JSON.parse(localStorage.getItem('trainerhub_workouts') || '[]');
+  document.getElementById('ps-workouts').textContent = saved.length;
+  const shared = JSON.parse(localStorage.getItem('th_my_shared') || '[]');
+  document.getElementById('ps-shared').textContent = shared.length;
+  const el = document.getElementById('mySharedList');
+  if (!shared.length) {
+    el.innerHTML = '<div style="color:#6b7280;font-size:0.85rem;text-align:center;padding:20px">עדיין לא שיתפת אימונים במרקטפלייס</div>';
+  } else {
+    el.innerHTML = shared.map(s => `
+      <div class="history-item">
+        <div><div class="history-name">${s.title}</div><div class="history-meta">${s.sharedAt}</div></div>
+        <span style="color:#22c55e;font-size:0.78rem">✅ פורסם</span>
+      </div>`).join('');
+  }
+}
+</script>
+
+<!-- ══ Product Layer: Auth / Onboarding / Legal / Feedback / Analytics ══ -->
+<style>
+.login-btn{background:none;border:1px solid #3a3a5a;color:#a78bfa;padding:7px 16px;border-radius:20px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.login-btn:hover{border-color:#7c3aed;background:rgba(124,58,237,.08)}
+.user-menu{display:none;position:absolute;top:44px;left:0;background:#1a1a2e;border:1px solid #3a3a5a;border-radius:12px;padding:8px;min-width:160px;z-index:1100;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.user-menu.open{display:block}
+.user-menu-name{font-size:0.8rem;color:#6b7280;padding:6px 10px;border-bottom:1px solid #2a2a4a;margin-bottom:6px}
+.user-menu button{display:block;width:100%;text-align:right;background:none;border:none;color:#c4b5fd;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:inherit}
+.user-menu button:hover{background:rgba(124,58,237,.12)}
+.th-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1200;align-items:center;justify-content:center}
+.th-modal-overlay.open{display:flex}
+.th-modal{background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:32px;max-width:420px;width:92%;position:relative;max-height:88vh;overflow-y:auto}
+.th-modal .close-x{position:absolute;top:14px;left:14px;background:none;border:none;color:#6b7280;font-size:1.2rem;cursor:pointer}
+.auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:#0f0f13;border-radius:10px;padding:4px}
+.auth-tab{flex:1;padding:9px;border:none;border-radius:8px;background:transparent;color:#6b7280;cursor:pointer;font-size:0.88rem;font-weight:600;font-family:inherit}
+.auth-tab.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
+.auth-field{margin-bottom:12px}
+.auth-field label{display:block;font-size:0.8rem;color:#a78bfa;margin-bottom:5px}
+.auth-field input{width:100%;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:11px 14px;color:#f0f0f0;font-size:0.9rem;font-family:inherit}
+.auth-field input:focus{outline:none;border-color:#7c3aed}
+.auth-submit{width:100%;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:12px;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer}
+.auth-error{color:#fca5a5;font-size:0.8rem;margin-top:8px;display:none}
+#authSubtitle{color:#a78bfa;font-size:0.85rem;text-align:center;margin-bottom:16px}
+.th-footer{max-width:1100px;margin:0 auto;padding:20px;border-top:1px solid #2a2a4a;display:flex;justify-content:center;gap:20px;font-size:0.78rem;color:#6b7280}
+.th-footer a{color:#6b7280;text-decoration:none;cursor:pointer}
+.th-footer a:hover{color:#a78bfa}
+.legal-body{font-size:0.85rem;color:#c4b5fd;line-height:1.8}
+.legal-body p{margin-bottom:12px;color:#9ca3af}
+.legal-body h4{color:#a78bfa;margin:14px 0 6px;font-size:0.9rem}
+#onboardOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1500;align-items:center;justify-content:center}
+#onboardOverlay.open{display:flex}
+.onboard-card{background:#1a1a2e;border:1px solid #7c3aed;border-radius:20px;padding:36px;max-width:440px;width:92%;text-align:center;box-shadow:0 12px 48px rgba(124,58,237,.3)}
+.onboard-icon{font-size:3rem;margin-bottom:14px}
+.onboard-title{font-size:1.3rem;font-weight:800;color:#f0f0f0;margin-bottom:10px}
+.onboard-desc{font-size:0.9rem;color:#a78bfa;line-height:1.7;margin-bottom:24px}
+.onboard-dots{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.onboard-dot{width:8px;height:8px;border-radius:50%;background:#2a2a4a}
+.onboard-dot.active{background:#7c3aed}
+.onboard-actions{display:flex;gap:10px;justify-content:center}
+.onboard-next{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:11px 32px;border-radius:12px;font-size:0.9rem;font-weight:700;cursor:pointer}
+.onboard-skip{background:none;border:1px solid #3a3a5a;color:#6b7280;padding:11px 20px;border-radius:12px;font-size:0.9rem;cursor:pointer}
+#feedbackFab{position:fixed;bottom:24px;left:24px;z-index:1100;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:24px;padding:11px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(124,58,237,.4);font-family:inherit}
+#feedbackPanel{display:none;position:fixed;bottom:76px;left:24px;z-index:1100;background:#1a1a2e;border:1px solid #3a3a5a;border-radius:16px;padding:20px;width:280px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#feedbackPanel.open{display:block}
+.fb-stars{display:flex;gap:6px;justify-content:center;margin:10px 0 14px;flex-direction:row-reverse}
+.fb-star{font-size:1.5rem;cursor:pointer;filter:grayscale(1);transition:filter .15s,transform .15s}
+.fb-star.on{filter:none;transform:scale(1.1)}
+#feedbackPanel textarea{width:100%;height:70px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#f0f0f0;font-size:0.85rem;font-family:inherit;resize:none;direction:rtl}
+#fbToast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#14532d;border:1px solid #22c55e;color:#86efac;padding:11px 22px;border-radius:12px;font-size:0.88rem;font-weight:600;z-index:1600}
+</style>
+
+<!-- Auth Modal -->
+<div class="th-modal-overlay" id="authModal">
+  <div class="th-modal">
+    <button class="close-x" onclick="closeAuth()">✕</button>
+    <div style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px">🏋️ TrainerHub</div>
+    <div id="authSubtitle">התחבר כדי לשמור ולשתף אימונים</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="setAuthMode('login')">התחברות</button>
+      <button class="auth-tab" id="tabSignup" onclick="setAuthMode('signup')">הרשמה</button>
+    </div>
+    <div class="auth-field" id="nameField" style="display:none">
+      <label>שם מלא</label>
+      <input type="text" id="authName" placeholder="השם שלך">
+    </div>
+    <div class="auth-field">
+      <label>אימייל</label>
+      <input type="email" id="authEmail" placeholder="you@email.com" dir="ltr">
+    </div>
+    <div class="auth-field">
+      <label>סיסמה</label>
+      <input type="password" id="authPass" placeholder="••••••••" dir="ltr">
+    </div>
+    <button class="auth-submit" id="authSubmit" onclick="submitAuth()">התחבר</button>
+    <div class="auth-error" id="authError"></div>
+  </div>
+</div>
+
+<!-- Onboarding -->
+<div id="onboardOverlay">
+  <div class="onboard-card">
+    <div class="onboard-icon" id="obIcon">🏋️</div>
+    <div class="onboard-title" id="obTitle"></div>
+    <div class="onboard-desc" id="obDesc"></div>
+    <div class="onboard-dots" id="obDots"></div>
+    <div class="onboard-actions">
+      <button class="onboard-next" id="obNext" onclick="onboardNext()">הבא</button>
+      <button class="onboard-skip" onclick="finishOnboarding()">דלג</button>
+    </div>
+  </div>
+</div>
+
+<!-- Legal Modal -->
+<div class="th-modal-overlay" id="legalModal">
+  <div class="th-modal" style="max-width:560px">
+    <button class="close-x" onclick="closeLegal()">✕</button>
+    <div style="font-size:1.2rem;font-weight:800;margin-bottom:16px" id="legalTitle"></div>
+    <div class="legal-body" id="legalBody"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="th-footer">
+  <span>© 2026 TrainerHub</span>
+  <a onclick="openLegal('terms')">תנאי שימוש</a>
+  <a onclick="openLegal('privacy')">מדיניות פרטיות</a>
+</footer>
+
+<!-- Feedback widget -->
+<button id="feedbackFab" onclick="toggleFeedback()">💬 משוב</button>
+<div id="feedbackPanel">
+  <div style="font-size:0.9rem;font-weight:700;margin-bottom:4px">מה דעתך על TrainerHub?</div>
+  <div class="fb-stars" id="fbStars"></div>
+  <textarea id="fbText" placeholder="ספר לנו מה אפשר לשפר..."></textarea>
+  <button class="auth-submit" style="margin-top:10px;padding:9px" onclick="sendFeedback()">שלח משוב</button>
+</div>
+<div id="fbToast">תודה על המשוב! 💜</div>
+
+<script>
+// ── Analytics stub ────────────────────────────────────────────────
+function track(event, props) {
+  try {
+    const log = JSON.parse(localStorage.getItem('trainerhub_analytics') || '[]');
+    log.push({ event, props: props || {}, ts: new Date().toISOString() });
+    localStorage.setItem('trainerhub_analytics', JSON.stringify(log.slice(-200)));
+  } catch (e) {}
+}
+
+// ── Auth ──────────────────────────────────────────────────────────
+let authMode = 'login';
+function getUser() {
+  try { return JSON.parse(localStorage.getItem('trainerhub_user')); } catch (e) { return null; }
+}
+function openAuth(subtitle) {
+  document.getElementById('authSubtitle').textContent = subtitle || 'התחבר כדי לשמור ולשתף אימונים';
+  if (subtitle) setAuthMode('signup');
+  document.getElementById('authModal').classList.add('open');
+}
+function closeAuth() { document.getElementById('authModal').classList.remove('open'); }
+function setAuthMode(mode) {
+  authMode = mode;
+  document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
+  document.getElementById('nameField').style.display = mode === 'signup' ? 'block' : 'none';
+  document.getElementById('authSubmit').textContent = mode === 'signup' ? 'צור חשבון חינם' : 'התחבר';
+}
+function submitAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const pass  = document.getElementById('authPass').value;
+  const name  = document.getElementById('authName').value.trim();
+  const err   = document.getElementById('authError');
+  if (!email.includes('@') || pass.length < 4 || (authMode === 'signup' && !name)) {
+    err.textContent = authMode === 'signup' ? 'אנא מלא שם, אימייל תקין וסיסמה (4+ תווים)' : 'אנא הזן אימייל תקין וסיסמה (4+ תווים)';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  const user = { name: name || email.split('@')[0], email, joinedAt: new Date().toISOString() };
+  localStorage.setItem('trainerhub_user', JSON.stringify(user));
+  track(authMode === 'signup' ? 'signup' : 'login', { email });
+  closeAuth();
+  renderAuthState();
+}
+function logoutUser() {
+  localStorage.removeItem('trainerhub_user');
+  track('logout');
+  renderAuthState();
+  document.getElementById('userMenu').classList.remove('open');
+}
+function toggleUserMenu(e) {
+  e.stopPropagation();
+  document.getElementById('userMenu').classList.toggle('open');
+}
+document.addEventListener('click', () => document.getElementById('userMenu').classList.remove('open'));
+function renderAuthState() {
+  const user = getUser();
+  document.getElementById('loginBtn').style.display = user ? 'none' : 'inline-block';
+  document.getElementById('avatarWrap').style.display = user ? 'block' : 'none';
+  if (user) {
+    document.getElementById('userAvatar').textContent = (user.name || '?').charAt(0);
+    document.getElementById('userMenuName').textContent = user.name;
+  }
+}
+renderAuthState();
+document.getElementById('authModal').addEventListener('click', function(e) { if (e.target === this) closeAuth(); });
+
+// ── Onboarding ────────────────────────────────────────────────────
+const OB_STEPS = [
+  { icon: '🏋️', title: 'ברוכים הבאים ל-TrainerHub', desc: 'הפלטפורמה שהופכת כל תיאור אימון חופשי לכרטיסיית אימון מקצועית ומעוצבת — בעזרת AI, תוך שניות.' },
+  { icon: '✍️', title: 'איך זה עובד?', desc: 'כתוב או הדבק תיאור אימון בטקסט חופשי בפאנל הימני, לחץ "המר לכרטיסיית אימון" — וקבל כרטיסייה מסודרת עם חימום, עיקר ושחרור. שמור, הדפס או שתף ב-Marketplace.' },
+  { icon: '⚡', title: 'מה מקבלים ב-Pro?', desc: 'אימונים ללא הגבלה, גישה מלאה ל-Marketplace הקהילתי, ייצוא PDF ו-Analytics — רק ב-₪49 לחודש. אפשר להתחיל בחינם!' }
+];
+let obStep = 0;
+function renderOnboard() {
+  const s = OB_STEPS[obStep];
+  document.getElementById('obIcon').textContent = s.icon;
+  document.getElementById('obTitle').textContent = s.title;
+  document.getElementById('obDesc').textContent = s.desc;
+  document.getElementById('obDots').innerHTML = OB_STEPS.map((_, i) =>
+    `<div class="onboard-dot ${i === obStep ? 'active' : ''}"></div>`).join('');
+  document.getElementById('obNext').textContent = obStep === OB_STEPS.length - 1 ? 'בואו נתחיל! 🚀' : 'הבא';
+}
+function onboardNext() {
+  if (obStep < OB_STEPS.length - 1) { obStep++; renderOnboard(); }
+  else finishOnboarding();
+}
+function finishOnboarding() {
+  localStorage.setItem('trainerhub_onboarded', '1');
+  document.getElementById('onboardOverlay').classList.remove('open');
+  track('onboarding_done', { step: obStep + 1 });
+}
+if (!localStorage.getItem('trainerhub_onboarded')) {
+  renderOnboard();
+  document.getElementById('onboardOverlay').classList.add('open');
+}
+
+// ── Legal ─────────────────────────────────────────────────────────
+const LEGAL = {
+  terms: { title: '📜 תנאי שימוש', body: `
+    <p>ברוכים הבאים ל-TrainerHub. השימוש בפלטפורמה מהווה הסכמה מלאה לתנאים אלה. TrainerHub מספקת כלי AI ליצירת כרטיסיות אימון, שיתוף תכנים בקהילת מאמנים וניהול פרופיל מקצועי.</p>
+    <p>התכנים הנוצרים באמצעות הפלטפורמה מיועדים לשימוש מקצועי של מאמני כושר. האחריות על התאמת תוכניות האימון למתאמנים, לרבות בדיקת מצב בריאותי ומגבלות פיזיות, חלה על המאמן בלבד. TrainerHub אינה מספקת ייעוץ רפואי.</p>
+    <p>בעת שיתוף אימון ב-Marketplace, אתה מעניק ל-TrainerHub רישיון לא בלעדי להצגת התוכן לשאר משתמשי הפלטפורמה. אתה מתחייב שהתוכן המשותף הוא מקורי או שבידיך הזכויות לפרסמו.</p>
+    <p>תוכניות המנוי (Free, Pro, Studio) מתחדשות מדי חודש. ניתן לבטל בכל עת, והביטול ייכנס לתוקף בסוף תקופת החיוב הנוכחית. לא יינתן החזר יחסי עבור תקופה שנוצלה חלקית.</p>
+    <p>TrainerHub שומרת לעצמה את הזכות לעדכן תנאים אלה מעת לעת. שינויים מהותיים יפורסמו באפליקציה. המשך שימוש לאחר עדכון מהווה הסכמה לתנאים המעודכנים.</p>
+    <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים בתל אביב.</p>` },
+  privacy: { title: '🔒 מדיניות פרטיות', body: `
+    <p>פרטיותך חשובה לנו. מדיניות זו מסבירה איזה מידע TrainerHub אוספת, כיצד הוא נשמר ולאילו מטרות הוא משמש.</p>
+    <p>בעת ההרשמה אנו אוספים שם, כתובת אימייל וסיסמה. בנוסף נשמרים תכני האימונים שאתה יוצר, נתוני שימוש בסיסיים (כגון אירועי לחיצה ופעולות מפתח) והעדפות אישיות — לצורך שיפור חוויית השימוש.</p>
+    <p>בגרסת הדגמה זו, כל הנתונים נשמרים מקומית בדפדפן שלך (localStorage) ואינם נשלחים לשרתים חיצוניים. מחיקת נתוני הדפדפן תמחק את המידע לצמיתות.</p>
+    <p>איננו מוכרים או משתפים מידע אישי עם צדדים שלישיים למטרות שיווק. מידע עשוי להימסר לרשויות רק בהתאם לדרישה חוקית מחייבת.</p>
+    <p>באפשרותך לבקש בכל עת עיון במידע השמור עליך, תיקונו או מחיקתו, באמצעות פנייה לצוות התמיכה או מחיקת החשבון מההגדרות.</p>
+    <p>מדיניות זו כפופה לחוק הגנת הפרטיות, התשמ"א-1981, ולתקנות הגנת הפרטיות (אבטחת מידע), התשע"ז-2017.</p>` }
+};
+function openLegal(kind) {
+  document.getElementById('legalTitle').textContent = LEGAL[kind].title;
+  document.getElementById('legalBody').innerHTML = LEGAL[kind].body;
+  document.getElementById('legalModal').classList.add('open');
+}
+function closeLegal() { document.getElementById('legalModal').classList.remove('open'); }
+document.getElementById('legalModal').addEventListener('click', function(e) { if (e.target === this) closeLegal(); });
+
+// ── Feedback widget ───────────────────────────────────────────────
+let fbRating = 0;
+document.getElementById('fbStars').innerHTML = [1,2,3,4,5].map(n =>
+  `<span class="fb-star" data-n="${n}" onclick="setFbRating(${n})">⭐</span>`).join('');
+function setFbRating(n) {
+  fbRating = n;
+  document.querySelectorAll('.fb-star').forEach(s =>
+    s.classList.toggle('on', parseInt(s.dataset.n) <= n));
+}
+function toggleFeedback() {
+  document.getElementById('feedbackPanel').classList.toggle('open');
+}
+function sendFeedback() {
+  const text = document.getElementById('fbText').value.trim();
+  if (!fbRating && !text) return;
+  const all = JSON.parse(localStorage.getItem('trainerhub_feedback') || '[]');
+  all.push({ rating: fbRating, text, ts: new Date().toISOString() });
+  localStorage.setItem('trainerhub_feedback', JSON.stringify(all));
+  track('feedback', { rating: fbRating });
+  document.getElementById('feedbackPanel').classList.remove('open');
+  document.getElementById('fbText').value = '';
+  setFbRating(0);
+  const t = document.getElementById('fbToast');
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+</script>
+
+<!-- ══════════ 👥 המתאמנים שלי — לולאת ביצוע ══════════ -->
+<div id="tab-clients" class="tab-section">
+<div style="max-width:900px;margin:0 auto;padding:24px 20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px">
+    <h2 style="font-size:1.3rem;font-weight:800">👥 המתאמנים שלי</h2>
+    <button class="action-btn" style="flex:0;min-width:auto" onclick="addClient()">+ הוסף מתאמן</button>
+  </div>
+  <p style="color:#6b7280;font-size:0.85rem;margin-bottom:18px">שלח תוכנית ב-WhatsApp → הלקוח מסמן ביצוע → אתה רואה מי נשר לפני שהוא עוזב</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+    <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:14px;text-align:center">
+      <div style="font-size:1.5rem;font-weight:800;color:#22c55e" id="clActive">0</div>
+      <div style="font-size:0.72rem;color:#6b7280">פעילים השבוע</div>
+    </div>
+    <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:14px;text-align:center">
+      <div style="font-size:1.5rem;font-weight:800;color:#a78bfa" id="clAdherence">0%</div>
+      <div style="font-size:0.72rem;color:#6b7280">ביצוע ממוצע</div>
+    </div>
+    <div style="background:#1a1a2e;border:1px solid #7f1d1d;border-radius:12px;padding:14px;text-align:center">
+      <div style="font-size:1.5rem;font-weight:800;color:#f87171" id="clRisk">0</div>
+      <div style="font-size:0.72rem;color:#6b7280">בסיכון נשירה ⚠️</div>
+    </div>
+  </div>
+  <div id="clientsList"></div>
+</div>
+</div>
+
+<script>
+(function(){
+const CKEY='trainerhub_clients';
+const seed=[
+ {name:'יוסי לוי',phone:'0501234567',week:[1,1,0,1,1,0,0],plan:'אימון כוח עליון'},
+ {name:'מיכל כהן',phone:'0522345678',week:[1,1,1,1,0,0,0],plan:'HIIT 30 דקות'},
+ {name:'דנה אברהם',phone:'0533456789',week:[0,0,0,0,0,0,0],plan:'אימון פונקציונלי'},
+ {name:'עומר שלום',phone:'0544567890',week:[1,0,0,1,0,0,0],plan:'אימון רגליים'},
+ {name:'נועה בר',phone:'0555678901',week:[1,1,1,1,1,0,0],plan:'ריצה + ליבה'}
+];
+let clients=JSON.parse(localStorage.getItem(CKEY)||'null')||seed;
+function save(){localStorage.setItem(CKEY,JSON.stringify(clients));}
+function adherence(c){const done=c.week.filter(Boolean).length;return Math.round(done/5*100);}
+function atRisk(c){return c.week.slice(-4).filter(Boolean).length===0||adherence(c)<30;}
+
+window.renderClients=function(){
+  const list=document.getElementById('clientsList');
+  const days=['א','ב','ג','ד','ה','ו','ש'];
+  list.innerHTML=clients.map((c,i)=>{
+    const adh=adherence(c),risk=atRisk(c);
+    const dots=c.week.map((d,j)=>`<span title="יום ${days[j]}" style="width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;background:${d?'#14532d':'#2a2a4a'};color:${d?'#86efac':'#4a4a6a'};border:1px solid ${d?'#22c55e':'#3a3a5a'}">${d?'✓':''}</span>`).join('');
+    return `<div style="background:#1a1a2e;border:1px solid ${risk?'#7f1d1d':'#2a2a4a'};border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${c.name[0]}</div>
+      <div style="flex:1;min-width:150px">
+        <div style="font-weight:700">${c.name} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בסיכון נשירה</span>':''}</div>
+        <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">תוכנית: ${c.plan} · ביצוע ${adh}%</div>
+        <div style="display:flex;gap:4px;margin-top:6px">${dots}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem;background:#14532d;border-color:#22c55e;color:#86efac" onclick="sendWhatsApp(${i})">💬 שלח תוכנית</button>
+        <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="assignCurrent(${i})">📋 שייך אימון</button>
+        <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="simulateDone(${i})">✓ סמן ביצוע</button>
+      </div>
+    </div>`;
+  }).join('');
+  const active=clients.filter(c=>c.week.some(Boolean)).length;
+  const avg=Math.round(clients.reduce((s,c)=>s+adherence(c),0)/clients.length);
+  document.getElementById('clActive').textContent=active;
+  document.getElementById('clAdherence').textContent=avg+'%';
+  document.getElementById('clRisk').textContent=clients.filter(atRisk).length;
+};
+window.sendWhatsApp=function(i){
+  const c=clients[i];
+  const msg=encodeURIComponent(`היי ${c.name}! 💪 התוכנית שלך לשבוע: ${c.plan}.\nכשתסיים אימון — שלח לי ✓\n(נשלח מ-TrainerHub)`);
+  window.open(`https://wa.me/972${c.phone.slice(1)}?text=${msg}`,'_blank');
+  if(typeof track==='function')track('client_whatsapp_send',{client:c.name});
+};
+window.assignCurrent=function(i){
+  if(typeof currentWorkout!=='undefined'&&currentWorkout){clients[i].plan=currentWorkout.title||'אימון חדש';save();renderClients();}
+  else alert('צור קודם אימון ב-Creator Studio, ואז שייך אותו');
+};
+window.simulateDone=function(i){
+  const w=clients[i].week;const j=w.indexOf(0);
+  if(j>-1){w[j]=1;save();renderClients();}
+};
+window.addClient=function(){
+  const name=prompt('שם המתאמן:');if(!name)return;
+  const phone=prompt('טלפון (05X...):')||'0500000000';
+  clients.push({name,phone,week:[0,0,0,0,0,0,0],plan:'טרם שויכה תוכנית'});
+  save();renderClients();
+  if(typeof track==='function')track('client_added');
+};
+renderClients();
+})();
+</script>
+</body>
+</html>
