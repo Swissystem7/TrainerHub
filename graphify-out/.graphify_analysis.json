@@ -1,0 +1,500 @@
+{
+  "communities": {
+    "0": [
+      "lib_generateworkoutprogram_test",
+      "lib_generateworkoutprogram_test_allinjuriesprofile",
+      "lib_generateworkoutprogram_test_allinjuriesresult",
+      "lib_generateworkoutprogram_test_assert",
+      "lib_generateworkoutprogram_test_clampprofile",
+      "lib_generateworkoutprogram_test_clampresult",
+      "lib_generateworkoutprogram_test_clampresult2",
+      "lib_generateworkoutprogram_test_emptygoalsprofile",
+      "lib_generateworkoutprogram_test_emptygoalsresult",
+      "lib_generateworkoutprogram_test_generateworkoutprogram",
+      "lib_generateworkoutprogram_test_injuredprofile",
+      "lib_generateworkoutprogram_test_injuredresult",
+      "lib_generateworkoutprogram_test_invalidfitnessprofile",
+      "lib_generateworkoutprogram_test_invalidfitnessresult",
+      "lib_generateworkoutprogram_test_invalidgenderprofile",
+      "lib_generateworkoutprogram_test_invalidgenderresult",
+      "lib_generateworkoutprogram_test_minimalprofile",
+      "lib_generateworkoutprogram_test_minimalresult",
+      "lib_generateworkoutprogram_test_newuserprofile",
+      "lib_generateworkoutprogram_test_newuserresult",
+      "lib_generateworkoutprogram_test_noequipmentprofile",
+      "lib_generateworkoutprogram_test_noequipmentresult",
+      "lib_generateworkoutprogram_test_normalprofile",
+      "lib_generateworkoutprogram_test_normalresult",
+      "lib_generateworkoutprogram_test_oldprofile",
+      "lib_generateworkoutprogram_test_oldresult",
+      "lib_generateworkoutprogram_test_youngprofile",
+      "lib_generateworkoutprogram_test_youngresult"
+    ],
+    "1": [
+      "lib_analyzeprogresstrends",
+      "lib_analyzeprogresstrends_analyzeprogresstrends",
+      "lib_analyzeprogresstrends_test",
+      "lib_analyzeprogresstrends_test_aggressivelossinput",
+      "lib_analyzeprogresstrends_test_aggressivelossresult",
+      "lib_analyzeprogresstrends_test_analyzeprogresstrends",
+      "lib_analyzeprogresstrends_test_assert",
+      "lib_analyzeprogresstrends_test_declininginput",
+      "lib_analyzeprogresstrends_test_decliningresult",
+      "lib_analyzeprogresstrends_test_emptyresult",
+      "lib_analyzeprogresstrends_test_insufficientresult",
+      "lib_analyzeprogresstrends_test_invalidphaseinput",
+      "lib_analyzeprogresstrends_test_invalidphaseresult",
+      "lib_analyzeprogresstrends_test_normalinput",
+      "lib_analyzeprogresstrends_test_normalresult",
+      "lib_analyzeprogresstrends_test_nullvaluesinput",
+      "lib_analyzeprogresstrends_test_nullvaluesresult",
+      "lib_analyzeprogresstrends_test_singleentry",
+      "lib_analyzeprogresstrends_test_stableinput",
+      "lib_analyzeprogresstrends_test_stableresult",
+      "lib_analyzeprogresstrends_test_strengthincreaseinput",
+      "lib_analyzeprogresstrends_test_strengthincreaseresult"
+    ],
+    "2": [
+      "lib_calculatechurnrisk",
+      "lib_calculatechurnrisk_calculatechurnrisk",
+      "lib_calculatechurnrisk_test",
+      "lib_calculatechurnrisk_test_assert",
+      "lib_calculatechurnrisk_test_calculatechurnrisk",
+      "lib_calculatechurnrisk_test_daysago",
+      "lib_calculatechurnrisk_test_history1",
+      "lib_calculatechurnrisk_test_history10",
+      "lib_calculatechurnrisk_test_history12",
+      "lib_calculatechurnrisk_test_history4",
+      "lib_calculatechurnrisk_test_history5",
+      "lib_calculatechurnrisk_test_history6",
+      "lib_calculatechurnrisk_test_history7",
+      "lib_calculatechurnrisk_test_history8",
+      "lib_calculatechurnrisk_test_history9",
+      "lib_calculatechurnrisk_test_result1",
+      "lib_calculatechurnrisk_test_result10",
+      "lib_calculatechurnrisk_test_result11",
+      "lib_calculatechurnrisk_test_result8",
+      "lib_calculatechurnrisk_test_result9"
+    ],
+    "3": [
+      "index",
+      "index_$",
+      "index_esc",
+      "index_run",
+      "lib_filterexercises",
+      "lib_filterexercises_filterexercises",
+      "lib_generateworkoutprogram",
+      "lib_generateworkoutprogram_generateid",
+      "lib_generateworkoutprogram_generateworkoutprogram",
+      "lib_workoutvolume",
+      "lib_workoutvolume_test",
+      "lib_workoutvolume_test_assert",
+      "lib_workoutvolume_test_workoutvolume",
+      "lib_workoutvolume_workoutvolume"
+    ],
+    "4": [
+      "frontend_index",
+      "frontend_index_closepricing",
+      "frontend_index_hidetoast",
+      "frontend_index_logoutuser",
+      "frontend_index_openauth",
+      "frontend_index_openpricing",
+      "frontend_index_switchtab",
+      "frontend_index_toggleusermenu",
+      "frontend_index_track"
+    ],
+    "5": [
+      "frontend_workout_mode_advance",
+      "frontend_workout_mode_buildclocksvg",
+      "frontend_workout_mode_finishworkout",
+      "frontend_workout_mode_markesetdone",
+      "frontend_workout_mode_renderexercise",
+      "frontend_workout_mode_renderrest",
+      "frontend_workout_mode_renderstep",
+      "frontend_workout_mode_skipcurrent",
+      "frontend_workout_mode_updateprogress"
+    ],
+    "6": [
+      "lib_createclientdatasharetoken",
+      "lib_createclientdatasharetoken_allowed_scopes",
+      "lib_createclientdatasharetoken_base64urldecode",
+      "lib_createclientdatasharetoken_base64urlencode",
+      "lib_createclientdatasharetoken_createclientdatasharetoken",
+      "lib_createclientdatasharetoken_crypto",
+      "lib_createclientdatasharetoken_hmacsha256base64url",
+      "lib_createclientdatasharetoken_setserversecret"
+    ],
+    "7": [
+      "lib_readme",
+      "lib_suggestnextvolume",
+      "lib_suggestnextvolume_suggestnextvolume",
+      "lib_suggestnextvolume_test",
+      "lib_suggestnextvolume_test_assert",
+      "lib_suggestnextvolume_test_suggestnextvolume"
+    ],
+    "8": [
+      "lib_onerepmax",
+      "lib_onerepmax_onerepmax",
+      "lib_onerepmax_test",
+      "lib_onerepmax_test_assert",
+      "lib_onerepmax_test_onerepmax"
+    ],
+    "9": [
+      "backend_main",
+      "backend_main_parse_workout",
+      "backend_main_workoutrequest",
+      "basemodel"
+    ],
+    "10": [
+      "frontend_workout_mode_pauseelapsedtimer",
+      "frontend_workout_mode_resumecurrentstep",
+      "frontend_workout_mode_startelapsedtimer",
+      "frontend_workout_mode_togglepause"
+    ],
+    "11": [
+      "lib_bmi",
+      "lib_bmi_test",
+      "lib_bmi_test_a",
+      "lib_bmi_test_bmi"
+    ],
+    "12": [
+      "lib_evaluatechurnreferraltrigger",
+      "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
+      "lib_evaluatechurnreferraltrigger_getprompthistory",
+      "lib_evaluatechurnreferraltrigger_recordprompt"
+    ],
+    "13": [
+      "lib_processreferralreward",
+      "lib_processreferralreward_processreferralreward",
+      "lib_processreferralreward_referralbalances",
+      "lib_processreferralreward_usedreferralcodes"
+    ],
+    "14": [
+      "frontend_workout_mode_buildsteps",
+      "frontend_workout_mode_init",
+      "frontend_workout_mode_loadworkout"
+    ],
+    "15": [
+      "frontend_workout_mode_startcountdown",
+      "frontend_workout_mode_updateclockdisplay"
+    ],
+    "16": [
+      "github_workflows_factory_ci",
+      "lib_test_files"
+    ],
+    "17": [
+      "lib_analyzeprogress",
+      "lib_analyzeprogress_analyzeprogress"
+    ],
+    "18": [
+      "lib_anonymizeclientdata",
+      "lib_anonymizeclientdata_anonymizeclientdata"
+    ],
+    "19": [
+      "lib_applyageconstraints",
+      "lib_applyageconstraints_applyageconstraints"
+    ],
+    "20": [
+      "lib_applymethodbias",
+      "lib_applymethodbias_applymethodbias"
+    ],
+    "21": [
+      "lib_buildworkoutprogram",
+      "lib_buildworkoutprogram_buildworkoutprogram"
+    ],
+    "22": [
+      "lib_calculatechurnriskscore",
+      "lib_calculatechurnriskscore_calculatechurnriskscore"
+    ],
+    "23": [
+      "lib_calculateonboardingchurnrisk",
+      "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk"
+    ],
+    "24": [
+      "lib_computechurnrisk",
+      "lib_computechurnrisk_computechurnrisk"
+    ],
+    "25": [
+      "lib_computeclientchurnrisk",
+      "lib_computeclientchurnrisk_computeclientchurnrisk"
+    ],
+    "26": [
+      "lib_createshareableworkoutcard",
+      "lib_createshareableworkoutcard_createshareableworkoutcard"
+    ],
+    "27": [
+      "lib_detectclientchurnsignal",
+      "lib_detectclientchurnsignal_detectclientchurnsignal"
+    ],
+    "28": [
+      "lib_detectprogressanomaly",
+      "lib_detectprogressanomaly_detectprogressanomaly"
+    ],
+    "29": [
+      "lib_detectprogressplateau",
+      "lib_detectprogressplateau_detectprogressplateau"
+    ],
+    "30": [
+      "lib_detectstagnation",
+      "lib_detectstagnation_detectstagnation"
+    ],
+    "31": [
+      "lib_generateadherenceheatmap",
+      "lib_generateadherenceheatmap_generateadherenceheatmap"
+    ],
+    "32": [
+      "lib_generatebaselineprogram",
+      "lib_generatebaselineprogram_generatebaselineprogram"
+    ],
+    "33": [
+      "lib_generatecomebackworkout",
+      "lib_generatecomebackworkout_generatecomebackworkout"
+    ],
+    "34": [
+      "lib_generateperiodization",
+      "lib_generateperiodization_generateperiodization"
+    ],
+    "35": [
+      "lib_generatequickstartprogram",
+      "lib_generatequickstartprogram_generatequickstartprogram"
+    ],
+    "36": [
+      "lib_generatereengagementmessage",
+      "lib_generatereengagementmessage_generatereengagementmessage"
+    ],
+    "37": [
+      "lib_generateweeklyplan",
+      "lib_generateweeklyplan_generateweeklyplan"
+    ],
+    "38": [
+      "lib_importclientsfromcsv",
+      "lib_importclientsfromcsv_importclientsfromcsv"
+    ],
+    "39": [
+      "lib_logauditevent",
+      "lib_logauditevent_logauditevent"
+    ],
+    "40": [
+      "lib_optimizeclasspricing",
+      "lib_optimizeclasspricing_optimizeclasspricing"
+    ],
+    "41": [
+      "lib_optimizereferralincentive",
+      "lib_optimizereferralincentive_optimizereferralincentive"
+    ],
+    "42": [
+      "lib_parseclientimportdata",
+      "lib_parseclientimportdata_parseclientimportdata"
+    ],
+    "43": [
+      "lib_parserequest",
+      "lib_parserequest_parserequest"
+    ],
+    "44": [
+      "lib_predictchurnrisk",
+      "lib_predictchurnrisk_predictchurnrisk"
+    ],
+    "45": [
+      "lib_predictclientchurn",
+      "lib_predictclientchurn_predictclientchurn"
+    ],
+    "46": [
+      "lib_scheduleonboardingchecklist",
+      "lib_scheduleonboardingchecklist_scheduleonboardingchecklist"
+    ],
+    "47": [
+      "lib_suggestupsell",
+      "lib_suggestupsell_suggestupsell"
+    ],
+    "48": [
+      "lib_verifyprogramintegrity",
+      "lib_verifyprogramintegrity_verifyprogramintegrity"
+    ],
+    "49": [
+      "frontend_workout_mode"
+    ],
+    "50": [
+      "frontend_workout_mode_clearcountdown"
+    ],
+    "51": [
+      "frontend_workout_mode_exitworkout"
+    ],
+    "52": [
+      "frontend_workout_mode_formattime"
+    ],
+    "53": [
+      "index_hub"
+    ],
+    "54": [
+      "index_names"
+    ],
+    "55": [
+      "readme"
+    ],
+    "56": [
+      "trainerhub_project"
+    ]
+  },
+  "cohesion": {
+    "0": 0.07142857142857142,
+    "1": 0.09523809523809523,
+    "2": 0.10526315789473684,
+    "3": 0.17582417582417584,
+    "4": 0.2222222222222222,
+    "5": 0.25,
+    "6": 0.35714285714285715,
+    "7": 0.4,
+    "8": 0.5,
+    "9": 0.6666666666666666,
+    "10": 0.5,
+    "11": 0.5,
+    "12": 0.8333333333333334,
+    "13": 0.5,
+    "14": 0.6666666666666666,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0
+  },
+  "gods": [
+    {
+      "id": "lib_createclientdatasharetoken_createclientdatasharetoken",
+      "label": "createClientDataShareToken()",
+      "degree": 4
+    },
+    {
+      "id": "lib_generateworkoutprogram_generateworkoutprogram",
+      "label": "generateWorkoutProgram()",
+      "degree": 4
+    },
+    {
+      "id": "index_run",
+      "label": "run function (root index)",
+      "degree": 4
+    },
+    {
+      "id": "frontend_workout_mode_renderstep",
+      "label": "renderStep",
+      "degree": 4
+    },
+    {
+      "id": "frontend_workout_mode_advance",
+      "label": "advance",
+      "degree": 4
+    },
+    {
+      "id": "backend_main_workoutrequest",
+      "label": "WorkoutRequest",
+      "degree": 3
+    },
+    {
+      "id": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
+      "label": "evaluateChurnReferralTrigger()",
+      "degree": 3
+    },
+    {
+      "id": "lib_workoutvolume_workoutvolume",
+      "label": "workoutVolume()",
+      "degree": 3
+    },
+    {
+      "id": "index",
+      "label": "index.html (root)",
+      "degree": 3
+    },
+    {
+      "id": "frontend_workout_mode_togglepause",
+      "label": "togglePause",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "run function (root index)",
+      "target": "generateWorkoutProgram()",
+      "source_files": [
+        "index.html",
+        "lib/generateWorkoutProgram.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code ↔ doc); connects across different repos/directories"
+    },
+    {
+      "source": "run function (root index)",
+      "target": "workoutVolume()",
+      "source_files": [
+        "index.html",
+        "lib/workoutVolume.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code ↔ doc); connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `generateWorkoutProgram()` connect `run function (root index)` to `generateWorkoutProgram.test.js`?",
+      "why": "High betweenness centrality (0.008) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `assert`, `{ analyzeProgressTrends }`, `normalInput` to the rest of the system?",
+      "why": "101 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `generateWorkoutProgram.test.js` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `analyzeProgressTrends.test.js` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `calculateChurnRisk.test.js` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

@@ -1,0 +1,287 @@
+{
+  "backend/main.py": {
+    "mtime": 1784200867.54425,
+    "ast_hash": "2ad69fbd4e5f3fb8ab3f704e8f16aefc",
+    "semantic_hash": "2ad69fbd4e5f3fb8ab3f704e8f16aefc"
+  },
+  "lib/analyzeProgress.js": {
+    "mtime": 1784407826.9675736,
+    "ast_hash": "4408f4cab66b80c38871a9f77a37ec01",
+    "semantic_hash": "4408f4cab66b80c38871a9f77a37ec01"
+  },
+  "lib/analyzeProgressTrends.js": {
+    "mtime": 1784282330.0662308,
+    "ast_hash": "252120e9181cb272e5f8ec54d961b3d3",
+    "semantic_hash": "252120e9181cb272e5f8ec54d961b3d3"
+  },
+  "lib/analyzeProgressTrends.test.js": {
+    "mtime": 1784282330.5829732,
+    "ast_hash": "2eb78f9e01ded7a262fa0ad33bba2b68",
+    "semantic_hash": "2eb78f9e01ded7a262fa0ad33bba2b68"
+  },
+  "lib/anonymizeClientData.js": {
+    "mtime": 1784457969.9963276,
+    "ast_hash": "f15624f6cbb93bafb27cc7c3a999e6ae",
+    "semantic_hash": "f15624f6cbb93bafb27cc7c3a999e6ae"
+  },
+  "lib/applyAgeConstraints.js": {
+    "mtime": 1784407834.695677,
+    "ast_hash": "33c422a79d5562ba0c0f6e1ce4cc7200",
+    "semantic_hash": "33c422a79d5562ba0c0f6e1ce4cc7200"
+  },
+  "lib/applyMethodBias.js": {
+    "mtime": 1784407833.1847546,
+    "ast_hash": "1cd281c222fb7e778c7264b12ac9310c",
+    "semantic_hash": "1cd281c222fb7e778c7264b12ac9310c"
+  },
+  "lib/bmi.js": {
+    "mtime": 1784241697.9528778,
+    "ast_hash": "80e25a8607366209188fc6d8a9414023",
+    "semantic_hash": "80e25a8607366209188fc6d8a9414023"
+  },
+  "lib/bmi.test.js": {
+    "mtime": 1784241697.9528778,
+    "ast_hash": "7509fd49e457aa4e2ecc4ab8a92b599d",
+    "semantic_hash": "7509fd49e457aa4e2ecc4ab8a92b599d"
+  },
+  "lib/buildWorkoutProgram.js": {
+    "mtime": 1784407826.4988153,
+    "ast_hash": "90d286d785516354308e3b9ff40e87cb",
+    "semantic_hash": "90d286d785516354308e3b9ff40e87cb"
+  },
+  "lib/calculateChurnRisk.js": {
+    "mtime": 1784282336.3779812,
+    "ast_hash": "5469d59f6a8784ab06251500398df657",
+    "semantic_hash": "5469d59f6a8784ab06251500398df657"
+  },
+  "lib/calculateChurnRisk.test.js": {
+    "mtime": 1784282336.9248571,
+    "ast_hash": "18d630e7cb584481bfa5bc692f3a63cc",
+    "semantic_hash": "18d630e7cb584481bfa5bc692f3a63cc"
+  },
+  "lib/calculateChurnRiskScore.js": {
+    "mtime": 1784573218.142457,
+    "ast_hash": "76c65259d06d9cd780140b9158afe807",
+    "semantic_hash": "76c65259d06d9cd780140b9158afe807"
+  },
+  "lib/calculateOnboardingChurnRisk.js": {
+    "mtime": 1784443571.527064,
+    "ast_hash": "a7518a4f36c29e7754bd91a3f8393a7b",
+    "semantic_hash": "a7518a4f36c29e7754bd91a3f8393a7b"
+  },
+  "lib/computeChurnRisk.js": {
+    "mtime": 1784414763.531946,
+    "ast_hash": "71a1eb5e24d7f7a34c7a15749bbdf152",
+    "semantic_hash": "71a1eb5e24d7f7a34c7a15749bbdf152"
+  },
+  "lib/computeClientChurnRisk.js": {
+    "mtime": 1784573167.2362747,
+    "ast_hash": "d766d44c1fbcb6b760114abc30164df3",
+    "semantic_hash": "d766d44c1fbcb6b760114abc30164df3"
+  },
+  "lib/createClientDataShareToken.js": {
+    "mtime": 1784573186.626578,
+    "ast_hash": "a356a4b8dccf9acc0b7c5a0f8bc808ca",
+    "semantic_hash": "a356a4b8dccf9acc0b7c5a0f8bc808ca"
+  },
+  "lib/createShareableWorkoutCard.js": {
+    "mtime": 1784573212.0329666,
+    "ast_hash": "004a046d9d83ae29db452e3f17b20ab6",
+    "semantic_hash": "004a046d9d83ae29db452e3f17b20ab6"
+  },
+  "lib/detectClientChurnSignal.js": {
+    "mtime": 1784573204.8556437,
+    "ast_hash": "75ca752fc4a45fe5f6ef90be0389cda6",
+    "semantic_hash": "75ca752fc4a45fe5f6ef90be0389cda6"
+  },
+  "lib/detectProgressAnomaly.js": {
+    "mtime": 1784573185.9703832,
+    "ast_hash": "49f3dca6c0d1e719108ec745544af141",
+    "semantic_hash": "49f3dca6c0d1e719108ec745544af141"
+  },
+  "lib/detectProgressPlateau.js": {
+    "mtime": 1784573168.4699411,
+    "ast_hash": "9397707676e1b380b424e2dbdf9d4955",
+    "semantic_hash": "9397707676e1b380b424e2dbdf9d4955"
+  },
+  "lib/detectStagnation.js": {
+    "mtime": 1784573226.5642147,
+    "ast_hash": "4fd69d5ae0cf722f8ba4b4af2c32fafe",
+    "semantic_hash": "4fd69d5ae0cf722f8ba4b4af2c32fafe"
+  },
+  "lib/evaluateChurnReferralTrigger.js": {
+    "mtime": 1784573212.7291417,
+    "ast_hash": "15820cf8e45ca3eac0e94fd09cbbfb5d",
+    "semantic_hash": "15820cf8e45ca3eac0e94fd09cbbfb5d"
+  },
+  "lib/filterExercises.js": {
+    "mtime": 1784407832.6884513,
+    "ast_hash": "a43ca0020d1b8203bdc1c25375601385",
+    "semantic_hash": "a43ca0020d1b8203bdc1c25375601385"
+  },
+  "lib/generateAdherenceHeatmap.js": {
+    "mtime": 1784573197.5870142,
+    "ast_hash": "264ff2996abd37e64041944495eff25e",
+    "semantic_hash": "264ff2996abd37e64041944495eff25e"
+  },
+  "lib/generateBaselineProgram.js": {
+    "mtime": 1784443570.8515666,
+    "ast_hash": "7507b02bbf7cde74fc764a7ea134c45d",
+    "semantic_hash": "7507b02bbf7cde74fc764a7ea134c45d"
+  },
+  "lib/generateComebackWorkout.js": {
+    "mtime": 1784573198.2537484,
+    "ast_hash": "133384bb37f7e7a8da755e3b95ead90f",
+    "semantic_hash": "133384bb37f7e7a8da755e3b95ead90f"
+  },
+  "lib/generatePeriodization.js": {
+    "mtime": 1784407834.2283695,
+    "ast_hash": "1aa2b64293f4348fd2bdc79e8148c5d9",
+    "semantic_hash": "1aa2b64293f4348fd2bdc79e8148c5d9"
+  },
+  "lib/generateQuickStartProgram.js": {
+    "mtime": 1784573177.2156847,
+    "ast_hash": "ac03b391f88b4ab4aff14f0825f3ff43",
+    "semantic_hash": "ac03b391f88b4ab4aff14f0825f3ff43"
+  },
+  "lib/generateReEngagementMessage.js": {
+    "mtime": 1784573167.8573565,
+    "ast_hash": "f41f1e6b6403a1dcb84dea3ebe64ed2b",
+    "semantic_hash": "f41f1e6b6403a1dcb84dea3ebe64ed2b"
+  },
+  "lib/generateWeeklyPlan.js": {
+    "mtime": 1784407833.6525142,
+    "ast_hash": "a805d03c296623d9c8f3327e389ec90e",
+    "semantic_hash": "a805d03c296623d9c8f3327e389ec90e"
+  },
+  "lib/generateWorkoutProgram.js": {
+    "mtime": 1784281459.0840373,
+    "ast_hash": "8b8295c202bc69a1809da11d44705d80",
+    "semantic_hash": "8b8295c202bc69a1809da11d44705d80"
+  },
+  "lib/generateWorkoutProgram.test.js": {
+    "mtime": 1784281470.7898114,
+    "ast_hash": "039298ebde0d713a6cea1da19b3e1be6",
+    "semantic_hash": "039298ebde0d713a6cea1da19b3e1be6"
+  },
+  "lib/importClientsFromCSV.js": {
+    "mtime": 1784443570.0733576,
+    "ast_hash": "30c3cac43768864dda4b58d4f5c6585f",
+    "semantic_hash": "30c3cac43768864dda4b58d4f5c6585f"
+  },
+  "lib/logAuditEvent.js": {
+    "mtime": 1784457971.9998298,
+    "ast_hash": "82fb3074d4d12f12a1e2b45d23f8aa9a",
+    "semantic_hash": "82fb3074d4d12f12a1e2b45d23f8aa9a"
+  },
+  "lib/oneRepMax.js": {
+    "mtime": 1784219530.9004073,
+    "ast_hash": "df6e2add4bdfcb3ebc98acdbd1b9a09c",
+    "semantic_hash": "df6e2add4bdfcb3ebc98acdbd1b9a09c"
+  },
+  "lib/oneRepMax.test.js": {
+    "mtime": 1784219530.9004073,
+    "ast_hash": "4fdd640f3de2f3fffd4b162c685c688a",
+    "semantic_hash": "4fdd640f3de2f3fffd4b162c685c688a"
+  },
+  "lib/optimizeClassPricing.js": {
+    "mtime": 1784573218.795242,
+    "ast_hash": "d6c0f11e8e70c144b25093f1764c4b35",
+    "semantic_hash": "d6c0f11e8e70c144b25093f1764c4b35"
+  },
+  "lib/optimizeReferralIncentive.js": {
+    "mtime": 1784414764.833619,
+    "ast_hash": "f0758a8bf391087b9afa1f1b33524c3d",
+    "semantic_hash": "f0758a8bf391087b9afa1f1b33524c3d"
+  },
+  "lib/parseClientImportData.js": {
+    "mtime": 1784573176.4550412,
+    "ast_hash": "4766a670fa323112e9c783f6e3c03548",
+    "semantic_hash": "4766a670fa323112e9c783f6e3c03548"
+  },
+  "lib/parseRequest.js": {
+    "mtime": 1784407832.2009943,
+    "ast_hash": "6098617826fd9b3d203b92cfca564dfb",
+    "semantic_hash": "6098617826fd9b3d203b92cfca564dfb"
+  },
+  "lib/predictChurnRisk.js": {
+    "mtime": 1784407827.5622914,
+    "ast_hash": "36d58b38362ee960705e496fe52f9e73",
+    "semantic_hash": "36d58b38362ee960705e496fe52f9e73"
+  },
+  "lib/predictClientChurn.js": {
+    "mtime": 1784573196.892342,
+    "ast_hash": "016af237a76ce0060be429994f82110c",
+    "semantic_hash": "016af237a76ce0060be429994f82110c"
+  },
+  "lib/processReferralReward.js": {
+    "mtime": 1784573219.487716,
+    "ast_hash": "b0f79542f21022ac6b35c7b53c53a0fa",
+    "semantic_hash": "b0f79542f21022ac6b35c7b53c53a0fa"
+  },
+  "lib/scheduleOnboardingChecklist.js": {
+    "mtime": 1784573177.78983,
+    "ast_hash": "7224114c702aaa06449826b9ceca70b9",
+    "semantic_hash": "7224114c702aaa06449826b9ceca70b9"
+  },
+  "lib/suggestNextVolume.js": {
+    "mtime": 1784217855.7492292,
+    "ast_hash": "aed9fbe5f428170c3cb151ef466e0fce",
+    "semantic_hash": "aed9fbe5f428170c3cb151ef466e0fce"
+  },
+  "lib/suggestNextVolume.test.js": {
+    "mtime": 1784217855.7492292,
+    "ast_hash": "014d5647f9799b1112d156df0bcb4e84",
+    "semantic_hash": "014d5647f9799b1112d156df0bcb4e84"
+  },
+  "lib/suggestUpsell.js": {
+    "mtime": 1784414764.1752968,
+    "ast_hash": "fb0ac46b4edcbc17395b4fcaf3d9b725",
+    "semantic_hash": "fb0ac46b4edcbc17395b4fcaf3d9b725"
+  },
+  "lib/verifyProgramIntegrity.js": {
+    "mtime": 1784457971.1544008,
+    "ast_hash": "605ead7fb705307ee74e6b56c4035c34",
+    "semantic_hash": "605ead7fb705307ee74e6b56c4035c34"
+  },
+  "lib/workoutVolume.js": {
+    "mtime": 1784217855.7492292,
+    "ast_hash": "62821f30299f0c51e18edcc5a862c481",
+    "semantic_hash": "62821f30299f0c51e18edcc5a862c481"
+  },
+  "lib/workoutVolume.test.js": {
+    "mtime": 1784217855.7492292,
+    "ast_hash": "19375041f87a87bd565adf873785253a",
+    "semantic_hash": "19375041f87a87bd565adf873785253a"
+  },
+  ".github/workflows/factory-ci.yml": {
+    "mtime": 1784400894.4380462,
+    "ast_hash": "647973c28026a520b63b016894b8d97c",
+    "semantic_hash": "647973c28026a520b63b016894b8d97c"
+  },
+  "README.md": {
+    "mtime": 1784200867.5286255,
+    "ast_hash": "d3405e408f9d0490aece378cd5f24cc2",
+    "semantic_hash": "d3405e408f9d0490aece378cd5f24cc2"
+  },
+  "frontend/index.html": {
+    "mtime": 1784200867.54425,
+    "ast_hash": "c84b5079bd461d7ccfb208acb9a29cf7",
+    "semantic_hash": "c84b5079bd461d7ccfb208acb9a29cf7"
+  },
+  "frontend/workout-mode.html": {
+    "mtime": 1784200867.54425,
+    "ast_hash": "7868a361dd10a72b054465f06bd5c399",
+    "semantic_hash": "7868a361dd10a72b054465f06bd5c399"
+  },
+  "index.html": {
+    "mtime": 1784569748.2701237,
+    "ast_hash": "40f45b3ea0b7e517118e88ad2795aa5c",
+    "semantic_hash": "40f45b3ea0b7e517118e88ad2795aa5c"
+  },
+  "lib/README.md": {
+    "mtime": 1784217855.7492292,
+    "ast_hash": "976d2194e46a34c6a0a843ccc2815292",
+    "semantic_hash": "976d2194e46a34c6a0a843ccc2815292"
+  }
+}
