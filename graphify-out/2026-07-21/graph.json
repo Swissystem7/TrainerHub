@@ -47,10 +47,10 @@
       "source_file": "backend/main.py",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "backend_main",
       "community": 9,
-      "community_name": "WorkoutRequest",
-      "norm_label": "main.py"
+      "norm_label": "main.py",
+      "id": "backend_main",
+      "community_name": "WorkoutRequest"
     },
     {
       "label": "WorkoutRequest",
@@ -58,10 +58,10 @@
       "source_file": "backend/main.py",
       "source_location": "L80",
       "_origin": "ast",
-      "id": "backend_main_workoutrequest",
       "community": 9,
-      "community_name": "WorkoutRequest",
-      "norm_label": "workoutrequest"
+      "norm_label": "workoutrequest",
+      "id": "backend_main_workoutrequest",
+      "community_name": "WorkoutRequest"
     },
     {
       "label": "BaseModel",
@@ -69,10 +69,10 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "id": "basemodel",
       "community": 9,
-      "community_name": "WorkoutRequest",
-      "norm_label": "basemodel"
+      "norm_label": "basemodel",
+      "id": "basemodel",
+      "community_name": "WorkoutRequest"
     },
     {
       "label": "parse_workout()",
@@ -80,10 +80,10 @@
       "source_file": "backend/main.py",
       "source_location": "L84",
       "_origin": "ast",
-      "id": "backend_main_parse_workout",
       "community": 9,
-      "community_name": "WorkoutRequest",
-      "norm_label": "parse_workout()"
+      "norm_label": "parse_workout()",
+      "id": "backend_main_parse_workout",
+      "community_name": "WorkoutRequest"
     },
     {
       "label": "analyzeProgress.js",
@@ -91,10 +91,10 @@
       "source_file": "lib/analyzeProgress.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogress",
       "community": 17,
-      "community_name": "analyzeProgress.js",
-      "norm_label": "analyzeprogress.js"
+      "norm_label": "analyzeprogress.js",
+      "id": "lib_analyzeprogress",
+      "community_name": "analyzeProgress.js"
     },
     {
       "label": "analyzeProgress()",
@@ -102,10 +102,10 @@
       "source_file": "lib/analyzeProgress.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogress_analyzeprogress",
       "community": 17,
-      "community_name": "analyzeProgress.js",
-      "norm_label": "analyzeprogress()"
+      "norm_label": "analyzeprogress()",
+      "id": "lib_analyzeprogress_analyzeprogress",
+      "community_name": "analyzeProgress.js"
     },
     {
       "label": "analyzeProgressTrends.js",
@@ -113,10 +113,10 @@
       "source_file": "lib/analyzeProgressTrends.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "analyzeprogresstrends.js"
+      "norm_label": "analyzeprogresstrends.js",
+      "id": "lib_analyzeprogresstrends",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "analyzeProgressTrends()",
@@ -124,10 +124,10 @@
       "source_file": "lib/analyzeProgressTrends.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_analyzeprogresstrends",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "analyzeprogresstrends()"
+      "norm_label": "analyzeprogresstrends()",
+      "id": "lib_analyzeprogresstrends_analyzeprogresstrends",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "analyzeProgressTrends.test.js",
@@ -135,10 +135,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "analyzeprogresstrends.test.js"
+      "norm_label": "analyzeprogresstrends.test.js",
+      "id": "lib_analyzeprogresstrends_test",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "assert",
@@ -146,10 +146,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_assert",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_analyzeprogresstrends_test_assert",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "{ analyzeProgressTrends }",
@@ -157,10 +157,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_analyzeprogresstrends",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "{ analyzeprogresstrends }"
+      "norm_label": "{ analyzeprogresstrends }",
+      "id": "lib_analyzeprogresstrends_test_analyzeprogresstrends",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "normalInput",
@@ -168,10 +168,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_normalinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "normalinput"
+      "norm_label": "normalinput",
+      "id": "lib_analyzeprogresstrends_test_normalinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "normalResult",
@@ -179,10 +179,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_normalresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "normalresult"
+      "norm_label": "normalresult",
+      "id": "lib_analyzeprogresstrends_test_normalresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "singleEntry",
@@ -190,10 +190,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_singleentry",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "singleentry"
+      "norm_label": "singleentry",
+      "id": "lib_analyzeprogresstrends_test_singleentry",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "insufficientResult",
@@ -201,10 +201,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_insufficientresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "insufficientresult"
+      "norm_label": "insufficientresult",
+      "id": "lib_analyzeprogresstrends_test_insufficientresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "emptyResult",
@@ -212,10 +212,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_emptyresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "emptyresult"
+      "norm_label": "emptyresult",
+      "id": "lib_analyzeprogresstrends_test_emptyresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "invalidPhaseInput",
@@ -223,10 +223,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_invalidphaseinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "invalidphaseinput"
+      "norm_label": "invalidphaseinput",
+      "id": "lib_analyzeprogresstrends_test_invalidphaseinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "invalidPhaseResult",
@@ -234,10 +234,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L36",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_invalidphaseresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "invalidphaseresult"
+      "norm_label": "invalidphaseresult",
+      "id": "lib_analyzeprogresstrends_test_invalidphaseresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "nullValuesInput",
@@ -245,10 +245,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L41",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_nullvaluesinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "nullvaluesinput"
+      "norm_label": "nullvaluesinput",
+      "id": "lib_analyzeprogresstrends_test_nullvaluesinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "nullValuesResult",
@@ -256,10 +256,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L45",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_nullvaluesresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "nullvaluesresult"
+      "norm_label": "nullvaluesresult",
+      "id": "lib_analyzeprogresstrends_test_nullvaluesresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "stableInput",
@@ -267,10 +267,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_stableinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "stableinput"
+      "norm_label": "stableinput",
+      "id": "lib_analyzeprogresstrends_test_stableinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "stableResult",
@@ -278,10 +278,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L55",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_stableresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "stableresult"
+      "norm_label": "stableresult",
+      "id": "lib_analyzeprogresstrends_test_stableresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "strengthIncreaseInput",
@@ -289,10 +289,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L60",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_strengthincreaseinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "strengthincreaseinput"
+      "norm_label": "strengthincreaseinput",
+      "id": "lib_analyzeprogresstrends_test_strengthincreaseinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "strengthIncreaseResult",
@@ -300,10 +300,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L64",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_strengthincreaseresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "strengthincreaseresult"
+      "norm_label": "strengthincreaseresult",
+      "id": "lib_analyzeprogresstrends_test_strengthincreaseresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "aggressiveLossInput",
@@ -311,10 +311,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L69",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_aggressivelossinput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "aggressivelossinput"
+      "norm_label": "aggressivelossinput",
+      "id": "lib_analyzeprogresstrends_test_aggressivelossinput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "aggressiveLossResult",
@@ -322,10 +322,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L74",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_aggressivelossresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "aggressivelossresult"
+      "norm_label": "aggressivelossresult",
+      "id": "lib_analyzeprogresstrends_test_aggressivelossresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "decliningInput",
@@ -333,10 +333,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L79",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_declininginput",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "declininginput"
+      "norm_label": "declininginput",
+      "id": "lib_analyzeprogresstrends_test_declininginput",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "decliningResult",
@@ -344,10 +344,10 @@
       "source_file": "lib/analyzeProgressTrends.test.js",
       "source_location": "L84",
       "_origin": "ast",
-      "id": "lib_analyzeprogresstrends_test_decliningresult",
       "community": 1,
-      "community_name": "analyzeProgressTrends.test.js",
-      "norm_label": "decliningresult"
+      "norm_label": "decliningresult",
+      "id": "lib_analyzeprogresstrends_test_decliningresult",
+      "community_name": "analyzeProgressTrends.test.js"
     },
     {
       "label": "anonymizeClientData.js",
@@ -355,10 +355,10 @@
       "source_file": "lib/anonymizeClientData.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_anonymizeclientdata",
       "community": 18,
-      "community_name": "anonymizeClientData.js",
-      "norm_label": "anonymizeclientdata.js"
+      "norm_label": "anonymizeclientdata.js",
+      "id": "lib_anonymizeclientdata",
+      "community_name": "anonymizeClientData.js"
     },
     {
       "label": "anonymizeClientData()",
@@ -366,10 +366,10 @@
       "source_file": "lib/anonymizeClientData.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_anonymizeclientdata_anonymizeclientdata",
       "community": 18,
-      "community_name": "anonymizeClientData.js",
-      "norm_label": "anonymizeclientdata()"
+      "norm_label": "anonymizeclientdata()",
+      "id": "lib_anonymizeclientdata_anonymizeclientdata",
+      "community_name": "anonymizeClientData.js"
     },
     {
       "label": "applyAgeConstraints.js",
@@ -377,10 +377,10 @@
       "source_file": "lib/applyAgeConstraints.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_applyageconstraints",
       "community": 19,
-      "community_name": "applyAgeConstraints.js",
-      "norm_label": "applyageconstraints.js"
+      "norm_label": "applyageconstraints.js",
+      "id": "lib_applyageconstraints",
+      "community_name": "applyAgeConstraints.js"
     },
     {
       "label": "applyAgeConstraints()",
@@ -388,10 +388,10 @@
       "source_file": "lib/applyAgeConstraints.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_applyageconstraints_applyageconstraints",
       "community": 19,
-      "community_name": "applyAgeConstraints.js",
-      "norm_label": "applyageconstraints()"
+      "norm_label": "applyageconstraints()",
+      "id": "lib_applyageconstraints_applyageconstraints",
+      "community_name": "applyAgeConstraints.js"
     },
     {
       "label": "applyMethodBias.js",
@@ -399,10 +399,10 @@
       "source_file": "lib/applyMethodBias.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_applymethodbias",
       "community": 20,
-      "community_name": "applyMethodBias.js",
-      "norm_label": "applymethodbias.js"
+      "norm_label": "applymethodbias.js",
+      "id": "lib_applymethodbias",
+      "community_name": "applyMethodBias.js"
     },
     {
       "label": "applyMethodBias()",
@@ -410,10 +410,10 @@
       "source_file": "lib/applyMethodBias.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_applymethodbias_applymethodbias",
       "community": 20,
-      "community_name": "applyMethodBias.js",
-      "norm_label": "applymethodbias()"
+      "norm_label": "applymethodbias()",
+      "id": "lib_applymethodbias_applymethodbias",
+      "community_name": "applyMethodBias.js"
     },
     {
       "label": "bmi.js",
@@ -421,10 +421,10 @@
       "source_file": "lib/bmi.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_bmi",
       "community": 11,
-      "community_name": "bmi.test.js",
-      "norm_label": "bmi.js"
+      "norm_label": "bmi.js",
+      "id": "lib_bmi",
+      "community_name": "bmi.test.js"
     },
     {
       "label": "bmi.test.js",
@@ -432,10 +432,10 @@
       "source_file": "lib/bmi.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_bmi_test",
       "community": 11,
-      "community_name": "bmi.test.js",
-      "norm_label": "bmi.test.js"
+      "norm_label": "bmi.test.js",
+      "id": "lib_bmi_test",
+      "community_name": "bmi.test.js"
     },
     {
       "label": "a",
@@ -443,10 +443,10 @@
       "source_file": "lib/bmi.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_bmi_test_a",
       "community": 11,
-      "community_name": "bmi.test.js",
-      "norm_label": "a"
+      "norm_label": "a",
+      "id": "lib_bmi_test_a",
+      "community_name": "bmi.test.js"
     },
     {
       "label": "{bmi}",
@@ -454,10 +454,10 @@
       "source_file": "lib/bmi.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_bmi_test_bmi",
       "community": 11,
-      "community_name": "bmi.test.js",
-      "norm_label": "{bmi}"
+      "norm_label": "{bmi}",
+      "id": "lib_bmi_test_bmi",
+      "community_name": "bmi.test.js"
     },
     {
       "label": "buildWorkoutProgram.js",
@@ -465,10 +465,10 @@
       "source_file": "lib/buildWorkoutProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_buildworkoutprogram",
       "community": 21,
-      "community_name": "buildWorkoutProgram.js",
-      "norm_label": "buildworkoutprogram.js"
+      "norm_label": "buildworkoutprogram.js",
+      "id": "lib_buildworkoutprogram",
+      "community_name": "buildWorkoutProgram.js"
     },
     {
       "label": "buildWorkoutProgram()",
@@ -476,10 +476,10 @@
       "source_file": "lib/buildWorkoutProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_buildworkoutprogram_buildworkoutprogram",
       "community": 21,
-      "community_name": "buildWorkoutProgram.js",
-      "norm_label": "buildworkoutprogram()"
+      "norm_label": "buildworkoutprogram()",
+      "id": "lib_buildworkoutprogram_buildworkoutprogram",
+      "community_name": "buildWorkoutProgram.js"
     },
     {
       "label": "calculateChurnRisk.js",
@@ -487,10 +487,10 @@
       "source_file": "lib/calculateChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "calculatechurnrisk.js"
+      "norm_label": "calculatechurnrisk.js",
+      "id": "lib_calculatechurnrisk",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "calculateChurnRisk()",
@@ -498,10 +498,10 @@
       "source_file": "lib/calculateChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_calculatechurnrisk",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "calculatechurnrisk()"
+      "norm_label": "calculatechurnrisk()",
+      "id": "lib_calculatechurnrisk_calculatechurnrisk",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "calculateChurnRisk.test.js",
@@ -509,10 +509,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "calculatechurnrisk.test.js"
+      "norm_label": "calculatechurnrisk.test.js",
+      "id": "lib_calculatechurnrisk_test",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "assert",
@@ -520,10 +520,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_assert",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_calculatechurnrisk_test_assert",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "{ calculateChurnRisk }",
@@ -531,10 +531,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_calculatechurnrisk",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "{ calculatechurnrisk }"
+      "norm_label": "{ calculatechurnrisk }",
+      "id": "lib_calculatechurnrisk_test_calculatechurnrisk",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "daysAgo()",
@@ -542,10 +542,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_daysago",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "daysago()"
+      "norm_label": "daysago()",
+      "id": "lib_calculatechurnrisk_test_daysago",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history1",
@@ -553,10 +553,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history1",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history1"
+      "norm_label": "history1",
+      "id": "lib_calculatechurnrisk_test_history1",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "result1",
@@ -564,10 +564,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_result1",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "result1"
+      "norm_label": "result1",
+      "id": "lib_calculatechurnrisk_test_result1",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history4",
@@ -575,10 +575,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L34",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history4",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history4"
+      "norm_label": "history4",
+      "id": "lib_calculatechurnrisk_test_history4",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history5",
@@ -586,10 +586,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history5",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history5"
+      "norm_label": "history5",
+      "id": "lib_calculatechurnrisk_test_history5",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history6",
@@ -597,10 +597,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history6",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history6"
+      "norm_label": "history6",
+      "id": "lib_calculatechurnrisk_test_history6",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history7",
@@ -608,10 +608,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L58",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history7",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history7"
+      "norm_label": "history7",
+      "id": "lib_calculatechurnrisk_test_history7",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history8",
@@ -619,10 +619,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L65",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history8",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history8"
+      "norm_label": "history8",
+      "id": "lib_calculatechurnrisk_test_history8",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "result8",
@@ -630,10 +630,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L70",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_result8",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "result8"
+      "norm_label": "result8",
+      "id": "lib_calculatechurnrisk_test_result8",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history9",
@@ -641,10 +641,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L75",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history9",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history9"
+      "norm_label": "history9",
+      "id": "lib_calculatechurnrisk_test_history9",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "result9",
@@ -652,10 +652,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L79",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_result9",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "result9"
+      "norm_label": "result9",
+      "id": "lib_calculatechurnrisk_test_result9",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history10",
@@ -663,10 +663,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L83",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history10",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history10"
+      "norm_label": "history10",
+      "id": "lib_calculatechurnrisk_test_history10",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "result10",
@@ -674,10 +674,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L88",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_result10",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "result10"
+      "norm_label": "result10",
+      "id": "lib_calculatechurnrisk_test_result10",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "result11",
@@ -685,10 +685,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L93",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_result11",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "result11"
+      "norm_label": "result11",
+      "id": "lib_calculatechurnrisk_test_result11",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "history12",
@@ -696,10 +696,10 @@
       "source_file": "lib/calculateChurnRisk.test.js",
       "source_location": "L101",
       "_origin": "ast",
-      "id": "lib_calculatechurnrisk_test_history12",
       "community": 2,
-      "community_name": "calculateChurnRisk.test.js",
-      "norm_label": "history12"
+      "norm_label": "history12",
+      "id": "lib_calculatechurnrisk_test_history12",
+      "community_name": "calculateChurnRisk.test.js"
     },
     {
       "label": "calculateChurnRiskScore.js",
@@ -707,10 +707,10 @@
       "source_file": "lib/calculateChurnRiskScore.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnriskscore",
       "community": 22,
-      "community_name": "calculateChurnRiskScore.js",
-      "norm_label": "calculatechurnriskscore.js"
+      "norm_label": "calculatechurnriskscore.js",
+      "id": "lib_calculatechurnriskscore",
+      "community_name": "calculateChurnRiskScore.js"
     },
     {
       "label": "calculateChurnRiskScore()",
@@ -718,10 +718,10 @@
       "source_file": "lib/calculateChurnRiskScore.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculatechurnriskscore_calculatechurnriskscore",
       "community": 22,
-      "community_name": "calculateChurnRiskScore.js",
-      "norm_label": "calculatechurnriskscore()"
+      "norm_label": "calculatechurnriskscore()",
+      "id": "lib_calculatechurnriskscore_calculatechurnriskscore",
+      "community_name": "calculateChurnRiskScore.js"
     },
     {
       "label": "calculateOnboardingChurnRisk.js",
@@ -729,10 +729,10 @@
       "source_file": "lib/calculateOnboardingChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculateonboardingchurnrisk",
       "community": 23,
-      "community_name": "calculateOnboardingChurnRisk.js",
-      "norm_label": "calculateonboardingchurnrisk.js"
+      "norm_label": "calculateonboardingchurnrisk.js",
+      "id": "lib_calculateonboardingchurnrisk",
+      "community_name": "calculateOnboardingChurnRisk.js"
     },
     {
       "label": "calculateOnboardingChurnRisk()",
@@ -740,10 +740,10 @@
       "source_file": "lib/calculateOnboardingChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk",
       "community": 23,
-      "community_name": "calculateOnboardingChurnRisk.js",
-      "norm_label": "calculateonboardingchurnrisk()"
+      "norm_label": "calculateonboardingchurnrisk()",
+      "id": "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk",
+      "community_name": "calculateOnboardingChurnRisk.js"
     },
     {
       "label": "computeChurnRisk.js",
@@ -751,10 +751,10 @@
       "source_file": "lib/computeChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_computechurnrisk",
       "community": 24,
-      "community_name": "computeChurnRisk.js",
-      "norm_label": "computechurnrisk.js"
+      "norm_label": "computechurnrisk.js",
+      "id": "lib_computechurnrisk",
+      "community_name": "computeChurnRisk.js"
     },
     {
       "label": "computeChurnRisk()",
@@ -762,10 +762,10 @@
       "source_file": "lib/computeChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_computechurnrisk_computechurnrisk",
       "community": 24,
-      "community_name": "computeChurnRisk.js",
-      "norm_label": "computechurnrisk()"
+      "norm_label": "computechurnrisk()",
+      "id": "lib_computechurnrisk_computechurnrisk",
+      "community_name": "computeChurnRisk.js"
     },
     {
       "label": "computeClientChurnRisk.js",
@@ -773,10 +773,10 @@
       "source_file": "lib/computeClientChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_computeclientchurnrisk",
       "community": 25,
-      "community_name": "computeClientChurnRisk.js",
-      "norm_label": "computeclientchurnrisk.js"
+      "norm_label": "computeclientchurnrisk.js",
+      "id": "lib_computeclientchurnrisk",
+      "community_name": "computeClientChurnRisk.js"
     },
     {
       "label": "computeClientChurnRisk()",
@@ -784,10 +784,10 @@
       "source_file": "lib/computeClientChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_computeclientchurnrisk_computeclientchurnrisk",
       "community": 25,
-      "community_name": "computeClientChurnRisk.js",
-      "norm_label": "computeclientchurnrisk()"
+      "norm_label": "computeclientchurnrisk()",
+      "id": "lib_computeclientchurnrisk_computeclientchurnrisk",
+      "community_name": "computeClientChurnRisk.js"
     },
     {
       "label": "createClientDataShareToken.js",
@@ -795,10 +795,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "createclientdatasharetoken.js"
+      "norm_label": "createclientdatasharetoken.js",
+      "id": "lib_createclientdatasharetoken",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "crypto",
@@ -806,10 +806,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_crypto",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "crypto"
+      "norm_label": "crypto",
+      "id": "lib_createclientdatasharetoken_crypto",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "ALLOWED_SCOPES",
@@ -817,10 +817,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_allowed_scopes",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "allowed_scopes"
+      "norm_label": "allowed_scopes",
+      "id": "lib_createclientdatasharetoken_allowed_scopes",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "setServerSecret()",
@@ -828,10 +828,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_setserversecret",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "setserversecret()"
+      "norm_label": "setserversecret()",
+      "id": "lib_createclientdatasharetoken_setserversecret",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "base64urlEncode()",
@@ -839,10 +839,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_base64urlencode",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "base64urlencode()"
+      "norm_label": "base64urlencode()",
+      "id": "lib_createclientdatasharetoken_base64urlencode",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "base64urlDecode()",
@@ -850,10 +850,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_base64urldecode",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "base64urldecode()"
+      "norm_label": "base64urldecode()",
+      "id": "lib_createclientdatasharetoken_base64urldecode",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "hmacSha256Base64url()",
@@ -861,10 +861,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_hmacsha256base64url",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "hmacsha256base64url()"
+      "norm_label": "hmacsha256base64url()",
+      "id": "lib_createclientdatasharetoken_hmacsha256base64url",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "createClientDataShareToken()",
@@ -872,10 +872,10 @@
       "source_file": "lib/createClientDataShareToken.js",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "lib_createclientdatasharetoken_createclientdatasharetoken",
       "community": 6,
-      "community_name": "createClientDataShareToken.js",
-      "norm_label": "createclientdatasharetoken()"
+      "norm_label": "createclientdatasharetoken()",
+      "id": "lib_createclientdatasharetoken_createclientdatasharetoken",
+      "community_name": "createClientDataShareToken.js"
     },
     {
       "label": "createShareableWorkoutCard.js",
@@ -883,10 +883,10 @@
       "source_file": "lib/createShareableWorkoutCard.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_createshareableworkoutcard",
       "community": 26,
-      "community_name": "createShareableWorkoutCard.js",
-      "norm_label": "createshareableworkoutcard.js"
+      "norm_label": "createshareableworkoutcard.js",
+      "id": "lib_createshareableworkoutcard",
+      "community_name": "createShareableWorkoutCard.js"
     },
     {
       "label": "createShareableWorkoutCard()",
@@ -894,10 +894,10 @@
       "source_file": "lib/createShareableWorkoutCard.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_createshareableworkoutcard_createshareableworkoutcard",
       "community": 26,
-      "community_name": "createShareableWorkoutCard.js",
-      "norm_label": "createshareableworkoutcard()"
+      "norm_label": "createshareableworkoutcard()",
+      "id": "lib_createshareableworkoutcard_createshareableworkoutcard",
+      "community_name": "createShareableWorkoutCard.js"
     },
     {
       "label": "detectClientChurnSignal.js",
@@ -905,10 +905,10 @@
       "source_file": "lib/detectClientChurnSignal.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectclientchurnsignal",
       "community": 27,
-      "community_name": "detectClientChurnSignal.js",
-      "norm_label": "detectclientchurnsignal.js"
+      "norm_label": "detectclientchurnsignal.js",
+      "id": "lib_detectclientchurnsignal",
+      "community_name": "detectClientChurnSignal.js"
     },
     {
       "label": "detectClientChurnSignal()",
@@ -916,10 +916,10 @@
       "source_file": "lib/detectClientChurnSignal.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectclientchurnsignal_detectclientchurnsignal",
       "community": 27,
-      "community_name": "detectClientChurnSignal.js",
-      "norm_label": "detectclientchurnsignal()"
+      "norm_label": "detectclientchurnsignal()",
+      "id": "lib_detectclientchurnsignal_detectclientchurnsignal",
+      "community_name": "detectClientChurnSignal.js"
     },
     {
       "label": "detectProgressAnomaly.js",
@@ -927,10 +927,10 @@
       "source_file": "lib/detectProgressAnomaly.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectprogressanomaly",
       "community": 28,
-      "community_name": "detectProgressAnomaly.js",
-      "norm_label": "detectprogressanomaly.js"
+      "norm_label": "detectprogressanomaly.js",
+      "id": "lib_detectprogressanomaly",
+      "community_name": "detectProgressAnomaly.js"
     },
     {
       "label": "detectProgressAnomaly()",
@@ -938,10 +938,10 @@
       "source_file": "lib/detectProgressAnomaly.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectprogressanomaly_detectprogressanomaly",
       "community": 28,
-      "community_name": "detectProgressAnomaly.js",
-      "norm_label": "detectprogressanomaly()"
+      "norm_label": "detectprogressanomaly()",
+      "id": "lib_detectprogressanomaly_detectprogressanomaly",
+      "community_name": "detectProgressAnomaly.js"
     },
     {
       "label": "detectProgressPlateau.js",
@@ -949,10 +949,10 @@
       "source_file": "lib/detectProgressPlateau.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectprogressplateau",
       "community": 29,
-      "community_name": "detectProgressPlateau.js",
-      "norm_label": "detectprogressplateau.js"
+      "norm_label": "detectprogressplateau.js",
+      "id": "lib_detectprogressplateau",
+      "community_name": "detectProgressPlateau.js"
     },
     {
       "label": "detectProgressPlateau()",
@@ -960,10 +960,10 @@
       "source_file": "lib/detectProgressPlateau.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectprogressplateau_detectprogressplateau",
       "community": 29,
-      "community_name": "detectProgressPlateau.js",
-      "norm_label": "detectprogressplateau()"
+      "norm_label": "detectprogressplateau()",
+      "id": "lib_detectprogressplateau_detectprogressplateau",
+      "community_name": "detectProgressPlateau.js"
     },
     {
       "label": "detectStagnation.js",
@@ -971,10 +971,10 @@
       "source_file": "lib/detectStagnation.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectstagnation",
       "community": 30,
-      "community_name": "detectStagnation.js",
-      "norm_label": "detectstagnation.js"
+      "norm_label": "detectstagnation.js",
+      "id": "lib_detectstagnation",
+      "community_name": "detectStagnation.js"
     },
     {
       "label": "detectStagnation()",
@@ -982,10 +982,10 @@
       "source_file": "lib/detectStagnation.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_detectstagnation_detectstagnation",
       "community": 30,
-      "community_name": "detectStagnation.js",
-      "norm_label": "detectstagnation()"
+      "norm_label": "detectstagnation()",
+      "id": "lib_detectstagnation_detectstagnation",
+      "community_name": "detectStagnation.js"
     },
     {
       "label": "evaluateChurnReferralTrigger.js",
@@ -993,10 +993,10 @@
       "source_file": "lib/evaluateChurnReferralTrigger.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_evaluatechurnreferraltrigger",
       "community": 12,
-      "community_name": "evaluateChurnReferralTrigger.js",
-      "norm_label": "evaluatechurnreferraltrigger.js"
+      "norm_label": "evaluatechurnreferraltrigger.js",
+      "id": "lib_evaluatechurnreferraltrigger",
+      "community_name": "evaluateChurnReferralTrigger.js"
     },
     {
       "label": "evaluateChurnReferralTrigger()",
@@ -1004,10 +1004,10 @@
       "source_file": "lib/evaluateChurnReferralTrigger.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
       "community": 12,
-      "community_name": "evaluateChurnReferralTrigger.js",
-      "norm_label": "evaluatechurnreferraltrigger()"
+      "norm_label": "evaluatechurnreferraltrigger()",
+      "id": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
+      "community_name": "evaluateChurnReferralTrigger.js"
     },
     {
       "label": "getPromptHistory()",
@@ -1015,10 +1015,10 @@
       "source_file": "lib/evaluateChurnReferralTrigger.js",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "lib_evaluatechurnreferraltrigger_getprompthistory",
       "community": 12,
-      "community_name": "evaluateChurnReferralTrigger.js",
-      "norm_label": "getprompthistory()"
+      "norm_label": "getprompthistory()",
+      "id": "lib_evaluatechurnreferraltrigger_getprompthistory",
+      "community_name": "evaluateChurnReferralTrigger.js"
     },
     {
       "label": "recordPrompt()",
@@ -1026,10 +1026,10 @@
       "source_file": "lib/evaluateChurnReferralTrigger.js",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "lib_evaluatechurnreferraltrigger_recordprompt",
       "community": 12,
-      "community_name": "evaluateChurnReferralTrigger.js",
-      "norm_label": "recordprompt()"
+      "norm_label": "recordprompt()",
+      "id": "lib_evaluatechurnreferraltrigger_recordprompt",
+      "community_name": "evaluateChurnReferralTrigger.js"
     },
     {
       "label": "filterExercises.js",
@@ -1037,10 +1037,10 @@
       "source_file": "lib/filterExercises.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_filterexercises",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "filterexercises.js"
+      "norm_label": "filterexercises.js",
+      "id": "lib_filterexercises",
+      "community_name": "run function (root index)"
     },
     {
       "label": "filterExercises()",
@@ -1048,10 +1048,10 @@
       "source_file": "lib/filterExercises.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_filterexercises_filterexercises",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "filterexercises()"
+      "norm_label": "filterexercises()",
+      "id": "lib_filterexercises_filterexercises",
+      "community_name": "run function (root index)"
     },
     {
       "label": "generateAdherenceHeatmap.js",
@@ -1059,10 +1059,10 @@
       "source_file": "lib/generateAdherenceHeatmap.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateadherenceheatmap",
       "community": 31,
-      "community_name": "generateAdherenceHeatmap.js",
-      "norm_label": "generateadherenceheatmap.js"
+      "norm_label": "generateadherenceheatmap.js",
+      "id": "lib_generateadherenceheatmap",
+      "community_name": "generateAdherenceHeatmap.js"
     },
     {
       "label": "generateAdherenceHeatmap()",
@@ -1070,10 +1070,10 @@
       "source_file": "lib/generateAdherenceHeatmap.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateadherenceheatmap_generateadherenceheatmap",
       "community": 31,
-      "community_name": "generateAdherenceHeatmap.js",
-      "norm_label": "generateadherenceheatmap()"
+      "norm_label": "generateadherenceheatmap()",
+      "id": "lib_generateadherenceheatmap_generateadherenceheatmap",
+      "community_name": "generateAdherenceHeatmap.js"
     },
     {
       "label": "generateBaselineProgram.js",
@@ -1081,10 +1081,10 @@
       "source_file": "lib/generateBaselineProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatebaselineprogram",
       "community": 32,
-      "community_name": "generateBaselineProgram.js",
-      "norm_label": "generatebaselineprogram.js"
+      "norm_label": "generatebaselineprogram.js",
+      "id": "lib_generatebaselineprogram",
+      "community_name": "generateBaselineProgram.js"
     },
     {
       "label": "generateBaselineProgram()",
@@ -1092,10 +1092,10 @@
       "source_file": "lib/generateBaselineProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatebaselineprogram_generatebaselineprogram",
       "community": 32,
-      "community_name": "generateBaselineProgram.js",
-      "norm_label": "generatebaselineprogram()"
+      "norm_label": "generatebaselineprogram()",
+      "id": "lib_generatebaselineprogram_generatebaselineprogram",
+      "community_name": "generateBaselineProgram.js"
     },
     {
       "label": "generateComebackWorkout.js",
@@ -1103,10 +1103,10 @@
       "source_file": "lib/generateComebackWorkout.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatecomebackworkout",
       "community": 33,
-      "community_name": "generateComebackWorkout.js",
-      "norm_label": "generatecomebackworkout.js"
+      "norm_label": "generatecomebackworkout.js",
+      "id": "lib_generatecomebackworkout",
+      "community_name": "generateComebackWorkout.js"
     },
     {
       "label": "generateComebackWorkout()",
@@ -1114,10 +1114,10 @@
       "source_file": "lib/generateComebackWorkout.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatecomebackworkout_generatecomebackworkout",
       "community": 33,
-      "community_name": "generateComebackWorkout.js",
-      "norm_label": "generatecomebackworkout()"
+      "norm_label": "generatecomebackworkout()",
+      "id": "lib_generatecomebackworkout_generatecomebackworkout",
+      "community_name": "generateComebackWorkout.js"
     },
     {
       "label": "generatePeriodization.js",
@@ -1125,10 +1125,10 @@
       "source_file": "lib/generatePeriodization.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateperiodization",
       "community": 34,
-      "community_name": "generatePeriodization.js",
-      "norm_label": "generateperiodization.js"
+      "norm_label": "generateperiodization.js",
+      "id": "lib_generateperiodization",
+      "community_name": "generatePeriodization.js"
     },
     {
       "label": "generatePeriodization()",
@@ -1136,10 +1136,10 @@
       "source_file": "lib/generatePeriodization.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateperiodization_generateperiodization",
       "community": 34,
-      "community_name": "generatePeriodization.js",
-      "norm_label": "generateperiodization()"
+      "norm_label": "generateperiodization()",
+      "id": "lib_generateperiodization_generateperiodization",
+      "community_name": "generatePeriodization.js"
     },
     {
       "label": "generateQuickStartProgram.js",
@@ -1147,10 +1147,10 @@
       "source_file": "lib/generateQuickStartProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatequickstartprogram",
       "community": 35,
-      "community_name": "generateQuickStartProgram.js",
-      "norm_label": "generatequickstartprogram.js"
+      "norm_label": "generatequickstartprogram.js",
+      "id": "lib_generatequickstartprogram",
+      "community_name": "generateQuickStartProgram.js"
     },
     {
       "label": "generateQuickStartProgram()",
@@ -1158,10 +1158,10 @@
       "source_file": "lib/generateQuickStartProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatequickstartprogram_generatequickstartprogram",
       "community": 35,
-      "community_name": "generateQuickStartProgram.js",
-      "norm_label": "generatequickstartprogram()"
+      "norm_label": "generatequickstartprogram()",
+      "id": "lib_generatequickstartprogram_generatequickstartprogram",
+      "community_name": "generateQuickStartProgram.js"
     },
     {
       "label": "generateReEngagementMessage.js",
@@ -1169,10 +1169,10 @@
       "source_file": "lib/generateReEngagementMessage.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatereengagementmessage",
       "community": 36,
-      "community_name": "generateReEngagementMessage.js",
-      "norm_label": "generatereengagementmessage.js"
+      "norm_label": "generatereengagementmessage.js",
+      "id": "lib_generatereengagementmessage",
+      "community_name": "generateReEngagementMessage.js"
     },
     {
       "label": "generateReEngagementMessage()",
@@ -1180,10 +1180,10 @@
       "source_file": "lib/generateReEngagementMessage.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generatereengagementmessage_generatereengagementmessage",
       "community": 36,
-      "community_name": "generateReEngagementMessage.js",
-      "norm_label": "generatereengagementmessage()"
+      "norm_label": "generatereengagementmessage()",
+      "id": "lib_generatereengagementmessage_generatereengagementmessage",
+      "community_name": "generateReEngagementMessage.js"
     },
     {
       "label": "generateWeeklyPlan.js",
@@ -1191,10 +1191,10 @@
       "source_file": "lib/generateWeeklyPlan.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateweeklyplan",
       "community": 37,
-      "community_name": "generateWeeklyPlan.js",
-      "norm_label": "generateweeklyplan.js"
+      "norm_label": "generateweeklyplan.js",
+      "id": "lib_generateweeklyplan",
+      "community_name": "generateWeeklyPlan.js"
     },
     {
       "label": "generateWeeklyPlan()",
@@ -1202,10 +1202,10 @@
       "source_file": "lib/generateWeeklyPlan.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateweeklyplan_generateweeklyplan",
       "community": 37,
-      "community_name": "generateWeeklyPlan.js",
-      "norm_label": "generateweeklyplan()"
+      "norm_label": "generateweeklyplan()",
+      "id": "lib_generateweeklyplan_generateweeklyplan",
+      "community_name": "generateWeeklyPlan.js"
     },
     {
       "label": "generateWorkoutProgram.js",
@@ -1213,10 +1213,10 @@
       "source_file": "lib/generateWorkoutProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "generateworkoutprogram.js"
+      "norm_label": "generateworkoutprogram.js",
+      "id": "lib_generateworkoutprogram",
+      "community_name": "run function (root index)"
     },
     {
       "label": "generateWorkoutProgram()",
@@ -1224,10 +1224,10 @@
       "source_file": "lib/generateWorkoutProgram.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_generateworkoutprogram",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "generateworkoutprogram()"
+      "norm_label": "generateworkoutprogram()",
+      "id": "lib_generateworkoutprogram_generateworkoutprogram",
+      "community_name": "run function (root index)"
     },
     {
       "label": "generateId()",
@@ -1235,10 +1235,10 @@
       "source_file": "lib/generateWorkoutProgram.js",
       "source_location": "L86",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_generateid",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "generateid()"
+      "norm_label": "generateid()",
+      "id": "lib_generateworkoutprogram_generateid",
+      "community_name": "run function (root index)"
     },
     {
       "label": "generateWorkoutProgram.test.js",
@@ -1246,10 +1246,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "generateworkoutprogram.test.js"
+      "norm_label": "generateworkoutprogram.test.js",
+      "id": "lib_generateworkoutprogram_test",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "assert",
@@ -1257,10 +1257,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_assert",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_generateworkoutprogram_test_assert",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "{ generateWorkoutProgram }",
@@ -1268,10 +1268,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_generateworkoutprogram",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "{ generateworkoutprogram }"
+      "norm_label": "{ generateworkoutprogram }",
+      "id": "lib_generateworkoutprogram_test_generateworkoutprogram",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "normalProfile",
@@ -1279,10 +1279,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_normalprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "normalprofile"
+      "norm_label": "normalprofile",
+      "id": "lib_generateworkoutprogram_test_normalprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "normalResult",
@@ -1290,10 +1290,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_normalresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "normalresult"
+      "norm_label": "normalresult",
+      "id": "lib_generateworkoutprogram_test_normalresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "allInjuriesProfile",
@@ -1301,10 +1301,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L35",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_allinjuriesprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "allinjuriesprofile"
+      "norm_label": "allinjuriesprofile",
+      "id": "lib_generateworkoutprogram_test_allinjuriesprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "allInjuriesResult",
@@ -1312,10 +1312,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_allinjuriesresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "allinjuriesresult"
+      "norm_label": "allinjuriesresult",
+      "id": "lib_generateworkoutprogram_test_allinjuriesresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "minimalProfile",
@@ -1323,10 +1323,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_minimalprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "minimalprofile"
+      "norm_label": "minimalprofile",
+      "id": "lib_generateworkoutprogram_test_minimalprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "minimalResult",
@@ -1334,10 +1334,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_minimalresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "minimalresult"
+      "norm_label": "minimalresult",
+      "id": "lib_generateworkoutprogram_test_minimalresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "youngProfile",
@@ -1345,10 +1345,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L57",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_youngprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "youngprofile"
+      "norm_label": "youngprofile",
+      "id": "lib_generateworkoutprogram_test_youngprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "youngResult",
@@ -1356,10 +1356,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L58",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_youngresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "youngresult"
+      "norm_label": "youngresult",
+      "id": "lib_generateworkoutprogram_test_youngresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "oldProfile",
@@ -1367,10 +1367,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L62",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_oldprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "oldprofile"
+      "norm_label": "oldprofile",
+      "id": "lib_generateworkoutprogram_test_oldprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "oldResult",
@@ -1378,10 +1378,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L63",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_oldresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "oldresult"
+      "norm_label": "oldresult",
+      "id": "lib_generateworkoutprogram_test_oldresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "invalidGenderProfile",
@@ -1389,10 +1389,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L69",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_invalidgenderprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "invalidgenderprofile"
+      "norm_label": "invalidgenderprofile",
+      "id": "lib_generateworkoutprogram_test_invalidgenderprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "invalidGenderResult",
@@ -1400,10 +1400,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L70",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_invalidgenderresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "invalidgenderresult"
+      "norm_label": "invalidgenderresult",
+      "id": "lib_generateworkoutprogram_test_invalidgenderresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "invalidFitnessProfile",
@@ -1411,10 +1411,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L74",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_invalidfitnessprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "invalidfitnessprofile"
+      "norm_label": "invalidfitnessprofile",
+      "id": "lib_generateworkoutprogram_test_invalidfitnessprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "invalidFitnessResult",
@@ -1422,10 +1422,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L75",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_invalidfitnessresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "invalidfitnessresult"
+      "norm_label": "invalidfitnessresult",
+      "id": "lib_generateworkoutprogram_test_invalidfitnessresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "noEquipmentProfile",
@@ -1433,10 +1433,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L79",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_noequipmentprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "noequipmentprofile"
+      "norm_label": "noequipmentprofile",
+      "id": "lib_generateworkoutprogram_test_noequipmentprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "noEquipmentResult",
@@ -1444,10 +1444,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L80",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_noequipmentresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "noequipmentresult"
+      "norm_label": "noequipmentresult",
+      "id": "lib_generateworkoutprogram_test_noequipmentresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "injuredProfile",
@@ -1455,10 +1455,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L84",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_injuredprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "injuredprofile"
+      "norm_label": "injuredprofile",
+      "id": "lib_generateworkoutprogram_test_injuredprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "injuredResult",
@@ -1466,10 +1466,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L85",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_injuredresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "injuredresult"
+      "norm_label": "injuredresult",
+      "id": "lib_generateworkoutprogram_test_injuredresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "clampProfile",
@@ -1477,10 +1477,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L92",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_clampprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "clampprofile"
+      "norm_label": "clampprofile",
+      "id": "lib_generateworkoutprogram_test_clampprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "clampResult",
@@ -1488,10 +1488,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L93",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_clampresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "clampresult"
+      "norm_label": "clampresult",
+      "id": "lib_generateworkoutprogram_test_clampresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "clampResult2",
@@ -1499,10 +1499,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L97",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_clampresult2",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "clampresult2"
+      "norm_label": "clampresult2",
+      "id": "lib_generateworkoutprogram_test_clampresult2",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "emptyGoalsProfile",
@@ -1510,10 +1510,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L102",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_emptygoalsprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "emptygoalsprofile"
+      "norm_label": "emptygoalsprofile",
+      "id": "lib_generateworkoutprogram_test_emptygoalsprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "emptyGoalsResult",
@@ -1521,10 +1521,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L103",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_emptygoalsresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "emptygoalsresult"
+      "norm_label": "emptygoalsresult",
+      "id": "lib_generateworkoutprogram_test_emptygoalsresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "newUserProfile",
@@ -1532,10 +1532,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L107",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_newuserprofile",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "newuserprofile"
+      "norm_label": "newuserprofile",
+      "id": "lib_generateworkoutprogram_test_newuserprofile",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "newUserResult",
@@ -1543,10 +1543,10 @@
       "source_file": "lib/generateWorkoutProgram.test.js",
       "source_location": "L108",
       "_origin": "ast",
-      "id": "lib_generateworkoutprogram_test_newuserresult",
       "community": 0,
-      "community_name": "generateWorkoutProgram.test.js",
-      "norm_label": "newuserresult"
+      "norm_label": "newuserresult",
+      "id": "lib_generateworkoutprogram_test_newuserresult",
+      "community_name": "generateWorkoutProgram.test.js"
     },
     {
       "label": "importClientsFromCSV.js",
@@ -1554,10 +1554,10 @@
       "source_file": "lib/importClientsFromCSV.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_importclientsfromcsv",
       "community": 38,
-      "community_name": "importClientsFromCSV.js",
-      "norm_label": "importclientsfromcsv.js"
+      "norm_label": "importclientsfromcsv.js",
+      "id": "lib_importclientsfromcsv",
+      "community_name": "importClientsFromCSV.js"
     },
     {
       "label": "importClientsFromCSV()",
@@ -1565,10 +1565,10 @@
       "source_file": "lib/importClientsFromCSV.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_importclientsfromcsv_importclientsfromcsv",
       "community": 38,
-      "community_name": "importClientsFromCSV.js",
-      "norm_label": "importclientsfromcsv()"
+      "norm_label": "importclientsfromcsv()",
+      "id": "lib_importclientsfromcsv_importclientsfromcsv",
+      "community_name": "importClientsFromCSV.js"
     },
     {
       "label": "logAuditEvent.js",
@@ -1576,10 +1576,10 @@
       "source_file": "lib/logAuditEvent.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_logauditevent",
       "community": 39,
-      "community_name": "logAuditEvent.js",
-      "norm_label": "logauditevent.js"
+      "norm_label": "logauditevent.js",
+      "id": "lib_logauditevent",
+      "community_name": "logAuditEvent.js"
     },
     {
       "label": "logAuditEvent()",
@@ -1587,10 +1587,10 @@
       "source_file": "lib/logAuditEvent.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_logauditevent_logauditevent",
       "community": 39,
-      "community_name": "logAuditEvent.js",
-      "norm_label": "logauditevent()"
+      "norm_label": "logauditevent()",
+      "id": "lib_logauditevent_logauditevent",
+      "community_name": "logAuditEvent.js"
     },
     {
       "label": "oneRepMax.js",
@@ -1598,10 +1598,10 @@
       "source_file": "lib/oneRepMax.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_onerepmax",
       "community": 8,
-      "community_name": "oneRepMax.test.js",
-      "norm_label": "onerepmax.js"
+      "norm_label": "onerepmax.js",
+      "id": "lib_onerepmax",
+      "community_name": "oneRepMax.test.js"
     },
     {
       "label": "oneRepMax()",
@@ -1609,10 +1609,10 @@
       "source_file": "lib/oneRepMax.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "lib_onerepmax_onerepmax",
       "community": 8,
-      "community_name": "oneRepMax.test.js",
-      "norm_label": "onerepmax()"
+      "norm_label": "onerepmax()",
+      "id": "lib_onerepmax_onerepmax",
+      "community_name": "oneRepMax.test.js"
     },
     {
       "label": "oneRepMax.test.js",
@@ -1620,10 +1620,10 @@
       "source_file": "lib/oneRepMax.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_onerepmax_test",
       "community": 8,
-      "community_name": "oneRepMax.test.js",
-      "norm_label": "onerepmax.test.js"
+      "norm_label": "onerepmax.test.js",
+      "id": "lib_onerepmax_test",
+      "community_name": "oneRepMax.test.js"
     },
     {
       "label": "assert",
@@ -1631,10 +1631,10 @@
       "source_file": "lib/oneRepMax.test.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "lib_onerepmax_test_assert",
       "community": 8,
-      "community_name": "oneRepMax.test.js",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_onerepmax_test_assert",
+      "community_name": "oneRepMax.test.js"
     },
     {
       "label": "{ oneRepMax }",
@@ -1642,10 +1642,10 @@
       "source_file": "lib/oneRepMax.test.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "lib_onerepmax_test_onerepmax",
       "community": 8,
-      "community_name": "oneRepMax.test.js",
-      "norm_label": "{ onerepmax }"
+      "norm_label": "{ onerepmax }",
+      "id": "lib_onerepmax_test_onerepmax",
+      "community_name": "oneRepMax.test.js"
     },
     {
       "label": "optimizeClassPricing.js",
@@ -1653,10 +1653,10 @@
       "source_file": "lib/optimizeClassPricing.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_optimizeclasspricing",
       "community": 40,
-      "community_name": "optimizeClassPricing.js",
-      "norm_label": "optimizeclasspricing.js"
+      "norm_label": "optimizeclasspricing.js",
+      "id": "lib_optimizeclasspricing",
+      "community_name": "optimizeClassPricing.js"
     },
     {
       "label": "optimizeClassPricing()",
@@ -1664,10 +1664,10 @@
       "source_file": "lib/optimizeClassPricing.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_optimizeclasspricing_optimizeclasspricing",
       "community": 40,
-      "community_name": "optimizeClassPricing.js",
-      "norm_label": "optimizeclasspricing()"
+      "norm_label": "optimizeclasspricing()",
+      "id": "lib_optimizeclasspricing_optimizeclasspricing",
+      "community_name": "optimizeClassPricing.js"
     },
     {
       "label": "optimizeReferralIncentive.js",
@@ -1675,10 +1675,10 @@
       "source_file": "lib/optimizeReferralIncentive.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_optimizereferralincentive",
       "community": 41,
-      "community_name": "optimizeReferralIncentive.js",
-      "norm_label": "optimizereferralincentive.js"
+      "norm_label": "optimizereferralincentive.js",
+      "id": "lib_optimizereferralincentive",
+      "community_name": "optimizeReferralIncentive.js"
     },
     {
       "label": "optimizeReferralIncentive()",
@@ -1686,10 +1686,10 @@
       "source_file": "lib/optimizeReferralIncentive.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_optimizereferralincentive_optimizereferralincentive",
       "community": 41,
-      "community_name": "optimizeReferralIncentive.js",
-      "norm_label": "optimizereferralincentive()"
+      "norm_label": "optimizereferralincentive()",
+      "id": "lib_optimizereferralincentive_optimizereferralincentive",
+      "community_name": "optimizeReferralIncentive.js"
     },
     {
       "label": "parseClientImportData.js",
@@ -1697,10 +1697,10 @@
       "source_file": "lib/parseClientImportData.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_parseclientimportdata",
       "community": 42,
-      "community_name": "parseClientImportData.js",
-      "norm_label": "parseclientimportdata.js"
+      "norm_label": "parseclientimportdata.js",
+      "id": "lib_parseclientimportdata",
+      "community_name": "parseClientImportData.js"
     },
     {
       "label": "parseClientImportData()",
@@ -1708,10 +1708,10 @@
       "source_file": "lib/parseClientImportData.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_parseclientimportdata_parseclientimportdata",
       "community": 42,
-      "community_name": "parseClientImportData.js",
-      "norm_label": "parseclientimportdata()"
+      "norm_label": "parseclientimportdata()",
+      "id": "lib_parseclientimportdata_parseclientimportdata",
+      "community_name": "parseClientImportData.js"
     },
     {
       "label": "parseRequest.js",
@@ -1719,10 +1719,10 @@
       "source_file": "lib/parseRequest.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_parserequest",
       "community": 43,
-      "community_name": "parseRequest.js",
-      "norm_label": "parserequest.js"
+      "norm_label": "parserequest.js",
+      "id": "lib_parserequest",
+      "community_name": "parseRequest.js"
     },
     {
       "label": "parseRequest()",
@@ -1730,10 +1730,10 @@
       "source_file": "lib/parseRequest.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_parserequest_parserequest",
       "community": 43,
-      "community_name": "parseRequest.js",
-      "norm_label": "parserequest()"
+      "norm_label": "parserequest()",
+      "id": "lib_parserequest_parserequest",
+      "community_name": "parseRequest.js"
     },
     {
       "label": "predictChurnRisk.js",
@@ -1741,10 +1741,10 @@
       "source_file": "lib/predictChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_predictchurnrisk",
       "community": 44,
-      "community_name": "predictChurnRisk.js",
-      "norm_label": "predictchurnrisk.js"
+      "norm_label": "predictchurnrisk.js",
+      "id": "lib_predictchurnrisk",
+      "community_name": "predictChurnRisk.js"
     },
     {
       "label": "predictChurnRisk()",
@@ -1752,10 +1752,10 @@
       "source_file": "lib/predictChurnRisk.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_predictchurnrisk_predictchurnrisk",
       "community": 44,
-      "community_name": "predictChurnRisk.js",
-      "norm_label": "predictchurnrisk()"
+      "norm_label": "predictchurnrisk()",
+      "id": "lib_predictchurnrisk_predictchurnrisk",
+      "community_name": "predictChurnRisk.js"
     },
     {
       "label": "predictClientChurn.js",
@@ -1763,10 +1763,10 @@
       "source_file": "lib/predictClientChurn.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_predictclientchurn",
       "community": 45,
-      "community_name": "predictClientChurn.js",
-      "norm_label": "predictclientchurn.js"
+      "norm_label": "predictclientchurn.js",
+      "id": "lib_predictclientchurn",
+      "community_name": "predictClientChurn.js"
     },
     {
       "label": "predictClientChurn()",
@@ -1774,32 +1774,10 @@
       "source_file": "lib/predictClientChurn.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_predictclientchurn_predictclientchurn",
       "community": 45,
-      "community_name": "predictClientChurn.js",
-      "norm_label": "predictclientchurn()"
-    },
-    {
-      "label": "processClientOnboardingStep.js",
-      "file_type": "code",
-      "source_file": "lib/processClientOnboardingStep.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_processclientonboardingstep",
-      "community": 58,
-      "community_name": "processClientOnboardingStep.js",
-      "norm_label": "processclientonboardingstep.js"
-    },
-    {
-      "label": "processClientOnboardingStep()",
-      "file_type": "code",
-      "source_file": "lib/processClientOnboardingStep.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_processclientonboardingstep_processclientonboardingstep",
-      "community": 58,
-      "community_name": "processClientOnboardingStep.js",
-      "norm_label": "processclientonboardingstep()"
+      "norm_label": "predictclientchurn()",
+      "id": "lib_predictclientchurn_predictclientchurn",
+      "community_name": "predictClientChurn.js"
     },
     {
       "label": "processReferralReward.js",
@@ -1807,10 +1785,10 @@
       "source_file": "lib/processReferralReward.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_processreferralreward",
       "community": 13,
-      "community_name": "processReferralReward.js",
-      "norm_label": "processreferralreward.js"
+      "norm_label": "processreferralreward.js",
+      "id": "lib_processreferralreward",
+      "community_name": "processReferralReward.js"
     },
     {
       "label": "usedReferralCodes",
@@ -1818,10 +1796,10 @@
       "source_file": "lib/processReferralReward.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_processreferralreward_usedreferralcodes",
       "community": 13,
-      "community_name": "processReferralReward.js",
-      "norm_label": "usedreferralcodes"
+      "norm_label": "usedreferralcodes",
+      "id": "lib_processreferralreward_usedreferralcodes",
+      "community_name": "processReferralReward.js"
     },
     {
       "label": "referralBalances",
@@ -1829,10 +1807,10 @@
       "source_file": "lib/processReferralReward.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "lib_processreferralreward_referralbalances",
       "community": 13,
-      "community_name": "processReferralReward.js",
-      "norm_label": "referralbalances"
+      "norm_label": "referralbalances",
+      "id": "lib_processreferralreward_referralbalances",
+      "community_name": "processReferralReward.js"
     },
     {
       "label": "processReferralReward()",
@@ -1840,10 +1818,10 @@
       "source_file": "lib/processReferralReward.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "lib_processreferralreward_processreferralreward",
       "community": 13,
-      "community_name": "processReferralReward.js",
-      "norm_label": "processreferralreward()"
+      "norm_label": "processreferralreward()",
+      "id": "lib_processreferralreward_processreferralreward",
+      "community_name": "processReferralReward.js"
     },
     {
       "label": "scheduleOnboardingChecklist.js",
@@ -1851,10 +1829,10 @@
       "source_file": "lib/scheduleOnboardingChecklist.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_scheduleonboardingchecklist",
       "community": 46,
-      "community_name": "scheduleOnboardingChecklist.js",
-      "norm_label": "scheduleonboardingchecklist.js"
+      "norm_label": "scheduleonboardingchecklist.js",
+      "id": "lib_scheduleonboardingchecklist",
+      "community_name": "scheduleOnboardingChecklist.js"
     },
     {
       "label": "scheduleOnboardingChecklist()",
@@ -1862,10 +1840,10 @@
       "source_file": "lib/scheduleOnboardingChecklist.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_scheduleonboardingchecklist_scheduleonboardingchecklist",
       "community": 46,
-      "community_name": "scheduleOnboardingChecklist.js",
-      "norm_label": "scheduleonboardingchecklist()"
+      "norm_label": "scheduleonboardingchecklist()",
+      "id": "lib_scheduleonboardingchecklist_scheduleonboardingchecklist",
+      "community_name": "scheduleOnboardingChecklist.js"
     },
     {
       "label": "suggestNextVolume.js",
@@ -1873,10 +1851,10 @@
       "source_file": "lib/suggestNextVolume.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_suggestnextvolume",
       "community": 7,
-      "community_name": "suggestNextVolume.test.js",
-      "norm_label": "suggestnextvolume.js"
+      "norm_label": "suggestnextvolume.js",
+      "id": "lib_suggestnextvolume",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "suggestNextVolume()",
@@ -1884,10 +1862,10 @@
       "source_file": "lib/suggestNextVolume.js",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "lib_suggestnextvolume_suggestnextvolume",
       "community": 7,
-      "community_name": "suggestNextVolume.test.js",
-      "norm_label": "suggestnextvolume()"
+      "norm_label": "suggestnextvolume()",
+      "id": "lib_suggestnextvolume_suggestnextvolume",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "suggestNextVolume.test.js",
@@ -1895,10 +1873,10 @@
       "source_file": "lib/suggestNextVolume.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_suggestnextvolume_test",
       "community": 7,
-      "community_name": "suggestNextVolume.test.js",
-      "norm_label": "suggestnextvolume.test.js"
+      "norm_label": "suggestnextvolume.test.js",
+      "id": "lib_suggestnextvolume_test",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "assert",
@@ -1906,10 +1884,10 @@
       "source_file": "lib/suggestNextVolume.test.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "lib_suggestnextvolume_test_assert",
       "community": 7,
-      "community_name": "suggestNextVolume.test.js",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_suggestnextvolume_test_assert",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "{ suggestNextVolume }",
@@ -1917,32 +1895,10 @@
       "source_file": "lib/suggestNextVolume.test.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "lib_suggestnextvolume_test_suggestnextvolume",
       "community": 7,
-      "community_name": "suggestNextVolume.test.js",
-      "norm_label": "{ suggestnextvolume }"
-    },
-    {
-      "label": "suggestStartingProgram.js",
-      "file_type": "code",
-      "source_file": "lib/suggestStartingProgram.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_suggeststartingprogram",
-      "community": 59,
-      "community_name": "suggestStartingProgram.js",
-      "norm_label": "suggeststartingprogram.js"
-    },
-    {
-      "label": "suggestStartingProgram()",
-      "file_type": "code",
-      "source_file": "lib/suggestStartingProgram.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_suggeststartingprogram_suggeststartingprogram",
-      "community": 59,
-      "community_name": "suggestStartingProgram.js",
-      "norm_label": "suggeststartingprogram()"
+      "norm_label": "{ suggestnextvolume }",
+      "id": "lib_suggestnextvolume_test_suggestnextvolume",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "suggestUpsell.js",
@@ -1950,10 +1906,10 @@
       "source_file": "lib/suggestUpsell.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_suggestupsell",
       "community": 47,
-      "community_name": "suggestUpsell.js",
-      "norm_label": "suggestupsell.js"
+      "norm_label": "suggestupsell.js",
+      "id": "lib_suggestupsell",
+      "community_name": "suggestUpsell.js"
     },
     {
       "label": "suggestUpsell()",
@@ -1961,10 +1917,10 @@
       "source_file": "lib/suggestUpsell.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_suggestupsell_suggestupsell",
       "community": 47,
-      "community_name": "suggestUpsell.js",
-      "norm_label": "suggestupsell()"
+      "norm_label": "suggestupsell()",
+      "id": "lib_suggestupsell_suggestupsell",
+      "community_name": "suggestUpsell.js"
     },
     {
       "label": "verifyProgramIntegrity.js",
@@ -1972,10 +1928,10 @@
       "source_file": "lib/verifyProgramIntegrity.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_verifyprogramintegrity",
       "community": 48,
-      "community_name": "verifyProgramIntegrity.js",
-      "norm_label": "verifyprogramintegrity.js"
+      "norm_label": "verifyprogramintegrity.js",
+      "id": "lib_verifyprogramintegrity",
+      "community_name": "verifyProgramIntegrity.js"
     },
     {
       "label": "verifyProgramIntegrity()",
@@ -1983,10 +1939,10 @@
       "source_file": "lib/verifyProgramIntegrity.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_verifyprogramintegrity_verifyprogramintegrity",
       "community": 48,
-      "community_name": "verifyProgramIntegrity.js",
-      "norm_label": "verifyprogramintegrity()"
+      "norm_label": "verifyprogramintegrity()",
+      "id": "lib_verifyprogramintegrity_verifyprogramintegrity",
+      "community_name": "verifyProgramIntegrity.js"
     },
     {
       "label": "workoutVolume.js",
@@ -1994,10 +1950,10 @@
       "source_file": "lib/workoutVolume.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_workoutvolume",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "workoutvolume.js"
+      "norm_label": "workoutvolume.js",
+      "id": "lib_workoutvolume",
+      "community_name": "run function (root index)"
     },
     {
       "label": "workoutVolume()",
@@ -2005,10 +1961,10 @@
       "source_file": "lib/workoutVolume.js",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "lib_workoutvolume_workoutvolume",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "workoutvolume()"
+      "norm_label": "workoutvolume()",
+      "id": "lib_workoutvolume_workoutvolume",
+      "community_name": "run function (root index)"
     },
     {
       "label": "workoutVolume.test.js",
@@ -2016,10 +1972,10 @@
       "source_file": "lib/workoutVolume.test.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "lib_workoutvolume_test",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "workoutvolume.test.js"
+      "norm_label": "workoutvolume.test.js",
+      "id": "lib_workoutvolume_test",
+      "community_name": "run function (root index)"
     },
     {
       "label": "assert",
@@ -2027,10 +1983,10 @@
       "source_file": "lib/workoutVolume.test.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "lib_workoutvolume_test_assert",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "assert"
+      "norm_label": "assert",
+      "id": "lib_workoutvolume_test_assert",
+      "community_name": "run function (root index)"
     },
     {
       "label": "{ workoutVolume }",
@@ -2038,98 +1994,10 @@
       "source_file": "lib/workoutVolume.test.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "lib_workoutvolume_test_workoutvolume",
       "community": 3,
-      "community_name": "run function (root index)",
-      "norm_label": "{ workoutvolume }"
-    },
-    {
-      "label": "VALIDATION.md",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "validation",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "validation.md"
-    },
-    {
-      "label": "TrainerHub \u2014 Market Validation (auto, DeepSeek 2026-07-20)",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "validation_trainerhub_market_validation_auto_deepseek_2026_07_20",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "trainerhub \u2014 market validation (auto, deepseek 2026-07-20)"
-    },
-    {
-      "label": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "trainerhub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7"
-    },
-    {
-      "label": "1. ICP \u05de\u05d3\u05d5\u05d9\u05e7 (\u05d9\u05e9\u05e8\u05d0\u05dc)",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "validation_1_icp_\u05de\u05d3\u05d5\u05d9\u05e7_\u05d9\u05e9\u05e8\u05d0\u05dc",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "1. icp \u05de\u05d3\u05d5\u05d9\u05e7 (\u05d9\u05e9\u05e8\u05d0\u05dc)"
-    },
-    {
-      "label": "2. \u05de\u05d7\u05d9\u05e8 \u05de\u05d5\u05e6\u05e2 + \u05de\u05d5\u05d3\u05dc",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "validation_2_\u05de\u05d7\u05d9\u05e8_\u05de\u05d5\u05e6\u05e2_\u05de\u05d5\u05d3\u05dc",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "2. \u05de\u05d7\u05d9\u05e8 \u05de\u05d5\u05e6\u05e2 + \u05de\u05d5\u05d3\u05dc"
-    },
-    {
-      "label": "3. \u05d6\u05d5\u05d5\u05d9\u05ea \u05de\u05d5\u05dc \u05d4\u05de\u05ea\u05d7\u05e8\u05d4 \u05d4\u05de\u05e8\u05db\u05d6\u05d9",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "validation_3_\u05d6\u05d5\u05d5\u05d9\u05ea_\u05de\u05d5\u05dc_\u05d4\u05de\u05ea\u05d7\u05e8\u05d4_\u05d4\u05de\u05e8\u05db\u05d6\u05d9",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "3. \u05d6\u05d5\u05d5\u05d9\u05ea \u05de\u05d5\u05dc \u05d4\u05de\u05ea\u05d7\u05e8\u05d4 \u05d4\u05de\u05e8\u05db\u05d6\u05d9"
-    },
-    {
-      "label": "4. \u05ea\u05d5\u05db\u05e0\u05d9\u05ea 100 \u05d4\u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd \u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d9\u05dd (\u05ea\u05e7\u05e6\u05d9\u05d1 0)",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L23",
-      "_origin": "ast",
-      "id": "validation_4_\u05ea\u05d5\u05db\u05e0\u05d9\u05ea_100_\u05d4\u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd_\u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d9\u05dd_\u05ea\u05e7\u05e6\u05d9\u05d1_0",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "4. \u05ea\u05d5\u05db\u05e0\u05d9\u05ea 100 \u05d4\u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd \u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d9\u05dd (\u05ea\u05e7\u05e6\u05d9\u05d1 0)"
-    },
-    {
-      "label": "5. \u05e7\u05e8\u05d9\u05d8\u05e8\u05d9\u05d5\u05df \u05de\u05e1\u05e4\u05e8\u05d9 \u2014 30 \u05d9\u05d5\u05dd",
-      "file_type": "document",
-      "source_file": "VALIDATION.md",
-      "source_location": "L32",
-      "_origin": "ast",
-      "id": "validation_5_\u05e7\u05e8\u05d9\u05d8\u05e8\u05d9\u05d5\u05df_\u05de\u05e1\u05e4\u05e8\u05d9_30_\u05d9\u05d5\u05dd",
-      "community": 57,
-      "community_name": "TrainerHub \u2014 \u05d3\u05e3 \u05d0\u05d9\u05de\u05d5\u05ea \u05e9\u05d5\u05e7",
-      "norm_label": "5. \u05e7\u05e8\u05d9\u05d8\u05e8\u05d9\u05d5\u05df \u05de\u05e1\u05e4\u05e8\u05d9 \u2014 30 \u05d9\u05d5\u05dd"
+      "norm_label": "{ workoutvolume }",
+      "id": "lib_workoutvolume_test_workoutvolume",
+      "community_name": "run function (root index)"
     },
     {
       "label": "README.md",
@@ -2142,8 +2010,8 @@
       "contributor": null,
       "community": 55,
       "norm_label": "readme.md",
-      "community_name": "README.md",
-      "id": "readme"
+      "id": "readme",
+      "community_name": "README.md"
     },
     {
       "label": "index.html (root)",
@@ -2156,8 +2024,8 @@
       "contributor": null,
       "community": 3,
       "norm_label": "index.html (root)",
-      "community_name": "run function (root index)",
-      "id": "index"
+      "id": "index",
+      "community_name": "run function (root index)"
     },
     {
       "label": "factory-ci.yml",
@@ -2170,8 +2038,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "factory-ci.yml",
-      "community_name": "factory-ci.yml",
-      "id": "github_workflows_factory_ci"
+      "id": "github_workflows_factory_ci",
+      "community_name": "factory-ci.yml"
     },
     {
       "label": "frontend/index.html",
@@ -2184,8 +2052,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "frontend/index.html",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index"
+      "id": "frontend_index",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "frontend/workout-mode.html",
@@ -2198,8 +2066,8 @@
       "contributor": null,
       "community": 49,
       "norm_label": "frontend/workout-mode.html",
-      "community_name": "frontend/workout-mode.html",
-      "id": "frontend_workout_mode"
+      "id": "frontend_workout_mode",
+      "community_name": "frontend/workout-mode.html"
     },
     {
       "label": "lib/README.md",
@@ -2212,8 +2080,8 @@
       "contributor": null,
       "community": 7,
       "norm_label": "lib/readme.md",
-      "community_name": "suggestNextVolume.test.js",
-      "id": "lib_readme"
+      "id": "lib_readme",
+      "community_name": "suggestNextVolume.test.js"
     },
     {
       "label": "run function (root index)",
@@ -2226,8 +2094,8 @@
       "contributor": null,
       "community": 3,
       "norm_label": "run function (root index)",
-      "community_name": "run function (root index)",
-      "id": "index_run"
+      "id": "index_run",
+      "community_name": "run function (root index)"
     },
     {
       "label": "$ helper (root index)",
@@ -2241,8 +2109,8 @@
       "verification": "unverified",
       "community": 3,
       "norm_label": "$ helper (root index)",
-      "community_name": "run function (root index)",
-      "id": "index_$"
+      "id": "index_$",
+      "community_name": "run function (root index)"
     },
     {
       "label": "esc helper (root index)",
@@ -2255,8 +2123,8 @@
       "contributor": null,
       "community": 3,
       "norm_label": "esc helper (root index)",
-      "community_name": "run function (root index)",
-      "id": "index_esc"
+      "id": "index_esc",
+      "community_name": "run function (root index)"
     },
     {
       "label": "Hub object (root index)",
@@ -2269,8 +2137,8 @@
       "contributor": null,
       "community": 53,
       "norm_label": "hub object (root index)",
-      "community_name": "Hub object (root index)",
-      "id": "index_hub"
+      "id": "index_hub",
+      "community_name": "Hub object (root index)"
     },
     {
       "label": "names lookup (root index)",
@@ -2283,8 +2151,8 @@
       "contributor": null,
       "community": 54,
       "norm_label": "names lookup (root index)",
-      "community_name": "names lookup (root index)",
-      "id": "index_names"
+      "id": "index_names",
+      "community_name": "names lookup (root index)"
     },
     {
       "label": "switchTab (inferred)",
@@ -2297,8 +2165,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "switchtab (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_switchtab"
+      "id": "frontend_index_switchtab",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "openPricing (inferred)",
@@ -2311,8 +2179,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "openpricing (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_openpricing"
+      "id": "frontend_index_openpricing",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "track (inferred)",
@@ -2325,8 +2193,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "track (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_track"
+      "id": "frontend_index_track",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "openAuth (inferred)",
@@ -2339,8 +2207,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "openauth (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_openauth"
+      "id": "frontend_index_openauth",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "toggleUserMenu (inferred)",
@@ -2353,8 +2221,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "toggleusermenu (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_toggleusermenu"
+      "id": "frontend_index_toggleusermenu",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "logoutUser (inferred)",
@@ -2367,8 +2235,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "logoutuser (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_logoutuser"
+      "id": "frontend_index_logoutuser",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "hideToast (inferred)",
@@ -2381,8 +2249,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "hidetoast (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_hidetoast"
+      "id": "frontend_index_hidetoast",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "closePricing (inferred)",
@@ -2395,8 +2263,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "closepricing (inferred)",
-      "community_name": "frontend/index.html",
-      "id": "frontend_index_closepricing"
+      "id": "frontend_index_closepricing",
+      "community_name": "frontend/index.html"
     },
     {
       "label": "loadWorkout",
@@ -2409,8 +2277,8 @@
       "contributor": null,
       "community": 14,
       "norm_label": "loadworkout",
-      "community_name": "loadWorkout",
-      "id": "frontend_workout_mode_loadworkout"
+      "id": "frontend_workout_mode_loadworkout",
+      "community_name": "loadWorkout"
     },
     {
       "label": "buildSteps",
@@ -2423,8 +2291,8 @@
       "contributor": null,
       "community": 14,
       "norm_label": "buildsteps",
-      "community_name": "loadWorkout",
-      "id": "frontend_workout_mode_buildsteps"
+      "id": "frontend_workout_mode_buildsteps",
+      "community_name": "loadWorkout"
     },
     {
       "label": "renderStep",
@@ -2437,8 +2305,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "renderstep",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_renderstep"
+      "id": "frontend_workout_mode_renderstep",
+      "community_name": "advance"
     },
     {
       "label": "renderExercise",
@@ -2451,8 +2319,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "renderexercise",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_renderexercise"
+      "id": "frontend_workout_mode_renderexercise",
+      "community_name": "advance"
     },
     {
       "label": "renderRest",
@@ -2465,8 +2333,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "renderrest",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_renderrest"
+      "id": "frontend_workout_mode_renderrest",
+      "community_name": "advance"
     },
     {
       "label": "buildClockSVG",
@@ -2479,8 +2347,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "buildclocksvg",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_buildclocksvg"
+      "id": "frontend_workout_mode_buildclocksvg",
+      "community_name": "advance"
     },
     {
       "label": "updateProgress",
@@ -2493,8 +2361,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "updateprogress",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_updateprogress"
+      "id": "frontend_workout_mode_updateprogress",
+      "community_name": "advance"
     },
     {
       "label": "startCountdown",
@@ -2507,8 +2375,8 @@
       "contributor": null,
       "community": 15,
       "norm_label": "startcountdown",
-      "community_name": "startCountdown",
-      "id": "frontend_workout_mode_startcountdown"
+      "id": "frontend_workout_mode_startcountdown",
+      "community_name": "startCountdown"
     },
     {
       "label": "clearCountdown",
@@ -2521,8 +2389,8 @@
       "contributor": null,
       "community": 50,
       "norm_label": "clearcountdown",
-      "community_name": "clearCountdown",
-      "id": "frontend_workout_mode_clearcountdown"
+      "id": "frontend_workout_mode_clearcountdown",
+      "community_name": "clearCountdown"
     },
     {
       "label": "updateClockDisplay",
@@ -2535,8 +2403,8 @@
       "contributor": null,
       "community": 15,
       "norm_label": "updateclockdisplay",
-      "community_name": "startCountdown",
-      "id": "frontend_workout_mode_updateclockdisplay"
+      "id": "frontend_workout_mode_updateclockdisplay",
+      "community_name": "startCountdown"
     },
     {
       "label": "startElapsedTimer",
@@ -2549,8 +2417,8 @@
       "contributor": null,
       "community": 10,
       "norm_label": "startelapsedtimer",
-      "community_name": "togglePause",
-      "id": "frontend_workout_mode_startelapsedtimer"
+      "id": "frontend_workout_mode_startelapsedtimer",
+      "community_name": "togglePause"
     },
     {
       "label": "pauseElapsedTimer",
@@ -2563,8 +2431,8 @@
       "contributor": null,
       "community": 10,
       "norm_label": "pauseelapsedtimer",
-      "community_name": "togglePause",
-      "id": "frontend_workout_mode_pauseelapsedtimer"
+      "id": "frontend_workout_mode_pauseelapsedtimer",
+      "community_name": "togglePause"
     },
     {
       "label": "formatTime",
@@ -2577,8 +2445,8 @@
       "contributor": null,
       "community": 52,
       "norm_label": "formattime",
-      "community_name": "formatTime",
-      "id": "frontend_workout_mode_formattime"
+      "id": "frontend_workout_mode_formattime",
+      "community_name": "formatTime"
     },
     {
       "label": "togglePause",
@@ -2591,8 +2459,8 @@
       "contributor": null,
       "community": 10,
       "norm_label": "togglepause",
-      "community_name": "togglePause",
-      "id": "frontend_workout_mode_togglepause"
+      "id": "frontend_workout_mode_togglepause",
+      "community_name": "togglePause"
     },
     {
       "label": "resumeCurrentStep",
@@ -2605,8 +2473,8 @@
       "contributor": null,
       "community": 10,
       "norm_label": "resumecurrentstep",
-      "community_name": "togglePause",
-      "id": "frontend_workout_mode_resumecurrentstep"
+      "id": "frontend_workout_mode_resumecurrentstep",
+      "community_name": "togglePause"
     },
     {
       "label": "markSetDone",
@@ -2619,8 +2487,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "marksetdone",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_markesetdone"
+      "id": "frontend_workout_mode_markesetdone",
+      "community_name": "advance"
     },
     {
       "label": "advance",
@@ -2633,8 +2501,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "advance",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_advance"
+      "id": "frontend_workout_mode_advance",
+      "community_name": "advance"
     },
     {
       "label": "skipCurrent",
@@ -2647,8 +2515,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "skipcurrent",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_skipcurrent"
+      "id": "frontend_workout_mode_skipcurrent",
+      "community_name": "advance"
     },
     {
       "label": "DOMContentLoaded handler",
@@ -2661,8 +2529,8 @@
       "contributor": null,
       "community": 14,
       "norm_label": "domcontentloaded handler",
-      "community_name": "loadWorkout",
-      "id": "frontend_workout_mode_init"
+      "id": "frontend_workout_mode_init",
+      "community_name": "loadWorkout"
     },
     {
       "label": "finishWorkout (inferred)",
@@ -2675,8 +2543,8 @@
       "contributor": null,
       "community": 5,
       "norm_label": "finishworkout (inferred)",
-      "community_name": "advance",
-      "id": "frontend_workout_mode_finishworkout"
+      "id": "frontend_workout_mode_finishworkout",
+      "community_name": "advance"
     },
     {
       "label": "exitWorkout (inferred)",
@@ -2689,8 +2557,8 @@
       "contributor": null,
       "community": 51,
       "norm_label": "exitworkout (inferred)",
-      "community_name": "exitWorkout (inferred)",
-      "id": "frontend_workout_mode_exitworkout"
+      "id": "frontend_workout_mode_exitworkout",
+      "community_name": "exitWorkout (inferred)"
     },
     {
       "label": "TrainerHub Project",
@@ -2703,8 +2571,8 @@
       "contributor": null,
       "community": 56,
       "norm_label": "trainerhub project",
-      "community_name": "TrainerHub Project",
-      "id": "trainerhub_project"
+      "id": "trainerhub_project",
+      "community_name": "TrainerHub Project"
     },
     {
       "label": "lib/*.test.js tests",
@@ -2717,8 +2585,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "lib/*.test.js tests",
-      "community_name": "factory-ci.yml",
-      "id": "lib_test_files"
+      "id": "lib_test_files",
+      "community_name": "factory-ci.yml"
     }
   ],
   "links": [
@@ -2729,9 +2597,9 @@
       "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "backend_main",
-      "target": "backend_main_parse_workout",
-      "confidence_score": 1.0
+      "target": "backend_main_parse_workout"
     },
     {
       "relation": "contains",
@@ -2740,9 +2608,9 @@
       "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "backend_main",
-      "target": "backend_main_workoutrequest",
-      "confidence_score": 1.0
+      "target": "backend_main_workoutrequest"
     },
     {
       "relation": "references",
@@ -2752,9 +2620,9 @@
       "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "backend_main_parse_workout",
-      "target": "backend_main_workoutrequest",
-      "confidence_score": 1.0
+      "target": "backend_main_workoutrequest"
     },
     {
       "relation": "inherits",
@@ -2763,9 +2631,9 @@
       "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "backend_main_workoutrequest",
-      "target": "basemodel",
-      "confidence_score": 1.0
+      "target": "basemodel"
     },
     {
       "relation": "indirect_call",
@@ -2775,9 +2643,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_analyzeprogress",
-      "target": "lib_analyzeprogress_analyzeprogress",
-      "confidence_score": 0.5
+      "target": "lib_analyzeprogress_analyzeprogress"
     },
     {
       "relation": "indirect_call",
@@ -2787,9 +2655,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_analyzeprogresstrends",
-      "target": "lib_analyzeprogresstrends_analyzeprogresstrends",
-      "confidence_score": 0.5
+      "target": "lib_analyzeprogresstrends_analyzeprogresstrends"
     },
     {
       "relation": "imports_from",
@@ -2799,9 +2667,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends"
     },
     {
       "relation": "imports",
@@ -2811,9 +2679,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_analyzeprogresstrends",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_analyzeprogresstrends"
     },
     {
       "relation": "contains",
@@ -2822,9 +2690,9 @@
       "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_aggressivelossinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_aggressivelossinput"
     },
     {
       "relation": "contains",
@@ -2833,9 +2701,9 @@
       "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_aggressivelossresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_aggressivelossresult"
     },
     {
       "relation": "contains",
@@ -2844,9 +2712,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_analyzeprogresstrends",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_analyzeprogresstrends"
     },
     {
       "relation": "contains",
@@ -2855,9 +2723,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_assert"
     },
     {
       "relation": "contains",
@@ -2866,9 +2734,9 @@
       "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_declininginput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_declininginput"
     },
     {
       "relation": "contains",
@@ -2877,9 +2745,9 @@
       "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_decliningresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_decliningresult"
     },
     {
       "relation": "contains",
@@ -2888,9 +2756,9 @@
       "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_emptyresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_emptyresult"
     },
     {
       "relation": "contains",
@@ -2899,9 +2767,9 @@
       "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_insufficientresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_insufficientresult"
     },
     {
       "relation": "contains",
@@ -2910,9 +2778,9 @@
       "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_invalidphaseinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_invalidphaseinput"
     },
     {
       "relation": "contains",
@@ -2921,9 +2789,9 @@
       "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_invalidphaseresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_invalidphaseresult"
     },
     {
       "relation": "contains",
@@ -2932,9 +2800,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_normalinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_normalinput"
     },
     {
       "relation": "contains",
@@ -2943,9 +2811,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_normalresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_normalresult"
     },
     {
       "relation": "contains",
@@ -2954,9 +2822,9 @@
       "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_nullvaluesinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_nullvaluesinput"
     },
     {
       "relation": "contains",
@@ -2965,9 +2833,9 @@
       "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_nullvaluesresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_nullvaluesresult"
     },
     {
       "relation": "contains",
@@ -2976,9 +2844,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_singleentry",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_singleentry"
     },
     {
       "relation": "contains",
@@ -2987,9 +2855,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_stableinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_stableinput"
     },
     {
       "relation": "contains",
@@ -2998,9 +2866,9 @@
       "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_stableresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_stableresult"
     },
     {
       "relation": "contains",
@@ -3009,9 +2877,9 @@
       "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_strengthincreaseinput",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_strengthincreaseinput"
     },
     {
       "relation": "contains",
@@ -3020,9 +2888,9 @@
       "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_analyzeprogresstrends_test",
-      "target": "lib_analyzeprogresstrends_test_strengthincreaseresult",
-      "confidence_score": 1.0
+      "target": "lib_analyzeprogresstrends_test_strengthincreaseresult"
     },
     {
       "relation": "indirect_call",
@@ -3032,9 +2900,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_anonymizeclientdata",
-      "target": "lib_anonymizeclientdata_anonymizeclientdata",
-      "confidence_score": 0.5
+      "target": "lib_anonymizeclientdata_anonymizeclientdata"
     },
     {
       "relation": "indirect_call",
@@ -3044,9 +2912,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_applyageconstraints",
-      "target": "lib_applyageconstraints_applyageconstraints",
-      "confidence_score": 0.5
+      "target": "lib_applyageconstraints_applyageconstraints"
     },
     {
       "relation": "indirect_call",
@@ -3056,9 +2924,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_applymethodbias",
-      "target": "lib_applymethodbias_applymethodbias",
-      "confidence_score": 0.5
+      "target": "lib_applymethodbias_applymethodbias"
     },
     {
       "relation": "imports_from",
@@ -3068,9 +2936,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_bmi_test",
-      "target": "lib_bmi",
-      "confidence_score": 1.0
+      "target": "lib_bmi"
     },
     {
       "relation": "contains",
@@ -3079,9 +2947,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_bmi_test",
-      "target": "lib_bmi_test_a",
-      "confidence_score": 1.0
+      "target": "lib_bmi_test_a"
     },
     {
       "relation": "contains",
@@ -3090,9 +2958,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_bmi_test",
-      "target": "lib_bmi_test_bmi",
-      "confidence_score": 1.0
+      "target": "lib_bmi_test_bmi"
     },
     {
       "relation": "indirect_call",
@@ -3102,9 +2970,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_buildworkoutprogram",
-      "target": "lib_buildworkoutprogram_buildworkoutprogram",
-      "confidence_score": 0.5
+      "target": "lib_buildworkoutprogram_buildworkoutprogram"
     },
     {
       "relation": "indirect_call",
@@ -3114,9 +2982,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_calculatechurnrisk",
-      "target": "lib_calculatechurnrisk_calculatechurnrisk",
-      "confidence_score": 0.5
+      "target": "lib_calculatechurnrisk_calculatechurnrisk"
     },
     {
       "relation": "imports_from",
@@ -3126,9 +2994,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk"
     },
     {
       "relation": "imports",
@@ -3138,9 +3006,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_calculatechurnrisk",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_calculatechurnrisk"
     },
     {
       "relation": "contains",
@@ -3149,9 +3017,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_assert"
     },
     {
       "relation": "contains",
@@ -3160,9 +3028,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_calculatechurnrisk",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_calculatechurnrisk"
     },
     {
       "relation": "contains",
@@ -3171,9 +3039,9 @@
       "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_daysago",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_daysago"
     },
     {
       "relation": "contains",
@@ -3182,9 +3050,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history1",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history1"
     },
     {
       "relation": "contains",
@@ -3193,9 +3061,9 @@
       "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history10",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history10"
     },
     {
       "relation": "contains",
@@ -3204,9 +3072,9 @@
       "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history12",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history12"
     },
     {
       "relation": "contains",
@@ -3215,9 +3083,9 @@
       "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history4",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history4"
     },
     {
       "relation": "contains",
@@ -3226,9 +3094,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history5",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history5"
     },
     {
       "relation": "contains",
@@ -3237,9 +3105,9 @@
       "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history6",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history6"
     },
     {
       "relation": "contains",
@@ -3248,9 +3116,9 @@
       "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history7",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history7"
     },
     {
       "relation": "contains",
@@ -3259,9 +3127,9 @@
       "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history8",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history8"
     },
     {
       "relation": "contains",
@@ -3270,9 +3138,9 @@
       "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_history9",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_history9"
     },
     {
       "relation": "contains",
@@ -3281,9 +3149,9 @@
       "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_result1",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_result1"
     },
     {
       "relation": "contains",
@@ -3292,9 +3160,9 @@
       "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_result10",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_result10"
     },
     {
       "relation": "contains",
@@ -3303,9 +3171,9 @@
       "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_result11",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_result11"
     },
     {
       "relation": "contains",
@@ -3314,9 +3182,9 @@
       "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_result8",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_result8"
     },
     {
       "relation": "contains",
@@ -3325,9 +3193,9 @@
       "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_calculatechurnrisk_test",
-      "target": "lib_calculatechurnrisk_test_result9",
-      "confidence_score": 1.0
+      "target": "lib_calculatechurnrisk_test_result9"
     },
     {
       "relation": "indirect_call",
@@ -3337,9 +3205,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_calculatechurnriskscore",
-      "target": "lib_calculatechurnriskscore_calculatechurnriskscore",
-      "confidence_score": 0.5
+      "target": "lib_calculatechurnriskscore_calculatechurnriskscore"
     },
     {
       "relation": "indirect_call",
@@ -3349,9 +3217,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_calculateonboardingchurnrisk",
-      "target": "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk",
-      "confidence_score": 0.5
+      "target": "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk"
     },
     {
       "relation": "indirect_call",
@@ -3361,9 +3229,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_computechurnrisk",
-      "target": "lib_computechurnrisk_computechurnrisk",
-      "confidence_score": 0.5
+      "target": "lib_computechurnrisk_computechurnrisk"
     },
     {
       "relation": "indirect_call",
@@ -3373,9 +3241,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_computeclientchurnrisk",
-      "target": "lib_computeclientchurnrisk_computeclientchurnrisk",
-      "confidence_score": 0.5
+      "target": "lib_computeclientchurnrisk_computeclientchurnrisk"
     },
     {
       "relation": "contains",
@@ -3384,9 +3252,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_allowed_scopes",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_allowed_scopes"
     },
     {
       "relation": "contains",
@@ -3395,9 +3263,9 @@
       "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_base64urldecode",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_base64urldecode"
     },
     {
       "relation": "contains",
@@ -3406,9 +3274,9 @@
       "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_base64urlencode",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_base64urlencode"
     },
     {
       "relation": "indirect_call",
@@ -3418,9 +3286,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_createclientdatasharetoken",
-      "confidence_score": 0.5
+      "target": "lib_createclientdatasharetoken_createclientdatasharetoken"
     },
     {
       "relation": "contains",
@@ -3429,9 +3297,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_crypto",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_crypto"
     },
     {
       "relation": "contains",
@@ -3440,9 +3308,9 @@
       "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_hmacsha256base64url",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_hmacsha256base64url"
     },
     {
       "relation": "indirect_call",
@@ -3452,9 +3320,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_setserversecret",
-      "confidence_score": 0.5
+      "target": "lib_createclientdatasharetoken_setserversecret"
     },
     {
       "relation": "references",
@@ -3476,9 +3344,9 @@
       "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_base64urlencode",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_base64urlencode"
     },
     {
       "relation": "calls",
@@ -3488,9 +3356,9 @@
       "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_createclientdatasharetoken_createclientdatasharetoken",
-      "target": "lib_createclientdatasharetoken_hmacsha256base64url",
-      "confidence_score": 1.0
+      "target": "lib_createclientdatasharetoken_hmacsha256base64url"
     },
     {
       "relation": "indirect_call",
@@ -3500,9 +3368,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_createshareableworkoutcard",
-      "target": "lib_createshareableworkoutcard_createshareableworkoutcard",
-      "confidence_score": 0.5
+      "target": "lib_createshareableworkoutcard_createshareableworkoutcard"
     },
     {
       "relation": "indirect_call",
@@ -3512,9 +3380,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_detectclientchurnsignal",
-      "target": "lib_detectclientchurnsignal_detectclientchurnsignal",
-      "confidence_score": 0.5
+      "target": "lib_detectclientchurnsignal_detectclientchurnsignal"
     },
     {
       "relation": "indirect_call",
@@ -3524,9 +3392,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_detectprogressanomaly",
-      "target": "lib_detectprogressanomaly_detectprogressanomaly",
-      "confidence_score": 0.5
+      "target": "lib_detectprogressanomaly_detectprogressanomaly"
     },
     {
       "relation": "indirect_call",
@@ -3536,9 +3404,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_detectprogressplateau",
-      "target": "lib_detectprogressplateau_detectprogressplateau",
-      "confidence_score": 0.5
+      "target": "lib_detectprogressplateau_detectprogressplateau"
     },
     {
       "relation": "indirect_call",
@@ -3548,9 +3416,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_detectstagnation",
-      "target": "lib_detectstagnation_detectstagnation",
-      "confidence_score": 0.5
+      "target": "lib_detectstagnation_detectstagnation"
     },
     {
       "relation": "indirect_call",
@@ -3560,9 +3428,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_evaluatechurnreferraltrigger",
-      "target": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
-      "confidence_score": 0.5
+      "target": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger"
     },
     {
       "relation": "contains",
@@ -3571,9 +3439,9 @@
       "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_evaluatechurnreferraltrigger",
-      "target": "lib_evaluatechurnreferraltrigger_getprompthistory",
-      "confidence_score": 1.0
+      "target": "lib_evaluatechurnreferraltrigger_getprompthistory"
     },
     {
       "relation": "contains",
@@ -3582,9 +3450,9 @@
       "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_evaluatechurnreferraltrigger",
-      "target": "lib_evaluatechurnreferraltrigger_recordprompt",
-      "confidence_score": 1.0
+      "target": "lib_evaluatechurnreferraltrigger_recordprompt"
     },
     {
       "relation": "calls",
@@ -3594,9 +3462,9 @@
       "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
-      "target": "lib_evaluatechurnreferraltrigger_getprompthistory",
-      "confidence_score": 1.0
+      "target": "lib_evaluatechurnreferraltrigger_getprompthistory"
     },
     {
       "relation": "calls",
@@ -3606,9 +3474,9 @@
       "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_evaluatechurnreferraltrigger_evaluatechurnreferraltrigger",
-      "target": "lib_evaluatechurnreferraltrigger_recordprompt",
-      "confidence_score": 1.0
+      "target": "lib_evaluatechurnreferraltrigger_recordprompt"
     },
     {
       "relation": "references",
@@ -3628,9 +3496,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_filterexercises",
-      "target": "lib_filterexercises_filterexercises",
-      "confidence_score": 0.5
+      "target": "lib_filterexercises_filterexercises"
     },
     {
       "relation": "indirect_call",
@@ -3640,9 +3508,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generateadherenceheatmap",
-      "target": "lib_generateadherenceheatmap_generateadherenceheatmap",
-      "confidence_score": 0.5
+      "target": "lib_generateadherenceheatmap_generateadherenceheatmap"
     },
     {
       "relation": "indirect_call",
@@ -3652,9 +3520,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generatebaselineprogram",
-      "target": "lib_generatebaselineprogram_generatebaselineprogram",
-      "confidence_score": 0.5
+      "target": "lib_generatebaselineprogram_generatebaselineprogram"
     },
     {
       "relation": "indirect_call",
@@ -3664,9 +3532,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generatecomebackworkout",
-      "target": "lib_generatecomebackworkout_generatecomebackworkout",
-      "confidence_score": 0.5
+      "target": "lib_generatecomebackworkout_generatecomebackworkout"
     },
     {
       "relation": "indirect_call",
@@ -3676,9 +3544,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generateperiodization",
-      "target": "lib_generateperiodization_generateperiodization",
-      "confidence_score": 0.5
+      "target": "lib_generateperiodization_generateperiodization"
     },
     {
       "relation": "indirect_call",
@@ -3688,9 +3556,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generatequickstartprogram",
-      "target": "lib_generatequickstartprogram_generatequickstartprogram",
-      "confidence_score": 0.5
+      "target": "lib_generatequickstartprogram_generatequickstartprogram"
     },
     {
       "relation": "indirect_call",
@@ -3700,9 +3568,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generatereengagementmessage",
-      "target": "lib_generatereengagementmessage_generatereengagementmessage",
-      "confidence_score": 0.5
+      "target": "lib_generatereengagementmessage_generatereengagementmessage"
     },
     {
       "relation": "indirect_call",
@@ -3712,9 +3580,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generateweeklyplan",
-      "target": "lib_generateweeklyplan_generateweeklyplan",
-      "confidence_score": 0.5
+      "target": "lib_generateweeklyplan_generateweeklyplan"
     },
     {
       "relation": "references",
@@ -3733,9 +3601,9 @@
       "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram",
-      "target": "lib_generateworkoutprogram_generateid",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_generateid"
     },
     {
       "relation": "indirect_call",
@@ -3745,9 +3613,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_generateworkoutprogram",
-      "target": "lib_generateworkoutprogram_generateworkoutprogram",
-      "confidence_score": 0.5
+      "target": "lib_generateworkoutprogram_generateworkoutprogram"
     },
     {
       "relation": "imports_from",
@@ -3757,9 +3625,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram"
     },
     {
       "relation": "calls",
@@ -3791,9 +3659,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_generateworkoutprogram",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_generateworkoutprogram"
     },
     {
       "relation": "contains",
@@ -3802,9 +3670,9 @@
       "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_allinjuriesprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_allinjuriesprofile"
     },
     {
       "relation": "contains",
@@ -3813,9 +3681,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_allinjuriesresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_allinjuriesresult"
     },
     {
       "relation": "contains",
@@ -3824,9 +3692,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_assert"
     },
     {
       "relation": "contains",
@@ -3835,9 +3703,9 @@
       "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_clampprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_clampprofile"
     },
     {
       "relation": "contains",
@@ -3846,9 +3714,9 @@
       "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_clampresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_clampresult"
     },
     {
       "relation": "contains",
@@ -3857,9 +3725,9 @@
       "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_clampresult2",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_clampresult2"
     },
     {
       "relation": "contains",
@@ -3868,9 +3736,9 @@
       "source_location": "L102",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_emptygoalsprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_emptygoalsprofile"
     },
     {
       "relation": "contains",
@@ -3879,9 +3747,9 @@
       "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_emptygoalsresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_emptygoalsresult"
     },
     {
       "relation": "contains",
@@ -3890,9 +3758,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_generateworkoutprogram",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_generateworkoutprogram"
     },
     {
       "relation": "contains",
@@ -3901,9 +3769,9 @@
       "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_injuredprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_injuredprofile"
     },
     {
       "relation": "contains",
@@ -3912,9 +3780,9 @@
       "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_injuredresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_injuredresult"
     },
     {
       "relation": "contains",
@@ -3923,9 +3791,9 @@
       "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_invalidfitnessprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_invalidfitnessprofile"
     },
     {
       "relation": "contains",
@@ -3934,9 +3802,9 @@
       "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_invalidfitnessresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_invalidfitnessresult"
     },
     {
       "relation": "contains",
@@ -3945,9 +3813,9 @@
       "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_invalidgenderprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_invalidgenderprofile"
     },
     {
       "relation": "contains",
@@ -3956,9 +3824,9 @@
       "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_invalidgenderresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_invalidgenderresult"
     },
     {
       "relation": "contains",
@@ -3967,9 +3835,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_minimalprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_minimalprofile"
     },
     {
       "relation": "contains",
@@ -3978,9 +3846,9 @@
       "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_minimalresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_minimalresult"
     },
     {
       "relation": "contains",
@@ -3989,9 +3857,9 @@
       "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_newuserprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_newuserprofile"
     },
     {
       "relation": "contains",
@@ -4000,9 +3868,9 @@
       "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_newuserresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_newuserresult"
     },
     {
       "relation": "contains",
@@ -4011,9 +3879,9 @@
       "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_noequipmentprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_noequipmentprofile"
     },
     {
       "relation": "contains",
@@ -4022,9 +3890,9 @@
       "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_noequipmentresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_noequipmentresult"
     },
     {
       "relation": "contains",
@@ -4033,9 +3901,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_normalprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_normalprofile"
     },
     {
       "relation": "contains",
@@ -4044,9 +3912,9 @@
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_normalresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_normalresult"
     },
     {
       "relation": "contains",
@@ -4055,9 +3923,9 @@
       "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_oldprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_oldprofile"
     },
     {
       "relation": "contains",
@@ -4066,9 +3934,9 @@
       "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_oldresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_oldresult"
     },
     {
       "relation": "contains",
@@ -4077,9 +3945,9 @@
       "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_youngprofile",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_youngprofile"
     },
     {
       "relation": "contains",
@@ -4088,9 +3956,9 @@
       "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_generateworkoutprogram_test",
-      "target": "lib_generateworkoutprogram_test_youngresult",
-      "confidence_score": 1.0
+      "target": "lib_generateworkoutprogram_test_youngresult"
     },
     {
       "relation": "indirect_call",
@@ -4100,9 +3968,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_importclientsfromcsv",
-      "target": "lib_importclientsfromcsv_importclientsfromcsv",
-      "confidence_score": 0.5
+      "target": "lib_importclientsfromcsv_importclientsfromcsv"
     },
     {
       "relation": "indirect_call",
@@ -4112,9 +3980,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_logauditevent",
-      "target": "lib_logauditevent_logauditevent",
-      "confidence_score": 0.5
+      "target": "lib_logauditevent_logauditevent"
     },
     {
       "relation": "indirect_call",
@@ -4124,9 +3992,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_onerepmax",
-      "target": "lib_onerepmax_onerepmax",
-      "confidence_score": 0.5
+      "target": "lib_onerepmax_onerepmax"
     },
     {
       "relation": "imports_from",
@@ -4136,9 +4004,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_onerepmax_test",
-      "target": "lib_onerepmax",
-      "confidence_score": 1.0
+      "target": "lib_onerepmax"
     },
     {
       "relation": "imports",
@@ -4148,9 +4016,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_onerepmax_test",
-      "target": "lib_onerepmax_onerepmax",
-      "confidence_score": 1.0
+      "target": "lib_onerepmax_onerepmax"
     },
     {
       "relation": "contains",
@@ -4159,9 +4027,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_onerepmax_test",
-      "target": "lib_onerepmax_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_onerepmax_test_assert"
     },
     {
       "relation": "contains",
@@ -4170,9 +4038,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_onerepmax_test",
-      "target": "lib_onerepmax_test_onerepmax",
-      "confidence_score": 1.0
+      "target": "lib_onerepmax_test_onerepmax"
     },
     {
       "relation": "indirect_call",
@@ -4182,9 +4050,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_optimizeclasspricing",
-      "target": "lib_optimizeclasspricing_optimizeclasspricing",
-      "confidence_score": 0.5
+      "target": "lib_optimizeclasspricing_optimizeclasspricing"
     },
     {
       "relation": "indirect_call",
@@ -4194,9 +4062,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_optimizereferralincentive",
-      "target": "lib_optimizereferralincentive_optimizereferralincentive",
-      "confidence_score": 0.5
+      "target": "lib_optimizereferralincentive_optimizereferralincentive"
     },
     {
       "relation": "indirect_call",
@@ -4206,9 +4074,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_parseclientimportdata",
-      "target": "lib_parseclientimportdata_parseclientimportdata",
-      "confidence_score": 0.5
+      "target": "lib_parseclientimportdata_parseclientimportdata"
     },
     {
       "relation": "indirect_call",
@@ -4218,9 +4086,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_parserequest",
-      "target": "lib_parserequest_parserequest",
-      "confidence_score": 0.5
+      "target": "lib_parserequest_parserequest"
     },
     {
       "relation": "indirect_call",
@@ -4230,9 +4098,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_predictchurnrisk",
-      "target": "lib_predictchurnrisk_predictchurnrisk",
-      "confidence_score": 0.5
+      "target": "lib_predictchurnrisk_predictchurnrisk"
     },
     {
       "relation": "indirect_call",
@@ -4242,21 +4110,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_predictclientchurn",
-      "target": "lib_predictclientchurn_predictclientchurn",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/processClientOnboardingStep.js",
-      "source_location": "L49",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_processclientonboardingstep",
-      "target": "lib_processclientonboardingstep_processclientonboardingstep",
-      "confidence_score": 0.5
+      "target": "lib_predictclientchurn_predictclientchurn"
     },
     {
       "relation": "indirect_call",
@@ -4266,9 +4122,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_processreferralreward",
-      "target": "lib_processreferralreward_processreferralreward",
-      "confidence_score": 0.5
+      "target": "lib_processreferralreward_processreferralreward"
     },
     {
       "relation": "contains",
@@ -4277,9 +4133,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_processreferralreward",
-      "target": "lib_processreferralreward_referralbalances",
-      "confidence_score": 1.0
+      "target": "lib_processreferralreward_referralbalances"
     },
     {
       "relation": "contains",
@@ -4288,9 +4144,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_processreferralreward",
-      "target": "lib_processreferralreward_usedreferralcodes",
-      "confidence_score": 1.0
+      "target": "lib_processreferralreward_usedreferralcodes"
     },
     {
       "relation": "indirect_call",
@@ -4300,9 +4156,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_scheduleonboardingchecklist",
-      "target": "lib_scheduleonboardingchecklist_scheduleonboardingchecklist",
-      "confidence_score": 0.5
+      "target": "lib_scheduleonboardingchecklist_scheduleonboardingchecklist"
     },
     {
       "relation": "references",
@@ -4322,9 +4178,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_suggestnextvolume",
-      "target": "lib_suggestnextvolume_suggestnextvolume",
-      "confidence_score": 0.5
+      "target": "lib_suggestnextvolume_suggestnextvolume"
     },
     {
       "relation": "imports_from",
@@ -4334,9 +4190,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_suggestnextvolume_test",
-      "target": "lib_suggestnextvolume",
-      "confidence_score": 1.0
+      "target": "lib_suggestnextvolume"
     },
     {
       "relation": "imports",
@@ -4346,9 +4202,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_suggestnextvolume_test",
-      "target": "lib_suggestnextvolume_suggestnextvolume",
-      "confidence_score": 1.0
+      "target": "lib_suggestnextvolume_suggestnextvolume"
     },
     {
       "relation": "contains",
@@ -4357,9 +4213,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_suggestnextvolume_test",
-      "target": "lib_suggestnextvolume_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_suggestnextvolume_test_assert"
     },
     {
       "relation": "contains",
@@ -4368,21 +4224,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_suggestnextvolume_test",
-      "target": "lib_suggestnextvolume_test_suggestnextvolume",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/suggestStartingProgram.js",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_suggeststartingprogram",
-      "target": "lib_suggeststartingprogram_suggeststartingprogram",
-      "confidence_score": 0.5
+      "target": "lib_suggestnextvolume_test_suggestnextvolume"
     },
     {
       "relation": "indirect_call",
@@ -4392,9 +4236,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_suggestupsell",
-      "target": "lib_suggestupsell_suggestupsell",
-      "confidence_score": 0.5
+      "target": "lib_suggestupsell_suggestupsell"
     },
     {
       "relation": "indirect_call",
@@ -4404,9 +4248,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_verifyprogramintegrity",
-      "target": "lib_verifyprogramintegrity_verifyprogramintegrity",
-      "confidence_score": 0.5
+      "target": "lib_verifyprogramintegrity_verifyprogramintegrity"
     },
     {
       "relation": "references",
@@ -4426,9 +4270,9 @@
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
+      "confidence_score": 0.5,
       "source": "lib_workoutvolume",
-      "target": "lib_workoutvolume_workoutvolume",
-      "confidence_score": 0.5
+      "target": "lib_workoutvolume_workoutvolume"
     },
     {
       "relation": "imports_from",
@@ -4438,9 +4282,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_workoutvolume_test",
-      "target": "lib_workoutvolume",
-      "confidence_score": 1.0
+      "target": "lib_workoutvolume"
     },
     {
       "relation": "calls",
@@ -4460,9 +4304,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_workoutvolume_test",
-      "target": "lib_workoutvolume_workoutvolume",
-      "confidence_score": 1.0
+      "target": "lib_workoutvolume_workoutvolume"
     },
     {
       "relation": "contains",
@@ -4471,9 +4315,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_workoutvolume_test",
-      "target": "lib_workoutvolume_test_assert",
-      "confidence_score": 1.0
+      "target": "lib_workoutvolume_test_assert"
     },
     {
       "relation": "contains",
@@ -4482,86 +4326,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "lib_workoutvolume_test",
-      "target": "lib_workoutvolume_test_workoutvolume",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation",
-      "target": "validation_trainerhub_market_validation_auto_deepseek_2026_07_20",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation",
-      "target": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "target": "validation_1_icp_\u05de\u05d3\u05d5\u05d9\u05e7_\u05d9\u05e9\u05e8\u05d0\u05dc",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "target": "validation_2_\u05de\u05d7\u05d9\u05e8_\u05de\u05d5\u05e6\u05e2_\u05de\u05d5\u05d3\u05dc",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "target": "validation_3_\u05d6\u05d5\u05d5\u05d9\u05ea_\u05de\u05d5\u05dc_\u05d4\u05de\u05ea\u05d7\u05e8\u05d4_\u05d4\u05de\u05e8\u05db\u05d6\u05d9",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L23",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "target": "validation_4_\u05ea\u05d5\u05db\u05e0\u05d9\u05ea_100_\u05d4\u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd_\u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d9\u05dd_\u05ea\u05e7\u05e6\u05d9\u05d1_0",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "VALIDATION.md",
-      "source_location": "L32",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "validation_trainerhub_\u05d3\u05e3_\u05d0\u05d9\u05de\u05d5\u05ea_\u05e9\u05d5\u05e7",
-      "target": "validation_5_\u05e7\u05e8\u05d9\u05d8\u05e8\u05d9\u05d5\u05df_\u05de\u05e1\u05e4\u05e8\u05d9_30_\u05d9\u05d5\u05dd",
-      "confidence_score": 1.0
+      "target": "lib_workoutvolume_test_workoutvolume"
     },
     {
       "relation": "references",
@@ -4861,5 +4628,5 @@
       "source_file": "frontend/workout-mode.html"
     }
   ],
-  "built_at_commit": "03d54e4d80cf7bc583ae6aab98267cc92276eaff"
+  "built_at_commit": "ca9d48caf94e356167cd72ee690a141b7929cfbd"
 }

@@ -283,20 +283,5 @@
     "mtime": 1784217855.7492292,
     "ast_hash": "976d2194e46a34c6a0a843ccc2815292",
     "semantic_hash": "976d2194e46a34c6a0a843ccc2815292"
-  },
-  "lib/processClientOnboardingStep.js": {
-    "mtime": 1784587561.956554,
-    "ast_hash": "62f2b2a35bee635ad1b4a24636ac7794",
-    "semantic_hash": ""
-  },
-  "lib/suggestStartingProgram.js": {
-    "mtime": 1784587563.0364323,
-    "ast_hash": "8b7092fcbc272bcd2120396c0970fd76",
-    "semantic_hash": ""
-  },
-  "VALIDATION.md": {
-    "mtime": 1784581416.2257855,
-    "ast_hash": "73962d50c043ebad1d5576e6043001b4",
-    "semantic_hash": ""
   }
 }
