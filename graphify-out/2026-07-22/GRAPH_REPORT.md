@@ -1,16 +1,16 @@
-# Graph Report - TrainerHub  (2026-07-22)
+# Graph Report - TrainerHub  (2026-07-21)
 
 ## Corpus Check
-- 69 files · ~29,546 words
+- 56 files · ~24,606 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 263 nodes · 210 edges · 73 communities (63 shown, 10 thin omitted)
-- Extraction: 67% EXTRACTED · 33% INFERRED · 0% AMBIGUOUS · INFERRED: 69 edges (avg confidence: 0.55)
+- 232 nodes · 188 edges · 60 communities (50 shown, 10 thin omitted)
+- Extraction: 70% EXTRACTED · 30% INFERRED · 0% AMBIGUOUS · INFERRED: 56 edges (avg confidence: 0.56)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8369b25d`
+- Built from commit: `03d54e4d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -39,19 +39,18 @@
 - names lookup (root index)
 - TrainerHub Project
 - TrainerHub — דף אימות שוק
-- scheduleReEngagementCampaign.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `TrainerHub — דף אימות שוק` - 6 edges
-2. `scheduleReEngagementCampaign()` - 5 edges
-3. `createClientDataShareToken()` - 4 edges
-4. `generateWorkoutProgram()` - 4 edges
-5. `run function (root index)` - 4 edges
-6. `renderStep` - 4 edges
-7. `advance` - 4 edges
-8. `WorkoutRequest` - 3 edges
-9. `evaluateChurnReferralTrigger()` - 3 edges
-10. `workoutVolume()` - 3 edges
+2. `createClientDataShareToken()` - 4 edges
+3. `generateWorkoutProgram()` - 4 edges
+4. `run function (root index)` - 4 edges
+5. `renderStep` - 4 edges
+6. `advance` - 4 edges
+7. `WorkoutRequest` - 3 edges
+8. `evaluateChurnReferralTrigger()` - 3 edges
+9. `workoutVolume()` - 3 edges
+10. `index.html (root)` - 3 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `run function (root index)` --calls--> `generateWorkoutProgram()`  [EXTRACTED]
@@ -66,7 +65,7 @@
 - **Workout Program Generation Modules** — lib_generateworkoutprogram, lib_filterexercises, lib_workoutvolume [EXTRACTED 1.00]
 - **Workout Mode Flow Functions** — frontend_workout_mode_loadworkout, frontend_workout_mode_buildsteps, frontend_workout_mode_renderstep, frontend_workout_mode_renderexercise, frontend_workout_mode_renderrest, frontend_workout_mode_updateprogress, frontend_workout_mode_startcountdown, frontend_workout_mode_updateclockdisplay, frontend_workout_mode_togglepause, frontend_workout_mode_markesetdone, frontend_workout_mode_advance, frontend_workout_mode_skipcurrent [EXTRACTED 1.00]
 
-## Communities (73 total, 10 thin omitted)
+## Communities (60 total, 10 thin omitted)
 
 ### Community 0 - "generateWorkoutProgram.test.js"
 Cohesion: 0.07
@@ -124,12 +123,8 @@ Nodes (3): buildSteps, DOMContentLoaded handler, loadWorkout
 Cohesion: 0.25
 Nodes (7): 1. ICP מדויק (ישראל), 2. מחיר מוצע + מודל, 3. זווית מול המתחרה המרכזי, 4. תוכנית 100 המשתמשים הראשונים (תקציב 0), 5. קריטריון מספרי — 30 יום, TrainerHub — Market Validation (auto, DeepSeek 2026-07-20), TrainerHub — דף אימות שוק
 
-### Community 60 - "scheduleReEngagementCampaign.js"
-Cohesion: 0.48
-Nodes (6): generateUUID(), getClientData(), getPendingCampaign(), { randomUUID }, saveCampaign(), scheduleReEngagementCampaign()
-
 ## Knowledge Gaps
-- **108 isolated node(s):** `assert`, `{ analyzeProgressTrends }`, `normalInput`, `normalResult`, `singleEntry` (+103 more)
+- **107 isolated node(s):** `assert`, `{ analyzeProgressTrends }`, `normalInput`, `normalResult`, `singleEntry` (+102 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -137,9 +132,9 @@ Nodes (6): generateUUID(), getClientData(), getPendingCampaign(), { randomUUID }
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `generateWorkoutProgram()` connect `run function (root index)` to `generateWorkoutProgram.test.js`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
 - **What connects `assert`, `{ analyzeProgressTrends }`, `normalInput` to the rest of the system?**
-  _108 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _107 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `generateWorkoutProgram.test.js` be split into smaller, more focused modules?**
   _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._
 - **Should `analyzeProgressTrends.test.js` be split into smaller, more focused modules?**

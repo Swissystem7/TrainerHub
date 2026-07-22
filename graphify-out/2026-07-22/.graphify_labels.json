@@ -58,18 +58,5 @@
   "56": "TrainerHub Project",
   "57": "TrainerHub — דף אימות שוק",
   "58": "processClientOnboardingStep.js",
-  "59": "suggestStartingProgram.js",
-  "60": "scheduleReEngagementCampaign.js",
-  "61": "analyzeProgressTrend.js",
-  "62": "anonymizeClientExport.js",
-  "63": "calculateClientChurnRisk.js",
-  "64": "calculateReferralReward.js",
-  "65": "detectSessionAnomaly.js",
-  "66": "generateClientViewToken.js",
-  "67": "generateProgram.js",
-  "68": "generateProgressSummary.js",
-  "69": "generateStarterTemplate.js",
-  "70": "generateUpsellSuggestions.js",
-  "71": "logClientDataAccess.js",
-  "72": "validateWorkoutSafety.js"
+  "59": "suggestStartingProgram.js"
 }

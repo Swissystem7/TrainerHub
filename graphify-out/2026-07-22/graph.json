@@ -108,28 +108,6 @@
       "norm_label": "analyzeprogress()"
     },
     {
-      "label": "analyzeProgressTrend.js",
-      "file_type": "code",
-      "source_file": "lib/analyzeProgressTrend.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_analyzeprogresstrend",
-      "community": 61,
-      "community_name": "analyzeProgressTrend.js",
-      "norm_label": "analyzeprogresstrend.js"
-    },
-    {
-      "label": "analyzeProgressTrend()",
-      "file_type": "code",
-      "source_file": "lib/analyzeProgressTrend.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_analyzeprogresstrend_analyzeprogresstrend",
-      "community": 61,
-      "community_name": "analyzeProgressTrend.js",
-      "norm_label": "analyzeprogresstrend()"
-    },
-    {
       "label": "analyzeProgressTrends.js",
       "file_type": "code",
       "source_file": "lib/analyzeProgressTrends.js",
@@ -392,28 +370,6 @@
       "community": 18,
       "community_name": "anonymizeClientData.js",
       "norm_label": "anonymizeclientdata()"
-    },
-    {
-      "label": "anonymizeClientExport.js",
-      "file_type": "code",
-      "source_file": "lib/anonymizeClientExport.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_anonymizeclientexport",
-      "community": 62,
-      "community_name": "anonymizeClientExport.js",
-      "norm_label": "anonymizeclientexport.js"
-    },
-    {
-      "label": "anonymizeClientExport()",
-      "file_type": "code",
-      "source_file": "lib/anonymizeClientExport.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_anonymizeclientexport_anonymizeclientexport",
-      "community": 62,
-      "community_name": "anonymizeClientExport.js",
-      "norm_label": "anonymizeclientexport()"
     },
     {
       "label": "applyAgeConstraints.js",
@@ -768,28 +724,6 @@
       "norm_label": "calculatechurnriskscore()"
     },
     {
-      "label": "calculateClientChurnRisk.js",
-      "file_type": "code",
-      "source_file": "lib/calculateClientChurnRisk.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_calculateclientchurnrisk",
-      "community": 63,
-      "community_name": "calculateClientChurnRisk.js",
-      "norm_label": "calculateclientchurnrisk.js"
-    },
-    {
-      "label": "calculateClientChurnRisk()",
-      "file_type": "code",
-      "source_file": "lib/calculateClientChurnRisk.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_calculateclientchurnrisk_calculateclientchurnrisk",
-      "community": 63,
-      "community_name": "calculateClientChurnRisk.js",
-      "norm_label": "calculateclientchurnrisk()"
-    },
-    {
       "label": "calculateOnboardingChurnRisk.js",
       "file_type": "code",
       "source_file": "lib/calculateOnboardingChurnRisk.js",
@@ -810,28 +744,6 @@
       "community": 23,
       "community_name": "calculateOnboardingChurnRisk.js",
       "norm_label": "calculateonboardingchurnrisk()"
-    },
-    {
-      "label": "calculateReferralReward.js",
-      "file_type": "code",
-      "source_file": "lib/calculateReferralReward.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_calculatereferralreward",
-      "community": 64,
-      "community_name": "calculateReferralReward.js",
-      "norm_label": "calculatereferralreward.js"
-    },
-    {
-      "label": "calculateReferralReward()",
-      "file_type": "code",
-      "source_file": "lib/calculateReferralReward.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_calculatereferralreward_calculatereferralreward",
-      "community": 64,
-      "community_name": "calculateReferralReward.js",
-      "norm_label": "calculatereferralreward()"
     },
     {
       "label": "computeChurnRisk.js",
@@ -1054,28 +966,6 @@
       "norm_label": "detectprogressplateau()"
     },
     {
-      "label": "detectSessionAnomaly.js",
-      "file_type": "code",
-      "source_file": "lib/detectSessionAnomaly.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectsessionanomaly",
-      "community": 65,
-      "community_name": "detectSessionAnomaly.js",
-      "norm_label": "detectsessionanomaly.js"
-    },
-    {
-      "label": "detectSessionAnomaly()",
-      "file_type": "code",
-      "source_file": "lib/detectSessionAnomaly.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectsessionanomaly_detectsessionanomaly",
-      "community": 65,
-      "community_name": "detectSessionAnomaly.js",
-      "norm_label": "detectsessionanomaly()"
-    },
-    {
       "label": "detectStagnation.js",
       "file_type": "code",
       "source_file": "lib/detectStagnation.js",
@@ -1208,28 +1098,6 @@
       "norm_label": "generatebaselineprogram()"
     },
     {
-      "label": "generateClientViewToken.js",
-      "file_type": "code",
-      "source_file": "lib/generateClientViewToken.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateclientviewtoken",
-      "community": 66,
-      "community_name": "generateClientViewToken.js",
-      "norm_label": "generateclientviewtoken.js"
-    },
-    {
-      "label": "generateClientViewToken()",
-      "file_type": "code",
-      "source_file": "lib/generateClientViewToken.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateclientviewtoken_generateclientviewtoken",
-      "community": 66,
-      "community_name": "generateClientViewToken.js",
-      "norm_label": "generateclientviewtoken()"
-    },
-    {
       "label": "generateComebackWorkout.js",
       "file_type": "code",
       "source_file": "lib/generateComebackWorkout.js",
@@ -1274,50 +1142,6 @@
       "norm_label": "generateperiodization()"
     },
     {
-      "label": "generateProgram.js",
-      "file_type": "code",
-      "source_file": "lib/generateProgram.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogram",
-      "community": 67,
-      "community_name": "generateProgram.js",
-      "norm_label": "generateprogram.js"
-    },
-    {
-      "label": "generateProgram()",
-      "file_type": "code",
-      "source_file": "lib/generateProgram.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogram_generateprogram",
-      "community": 67,
-      "community_name": "generateProgram.js",
-      "norm_label": "generateprogram()"
-    },
-    {
-      "label": "generateProgressSummary.js",
-      "file_type": "code",
-      "source_file": "lib/generateProgressSummary.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogresssummary",
-      "community": 68,
-      "community_name": "generateProgressSummary.js",
-      "norm_label": "generateprogresssummary.js"
-    },
-    {
-      "label": "generateProgressSummary()",
-      "file_type": "code",
-      "source_file": "lib/generateProgressSummary.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogresssummary_generateprogresssummary",
-      "community": 68,
-      "community_name": "generateProgressSummary.js",
-      "norm_label": "generateprogresssummary()"
-    },
-    {
       "label": "generateQuickStartProgram.js",
       "file_type": "code",
       "source_file": "lib/generateQuickStartProgram.js",
@@ -1360,50 +1184,6 @@
       "community": 36,
       "community_name": "generateReEngagementMessage.js",
       "norm_label": "generatereengagementmessage()"
-    },
-    {
-      "label": "generateStarterTemplate.js",
-      "file_type": "code",
-      "source_file": "lib/generateStarterTemplate.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generatestartertemplate",
-      "community": 69,
-      "community_name": "generateStarterTemplate.js",
-      "norm_label": "generatestartertemplate.js"
-    },
-    {
-      "label": "generateStarterTemplate()",
-      "file_type": "code",
-      "source_file": "lib/generateStarterTemplate.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generatestartertemplate_generatestartertemplate",
-      "community": 69,
-      "community_name": "generateStarterTemplate.js",
-      "norm_label": "generatestartertemplate()"
-    },
-    {
-      "label": "generateUpsellSuggestions.js",
-      "file_type": "code",
-      "source_file": "lib/generateUpsellSuggestions.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateupsellsuggestions",
-      "community": 70,
-      "community_name": "generateUpsellSuggestions.js",
-      "norm_label": "generateupsellsuggestions.js"
-    },
-    {
-      "label": "generateUpsellSuggestions()",
-      "file_type": "code",
-      "source_file": "lib/generateUpsellSuggestions.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateupsellsuggestions_generateupsellsuggestions",
-      "community": 70,
-      "community_name": "generateUpsellSuggestions.js",
-      "norm_label": "generateupsellsuggestions()"
     },
     {
       "label": "generateWeeklyPlan.js",
@@ -1813,28 +1593,6 @@
       "norm_label": "logauditevent()"
     },
     {
-      "label": "logClientDataAccess.js",
-      "file_type": "code",
-      "source_file": "lib/logClientDataAccess.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_logclientdataaccess",
-      "community": 71,
-      "community_name": "logClientDataAccess.js",
-      "norm_label": "logclientdataaccess.js"
-    },
-    {
-      "label": "logClientDataAccess()",
-      "file_type": "code",
-      "source_file": "lib/logClientDataAccess.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_logclientdataaccess_logclientdataaccess",
-      "community": 71,
-      "community_name": "logClientDataAccess.js",
-      "norm_label": "logclientdataaccess()"
-    },
-    {
       "label": "oneRepMax.js",
       "file_type": "code",
       "source_file": "lib/oneRepMax.js",
@@ -2110,83 +1868,6 @@
       "norm_label": "scheduleonboardingchecklist()"
     },
     {
-      "label": "scheduleReEngagementCampaign.js",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "schedulereengagementcampaign.js"
-    },
-    {
-      "label": "{ randomUUID }",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_randomuuid",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "{ randomuuid }"
-    },
-    {
-      "label": "scheduleReEngagementCampaign()",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "schedulereengagementcampaign()"
-    },
-    {
-      "label": "getClientData()",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L67",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_getclientdata",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "getclientdata()"
-    },
-    {
-      "label": "getPendingCampaign()",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L71",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_getpendingcampaign",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "getpendingcampaign()"
-    },
-    {
-      "label": "saveCampaign()",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L76",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_savecampaign",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "savecampaign()"
-    },
-    {
-      "label": "generateUUID()",
-      "file_type": "code",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L81",
-      "_origin": "ast",
-      "id": "lib_schedulereengagementcampaign_generateuuid",
-      "community": 60,
-      "community_name": "scheduleReEngagementCampaign.js",
-      "norm_label": "generateuuid()"
-    },
-    {
       "label": "suggestNextVolume.js",
       "file_type": "code",
       "source_file": "lib/suggestNextVolume.js",
@@ -2284,28 +1965,6 @@
       "community": 47,
       "community_name": "suggestUpsell.js",
       "norm_label": "suggestupsell()"
-    },
-    {
-      "label": "validateWorkoutSafety.js",
-      "file_type": "code",
-      "source_file": "lib/validateWorkoutSafety.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_validateworkoutsafety",
-      "community": 72,
-      "community_name": "validateWorkoutSafety.js",
-      "norm_label": "validateworkoutsafety.js"
-    },
-    {
-      "label": "validateWorkoutSafety()",
-      "file_type": "code",
-      "source_file": "lib/validateWorkoutSafety.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_validateworkoutsafety_validateworkoutsafety",
-      "community": 72,
-      "community_name": "validateWorkoutSafety.js",
-      "norm_label": "validateworkoutsafety()"
     },
     {
       "label": "verifyProgramIntegrity.js",
@@ -3123,18 +2782,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/analyzeProgressTrend.js",
-      "source_location": "L37",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_analyzeprogresstrend",
-      "target": "lib_analyzeprogresstrend_analyzeprogresstrend",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/analyzeProgressTrends.js",
       "source_location": "L198",
       "weight": 1.0,
@@ -3387,18 +3034,6 @@
       "context": "collection",
       "source": "lib_anonymizeclientdata",
       "target": "lib_anonymizeclientdata_anonymizeclientdata",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/anonymizeClientExport.js",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_anonymizeclientexport",
-      "target": "lib_anonymizeclientexport_anonymizeclientexport",
       "confidence_score": 0.5
     },
     {
@@ -3709,18 +3344,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/calculateClientChurnRisk.js",
-      "source_location": "L122",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_calculateclientchurnrisk",
-      "target": "lib_calculateclientchurnrisk_calculateclientchurnrisk",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/calculateOnboardingChurnRisk.js",
       "source_location": "L79",
       "weight": 1.0,
@@ -3728,18 +3351,6 @@
       "context": "collection",
       "source": "lib_calculateonboardingchurnrisk",
       "target": "lib_calculateonboardingchurnrisk_calculateonboardingchurnrisk",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/calculateReferralReward.js",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_calculatereferralreward",
-      "target": "lib_calculatereferralreward_calculatereferralreward",
       "confidence_score": 0.5
     },
     {
@@ -3932,18 +3543,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/detectSessionAnomaly.js",
-      "source_location": "L60",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_detectsessionanomaly",
-      "target": "lib_detectsessionanomaly_detectsessionanomaly",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/detectStagnation.js",
       "source_location": "L43",
       "weight": 1.0,
@@ -4060,18 +3659,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/generateClientViewToken.js",
-      "source_location": "L27",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateclientviewtoken",
-      "target": "lib_generateclientviewtoken_generateclientviewtoken",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/generateComebackWorkout.js",
       "source_location": "L65",
       "weight": 1.0,
@@ -4096,30 +3683,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/generateProgram.js",
-      "source_location": "L92",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateprogram",
-      "target": "lib_generateprogram_generateprogram",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateProgressSummary.js",
-      "source_location": "L138",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateprogresssummary",
-      "target": "lib_generateprogresssummary_generateprogresssummary",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/generateQuickStartProgram.js",
       "source_location": "L300",
       "weight": 1.0,
@@ -4139,30 +3702,6 @@
       "context": "collection",
       "source": "lib_generatereengagementmessage",
       "target": "lib_generatereengagementmessage_generatereengagementmessage",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateStarterTemplate.js",
-      "source_location": "L175",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generatestartertemplate",
-      "target": "lib_generatestartertemplate_generatestartertemplate",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateUpsellSuggestions.js",
-      "source_location": "L55",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateupsellsuggestions",
-      "target": "lib_generateupsellsuggestions_generateupsellsuggestions",
       "confidence_score": 0.5
     },
     {
@@ -4580,18 +4119,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/logClientDataAccess.js",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_logclientdataaccess",
-      "target": "lib_logclientdataaccess_logclientdataaccess",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/oneRepMax.js",
       "source_location": "L10",
       "weight": 1.0,
@@ -4778,121 +4305,6 @@
       "confidence_score": 0.5
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L81",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_generateuuid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L67",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_getclientdata",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L71",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_getpendingcampaign",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_randomuuid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L76",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_savecampaign",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L84",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L63",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_generateuuid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L36",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_getclientdata",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L43",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_getpendingcampaign",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/scheduleReEngagementCampaign.js",
-      "source_location": "L64",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_schedulereengagementcampaign_schedulereengagementcampaign",
-      "target": "lib_schedulereengagementcampaign_savecampaign",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "references",
       "confidence": "INFERRED",
       "confidence_score": 0.9,
@@ -4982,18 +4394,6 @@
       "context": "collection",
       "source": "lib_suggestupsell",
       "target": "lib_suggestupsell_suggestupsell",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/validateWorkoutSafety.js",
-      "source_location": "L77",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_validateworkoutsafety",
-      "target": "lib_validateworkoutsafety_validateworkoutsafety",
       "confidence_score": 0.5
     },
     {
@@ -5461,5 +4861,5 @@
       "source_file": "frontend/workout-mode.html"
     }
   ],
-  "built_at_commit": "8369b25d509f2fd1c2fc33935285187923a18c66"
+  "built_at_commit": "03d54e4d80cf7bc583ae6aab98267cc92276eaff"
 }
