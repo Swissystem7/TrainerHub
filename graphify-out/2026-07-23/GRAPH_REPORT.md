@@ -1,16 +1,16 @@
-# Graph Report - TrainerHub  (2026-07-23)
+# Graph Report - TrainerHub  (2026-07-22)
 
 ## Corpus Check
-- 74 files · ~31,702 words
+- 69 files · ~29,546 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 276 nodes · 220 edges · 77 communities (67 shown, 10 thin omitted)
-- Extraction: 67% EXTRACTED · 33% INFERRED · 0% AMBIGUOUS · INFERRED: 73 edges (avg confidence: 0.55)
+- 263 nodes · 210 edges · 73 communities (63 shown, 10 thin omitted)
+- Extraction: 67% EXTRACTED · 33% INFERRED · 0% AMBIGUOUS · INFERRED: 69 edges (avg confidence: 0.55)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `52aaa792`
+- Built from commit: `8369b25d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -40,7 +40,6 @@
 - TrainerHub Project
 - TrainerHub — דף אימות שוק
 - scheduleReEngagementCampaign.js
-- getReEngagementStrategy.test.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `TrainerHub — דף אימות שוק` - 6 edges
@@ -67,7 +66,7 @@
 - **Workout Program Generation Modules** — lib_generateworkoutprogram, lib_filterexercises, lib_workoutvolume [EXTRACTED 1.00]
 - **Workout Mode Flow Functions** — frontend_workout_mode_loadworkout, frontend_workout_mode_buildsteps, frontend_workout_mode_renderstep, frontend_workout_mode_renderexercise, frontend_workout_mode_renderrest, frontend_workout_mode_updateprogress, frontend_workout_mode_startcountdown, frontend_workout_mode_updateclockdisplay, frontend_workout_mode_togglepause, frontend_workout_mode_markesetdone, frontend_workout_mode_advance, frontend_workout_mode_skipcurrent [EXTRACTED 1.00]
 
-## Communities (77 total, 10 thin omitted)
+## Communities (73 total, 10 thin omitted)
 
 ### Community 0 - "generateWorkoutProgram.test.js"
 Cohesion: 0.07
@@ -129,12 +128,8 @@ Nodes (7): 1. ICP מדויק (ישראל), 2. מחיר מוצע + מודל, 3. �
 Cohesion: 0.48
 Nodes (6): generateUUID(), getClientData(), getPendingCampaign(), { randomUUID }, saveCampaign(), scheduleReEngagementCampaign()
 
-### Community 73 - "getReEngagementStrategy.test.js"
-Cohesion: 0.33
-Nodes (5): getReEngagementStrategy(), activeProfile, assert, { getReEngagementStrategy }, test
-
 ## Knowledge Gaps
-- **112 isolated node(s):** `assert`, `{ analyzeProgressTrends }`, `normalInput`, `normalResult`, `singleEntry` (+107 more)
+- **108 isolated node(s):** `assert`, `{ analyzeProgressTrends }`, `normalInput`, `normalResult`, `singleEntry` (+103 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -144,7 +139,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `generateWorkoutProgram()` connect `run function (root index)` to `generateWorkoutProgram.test.js`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `assert`, `{ analyzeProgressTrends }`, `normalInput` to the rest of the system?**
-  _112 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _108 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `generateWorkoutProgram.test.js` be split into smaller, more focused modules?**
   _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._
 - **Should `analyzeProgressTrends.test.js` be split into smaller, more focused modules?**

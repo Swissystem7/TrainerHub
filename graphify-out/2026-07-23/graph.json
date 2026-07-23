@@ -878,28 +878,6 @@
       "norm_label": "computeclientchurnrisk()"
     },
     {
-      "label": "computeReferralReward.js",
-      "file_type": "code",
-      "source_file": "lib/computeReferralReward.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_computereferralreward",
-      "community": 74,
-      "community_name": "computeReferralReward.js",
-      "norm_label": "computereferralreward.js"
-    },
-    {
-      "label": "computeReferralReward()",
-      "file_type": "code",
-      "source_file": "lib/computeReferralReward.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_computereferralreward_computereferralreward",
-      "community": 74,
-      "community_name": "computeReferralReward.js",
-      "norm_label": "computereferralreward()"
-    },
-    {
       "label": "createClientDataShareToken.js",
       "file_type": "code",
       "source_file": "lib/createClientDataShareToken.js",
@@ -1272,28 +1250,6 @@
       "community": 33,
       "community_name": "generateComebackWorkout.js",
       "norm_label": "generatecomebackworkout()"
-    },
-    {
-      "label": "generateInitialWorkoutPlan.js",
-      "file_type": "code",
-      "source_file": "lib/generateInitialWorkoutPlan.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateinitialworkoutplan",
-      "community": 75,
-      "community_name": "generateInitialWorkoutPlan.js",
-      "norm_label": "generateinitialworkoutplan.js"
-    },
-    {
-      "label": "generateInitialWorkoutPlan()",
-      "file_type": "code",
-      "source_file": "lib/generateInitialWorkoutPlan.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateinitialworkoutplan_generateinitialworkoutplan",
-      "community": 75,
-      "community_name": "generateInitialWorkoutPlan.js",
-      "norm_label": "generateinitialworkoutplan()"
     },
     {
       "label": "generatePeriodization.js",
@@ -1813,83 +1769,6 @@
       "norm_label": "newuserresult"
     },
     {
-      "label": "getReEngagementStrategy.js",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "getreengagementstrategy.js"
-    },
-    {
-      "label": "getReEngagementStrategy()",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_getreengagementstrategy",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "getreengagementstrategy()"
-    },
-    {
-      "label": "getReEngagementStrategy.test.js",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_test",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "getreengagementstrategy.test.js"
-    },
-    {
-      "label": "test",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_test_test",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "test"
-    },
-    {
-      "label": "assert",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_test_assert",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "assert"
-    },
-    {
-      "label": "{ getReEngagementStrategy }",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_test_getreengagementstrategy",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "{ getreengagementstrategy }"
-    },
-    {
-      "label": "activeProfile",
-      "file_type": "code",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "lib_getreengagementstrategy_test_activeprofile",
-      "community": 73,
-      "community_name": "getReEngagementStrategy.test.js",
-      "norm_label": "activeprofile"
-    },
-    {
       "label": "importClientsFromCSV.js",
       "file_type": "code",
       "source_file": "lib/importClientsFromCSV.js",
@@ -2031,28 +1910,6 @@
       "community": 40,
       "community_name": "optimizeClassPricing.js",
       "norm_label": "optimizeclasspricing()"
-    },
-    {
-      "label": "optimizePackagePrice.js",
-      "file_type": "code",
-      "source_file": "lib/optimizePackagePrice.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_optimizepackageprice",
-      "community": 76,
-      "community_name": "optimizePackagePrice.js",
-      "norm_label": "optimizepackageprice.js"
-    },
-    {
-      "label": "optimizePackagePrice()",
-      "file_type": "code",
-      "source_file": "lib/optimizePackagePrice.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_optimizepackageprice_optimizepackageprice",
-      "community": 76,
-      "community_name": "optimizePackagePrice.js",
-      "norm_label": "optimizepackageprice()"
     },
     {
       "label": "optimizeReferralIncentive.js",
@@ -3910,18 +3767,6 @@
       "confidence_score": 0.5
     },
     {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/computeReferralReward.js",
-      "source_location": "L43",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_computereferralreward",
-      "target": "lib_computereferralreward_computereferralreward",
-      "confidence_score": 0.5
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "lib/createClientDataShareToken.js",
@@ -4234,18 +4079,6 @@
       "context": "collection",
       "source": "lib_generatecomebackworkout",
       "target": "lib_generatecomebackworkout_generatecomebackworkout",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateInitialWorkoutPlan.js",
-      "source_location": "L182",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateinitialworkoutplan",
-      "target": "lib_generateinitialworkoutplan_generateinitialworkoutplan",
       "confidence_score": 0.5
     },
     {
@@ -4723,86 +4556,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/getReEngagementStrategy.js",
-      "source_location": "L50",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_getreengagementstrategy",
-      "target": "lib_getreengagementstrategy_getreengagementstrategy",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy_getreengagementstrategy",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy_test_activeprofile",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy_test_assert",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy_test_getreengagementstrategy",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/getReEngagementStrategy.test.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_getreengagementstrategy_test",
-      "target": "lib_getreengagementstrategy_test_test",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/importClientsFromCSV.js",
       "source_location": "L67",
       "weight": 1.0,
@@ -4904,18 +4657,6 @@
       "context": "collection",
       "source": "lib_optimizeclasspricing",
       "target": "lib_optimizeclasspricing_optimizeclasspricing",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/optimizePackagePrice.js",
-      "source_location": "L47",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_optimizepackageprice",
-      "target": "lib_optimizepackageprice_optimizepackageprice",
       "confidence_score": 0.5
     },
     {
@@ -5720,5 +5461,5 @@
       "source_file": "frontend/workout-mode.html"
     }
   ],
-  "built_at_commit": "52aaa7920082c3519d86a2933929a29fd9545ee5"
+  "built_at_commit": "8369b25d509f2fd1c2fc33935285187923a18c66"
 }

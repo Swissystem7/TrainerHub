@@ -71,9 +71,5 @@
   "69": "generateStarterTemplate.js",
   "70": "generateUpsellSuggestions.js",
   "71": "logClientDataAccess.js",
-  "72": "validateWorkoutSafety.js",
-  "73": "getReEngagementStrategy.test.js",
-  "74": "computeReferralReward.js",
-  "75": "generateInitialWorkoutPlan.js",
-  "76": "optimizePackagePrice.js"
+  "72": "validateWorkoutSafety.js"
 }

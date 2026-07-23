@@ -363,30 +363,5 @@
     "mtime": 1784637971.0244677,
     "ast_hash": "cc96c35ebad65ad5bde260dce821d7cc",
     "semantic_hash": ""
-  },
-  "lib/computeReferralReward.js": {
-    "mtime": 1784731574.7148807,
-    "ast_hash": "130f6aca53de40937869b807e236b8c6",
-    "semantic_hash": ""
-  },
-  "lib/generateInitialWorkoutPlan.js": {
-    "mtime": 1784760369.1648886,
-    "ast_hash": "618e9038c72b80a1c9d97391f63c2517",
-    "semantic_hash": ""
-  },
-  "lib/getReEngagementStrategy.js": {
-    "mtime": 1784738771.4163167,
-    "ast_hash": "cc56d9b3a478b0cc98aca87f81b77a14",
-    "semantic_hash": ""
-  },
-  "lib/getReEngagementStrategy.test.js": {
-    "mtime": 1784746926.2076147,
-    "ast_hash": "03a7345e19fecd899497a77dc2ba6702",
-    "semantic_hash": ""
-  },
-  "lib/optimizePackagePrice.js": {
-    "mtime": 1784731573.8072002,
-    "ast_hash": "6fa8e10093131cd96a820b2fc917bb56",
-    "semantic_hash": ""
   }
 }
