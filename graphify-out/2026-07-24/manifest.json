@@ -388,45 +388,5 @@
     "mtime": 1784731573.8072002,
     "ast_hash": "6fa8e10093131cd96a820b2fc917bb56",
     "semantic_hash": ""
-  },
-  "lib/checkDataShareConsent.js": {
-    "mtime": 1784817977.360011,
-    "ast_hash": "e963c32ae40df5ae8db94a5c63e1e372",
-    "semantic_hash": ""
-  },
-  "lib/checkProgressAnomaly.js": {
-    "mtime": 1784774775.553589,
-    "ast_hash": "fcb643d507bef20b488f3cd85e9d1c8b",
-    "semantic_hash": ""
-  },
-  "lib/detectAnomalousProgressEntry.js": {
-    "mtime": 1784817976.6901107,
-    "ast_hash": "b725c2604c588381e44580f9c058c0c3",
-    "semantic_hash": ""
-  },
-  "lib/detectInactiveClients.js": {
-    "mtime": 1784789168.613052,
-    "ast_hash": "c7a1850d20e40a3157f1ac72d3d8c3c2",
-    "semantic_hash": ""
-  },
-  "lib/generateClientInviteLink.js": {
-    "mtime": 1784789169.181497,
-    "ast_hash": "c098c300a9c03f767d8bee477f559e83",
-    "semantic_hash": ""
-  },
-  "lib/generateProgramFromTemplate.js": {
-    "mtime": 1784789167.8585765,
-    "ast_hash": "74eb3428dcb1ce9227d826e4087fc00e",
-    "semantic_hash": ""
-  },
-  "lib/logProgramChange.js": {
-    "mtime": 1784774776.6149123,
-    "ast_hash": "47534408de3d0a271673de21b480c63c",
-    "semantic_hash": ""
-  },
-  "lib/verifyWorkoutUpdateIntegrity.js": {
-    "mtime": 1784817975.5359168,
-    "ast_hash": "e588e9d8a039dc1d0e0f7e02fbdb813c",
-    "semantic_hash": ""
   }
 }

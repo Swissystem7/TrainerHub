@@ -75,13 +75,5 @@
   "73": "getReEngagementStrategy.test.js",
   "74": "computeReferralReward.js",
   "75": "generateInitialWorkoutPlan.js",
-  "76": "optimizePackagePrice.js",
-  "77": "generateClientInviteLink.js",
-  "78": "logProgramChange.js",
-  "79": "checkDataShareConsent.js",
-  "80": "checkProgressAnomaly.js",
-  "81": "detectAnomalousProgressEntry.js",
-  "82": "detectInactiveClients.js",
-  "83": "generateProgramFromTemplate.js",
-  "84": "verifyWorkoutUpdateIntegrity.js"
+  "76": "optimizePackagePrice.js"
 }

@@ -834,50 +834,6 @@
       "norm_label": "calculatereferralreward()"
     },
     {
-      "label": "checkDataShareConsent.js",
-      "file_type": "code",
-      "source_file": "lib/checkDataShareConsent.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_checkdatashareconsent",
-      "community": 79,
-      "community_name": "checkDataShareConsent.js",
-      "norm_label": "checkdatashareconsent.js"
-    },
-    {
-      "label": "checkDataShareConsent()",
-      "file_type": "code",
-      "source_file": "lib/checkDataShareConsent.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_checkdatashareconsent_checkdatashareconsent",
-      "community": 79,
-      "community_name": "checkDataShareConsent.js",
-      "norm_label": "checkdatashareconsent()"
-    },
-    {
-      "label": "checkProgressAnomaly.js",
-      "file_type": "code",
-      "source_file": "lib/checkProgressAnomaly.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_checkprogressanomaly",
-      "community": 80,
-      "community_name": "checkProgressAnomaly.js",
-      "norm_label": "checkprogressanomaly.js"
-    },
-    {
-      "label": "checkProgressAnomaly()",
-      "file_type": "code",
-      "source_file": "lib/checkProgressAnomaly.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_checkprogressanomaly_checkprogressanomaly",
-      "community": 80,
-      "community_name": "checkProgressAnomaly.js",
-      "norm_label": "checkprogressanomaly()"
-    },
-    {
       "label": "computeChurnRisk.js",
       "file_type": "code",
       "source_file": "lib/computeChurnRisk.js",
@@ -1054,28 +1010,6 @@
       "norm_label": "createshareableworkoutcard()"
     },
     {
-      "label": "detectAnomalousProgressEntry.js",
-      "file_type": "code",
-      "source_file": "lib/detectAnomalousProgressEntry.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectanomalousprogressentry",
-      "community": 81,
-      "community_name": "detectAnomalousProgressEntry.js",
-      "norm_label": "detectanomalousprogressentry.js"
-    },
-    {
-      "label": "detectAnomalousProgressEntry()",
-      "file_type": "code",
-      "source_file": "lib/detectAnomalousProgressEntry.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectanomalousprogressentry_detectanomalousprogressentry",
-      "community": 81,
-      "community_name": "detectAnomalousProgressEntry.js",
-      "norm_label": "detectanomalousprogressentry()"
-    },
-    {
       "label": "detectClientChurnSignal.js",
       "file_type": "code",
       "source_file": "lib/detectClientChurnSignal.js",
@@ -1096,28 +1030,6 @@
       "community": 27,
       "community_name": "detectClientChurnSignal.js",
       "norm_label": "detectclientchurnsignal()"
-    },
-    {
-      "label": "detectInactiveClients.js",
-      "file_type": "code",
-      "source_file": "lib/detectInactiveClients.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectinactiveclients",
-      "community": 82,
-      "community_name": "detectInactiveClients.js",
-      "norm_label": "detectinactiveclients.js"
-    },
-    {
-      "label": "detectInactiveClients()",
-      "file_type": "code",
-      "source_file": "lib/detectInactiveClients.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_detectinactiveclients_detectinactiveclients",
-      "community": 82,
-      "community_name": "detectInactiveClients.js",
-      "norm_label": "detectinactiveclients()"
     },
     {
       "label": "detectProgressAnomaly.js",
@@ -1318,83 +1230,6 @@
       "norm_label": "generatebaselineprogram()"
     },
     {
-      "label": "generateClientInviteLink.js",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "generateclientinvitelink.js"
-    },
-    {
-      "label": "{ randomUUID }",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_randomuuid",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "{ randomuuid }"
-    },
-    {
-      "label": "trainers",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_trainers",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "trainers"
-    },
-    {
-      "label": "programs",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L7",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_programs",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "programs"
-    },
-    {
-      "label": "invites",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_invites",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "invites"
-    },
-    {
-      "label": "generateClientInviteLink()",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L14",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_generateclientinvitelink",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "generateclientinvitelink()"
-    },
-    {
-      "label": "validateClientInviteLink()",
-      "file_type": "code",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "lib_generateclientinvitelink_validateclientinvitelink",
-      "community": 77,
-      "community_name": "generateClientInviteLink.js",
-      "norm_label": "validateclientinvitelink()"
-    },
-    {
       "label": "generateClientViewToken.js",
       "file_type": "code",
       "source_file": "lib/generateClientViewToken.js",
@@ -1503,28 +1338,6 @@
       "community": 67,
       "community_name": "generateProgram.js",
       "norm_label": "generateprogram()"
-    },
-    {
-      "label": "generateProgramFromTemplate.js",
-      "file_type": "code",
-      "source_file": "lib/generateProgramFromTemplate.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogramfromtemplate",
-      "community": 83,
-      "community_name": "generateProgramFromTemplate.js",
-      "norm_label": "generateprogramfromtemplate.js"
-    },
-    {
-      "label": "generateProgramFromTemplate()",
-      "file_type": "code",
-      "source_file": "lib/generateProgramFromTemplate.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_generateprogramfromtemplate_generateprogramfromtemplate",
-      "community": 83,
-      "community_name": "generateProgramFromTemplate.js",
-      "norm_label": "generateprogramfromtemplate()"
     },
     {
       "label": "generateProgressSummary.js",
@@ -2143,39 +1956,6 @@
       "norm_label": "logclientdataaccess()"
     },
     {
-      "label": "logProgramChange.js",
-      "file_type": "code",
-      "source_file": "lib/logProgramChange.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_logprogramchange",
-      "community": 78,
-      "community_name": "logProgramChange.js",
-      "norm_label": "logprogramchange.js"
-    },
-    {
-      "label": "crypto",
-      "file_type": "code",
-      "source_file": "lib/logProgramChange.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_logprogramchange_crypto",
-      "community": 78,
-      "community_name": "logProgramChange.js",
-      "norm_label": "crypto"
-    },
-    {
-      "label": "logProgramChange()",
-      "file_type": "code",
-      "source_file": "lib/logProgramChange.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "lib_logprogramchange_logprogramchange",
-      "community": 78,
-      "community_name": "logProgramChange.js",
-      "norm_label": "logprogramchange()"
-    },
-    {
       "label": "oneRepMax.js",
       "file_type": "code",
       "source_file": "lib/oneRepMax.js",
@@ -2691,28 +2471,6 @@
       "community": 48,
       "community_name": "verifyProgramIntegrity.js",
       "norm_label": "verifyprogramintegrity()"
-    },
-    {
-      "label": "verifyWorkoutUpdateIntegrity.js",
-      "file_type": "code",
-      "source_file": "lib/verifyWorkoutUpdateIntegrity.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_verifyworkoutupdateintegrity",
-      "community": 84,
-      "community_name": "verifyWorkoutUpdateIntegrity.js",
-      "norm_label": "verifyworkoutupdateintegrity.js"
-    },
-    {
-      "label": "verifyWorkoutUpdateIntegrity()",
-      "file_type": "code",
-      "source_file": "lib/verifyWorkoutUpdateIntegrity.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "lib_verifyworkoutupdateintegrity_verifyworkoutupdateintegrity",
-      "community": 84,
-      "community_name": "verifyWorkoutUpdateIntegrity.js",
-      "norm_label": "verifyworkoutupdateintegrity()"
     },
     {
       "label": "workoutVolume.js",
@@ -4130,30 +3888,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/checkDataShareConsent.js",
-      "source_location": "L27",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_checkdatashareconsent",
-      "target": "lib_checkdatashareconsent_checkdatashareconsent",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/checkProgressAnomaly.js",
-      "source_location": "L93",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_checkprogressanomaly",
-      "target": "lib_checkprogressanomaly_checkprogressanomaly",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/computeChurnRisk.js",
       "source_location": "L55",
       "weight": 1.0,
@@ -4317,18 +4051,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/detectAnomalousProgressEntry.js",
-      "source_location": "L77",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_detectanomalousprogressentry",
-      "target": "lib_detectanomalousprogressentry_detectanomalousprogressentry",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/detectClientChurnSignal.js",
       "source_location": "L50",
       "weight": 1.0,
@@ -4336,18 +4058,6 @@
       "context": "collection",
       "source": "lib_detectclientchurnsignal",
       "target": "lib_detectclientchurnsignal_detectclientchurnsignal",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/detectInactiveClients.js",
-      "source_location": "L79",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_detectinactiveclients",
-      "target": "lib_detectinactiveclients_detectinactiveclients",
       "confidence_score": 0.5
     },
     {
@@ -4505,74 +4215,6 @@
     {
       "relation": "indirect_call",
       "confidence": "INFERRED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L65",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_generateclientinvitelink",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_invites",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_programs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_randomuuid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_trainers",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateClientInviteLink.js",
-      "source_location": "L65",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateclientinvitelink",
-      "target": "lib_generateclientinvitelink_validateclientinvitelink",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
       "source_file": "lib/generateClientViewToken.js",
       "source_location": "L27",
       "weight": 1.0,
@@ -4628,18 +4270,6 @@
       "context": "collection",
       "source": "lib_generateprogram",
       "target": "lib_generateprogram_generateprogram",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/generateProgramFromTemplate.js",
-      "source_location": "L91",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_generateprogramfromtemplate",
-      "target": "lib_generateprogramfromtemplate_generateprogramfromtemplate",
       "confidence_score": 0.5
     },
     {
@@ -5207,29 +4837,6 @@
       "confidence_score": 0.5
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/logProgramChange.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_logprogramchange",
-      "target": "lib_logprogramchange_crypto",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/logProgramChange.js",
-      "source_location": "L22",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_logprogramchange",
-      "target": "lib_logprogramchange_logprogramchange",
-      "confidence_score": 0.5
-    },
-    {
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "lib/oneRepMax.js",
@@ -5658,18 +5265,6 @@
       "context": "collection",
       "source": "lib_verifyprogramintegrity",
       "target": "lib_verifyprogramintegrity_verifyprogramintegrity",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "indirect_call",
-      "confidence": "INFERRED",
-      "source_file": "lib/verifyWorkoutUpdateIntegrity.js",
-      "source_location": "L28",
-      "weight": 1.0,
-      "_origin": "ast",
-      "context": "collection",
-      "source": "lib_verifyworkoutupdateintegrity",
-      "target": "lib_verifyworkoutupdateintegrity_verifyworkoutupdateintegrity",
       "confidence_score": 0.5
     },
     {
@@ -6125,5 +5720,5 @@
       "source_file": "frontend/workout-mode.html"
     }
   ],
-  "built_at_commit": "d8b23002d4912967c789166b85c948182fac02a8"
+  "built_at_commit": "52aaa7920082c3519d86a2933929a29fd9545ee5"
 }
