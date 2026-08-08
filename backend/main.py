@@ -6,6 +6,9 @@ import json
 import os
 import asyncio
 
+from demo_workout import DEMO_WORKOUT
+from parser import parse_workout_json, validate_workout
+
 app = FastAPI(title="TrainerHub API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
@@ -40,45 +43,10 @@ Return ONLY valid JSON with this exact structure:
 
 If information is missing, use null. Always respond with valid JSON only, no markdown."""
 
-DEMO_WORKOUT = {
-    "title": "אימון פונקציונלי — קבוצה",
-    "duration_minutes": 50,
-    "participants": 12,
-    "equipment": ["גומיות", "כדורי ולשין"],
-    "phases": [
-        {
-            "name": "Warm-up",
-            "duration_minutes": 10,
-            "exercises": [
-                {"name": "ריצה קלה", "duration_seconds": 180, "sets": None, "reps": None, "rest_seconds": None, "notes": None},
-                {"name": "הליכה בצד", "duration_seconds": 60, "sets": None, "reps": None, "rest_seconds": None, "notes": None},
-                {"name": "מתיחות דינמיות", "duration_seconds": 120, "sets": None, "reps": None, "rest_seconds": None, "notes": None}
-            ]
-        },
-        {
-            "name": "Main",
-            "duration_minutes": 35,
-            "exercises": [
-                {"name": "סקוואט עם גומייה", "sets": 3, "reps": 15, "rest_seconds": 45, "duration_seconds": None, "notes": "גומייה על הכתפיים"},
-                {"name": "לאנג'ים הליכה", "sets": 3, "reps": None, "duration_seconds": None, "rest_seconds": 45, "notes": "20 מטר הליכה"},
-                {"name": "זריקת כדור ולשין לקיר", "sets": 3, "reps": 12, "rest_seconds": 45, "duration_seconds": None, "notes": None},
-                {"name": "בורפי", "sets": 3, "reps": 10, "rest_seconds": 45, "duration_seconds": None, "notes": None}
-            ]
-        },
-        {
-            "name": "Cool-down",
-            "duration_minutes": 5,
-            "exercises": [
-                {"name": "מתיחות סטטיות", "duration_seconds": 300, "sets": None, "reps": None, "rest_seconds": None, "notes": "כל שריר 30 שניות"}
-            ]
-        }
-    ],
-    "intensity": "high",
-    "tags": ["functional", "group", "strength", "cardio"]
-}
 
 class WorkoutRequest(BaseModel):
     text: str
+
 
 @app.post("/api/parse-workout")
 async def parse_workout(req: WorkoutRequest):
@@ -100,16 +68,18 @@ async def parse_workout(req: WorkoutRequest):
             messages=[{"role": "user", "content": req.text}]
         )
 
-        raw = message.content[0].text.strip()
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
-
-        workout = json.loads(raw)
-        return {"success": True, "workout": workout}
+        # Fence stripping and parsing live in parser.py, where they are tested.
+        workout = parse_workout_json(message.content[0].text)
 
     except json.JSONDecodeError:
         raise HTTPException(500, "AI returned invalid JSON")
     except Exception as e:
         raise HTTPException(500, str(e))
+
+    # The JSON parsed, which does not mean it is a workout. Say what is wrong
+    # instead of handing the frontend something it renders as blank rows.
+    problems = validate_workout(workout)
+    if problems:
+        raise HTTPException(502, "AI returned an unusable workout: " + "; ".join(problems))
+
+    return {"success": True, "workout": workout}
