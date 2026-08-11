@@ -9,11 +9,11 @@ TrainerHub הוא ממשק ווב בשילוב שרת Python שהופך העדפ
 
 ## גודל שוק
 
-- **שוק תוכנות כושר אישי (Fitness App Market) גלובלי:** 1.54 מיליארד דולר ב-2023, עם תחזית CAGR של 17.6% עד 2030.  
-  מקור: Grand View Research, "Fitness App Market Size & Share Report, 2030", 2024 — <https://www.grandviewresearch.com/industry-analysis/fitness-app-market>
+- **שוק אפליקציות כושר (Fitness App Market) גלובלי:** שווי של 12.1 מיליארד דולר ב-2025, עם תחזית גדילה ל-13.9 מיליארד דולר ב-2026 ו-33.6 מיליארד דולר ב-2033, CAGR של 13.4% (2026–2033).  
+  מקור: Grand View Research, "Fitness App Market Size, Share & Trends Analysis Report", 2025 — <https://www.grandviewresearch.com/industry-analysis/fitness-app-market>
 
-- **מספר משתמשי אפליקציות כושר גלובלי:** כ-600 מיליון משתמשים ב-2023.  
-  מקור: Statista, "Number of health and fitness app users worldwide 2019–2027", נגיש 2024 — <https://www.statista.com/statistics/1285155/health-fitness-app-users-worldwide/>
+- **מספר משתמשי אפליקציות כושר גלובלי:** לא נמצא נתון מאומת (הדף ב-Statista דורש מנוי לצפייה בנתון).  
+  ראו: <https://www.statista.com/statistics/1285155/health-fitness-app-users-worldwide/>
 
 - **שוק תוכנות לניהול מאמנים אישיים (Personal Trainer Software):** לא נמצא נתון מאומת נפרד לתת-שוק זה ממקורות מחקר מוכרים.
 
@@ -41,7 +41,7 @@ TrainerHub הוא ממשק ווב בשילוב שרת Python שהופך העדפ
 
 1. **קל לפריסה עצמית** — Python backend + קבצים סטטיים, ללא תלות בתשתית SaaS.
 2. **כניסה מהירה ללא רישום** — המשתמש ממלא שדות ומקבל תוכנית תוך שניות, ללא יצירת חשבון.
-3. **לוגיקה פתוחה וניתנת להתאמה** — `lib/generateWorkoutProgram.js` חשוף ומתועד; קל להרחבה.
+3. **לוגיקה פתוחה וניתנת להתאמה** — `lib/generateProgramFromTemplate.js` בונה תוכניות מתבניות מוגדרות מראש; קל להוסיף תבניות חדשות.
 4. **תמיכה בפציעות** — המוצר מסנן תרגילים לפי אזורי גוף פצועים שהמשתמש הגדיר.
 
 ---
