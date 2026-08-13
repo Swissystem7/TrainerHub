@@ -89,6 +89,33 @@
   color: #9ca3af;
   margin-top: 4px;
 }
+.ex-media-wrap { width: 100%; }
+.ex-media {
+  width: 100%;
+  max-height: 240px;
+  border: 0;
+  border-radius: 10px;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+video.ex-media { max-height: 160px; aspect-ratio: auto; }
+.ex-media-fallback {
+  background: #111513;
+  border: 1px solid #303834;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #a7b1ab;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.ex-media-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #b9f24a;
+  font-weight: 700;
+}
+.source-pill { font-size: 0.72rem; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -11,7 +11,10 @@
     saved: 'trainerhub_workouts',
     clients: 'trainerhub_clients',
     user: 'trainerhub_user',
-    draft: 'trainerhub_draft_workout'
+    draft: 'trainerhub_draft_workout',
+    userCatalog: 'trainerhub_user_catalog',
+    wishlist: 'trainerhub_film_wishlist',
+    patterns: 'trainerhub_ingest_patterns'
   };
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
@@ -185,7 +188,25 @@
     'גב תחתון': 'superman',
     'מטפס הרים': 'mountain_climber',
     'שכיבות סמיכה': 'אתגר_שכיבות_שמיכה',
-    'שכיבות שמיכה': 'אתגר_שכיבות_שמיכה'
+    'שכיבות שמיכה': 'אתגר_שכיבות_שמיכה',
+    'שכיבת שמיכה': 'אתגר_שכיבות_שמיכה',
+    'שכיבת סמיכה': 'אתגר_שכיבות_שמיכה',
+    'פלנק': 'plank',
+    'plank': 'plank',
+    'סייד פלאנק': 'פלאנק_צידי',
+    'פלאנק צד': 'פלאנק_צידי',
+    'פוש אפ': 'אתגר_שכיבות_שמיכה',
+    'פושאפ': 'אתגר_שכיבות_שמיכה',
+    'push up': 'אתגר_שכיבות_שמיכה',
+    'pushups': 'אתגר_שכיבות_שמיכה',
+    'push ups': 'אתגר_שכיבות_שמיכה'
+  };
+
+  var SOURCE_LABELS = {
+    drive: 'דרייב',
+    local: 'מקומי',
+    youtube: 'יוטיוב',
+    link: 'קישור חיצוני'
   };
 
   var catalog = {};
@@ -222,6 +243,97 @@
     return './' + rel.replace(/^\.\//, '');
   }
 
+  function normalizeEntry(id, raw, defaultSource) {
+    var e = raw && typeof raw === 'object' ? raw : {};
+    return {
+      id: e.id || id,
+      he: e.he || e.id || id,
+      muscles: Array.isArray(e.muscles) && e.muscles.length ? e.muscles.slice() : ['core'],
+      equipment: Array.isArray(e.equipment) && e.equipment.length ? e.equipment.slice() : ['none'],
+      level: e.level || 'beginner',
+      source: e.source || defaultSource || 'local',
+      file: e.file || '',
+      driveId: e.driveId || '',
+      youtubeId: e.youtubeId || '',
+      folder: e.folder || '',
+      externalUrl: e.externalUrl || '',
+      startSec: e.startSec != null ? Number(e.startSec) : null,
+      endSec: e.endSec != null ? Number(e.endSec) : null,
+      segmentOf: e.segmentOf || ''
+    };
+  }
+
+  function isPlayable(e) {
+    return !!(e && (e.file || e.driveId || e.youtubeId));
+  }
+
+  function playableKind(e) {
+    if (!e) return null;
+    if (e.driveId) return 'drive';
+    if (e.youtubeId) return 'youtube';
+    if (e.file) return 'file';
+    if (e.externalUrl) return 'link';
+    return null;
+  }
+
+  function drivePreviewUrl(id) {
+    if (!id) return '';
+    return 'https://drive.google.com/file/d/' + id + '/preview';
+  }
+
+  function youtubeEmbedUrl(id, startSec, endSec) {
+    if (!id) return '';
+    var url = 'https://www.youtube.com/embed/' + id;
+    var q = [];
+    if (startSec != null && startSec >= 0) q.push('start=' + Math.floor(startSec));
+    if (endSec != null && endSec > 0) q.push('end=' + Math.floor(endSec));
+    return q.length ? (url + '?' + q.join('&')) : url;
+  }
+
+  function isOnline() {
+    if (typeof navigator === 'undefined') return true;
+    return navigator.onLine !== false;
+  }
+
+  function driveItemsFrom(driveData) {
+    if (!driveData) return [];
+    if (Array.isArray(driveData)) return driveData;
+    if (Array.isArray(driveData.items)) return driveData.items;
+    if (typeof driveData === 'object') {
+      return Object.keys(driveData).filter(function (k) {
+        return k.charAt(0) !== '_';
+      }).map(function (k) {
+        var e = driveData[k] || {};
+        return e.id ? e : Object.assign({ id: k }, e);
+      });
+    }
+    return [];
+  }
+
+  function mergeCatalogs(localMap, driveData, userList) {
+    var out = {};
+    if (localMap && typeof localMap === 'object' && !Array.isArray(localMap)) {
+      Object.keys(localMap).forEach(function (id) {
+        out[id] = normalizeEntry(id, localMap[id], (localMap[id] && localMap[id].source) || 'local');
+      });
+    }
+    driveItemsFrom(driveData).forEach(function (raw) {
+      if (!raw) return;
+      var e = normalizeEntry(raw.id || raw.driveId, raw, 'drive');
+      e.source = 'drive';
+      if (!e.driveId) return;
+      var id = e.id;
+      if (out[id]) id = 'drive_' + (e.driveId || id);
+      e.id = id;
+      out[id] = e;
+    });
+    (userList || []).forEach(function (raw) {
+      if (!raw || !raw.id) return;
+      out[raw.id] = normalizeEntry(raw.id, raw, raw.source || 'user');
+    });
+    return out;
+  }
+
   function catalogList() {
     return Object.keys(catalog).map(function (id) {
       var e = catalog[id] || {};
@@ -231,7 +343,15 @@
         muscles: e.muscles || [],
         equipment: e.equipment || ['none'],
         level: e.level || 'beginner',
-        file: e.file || ''
+        file: e.file || '',
+        source: e.source || 'local',
+        driveId: e.driveId || '',
+        youtubeId: e.youtubeId || '',
+        folder: e.folder || '',
+        externalUrl: e.externalUrl || '',
+        startSec: e.startSec != null ? e.startSec : null,
+        endSec: e.endSec != null ? e.endSec : null,
+        segmentOf: e.segmentOf || ''
       };
     });
   }
@@ -246,12 +366,12 @@
   function findExercise(step) {
     if (!step) return null;
     var id = step.id || step.name;
-    if (id && catalog[id] && catalog[id].file) return catalog[id];
+    if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
     var name = step.name;
     var keys = Object.keys(catalog);
     for (var i = 0; i < keys.length; i++) {
       var entry = catalog[keys[i]];
-      if (!entry || !entry.file) continue;
+      if (!entry || !isPlayable(entry)) continue;
       if (id && (entry.id === id || keys[i] === id)) return entry;
       if (name && (entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)) return entry;
     }
@@ -624,7 +744,7 @@
     var pool = PROGRAM_POOL.map(function (ex) {
       var copy = { id: ex.id, muscles: ex.muscles, equipment: ex.equipment };
       seenIds[ex.id] = true;
-      if (catalog[ex.id] && catalog[ex.id].file) {
+      if (catalog[ex.id] && isPlayable(catalog[ex.id])) {
         copy.hasClip = true;
         copy.tags = catalogTags(catalog[ex.id]);
       }
@@ -710,7 +830,7 @@
 
   function catalogAsPool() {
     return catalogList().filter(function (e) {
-      return e.file && e.muscles && e.muscles.length;
+      return isPlayable(e) && e.muscles && e.muscles.length;
     }).map(function (e) {
       return {
         id: e.id,
@@ -740,7 +860,14 @@
         byTag[t] = (byTag[t] || 0) + 1;
       });
     });
-    return { total: list.length, withFile: list.filter(function (e) { return !!e.file; }).length, byMuscle: byMuscle, byEquipment: byEquipment, byTag: byTag };
+    return {
+      total: list.length,
+      withFile: list.filter(function (e) { return !!e.file; }).length,
+      playable: list.filter(isPlayable).length,
+      byMuscle: byMuscle,
+      byEquipment: byEquipment,
+      byTag: byTag
+    };
   }
 
   function filterCatalog(opts) {
@@ -759,30 +886,54 @@
     });
   }
 
+  function normalizeName(name) {
+    var Infer = root.THInfer;
+    if (Infer && typeof Infer.normalizeSynonym === 'function') return Infer.normalizeSynonym(name);
+    return foldHe(name);
+  }
+
+  function sourcePref(e) {
+    if (!e) return 0;
+    if (e.driveId || e.source === 'drive') return 4;
+    if (e.youtubeId || e.source === 'youtube') return 3;
+    if (e.file) return 2;
+    return 1;
+  }
+
   function matchCatalog(name) {
     if (!name) return null;
-    var n = foldHe(name);
+    var n = normalizeName(name);
     if (!n) return null;
-    var aliasId = NAME_ALIASES[n];
-    if (aliasId && catalog[aliasId]) return catalog[aliasId];
+    var folded = foldHe(name);
+    var hits = [];
+    var aliasId = NAME_ALIASES[n] || NAME_ALIASES[folded];
+    if (aliasId && catalog[aliasId]) hits.push(catalog[aliasId]);
     var keys = Object.keys(catalog);
     var i;
     for (i = 0; i < keys.length; i++) {
       var e = catalog[keys[i]];
       if (!e) continue;
-      if (foldHe(e.he) === n || foldHe(keys[i]) === n || foldHe(e.id) === n) return e;
-      if (HE_NAMES[keys[i]] && foldHe(HE_NAMES[keys[i]]) === n) return e;
+      var he = normalizeName(e.he);
+      if (he === n || foldHe(keys[i]) === folded || foldHe(e.id) === folded || foldHe(e.he) === folded) {
+        hits.push(e);
+      } else if (HE_NAMES[keys[i]] && normalizeName(HE_NAMES[keys[i]]) === n) {
+        hits.push(e);
+      }
+    }
+    if (hits.length) {
+      hits.sort(function (a, b) { return sourcePref(b) - sourcePref(a); });
+      return hits[0];
     }
     var best = null;
     var bestLen = 0;
     for (i = 0; i < keys.length; i++) {
       var e2 = catalog[keys[i]];
       if (!e2) continue;
-      var he = foldHe(e2.he);
-      if (he.length >= 3 && (n.indexOf(he) !== -1 || he.indexOf(n) !== -1)) {
-        if (he.length > bestLen) {
+      var he2 = normalizeName(e2.he);
+      if (he2.length >= 3 && (n.indexOf(he2) !== -1 || he2.indexOf(n) !== -1)) {
+        if (he2.length > bestLen || (he2.length === bestLen && sourcePref(e2) > sourcePref(best))) {
           best = e2;
-          bestLen = he.length;
+          bestLen = he2.length;
         }
       }
     }
@@ -804,7 +955,89 @@
 
   function hasClip(step) {
     var e = findExercise(step);
-    return !!(e && e.file);
+    return isPlayable(e);
+  }
+
+  function bestMedia(entry) {
+    if (!entry) return null;
+    if (entry.driveId || entry.youtubeId || entry.externalUrl) return entry;
+    var he = foldHe(entry.he);
+    if (!he) return entry;
+    var keys = Object.keys(catalog);
+    var i;
+    for (i = 0; i < keys.length; i++) {
+      var e = catalog[keys[i]];
+      if (e && e.driveId && foldHe(e.he) === he) return e;
+    }
+    return entry;
+  }
+
+  function formatClock(sec) {
+    var n = Math.max(0, Math.floor(Number(sec) || 0));
+    var m = Math.floor(n / 60);
+    var s = n % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function mediaFallbackText(entry) {
+    if (!entry) return 'תרגיל מהמאגר';
+    var bits = [entry.he || 'תרגיל'];
+    if (entry.folder) bits.push(entry.folder);
+    var muscles = (entry.muscles || []).map(muscleLabel).filter(Boolean);
+    if (muscles.length) bits.push(muscles.join(', '));
+    return bits.join(' · ');
+  }
+
+  function mediaMarkup(entry, opts) {
+    opts = opts || {};
+    var cls = opts.className || 'ex-media';
+    if (!entry) return '';
+    entry = bestMedia(entry) || entry;
+    var fallback = '<div class="' + cls + '-fallback" role="note">' +
+      esc(mediaFallbackText(entry)) +
+      (playableKind(entry) && playableKind(entry) !== 'file'
+        ? '<span class="' + cls + '-offline"> — בלי רשת מוצג שם התרגיל במקום הנגן.</span>'
+        : '') +
+      '</div>';
+    if (!isOnline() || opts.offline) {
+      if (entry.externalUrl) {
+        return '<p class="' + cls + '-fallback" role="note">' + esc(mediaFallbackText(entry)) +
+          ' — הקישור החיצוני דורש רשת.</p>';
+      }
+      return fallback;
+    }
+    if (entry.driveId) {
+      var segNote = '';
+      if (entry.startSec != null && entry.endSec != null) {
+        segNote = '<p class="' + cls + '-segment" role="note">מקטע ' +
+          esc(formatClock(entry.startSec)) + '–' + esc(formatClock(entry.endSec)) +
+          ' — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>';
+      }
+      return '<div class="' + cls + '-wrap">' +
+        '<div class="' + cls + '-fallback" hidden>' + esc(mediaFallbackText(entry)) + '</div>' +
+        '<iframe class="' + cls + '" title="' + esc(entry.he || 'סרטון דרייב') +
+        '" src="' + esc(drivePreviewUrl(entry.driveId)) +
+        '" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+        segNote +
+        '</div>';
+    }
+    if (entry.youtubeId) {
+      return '<div class="' + cls + '-wrap">' +
+        '<iframe class="' + cls + '" title="' + esc(entry.he || 'סרטון יוטיוב') +
+        '" src="' + esc(youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec)) +
+        '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>' +
+        '</div>';
+    }
+    if (entry.file) {
+      return '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" src="' +
+        esc(catalogSrc(entry.file)) + '" onloadeddata="this.hidden=false" onerror="this.remove()"></video>';
+    }
+    if (entry.externalUrl) {
+      return '<a class="' + cls + '-link" href="' + esc(entry.externalUrl) +
+        '" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני — ' +
+        esc(entry.he || 'קישור') + '</a>';
+    }
+    return fallback;
   }
 
   function scoreSubstitute(candidate, current) {
@@ -817,7 +1050,8 @@
     (candidate.equipment || []).forEach(function (eq) {
       if (curEq.indexOf(eq) !== -1) score += 2;
     });
-    if (candidate.file) score += 1;
+    if (isPlayable(candidate)) score += 1;
+    if (candidate.source === 'drive') score += 1;
     if ((candidate.level || 'beginner') === ((current && current.level) || 'beginner')) score += 1;
     return score;
   }
@@ -832,7 +1066,7 @@
     var excludeId = (current && current.id) || (step && (step.id || step.name)) || '';
     var have = opts.equipment;
     var list = catalogList().filter(function (e) {
-      if (!e.file) return false;
+      if (!isPlayable(e)) return false;
       if (e.id === excludeId) return false;
       if (muscles.length && !e.muscles.some(function (m) { return muscles.indexOf(m) !== -1; })) return false;
       if (Array.isArray(have) && have.length && !userCanDo(e, have)) return false;
@@ -936,7 +1170,13 @@
     if (!entry) return '';
     var url = encodeClip(id, { name: name || '' });
     var who = name ? ('היי ' + name + ' 💪\n') : '';
-    return who + 'הנה הסרטון ל«' + entry.he + '»:\n' + url + '\n\nפותחים בלי הרשמה. אם הנגן לא מופיע — הקובץ אצלך במכשיר, לא בענן.';
+    var kind = playableKind(entry);
+    var note = 'פותחים בלי הרשמה.';
+    if (kind === 'drive') note = 'הסרטון מתנגן מדרייב משותף. בלי רשת יוצג שם התרגיל במקום הנגן.';
+    else if (kind === 'youtube') note = 'הסרטון מיוטיוב שנשמר במאגר.';
+    else if (kind === 'link') note = 'זה קישור חיצוני שנפתח מחוץ לאפליקציה — לא חיבור למאמנים.';
+    else note = 'פותחים בלי הרשמה. אם הנגן לא מופיע — הקובץ אצלך במכשיר, לא בענן.';
+    return who + 'הנה הסרטון ל«' + entry.he + '»:\n' + url + '\n\n' + note;
   }
 
   function daysSinceLast(client) {
@@ -1007,18 +1247,79 @@
     storeRemove(KEYS.draft);
   }
 
+  function userCatalogList() {
+    var list = storeGet(KEYS.userCatalog, []);
+    return Array.isArray(list) ? list : [];
+  }
+
+  function addUserEntry(entry) {
+    if (!entry || !entry.id || !entry.he) return null;
+    var list = userCatalogList();
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i] && (list[i].id === entry.id ||
+          (entry.driveId && list[i].driveId === entry.driveId) ||
+          (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
+        list[i] = entry;
+        storeSet(KEYS.userCatalog, list);
+        catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
+        return entry;
+      }
+    }
+    list.push(entry);
+    storeSet(KEYS.userCatalog, list);
+    catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
+    return entry;
+  }
+
+  function removeUserEntry(id) {
+    var list = userCatalogList().filter(function (e) { return e && e.id !== id; });
+    storeSet(KEYS.userCatalog, list);
+    if (catalog[id] && (catalog[id].source === 'user' || catalog[id].source === 'link' ||
+        catalog[id].source === 'youtube')) {
+      delete catalog[id];
+    }
+    return list;
+  }
+
+  function exportUserCatalog() {
+    return JSON.stringify(userCatalogList(), null, 2);
+  }
+
   function setCatalog(data) {
-    catalog = data && typeof data === 'object' ? data : {};
+    catalog = {};
+    if (Array.isArray(data)) {
+      data.forEach(function (e, i) {
+        if (!e) return;
+        var id = e.id || ('ex_' + i);
+        catalog[id] = normalizeEntry(id, e, e.source || 'local');
+      });
+    } else if (data && typeof data === 'object') {
+      Object.keys(data).forEach(function (id) {
+        if (id.charAt(0) === '_') return;
+        catalog[id] = normalizeEntry(id, data[id], (data[id] && data[id].source) || 'local');
+      });
+    }
     catalogReady = true;
     readyWaiters.splice(0).forEach(function (fn) { try { fn(); } catch (e) {} });
   }
 
+  function loadJson(rel) {
+    if (typeof fetch !== 'function') return Promise.resolve(null);
+    return fetch(assetUrl(rel)).then(function (r) {
+      return r.ok ? r.json() : null;
+    }).catch(function () { return null; });
+  }
+
   function loadCatalog() {
     if (catalogReady) return Promise.resolve(catalog);
-    return fetch(assetUrl('js/catalog.json')).then(function (r) {
-      return r.ok ? r.json() : {};
-    }).then(function (data) {
-      setCatalog(data);
+    return Promise.all([
+      loadJson('js/catalog.json'),
+      loadJson('videos/drive-catalog.json')
+    ]).then(function (pair) {
+      var local = pair[0] && typeof pair[0] === 'object' ? pair[0] : {};
+      var drive = pair[1] || [];
+      setCatalog(mergeCatalogs(local, drive, userCatalogList()));
       return catalog;
     }).catch(function () {
       setCatalog({});
@@ -1081,6 +1382,20 @@
     draftGet: draftGet,
     draftAdd: draftAdd,
     draftClear: draftClear,
+    isPlayable: isPlayable,
+    playableKind: playableKind,
+    drivePreviewUrl: drivePreviewUrl,
+    youtubeEmbedUrl: youtubeEmbedUrl,
+    isOnline: isOnline,
+    mediaMarkup: mediaMarkup,
+    mediaFallbackText: mediaFallbackText,
+    bestMedia: bestMedia,
+    mergeCatalogs: mergeCatalogs,
+    normalizeEntry: normalizeEntry,
+    userCatalogList: userCatalogList,
+    addUserEntry: addUserEntry,
+    removeUserEntry: removeUserEntry,
+    exportUserCatalog: exportUserCatalog,
     get catalog() { return catalog; }
   };
 
