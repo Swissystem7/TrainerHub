@@ -1,12 +1,13 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TrainerHub | בונה אימון</title>
 <link rel="stylesheet" href="./css/app.css">
 <style>
-:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem;margin-inline-end:8px}@media(max-width:700px){.layout{grid-template-columns:1fr}}
+:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem;margin-inline-end:8px}.swap-sel{width:auto;max-width:11rem;padding:4px 8px;margin-inline-start:8px;font-size:.75rem}@media(max-width:700px){.layout{grid-template-columns:1fr}}
 </style></head><body>
 <a class="skip-link" href="#form">דלג לטופס</a>
 <nav aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
   <span style="color:#b9f24a">TrainerHub</span>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">בונה אימון מהיר</span>
+  <a href="./library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
   <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">האפליקציה המלאה</a>
   <a href="./frontend/workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
 </nav>
@@ -14,7 +15,7 @@
   ⚠️ הדגמה — פענוח האימון בטקסט חופשי רץ ב-<code>backend/main.py</code>, שרת שאינו פעיל בדמו הזה. GitHub Pages מגיש קבצים סטטיים בלבד, ולכן התוצאות כאן מקומיות ולא מגיעות מהשרת.
 </div>
 <script src="./js/core.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button type="submit">בנה אימון</button></form><div class="card" id="result" aria-live="polite"></div></section></main><script>
+<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button type="submit">בנה אימון</button></form><div class="card" id="result" aria-live="polite"></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
 
@@ -35,45 +36,84 @@ function copyDayTraineeLink(dayIndex){
   });
 }
 
+function renderProgram(p){
+  const eq = $('equipment').value;
+  const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
+    reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
+  })));
+  const clipCount = p.dailyWorkouts.reduce((n, d) => {
+    return n + (d.exercises || []).filter(x => TH.hasClip({ id: x.name, name: x.name })).length;
+  }, 0);
+  $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
+    p.dailyWorkouts.map((d, i) => {
+      const w = TH.toPhasesWorkout(d, window.__lastMeta);
+      const phasesHtml = (w.phases || []).map((phase, pi) => {
+        const label = TH.phaseLabel(phase.name);
+        const exs = (phase.exercises || []).map((x, xi) => {
+          const bits = [];
+          if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
+          else if (x.reps) bits.push(x.reps + ' חזרות');
+          if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
+          if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
+          const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
+          const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
+          const swap = alts.length
+            ? '<label class="sr-only" for="swap-'+i+'-'+pi+'-'+xi+'">החלף '+esc(x.name)+'</label><select id="swap-'+i+'-'+pi+'-'+xi+'" data-day="'+i+'" data-phase="'+pi+'" data-ex="'+xi+'" class="swap-sel" aria-label="החלף '+esc(x.name)+'"><option value="">החלף…</option>'+alts.map(a => '<option value="'+esc(a.id)+'">'+esc(a.he)+'</option>').join('')+'</select>'
+            : '';
+          return '<div class="exercise"><b>'+clip+esc(x.name)+'</b><span>'+esc(bits.join(' · ') || 'הכנה')+' '+swap+'</span></div>';
+        }).join('');
+        return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
+      }).join('');
+      const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">לינק מתאמן</button></section>';
+    }).join('');
+  $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      if (!sel.value) return;
+      const day = window.__lastProgram.dailyWorkouts[Number(sel.dataset.day)];
+      if (!day) return;
+      const workout = TH.toPhasesWorkout(day, window.__lastMeta);
+      TH.swapExercise(workout, Number(sel.dataset.phase), Number(sel.dataset.ex), sel.value);
+      const swapped = workout.phases[Number(sel.dataset.phase)].exercises[Number(sel.dataset.ex)];
+      if (Number(sel.dataset.phase) === 1 && day.exercises && day.exercises[Number(sel.dataset.ex)]) {
+        day.exercises[Number(sel.dataset.ex)] = {
+          name: swapped.id,
+          sets: swapped.sets,
+          reps: swapped.reps,
+          restSeconds: swapped.rest_seconds,
+          rest_seconds: swapped.rest_seconds,
+          notes: swapped.notes
+        };
+      }
+      day.phases = workout.phases;
+      day.title = workout.title;
+      renderProgram(window.__lastProgram);
+    });
+  });
+}
+
 function run(e){
   if (e) e.preventDefault();
   try {
     const muscle = $('muscle').value, eq = $('equipment').value;
+    const audience = $('audience').value;
     const profile = {
       age: 31, gender: 'other', fitnessLevel: $('level').value,
       goals: [$('goal').value], availableEquipment: [eq],
       targetMuscles: muscle && muscle !== 'full' ? [muscle] : [],
       injuries: [],
-      previousWorkouts: 8
+      previousWorkouts: 8,
+      audience: audience === 'general' ? '' : audience,
+      preferCatalog: true
     };
     const p = TH.generateWorkoutProgram(profile, 1, Number($('days').value));
     window.__lastProgram = p;
     window.__lastMeta = {
-      equipment: [eq === 'none' ? 'משקל גוף' : 'משקולות'],
+      equipment: [TH.eqLabel(eq)],
       intensity: $('goal').value === 'strength' ? 'high' : 'medium',
-      tags: [muscle, $('goal').value]
+      tags: [muscle, $('goal').value].concat(audience && audience !== 'general' ? [audience] : [])
     };
-    const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
-      reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
-    })));
-    $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+TH.workoutVolume(sets)+'</b> ק״ג נפח משוער</div></div>' +
-      p.dailyWorkouts.map((d, i) => {
-        const w = TH.toPhasesWorkout(d, window.__lastMeta);
-        const phasesHtml = (w.phases || []).map(phase => {
-          const label = TH.phaseLabel(phase.name);
-          const exs = (phase.exercises || []).map(x => {
-            const bits = [];
-            if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
-            else if (x.reps) bits.push(x.reps + ' חזרות');
-            if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
-            if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
-            return '<div class="exercise"><b>'+esc(x.name)+'</b><span>'+esc(bits.join(' · ') || 'הכנה')+'</span></div>';
-          }).join('');
-          return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
-        }).join('');
-        const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-        return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">לינק מתאמן</button></section>';
-      }).join('');
+    renderProgram(p);
   } catch (err) {
     $('result').innerHTML = '<p class="error">'+esc(err.message)+'</p>';
   }
