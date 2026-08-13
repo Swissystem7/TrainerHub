@@ -9,98 +9,257 @@
 </nav>
 <div style="background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:#f0b542;font:600 0.74rem system-ui,sans-serif;padding:7px 14px;text-align:center;direction:rtl">
   ⚠️ הדגמה — פענוח האימון בטקסט חופשי רץ ב-<code>backend/main.py</code>, שרת שאינו פעיל בדמו הזה. GitHub Pages מגיש קבצים סטטיים בלבד, ולכן התוצאות כאן מקומיות ולא מגיעות מהשרת.
-</div><main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label>קבוצת שרירים מרכזית</label><select id="muscle"><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label>מטרה</label><select id="goal"><option value="strength">כוח</option><option value="general_fitness">כושר כללי</option><option value="muscle_gain">עלייה במסת שריר</option></select><label>רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label>ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option></select><label>ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button>בנה אימון</button></form><div class="card" id="result"></div></section></main><script>
+</div><main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label>קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label>מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label>רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label>ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option></select><label>ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button>בנה אימון</button></form><div class="card" id="result"></div></section></main><script>
 const __modules={"lib/generateWorkoutProgram.js":function(require,module,exports){
-function generateWorkoutProgram(clientProfile, programDuration, workoutDaysPerWeek) {
-  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-  const safeAge = clamp(clientProfile.age ?? 18, 10, 120);
-  const age = clamp(safeAge, 18, 100);
-  const gender = ['male','female','other'].includes(clientProfile.gender) ? clientProfile.gender : 'other';
-  const fitnessLevel = ['beginner','intermediate','advanced'].includes(clientProfile.fitnessLevel) ? clientProfile.fitnessLevel : 'beginner';
-  const goals = Array.isArray(clientProfile.goals) && clientProfile.goals.length > 0 ? clientProfile.goals : ['general_fitness'];
-  const equipment = Array.isArray(clientProfile.availableEquipment) ? clientProfile.availableEquipment : [];
-  const hasEquipment = equipment.length > 0 && !(equipment.length === 1 && equipment[0] === 'none');
-  const injuries = Array.isArray(clientProfile.injuries) ? clientProfile.injuries : [];
-  if (injuries.includes('all')) return { programId: generateId(), durationWeeks: 0, dailyWorkouts: [] };
-  const previousWorkouts = Math.max(0, clientProfile.previousWorkouts ?? 0);
-  const isNew = previousWorkouts < 5;
-  const duration = clamp(programDuration ?? 1, 1, 52);
-  const daysPerWeek = clamp(workoutDaysPerWeek ?? 1, 1, 7);
-  const totalDays = duration * daysPerWeek;
+const BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
 
-  const isSenior = age > 60;
-  const isAdvanced = fitnessLevel === 'advanced';
-  const isBeginner = fitnessLevel === 'beginner';
+const GOAL_RX = {
+  strength: { sets: 4, reps: '4-6', rest: 120 },
+  hypertrophy: { sets: 3, reps: '8-12', rest: 60 },
+  endurance: { sets: 3, reps: '12-15', rest: 45 }
+};
 
-  const bodyParts = ['chest','back','shoulders','biceps','triceps','legs','core'];
-  const injuredParts = injuries.filter(p => bodyParts.includes(p));
-  const safeParts = bodyParts.filter(p => !injuredParts.includes(p));
+const SPLIT_MUSCLES = {
+  push: ['chest', 'shoulders', 'triceps'],
+  pull: ['back', 'biceps'],
+  legs: ['legs'],
+  upper: ['chest', 'back', 'shoulders', 'biceps', 'triceps'],
+  lower: ['legs', 'core'],
+  full: ['chest', 'back', 'shoulders', 'legs', 'core']
+};
 
-  const exercisePool = {
-    chest: hasEquipment ? ['bench_press','dumbbell_fly','push_up','incline_press'] : ['push_up','wide_push_up','decline_push_up'],
-    back: hasEquipment ? ['barbell_row','pull_up','lat_pulldown','dumbbell_row'] : ['bodyweight_row','superman','reverse_fly'],
-    shoulders: hasEquipment ? ['overhead_press','lateral_raise','front_raise','upright_row'] : ['pike_push_up','wall_walk','arm_circles'],
-    biceps: hasEquipment ? ['bicep_curl','hammer_curl','concentration_curl'] : ['bodyweight_curl','doorway_curl'],
-    triceps: hasEquipment ? ['tricep_pushdown','overhead_extension','dips'] : ['bench_dips','tricep_push_up'],
-    legs: hasEquipment ? ['squat','deadlift','lunges','leg_press'] : ['bodyweight_squat','lunges','glute_bridge','step_up'],
-    core: ['plank','crunches','russian_twist','leg_raise','mountain_climber']
-  };
+const CATALOG = [
+  { id: 'bodyweight_squat', muscles: ['legs'], equipment: ['none'] },
+  { id: 'lunges', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+  { id: 'glute_bridge', muscles: ['legs'], equipment: ['none'] },
+  { id: 'step_up', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+  { id: 'wall_sit', muscles: ['legs'], equipment: ['none'] },
+  { id: 'calf_raise', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+  { id: 'goblet_squat', muscles: ['legs'], equipment: ['dumbbells'] },
+  { id: 'dumbbell_lunge', muscles: ['legs'], equipment: ['dumbbells'] },
+  { id: 'romanian_deadlift_db', muscles: ['legs'], equipment: ['dumbbells'] },
+  { id: 'dumbbell_step_up', muscles: ['legs'], equipment: ['dumbbells'] },
+  { id: 'squat', muscles: ['legs'], equipment: ['barbell'] },
+  { id: 'deadlift', muscles: ['legs', 'back'], equipment: ['barbell'] },
+  { id: 'leg_press', muscles: ['legs'], equipment: ['machine'] },
 
-  const warmUps = ['arm_circles','leg_swings','torso_twists','jumping_jacks','hip_circles'];
-  const coolDowns = ['hamstring_stretch','quad_stretch','shoulder_stretch','cat_cow','child_pose'];
+  { id: 'push_up', muscles: ['chest'], equipment: ['none'] },
+  { id: 'wide_push_up', muscles: ['chest'], equipment: ['none'] },
+  { id: 'decline_push_up', muscles: ['chest'], equipment: ['none'] },
+  { id: 'dumbbell_bench', muscles: ['chest'], equipment: ['dumbbells'] },
+  { id: 'dumbbell_fly', muscles: ['chest'], equipment: ['dumbbells'] },
+  { id: 'dumbbell_incline', muscles: ['chest'], equipment: ['dumbbells'] },
+  { id: 'bench_press', muscles: ['chest'], equipment: ['barbell'] },
+  { id: 'incline_press', muscles: ['chest'], equipment: ['barbell'] },
 
-  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  const shuffle = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  { id: 'superman', muscles: ['back'], equipment: ['none'] },
+  { id: 'bodyweight_row', muscles: ['back'], equipment: ['none'] },
+  { id: 'reverse_fly_bw', muscles: ['back'], equipment: ['none'] },
+  { id: 'dumbbell_row', muscles: ['back'], equipment: ['dumbbells'] },
+  { id: 'reverse_fly', muscles: ['back'], equipment: ['dumbbells'] },
+  { id: 'barbell_row', muscles: ['back'], equipment: ['barbell'] },
+  { id: 'pull_up', muscles: ['back'], equipment: ['bar'] },
+  { id: 'lat_pulldown', muscles: ['back'], equipment: ['machine'] },
 
-  const generateExercisesForDay = (dayIndex) => {
-    const usedNames = new Set();
-    const exercises = [];
-    const numExercises = isSenior ? 4 : (isAdvanced ? 6 : 5);
-    const availableParts = safeParts.length > 0 ? safeParts : ['core'];
-    const partsCycle = [];
-    for (let i = 0; i < numExercises; i++) {
-      partsCycle.push(availableParts[i % availableParts.length]);
-    }
-    const shuffledParts = shuffle(partsCycle);
-    for (const part of shuffledParts) {
-      const pool = exercisePool[part] || exercisePool.core;
-      const filtered = pool.filter(e => !usedNames.has(e));
-      if (filtered.length === 0) continue;
-      const name = getRandom(filtered);
-      usedNames.add(name);
-      const sets = isSenior ? 2 : (isBeginner ? 3 : (isAdvanced ? 4 : 3));
-      const reps = isSenior ? '10-12' : (isBeginner ? '8-12' : (isAdvanced ? '6-10' : '8-12'));
-      const rest = isSenior ? 90 : (isAdvanced ? 60 : 45);
-      const notes = [];
-      if (injuredParts.includes(part)) notes.push('modified for injury');
-      if (isSenior) notes.push('low intensity');
-      if (isNew) notes.push('focus on form');
-      exercises.push({ name, sets, reps, restSeconds: rest, notes: notes.join('; ') });
-    }
-    return exercises;
-  };
+  { id: 'pike_push_up', muscles: ['shoulders'], equipment: ['none'] },
+  { id: 'arm_circles', muscles: ['shoulders'], equipment: ['none'] },
+  { id: 'wall_walk', muscles: ['shoulders'], equipment: ['none'] },
+  { id: 'dumbbell_ohp', muscles: ['shoulders'], equipment: ['dumbbells'] },
+  { id: 'lateral_raise', muscles: ['shoulders'], equipment: ['dumbbells'] },
+  { id: 'front_raise', muscles: ['shoulders'], equipment: ['dumbbells'] },
+  { id: 'overhead_press', muscles: ['shoulders'], equipment: ['barbell'] },
+  { id: 'upright_row', muscles: ['shoulders'], equipment: ['barbell', 'dumbbells'] },
 
-  const dailyWorkouts = [];
-  for (let d = 0; d < totalDays; d++) {
-    const day = d + 1;
-    const warmUp = getRandom(warmUps);
-    const coolDown = getRandom(coolDowns);
-    const exercises = generateExercisesForDay(d);
-    dailyWorkouts.push({ day, warmUp, exercises, coolDown });
-  }
+  { id: 'bodyweight_curl', muscles: ['biceps'], equipment: ['none'] },
+  { id: 'doorway_curl', muscles: ['biceps'], equipment: ['none'] },
+  { id: 'bicep_curl', muscles: ['biceps'], equipment: ['dumbbells'] },
+  { id: 'hammer_curl', muscles: ['biceps'], equipment: ['dumbbells'] },
+  { id: 'concentration_curl', muscles: ['biceps'], equipment: ['dumbbells'] },
 
-  return {
-    programId: generateId(),
-    durationWeeks: duration,
-    dailyWorkouts
-  };
+  { id: 'bench_dips', muscles: ['triceps'], equipment: ['none'] },
+  { id: 'tricep_push_up', muscles: ['triceps'], equipment: ['none'] },
+  { id: 'overhead_extension', muscles: ['triceps'], equipment: ['dumbbells'] },
+  { id: 'tricep_kickback', muscles: ['triceps'], equipment: ['dumbbells'] },
+  { id: 'tricep_pushdown', muscles: ['triceps'], equipment: ['machine'] },
+  { id: 'dips', muscles: ['triceps'], equipment: ['bar'] },
+
+  { id: 'plank', muscles: ['core'], equipment: ['none'] },
+  { id: 'crunches', muscles: ['core'], equipment: ['none'] },
+  { id: 'russian_twist', muscles: ['core'], equipment: ['none', 'dumbbells'] },
+  { id: 'leg_raise', muscles: ['core'], equipment: ['none'] },
+  { id: 'mountain_climber', muscles: ['core'], equipment: ['none'] }
+];
+
+const WARM_UPS = ['arm_circles', 'leg_swings', 'torso_twists', 'jumping_jacks', 'hip_circles'];
+const COOL_DOWNS = ['hamstring_stretch', 'quad_stretch', 'shoulder_stretch', 'cat_cow', 'child_pose'];
+
+function clamp(v, lo, hi) {
+  return Math.min(Math.max(v, lo), hi);
 }
 
 function generateId() {
   return 'prog_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
 }
 
-module.exports = { generateWorkoutProgram };
+function normalizeGoal(raw) {
+  if (raw === 'strength') return 'strength';
+  if (raw === 'endurance') return 'endurance';
+  if (raw === 'hypertrophy' || raw === 'muscle_gain') return 'hypertrophy';
+  return 'hypertrophy';
+}
+
+function prescriptionFor(goal, isSenior) {
+  const base = GOAL_RX[goal] || GOAL_RX.hypertrophy;
+  if (isSenior) {
+    return { sets: Math.min(base.sets, 3), reps: base.reps, rest: Math.max(base.rest, 90) };
+  }
+  return { sets: base.sets, reps: base.reps, rest: base.rest };
+}
+
+function userCanDo(ex, userEquipment) {
+  const have = new Set((userEquipment || []).filter(function (e) { return e && e !== 'none'; }));
+  const options = ex.equipment && ex.equipment.length ? ex.equipment : ['none'];
+  return options.some(function (eq) { return eq === 'none' || have.has(eq); });
+}
+
+function splitNameForDay(dayIndex, daysPerWeek) {
+  if (daysPerWeek <= 1) return 'full';
+  if (daysPerWeek === 2) return ['upper', 'lower'][dayIndex % 2];
+  if (daysPerWeek === 3) return ['push', 'pull', 'legs'][dayIndex % 3];
+  if (daysPerWeek === 4) return ['upper', 'lower', 'upper', 'lower'][dayIndex % 4];
+  return ['push', 'pull', 'legs', 'upper', 'lower'][dayIndex % 5];
+}
+
+function musclesForDay(dayIndex, daysPerWeek, targetMuscles, injuredParts) {
+  const injured = new Set(injuredParts);
+  const requested = (targetMuscles || []).filter(function (m) {
+    return BODY_PARTS.includes(m) && !injured.has(m);
+  });
+  if (requested.length) return requested;
+
+  const split = splitNameForDay(dayIndex, daysPerWeek);
+  const fromSplit = (SPLIT_MUSCLES[split] || SPLIT_MUSCLES.full).filter(function (m) {
+    return !injured.has(m);
+  });
+  return fromSplit.length ? fromSplit : ['core'];
+}
+
+function pickExercises(dayIndex, muscles, pool, count, rx, notes) {
+  const used = new Set();
+  const exercises = [];
+  let slot = 0;
+  let guard = 0;
+  while (exercises.length < count && guard < 48) {
+    const muscle = muscles[slot % muscles.length];
+    const candidates = pool.filter(function (ex) {
+      return !used.has(ex.id) && ex.muscles.indexOf(muscle) !== -1;
+    });
+    if (candidates.length) {
+      const pick = candidates[(dayIndex + slot) % candidates.length];
+      used.add(pick.id);
+      exercises.push({
+        name: pick.id,
+        sets: rx.sets,
+        reps: rx.reps,
+        restSeconds: rx.rest,
+        notes: notes
+      });
+    }
+    slot++;
+    guard++;
+    if (slot > muscles.length && candidates.length === 0 && exercises.length === 0) {
+      const fallback = pool.filter(function (ex) { return !used.has(ex.id); });
+      if (!fallback.length) break;
+      const pick = fallback[dayIndex % fallback.length];
+      used.add(pick.id);
+      exercises.push({
+        name: pick.id,
+        sets: rx.sets,
+        reps: rx.reps,
+        restSeconds: rx.rest,
+        notes: notes
+      });
+    }
+  }
+  return exercises;
+}
+
+function generateWorkoutProgram(clientProfile, programDuration, workoutDaysPerWeek) {
+  clientProfile = clientProfile || {};
+  const safeAge = clamp(clientProfile.age ?? 18, 10, 120);
+  const age = clamp(safeAge, 18, 100);
+  const fitnessLevel = ['beginner', 'intermediate', 'advanced'].includes(clientProfile.fitnessLevel)
+    ? clientProfile.fitnessLevel
+    : 'beginner';
+  const goals = Array.isArray(clientProfile.goals) && clientProfile.goals.length
+    ? clientProfile.goals
+    : ['general_fitness'];
+  const equipment = Array.isArray(clientProfile.availableEquipment)
+    ? clientProfile.availableEquipment
+    : [];
+  const injuries = Array.isArray(clientProfile.injuries) ? clientProfile.injuries : [];
+  if (injuries.includes('all')) {
+    return { programId: generateId(), durationWeeks: 0, dailyWorkouts: [] };
+  }
+
+  const targetMuscles = Array.isArray(clientProfile.targetMuscles)
+    ? clientProfile.targetMuscles
+    : [];
+  const previousWorkouts = Math.max(0, clientProfile.previousWorkouts ?? 0);
+  const isNew = previousWorkouts < 5;
+  const duration = clamp(programDuration ?? 1, 1, 52);
+  const daysPerWeek = clamp(workoutDaysPerWeek ?? 1, 1, 7);
+  const totalDays = duration * daysPerWeek;
+  const isSenior = age > 60;
+  const injuredParts = injuries.filter(function (p) { return BODY_PARTS.includes(p); });
+  const goalKey = normalizeGoal(goals[0]);
+  const rx = prescriptionFor(goalKey, isSenior);
+
+  const pool = CATALOG.filter(function (ex) {
+    if (!userCanDo(ex, equipment)) return false;
+    if (ex.muscles.some(function (m) { return injuredParts.indexOf(m) !== -1; })) return false;
+    return true;
+  });
+
+  const noteParts = [];
+  if (isSenior) noteParts.push('low intensity');
+  if (isNew) noteParts.push('focus on form');
+  const notes = noteParts.join('; ');
+
+  const numExercises = isSenior ? 4 : (fitnessLevel === 'advanced' ? 6 : fitnessLevel === 'beginner' ? 4 : 5);
+
+  const dailyWorkouts = [];
+  for (let d = 0; d < totalDays; d++) {
+    const split = splitNameForDay(d, daysPerWeek);
+    const muscles = musclesForDay(d, daysPerWeek, targetMuscles, injuredParts);
+    const exercises = pickExercises(d, muscles, pool, numExercises, rx, notes);
+    const warmUp = WARM_UPS[d % WARM_UPS.length];
+    const coolDown = COOL_DOWNS[d % COOL_DOWNS.length];
+    dailyWorkouts.push({
+      day: d + 1,
+      split: targetMuscles.length ? 'focus' : split,
+      warmUp: warmUp,
+      exercises: exercises,
+      coolDown: coolDown
+    });
+  }
+
+  return {
+    programId: generateId(),
+    durationWeeks: duration,
+    dailyWorkouts: dailyWorkouts
+  };
+}
+
+module.exports = {
+  generateWorkoutProgram,
+  normalizeGoal,
+  prescriptionFor,
+  splitNameForDay,
+  userCanDo,
+  CATALOG
+};
+
 },
 "lib/filterExercises.js":function(require,module,exports){
 function filterExercises(library, params) {
@@ -177,7 +336,12 @@ const names={
   russian_twist:'טוויסט רוסי',leg_raise:'הרמת רגליים',mountain_climber:'מטפס הרים',
   jumping_jacks:'ג׳אמפינג ג׳קס',hip_circles:'מעגלי ירך',leg_swings:'נדנוד רגליים',
   torso_twists:'סיבובי גו',hamstring_stretch:'מתיחת מיתר',quad_stretch:'מתיחת ארבע ראשי',
-  shoulder_stretch:'מתיחת כתף',cat_cow:'חתול-פרה',child_pose:'מנח הילד'
+  shoulder_stretch:'מתיחת כתף',cat_cow:'חתול-פרה',child_pose:'מנח הילד',
+  wall_sit:'ישיבה על קיר',calf_raise:'עליות שוק',goblet_squat:'סקוואט גביע',
+  dumbbell_lunge:'מכרע משקולות',romanian_deadlift_db:'דדליפט רומני משקולות',
+  dumbbell_step_up:'עליית מדרגה עם משקולות',dumbbell_bench:'לחיצת חזה משקולות',
+  dumbbell_incline:'לחיצה בשיפוע משקולות',reverse_fly_bw:'פרפר הפוך משקל גוף',
+  dumbbell_ohp:'לחיצת כתפיים משקולות',tricep_kickback:'בעיטת טרייספס'
 };
 const $=x=>document.getElementById(x);
 const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -243,7 +407,8 @@ function run(e){
     const profile = {
       age: 31, gender: 'other', fitnessLevel: $('level').value,
       goals: [$('goal').value], availableEquipment: [eq],
-      injuries: ['chest','back','shoulders','biceps','triceps','legs','core'].filter(x => x !== muscle),
+      targetMuscles: muscle && muscle !== 'full' ? [muscle] : [],
+      injuries: [],
       previousWorkouts: 8
     };
     const p = Hub.generateWorkoutProgram(profile, 1, Number($('days').value));
@@ -271,7 +436,8 @@ function run(e){
           }).join('');
           return `<h3 style="margin:12px 0 4px;font-size:1rem">${esc(label)}</h3>${exs}`;
         }).join('');
-        return `<section class="day"><h3>אימון ${d.day}</h3>${phasesHtml}<button type="button" class="start-day" onclick="startDayWorkout(${i})">התחל אימון</button></section>`;
+        const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
+        return `<section class="day"><h3>אימון ${d.day}${splitLabel ? ' · ' + splitLabel : ''}</h3>${phasesHtml}<button type="button" class="start-day" onclick="startDayWorkout(${i})">התחל אימון</button></section>`;
       }).join('');
   } catch (err) {
     $('result').innerHTML = `<p class="error">${esc(err.message)}</p>`;
