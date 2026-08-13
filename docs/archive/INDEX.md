@@ -1,6 +1,6 @@
 # ארכיון מסמכים
 
-המסמך החי הוא [README.md](../../README.md). המחקר העדכני (פסק דין PARK, אוגוסט 2026) הוא [RESEARCH.md](../../RESEARCH.md).
+המסמך החי הוא [README.md](../../README.md). המחקר העדכני (פסק דין PARK, אוגוסט 2026) הוא [RESEARCH.md](../../RESEARCH.md). מחקר המחיר והיתד: [MONETIZATION.md](../../MONETIZATION.md).
 
 הקבצים כאן נשמרו להיסטוריה. אל תסתמכו עליהם כעובדות מוצר:
 

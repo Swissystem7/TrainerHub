@@ -4,7 +4,7 @@
 
 **למי נבנה:** מאמנים אישיים עצמאיים בישראל שרוצים תוכנית מותאמת (מטרה, רמה, ציוד, ימים) בלי אקסל. זה גם כלי תרגול למתאמן בודד.
 
-**[דמו חי על GitHub Pages](https://swissystem7.github.io/TrainerHub/)** · [בנה אימון](https://swissystem7.github.io/TrainerHub/) · [ספריית הסרטונים](https://swissystem7.github.io/TrainerHub/library.html) · [ניהול מאגר](https://swissystem7.github.io/TrainerHub/manage.html) · [האפליקציה המלאה](https://swissystem7.github.io/TrainerHub/frontend/) · [מצב אימון](https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html)
+**[דמו חי על GitHub Pages](https://swissystem7.github.io/TrainerHub/)** · [בנה אימון](https://swissystem7.github.io/TrainerHub/) · [ספריית הסרטונים](https://swissystem7.github.io/TrainerHub/library.html) · [הצעה למאמנים](https://swissystem7.github.io/TrainerHub/offer.html) · [דף אחד להדפסה](https://swissystem7.github.io/TrainerHub/pitch.html) · [ניהול מאגר](https://swissystem7.github.io/TrainerHub/manage.html) · [האפליקציה המלאה](https://swissystem7.github.io/TrainerHub/frontend/) · [מצב אימון](https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html)
 
 ---
 
@@ -23,15 +23,17 @@
 - **מצב אימון:** טיימר אחד לכל שלב, דילוג על סט בודד, חזרה שמורידה מונים. נגן: קובץ מקומי כ־`<video>`, דרייב/יוטיוב כ־iframe, ובלי רשת — טקסט התרגיל. **החלף** מציע חלופה מאותה קבוצת שרירים. לינק `#CLIP.` פותח תרגיל בודד מהספרייה.
 - **לינק מתאמן:** התוכנית ב־hash של הכתובת, בלי התחברות. בסיום — סיכום ל־`wa.me` וקוד `TH1` לייבוא.
 - **יומן ביצוע:** ייבוא הקוד מהוואטסאפ, רשת 28 יום, בלי לקוחות מזויפים. **הצע שבוע הבא** משנה סטים לפי קושי/דילוגים. **תזכורת** בוואטסאפ למי שבלי ביצוע מיובא.
-- **התחברות** היא הדגמה ב־localStorage. Marketplace / Pro / שיתוף חי מסומנים **בקרוב** או נשמרים רק בדפדפן.
+- **הצעה למאמנים** (`offer.html`): מסלול תוכן בלבד ב־₪59 למושב מאמן — שיתוף אימון ללקוח ודף ממותג. אין סליקה באתר; קוד גישה אחרי תשלום מחוץ לאתר. בלי קוד, כפתור «שתף אימון ללקוח» חסום.
+- **דף אחד להדפסה** (`pitch.html`) ו**ייצוא אימון ל־PDF** (`workout-print.html`, הדפסה מהדפדפן). גרסת תרגול נושאת סימן מים; מיתוג המאמן רק אחרי קוד.
+- **התחברות** היא הדגמה ב־localStorage. Marketplace מסומן כדוגמאות.
 
-אין סליקה, אין וואטסאפ־שרת, ואין ספריית 95 סרטונים בריפו. 44 סרטוני הדרייב מתנגנים מהקישור המשותף, לא מהריפו. `backend/` אופציונלי ולא רץ ב־Pages. מסמכי האקתון/תמחור ישנים ב־[docs/archive/](docs/archive/INDEX.md).
+אין סליקה, אין וואטסאפ־שרת, ואין ספריית 95 סרטונים בריפו. הקטלוג המקומי הוא 78 קליפים. 44 סרטוני הדרייב מתנגנים מהקישור המשותף, לא מהריפו. `backend/` אופציונלי ולא רץ ב־Pages. מחקר המחיר: [MONETIZATION.md](MONETIZATION.md). מסמכי האקתון/תמחור ישנים ב־[docs/archive/](docs/archive/INDEX.md).
 
 ---
 
 ## מה המחקר מצא
 
-פסק דין: **PARK** — לא לבנות עוד פיצ'רים לפני שיחות. פירוט ב־[RESEARCH.md](RESEARCH.md).
+פסק דין ל־CRM: **PARK**. ליתד תוכן (ספרייה + בונה + שיתוף, בלי CRM): נתיב כסף צר במחיר מוצע ₪59 — לא אומת בראיונות. פירוט ב־[RESEARCH.md](RESEARCH.md) ו־[MONETIZATION.md](MONETIZATION.md).
 
 1. **השוק הישראלי כבר מלא.** [AutoFit](https://auto-fit.co.il/), [Coach](https://www.coach-platform.com/), [Boostapp](https://www.boostapp.co.il/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F), [Tazman](https://tazman.co.il/) ו־[BaseCRM](https://basecrm.co.il/guides/trainee-management-app-complete-guide/) מוכרים למאמנים עברית + וואטסאפ + ניהול לקוחות, במחיר ₪0–450.
 2. **ה־ICP שנבחר כבר מטרה שלהם.** מאמן/ת עצמאי/ת בישראל עם 15–40 מתאמנים משלמים שעדיין רץ על וואטסאפ + אקסל — לא רשת ולא סטודיו עם עשרה מדריכים.
