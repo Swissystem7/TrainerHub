@@ -1,6 +1,6 @@
 # ספריית סרטוני תרגיל
 
-הקליפים עצמם **לא בריפו** (גודל + פרטיות). יש שני מקורות מאחורי שכבת lookup אחת ב־`js/core.js`:
+רוב הקליפים **לא בריפו** (גודל + פרטיות). בתיקייה הזו יש 7 קבצי mp4 לדוגמה (`פלאנק`, `בטן`, `מטפס הרים`, `גב תחתון`, `חימום`, `מדרגות`, `מתח אוסטרלי`). שאר 71 הרשומות ב־`js/catalog.json` דורשות העתקה מתיקיית המקור. יש שני מקורות מאחורי שכבת lookup אחת ב־`js/core.js`:
 
 - מקומי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"local"}`.
 - דרייב: [`drive-catalog.json`](./drive-catalog.json) — `{id, driveId, he, muscles, equipment, level, source:"drive", folder}`. 44 סרטונים משותפים כ-anyone/reader, נגן: `https://drive.google.com/file/d/{id}/preview`.
