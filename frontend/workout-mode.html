@@ -247,8 +247,9 @@
 <main class="stage" id="stage">
   <div class="empty-state" id="emptyState">
     <div class="big">🏋️</div>
-    <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן מהמאמן, או חזור ל-Studio.</p>
+    <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור ל-Studio.</p>
     <button type="button" class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../library.html'">ספריית סרטונים</button>
   </div>
 </main>
 
@@ -267,7 +268,11 @@
   <button type="button" class="ctrl-btn" id="btnDone" onclick="markSetDone()" title="סיים סט" aria-label="סיימתי סט">
     <span class="icon" aria-hidden="true">✅</span><span class="label">סיימתי</span>
   </button>
+  <button type="button" class="ctrl-btn" id="btnSwap" onclick="toggleSwap()" title="החלף תרגיל" aria-label="החלף תרגיל" aria-expanded="false" aria-controls="swapPanel">
+    <span class="icon" aria-hidden="true">🔁</span><span class="label">החלף</span>
+  </button>
 </div>
+<div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%"></div>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
@@ -307,6 +312,13 @@ let linkMeta = { wa: '', name: '', tid: '' };
 let skippedSets = 0;
 
 function loadWorkout() {
+  if (typeof ThLink === 'object' && ThLink.decodeClipHash) {
+    const clip = ThLink.decodeClipHash(location.hash);
+    if (clip && clip.id) {
+      linkMeta = { wa: clip.wa || '', name: clip.n || '', tid: '' };
+      return ThLink.clipToWorkout(clip);
+    }
+  }
   if (typeof ThLink === 'object' && ThLink.decodeHash) {
     const fromHash = ThLink.decodeHash(location.hash);
     if (fromHash && fromHash.workout && (fromHash.workout.phases || []).length) {
@@ -484,6 +496,8 @@ function renderExercise(step) {
   const btnDone = document.getElementById('btnDone');
   btnDone.style.display = '';
   btnDone.querySelector('.label').textContent = step.duration ? 'דלג' : 'סיימתי סט';
+  const btnSwapEx = document.getElementById('btnSwap');
+  if (btnSwapEx) btnSwapEx.style.display = '';
 
   // Start timer if duration
   clearCountdown();
@@ -515,6 +529,10 @@ function renderRest(step) {
   announceStatus('מנוחה, ' + step.duration + ' שניות');
 
   document.getElementById('btnDone').style.display = 'none';
+  const btnSwapRest = document.getElementById('btnSwap');
+  if (btnSwapRest) btnSwapRest.style.display = 'none';
+  const swapPanelRest = document.getElementById('swapPanel');
+  if (swapPanelRest) { swapPanelRest.hidden = true; swapPanelRest.innerHTML = ''; }
 
   clearCountdown();
   if (!paused && started) {
@@ -714,6 +732,63 @@ function skipCurrent() {
   }
 }
 
+function toggleSwap() {
+  const panel = document.getElementById('swapPanel');
+  const btn = document.getElementById('btnSwap');
+  if (!panel || !btn) return;
+  if (!panel.hidden) {
+    panel.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    panel.innerHTML = '';
+    return;
+  }
+  const step = steps[stepIdx];
+  if (!step || step.type !== 'exercise') {
+    panel.hidden = true;
+    return;
+  }
+  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5 });
+  if (!alts.length) {
+    panel.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    panel.innerHTML = '<p style="color:#9ca3af;font-size:0.85rem;text-align:center">אין חלופה עם סרטון באותה קבוצת שרירים</p>';
+    return;
+  }
+  panel.hidden = false;
+  btn.setAttribute('aria-expanded', 'true');
+  panel.innerHTML = '<p style="color:#9ca3af;font-size:0.8rem;margin-bottom:8px;text-align:center">לא יכול/ה את התרגיל? בחרו חלופה מאותה ספרייה</p>' +
+    alts.map(function (a) {
+      return '<button type="button" class="ctrl-btn" data-swap="' + esc(a.id) + '" style="width:100%;margin-bottom:6px;flex-direction:row;justify-content:space-between">' +
+        '<span>' + esc(a.he) + '</span><span class="label">' + esc((a.muscles || []).map(TH.muscleLabel).join(' · ')) + '</span></button>';
+    }).join('');
+  panel.querySelectorAll('[data-swap]').forEach(function (b) {
+    b.onclick = function () { applySwap(b.getAttribute('data-swap')); };
+  });
+}
+
+function applySwap(newId) {
+  const step = steps[stepIdx];
+  if (!step || !workout) return;
+  const entry = TH.catalog[newId];
+  if (!entry) return;
+  const oldName = step.name;
+  const oldId = step.id;
+  TH.swapExerciseById(workout, oldId || oldName, newId);
+  steps.forEach(function (s) {
+    if (s.type === 'exercise' && (s.id === oldId || s.name === oldName)) {
+      s.id = entry.id;
+      s.name = entry.he;
+    }
+    if (s.type === 'rest' && s.nextName === oldName) s.nextName = entry.he;
+  });
+  const panel = document.getElementById('swapPanel');
+  const btn = document.getElementById('btnSwap');
+  if (panel) { panel.hidden = true; panel.innerHTML = ''; }
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+  announceStatus('הוחלף ל' + entry.he);
+  renderStep();
+}
+
 function goBack() {
   clearCountdown();
   if (stepIdx > 0) {
@@ -741,6 +816,8 @@ function finishWorkout() {
 
   document.getElementById('stage').style.display = 'none';
   document.getElementById('controlsWrap').style.display = 'none';
+  const swapDone = document.getElementById('swapPanel');
+  if (swapDone) { swapDone.hidden = true; swapDone.innerHTML = ''; }
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('elapsedBar').style.display = 'none';
   const kbdDone = document.getElementById('kbdHint');
