@@ -1,0 +1,8 @@
+{
+  "name": "trainerhub",
+  "private": true,
+  "description": "Hebrew RTL workout builder and live workout-mode demo",
+  "scripts": {
+    "test": "node --test test/*.js"
+  }
+}

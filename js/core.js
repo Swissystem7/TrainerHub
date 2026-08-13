@@ -201,8 +201,8 @@
     for (var i = 0; i < keys.length; i++) {
       var entry = catalog[keys[i]];
       if (!entry || !entry.file) continue;
-      if (entry.he === name || keys[i] === name || entry.id === id) return entry;
-      if (HE_NAMES[keys[i]] === name) return entry;
+      if (id && (entry.id === id || keys[i] === id)) return entry;
+      if (name && (entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)) return entry;
     }
     return null;
   }
@@ -649,5 +649,9 @@
   };
   root.esc = esc;
 
+  if (typeof module === 'object' && module.exports) {
+    module.exports = api;
+  }
+
   if (typeof document !== 'undefined') loadCatalog();
-})(typeof window !== 'undefined' ? window : this);
+})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
