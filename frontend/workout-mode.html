@@ -358,6 +358,7 @@ let elapsedSeconds = 0;
 let elapsedInterval = null;
 let completedSets = 0;
 let completedExercises = 0;
+let completedStepIds = new Set();
 let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
 
 /* ═══════════════════════════════════════════
@@ -509,6 +510,7 @@ function updateProgress() {
 ═══════════════════════════════════════════ */
 
 function startCountdown(seconds, onDone) {
+  clearCountdown();
   countdown = seconds;
   countdownMax = seconds;
   updateClockDisplay(countdown, countdownMax);
@@ -603,7 +605,8 @@ function resumeCurrentStep() {
 function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
   const step = steps[stepIdx];
-  if (step && step.type === 'exercise') {
+  if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
+    completedStepIds.add(stepIdx);
     completedSets++;
     if (step.set === step.totalSets) completedExercises++;
   }
@@ -617,23 +620,27 @@ function advance() {
   if (stepIdx >= steps.length) {
     finishWorkout();
   } else {
+    // renderStep already starts the timed step; do not also call resumeCurrentStep()
     renderStep();
-    if (!paused && started) {
-      resumeCurrentStep();
-    }
   }
 }
 
 function skipCurrent() {
   clearCountdown();
   const step = steps[stepIdx];
-  if (step && step.type === 'exercise') completedExercises++; // partial credit
-  stepIdx++;
+  if (step && step.type === 'exercise') {
+    // Skip this set only (and its following rest), not the whole exercise
+    stepIdx++;
+    if (stepIdx < steps.length && steps[stepIdx].type === 'rest') {
+      stepIdx++;
+    }
+  } else {
+    stepIdx++;
+  }
   if (stepIdx >= steps.length) {
     finishWorkout();
   } else {
     renderStep();
-    if (!paused && started) resumeCurrentStep();
   }
 }
 
@@ -641,10 +648,16 @@ function goBack() {
   clearCountdown();
   if (stepIdx > 0) {
     stepIdx--;
-    // Re-init countdown to full
+    if (completedStepIds.has(stepIdx)) {
+      const step = steps[stepIdx];
+      completedStepIds.delete(stepIdx);
+      if (step && step.type === 'exercise') {
+        if (completedSets > 0) completedSets--;
+        if (step.set === step.totalSets && completedExercises > 0) completedExercises--;
+      }
+    }
     countdown = 0;
     renderStep();
-    if (!paused && started) resumeCurrentStep();
   }
 }
 
