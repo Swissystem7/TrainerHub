@@ -72,6 +72,70 @@
     { id: 'leg_raise', muscles: ['core'], equipment: ['none'] },
     { id: 'mountain_climber', muscles: ['core'], equipment: ['none'] }
   ];
+  var HE_NAMES = {
+    bodyweight_squat: 'סקוואט משקל גוף',
+    lunges: 'מכרעים',
+    glute_bridge: 'גשר ישבן',
+    step_up: 'עליית מדרגה',
+    wall_sit: 'ישיבה על קיר',
+    calf_raise: 'עליות שוק',
+    goblet_squat: 'סקוואט גביע',
+    dumbbell_lunge: 'מכרע משקולות',
+    romanian_deadlift_db: 'דדליפט רומני משקולות',
+    dumbbell_step_up: 'עליית מדרגה עם משקולות',
+    squat: 'סקוואט',
+    deadlift: 'דדליפט',
+    leg_press: 'לחיצת רגליים',
+    push_up: 'שכיבות סמיכה',
+    wide_push_up: 'שכיבות רחבות',
+    decline_push_up: 'שכיבות שיפוע',
+    dumbbell_bench: 'לחיצת חזה משקולות',
+    dumbbell_fly: 'פרפר משקולות',
+    dumbbell_incline: 'לחיצה בשיפוע משקולות',
+    bench_press: 'לחיצת חזה',
+    incline_press: 'לחיצה בשיפוע',
+    superman: 'סופרמן',
+    bodyweight_row: 'חתירת משקל גוף',
+    reverse_fly_bw: 'פרפר הפוך משקל גוף',
+    dumbbell_row: 'חתירת משקולת',
+    reverse_fly: 'פרפר הפוך',
+    barbell_row: 'חתירה',
+    pull_up: 'מתח',
+    lat_pulldown: 'פולי עליון',
+    pike_push_up: 'שכיבות פאייק',
+    arm_circles: 'מעגלי ידיים',
+    wall_walk: 'הליכה על קיר',
+    dumbbell_ohp: 'לחיצת כתפיים משקולות',
+    lateral_raise: 'הרחקה צידית',
+    front_raise: 'הרמה קדמית',
+    overhead_press: 'לחיצת כתפיים',
+    upright_row: 'חתירה אנכית',
+    bodyweight_curl: 'כפיפת משקל גוף',
+    doorway_curl: 'כפיפה במשקוף',
+    bicep_curl: 'כפיפת מרפק',
+    hammer_curl: 'פטישים',
+    concentration_curl: 'כפיפה מרוכזת',
+    bench_dips: 'דיפס על ספסל',
+    tricep_push_up: 'שכיבות טרייספס',
+    overhead_extension: 'פשיטה מעל הראש',
+    tricep_kickback: 'בעיטת טרייספס',
+    tricep_pushdown: 'פשיטת מרפק',
+    dips: 'מקבילים',
+    plank: 'פלאנק',
+    crunches: 'כפיפות בטן',
+    russian_twist: 'טוויסט רוסי',
+    leg_raise: 'הרמת רגליים',
+    mountain_climber: 'מטפס הרים',
+    jumping_jacks: 'ג׳אמפינג ג׳קס',
+    leg_swings: 'נדנוד רגליים',
+    torso_twists: 'סיבובי גו',
+    hip_circles: 'מעגלי ירך',
+    hamstring_stretch: 'מתיחת מיתר',
+    quad_stretch: 'מתיחת ארבע ראשי',
+    shoulder_stretch: 'מתיחת כתף',
+    cat_cow: 'חתול-פרה',
+    child_pose: 'מנח הילד'
+  };
 
   var catalog = {};
   var catalogReady = false;
@@ -123,6 +187,7 @@
 
   function heName(id) {
     if (!id) return '';
+    if (HE_NAMES[id]) return HE_NAMES[id];
     if (catalog[id] && catalog[id].he) return catalog[id].he;
     return String(id).replace(/_/g, ' ');
   }
@@ -131,18 +196,26 @@
     if (!step) return null;
     var id = step.id || step.name;
     if (id && catalog[id] && catalog[id].file) return catalog[id];
+    var name = step.name;
     var keys = Object.keys(catalog);
     for (var i = 0; i < keys.length; i++) {
       var entry = catalog[keys[i]];
-      if (entry && entry.file && (entry.he === step.name || keys[i] === step.name)) return entry;
+      if (!entry || !entry.file) continue;
+      if (entry.he === name || keys[i] === name || entry.id === id) return entry;
+      if (HE_NAMES[keys[i]] === name) return entry;
     }
     return null;
   }
 
   function catalogSrc(file) {
     if (!file) return '';
-    if (/^https?:\/\//i.test(file) || file.indexOf('../') === 0 || file.indexOf('./') === 0 || file.charAt(0) === '/') return file;
-    return assetUrl(file);
+    if (/^https?:\/\//i.test(file)) return file;
+    if (file.indexOf('../') === 0 || file.indexOf('./') === 0 || file.charAt(0) === '/') return file;
+    var name = String(file).replace(/^videos\//, '');
+    var encoded = name.split('/').map(function (part) {
+      return encodeURIComponent(part);
+    }).join('/');
+    return assetUrl('videos/' + encoded);
   }
 
   function phaseLabel(name) {
@@ -519,7 +592,7 @@
 
   function loadCatalog() {
     if (catalogReady) return Promise.resolve(catalog);
-    return fetch(assetUrl('videos/catalog.json')).then(function (r) {
+    return fetch(assetUrl('js/catalog.json')).then(function (r) {
       return r.ok ? r.json() : {};
     }).then(function (data) {
       setCatalog(data);

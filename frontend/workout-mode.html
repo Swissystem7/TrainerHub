@@ -458,8 +458,8 @@ function renderExercise(step) {
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
   const videoHtml = clip && clip.file
-    ? `<video class="ex-video" src="${esc(TH.catalogSrc(clip.file))}" playsinline controls muted preload="metadata" onerror="this.hidden=true"></video>`
-    : `<video class="ex-video" hidden playsinline></video>`;
+    ? `<video class="ex-video" hidden playsinline controls muted preload="metadata" src="${esc(TH.catalogSrc(clip.file))}" onloadeddata="this.hidden=false" onerror="this.remove()"></video>`
+    : '';
 
   stage.innerHTML = `
     <div class="phase-label">${esc(step.phase)}</div>
