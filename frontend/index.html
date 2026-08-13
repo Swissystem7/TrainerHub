@@ -73,7 +73,7 @@
       direction: rtl;
     }
 
-    textarea:focus { outline: none; border-color: #7c3aed; }
+    textarea:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 2px; border-color: #7c3aed; }
 
     .example-btn {
       margin-top: 8px;
@@ -108,7 +108,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #4a4a6a;
+      color: #9ca3af;
       font-size: 0.95rem;
       text-align: center;
     }
@@ -245,7 +245,7 @@
 
     /* History */
     .history-panel { margin-top: 20px; }
-    .history-title { font-size: 0.8rem; color: #6b7280; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .history-title { font-size: 0.8rem; color: #9ca3af; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
     .history-item {
       padding: 10px 14px; border: 1px solid #2a2a4a; border-radius: 10px;
       margin-bottom: 8px; cursor: pointer; transition: background 0.2s;
@@ -253,9 +253,9 @@
     }
     .history-item:hover { background: #1a1a2e; }
     .history-name { font-size: 0.88rem; font-weight: 600; }
-    .history-meta { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+    .history-meta { font-size: 0.75rem; color: #9ca3af; margin-top: 2px; }
     .history-del {
-      color: #4a4a6a; font-size: 0.8rem; cursor: pointer;
+      color: #9ca3af; font-size: 0.8rem; cursor: pointer;
       padding: 2px 8px; border-radius: 6px; border: 1px solid transparent;
     }
     .history-del:hover { color: #f87171; border-color: #7f1d1d; }
@@ -278,7 +278,7 @@
 
     /* ── History empty state ── */
     .history-empty {
-      text-align: center; padding: 24px 16px; color: #4a4a6a;
+      text-align: center; padding: 24px 16px; color: #9ca3af;
       font-size: 0.88rem; line-height: 1.7;
     }
     .history-empty .empty-icon { font-size: 2.2rem; margin-bottom: 8px; }
@@ -330,7 +330,7 @@
       border-radius: 14px; padding: 24px; text-align: center; color: #fca5a5;
     }
     .error-card .error-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .error-card .error-hint  { font-size: 0.82rem; color: #6b7280; margin-top: 8px; }
+    .error-card .error-hint  { font-size: 0.82rem; color: #9ca3af; margin-top: 8px; }
     .error-retry {
       margin-top: 14px; background: none; border: 1px solid #7f1d1d;
       color: #fca5a5; padding: 8px 20px; border-radius: 8px; cursor: pointer;
@@ -346,7 +346,8 @@
   </style>
 </head>
 <body>
-<nav id="TH-SURFACE-NAV" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
+<a class="skip-link" href="#workoutInput">דלג לתוכן</a>
+<nav id="TH-SURFACE-NAV" aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
   <span style="color:#b9f24a">TrainerHub</span>
   <a href="../" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בונה אימון מהיר</a>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">האפליקציה המלאה</span>
@@ -362,11 +363,11 @@
       <h1>🏋️ TrainerHub</h1>
       <span>GitHub למאמנים — AI Workout Creator</span>
     </div>
-    <nav style="display:flex;gap:4px;margin-inline-start:32px">
-      <button class="nav-tab active" onclick="switchTab('studio',this)">✍️ <span class="tab-label">Creator Studio</span></button>
-      <button class="nav-tab" onclick="switchTab('marketplace',this)">🛒 <span class="tab-label">Marketplace</span></button>
-      <button class="nav-tab" onclick="switchTab('clients',this)">📓 <span class="tab-label">יומן ביצוע</span></button>
-      <button class="nav-tab" onclick="switchTab('profile',this)">👤 <span class="tab-label">הפרופיל שלי</span></button>
+    <nav style="display:flex;gap:4px;margin-inline-start:32px" aria-label="לשוניות">
+      <button type="button" class="nav-tab active" onclick="switchTab('studio',this)" aria-current="page">✍️ <span class="tab-label">Creator Studio</span></button>
+      <button type="button" class="nav-tab" onclick="switchTab('marketplace',this)">🛒 <span class="tab-label">Marketplace</span></button>
+      <button type="button" class="nav-tab" onclick="switchTab('clients',this)">📓 <span class="tab-label">יומן ביצוע</span></button>
+      <button type="button" class="nav-tab" onclick="switchTab('profile',this)">👤 <span class="tab-label">הפרופיל שלי</span></button>
     </nav>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
@@ -390,48 +391,48 @@
 <!-- ── Pricing Modal ─────────────────────────────────────────────── -->
 <div id="pricingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center">
   <div style="background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:36px;max-width:720px;width:95%;position:relative;max-height:90vh;overflow-y:auto">
-    <button onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#6b7280;font-size:1.3rem;cursor:pointer">✕</button>
+    <button onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#9ca3af;font-size:1.3rem;cursor:pointer">✕</button>
     <div style="text-align:center;margin-bottom:28px">
       <div style="font-size:1.6rem;font-weight:800;color:#f0f0f0;margin-bottom:6px">⚡ שדרג את TrainerHub שלך</div>
-      <div style="color:#6b7280;font-size:0.9rem">התוכניות בתשלום עדיין לא פעילות — מסומנות כבקרוב</div>
+      <div style="color:#9ca3af;font-size:0.9rem">התוכניות בתשלום עדיין לא פעילות — מסומנות כבקרוב</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
       <!-- Free -->
       <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
-        <div style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Free</div>
+        <div style="font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Free</div>
         <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪0</div>
-        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לנצח</div>
+        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לנצח</div>
         <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
           <li>✓ עד 5 אימונים/חודש</li>
           <li>✓ כרטיסיות בסיסיות</li>
           <li>✓ היסטוריה מקומית</li>
-          <li style="color:#4a4a6a">✗ Marketplace</li>
-          <li style="color:#4a4a6a">✗ ייצוא PDF</li>
-          <li style="color:#4a4a6a">✗ Analytics</li>
+          <li style="color:#9ca3af">✗ Marketplace</li>
+          <li style="color:#9ca3af">✗ ייצוא PDF</li>
+          <li style="color:#9ca3af">✗ Analytics</li>
         </ul>
-        <button style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#6b7280;cursor:default;font-size:0.85rem">תוכנית נוכחית</button>
+        <button style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:default;font-size:0.85rem">תוכנית נוכחית</button>
       </div>
       <!-- Pro -->
       <div style="background:linear-gradient(180deg,#2d1f5e,#1a1230);border:2px solid #7c3aed;border-radius:14px;padding:22px;text-align:center;position:relative">
         <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:0.72rem;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.5px">הכי פופולרי</div>
         <div style="font-size:0.75rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Pro</div>
         <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪49</div>
-        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לחודש</div>
+        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לחודש</div>
         <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
           <li>✓ אימונים ללא הגבלה</li>
           <li>✓ גישה מלאה ל-Marketplace</li>
           <li>✓ ייצוא PDF</li>
           <li>✓ Analytics בסיסי</li>
           <li>✓ תמיכה מועדפת</li>
-          <li style="color:#4a4a6a">✗ Multi-trainer</li>
+          <li style="color:#9ca3af">✗ Multi-trainer</li>
         </ul>
         <button disabled style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:not-allowed;font-size:0.85rem">בקרוב</button>
       </div>
       <!-- Studio -->
       <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
-        <div style="font-size:0.75rem;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Studio</div>
+        <div style="font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Studio</div>
         <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪149</div>
-        <div style="font-size:0.78rem;color:#6b7280;margin-bottom:20px">לחודש</div>
+        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לחודש</div>
         <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
           <li>✓ הכל ב-Pro</li>
           <li>✓ Multi-trainer (עד 10)</li>
@@ -455,12 +456,12 @@
   <div style="font-size:0.82rem;color:#a78bfa;margin-bottom:12px">שדרג ל-Pro לאימונים ללא הגבלה</div>
   <div style="display:flex;gap:8px">
     <button onclick="openPricing();hideToast()" style="flex:1;background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:8px;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:700">שדרג ⚡</button>
-    <button onclick="hideToast()" style="background:none;border:1px solid #3a3a5a;color:#6b7280;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem">אחר כך</button>
+    <button onclick="hideToast()" style="background:none;border:1px solid #3a3a5a;color:#9ca3af;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem">אחר כך</button>
   </div>
 </div>
 
 <style>
-.nav-tab{padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#6b7280;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all.2s}
+.nav-tab{padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#9ca3af;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all.2s}
 .nav-tab:hover{color:#a78bfa;background:rgba(124,58,237,.08)}
 .nav-tab.active{background:rgba(124,58,237,.15);color:#a78bfa}
 .tab-section{display:none}
@@ -470,7 +471,7 @@
 .marketplace-wrap{max-width:1100px;margin:0 auto;padding:24px 20px}
 .mkt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
 .mkt-filters{display:flex;gap:8px;flex-wrap:wrap}
-.mkt-filter{padding:6px 16px;border-radius:20px;border:1px solid #2a2a4a;background:transparent;color:#6b7280;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all.2s}
+.mkt-filter{padding:6px 16px;border-radius:20px;border:1px solid #2a2a4a;background:transparent;color:#9ca3af;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all.2s}
 .mkt-filter.active,.mkt-filter:hover{border-color:#7c3aed;color:#a78bfa;background:rgba(124,58,237,.08)}
 .mkt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .mkt-card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;overflow:hidden;transition:all.2s;cursor:pointer}
@@ -481,10 +482,10 @@
 .mkt-trainer{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #2a2a4a}
 .trainer-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#fff;flex-shrink:0}
 .trainer-name{font-size:0.85rem;font-weight:600}
-.trainer-cred{font-size:0.72rem;color:#6b7280}
+.trainer-cred{font-size:0.72rem;color:#9ca3af}
 .mkt-card-body{padding:12px 16px}
 .mkt-actions{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid #2a2a4a}
-.mkt-stat{display:flex;align-items:center;gap:5px;font-size:0.78rem;color:#6b7280}
+.mkt-stat{display:flex;align-items:center;gap:5px;font-size:0.78rem;color:#9ca3af}
 .mkt-btn-row{display:flex;gap:6px}
 .mkt-btn{padding:5px 14px;border-radius:8px;border:1px solid #3a3a5a;background:transparent;color:#a78bfa;font-size:0.78rem;cursor:pointer;font-family:inherit;transition:all.2s}
 .mkt-btn:hover{border-color:#7c3aed;background:rgba(124,58,237,.08)}
@@ -500,7 +501,7 @@
 .profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .profile-stat{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:16px;text-align:center}
 .profile-stat-n{font-size:1.6rem;font-weight:800;color:#a78bfa}
-.profile-stat-l{font-size:0.72rem;color:#6b7280;margin-top:3px}
+.profile-stat-l{font-size:0.72rem;color:#9ca3af;margin-top:3px}
 .earned-badge{display:inline-flex;align-items:center;gap:6px;background:#2a2a4a;border-radius:20px;padding:6px 14px;font-size:0.8rem;margin:4px}
 </style>
 
@@ -508,8 +509,8 @@
 <div class="container">
   <!-- Input Panel -->
   <div class="panel">
-    <h2>✍️ הכנס תיאור אימון</h2>
-    <textarea id="workoutInput" placeholder="כתוב/הדבק כאן כל תיאור אימון בטקסט חופשי...
+    <h2 id="workoutInputLabel">✍️ הכנס תיאור אימון</h2>
+    <textarea id="workoutInput" aria-labelledby="workoutInputLabel" placeholder="כתוב/הדבק כאן כל תיאור אימון בטקסט חופשי...
 
 לדוגמה:
 אימון תחנות ל-10 אנשים, 45 דקות.
@@ -566,7 +567,7 @@
   <div class="mkt-header">
     <div>
       <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px">🛒 Marketplace <span style="font-size:0.75rem;color:#9ca3af;font-weight:600">דוגמאות · בקרוב קהילה חיה</span></h2>
-      <p style="color:#6b7280;font-size:0.85rem">כרטיסיות לדוגמה בלבד — אין רכישה או שיתוף חי</p>
+      <p style="color:#9ca3af;font-size:0.85rem">כרטיסיות לדוגמה בלבד — אין רכישה או שיתוף חי</p>
     </div>
     <div class="mkt-filters" id="mktFilters">
       <button class="mkt-filter active" onclick="filterMkt('all',this)">הכל</button>
@@ -589,7 +590,7 @@
     <div style="flex:1">
       <div style="font-size:1.4rem;font-weight:800;margin-bottom:4px">המאמן שלי</div>
       <div style="color:#a78bfa;font-size:0.9rem;margin-bottom:8px">פרופיל הדגמה · ללא אישור חיצוני</div>
-      <div style="color:#6b7280;font-size:0.83rem;line-height:1.6">מאמן כושר אישי ומאמן קבוצות. מתמחה באימוני כוח, HIIT ופונקציונלי. 8 שנות ניסיון עם מגוון אוכלוסיות.</div>
+      <div style="color:#9ca3af;font-size:0.83rem;line-height:1.6">מאמן כושר אישי ומאמן קבוצות. מתמחה באימוני כוח, HIIT ופונקציונלי. 8 שנות ניסיון עם מגוון אוכלוסיות.</div>
     </div>
     <button class="mkt-btn" style="align-self:flex-start;opacity:.7;cursor:default">✏️ ערוך פרופיל · בקרוב</button>
   </div>
@@ -751,7 +752,7 @@ function renderCard(w, usedFallback) {
       return `<div class="exercise">
         <div>
           <div class="exercise-name">${esc(ex.name)}</div>
-          ${ex.notes ? `<div style="color:#6b7280;font-size:0.78rem;margin-top:2px">${esc(ex.notes)}</div>` : ''}
+          ${ex.notes ? `<div style="color:#9ca3af;font-size:0.78rem;margin-top:2px">${esc(ex.notes)}</div>` : ''}
         </div>
         <div class="exercise-details">${details.join(' · ')}</div>
       </div>`;
@@ -972,9 +973,13 @@ function hideToast() {
 // ── Tab navigation ────────────────────────────────────────────────────────
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => {
+    b.classList.remove('active');
+    b.removeAttribute('aria-current');
+  });
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-current', 'page');
   if (id === 'marketplace') renderMarketplace();
   if (id === 'profile') renderProfileStats();
 }
@@ -1089,7 +1094,7 @@ function renderProfileStats() {
   if (folEl) folEl.textContent = '0';
   const el = document.getElementById('mySharedList');
   if (!shared.length) {
-    el.innerHTML = '<div style="color:#6b7280;font-size:0.85rem;text-align:center;padding:20px">עדיין לא שיתפת אימונים במרקטפלייס</div>';
+    el.innerHTML = '<div style="color:#9ca3af;font-size:0.85rem;text-align:center;padding:20px">עדיין לא שיתפת אימונים במרקטפלייס</div>';
   } else {
     el.innerHTML = shared.map(s => `
       <div class="history-item">
@@ -1106,25 +1111,25 @@ function renderProfileStats() {
 .login-btn:hover{border-color:#7c3aed;background:rgba(124,58,237,.08)}
 .user-menu{display:none;position:absolute;top:44px;left:0;background:#1a1a2e;border:1px solid #3a3a5a;border-radius:12px;padding:8px;min-width:160px;z-index:1100;box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .user-menu.open{display:block}
-.user-menu-name{font-size:0.8rem;color:#6b7280;padding:6px 10px;border-bottom:1px solid #2a2a4a;margin-bottom:6px}
+.user-menu-name{font-size:0.8rem;color:#9ca3af;padding:6px 10px;border-bottom:1px solid #2a2a4a;margin-bottom:6px}
 .user-menu button{display:block;width:100%;text-align:right;background:none;border:none;color:#c4b5fd;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:inherit}
 .user-menu button:hover{background:rgba(124,58,237,.12)}
 .th-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1200;align-items:center;justify-content:center}
 .th-modal-overlay.open{display:flex}
 .th-modal{background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:32px;max-width:420px;width:92%;position:relative;max-height:88vh;overflow-y:auto}
-.th-modal .close-x{position:absolute;top:14px;left:14px;background:none;border:none;color:#6b7280;font-size:1.2rem;cursor:pointer}
+.th-modal .close-x{position:absolute;top:14px;left:14px;background:none;border:none;color:#9ca3af;font-size:1.2rem;cursor:pointer}
 .auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:#0f0f13;border-radius:10px;padding:4px}
-.auth-tab{flex:1;padding:9px;border:none;border-radius:8px;background:transparent;color:#6b7280;cursor:pointer;font-size:0.88rem;font-weight:600;font-family:inherit}
+.auth-tab{flex:1;padding:9px;border:none;border-radius:8px;background:transparent;color:#9ca3af;cursor:pointer;font-size:0.88rem;font-weight:600;font-family:inherit}
 .auth-tab.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
 .auth-field{margin-bottom:12px}
 .auth-field label{display:block;font-size:0.8rem;color:#a78bfa;margin-bottom:5px}
 .auth-field input{width:100%;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:11px 14px;color:#f0f0f0;font-size:0.9rem;font-family:inherit}
-.auth-field input:focus{outline:none;border-color:#7c3aed}
+.auth-field input:focus-visible{outline:2px solid #c4b5fd;outline-offset:2px;border-color:#7c3aed}
 .auth-submit{width:100%;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:12px;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer}
 .auth-error{color:#fca5a5;font-size:0.8rem;margin-top:8px;display:none}
 #authSubtitle{color:#a78bfa;font-size:0.85rem;text-align:center;margin-bottom:16px}
-.th-footer{max-width:1100px;margin:0 auto;padding:20px;border-top:1px solid #2a2a4a;display:flex;justify-content:center;gap:20px;font-size:0.78rem;color:#6b7280}
-.th-footer a{color:#6b7280;text-decoration:none;cursor:pointer}
+.th-footer{max-width:1100px;margin:0 auto;padding:20px;border-top:1px solid #2a2a4a;display:flex;justify-content:center;gap:20px;font-size:0.78rem;color:#9ca3af}
+.th-footer a{color:#9ca3af;text-decoration:none;cursor:pointer}
 .th-footer a:hover{color:#a78bfa}
 .legal-body{font-size:0.85rem;color:#c4b5fd;line-height:1.8}
 .legal-body p{margin-bottom:12px;color:#9ca3af}
@@ -1140,12 +1145,12 @@ function renderProfileStats() {
 .onboard-dot.active{background:#7c3aed}
 .onboard-actions{display:flex;gap:10px;justify-content:center}
 .onboard-next{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;padding:11px 32px;border-radius:12px;font-size:0.9rem;font-weight:700;cursor:pointer}
-.onboard-skip{background:none;border:1px solid #3a3a5a;color:#6b7280;padding:11px 20px;border-radius:12px;font-size:0.9rem;cursor:pointer}
+.onboard-skip{background:none;border:1px solid #3a3a5a;color:#9ca3af;padding:11px 20px;border-radius:12px;font-size:0.9rem;cursor:pointer}
 #feedbackFab{position:fixed;bottom:24px;left:24px;z-index:1100;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:24px;padding:11px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(124,58,237,.4);font-family:inherit}
 #feedbackPanel{display:none;position:fixed;bottom:76px;left:24px;z-index:1100;background:#1a1a2e;border:1px solid #3a3a5a;border-radius:16px;padding:20px;width:280px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
 #feedbackPanel.open{display:block}
-.fb-stars{display:flex;gap:6px;justify-content:center;margin:10px 0 14px;flex-direction:row-reverse}
-.fb-star{font-size:1.5rem;cursor:pointer;filter:grayscale(1);transition:filter .15s,transform .15s}
+.fb-stars{display:flex;gap:6px;justify-content:center;margin:10px 0 14px}
+.fb-star{font-size:1.5rem;cursor:pointer;filter:grayscale(1);transition:filter .15s,transform .15s;background:none;border:0;padding:0;color:inherit}
 .fb-star.on{filter:none;transform:scale(1.1)}
 #feedbackPanel textarea{width:100%;height:70px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#f0f0f0;font-size:0.85rem;font-family:inherit;resize:none;direction:rtl}
 #fbToast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#14532d;border:1px solid #22c55e;color:#86efac;padding:11px 22px;border-radius:12px;font-size:0.88rem;font-weight:600;z-index:1600}
@@ -1154,24 +1159,24 @@ function renderProfileStats() {
 <!-- Trainee link modal -->
 <div class="th-modal-overlay" id="traineeLinkModal">
   <div class="th-modal">
-    <button class="close-x" onclick="closeTraineeLink()">✕</button>
+    <button type="button" class="close-x" onclick="closeTraineeLink()" aria-label="סגור">✕</button>
     <div style="font-size:1.2rem;font-weight:800;margin-bottom:6px">🔗 לינק מתאמן</div>
     <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:14px">התוכנית נשמרת בכתובת עצמה. המתאמן לא מתחבר. בסיום הוא שולח לך סיכום בוואטסאפ. הדגמה — בלי שרת.</p>
     <div class="auth-field">
-      <label>שם המתאמן</label>
-      <input type="text" id="tlName" placeholder="יוסי" oninput="updateTraineeLinkPreview()">
+      <label for="tlName">שם המתאמן</label>
+      <input type="text" id="tlName" placeholder="יוסי" autocomplete="name" oninput="updateTraineeLinkPreview()">
     </div>
     <div class="auth-field">
-      <label>טלפון המתאמן (לשליחת הלינק)</label>
-      <input type="tel" id="tlTraineePhone" placeholder="050..." dir="ltr">
+      <label for="tlTraineePhone">טלפון המתאמן (לשליחת הלינק)</label>
+      <input type="tel" id="tlTraineePhone" placeholder="050..." dir="ltr" autocomplete="tel">
     </div>
     <div class="auth-field">
-      <label>הטלפון שלך — לחזרת הסיכום בוואטסאפ</label>
-      <input type="tel" id="tlPhone" placeholder="050..." dir="ltr" oninput="updateTraineeLinkPreview()">
+      <label for="tlPhone">הטלפון שלך — לחזרת הסיכום בוואטסאפ</label>
+      <input type="tel" id="tlPhone" placeholder="050..." dir="ltr" autocomplete="tel" oninput="updateTraineeLinkPreview()">
     </div>
     <div class="auth-field">
-      <label>הקישור</label>
-      <textarea id="tlUrl" readonly dir="ltr" style="width:100%;min-height:70px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#c4b5fd;font-size:0.75rem"></textarea>
+      <label for="tlUrl">הקישור</label>
+      <textarea id="tlUrl" readonly dir="ltr" aria-label="קישור המתאמן" style="width:100%;min-height:70px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#c4b5fd;font-size:0.75rem"></textarea>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="auth-submit" id="tlCopyBtn" type="button" style="margin-top:0;flex:1" onclick="copyTraineeLink()">📋 העתק קישור</button>
@@ -1184,7 +1189,7 @@ function renderProfileStats() {
 <!-- Auth Modal -->
 <div class="th-modal-overlay" id="authModal">
   <div class="th-modal">
-    <button class="close-x" onclick="closeAuth()">✕</button>
+    <button type="button" class="close-x" onclick="closeAuth()" aria-label="סגור">✕</button>
     <div style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px">🏋️ TrainerHub</div>
     <div id="authSubtitle">הדגמה — ההתחברות נשמרת רק בדפדפן זה</div>
     <div class="auth-tabs">
@@ -1192,16 +1197,16 @@ function renderProfileStats() {
       <button class="auth-tab" id="tabSignup" onclick="setAuthMode('signup')">הרשמה (הדגמה)</button>
     </div>
     <div class="auth-field" id="nameField" style="display:none">
-      <label>שם מלא</label>
-      <input type="text" id="authName" placeholder="השם שלך">
+      <label for="authName">שם מלא</label>
+      <input type="text" id="authName" placeholder="השם שלך" autocomplete="name">
     </div>
     <div class="auth-field">
-      <label>אימייל</label>
-      <input type="email" id="authEmail" placeholder="you@email.com" dir="ltr">
+      <label for="authEmail">אימייל</label>
+      <input type="email" id="authEmail" placeholder="you@email.com" dir="ltr" autocomplete="email">
     </div>
     <div class="auth-field">
-      <label>סיסמה</label>
-      <input type="password" id="authPass" placeholder="••••••••" dir="ltr">
+      <label for="authPass">סיסמה</label>
+      <input type="password" id="authPass" placeholder="••••••••" dir="ltr" autocomplete="current-password">
     </div>
     <button class="auth-submit" id="authSubmit" onclick="submitAuth()">התחבר להדגמה</button>
     <div class="auth-error" id="authError"></div>
@@ -1225,7 +1230,7 @@ function renderProfileStats() {
 <!-- Legal Modal -->
 <div class="th-modal-overlay" id="legalModal">
   <div class="th-modal" style="max-width:560px">
-    <button class="close-x" onclick="closeLegal()">✕</button>
+    <button type="button" class="close-x" onclick="closeLegal()" aria-label="סגור">✕</button>
     <div style="font-size:1.2rem;font-weight:800;margin-bottom:16px" id="legalTitle"></div>
     <div class="legal-body" id="legalBody"></div>
   </div>
@@ -1243,6 +1248,7 @@ function renderProfileStats() {
 <div id="feedbackPanel">
   <div style="font-size:0.9rem;font-weight:700;margin-bottom:4px">מה דעתך על TrainerHub?</div>
   <div class="fb-stars" id="fbStars"></div>
+  <label for="fbText">משוב בכתב</label>
   <textarea id="fbText" placeholder="ספר לנו מה אפשר לשפר..."></textarea>
   <button class="auth-submit" style="margin-top:10px;padding:9px" onclick="sendFeedback()">שלח משוב</button>
 </div>
@@ -1375,7 +1381,7 @@ document.getElementById('legalModal').addEventListener('click', function(e) { if
 // ── Feedback widget ───────────────────────────────────────────────
 let fbRating = 0;
 document.getElementById('fbStars').innerHTML = [1,2,3,4,5].map(n =>
-  `<span class="fb-star" data-n="${n}" onclick="setFbRating(${n})">⭐</span>`).join('');
+  `<button type="button" class="fb-star" data-n="${n}" aria-label="דירוג ${n} מתוך 5" onclick="setFbRating(${n})">⭐</button>`).join('');
 function setFbRating(n) {
   fbRating = n;
   document.querySelectorAll('.fb-star').forEach(s =>
@@ -1407,9 +1413,9 @@ function sendFeedback() {
     <h2 style="font-size:1.3rem;font-weight:800">📓 יומן ביצוע</h2>
     <button class="action-btn" style="flex:0;min-width:auto" onclick="addClient()">+ מתאמן</button>
   </div>
-  <p style="color:#6b7280;font-size:0.85rem;margin-bottom:14px">הדבק קוד TH1 שהמתאמן שלח בוואטסאפ — בלי שרת. הנתונים נשמרים בדפדפן הזה בלבד.</p>
+  <p style="color:#9ca3af;font-size:0.85rem;margin-bottom:14px">הדבק קוד TH1 שהמתאמן שלח בוואטסאפ — בלי שרת. הנתונים נשמרים בדפדפן הזה בלבד.</p>
   <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:14px;padding:14px;margin-bottom:18px">
-    <label style="display:block;font-size:0.78rem;color:#a78bfa;margin-bottom:6px">קוד / JSON מהמתאמן</label>
+    <label for="importCode" style="display:block;font-size:0.78rem;color:#a78bfa;margin-bottom:6px">קוד / JSON מהמתאמן</label>
     <textarea id="importCode" dir="ltr" placeholder="TH1.eyJ2IjoxLC..." style="width:100%;min-height:64px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#c4b5fd;font-size:0.8rem"></textarea>
     <button class="action-btn" style="margin-top:8px;flex:0" onclick="importResultCode()">📥 ייבא ליומן</button>
     <div id="importMsg" style="font-size:0.78rem;margin-top:8px;color:#86efac;display:none"></div>
@@ -1417,15 +1423,15 @@ function sendFeedback() {
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
     <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:14px;text-align:center">
       <div style="font-size:1.5rem;font-weight:800;color:#22c55e" id="clActive">0</div>
-      <div style="font-size:0.72rem;color:#6b7280">פעילים ב־7 ימים</div>
+      <div style="font-size:0.72rem;color:#9ca3af">פעילים ב־7 ימים</div>
     </div>
     <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:14px;text-align:center">
       <div style="font-size:1.5rem;font-weight:800;color:#a78bfa" id="clAdherence">0%</div>
-      <div style="font-size:0.72rem;color:#6b7280">ימים עם ביצוע (4 שבועות)</div>
+      <div style="font-size:0.72rem;color:#9ca3af">ימים עם ביצוע (4 שבועות)</div>
     </div>
     <div style="background:#1a1a2e;border:1px solid #7f1d1d;border-radius:12px;padding:14px;text-align:center">
       <div style="font-size:1.5rem;font-weight:800;color:#f87171" id="clRisk">0</div>
-      <div style="font-size:0.72rem;color:#6b7280">בלי ביצוע שבוע+</div>
+      <div style="font-size:0.72rem;color:#9ca3af">בלי ביצוע שבוע+</div>
     </div>
   </div>
   <div id="clientsList"></div>
@@ -1484,7 +1490,7 @@ function weekDots(c){
 window.renderClients=function(){
   const list=document.getElementById('clientsList');
   if (!clients.length){
-    list.innerHTML='<div style="color:#6b7280;text-align:center;padding:28px 12px;line-height:1.7">עדיין אין מתאמנים אמיתיים.<br>הוסף מתאמן או ייבא קוד TH1 שנשלח בוואטסאפ.</div>';
+    list.innerHTML='<div style="color:#9ca3af;text-align:center;padding:28px 12px;line-height:1.7">עדיין אין מתאמנים אמיתיים.<br>הוסף מתאמן או ייבא קוד TH1 שנשלח בוואטסאפ.</div>';
     document.getElementById('clActive').textContent='0';
     document.getElementById('clAdherence').textContent='0%';
     document.getElementById('clRisk').textContent='0';
@@ -1499,7 +1505,7 @@ window.renderClients=function(){
         <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${esc((c.name||'?')[0])}</div>
         <div style="flex:1;min-width:160px">
           <div style="font-weight:700">${esc(c.name)} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בלי ביצוע שבוע</span>':''}</div>
-          <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">${esc(c.plan||'בלי תוכנית משויכת')} · ${esc(lastTxt)}${last&&last.rpe?' · קושי '+last.rpe+'/5':''} · ${adh}% מ־28 יום</div>
+          <div style="font-size:0.75rem;color:#9ca3af;margin-top:2px">${esc(c.plan||'בלי תוכנית משויכת')} · ${esc(lastTxt)}${last&&last.rpe?' · קושי '+last.rpe+'/5':''} · ${adh}% מ־28 יום</div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem;background:#14532d;border-color:#22c55e;color:#86efac" onclick="sendWhatsApp(${i})">💬 שלח לינק</button>

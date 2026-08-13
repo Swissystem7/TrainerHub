@@ -31,7 +31,7 @@
     .top-bar h1 { font-size: 1.1rem; color: #7c3aed; font-weight: 700; }
     .top-bar .workout-title { color: #a78bfa; font-size: 0.85rem; margin-top: 2px; max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .exit-btn {
-      background: none; border: 1px solid #3a3a5a; color: #6b7280;
+      background: none; border: 1px solid #3a3a5a; color: #9ca3af;
       padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
     }
     .exit-btn:hover { border-color: #7f1d1d; color: #f87171; }
@@ -43,7 +43,7 @@
     }
     .progress-info {
       display: flex; justify-content: space-between;
-      font-size: 0.78rem; color: #6b7280; margin-bottom: 6px;
+      font-size: 0.78rem; color: #9ca3af; margin-bottom: 6px;
     }
     .progress-bar {
       height: 6px; background: #2a2a4a; border-radius: 3px; overflow: hidden;
@@ -68,7 +68,7 @@
     }
 
     .phase-label {
-      font-size: 0.78rem; color: #6b7280; text-transform: uppercase;
+      font-size: 0.78rem; color: #9ca3af; text-transform: uppercase;
       letter-spacing: 1.5px; font-weight: 600;
     }
 
@@ -118,13 +118,13 @@
       background: #1a1a2e; border: 1px solid #2a2a4a;
       border-radius: 12px; padding: 14px 24px; max-width: 340px; width: 100%;
     }
-    .next-preview .label { font-size: 0.75rem; color: #6b7280; margin-bottom: 4px; }
+    .next-preview .label { font-size: 0.75rem; color: #9ca3af; margin-bottom: 4px; }
     .next-preview .name { font-size: 1.05rem; color: #a78bfa; font-weight: 700; }
-    .next-preview .detail { font-size: 0.82rem; color: #6b7280; margin-top: 4px; }
+    .next-preview .detail { font-size: 0.82rem; color: #9ca3af; margin-top: 4px; }
 
     /* Exercise notes */
     .ex-notes {
-      font-size: 0.85rem; color: #6b7280; max-width: 340px;
+      font-size: 0.85rem; color: #9ca3af; max-width: 340px;
       background: #1a1a2e; border-radius: 10px; padding: 10px 16px;
     }
 
@@ -154,16 +154,18 @@
       transition: all 0.2s; min-width: 72px; color: #f0f0f0;
     }
     .ctrl-btn .icon { font-size: 1.5rem; }
-    .ctrl-btn .label { font-size: 0.72rem; color: #6b7280; }
+    .ctrl-btn .label { font-size: 0.72rem; color: #9ca3af; }
     .ctrl-btn:hover { border-color: #7c3aed; background: #1e1b3a; }
     .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .ctrl-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; }
     .ctrl-btn.primary:hover { opacity: 0.9; }
+    .ctrl-btn:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
+    textarea, input { user-select: text; }
 
     /* ── No workout / Error ── */
     .empty-state {
       flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 16px; color: #4a4a6a;
+      align-items: center; justify-content: center; gap: 16px; color: #9ca3af;
       padding: 32px;
     }
     .empty-state .big { font-size: 4rem; }
@@ -192,7 +194,7 @@
       padding: 16px 24px; min-width: 110px;
     }
     .stat-card .val { font-size: 1.8rem; font-weight: 800; color: #a78bfa; }
-    .stat-card .lbl { font-size: 0.75rem; color: #6b7280; margin-top: 2px; }
+    .stat-card .lbl { font-size: 0.75rem; color: #9ca3af; margin-top: 2px; }
     .done-btn {
       background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white;
       border: none; padding: 14px 40px; border-radius: 14px; cursor: pointer;
@@ -205,63 +207,68 @@
       display: flex; align-items: center; gap: 8px;
       padding: 8px 24px 0; flex-shrink: 0;
     }
-    .elapsed-label { font-size: 0.75rem; color: #6b7280; white-space: nowrap; }
+    .elapsed-label { font-size: 0.75rem; color: #9ca3af; white-space: nowrap; }
     .elapsed-val { font-size: 0.82rem; color: #a78bfa; font-weight: 600; white-space: nowrap; }
   </style>
 </head>
 <body>
 
+<a class="skip-link" href="#stage">דלג לאימון</a>
+<div id="liveStatus" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<div id="liveTimer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
 <!-- Top bar -->
-<div class="top-bar" id="topBar">
+<header class="top-bar" id="topBar">
   <div>
     <h1>🏋️ TrainerHub</h1>
     <div class="workout-title" id="workoutTitleBar">טוען אימון...</div>
   </div>
-  <button class="exit-btn" onclick="exitWorkout()">✕ יציאה</button>
-</div>
+  <button type="button" class="exit-btn" onclick="exitWorkout()" aria-label="יציאה מהאימון">✕ יציאה</button>
+</header>
 
 <!-- Progress bar -->
 <div class="progress-wrap" id="progressWrap" style="display:none">
   <div class="progress-info">
-    <span id="progressLabel">תרגיל 0 מתוך 0</span>
+    <span id="progressLabel" aria-live="polite" aria-atomic="true">תרגיל 0 מתוך 0</span>
     <span id="totalTimeLabel">⏱ 0:00</span>
   </div>
-  <div class="progress-bar">
+  <div class="progress-bar" role="progressbar" aria-labelledby="progressLabel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
     <div class="progress-fill" id="progressFill" style="width:0%"></div>
   </div>
 </div>
 
 <!-- Elapsed total time -->
 <div class="elapsed-bar" id="elapsedBar" style="display:none">
-  <span class="elapsed-label">זמן אימון:</span>
-  <span class="elapsed-val" id="elapsedVal">0:00</span>
+  <span class="elapsed-label" id="elapsedLabel">זמן אימון:</span>
+  <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
 </div>
 
 <!-- Stage (main exercise display) -->
-<div class="stage" id="stage">
+<main class="stage" id="stage">
   <div class="empty-state" id="emptyState">
     <div class="big">🏋️</div>
     <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן מהמאמן, או חזור ל-Studio.</p>
-    <button class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+    <button type="button" class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
   </div>
-</div>
+</main>
 
 <!-- Controls -->
-<div class="controls" id="controlsWrap" style="display:none">
-  <button class="ctrl-btn" id="btnBack" onclick="goBack()" title="חזור">
-    <span class="icon">⏮</span><span class="label">חזור</span>
+<div class="controls" id="controlsWrap" style="display:none" role="group" aria-label="פקדי אימון">
+  <button type="button" class="ctrl-btn" id="btnBack" onclick="goBack()" title="חזור" aria-label="חזור לתרגיל הקודם">
+    <span class="icon" aria-hidden="true">⏮</span><span class="label">חזור</span>
   </button>
-  <button class="ctrl-btn primary" id="btnStartPause" onclick="togglePause()">
-    <span class="icon" id="startPauseIcon">▶</span>
+  <button type="button" class="ctrl-btn primary" id="btnStartPause" onclick="togglePause()" aria-label="התחל או השהה">
+    <span class="icon" id="startPauseIcon" aria-hidden="true">▶</span>
     <span class="label" id="startPauseLabel">התחל</span>
   </button>
-  <button class="ctrl-btn" id="btnSkip" onclick="skipCurrent()" title="דלג">
-    <span class="icon">⏭</span><span class="label">דלג</span>
+  <button type="button" class="ctrl-btn" id="btnSkip" onclick="skipCurrent()" title="דלג" aria-label="דלג על הסט הנוכחי">
+    <span class="icon" aria-hidden="true">⏭</span><span class="label">דלג</span>
   </button>
-  <button class="ctrl-btn" id="btnDone" onclick="markSetDone()" title="סיים סט">
-    <span class="icon">✅</span><span class="label">סיימתי</span>
+  <button type="button" class="ctrl-btn" id="btnDone" onclick="markSetDone()" title="סיים סט" aria-label="סיימתי סט">
+    <span class="icon" aria-hidden="true">✅</span><span class="label">סיימתי</span>
   </button>
 </div>
+<p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
 <div id="completionScreen">
@@ -273,16 +280,16 @@
     <div class="stat-card"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
     <div class="stat-card"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
-  <div style="color:#6b7280;font-size:0.9rem">💪 עבודה מצוינת!</div>
+  <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
     <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
-      <div style="font-size:0.78rem;color:#6b7280;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
-      <div id="rpeRow" style="display:flex;gap:6px;justify-content:center;flex-direction:row-reverse"></div>
+      <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
+      <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0">💬 שלח סיכום למאמן בוואטסאפ</button>
-    <label style="display:block;font-size:0.75rem;color:#6b7280;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
-    <textarea id="resultCode" readonly dir="ltr" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
+    <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
+    <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
     <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#1a1a2e;border:1px solid #3a3a5a">📋 העתק קוד</button>
   </div>
   <button class="done-btn" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
@@ -419,6 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('progressWrap').style.display = 'block';
   document.getElementById('elapsedBar').style.display = 'flex';
   document.getElementById('controlsWrap').style.display = 'flex';
+  const kbdHint = document.getElementById('kbdHint');
+  if (kbdHint) kbdHint.style.display = 'block';
 
   renderStep();
 });
@@ -448,12 +457,12 @@ function renderExercise(step) {
   stage.className = 'stage';
 
   const setInfo = step.totalSets > 1
-    ? `<div class="set-indicator">סט ${step.set} מתוך ${step.totalSets}</div>` : '';
+    ? `<div class="set-indicator" aria-live="polite" aria-atomic="true">סט ${step.set} מתוך ${step.totalSets}</div>` : '';
 
   const repsOrTime = step.duration
-    ? `<div class="clock-ring" id="clockRing">${buildClockSVG()}<div class="clock-text" id="clockText">${step.duration}</div></div>`
+    ? `<div class="clock-ring" id="clockRing" role="timer" aria-label="שעון תרגיל">${buildClockSVG()}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true">${step.duration}</div></div>`
     : step.reps
-      ? `<div class="reps-display">${esc(step.reps)} חזרות</div>` : '';
+      ? `<div class="reps-display" aria-live="polite">${esc(step.reps)} חזרות</div>` : '';
 
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
@@ -469,6 +478,7 @@ function renderExercise(step) {
     ${repsOrTime}
     ${notes}
   `;
+  announceStatus(step.name + (step.totalSets > 1 ? (', סט ' + step.set + ' מתוך ' + step.totalSets) : ''));
 
   // Update done button label
   const btnDone = document.getElementById('btnDone');
@@ -499,9 +509,10 @@ function renderRest(step) {
 
   stage.innerHTML = `
     <div class="rest-label">מנוחה</div>
-    <div class="clock-ring" id="clockRing">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" style="color:#10b981">${step.duration}</div></div>
+    <div class="clock-ring" id="clockRing" role="timer" aria-label="שעון מנוחה">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true" style="color:#10b981">${step.duration}</div></div>
     ${nextHtml}
   `;
+  announceStatus('מנוחה, ' + step.duration + ' שניות');
 
   document.getElementById('btnDone').style.display = 'none';
 
@@ -541,6 +552,8 @@ function updateProgress() {
 
   const pct = totalExSteps > 0 ? (exStepsSoFar / totalExSteps) * 100 : 0;
   document.getElementById('progressFill').style.width = pct + '%';
+  const bar = document.getElementById('progressBar');
+  if (bar) bar.setAttribute('aria-valuenow', String(Math.round(pct)));
 }
 
 /* ═══════════════════════════════════════════
@@ -573,6 +586,7 @@ function updateClockDisplay(val, max) {
   if (!textEl) return;
 
   textEl.textContent = Math.max(0, val);
+  announceTimer(Math.max(0, val), max);
 
   if (arcEl) {
     const r = 80;
@@ -600,6 +614,19 @@ function formatTime(s) {
   return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
+function announceStatus(text) {
+  const el = document.getElementById('liveStatus');
+  if (el) el.textContent = text;
+}
+
+function announceTimer(val, max) {
+  const el = document.getElementById('liveTimer');
+  if (!el) return;
+  if (val === max || val <= 5 || val % 10 === 0) {
+    el.textContent = val + ' שניות';
+  }
+}
+
 /* ═══════════════════════════════════════════
    CONTROLS
 ═══════════════════════════════════════════ */
@@ -611,6 +638,7 @@ function togglePause() {
     startElapsedTimer();
     document.getElementById('startPauseIcon').textContent = '⏸';
     document.getElementById('startPauseLabel').textContent = 'עצור';
+    document.getElementById('btnStartPause').setAttribute('aria-label', 'השהה אימון');
     // Start current step timer if needed
     resumeCurrentStep();
     return;
@@ -622,10 +650,13 @@ function togglePause() {
     pauseElapsedTimer();
     document.getElementById('startPauseIcon').textContent = '▶';
     document.getElementById('startPauseLabel').textContent = 'המשך';
+    document.getElementById('btnStartPause').setAttribute('aria-label', 'המשך אימון');
+    announceStatus('האימון מושהה');
   } else {
     startElapsedTimer();
     document.getElementById('startPauseIcon').textContent = '⏸';
     document.getElementById('startPauseLabel').textContent = 'עצור';
+    document.getElementById('btnStartPause').setAttribute('aria-label', 'השהה אימון');
     resumeCurrentStep();
   }
 }
@@ -712,6 +743,9 @@ function finishWorkout() {
   document.getElementById('controlsWrap').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('elapsedBar').style.display = 'none';
+  const kbdDone = document.getElementById('kbdHint');
+  if (kbdDone) kbdDone.style.display = 'none';
+  announceStatus('האימון הסתיים');
 
   document.getElementById('statTime').textContent = formatTime(elapsedSeconds);
   document.getElementById('statExercises').textContent = completedExercises;
@@ -764,7 +798,7 @@ function finishWorkout() {
     const rpeRow = document.getElementById('rpeRow');
     if (rpeRow) {
       rpeRow.innerHTML = [1, 2, 3, 4, 5].map(n =>
-        `<button type="button" class="done-btn" data-rpe="${n}" style="min-width:44px;padding:8px 0;margin:0;background:#1a1a2e;border:1px solid #3a3a5a">${n}</button>`
+        `<button type="button" class="done-btn" data-rpe="${n}" aria-label="קושי ${n} מתוך 5" style="min-width:44px;padding:8px 0;margin:0;background:#1a1a2e;border:1px solid #3a3a5a">${n}</button>`
       ).join('');
       rpeRow.querySelectorAll('[data-rpe]').forEach(btn => {
         btn.onclick = function () {
@@ -799,6 +833,32 @@ function exitWorkout() {
     window.location.href = 'index.html';
   }
 }
+
+document.addEventListener('keydown', function (e) {
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  if (e.target && e.target.isContentEditable) return;
+  if (!workout || !steps.length) return;
+  if (document.getElementById('completionScreen').classList.contains('active')) return;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    if (started && !paused) togglePause();
+    return;
+  }
+
+  if (e.key === ' ' || e.key === 'Enter') {
+    if (tag === 'BUTTON' || (e.target.closest && e.target.closest('button, a'))) return;
+    e.preventDefault();
+    if (!started || paused) {
+      togglePause();
+      return;
+    }
+    const step = steps[stepIdx];
+    if (step && step.type === 'exercise') markSetDone();
+    else advance();
+  }
+});
 </script>
 
 </body>
