@@ -49,9 +49,10 @@
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <span class="chip on">ספריית סרטונים</span>
+  <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
-  <a href="./frontend/">האפליקציה המלאה</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
@@ -69,6 +70,7 @@
     <div id="draftList"></div>
     <div class="draft-actions">
       <button type="button" class="th-btn" id="draftStart">התחל אימון</button>
+      <button type="button" class="th-btn ghost" id="draftPreview">פתח כמתאמן</button>
       <button type="button" class="th-btn ghost" id="draftCopy">שתף אימון ללקוח</button>
       <button type="button" class="th-btn ghost" id="draftPdf">דף להדפסה / PDF</button>
       <button type="button" class="th-btn ghost" id="draftClear">נקה</button>
@@ -258,6 +260,9 @@
     var w = TH.draftGet();
     TH.store.set(TH.KEYS.active, w);
     location.href = './frontend/workout-mode.html';
+  });
+  $('draftPreview').addEventListener('click', function () {
+    location.href = TH.encodeLink(TH.draftGet(), {});
   });
   $('draftCopy').addEventListener('click', function () {
     var shared = TH.shareToClient(TH.draftGet(), {});

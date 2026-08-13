@@ -70,9 +70,10 @@
   <span class="chip on">בנה אימון</span>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
-  <a href="./frontend/">האפליקציה המלאה</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
@@ -84,11 +85,17 @@
     <h1>תגיד איזה אימון אתה רוצה.</h1>
     <p>שדה אחד. בעברית. תוך פחות משנייה מתקבל אימון מהסרטונים האמיתיים, עם הסבר על מה עובדים ולמה נבחר כל תרגיל.</p>
   </header>
+  <ol class="th-steps">
+    <li><b>1. כותבים</b>מה רוצים, או מדביקים אימון קיים.</li>
+    <li><b>2. מקבלים תוכנית</b>מהמאגר, עם הסבר ולמה נבחר כל תרגיל.</li>
+    <li><b>3. מריצים</b>טיימר + סרטון. בלי רשת נשאר שם התרגיל.</li>
+    <li><b>4. פותחים כמתאמן</b>בלי קוד. שיתוף ללקוח ויומן — אחרי זה.</li>
+  </ol>
 
   <div class="modes" role="tablist" aria-label="מצב בנייה">
-    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true">מה אתה רוצה</button>
-    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false">הדבק אימון</button>
-    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false">פרק סרטון</button>
+    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true" tabindex="0">מה אתה רוצה</button>
+    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false" tabindex="-1">הדבק אימון</button>
+    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false" tabindex="-1">פרק סרטון</button>
   </div>
 
   <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
@@ -170,6 +177,7 @@
       var panel = $('panel-' + key);
       var on = key === id;
       tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
       if (on) panel.removeAttribute('hidden');
       else panel.setAttribute('hidden', '');
     });
@@ -179,6 +187,9 @@
     $('startBtn').addEventListener('click', function () {
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
+    });
+    $('previewBtn').addEventListener('click', function () {
+      location.href = TH.encodeLink(w, {});
     });
     $('copyBtn').addEventListener('click', function () {
       var shared = TH.shareToClient(w, {});
@@ -252,6 +263,7 @@
         phases +
         '<div class="actions">' +
           '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="previewBtn">פתח כמתאמן</button>' +
           '<button type="button" class="th-btn ghost" id="copyBtn">שתף אימון ללקוח</button>' +
           '<button type="button" class="th-btn ghost" id="pdfBtn">דף להדפסה / PDF</button>' +
         '</div>' +
@@ -343,6 +355,19 @@
   document.querySelectorAll('[role="tab"]').forEach(function (tab) {
     tab.addEventListener('click', function () {
       switchTab(tab.id.replace('tab-', ''));
+    });
+    tab.addEventListener('keydown', function (e) {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var i = tabs.indexOf(tab);
+      var next = -1;
+      if (e.key === 'ArrowLeft') next = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowRight') next = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      if (next < 0) return;
+      e.preventDefault();
+      tabs[next].focus();
+      switchTab(tabs[next].id.replace('tab-', ''));
     });
   });
 

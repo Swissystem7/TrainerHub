@@ -9,9 +9,10 @@
   <a href="./" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בנה אימון</a>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">בונה שבועי</span>
   <a href="./library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
+  <a href="./journal.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">יומן ביצוע</a>
   <a href="./offer.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">הצעה למאמנים</a>
   <a href="./manage.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ניהול מאגר</a>
-  <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">האפליקציה המלאה</a>
+  <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
 </nav>
 <div style="background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:#f0b542;font:600 0.74rem system-ui,sans-serif;padding:7px 14px;text-align:center;direction:rtl">
@@ -29,6 +30,12 @@ function startDayWorkout(dayIndex){
   TH.store.set(TH.KEYS.active, workout);
   window.location.href = './frontend/workout-mode.html';
 }
+function previewDayWorkout(dayIndex){
+  const raw = window.__lastProgram;
+  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
+  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  window.location.href = TH.encodeLink(workout, {});
+}
 function copyDayTraineeLink(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
@@ -36,12 +43,14 @@ function copyDayTraineeLink(dayIndex){
   const shared = TH.shareToClient(workout, {});
   const old = $('result').querySelector('.th-gate');
   if (old) old.parentNode.removeChild(old);
+  const note = $('copyStatus');
+  if (note) note.remove();
   if (!shared.ok) {
     $('result').insertAdjacentHTML('afterbegin', TH.gateMarkup('share'));
     return;
   }
   navigator.clipboard.writeText(shared.url).then(function(){
-    alert('הלינק הועתק. הלקוח פותח בלי התחברות.');
+    $('result').insertAdjacentHTML('afterbegin', '<p class="honest" id="copyStatus" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
   });
 }
 function printDayWorkout(dayIndex){
@@ -81,7 +90,7 @@ function renderProgram(p){
         return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
       }).join('');
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button></section>';
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button></section>';
     }).join('');
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {

@@ -1494,6 +1494,36 @@
     return { model: workoutPrintModel(workout, opts), url: printUrl() };
   }
 
+  function suggestNextFromLog(compact, lastLog) {
+    lastLog = lastLog || {};
+    var hard = (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
+    var easy = lastLog.rpe != null && Number(lastLog.rpe) <= 2 && !(Number(lastLog.skipped) || 0);
+    var next;
+    try {
+      next = JSON.parse(JSON.stringify(compact || {}));
+    } catch (e) {
+      next = {};
+    }
+    if (!Array.isArray(next.p)) next.p = [];
+    next.p.forEach(function (ph) {
+      if (!ph || ph.n !== 'Main') return;
+      (ph.e || []).forEach(function (ex) {
+        if (!ex || ex.s == null) return;
+        if (hard) ex.s = Math.max(2, Number(ex.s) - 1);
+        else if (easy) ex.s = Math.min(5, Number(ex.s) + 1);
+      });
+    });
+    next.t = (next.t || 'אימון') + ' · שבוע הבא';
+    return {
+      compact: next,
+      workout: expandPlan(next),
+      adjusted: hard ? 'down' : (easy ? 'up' : 'same'),
+      why: hard
+        ? 'הורדתי סט — היו דילוגים או קושי גבוה'
+        : (easy ? 'הוספתי סט — הביצוע היה קל ונקי' : 'השארתי נפח — אין אות ברור')
+    };
+  }
+
   var api = {
     KEYS: KEYS,
     PHASE_LABELS: PHASE_LABELS,
@@ -1525,6 +1555,7 @@
     workoutPrintModel: workoutPrintModel,
     workoutPrintHtml: workoutPrintHtml,
     preparePrint: preparePrint,
+    suggestNextFromLog: suggestNextFromLog,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
     decodeResult: decodeResult,

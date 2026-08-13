@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="יומן ביצוע מקומי: ייבוא קוד TH1 מהוואטסאפ, רשת 28 יום, הצעת שבוע הבא. בלי שרת ובלי לקוחות בדויים.">
+  <title>TrainerHub | יומן ביצוע</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 900px; margin: auto; padding: 28px 20px 72px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
+    .top p { color: var(--muted); line-height: 1.6; max-width: 44rem; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 16px 0; }
+    label { display: block; color: var(--muted); font-size: .84rem; margin: 12px 0 6px; }
+    input, textarea {
+      width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
+      background: #111513; color: var(--ink); font: inherit;
+    }
+    textarea { min-height: 72px; font-family: ui-monospace, Consolas, monospace; font-size: .82rem; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat { background: #111513; border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
+    .stat b { display: block; font-size: 1.5rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .actions button { width: auto; margin-top: 0; }
+    .status { min-height: 1.3em; margin-top: 8px; color: var(--lime); }
+    .warn { color: #f0b542; }
+    .honest { color: var(--muted); font-size: .88rem; line-height: 1.5; }
+    .dots { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 10px; }
+    .dot { width: 12px; height: 12px; border-radius: 3px; background: #26302b; border: 1px solid #303834; }
+    .dot.on { background: #3d6b00; border-color: var(--lime); }
+    .person { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; justify-content: space-between; }
+    .risk { color: #f0b542; font-size: .78rem; }
+    .empty { color: var(--muted); text-align: center; padding: 24px 8px; line-height: 1.7; }
+    @media (max-width: 640px) { .row, .stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#importCode">דלג לייבוא קוד</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <span class="chip on">יומן ביצוע</span>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  היומן נשמר בדפדפן הזה בלבד. אין שרת, אין לקוחות לדוגמה, ואין זה CRM שנמכר ב־₪59.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / יומן</small>
+    <h1>מה שקרה באימון, לא רשימת לקוחות בדויה.</h1>
+    <p>מדביקים את קוד <code>TH1</code> שהמתאמן מעתיק ממסך הסיום. הרשת היא 28 יום אחרונים. «הצע שבוע הבא» משנה סטים לפי קושי ודילוגים.</p>
+  </header>
+
+  <form class="card" id="importForm">
+    <h2>ייבוא קוד מהוואטסאפ</h2>
+    <label for="importCode">קוד TH1 או JSON</label>
+    <textarea id="importCode" name="importCode" dir="ltr" placeholder="TH1.eyJ2IjoxLC..." autocomplete="off"></textarea>
+    <div class="actions">
+      <button type="submit" class="th-btn">ייבא ליומן</button>
+    </div>
+    <p class="status" id="importStatus" role="status"></p>
+  </form>
+
+  <form class="card" id="addForm">
+    <h2>מתאמן חדש (נשמר כאן בלבד)</h2>
+    <div class="row">
+      <div>
+        <label for="newName">שם</label>
+        <input id="newName" name="newName" type="text" autocomplete="name" maxlength="60">
+      </div>
+      <div>
+        <label for="newPhone">טלפון לוואטסאפ (לא חובה)</label>
+        <input id="newPhone" name="newPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X…">
+      </div>
+    </div>
+    <div class="actions">
+      <button type="submit" class="th-btn ghost">הוסף מתאמן</button>
+    </div>
+    <p class="honest">השם והטלפון לא נשלחים לשום שרת. תזכורת פותחת wa.me במכשיר.</p>
+  </form>
+
+  <div class="stats" aria-live="polite">
+    <div class="stat"><b id="clActive">0</b> פעילים ב־7 ימים</div>
+    <div class="stat"><b id="clAdherence">0%</b> ימים עם ביצוע (28)</div>
+    <div class="stat"><b id="clRisk">0</b> בלי ביצוע שבוע+</div>
+  </div>
+
+  <div id="list"></div>
+</main>
+<script src="./js/core.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var CKEY = TH.KEYS.clients;
+  var clients = TH.store.get(CKEY, []);
+  if (!Array.isArray(clients)) clients = [];
+
+  function save() { TH.store.set(CKEY, clients); }
+
+  function logsOf(c) { return Array.isArray(c.logs) ? c.logs : []; }
+
+  function dayKey(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function lastNDays(n) {
+    var out = [];
+    var now = new Date();
+    now.setHours(12, 0, 0, 0);
+    var i;
+    for (i = n - 1; i >= 0; i--) {
+      var d = new Date(now);
+      d.setDate(now.getDate() - i);
+      out.push(dayKey(d.toISOString()));
+    }
+    return out;
+  }
+
+  function doneDays(c) {
+    var set = {};
+    logsOf(c).forEach(function (l) {
+      var k = dayKey(l.at || l.doneAt);
+      if (k) set[k] = true;
+    });
+    return set;
+  }
+
+  function sessionsLastDays(c, n) {
+    var set = doneDays(c);
+    return lastNDays(n).filter(function (k) { return set[k]; }).length;
+  }
+
+  function lastLog(c) {
+    return logsOf(c).slice().sort(function (a, b) {
+      return String(b.at || b.doneAt || '').localeCompare(String(a.at || a.doneAt || ''));
+    })[0] || null;
+  }
+
+  function activeWorkout() {
+    return TH.store.get(TH.KEYS.active, null);
+  }
+
+  function assignedWorkout(c) {
+    if (c && c.lastWorkout && Array.isArray(c.lastWorkout.phases)) return c.lastWorkout;
+    return activeWorkout();
+  }
+
+  function render() {
+    var list = $('list');
+    if (!clients.length) {
+      list.innerHTML = '<p class="empty">עדיין אין מתאמנים אמיתיים. הוסיפו שם או ייבאו קוד TH1 ממסך הסיום.</p>';
+      $('clActive').textContent = '0';
+      $('clAdherence').textContent = '0%';
+      $('clRisk').textContent = '0';
+      return;
+    }
+    var active = 0;
+    var adhSum = 0;
+    var risk = 0;
+    list.innerHTML = clients.map(function (c, i) {
+      var adh = Math.round(sessionsLastDays(c, 28) / 28 * 100);
+      var weekEmpty = sessionsLastDays(c, 7) === 0;
+      if (sessionsLastDays(c, 7) > 0) active++;
+      adhSum += adh;
+      if (weekEmpty) risk++;
+      var last = lastLog(c);
+      var lastTxt = last
+        ? ('אחרון: ' + (last.title || 'אימון') + ' · ' + dayKey(last.at || last.doneAt))
+        : 'עדיין אין ביצוע מיובא';
+      var set = doneDays(c);
+      var dots = lastNDays(28).map(function (k) {
+        return '<span class="dot' + (set[k] ? ' on' : '') + '" title="' + TH.esc(k) + '"></span>';
+      }).join('');
+      return '<article class="card">' +
+        '<div class="person">' +
+          '<div>' +
+            '<h2>' + TH.esc(c.name || 'מתאמן') +
+              (weekEmpty ? ' <span class="risk">בלי ביצוע שבוע</span>' : '') +
+            '</h2>' +
+            '<p class="honest">' + TH.esc(c.plan || 'בלי תוכנית משויכת') + ' · ' +
+              TH.esc(lastTxt) +
+              (last && last.rpe ? ' · קושי ' + last.rpe + '/5' : '') +
+              ' · ' + adh + '% מ־28 יום</p>' +
+          '</div>' +
+          '<div class="actions">' +
+            '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '">פתח כמתאמן</button>' +
+            '<button type="button" class="th-btn ghost" data-act="share" data-i="' + i + '">שתף אימון ללקוח</button>' +
+            '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '">תזכורת</button>' +
+            '<button type="button" class="th-btn ghost" data-act="next" data-i="' + i + '">הצע שבוע הבא</button>' +
+            '<button type="button" class="th-btn ghost" data-act="assign" data-i="' + i + '">שייך אימון פעיל</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="dots" aria-hidden="true">' + dots + '</div>' +
+        '<div class="th-gate-host"></div>' +
+      '</article>';
+    }).join('');
+    $('clActive').textContent = String(active);
+    $('clAdherence').textContent = Math.round(adhSum / clients.length) + '%';
+    $('clRisk').textContent = String(risk);
+  }
+
+  function setStatus(el, text, warn) {
+    el.textContent = text;
+    el.className = warn ? 'status warn' : 'status';
+  }
+
+  function shareOrPreview(c, previewOnly) {
+    var workout = assignedWorkout(c);
+    if (!workout) {
+      setStatus($('importStatus'), 'אין אימון פעיל לשיוך. בנו אימון קודם.', true);
+      return;
+    }
+    if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
+    c.lastWorkout = workout;
+    save();
+    if (previewOnly) {
+      location.href = TH.encodeLink(workout, { name: c.name || '', tid: c.id || '' });
+      return;
+    }
+    var shared = TH.shareToClient(workout, { name: c.name || '', tid: c.id || '' });
+    if (!shared.ok) {
+      var host = document.querySelector('[data-act="share"][data-i]')
+        ? document.querySelector('.th-gate-host')
+        : $('list');
+      if (host) {
+        var old = host.querySelector('.th-gate');
+        if (old) old.parentNode.removeChild(old);
+        host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+      }
+      return;
+    }
+    var msg = 'היי ' + (c.name || '') + ' 💪\nהאימון שלך (בלי הרשמה):\n' + shared.url +
+      '\n\nכשתסיים — שלח לי את הקוד ממסך הסיום.';
+    window.open(TH.waShareUrl(c.phone, msg), '_blank');
+  }
+
+  $('importForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var parsed = TH.decodeResult($('importCode').value);
+    if (!parsed) {
+      setStatus($('importStatus'), 'לא זוהה קוד TH1 או JSON תקין.', true);
+      return;
+    }
+    var c = clients.filter(function (x) { return parsed.tid && x.id === parsed.tid; })[0];
+    if (!c && parsed.name) c = clients.filter(function (x) { return x.name === parsed.name; })[0];
+    if (!c) {
+      c = { id: parsed.tid || ('t_' + Date.now().toString(36)), name: parsed.name || 'מתאמן', phone: '', plan: parsed.title, logs: [] };
+      clients.unshift(c);
+    }
+    c.logs = logsOf(c);
+    var dup = c.logs.some(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; });
+    if (!dup) {
+      c.logs.push({
+        at: parsed.doneAt,
+        title: parsed.title,
+        minutes: parsed.minutes,
+        exercises: parsed.exercises,
+        sets: parsed.sets,
+        skipped: parsed.skipped,
+        rpe: parsed.rpe
+      });
+      c.plan = parsed.title || c.plan;
+      if (parsed.plan) c.lastPlan = parsed.plan;
+    }
+    save();
+    $('importCode').value = '';
+    setStatus($('importStatus'), dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.'));
+    render();
+  });
+
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('newName').value.trim();
+    if (!name) {
+      setStatus($('importStatus'), 'צריך שם כדי להוסיף מתאמן.', true);
+      return;
+    }
+    clients.push({
+      id: 't_' + Date.now().toString(36),
+      name: name,
+      phone: $('newPhone').value.trim(),
+      plan: 'טרם שויכה תוכנית',
+      logs: []
+    });
+    $('newName').value = '';
+    $('newPhone').value = '';
+    save();
+    setStatus($('importStatus'), 'נוסף «' + name + '». הנתונים נשארים בדפדפן.');
+    render();
+  });
+
+  $('list').addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-act]');
+    if (!btn) return;
+    var i = Number(btn.getAttribute('data-i'));
+    var c = clients[i];
+    if (!c) return;
+    var act = btn.getAttribute('data-act');
+    if (act === 'preview') shareOrPreview(c, true);
+    else if (act === 'share') shareOrPreview(c, false);
+    else if (act === 'nudge') {
+      window.open(TH.waShareUrl(c.phone, TH.nudgeMessage(c)), '_blank');
+    } else if (act === 'assign') {
+      var w = activeWorkout();
+      if (!w) {
+        setStatus($('importStatus'), 'אין אימון פעיל. בנו אימון ואז שייכו.', true);
+        return;
+      }
+      c.plan = w.title || 'אימון';
+      c.lastWorkout = w;
+      c.lastPlan = TH.compactPlan(w);
+      save();
+      setStatus($('importStatus'), 'שויך «' + c.plan + '» ל' + c.name + '.');
+      render();
+    } else if (act === 'next') {
+      if (!c.lastPlan) {
+        setStatus($('importStatus'), 'אין תוכנית שמורה. פתחו כמתאמן או שייכו אימון פעיל קודם.', true);
+        return;
+      }
+      var suggested = TH.suggestNextFromLog(c.lastPlan, lastLog(c) || {});
+      c.lastPlan = suggested.compact;
+      c.lastWorkout = suggested.workout;
+      c.plan = suggested.workout.title;
+      TH.store.set(TH.KEYS.active, suggested.workout);
+      save();
+      setStatus($('importStatus'), suggested.why + ' אפשר לפתוח כמתאמן בלי קוד גישה.');
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

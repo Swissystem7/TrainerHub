@@ -15,7 +15,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      user-select: none;
+      user-select: text;
     }
 
     /* ── Header ── */
@@ -163,6 +163,7 @@
     .ctrl-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; }
     .ctrl-btn.primary:hover { opacity: 0.9; }
     .ctrl-btn:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
+    .ctrl-btn, .exit-btn, .go-back, .done-btn { user-select: none; }
     textarea, input { user-select: text; }
 
     /* ── No workout / Error ── */
@@ -253,6 +254,7 @@
     <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור למסך בניית האימון.</p>
     <button type="button" class="go-back" onclick="window.location.href='../'">← בנה אימון</button>
     <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../library.html'">ספריית סרטונים</button>
+    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'">יומן ביצוע</button>
   </div>
 </main>
 
@@ -300,7 +302,8 @@
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
     <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#1a1a2e;border:1px solid #3a3a5a">📋 העתק קוד</button>
   </div>
-  <button class="done-btn" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+  <button class="done-btn" onclick="window.location.href='../'">← בנה אימון</button>
+  <button class="done-btn" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'">לייבוא ביומן</button>
 </div>
 
 <script src="../js/core.js"></script>

@@ -154,6 +154,28 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   .print-footer { color: #444; }
 }
 
+.th-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.th-steps li {
+  background: #1a1f1d;
+  border: 1px solid #303834;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #a7b1ab;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+.th-steps b { display: block; color: #f6f8f6; margin-bottom: 4px; }
+@media (max-width: 700px) {
+  .th-steps { grid-template-columns: 1fr 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
