@@ -275,6 +275,10 @@
   <div style="color:#6b7280;font-size:0.9rem">💪 עבודה מצוינת!</div>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
     <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
+    <div style="margin-bottom:12px">
+      <div style="font-size:0.78rem;color:#6b7280;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
+      <div id="rpeRow" style="display:flex;gap:6px;justify-content:center;flex-direction:row-reverse"></div>
+    </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0">💬 שלח סיכום למאמן בוואטסאפ</button>
     <label style="display:block;font-size:0.75rem;color:#6b7280;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
@@ -753,41 +757,68 @@ function finishWorkout() {
 
   document.getElementById('completionScreen').classList.add('active');
 
-  const result = {
-    name: linkMeta.name || '',
-    title: (workout && workout.title) || 'אימון',
-    doneAt: new Date().toISOString(),
-    minutes: Math.round(elapsedSeconds / 60),
-    exercises: completedExercises,
-    sets: completedSets,
-    skipped: skippedSets,
-    tid: linkMeta.tid || ''
-  };
-  const code = (typeof ThLink === 'object' && ThLink.encodeResult) ? ThLink.encodeResult(result) : JSON.stringify(result);
-  const wrap = document.getElementById('reportWrap');
-  const codeEl = document.getElementById('resultCode');
-  if (wrap && codeEl) {
-    wrap.style.display = 'block';
-    codeEl.value = code;
+  let reportRpe = null;
+  const finishedAt = new Date().toISOString();
+  function buildResult() {
+    return {
+      name: linkMeta.name || '',
+      title: (workout && workout.title) || 'אימון',
+      doneAt: finishedAt,
+      minutes: Math.round(elapsedSeconds / 60),
+      exercises: completedExercises,
+      sets: completedSets,
+      skipped: skippedSets,
+      tid: linkMeta.tid || '',
+      rpe: reportRpe,
+      plan: (typeof ThLink === 'object' && ThLink.compactPlan) ? ThLink.compactPlan(workout) : null
+    };
+  }
+  function refreshReport() {
+    const result = buildResult();
+    const code = (typeof ThLink === 'object' && ThLink.encodeResult) ? ThLink.encodeResult(result) : JSON.stringify(result);
+    const codeEl = document.getElementById('resultCode');
+    if (codeEl) codeEl.value = code;
     const msg = [
       'סיימתי אימון ב-TrainerHub',
       result.name ? ('מתאמן: ' + result.name) : '',
       'תוכנית: ' + result.title,
       'זמן: ' + formatTime(elapsedSeconds) + ' · תרגילים ' + result.exercises + ' · סטים ' + result.sets + (result.skipped ? (' · דולגו ' + result.skipped) : ''),
+      result.rpe ? ('קושי: ' + result.rpe + '/5') : '',
       '',
       'קוד לייבוא ביומן המאמן:',
       code
     ].filter(Boolean).join('\n');
     const waBtn = document.getElementById('btnWaTrainer');
-    if (waBtn && ThLink.waShareUrl) {
+    if (waBtn && typeof ThLink === 'object' && ThLink.waShareUrl) {
       waBtn.onclick = function () {
         window.open(ThLink.waShareUrl(linkMeta.wa, msg), '_blank');
       };
     }
+    return code;
+  }
+  const wrap = document.getElementById('reportWrap');
+  if (wrap) {
+    wrap.style.display = 'block';
+    const rpeRow = document.getElementById('rpeRow');
+    if (rpeRow) {
+      rpeRow.innerHTML = [1, 2, 3, 4, 5].map(n =>
+        `<button type="button" class="done-btn" data-rpe="${n}" style="min-width:44px;padding:8px 0;margin:0;background:#1a1a2e;border:1px solid #3a3a5a">${n}</button>`
+      ).join('');
+      rpeRow.querySelectorAll('[data-rpe]').forEach(btn => {
+        btn.onclick = function () {
+          reportRpe = Number(btn.getAttribute('data-rpe'));
+          rpeRow.querySelectorAll('[data-rpe]').forEach(b => {
+            b.style.background = Number(b.getAttribute('data-rpe')) === reportRpe ? '#5b21b6' : '#1a1a2e';
+          });
+          refreshReport();
+        };
+      });
+    }
+    refreshReport();
     const copyBtn = document.getElementById('btnCopyCode');
     if (copyBtn) {
       copyBtn.onclick = function () {
-        navigator.clipboard.writeText(code).then(function () {
+        navigator.clipboard.writeText(refreshReport()).then(function () {
           copyBtn.textContent = '✅ הועתק';
           setTimeout(function () { copyBtn.textContent = '📋 העתק קוד'; }, 1600);
         });

@@ -122,7 +122,8 @@
       s: result.sets != null ? result.sets : 0,
       sk: result.skipped != null ? result.skipped : 0,
       tid: result.tid || '',
-      rpe: result.rpe != null ? result.rpe : null
+      rpe: result.rpe != null ? result.rpe : null,
+      pl: result.plan || null
     };
     return 'TH1.' + utf8ToB64url(JSON.stringify(payload));
   }
@@ -155,7 +156,8 @@
       sets: Number(obj.s != null ? obj.s : obj.sets) || 0,
       skipped: Number(obj.sk != null ? obj.sk : obj.skipped) || 0,
       tid: obj.tid || '',
-      rpe: obj.rpe != null ? Number(obj.rpe) : null
+      rpe: obj.rpe != null ? Number(obj.rpe) : null,
+      plan: obj.pl || obj.plan || null
     };
   }
 

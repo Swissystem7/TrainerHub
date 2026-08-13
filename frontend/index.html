@@ -1508,6 +1508,7 @@ window.renderClients=function(){
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem;background:#14532d;border-color:#22c55e;color:#86efac" onclick="sendWhatsApp(${i})">💬 שלח לינק</button>
+          <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="suggestNextWeek(${i})">📈 הצע שבוע הבא</button>
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="assignCurrent(${i})">📋 שייך אימון נוכחי</button>
         </div>
       </div>
@@ -1541,6 +1542,7 @@ window.importResultCode=function(){
   if(!dup){
     c.logs.push({at:parsed.doneAt,title:parsed.title,minutes:parsed.minutes,exercises:parsed.exercises,sets:parsed.sets,skipped:parsed.skipped,rpe:parsed.rpe});
     c.plan=parsed.title||c.plan;
+    if (parsed.plan) c.lastPlan=parsed.plan;
   }
   save();
   document.getElementById('importCode').value='';
@@ -1557,6 +1559,8 @@ window.sendWhatsApp=function(i){
     return;
   }
   if(typeof ThLink!=='object')return;
+  if (typeof ThLink.compactPlan==='function') c.lastPlan=ThLink.compactPlan(currentWorkout);
+  save();
   const url=ThLink.encodeLink(currentWorkout,{name:c.name,wa:'',tid:c.id});
   const msg='היי '+(c.name||'')+' 💪\nהאימון שלך (בלי הרשמה):\n'+url+'\n\nכשתסיים — שלח לי את הקוד ממסך הסיום.';
   window.open(ThLink.waShareUrl(c.phone,msg),'_blank');
@@ -1565,6 +1569,40 @@ window.sendWhatsApp=function(i){
 window.assignCurrent=function(i){
   if(typeof currentWorkout!=='undefined'&&currentWorkout){clients[i].plan=currentWorkout.title||'אימון חדש';save();renderClients();}
   else alert('צור קודם אימון ב-Creator Studio, ואז שייך אותו');
+};
+window.suggestNextWeek=function(i){
+  const c=clients[i];
+  if(typeof ThLink!=='object'||!c.lastPlan){
+    alert('אין תוכנית שמורה למתאמן הזה. שלח לינק או ייבא קוד אחרי אימון.');
+    return;
+  }
+  const last=logsOf(c).slice().sort((a,b)=>String(b.at).localeCompare(String(a.at)))[0]||{};
+  const hard=(last.rpe!=null && last.rpe>=4) || (last.skipped||0)>=2;
+  const easy=(last.rpe!=null && last.rpe<=2) && !(last.skipped);
+  const next=JSON.parse(JSON.stringify(c.lastPlan));
+  (next.p||[]).forEach(function(ph){
+    if(ph.n!=='Main') return;
+    (ph.e||[]).forEach(function(ex){
+      if(ex.s==null) return;
+      if(hard) ex.s=Math.max(2, Number(ex.s)-1);
+      else if(easy) ex.s=Math.min(5, Number(ex.s)+1);
+    });
+  });
+  next.t=(next.t||c.plan||'אימון')+' · שבוע הבא';
+  const workout=ThLink.expandPlan(next);
+  c.lastPlan=next;
+  c.plan=workout.title;
+  save();
+  if(typeof currentWorkout!=='undefined'){
+    currentWorkout=workout;
+    document.getElementById('cardEmpty').style.display='none';
+    document.getElementById('cardContent').style.display='block';
+    document.getElementById('actionBar').style.display='flex';
+    renderCard(currentWorkout);
+    switchTab('studio', document.querySelector('.nav-tab'));
+  }
+  const why=hard?'הורדתי סט — היו דילוגים או קושי גבוה':(easy?'הוספתי סט — הביצוע היה קל ונקי':'השארתי נפח — אין אות ברור');
+  alert('הוצעה תוכנית לשבוע הבא ('+why+'). אפשר לשלוח לינק מתאמן מהכרטיסייה.');
 };
 window.addClient=function(){
   const name=prompt('שם המתאמן:');if(!name)return;
