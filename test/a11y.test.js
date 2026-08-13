@@ -7,10 +7,12 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const pages = {
-  weekly: fs.readFileSync(path.join(root, 'index.html'), 'utf8'),
+  prompt: fs.readFileSync(path.join(root, 'index.html'), 'utf8'),
+  weekly: fs.readFileSync(path.join(root, 'weekly.html'), 'utf8'),
   studio: fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8'),
   workout: fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8'),
-  library: fs.readFileSync(path.join(root, 'library.html'), 'utf8')
+  library: fs.readFileSync(path.join(root, 'library.html'), 'utf8'),
+  manage: fs.readFileSync(path.join(root, 'manage.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -90,13 +92,19 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /\.skip-link/);
+  assert.match(pages.prompt, /class="skip-link"/);
   assert.match(pages.weekly, /class="skip-link"/);
   assert.match(pages.studio, /class="skip-link"/);
   assert.match(pages.workout, /class="skip-link"/);
   assert.match(pages.library, /class="skip-link"/);
+  assert.match(pages.manage, /class="skip-link"/);
   assert.match(pages.library, /ספריית סרטונים/);
   assert.match(pages.weekly, /library\.html/);
   assert.match(pages.studio, /library\.html/);
+  assert.match(pages.prompt, /THEngine\.buildSession/);
+  assert.match(pages.manage, /ניהול מאגר/);
+  assert.match(pages.manage, /לא חיבור למאמנים/);
+  assert.doesNotMatch(pages.manage, /חיבור לאינסטגרם|אינטגרציית אינסטגרם/);
   assert.match(pages.workout, /:focus-visible/);
 });
 

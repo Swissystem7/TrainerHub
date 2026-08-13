@@ -8,7 +8,7 @@ const TH = require('../js/core.js');
 TH.setCatalog({});
 
 const root = path.join(__dirname, '..');
-const weekly = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const weekly = fs.readFileSync(path.join(root, 'weekly.html'), 'utf8');
 const studio = fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8');
 const workoutMode = fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8');
 
