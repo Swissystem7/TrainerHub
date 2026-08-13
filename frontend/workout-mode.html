@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrainerHub — מצב אימון</title>
+  <link rel="stylesheet" href="../css/app.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -287,19 +288,13 @@
   <button class="done-btn" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
 </div>
 
-<script src="th-link.js"></script>
+<script src="../js/core.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
 ═══════════════════════════════════════════ */
 
-const PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
-
-function esc(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
+const PHASE_LABELS = TH.PHASE_LABELS;
 
 let linkMeta = { wa: '', name: '', tid: '' };
 let skippedSets = 0;
@@ -312,11 +307,7 @@ function loadWorkout() {
       return fromHash.workout;
     }
   }
-  try {
-    const raw = localStorage.getItem('trainerhub_active_workout');
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch { return null; }
+  return TH.store.get(TH.KEYS.active, null);
 }
 
 // Flatten workout into a linear list of "steps"
@@ -399,43 +390,14 @@ let completedSets = 0;
 let completedExercises = 0;
 let completedStepIds = new Set();
 let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
-let videoCatalog = {};
-let videoByHe = {};
-
-function catalogSrc(file) {
-  if (!file) return '';
-  if (/^https?:\/\//i.test(file) || file.startsWith('../') || file.startsWith('./') || file.startsWith('/')) return file;
-  return '../' + file.replace(/^\.?\//, '');
-}
-
-function findCatalogEntry(step) {
-  if (!step || !videoCatalog) return null;
-  if (step.id && videoCatalog[step.id] && videoCatalog[step.id].file) return videoCatalog[step.id];
-  if (step.name && videoCatalog[step.name] && videoCatalog[step.name].file) return videoCatalog[step.name];
-  const keys = Object.keys(videoCatalog);
-  for (let i = 0; i < keys.length; i++) {
-    const entry = videoCatalog[keys[i]];
-    if (entry && entry.file && entry.he === step.name) return entry;
-  }
-  return null;
-}
-
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  fetch('../videos/catalog.json').then(r => r.ok ? r.json() : {}).then(data => {
-    if (data && typeof data === 'object') {
-      videoCatalog = data;
-      videoByHe = {};
-      Object.keys(data).forEach(id => {
-        const entry = data[id];
-        if (entry && entry.he) videoByHe[entry.he] = entry;
-      });
-    }
+  TH.ready(function () {
     if (workout && steps.length) renderStep();
-  }).catch(() => {});
+  });
 
   workout = loadWorkout();
 
@@ -494,9 +456,9 @@ function renderExercise(step) {
       ? `<div class="reps-display">${esc(step.reps)} חזרות</div>` : '';
 
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
-  const clip = findCatalogEntry(step);
+  const clip = TH.findExercise(step);
   const videoHtml = clip && clip.file
-    ? `<video class="ex-video" src="${esc(catalogSrc(clip.file))}" playsinline controls muted preload="metadata" onerror="this.hidden=true"></video>`
+    ? `<video class="ex-video" src="${esc(TH.catalogSrc(clip.file))}" playsinline controls muted preload="metadata" onerror="this.hidden=true"></video>`
     : `<video class="ex-video" hidden playsinline></video>`;
 
   stage.innerHTML = `
@@ -770,7 +732,7 @@ function finishWorkout() {
       skipped: skippedSets,
       tid: linkMeta.tid || '',
       rpe: reportRpe,
-      plan: (typeof ThLink === 'object' && ThLink.compactPlan) ? ThLink.compactPlan(workout) : null
+      plan: TH.compactPlan(workout)
     };
   }
   function refreshReport() {
@@ -826,14 +788,14 @@ function finishWorkout() {
     }
   }
 
-  localStorage.removeItem('trainerhub_active_workout');
+  TH.store.remove(TH.KEYS.active);
 }
 
 function exitWorkout() {
   if (confirm('לצאת מהאימון?')) {
     clearCountdown();
     pauseElapsedTimer();
-    localStorage.removeItem('trainerhub_active_workout');
+    TH.store.remove(TH.KEYS.active);
     window.location.href = 'index.html';
   }
 }

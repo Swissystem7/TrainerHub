@@ -1,0 +1,51 @@
+/* Shared surface chrome — weekly builder, Studio, workout-mode */
+.th-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: #0d100f;
+  border-bottom: 1px solid #303834;
+  font: 600 0.78rem system-ui, sans-serif;
+  position: relative;
+  z-index: 9999;
+  direction: rtl;
+}
+.th-nav .brand { color: #b9f24a; }
+.th-nav a, .th-nav .chip {
+  color: #f6f8f6;
+  border: 1px solid #303834;
+  border-radius: 14px;
+  padding: 3px 11px;
+  text-decoration: none;
+}
+.th-nav .chip.on {
+  background: rgba(185, 242, 74, 0.15);
+  border-color: rgba(185, 242, 74, 0.4);
+}
+.th-banner {
+  background: rgba(245, 158, 11, 0.1);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f0b542;
+  font: 600 0.74rem system-ui, sans-serif;
+  padding: 7px 14px;
+  text-align: center;
+  direction: rtl;
+}
+.th-btn {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: #fff;
+  border: 1px solid #7c3aed;
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.th-btn.ghost {
+  background: #1a1a2e;
+  color: #c4b5fd;
+  border-color: #3a3a5a;
+}

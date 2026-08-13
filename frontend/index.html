@@ -9,6 +9,7 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#7c3aed">
   <title>TrainerHub — Creator Studio</title>
+  <link rel="stylesheet" href="../css/app.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -615,8 +616,8 @@
 </div>
 </div><!-- /tab-profile -->
 
+<script src="../js/core.js"></script>
 <script src="parse-workout.js"></script>
-<script src="th-link.js"></script>
 <script>
 const EXAMPLES = {
   1: `אימון פונקציונלי לקבוצה של 12 אנשים, 50 דקות, ציוד: גומיות וכדורי ולשין.
@@ -649,12 +650,6 @@ const EXAMPLES = {
 };
 
 let currentWorkout = null;
-
-function esc(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
 
 function loadExample(num) {
   document.getElementById('workoutInput').value = EXAMPLES[num];
@@ -909,7 +904,7 @@ function deleteSaved(e, i) {
 
 function startWorkout() {
   if (!currentWorkout) return;
-  localStorage.setItem('trainerhub_active_workout', JSON.stringify(currentWorkout));
+  TH.store.set(TH.KEYS.active, currentWorkout);
   window.location.href = 'workout-mode.html';
 }
 
@@ -1504,7 +1499,7 @@ window.renderClients=function(){
         <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${esc((c.name||'?')[0])}</div>
         <div style="flex:1;min-width:160px">
           <div style="font-weight:700">${esc(c.name)} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בלי ביצוע שבוע</span>':''}</div>
-          <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">${esc(c.plan||'בלי תוכנית משויכת')} · ${esc(lastTxt)} · ${adh}% מ־28 יום</div>
+          <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">${esc(c.plan||'בלי תוכנית משויכת')} · ${esc(lastTxt)}${last&&last.rpe?' · קושי '+last.rpe+'/5':''} · ${adh}% מ־28 יום</div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem;background:#14532d;border-color:#22c55e;color:#86efac" onclick="sendWhatsApp(${i})">💬 שלח לינק</button>
@@ -1602,7 +1597,8 @@ window.suggestNextWeek=function(i){
     switchTab('studio', document.querySelector('.nav-tab'));
   }
   const why=hard?'הורדתי סט — היו דילוגים או קושי גבוה':(easy?'הוספתי סט — הביצוע היה קל ונקי':'השארתי נפח — אין אות ברור');
-  alert('הוצעה תוכנית לשבוע הבא ('+why+'). אפשר לשלוח לינק מתאמן מהכרטיסייה.');
+  if (typeof openTraineeLink==='function') openTraineeLink();
+  else alert('הוצעה תוכנית לשבוע הבא ('+why+'). אפשר לשלוח לינק מתאמן מהכרטיסייה.');
 };
 window.addClient=function(){
   const name=prompt('שם המתאמן:');if(!name)return;
