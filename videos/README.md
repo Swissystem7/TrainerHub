@@ -1,1 +1,13 @@
-סרטוני התרגיל חיים מחוץ לריפו. המיפוי id → {he, muscles, equipment, level, file} הוא הקובץ האחד `js/catalog.json`.
+# ספריית סרטוני תרגיל
+
+`catalog.json` ממפה מזהה תרגיל → `{id, he, muscles, equipment, level, file}`.
+
+הקליפים עצמם **לא בריפו** (גודל + פרטיות). מארחים אותם בנפרד.
+
+## איך לשים קבצים מקומית
+
+1. העתק את קבצי ה־mp4 ששמותיהם מופיעים ב־`file` לתיקייה הזו (`videos/`).
+2. מצב האימון טוען `videos/<file>` דרך `js/core.js` כשיש מיפוי.
+3. קליפים אנונימיים (`VID_*`, hash) ושמות של אנשים/קבוצות **לא נכנסו לקטלוג**.
+
+המזהים `plank`, `mountain_climber`, `push_up`, `bodyweight_row`, `superman`, `crunches`, `step_up`, `warmup` תואמים למנוע התוכנית — כשיש קובץ, הנגן מציג אותו.

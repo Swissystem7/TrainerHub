@@ -1,0 +1,964 @@
+{
+  "warmup": {
+    "id": "warmup",
+    "he": "חימום",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "חימום.mp4"
+  },
+  "אתגר_שתייה": {
+    "id": "אתגר_שתייה",
+    "he": "אתגר שתייה",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "אתגר שתייה.mp4"
+  },
+  "crunches": {
+    "id": "crunches",
+    "he": "בטן",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן.mp4"
+  },
+  "בטן_גומיות": {
+    "id": "בטן_גומיות",
+    "he": "בטן גומיות",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "בטן גומיות␠.mp4"
+  },
+  "בטן_הגיע_ברגל_אחורית_ולהחליף": {
+    "id": "בטן_הגיע_ברגל_אחורית_ולהחליף",
+    "he": "בטן הגיע ברגל אחורית ולהחליף",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן הגיע ברגל אחורית ולהחליף.mp4"
+  },
+  "בטן_זוגות": {
+    "id": "בטן_זוגות",
+    "he": "בטן זוגות",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן זוגות.mp4"
+  },
+  "בטן_זוגות_2": {
+    "id": "בטן_זוגות_2",
+    "he": "בטן זוגות",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן זוגות (4.7 MB).mp4"
+  },
+  "בטן_כדור_כדורסל": {
+    "id": "בטן_כדור_כדורסל",
+    "he": "בטן כדור כדורסל",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "basketball"
+    ],
+    "level": "beginner",
+    "file": "בטן כדור כדורסל.mp4"
+  },
+  "core_set": {
+    "id": "core_set",
+    "he": "בטן סט",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן סט.mp4"
+  },
+  "בטן_עם_כדור": {
+    "id": "בטן_עם_כדור",
+    "he": "בטן עם כדור",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "ball"
+    ],
+    "level": "beginner",
+    "file": "בטן עם כדור.mp4"
+  },
+  "בטן_עם_קיר": {
+    "id": "בטן_עם_קיר",
+    "he": "בטן עם קיר",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "wall"
+    ],
+    "level": "beginner",
+    "file": "בטן עם קיר.mp4"
+  },
+  "mountain_climber": {
+    "id": "mountain_climber",
+    "he": "מטפס הרים",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "מטפס הרים.mp4"
+  },
+  "mountain_climber_plank": {
+    "id": "mountain_climber_plank",
+    "he": "מטפס הרים עם פלאנק",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "מטפס הרים עם פלאנק.mp4"
+  },
+  "crunches_set": {
+    "id": "crunches_set",
+    "he": "סט בטן",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "סט בטן.mp4"
+  },
+  "plank": {
+    "id": "plank",
+    "he": "פלאנק",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק.mp4"
+  },
+  "plank_knees": {
+    "id": "plank_knees",
+    "he": "פלאנק ברכיים",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק ברכיים.mp4"
+  },
+  "plank_high": {
+    "id": "plank_high",
+    "he": "פלאנק גבוה",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק גבוה.mp4"
+  },
+  "plank_side_to_side": {
+    "id": "plank_side_to_side",
+    "he": "פלאנק מצד לצד",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק מצד לצד.mp4"
+  },
+  "plank_side": {
+    "id": "plank_side",
+    "he": "פלאנק צידי",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק צידי.mp4"
+  },
+  "plank_clock": {
+    "id": "plank_clock",
+    "he": "פלאנק שעון",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פלאנק שעון.mp4"
+  },
+  "superman": {
+    "id": "superman",
+    "he": "גב תחתון",
+    "muscles": [
+      "back"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "גב תחתון.mp4"
+  },
+  "shoulder_back": {
+    "id": "shoulder_back",
+    "he": "כתפיים וגב",
+    "muscles": [
+      "shoulders"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "כתפיים וגב.mp4"
+  },
+  "bodyweight_row": {
+    "id": "bodyweight_row",
+    "he": "מתח אוסטרלי",
+    "muscles": [
+      "back"
+    ],
+    "equipment": [
+      "bar"
+    ],
+    "level": "intermediate",
+    "file": "מתח אוסטרלי.mp4"
+  },
+  "קונוסים_גב": {
+    "id": "קונוסים_גב",
+    "he": "קונוסים גב",
+    "muscles": [
+      "back"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "קונוסים גב.mp4"
+  },
+  "בישיבה_אחד_נגד_השני": {
+    "id": "בישיבה_אחד_נגד_השני",
+    "he": "בישיבה אחד נגד השני",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "בישיבה אחד נגד השני.mp4"
+  },
+  "גומיות_ארבע_ראשי": {
+    "id": "גומיות_ארבע_ראשי",
+    "he": "גומיות ארבע ראשי",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות ארבע ראשי.mp4"
+  },
+  "גומיות_בטן": {
+    "id": "גומיות_בטן",
+    "he": "גומיות בטן",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות בטן.mp4"
+  },
+  "גומיות_במקום_מכון": {
+    "id": "גומיות_במקום_מכון",
+    "he": "גומיות במקום מכון",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות במקום מכון.mp4"
+  },
+  "גומיות_ברכיים": {
+    "id": "גומיות_ברכיים",
+    "he": "גומיות ברכיים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות ברכיים.mp4"
+  },
+  "גומיות_התנגדות": {
+    "id": "גומיות_התנגדות",
+    "he": "גומיות התנגדות",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות התנגדות.mp4"
+  },
+  "גומיות_ירכיים": {
+    "id": "גומיות_ירכיים",
+    "he": "גומיות ירכיים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות ירכיים.mp4"
+  },
+  "גומיות_רגליים": {
+    "id": "גומיות_רגליים",
+    "he": "גומיות רגליים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות רגליים.mp4"
+  },
+  "גומיות_רגליים_2": {
+    "id": "גומיות_רגליים_2",
+    "he": "גומיות רגליים 2",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "גומיות רגליים 2.mp4"
+  },
+  "עבודה_עם_גומייה": {
+    "id": "עבודה_עם_גומייה",
+    "he": "עבודה עם גומייה",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "band"
+    ],
+    "level": "beginner",
+    "file": "עבודה עם גומייה.mp4"
+  },
+  "crunches_2": {
+    "id": "crunches_2",
+    "he": "בטן",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "בטן.mp4"
+  },
+  "זוגות_בטן": {
+    "id": "זוגות_בטן",
+    "he": "זוגות בטן",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "זוגות בטן.mp4"
+  },
+  "זוגות_בטן_שתיים": {
+    "id": "זוגות_בטן_שתיים",
+    "he": "זוגות בטן שתיים",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "זוגות בטן שתיים.mp4"
+  },
+  "זוגות_התנגדות": {
+    "id": "זוגות_התנגדות",
+    "he": "זוגות התנגדות",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "זוגות התנגדות.mp4"
+  },
+  "זוגות_ידיים": {
+    "id": "זוגות_ידיים",
+    "he": "זוגות ידיים",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "זוגות ידיים.mp4"
+  },
+  "כדורסל_זמן_תגובה": {
+    "id": "כדורסל_זמן_תגובה",
+    "he": "כדורסל זמן תגובה",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "basketball"
+    ],
+    "level": "beginner",
+    "file": "כדורסל זמן תגובה.mp4"
+  },
+  "קורדינאציה": {
+    "id": "קורדינאציה",
+    "he": "קורדינאציה",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "קורדינאציה.mp4"
+  },
+  "תרגיל_תגובה": {
+    "id": "תרגיל_תגובה",
+    "he": "תרגיל תגובה",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "תרגיל תגובה.mp4"
+  },
+  "push_up_challenge": {
+    "id": "push_up_challenge",
+    "he": "אתגר שכיבות שמיכה",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "אתגר שכיבות שמיכה.mp4"
+  },
+  "הליכת_חיות_לחיזוק_ידיים": {
+    "id": "הליכת_חיות_לחיזוק_ידיים",
+    "he": "הליכת חיות לחיזוק ידיים",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "הליכת חיות לחיזוק ידיים.mp4"
+  },
+  "push_up_cones": {
+    "id": "push_up_cones",
+    "he": "חימום שכיבות שמיכה קונוסים על הגב",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "חימום שכיבות שמיכה קונוסים על הגב.mp4"
+  },
+  "ידיים_סוחבות_גוף": {
+    "id": "ידיים_סוחבות_גוף",
+    "he": "ידיים סוחבות גוף",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "ידיים סוחבות גוף.mp4"
+  },
+  "סט_כוח_ידיים": {
+    "id": "סט_כוח_ידיים",
+    "he": "סט כוח ידיים",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "intermediate",
+    "file": "סט כוח ידיים.mp4"
+  },
+  "push_up_kicks": {
+    "id": "push_up_kicks",
+    "he": "שכיבות שמיכה ובעיטות",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "שכיבות שמיכה ובעיטות.mp4"
+  },
+  "ילדים_הוקי_נעליים": {
+    "id": "ילדים_הוקי_נעליים",
+    "he": "ילדים הוקי נעליים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "ילדים הוקי נעליים.mp4"
+  },
+  "ילדים_חישוק_קונוסים": {
+    "id": "ילדים_חישוק_קונוסים",
+    "he": "ילדים חישוק קונוסים",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones",
+      "hoop"
+    ],
+    "level": "beginner",
+    "file": "ילדים חישוק קונוסים.mp4"
+  },
+  "ילדים_משחק_עם_קונוסים": {
+    "id": "ילדים_משחק_עם_קונוסים",
+    "he": "ילדים משחק עם קונוסים",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "ילדים משחק עם קונוסים.mp4"
+  },
+  "ילדים_קונוסים": {
+    "id": "ילדים_קונוסים",
+    "he": "ילדים קונוסים",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "ילדים קונוסים.mp4"
+  },
+  "ילדים_קונוסים_אחד_על_אחד": {
+    "id": "ילדים_קונוסים_אחד_על_אחד",
+    "he": "ילדים קונוסים אחד על אחד",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "ילדים קונוסים אחד על אחד.mp4"
+  },
+  "ילדים_קונוסים_וכדור": {
+    "id": "ילדים_קונוסים_וכדור",
+    "he": "ילדים קונוסים וכדור",
+    "muscles": [
+      "chest",
+      "back",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "ילדים קונוסים וכדור.mp4"
+  },
+  "יציאה_מהמקום": {
+    "id": "יציאה_מהמקום",
+    "he": "יציאה מהמקום",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "יציאה מהמקום.mp4"
+  },
+  "יציאה_מהמקום_2": {
+    "id": "יציאה_מהמקום_2",
+    "he": "יציאה מהמקום",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "יציאה מהמקום (10.8 MB).mp4"
+  },
+  "כדורגל_אחד_על_אחד": {
+    "id": "כדורגל_אחד_על_אחד",
+    "he": "כדורגל אחד על אחד",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "football"
+    ],
+    "level": "beginner",
+    "file": "כדורגל אחד על אחד.mp4"
+  },
+  "כדורגל_חימום": {
+    "id": "כדורגל_חימום",
+    "he": "כדורגל חימום",
+    "muscles": [
+      "core"
+    ],
+    "equipment": [
+      "football"
+    ],
+    "level": "beginner",
+    "file": "כדורגל חימום.mp4"
+  },
+  "כדורגל_תוקף_מגן": {
+    "id": "כדורגל_תוקף_מגן",
+    "he": "כדורגל תוקף מגן",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "football"
+    ],
+    "level": "beginner",
+    "file": "כדורגל תוקף מגן.mp4"
+  },
+  "מסירות_דיוק": {
+    "id": "מסירות_דיוק",
+    "he": "מסירות דיוק",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "מסירות דיוק.mp4"
+  },
+  "פסים": {
+    "id": "פסים",
+    "he": "פסים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "פסים.mp4"
+  },
+  "שליטה_בכדור": {
+    "id": "שליטה_בכדור",
+    "he": "שליטה בכדור",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "ball"
+    ],
+    "level": "beginner",
+    "file": "שליטה בכדור.mp4"
+  },
+  "שליטה_בכדור_זוגות": {
+    "id": "שליטה_בכדור_זוגות",
+    "he": "שליטה בכדור זוגות",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "ball"
+    ],
+    "level": "beginner",
+    "file": "שליטה בכדור זוגות.mp4"
+  },
+  "טניס_נגיעה_בגוף": {
+    "id": "טניס_נגיעה_בגוף",
+    "he": "טניס נגיעה בגוף",
+    "muscles": [
+      "shoulders"
+    ],
+    "equipment": [
+      "tennis-ball"
+    ],
+    "level": "beginner",
+    "file": "טניס נגיעה בגוף.mp4"
+  },
+  "עבודה_עם_כדור_טניס": {
+    "id": "עבודה_עם_כדור_טניס",
+    "he": "עבודה עם כדור טניס",
+    "muscles": [
+      "shoulders"
+    ],
+    "equipment": [
+      "tennis-ball"
+    ],
+    "level": "beginner",
+    "file": "עבודה עם כדור טניס.mp4"
+  },
+  "עבודה_עם_כדור_טניס_2": {
+    "id": "עבודה_עם_כדור_טניס_2",
+    "he": "עבודה עם כדור טניס 2",
+    "muscles": [
+      "shoulders"
+    ],
+    "equipment": [
+      "tennis-ball"
+    ],
+    "level": "beginner",
+    "file": "עבודה עם כדור טניס 2.mp4"
+  },
+  "אימון_קונוסים_תגובה_וכוח": {
+    "id": "אימון_קונוסים_תגובה_וכוח",
+    "he": "אימון קונוסים -תגובה וכוח",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "אימון קונוסים -תגובה וכוח.mp4"
+  },
+  "ילדים_קונוסים_אחד_על_אחד_2": {
+    "id": "ילדים_קונוסים_אחד_על_אחד_2",
+    "he": "ילדים קונוסים אחד על אחד",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "ילדים קונוסים אחד על אחד.mp4"
+  },
+  "משחקים_עם_קונוסים": {
+    "id": "משחקים_עם_קונוסים",
+    "he": "משחקים עם קונוסים",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "משחקים עם קונוסים.mp4"
+  },
+  "קונוסים_אחד_על_אחד": {
+    "id": "קונוסים_אחד_על_אחד",
+    "he": "קונוסים אחד על אחד",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "קונוסים אחד על אחד.mp4"
+  },
+  "קונוסים_ידיים_וכדורי_טניס": {
+    "id": "קונוסים_ידיים_וכדורי_טניס",
+    "he": "קונוסים ידיים וכדורי טניס",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "cones",
+      "tennis-ball"
+    ],
+    "level": "beginner",
+    "file": "קונוסים ידיים וכדורי טניס.mp4"
+  },
+  "קונוסים_עבודת_צוות": {
+    "id": "קונוסים_עבודת_צוות",
+    "he": "קונוסים עבודת צוות",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "קונוסים עבודת צוות.mp4"
+  },
+  "קונוסים_תחנות": {
+    "id": "קונוסים_תחנות",
+    "he": "קונוסים תחנות",
+    "muscles": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "cones"
+    ],
+    "level": "beginner",
+    "file": "קונוסים תחנות.mp4"
+  },
+  "step_up": {
+    "id": "step_up",
+    "he": "מדרגות",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "stairs"
+    ],
+    "level": "beginner",
+    "file": "מדרגות.mp4"
+  },
+  "ladder_feet": {
+    "id": "ladder_feet",
+    "he": "סולם רגליים",
+    "muscles": [
+      "legs"
+    ],
+    "equipment": [
+      "ladder"
+    ],
+    "level": "beginner",
+    "file": "סולם רגליים.mp4"
+  },
+  "push_up": {
+    "id": "push_up",
+    "he": "שכיבות סמיכה ורגליים",
+    "muscles": [
+      "biceps",
+      "triceps"
+    ],
+    "equipment": [
+      "none"
+    ],
+    "level": "beginner",
+    "file": "שכיבות סמיכה ורגליים.mp4"
+  }
+}

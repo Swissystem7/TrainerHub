@@ -30,6 +30,48 @@
   };
   var WARM_UPS = ['arm_circles', 'leg_swings', 'torso_twists', 'jumping_jacks', 'hip_circles'];
   var COOL_DOWNS = ['hamstring_stretch', 'quad_stretch', 'shoulder_stretch', 'cat_cow', 'child_pose'];
+  var PROGRAM_POOL = [
+    { id: 'bodyweight_squat', muscles: ['legs'], equipment: ['none'] },
+    { id: 'lunges', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+    { id: 'glute_bridge', muscles: ['legs'], equipment: ['none'] },
+    { id: 'step_up', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+    { id: 'wall_sit', muscles: ['legs'], equipment: ['none'] },
+    { id: 'calf_raise', muscles: ['legs'], equipment: ['none', 'dumbbells'] },
+    { id: 'goblet_squat', muscles: ['legs'], equipment: ['dumbbells'] },
+    { id: 'dumbbell_lunge', muscles: ['legs'], equipment: ['dumbbells'] },
+    { id: 'romanian_deadlift_db', muscles: ['legs'], equipment: ['dumbbells'] },
+    { id: 'squat', muscles: ['legs'], equipment: ['barbell'] },
+    { id: 'deadlift', muscles: ['legs', 'back'], equipment: ['barbell'] },
+    { id: 'leg_press', muscles: ['legs'], equipment: ['machine'] },
+    { id: 'push_up', muscles: ['chest'], equipment: ['none'] },
+    { id: 'wide_push_up', muscles: ['chest'], equipment: ['none'] },
+    { id: 'dumbbell_bench', muscles: ['chest'], equipment: ['dumbbells'] },
+    { id: 'dumbbell_fly', muscles: ['chest'], equipment: ['dumbbells'] },
+    { id: 'bench_press', muscles: ['chest'], equipment: ['barbell'] },
+    { id: 'superman', muscles: ['back'], equipment: ['none'] },
+    { id: 'bodyweight_row', muscles: ['back'], equipment: ['none'] },
+    { id: 'dumbbell_row', muscles: ['back'], equipment: ['dumbbells'] },
+    { id: 'barbell_row', muscles: ['back'], equipment: ['barbell'] },
+    { id: 'pull_up', muscles: ['back'], equipment: ['bar'] },
+    { id: 'lat_pulldown', muscles: ['back'], equipment: ['machine'] },
+    { id: 'pike_push_up', muscles: ['shoulders'], equipment: ['none'] },
+    { id: 'arm_circles', muscles: ['shoulders'], equipment: ['none'] },
+    { id: 'dumbbell_ohp', muscles: ['shoulders'], equipment: ['dumbbells'] },
+    { id: 'lateral_raise', muscles: ['shoulders'], equipment: ['dumbbells'] },
+    { id: 'overhead_press', muscles: ['shoulders'], equipment: ['barbell'] },
+    { id: 'bodyweight_curl', muscles: ['biceps'], equipment: ['none'] },
+    { id: 'bicep_curl', muscles: ['biceps'], equipment: ['dumbbells'] },
+    { id: 'hammer_curl', muscles: ['biceps'], equipment: ['dumbbells'] },
+    { id: 'bench_dips', muscles: ['triceps'], equipment: ['none'] },
+    { id: 'tricep_push_up', muscles: ['triceps'], equipment: ['none'] },
+    { id: 'overhead_extension', muscles: ['triceps'], equipment: ['dumbbells'] },
+    { id: 'tricep_pushdown', muscles: ['triceps'], equipment: ['machine'] },
+    { id: 'plank', muscles: ['core'], equipment: ['none'] },
+    { id: 'crunches', muscles: ['core'], equipment: ['none'] },
+    { id: 'russian_twist', muscles: ['core'], equipment: ['none', 'dumbbells'] },
+    { id: 'leg_raise', muscles: ['core'], equipment: ['none'] },
+    { id: 'mountain_climber', muscles: ['core'], equipment: ['none'] }
+  ];
 
   var catalog = {};
   var catalogReady = false;
@@ -433,7 +475,7 @@
     var injuredParts = injuries.filter(function (p) { return BODY_PARTS.indexOf(p) !== -1; });
     var goalKey = normalizeGoal(goals[0]);
     var rx = prescriptionFor(goalKey, isSenior);
-    var pool = catalogList().filter(function (ex) {
+    var pool = PROGRAM_POOL.filter(function (ex) {
       if (!userCanDo(ex, equipment)) return false;
       if (ex.muscles.some(function (m) { return injuredParts.indexOf(m) !== -1; })) return false;
       return true;
@@ -477,7 +519,7 @@
 
   function loadCatalog() {
     if (catalogReady) return Promise.resolve(catalog);
-    return fetch(assetUrl('js/catalog.json')).then(function (r) {
+    return fetch(assetUrl('videos/catalog.json')).then(function (r) {
       return r.ok ? r.json() : {};
     }).then(function (data) {
       setCatalog(data);
