@@ -126,6 +126,14 @@
       font-size: 0.85rem; color: #6b7280; max-width: 340px;
       background: #1a1a2e; border-radius: 10px; padding: 10px 16px;
     }
+    .ex-video {
+      width: min(340px, 90vw);
+      max-height: 200px;
+      border-radius: 12px;
+      background: #000;
+      border: 1px solid #2a2a4a;
+    }
+    .ex-video[hidden] { display: none; }
 
     /* ── Controls ── */
     .controls {
@@ -305,6 +313,7 @@ function buildSteps(workout) {
         // Exercise step
         steps.push({
           type: 'exercise',
+          id: ex.id || null,
           name: ex.name,
           phase: phaseLabel,
           set: s,
@@ -366,12 +375,38 @@ let completedSets = 0;
 let completedExercises = 0;
 let completedStepIds = new Set();
 let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
+let videoCatalog = {};
 
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
 
+function catalogSrc(file) {
+  if (!file) return '';
+  if (/^https?:\/\//i.test(file) || file.startsWith('../') || file.startsWith('/')) return file;
+  return '../' + file.replace(/^\.?\//, '');
+}
+
+function findCatalogEntry(step) {
+  if (!step || !videoCatalog) return null;
+  const byId = step.id && videoCatalog[step.id];
+  if (byId && byId.file) return byId;
+  const byName = videoCatalog[step.name];
+  if (byName && byName.file) return byName;
+  const keys = Object.keys(videoCatalog);
+  for (let i = 0; i < keys.length; i++) {
+    const entry = videoCatalog[keys[i]];
+    if (entry && entry.file && entry.he === step.name) return entry;
+  }
+  return null;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  fetch('../videos/catalog.json').then(r => r.ok ? r.json() : {}).then(data => {
+    if (data && typeof data === 'object') videoCatalog = data;
+    if (workout && steps.length) renderStep();
+  }).catch(() => {});
+
   workout = loadWorkout();
 
   if (!workout) {
@@ -429,11 +464,16 @@ function renderExercise(step) {
       ? `<div class="reps-display">${esc(step.reps)} חזרות</div>` : '';
 
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
+  const clip = findCatalogEntry(step);
+  const videoHtml = clip && clip.file
+    ? `<video class="ex-video" src="${esc(catalogSrc(clip.file))}" playsinline controls preload="metadata"></video>`
+    : `<video class="ex-video" hidden playsinline></video>`;
 
   stage.innerHTML = `
     <div class="phase-label">${esc(step.phase)}</div>
     <div class="exercise-name">${esc(step.name)}</div>
     ${setInfo}
+    ${videoHtml}
     ${repsOrTime}
     ${notes}
   `;
