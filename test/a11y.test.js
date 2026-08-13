@@ -12,7 +12,10 @@ const pages = {
   studio: fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8'),
   workout: fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8'),
   library: fs.readFileSync(path.join(root, 'library.html'), 'utf8'),
-  manage: fs.readFileSync(path.join(root, 'manage.html'), 'utf8')
+  manage: fs.readFileSync(path.join(root, 'manage.html'), 'utf8'),
+  offer: fs.readFileSync(path.join(root, 'offer.html'), 'utf8'),
+  pitch: fs.readFileSync(path.join(root, 'pitch.html'), 'utf8'),
+  print: fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -92,12 +95,21 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /\.skip-link/);
-  assert.match(pages.prompt, /class="skip-link"/);
-  assert.match(pages.weekly, /class="skip-link"/);
-  assert.match(pages.studio, /class="skip-link"/);
-  assert.match(pages.workout, /class="skip-link"/);
-  assert.match(pages.library, /class="skip-link"/);
-  assert.match(pages.manage, /class="skip-link"/);
+  assert.match(pages.prompt, /class="skip-link/);
+  assert.match(pages.weekly, /class="skip-link/);
+  assert.match(pages.studio, /class="skip-link/);
+  assert.match(pages.workout, /class="skip-link/);
+  assert.match(pages.library, /class="skip-link/);
+  assert.match(pages.manage, /class="skip-link/);
+  assert.match(pages.offer, /class="skip-link/);
+  assert.match(pages.pitch, /class="skip-link/);
+  assert.match(pages.print, /class="skip-link/);
+  assert.match(pages.prompt, /shareToClient/);
+  assert.match(pages.offer, /אין סליקה/);
+  assert.match(pages.offer, /₪59/);
+  assert.doesNotMatch(pages.offer, /1,?800 מאמנים|הכי פופולרי|כבר עובדים איתנו/);
+  assert.match(pages.pitch, /78 קליפ/);
+  assert.match(pages.print, /workoutPrintHtml/);
   assert.match(pages.library, /ספריית סרטונים/);
   assert.match(pages.weekly, /library\.html/);
   assert.match(pages.studio, /library\.html/);
