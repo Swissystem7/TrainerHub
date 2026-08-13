@@ -1,15 +1,34 @@
 # TrainerHub
 
-> **[לדמו החי של TrainerHub](https://swissystem7.github.io/TrainerHub/)**
+דמו / פורטפוליו בעברית וב־RTL: בונה תוכנית אימון שבועית וממיר טקסט חופשי לכרטיסייה שאפשר להריץ במצב אימון. זה לא מוצר SaaS חי, אין מנויים ואין שרת בענן בדמו הציבורי.
 
-**What**: TrainerHub — generates weekly training plans from trainee preferences, powered by a Python server.
+**למי נבנה:** מאמנים אישיים עצמאיים בישראל שרוצים תוכנית מותאמת (מטרה, רמה, ציוד, ימים) בלי אקסל. זה גם כלי תרגול למתאמן בודד.
 
-**For whom**: personal trainers and fitness enthusiasts who want customized workout schedules.
-
-**How**: web interface + Python backend.
+**[דמו חי על GitHub Pages](https://swissystem7.github.io/TrainerHub/)** · [האפליקציה המלאה](https://swissystem7.github.io/TrainerHub/frontend/) · [מצב אימון](https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html)
 
 ---
 
-TrainerHub הופך העדפות מתאמן לתוכנית אימון שבועית ברורה ומוכנה לביצוע בתוך שניות.
+## מה עובד היום
 
-הועלה מהמחשב של אבירן — יולי 2026.
+הדמו סטטי. פענוח AI ב־`backend/main.py` רץ רק אם מרימים `localhost:8001` עם מפתח; ב־Pages הוא לא פעיל.
+
+- **בונה שבועי** (`index.html`): מטרה משנה סטים/חזרות/מנוחה (כוח 4×4–6 / 120 שנ׳, היפרטרופיה 3×8–12 / 60 שנ׳, סיבולת 3×12–15 / 45 שנ׳). הציוד נשמר (משקולות לא מחזירות מכונות). `dayIndex` בונה פיצול push/pull/legs או עליון/תחתון. **התחל אימון** פותח את מצב האימון עם אותה סכימת `phases`.
+- **Creator Studio:** טקסט חופשי → כרטיסייה. אם השרת המקומי נכשל, רץ פענוח כללים בדפדפן (בלי AI).
+- **מצב אימון:** טיימר אחד לכל שלב, דילוג על סט בודד, חזרה שמורידה מונים. אם יש מיפוי ב־`videos/catalog.json` מוצג `<video>`; הקליפים עצמם מחוץ לריפו.
+- **התחברות** היא הדגמה ב־localStorage. Marketplace / Pro / שיתוף חי מסומנים **בקרוב** או נשמרים רק בדפדפן.
+
+אין סליקה, אין וואטסאפ מוצר, ואין ספריית 95 סרטונים בריפו.
+
+---
+
+## מה המחקר מצא
+
+פסק דין: **PARK** — לא לבנות עוד פיצ'רים לפני שיחות. פירוט ב־[RESEARCH.md](RESEARCH.md).
+
+1. **השוק הישראלי כבר מלא.** [AutoFit](https://auto-fit.co.il/), [Coach](https://www.coach-platform.com/), [Boostapp](https://www.boostapp.co.il/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F), [Tazman](https://tazman.co.il/) ו־[BaseCRM](https://basecrm.co.il/guides/trainee-management-app-complete-guide/) מוכרים למאמנים עברית + וואטסאפ + ניהול לקוחות, במחיר ₪0–450.
+2. **ה־ICP שנבחר כבר מטרה שלהם.** מאמן/ת עצמאי/ת בישראל עם 15–40 מתאמנים משלמים שעדיין רץ על וואטסאפ + אקסל — לא רשת ולא סטודיו עם עשרה מדריכים.
+3. **הצעד הבא הוא 10 ראיונות, לא קוד.** שיחות קצרות מ[קבוצת מאמני הכושר של ישראל](https://www.facebook.com/groups/134164056483/) (כ־25.7K חברים): *אם מחר מפסיקים את הוואטסאפ — לאיזה כלי עוברים, וכמה מוכנים לשלם?*
+
+---
+
+הועלה מהמחשב של אבירן — יולי 2026. תיקוני הדמו והמיצוב — אוגוסט 2026.
