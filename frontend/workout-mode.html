@@ -126,11 +126,13 @@
       font-size: 0.85rem; color: #6b7280; max-width: 340px;
       background: #1a1a2e; border-radius: 10px; padding: 10px 16px;
     }
+
     .ex-video {
       width: min(340px, 90vw);
       max-height: 200px;
       border-radius: 12px;
       background: #000;
+      object-fit: contain;
       border: 1px solid #2a2a4a;
     }
     .ex-video[hidden] { display: none; }
@@ -376,23 +378,18 @@ let completedExercises = 0;
 let completedStepIds = new Set();
 let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
 let videoCatalog = {};
-
-/* ═══════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════ */
+let videoByHe = {};
 
 function catalogSrc(file) {
   if (!file) return '';
-  if (/^https?:\/\//i.test(file) || file.startsWith('../') || file.startsWith('/')) return file;
+  if (/^https?:\/\//i.test(file) || file.startsWith('../') || file.startsWith('./') || file.startsWith('/')) return file;
   return '../' + file.replace(/^\.?\//, '');
 }
 
 function findCatalogEntry(step) {
   if (!step || !videoCatalog) return null;
-  const byId = step.id && videoCatalog[step.id];
-  if (byId && byId.file) return byId;
-  const byName = videoCatalog[step.name];
-  if (byName && byName.file) return byName;
+  if (step.id && videoCatalog[step.id] && videoCatalog[step.id].file) return videoCatalog[step.id];
+  if (step.name && videoCatalog[step.name] && videoCatalog[step.name].file) return videoCatalog[step.name];
   const keys = Object.keys(videoCatalog);
   for (let i = 0; i < keys.length; i++) {
     const entry = videoCatalog[keys[i]];
@@ -401,9 +398,20 @@ function findCatalogEntry(step) {
   return null;
 }
 
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+
 document.addEventListener('DOMContentLoaded', () => {
   fetch('../videos/catalog.json').then(r => r.ok ? r.json() : {}).then(data => {
-    if (data && typeof data === 'object') videoCatalog = data;
+    if (data && typeof data === 'object') {
+      videoCatalog = data;
+      videoByHe = {};
+      Object.keys(data).forEach(id => {
+        const entry = data[id];
+        if (entry && entry.he) videoByHe[entry.he] = entry;
+      });
+    }
     if (workout && steps.length) renderStep();
   }).catch(() => {});
 
@@ -466,7 +474,7 @@ function renderExercise(step) {
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
   const clip = findCatalogEntry(step);
   const videoHtml = clip && clip.file
-    ? `<video class="ex-video" src="${esc(catalogSrc(clip.file))}" playsinline controls preload="metadata"></video>`
+    ? `<video class="ex-video" src="${esc(catalogSrc(clip.file))}" playsinline controls muted preload="metadata" onerror="this.hidden=true"></video>`
     : `<video class="ex-video" hidden playsinline></video>`;
 
   stage.innerHTML = `
