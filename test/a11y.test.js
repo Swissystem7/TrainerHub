@@ -15,7 +15,8 @@ const pages = {
   manage: fs.readFileSync(path.join(root, 'manage.html'), 'utf8'),
   offer: fs.readFileSync(path.join(root, 'offer.html'), 'utf8'),
   pitch: fs.readFileSync(path.join(root, 'pitch.html'), 'utf8'),
-  print: fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8')
+  print: fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8'),
+  journal: fs.readFileSync(path.join(root, 'journal.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -104,7 +105,11 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.offer, /class="skip-link/);
   assert.match(pages.pitch, /class="skip-link/);
   assert.match(pages.print, /class="skip-link/);
+  assert.match(pages.journal, /class="skip-link/);
   assert.match(pages.prompt, /shareToClient/);
+  assert.match(pages.prompt, /encodeLink/);
+  assert.match(pages.journal, /suggestNextFromLog/);
+  assert.match(pages.journal, /decodeResult/);
   assert.match(pages.offer, /אין סליקה/);
   assert.match(pages.offer, /₪59/);
   assert.doesNotMatch(pages.offer, /1,?800 מאמנים|הכי פופולרי|כבר עובדים איתנו/);
@@ -113,6 +118,8 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.library, /ספריית סרטונים/);
   assert.match(pages.weekly, /library\.html/);
   assert.match(pages.studio, /library\.html/);
+  assert.match(pages.studio, /journal\.html/);
+  assert.doesNotMatch(pages.studio, /Marketplace|GitHub למאמנים|פלטפורמת AI|בקרוב קהילה/);
   assert.match(pages.prompt, /THEngine\.buildSession/);
   assert.match(pages.prompt, /THIngest\.ingestText/);
   assert.match(pages.prompt, /THIngest\.saveSegment/);
