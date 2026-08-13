@@ -1,6 +1,11 @@
 # ספריית סרטוני תרגיל
 
-הקליפים עצמם **לא בריפו** (גודל + פרטיות). המיפוי id → `{id, he, muscles, equipment, level, file}` הוא הקובץ האחד [`js/catalog.json`](../js/catalog.json). השדה `file` הוא שם קובץ ה־mp4 האמיתי, בלי נתיב מזויף.
+הקליפים עצמם **לא בריפו** (גודל + פרטיות). יש שני מקורות מאחורי שכבת lookup אחת ב־`js/core.js`:
+
+- מקומי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"local"}`.
+- דרייב: [`drive-catalog.json`](./drive-catalog.json) — `{id, driveId, he, muscles, equipment, level, source:"drive", folder}`. 44 סרטונים משותפים כ-anyone/reader, נגן: `https://drive.google.com/file/d/{id}/preview`.
+
+הוספת סרטון דרייב = שורה חדשה ב־JSON (או דרך מסך «ניהול מאגר»). בלי שינוי קוד.
 
 ## איפה הקבצים באמת
 
@@ -21,7 +26,7 @@
 
 ## מה לא נכנס לקטלוג
 
-- קליפים אנונימיים: `VID_*` ושם-hash של וואטסאפ (~13).
+- קליפים אנונימיים: `VID_*` ושם-hash של וואטסאפ. ששת ה-VID_* מהדרייב נשארים מחוץ ל־`drive-catalog.json`.
 - שם אדם או קבוצה בשם הקובץ (למשל מאמן, «נערים א ארצית»).
 - שמות מספריים בלבד (`1.mp4`, `2.mp4`) — אין שם תרגיל.
 

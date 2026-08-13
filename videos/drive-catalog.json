@@ -1,0 +1,653 @@
+{
+  "_meta": {
+    "source": "drive",
+    "generatedFrom": "drive-fitness-videos.json",
+    "count": 44,
+    "note": "הוספת סרטון = שורה חדשה. בלי שינוי קוד."
+  },
+  "items": [
+    {
+      "id": "drive_פלאנק",
+      "driveId": "1tLFxcQifJQgGYRZD20YQticZ0S4psv2r",
+      "he": "פלאנק",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_פלאנק_גבוה",
+      "driveId": "1Q---XrjF-bjqaoXtf76zN8QsfllfgwF6",
+      "he": "פלאנק גבוה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_פלאנק_ברכיים",
+      "driveId": "1lfq5WACix0Hc0X2Eo1e8AXkZaQGV9KbB",
+      "he": "פלאנק ברכיים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_פלאנק_צידי",
+      "driveId": "1FcJDIXo0DwiUHdXCFVkPi-eU9HY9DHH0",
+      "he": "פלאנק צידי",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_פלאנק_מצד_לצד",
+      "driveId": "1WguorGnjaGGHy_SXZLgNdA-vP4RVXwGH",
+      "he": "פלאנק מצד לצד",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_פלאנק_שעון",
+      "driveId": "1yIJ9myR1neU8Qjq587AZp6EwPPGn3UUV",
+      "he": "פלאנק שעון",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_מטפס_הרים",
+      "driveId": "1vK0HbdNXhZ_FChgFKRDf2-Lkm9_g4obj",
+      "he": "מטפס הרים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_מטפס_הרים_עם_פלאנק",
+      "driveId": "1kZGzGL4AsY8-0fh6cSRKRjlkqAKnP_8K",
+      "he": "מטפס הרים עם פלאנק",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן",
+      "driveId": "1rmf-nflg-5i5JBpsvgS7mAfq8f1bdCE1",
+      "he": "בטן",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_סט",
+      "driveId": "1-Zi3YppzaZo49UPDoT32qsKbb6LwCKKu",
+      "he": "בטן סט",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_סט_בטן",
+      "driveId": "1blr57fNTIgKOJuO242VR1A8JoyIVgYns",
+      "he": "סט בטן",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_עם_קיר",
+      "driveId": "1-yC0OPqGtjoPR0TXMbAEgt19QLiaFMRt",
+      "he": "בטן עם קיר",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_כדור_כדורסל",
+      "driveId": "1X_q9XhNaagWQSDlarXgHcOZCsy6v2Ann",
+      "he": "בטן כדור כדורסל",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_עם_כדור",
+      "driveId": "1JsibK5z5pxRIVVkt5ftsqZqDn5OHbS4W",
+      "he": "בטן עם כדור",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_גומיות",
+      "driveId": "1B-o2xdvYayZZWhN6u9E4_Hv6mEamTnF0",
+      "he": "בטן גומיות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_הגיע_ברגל_אחורית_ולהחליף",
+      "driveId": "1cKXMjzI6bfZJOmKmjpQ3yqVvPQPt8Cw-",
+      "he": "בטן הגיע ברגל אחורית ולהחליף",
+      "muscles": [
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_זוגות",
+      "driveId": "1mlzxv0uPsoK5A29Oyro1d45lVyX89LTD",
+      "he": "בטן זוגות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_בטן_זוגות_2",
+      "driveId": "13qjHxCt53ZJw6G5AxiVaSkXsOIGnFRwJ",
+      "he": "בטן זוגות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן"
+    },
+    {
+      "id": "drive_הליכת_חיות_לחיזוק_ידיים",
+      "driveId": "11o90mT_qwkWV5hOOrMzqusstC51ZdRzb",
+      "he": "הליכת חיות לחיזוק ידיים",
+      "muscles": [
+        "biceps",
+        "triceps",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_ידיים_סוחבות_גוף",
+      "driveId": "1D1Z5bBWnQrurMhRiPg_H_C2eJ-lIvhh1",
+      "he": "ידיים סוחבות גוף",
+      "muscles": [
+        "biceps",
+        "triceps",
+        "chest",
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_סט_כוח_ידיים",
+      "driveId": "1-Dy1_DoOtT9Zy0Q4ENhyULwRdwpfJSTP",
+      "he": "סט כוח ידיים",
+      "muscles": [
+        "biceps",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_אתגר_שכיבות_שמיכה",
+      "driveId": "19Cf4diAGBXG2f1jIE-QcmWlrCBQ1mIhu",
+      "he": "אתגר שכיבות שמיכה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_שכיבות_שמיכה_ובעיטות",
+      "driveId": "1HBsxB8etnLWCOaY2Xe2C1QXG70c0PgoL",
+      "he": "שכיבות שמיכה ובעיטות",
+      "muscles": [
+        "chest",
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_חימום_שכיבות_שמיכה_קונוסים_על_הגב",
+      "driveId": "1z3SjL3mf0VKHwwJvuqJZ8xJ-DC0jYA93",
+      "he": "חימום שכיבות שמיכה קונוסים על הגב",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים"
+    },
+    {
+      "id": "drive_גומיות_בטן",
+      "driveId": "1CqAWIIDQb3wOdTgj1o4UmaD6T0_au_us",
+      "he": "גומיות בטן",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_בטן_2",
+      "driveId": "1te6xhZgQSl35N1wqY8DyOjXTPBBEfwaY",
+      "he": "גומיות בטן",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_התנגדות",
+      "driveId": "1qwusTk4WR2N3OI_heGZ-Da43597PLxPQ",
+      "he": "גומיות התנגדות",
+      "muscles": [
+        "chest",
+        "back",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_ירכיים",
+      "driveId": "1uJS91LtonuKpO3haNGFvPVcpHo97c4G5",
+      "he": "גומיות ירכיים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_רגליים",
+      "driveId": "1-2ADpJ6vMwQ-t_AnjJWRZh0LBS4oBXgD",
+      "he": "גומיות רגליים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_רגליים_2",
+      "driveId": "1gAOSs0Un8vm7bE9u2v1IOm4dBKdSHsCa",
+      "he": "גומיות רגליים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_רגליים_2_2",
+      "driveId": "19yQeh1BZADdF6IGn553IsirrdKWGtrdJ",
+      "he": "גומיות רגליים 2",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_ארבע_ראשי",
+      "driveId": "1U7umRvqLLARg7Jqh_hprsDBgZ1eSqben",
+      "he": "גומיות ארבע ראשי",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_ברכיים",
+      "driveId": "1nxmCOgCxa00RnTzAsQ28w7yGvZNsOOb1",
+      "he": "גומיות ברכיים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_במקום_מכון",
+      "driveId": "105_8KC6CTTfVR65QVVKIQk3UeXWoTIdG",
+      "he": "גומיות במקום מכון",
+      "muscles": [
+        "chest",
+        "back",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_גומיות_במקום_מכון_2",
+      "driveId": "13xHVT82Aolj3DAAuxcmqYKYKWZWboDa0",
+      "he": "גומיות במקום מכון",
+      "muscles": [
+        "chest",
+        "back",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_עבודה_עם_גומייה",
+      "driveId": "1lohbQeiqbr1YR12X-gx4bJvVsyQpTfDc",
+      "he": "עבודה עם גומייה",
+      "muscles": [
+        "chest",
+        "back",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_בישיבה_אחד_נגד_השני",
+      "driveId": "1R21p49oxpVOfX3PQPv0DXbuuCWKbfqNS",
+      "he": "בישיבה אחד נגד השני",
+      "muscles": [
+        "chest",
+        "back",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גומיות"
+    },
+    {
+      "id": "drive_מתח_אוסטרלי",
+      "driveId": "1p1IXL9cwQBDcOcgbKpJmMNxmIXHXpo_d",
+      "he": "מתח אוסטרלי",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב"
+    },
+    {
+      "id": "drive_גב_תחתון",
+      "driveId": "1pkjqejGS1Ymc3vA8vYRZwjw4lm-_XTI-",
+      "he": "גב תחתון",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב"
+    },
+    {
+      "id": "drive_כתפיים_וגב",
+      "driveId": "1Khc79Hg4NBxeRagfkt25a7NL0Nq0uu1r",
+      "he": "כתפיים וגב",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב"
+    },
+    {
+      "id": "drive_קונוסים_גב",
+      "driveId": "1jT59O2m8rdEx9WLRusY9N21z2dzzJMnz",
+      "he": "קונוסים גב",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_ורגליים",
+      "driveId": "17TLtLaj06GakS7lclm-Ty5QqyKJMNSe3",
+      "he": "שכיבות סמיכה ורגליים",
+      "muscles": [
+        "legs",
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים"
+    },
+    {
+      "id": "drive_סולם_רגליים",
+      "driveId": "1gY1gCjrWNTRypZvNo07keNxc08rGevTW",
+      "he": "סולם רגליים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים"
+    },
+    {
+      "id": "drive_מדרגות",
+      "driveId": "1AnrHH6jijMwHS7B70MmsKx9V2edFtXzG",
+      "he": "מדרגות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים"
+    }
+  ]
+}
