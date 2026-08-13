@@ -356,7 +356,7 @@
       for (var midx = 0; midx < missing.length; midx++) missing[midx].duration_minutes = slice;
     }
 
-    return {
+    var workout = {
       title: title,
       duration_minutes: duration_minutes,
       participants: participants,
@@ -366,6 +366,9 @@
       tags: tags,
       source: 'client-fallback'
     };
+    var api = (typeof globalThis !== 'undefined' && globalThis.TH) || root.TH;
+    if (api && typeof api.attachCatalogIds === 'function') api.attachCatalogIds(workout);
+    return workout;
   }
 
   root.parseWorkoutClient = parseWorkoutClient;

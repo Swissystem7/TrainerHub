@@ -350,6 +350,7 @@
 <nav id="TH-SURFACE-NAV" aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
   <span style="color:#b9f24a">TrainerHub</span>
   <a href="../" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בונה אימון מהיר</a>
+  <a href="../library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">האפליקציה המלאה</span>
   <a href="./workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
 </nav>
@@ -749,9 +750,10 @@ function renderCard(w, usedFallback) {
       if (ex.duration_seconds) details.push(`${esc(ex.duration_seconds)}″`);
       if (ex.rest_seconds) details.push(`מנוחה ${esc(ex.rest_seconds)}″`);
 
+      const clipMark = (typeof TH === 'object' && TH.hasClip && TH.hasClip(ex)) ? ' 🎬' : '';
       return `<div class="exercise">
         <div>
-          <div class="exercise-name">${esc(ex.name)}</div>
+          <div class="exercise-name">${esc(ex.name)}${clipMark}</div>
           ${ex.notes ? `<div style="color:#9ca3af;font-size:0.78rem;margin-top:2px">${esc(ex.notes)}</div>` : ''}
         </div>
         <div class="exercise-details">${details.join(' · ')}</div>
@@ -1509,6 +1511,7 @@ window.renderClients=function(){
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem;background:#14532d;border-color:#22c55e;color:#86efac" onclick="sendWhatsApp(${i})">💬 שלח לינק</button>
+          <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="nudgeClient(${i})">⏰ תזכורת</button>
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="suggestNextWeek(${i})">📈 הצע שבוע הבא</button>
           <button class="action-btn" style="flex:0;min-width:auto;font-size:0.78rem" onclick="assignCurrent(${i})">📋 שייך אימון נוכחי</button>
         </div>
@@ -1552,6 +1555,12 @@ window.importResultCode=function(){
   msg.textContent=dup?'הרשומה כבר קיימת ביומן':'יובא ביצוע של '+ (parsed.name||c.name);
   renderClients();
   if(typeof track==='function')track('import_result');
+};
+window.nudgeClient=function(i){
+  const c=clients[i];
+  if(!c||typeof TH!=='object'||!TH.nudgeMessage)return;
+  window.open(TH.waShareUrl(c.phone,TH.nudgeMessage(c)),'_blank');
+  if(typeof track==='function')track('client_nudge',{client:c.name});
 };
 window.sendWhatsApp=function(i){
   const c=clients[i];

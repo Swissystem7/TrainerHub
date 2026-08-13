@@ -9,7 +9,8 @@ const root = path.join(__dirname, '..');
 const pages = {
   weekly: fs.readFileSync(path.join(root, 'index.html'), 'utf8'),
   studio: fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8'),
-  workout: fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8')
+  workout: fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8'),
+  library: fs.readFileSync(path.join(root, 'library.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -37,6 +38,16 @@ test('every page is Hebrew RTL', function () {
     assert.match(html, /lang="he"/, name);
     assert.match(html, /dir="rtl"/, name);
   }
+});
+
+test('workout-mode can open a single clip and offer a same-muscle swap', function () {
+  assert.match(pages.workout, /decodeClipHash/);
+  assert.match(pages.workout, /clipToWorkout/);
+  assert.match(pages.workout, /toggleSwap/);
+  assert.match(pages.workout, /substitutesFor/);
+  assert.match(pages.library, /filterCatalog/);
+  assert.match(pages.library, /encodeClip/);
+  assert.match(pages.library, /clipShareMessage/);
 });
 
 test('workout-mode advances with space/enter and pauses with escape', function () {
@@ -82,6 +93,10 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.weekly, /class="skip-link"/);
   assert.match(pages.studio, /class="skip-link"/);
   assert.match(pages.workout, /class="skip-link"/);
+  assert.match(pages.library, /class="skip-link"/);
+  assert.match(pages.library, /ספריית סרטונים/);
+  assert.match(pages.weekly, /library\.html/);
+  assert.match(pages.studio, /library\.html/);
   assert.match(pages.workout, /:focus-visible/);
 });
 
@@ -92,4 +107,5 @@ test('muted text uses a contrast-safe gray, not #6b7280 or #4a4a6a', function ()
   }
   assert.match(pages.workout, /#9ca3af/);
   assert.match(pages.studio, /#9ca3af/);
+  assert.doesNotMatch(pages.library, /#6b7280/);
 });
