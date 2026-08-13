@@ -548,7 +548,7 @@
     <div id="cardContent" style="display:none"></div>
     <div class="action-bar" id="actionBar" style="display:none">
       <button class="action-btn" onclick="saveWorkout()">💾 שמור</button>
-      <button class="action-btn" onclick="shareToMarketplace()">🛒 שתף</button>
+      <button class="action-btn" onclick="shareToMarketplace()">🛒 שתף · הדגמה</button>
       <button class="action-btn" onclick="downloadJSON()">📥 ייצא JSON</button>
       <button class="action-btn" onclick="printCard()">🖨️ הדפס</button>
       <button class="action-btn" onclick="copyText()">📋 העתק</button>
@@ -563,8 +563,8 @@
 <div class="marketplace-wrap">
   <div class="mkt-header">
     <div>
-      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px">🛒 Marketplace</h2>
-      <p style="color:#6b7280;font-size:0.85rem">אימונים של מאמנים מהקהילה — סנן, שמור, השתמש</p>
+      <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px">🛒 Marketplace <span style="font-size:0.75rem;color:#9ca3af;font-weight:600">דוגמאות · בקרוב קהילה חיה</span></h2>
+      <p style="color:#6b7280;font-size:0.85rem">כרטיסיות לדוגמה בלבד — אין רכישה או שיתוף חי</p>
     </div>
     <div class="mkt-filters" id="mktFilters">
       <button class="mkt-filter active" onclick="filterMkt('all',this)">הכל</button>
@@ -598,7 +598,7 @@
     <div class="profile-stat"><div class="profile-stat-n" id="ps-followers">0</div><div class="profile-stat-l">עוקבים</div></div>
   </div>
   <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:20px;margin-bottom:16px">
-    <div style="font-size:0.85rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">🏅 תגים שהרווחתי</div>
+    <div style="font-size:0.85rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">🏅 תגים · בקרוב</div>
     <div>
       <span class="earned-badge">🔥 100 אימונים</span>
       <span class="earned-badge">🌟 מאמן מוביל</span>
@@ -1036,8 +1036,8 @@ function shareToMarketplace() {
   const btn = event.target;
   btn.textContent = '⏳ משתף...';
   setTimeout(() => {
-    btn.textContent = '✅ שותף!';
-    setTimeout(() => btn.textContent = '🛒 שתף', 2000);
+    btn.textContent = '✅ נשמר מקומית';
+    setTimeout(() => btn.textContent = '🛒 שתף · הדגמה', 2000);
     const shared = JSON.parse(localStorage.getItem('th_my_shared') || '[]');
     shared.unshift({ title: currentWorkout.title, sharedAt: new Date().toLocaleString('he-IL') });
     localStorage.setItem('th_my_shared', JSON.stringify(shared.slice(0,10)));
@@ -1050,6 +1050,10 @@ function renderProfileStats() {
   document.getElementById('ps-workouts').textContent = saved.length;
   const shared = JSON.parse(localStorage.getItem('th_my_shared') || '[]');
   document.getElementById('ps-shared').textContent = shared.length;
+  const likesEl = document.getElementById('ps-likes');
+  const folEl = document.getElementById('ps-followers');
+  if (likesEl) likesEl.textContent = '0';
+  if (folEl) folEl.textContent = '0';
   const el = document.getElementById('mySharedList');
   if (!shared.length) {
     el.innerHTML = '<div style="color:#6b7280;font-size:0.85rem;text-align:center;padding:20px">עדיין לא שיתפת אימונים במרקטפלייס</div>';
