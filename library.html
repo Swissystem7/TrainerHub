@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ספריית סרטוני תרגיל בעברית — חיפוש, החלפה ושליחה בוואטסאפ. בלי הרשמה ובלי ענן.">
+  <title>TrainerHub | ספריית סרטונים</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 1100px; margin: auto; padding: 28px 20px 64px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 8px 0; }
+    .top p { color: var(--muted); max-width: 46rem; line-height: 1.6; }
+    .filters { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 12px; margin: 22px 0 10px; }
+    .filters label { display: block; color: var(--muted); font-size: .82rem; margin-bottom: 6px; }
+    input, select { width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
+    .chip { background: #26302b; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .8rem; cursor: pointer; font: inherit; }
+    .chip[aria-pressed="true"] { background: rgba(185,242,74,.15); border-color: var(--lime); color: var(--ink); }
+    .stats { color: var(--muted); font-size: .85rem; margin-bottom: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .card h2 { font-size: 1.05rem; margin: 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { background: #26302b; border-radius: 999px; padding: 3px 8px; font-size: .72rem; color: var(--muted); }
+    video { width: 100%; max-height: 160px; border-radius: 10px; background: #000; border: 1px solid var(--line); }
+    video[hidden] { display: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .actions button { flex: 1; min-width: 96px; margin-top: 0; padding: 8px 10px; font-size: .78rem; font-weight: 700; border: 0; border-radius: 8px; background: var(--lime); color: #101312; cursor: pointer; font-family: inherit; }
+    .actions button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    .empty { color: var(--muted); text-align: center; padding: 40px 12px; }
+    .alts { font-size: .8rem; color: var(--muted); }
+    .alts button { background: none; border: 0; color: var(--lime); cursor: pointer; font: inherit; padding: 0 4px; }
+    .draft { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 18px; }
+    .draft h2 { font-size: 1rem; margin: 0 0 8px; }
+    .draft-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .draft-actions button { width: auto; margin-top: 0; }
+    @media (max-width: 800px) { .filters { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .filters { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#q">דלג לחיפוש</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בונה אימון מהיר</a>
+  <span class="chip on">ספריית סרטונים</span>
+  <a href="./frontend/">האפליקציה המלאה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  הסרטונים עצמם מחוץ לריפו. בדמו החי הנגן מופיע רק אם הקובץ נמצא בתיקיית <code>videos/</code> — אין ענן ואין ספריית 95 קליפים מזויפת.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / CLIP LIBRARY</small>
+    <h1>הספרייה האמיתית, לא מאגר גנרי.</h1>
+    <p>חיפוש והחלפה מ־78 קליפים בעברית. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות הקבצים לא מוצגים — רק שם התרגיל.</p>
+  </header>
+
+  <section class="draft" id="draftBox" hidden>
+    <h2>אימון שנבנה מהספרייה</h2>
+    <div id="draftList"></div>
+    <div class="draft-actions">
+      <button type="button" class="th-btn" id="draftStart">התחל אימון</button>
+      <button type="button" class="th-btn ghost" id="draftCopy">העתק לינק מתאמן</button>
+      <button type="button" class="th-btn ghost" id="draftClear">נקה</button>
+    </div>
+  </section>
+
+  <form class="filters" id="filters" role="search">
+    <div>
+      <label for="q">חיפוש תרגיל</label>
+      <input id="q" type="search" placeholder="פלאנק, גומיות, קונוסים…" autocomplete="off">
+    </div>
+    <div>
+      <label for="muscle">שריר</label>
+      <select id="muscle">
+        <option value="">הכל</option>
+        <option value="core">ליבה</option>
+        <option value="legs">רגליים</option>
+        <option value="chest">חזה</option>
+        <option value="back">גב</option>
+        <option value="shoulders">כתפיים</option>
+        <option value="biceps">דו־ראשי</option>
+        <option value="triceps">תלת־ראשי</option>
+      </select>
+    </div>
+    <div>
+      <label for="equipment">ציוד</label>
+      <select id="equipment">
+        <option value="">הכל</option>
+        <option value="none">משקל גוף</option>
+        <option value="band">גומיות</option>
+        <option value="cones">קונוסים</option>
+        <option value="ball">כדור</option>
+        <option value="football">כדורגל</option>
+        <option value="basketball">כדורסל</option>
+        <option value="tennis-ball">כדור טניס</option>
+        <option value="bar">מתח</option>
+        <option value="stairs">מדרגות</option>
+      </select>
+    </div>
+    <div>
+      <label for="level">רמה</label>
+      <select id="level">
+        <option value="">הכל</option>
+        <option value="beginner">מתחילים</option>
+        <option value="intermediate">ביניים</option>
+        <option value="advanced">מתקדמים</option>
+      </select>
+    </div>
+  </form>
+  <div class="chips" role="group" aria-label="סינון לפי סוג">
+    <button type="button" class="chip" data-tag="" aria-pressed="true">הכל</button>
+    <button type="button" class="chip" data-tag="kids" aria-pressed="false">ילדים</button>
+    <button type="button" class="chip" data-tag="partner" aria-pressed="false">זוגות</button>
+    <button type="button" class="chip" data-tag="sport" aria-pressed="false">ספורט</button>
+    <button type="button" class="chip" data-tag="band" aria-pressed="false">גומיות</button>
+    <button type="button" class="chip" data-tag="cones" aria-pressed="false">קונוסים</button>
+  </div>
+  <p class="stats" id="stats" aria-live="polite"></p>
+  <div class="grid" id="grid"></div>
+</main>
+<script src="./js/core.js"></script>
+<script>
+(function () {
+  var tag = '';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function currentFilters() {
+    return {
+      q: $('q').value,
+      muscle: $('muscle').value,
+      equipment: $('equipment').value,
+      level: $('level').value,
+      tag: tag
+    };
+  }
+
+  function renderDraft() {
+    var box = $('draftBox');
+    var w = TH.draftGet();
+    var main = (w.phases && w.phases[1] && w.phases[1].exercises) || [];
+    if (!main.length) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    $('draftList').innerHTML = main.map(function (ex) {
+      return '<div class="pill">' + TH.esc(ex.name) + (ex.sets ? ' · ' + ex.sets + '×' + (ex.reps || '') : '') + '</div>';
+    }).join(' ');
+  }
+
+  function render() {
+    var list = TH.filterCatalog(currentFilters());
+    var stats = TH.catalogStats();
+    $('stats').textContent = list.length + ' מתוך ' + stats.total + ' תרגילים' +
+      (tag ? ' · סינון: ' + TH.tagLabel(tag) : '');
+    var grid = $('grid');
+    if (!list.length) {
+      grid.innerHTML = '<p class="empty">אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>';
+      return;
+    }
+    grid.innerHTML = list.map(function (e) {
+      var muscles = (e.muscles || []).map(function (m) {
+        return '<span class="pill">' + TH.esc(TH.muscleLabel(m)) + '</span>';
+      }).join('');
+      var eq = (e.equipment || []).map(function (x) {
+        return '<span class="pill">' + TH.esc(TH.eqLabel(x)) + '</span>';
+      }).join('');
+      var tags = TH.catalogTags(e).map(function (t) {
+        return '<span class="pill">' + TH.esc(TH.tagLabel(t)) + '</span>';
+      }).join('');
+      var src = TH.catalogSrc(e.file);
+      var video = src
+        ? '<video hidden playsinline controls muted preload="metadata" src="' + TH.esc(src) + '" onloadeddata="this.hidden=false" onerror="this.remove()"></video>'
+        : '';
+      var alts = TH.substitutesFor({ id: e.id }, { limit: 3 });
+      var altHtml = alts.length
+        ? '<div class="alts">חלופות: ' + alts.map(function (a) {
+            return '<button type="button" data-jump="' + TH.esc(a.id) + '">' + TH.esc(a.he) + '</button>';
+          }).join(' · ') + '</div>'
+        : '';
+      return '<article class="card" data-id="' + TH.esc(e.id) + '">' +
+        '<h2>' + TH.esc(e.he) + '</h2>' +
+        '<div class="meta">' + muscles + eq + tags + '</div>' +
+        video + altHtml +
+        '<div class="actions">' +
+          '<button type="button" data-act="copy">העתק לינק</button>' +
+          '<button type="button" class="ghost" data-act="wa">וואטסאפ</button>' +
+          '<button type="button" class="ghost" data-act="add">הוסף לאימון</button>' +
+        '</div></article>';
+    }).join('');
+  }
+
+  function onChip(btn) {
+    tag = btn.getAttribute('data-tag') || '';
+    document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
+      el.setAttribute('aria-pressed', el === btn ? 'true' : 'false');
+    });
+    render();
+  }
+
+  $('filters').addEventListener('input', render);
+  $('filters').addEventListener('change', render);
+  document.querySelectorAll('.chip[data-tag]').forEach(function (btn) {
+    btn.addEventListener('click', function () { onChip(btn); });
+  });
+
+  $('grid').addEventListener('click', function (e) {
+    var jump = e.target.closest && e.target.closest('[data-jump]');
+    if (jump) {
+      $('q').value = jump.textContent.trim();
+      tag = '';
+      document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
+        el.setAttribute('aria-pressed', el.getAttribute('data-tag') === '' ? 'true' : 'false');
+      });
+      render();
+      $('q').focus();
+      return;
+    }
+    var act = e.target.getAttribute && e.target.getAttribute('data-act');
+    if (!act) return;
+    var card = e.target.closest('.card');
+    if (!card) return;
+    var id = card.getAttribute('data-id');
+    if (act === 'copy') {
+      var url = TH.encodeClip(id, {});
+      navigator.clipboard.writeText(url).then(function () {
+        e.target.textContent = 'הועתק';
+        setTimeout(function () { e.target.textContent = 'העתק לינק'; }, 1400);
+      });
+    } else if (act === 'wa') {
+      window.open(TH.waShareUrl('', TH.clipShareMessage(id, '')), '_blank');
+    } else if (act === 'add') {
+      TH.draftAdd(id);
+      renderDraft();
+      e.target.textContent = 'נוסף';
+      setTimeout(function () { e.target.textContent = 'הוסף לאימון'; }, 1400);
+    }
+  });
+
+  $('draftStart').addEventListener('click', function () {
+    var w = TH.draftGet();
+    TH.store.set(TH.KEYS.active, w);
+    location.href = './frontend/workout-mode.html';
+  });
+  $('draftCopy').addEventListener('click', function () {
+    var url = TH.encodeLink(TH.draftGet(), {});
+    navigator.clipboard.writeText(url).then(function () {
+      $('draftCopy').textContent = 'הועתק';
+      setTimeout(function () { $('draftCopy').textContent = 'העתק לינק מתאמן'; }, 1400);
+    });
+  });
+  $('draftClear').addEventListener('click', function () {
+    TH.draftClear();
+    renderDraft();
+  });
+
+  TH.ready(function () {
+    renderDraft();
+    render();
+  });
+})();
+</script>
+</body>
+</html>
