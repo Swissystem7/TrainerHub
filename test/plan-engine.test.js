@@ -3,6 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const TH = require('../js/core.js');
+TH.setCatalog({});
 
 const BARBELL_OR_MACHINE = new Set([
   'squat', 'deadlift', 'leg_press', 'bench_press', 'incline_press',

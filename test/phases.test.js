@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const TH = require('../js/core.js');
+TH.setCatalog({});
 
 const root = path.join(__dirname, '..');
 const weekly = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
