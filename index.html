@@ -70,6 +70,7 @@
   <span class="chip on">בנה אימון</span>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">האפליקציה המלאה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
@@ -180,11 +181,22 @@
       location.href = './frontend/workout-mode.html';
     });
     $('copyBtn').addEventListener('click', function () {
-      var url = TH.encodeLink(w, {});
-      navigator.clipboard.writeText(url).then(function () {
+      var shared = TH.shareToClient(w, {});
+      var host = $('copyBtn').parentNode;
+      var old = host.parentNode.querySelector('.th-gate');
+      if (old) old.parentNode.removeChild(old);
+      if (!shared.ok) {
+        host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
+        return;
+      }
+      navigator.clipboard.writeText(shared.url).then(function () {
         $('copyBtn').textContent = 'הועתק';
-        setTimeout(function () { $('copyBtn').textContent = 'העתק לינק מתאמן'; }, 1400);
+        setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });
+    });
+    $('pdfBtn').addEventListener('click', function () {
+      TH.preparePrint(w, {});
+      location.href = TH.printUrl();
     });
   }
 
@@ -240,7 +252,8 @@
         phases +
         '<div class="actions">' +
           '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
-          '<button type="button" class="th-btn ghost" id="copyBtn">העתק לינק מתאמן</button>' +
+          '<button type="button" class="th-btn ghost" id="copyBtn">שתף אימון ללקוח</button>' +
+          '<button type="button" class="th-btn ghost" id="pdfBtn">דף להדפסה / PDF</button>' +
         '</div>' +
       '</article>';
 

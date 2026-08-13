@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="דף אחד להדפסה: ספריית תרגילי TrainerHub בעברית למאמן אישי.">
+  <title>TrainerHub | דף אחד למאמן</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --ink:#111; --muted:#444; --line:#ccc; --lime:#3d6b00; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8ebe8; color: var(--ink); font-family: Arial, sans-serif; }
+    .wrap { max-width: 210mm; margin: 16px auto 40px; }
+    .sheet {
+      background: #fff;
+      border: 1px solid #c9cfc9;
+      min-height: 277mm;
+      padding: 16mm 16mm 14mm;
+    }
+    header { border-bottom: 3px solid #3d6b00; padding-bottom: 10px; margin-bottom: 14px; }
+    header small { color: #3d6b00; font-weight: 800; letter-spacing: .04em; }
+    h1 { font-size: 1.85rem; margin: 6px 0 8px; line-height: 1.2; }
+    .lede { font-size: 1.02rem; line-height: 1.5; margin: 0; }
+    h2 { font-size: 1rem; margin: 16px 0 6px; }
+    p, li { line-height: 1.45; font-size: 0.95rem; }
+    ul { margin: 0; padding: 0 1.1rem 0 0; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .box { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+    .price { font-size: 1.6rem; font-weight: 900; margin: 0; }
+    .fine { color: var(--muted); font-size: 0.82rem; }
+    footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 8px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 10px; }
+    @media (max-width: 700px) {
+      .sheet { min-height: 0; padding: 20px; }
+      .cols { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      .wrap { margin: 0; max-width: none; }
+      .sheet { border: 0; min-height: auto; padding: 10mm 12mm; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link no-print" href="#sheet">דלג לדף</a>
+<nav class="th-nav no-print" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <span class="chip on">דף אחד להדפסה</span>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">האפליקציה המלאה</a>
+</nav>
+<div class="toolbar no-print">
+  <button type="button" class="th-btn" id="printBtn">הדפס / שמור כ־PDF</button>
+  <a class="th-btn ghost" href="./offer.html">חזרה להצעה</a>
+</div>
+<main class="wrap">
+  <article class="sheet" id="sheet">
+    <header>
+      <small>TRAINERHUB · ספריית תרגילים בעברית</small>
+      <h1>שלחו ללקוח אימון עם סרטון בעברית. בלי עוד מערכת ניהול.</h1>
+      <p class="lede">78 קליפי תרגיל מחוברים לבונה תוכנית. המאמן בונה בדפדפן, שולח לינק או דף להדפסה. אין יומן, אין סליקה, אין אפליקציה בחנות.</p>
+    </header>
+
+    <div class="cols">
+      <section>
+        <h2>למי זה</h2>
+        <p>מאמן או מאמנת עצמאיים בישראל שכבר מסתדרים בוואטסאפ, וחסר להם רק סרטון עברי + דף שהלקוח מבין.</p>
+        <h2>מה הלקוח מקבל</h2>
+        <ul>
+          <li>לינק לאימון בלי הרשמה</li>
+          <li>דף ממותג להדפסה או לשמירה כ־PDF</li>
+          <li>הדגמה בעברית מהספרייה, כשיש קליפ</li>
+        </ul>
+      </section>
+      <section>
+        <h2>מה במכוון אין</h2>
+        <ul>
+          <li>אין CRM, כרטיסיות או חשבוניות</li>
+          <li>אין וואטסאפ אוטומטי משרת</li>
+          <li>אין 2,000 תרגילים כמו אצל Coach, ואין 10,000 כמו אצל AutoFit</li>
+        </ul>
+        <div class="box">
+          <p class="price">₪59 <span class="fine">לחודש למאמן אחד</span></p>
+          <p class="fine">לקוחות בלי תקרה, כי אין ניהול לקוחות. אין סליקה בדף. אחרי ביט/העברה — קוד גישה.</p>
+        </div>
+      </section>
+    </div>
+
+    <section>
+      <h2>למה לא עוד AutoFit</h2>
+      <p>AutoFit מתחיל ב־₪300, Coach ב־₪200, Boostapp ב־₪179. הם מוכרים ניהול עסק. זו ספרייה ובונה בלבד, במחיר מתחת לרצפה הזו. 78 קליפים זה קטן — נאמר במפורש.</p>
+    </section>
+
+    <footer>
+      <p class="fine">דמו: swissystem7.github.io/TrainerHub · הצעה: offer.html · המחקר: MONETIZATION.md · נבדק 13.8.2026 · אין כאן מספרי לקוחות ואין עדויות בדויות.</p>
+    </footer>
+  </article>
+</main>
+<script>
+  document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+</script>
+</body>
+</html>

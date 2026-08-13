@@ -116,6 +116,44 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
 }
 .source-pill { font-size: 0.72rem; }
 
+.th-gate {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  color: #f0b542;
+  line-height: 1.5;
+}
+.th-gate p { margin: 0 0 8px; }
+.th-gate p:last-child { margin-bottom: 0; }
+.th-gate-link { color: #b9f24a; font-weight: 700; }
+.print-sheet { max-width: 720px; margin: 0 auto; }
+.print-sheet h1 { font-size: 1.8rem; margin: 0 0 8px; }
+.print-brand { font-weight: 800; font-size: 1.05rem; margin: 0 0 4px; }
+.print-phase { margin: 18px 0; }
+.print-phase h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.print-sheet table { width: 100%; border-collapse: collapse; }
+.print-sheet th, .print-sheet td {
+  text-align: start;
+  padding: 8px 6px;
+  border-bottom: 1px solid #303834;
+}
+.print-watermark {
+  margin: 20px 0 0;
+  padding: 10px 12px;
+  border: 1px dashed #f0b542;
+  color: #f0b542;
+  font-weight: 700;
+}
+.print-footer { margin-top: 24px; color: #a7b1ab; font-size: 0.85rem; }
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; color: #111 !important; }
+  .print-sheet th, .print-sheet td { border-bottom-color: #ccc; }
+  .print-footer { color: #444; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

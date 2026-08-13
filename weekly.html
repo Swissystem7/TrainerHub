@@ -9,6 +9,7 @@
   <a href="./" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בנה אימון</a>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">בונה שבועי</span>
   <a href="./library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
+  <a href="./offer.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">הצעה למאמנים</a>
   <a href="./manage.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ניהול מאגר</a>
   <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">האפליקציה המלאה</a>
   <a href="./frontend/workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
@@ -32,10 +33,23 @@ function copyDayTraineeLink(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
   const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
-  const url = TH.encodeLink(workout, {});
-  navigator.clipboard.writeText(url).then(function(){
-    alert('לינק המתאמן הועתק. פותחים בלי התחברות; בסיום יש קוד לשלוח למאמן בוואטסאפ.');
+  const shared = TH.shareToClient(workout, {});
+  const old = $('result').querySelector('.th-gate');
+  if (old) old.parentNode.removeChild(old);
+  if (!shared.ok) {
+    $('result').insertAdjacentHTML('afterbegin', TH.gateMarkup('share'));
+    return;
+  }
+  navigator.clipboard.writeText(shared.url).then(function(){
+    alert('הלינק הועתק. הלקוח פותח בלי התחברות.');
   });
+}
+function printDayWorkout(dayIndex){
+  const raw = window.__lastProgram;
+  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
+  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  TH.preparePrint(workout, {});
+  window.location.href = TH.printUrl();
 }
 
 function renderProgram(p){
@@ -67,7 +81,7 @@ function renderProgram(p){
         return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
       }).join('');
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">לינק מתאמן</button></section>';
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button></section>';
     }).join('');
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {

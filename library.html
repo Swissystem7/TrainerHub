@@ -49,6 +49,7 @@
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <span class="chip on">ספריית סרטונים</span>
+  <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">האפליקציה המלאה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
@@ -68,7 +69,8 @@
     <div id="draftList"></div>
     <div class="draft-actions">
       <button type="button" class="th-btn" id="draftStart">התחל אימון</button>
-      <button type="button" class="th-btn ghost" id="draftCopy">העתק לינק מתאמן</button>
+      <button type="button" class="th-btn ghost" id="draftCopy">שתף אימון ללקוח</button>
+      <button type="button" class="th-btn ghost" id="draftPdf">דף להדפסה / PDF</button>
       <button type="button" class="th-btn ghost" id="draftClear">נקה</button>
     </div>
   </section>
@@ -258,11 +260,21 @@
     location.href = './frontend/workout-mode.html';
   });
   $('draftCopy').addEventListener('click', function () {
-    var url = TH.encodeLink(TH.draftGet(), {});
-    navigator.clipboard.writeText(url).then(function () {
+    var shared = TH.shareToClient(TH.draftGet(), {});
+    var old = $('draftBox').querySelector('.th-gate');
+    if (old) old.parentNode.removeChild(old);
+    if (!shared.ok) {
+      $('draftBox').insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+      return;
+    }
+    navigator.clipboard.writeText(shared.url).then(function () {
       $('draftCopy').textContent = 'הועתק';
-      setTimeout(function () { $('draftCopy').textContent = 'העתק לינק מתאמן'; }, 1400);
+      setTimeout(function () { $('draftCopy').textContent = 'שתף אימון ללקוח'; }, 1400);
     });
+  });
+  $('draftPdf').addEventListener('click', function () {
+    TH.preparePrint(TH.draftGet(), {});
+    location.href = TH.printUrl();
   });
   $('draftClear').addEventListener('click', function () {
     TH.draftClear();

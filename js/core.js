@@ -14,8 +14,13 @@
     draft: 'trainerhub_draft_workout',
     userCatalog: 'trainerhub_user_catalog',
     wishlist: 'trainerhub_film_wishlist',
-    patterns: 'trainerhub_ingest_patterns'
+    patterns: 'trainerhub_ingest_patterns',
+    access: 'trainerhub_content_access',
+    print: 'trainerhub_print_workout'
   };
+
+  // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
+  var ACCESS_HASH = 3194953836;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
@@ -241,6 +246,74 @@
     var path = (root.location && location.pathname) || '';
     if (/\/frontend(\/|$)/.test(path)) return '../' + rel.replace(/^\.\//, '');
     return './' + rel.replace(/^\.\//, '');
+  }
+
+  function offerUrl() {
+    return assetUrl('offer.html');
+  }
+
+  function printUrl() {
+    return assetUrl('workout-print.html');
+  }
+
+  function hashAccessCode(code) {
+    var s = String(code || '').trim().toUpperCase().replace(/\s+/g, '');
+    var h = 2166136261;
+    var i;
+    for (i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function sanitizeBrand(name) {
+    var s = String(name == null ? '' : name).replace(/<[^>]*>/g, '').replace(/\.mp4/ig, '').trim();
+    if (s.length > 60) s = s.slice(0, 60);
+    return s;
+  }
+
+  function emptyEntitlement() {
+    return { tier: 'free', canShare: false, canBrandedPdf: false, brand: '', at: 0 };
+  }
+
+  function entitlement() {
+    var rec = storeGet(KEYS.access, null);
+    if (!rec || rec.tier !== 'trainer') return emptyEntitlement();
+    return {
+      tier: 'trainer',
+      canShare: true,
+      canBrandedPdf: true,
+      brand: sanitizeBrand(rec.brand || ''),
+      at: rec.at || 0
+    };
+  }
+
+  function setEntitlement(rec) {
+    rec = rec || {};
+    if (rec.tier !== 'trainer') {
+      storeRemove(KEYS.access);
+      return emptyEntitlement();
+    }
+    storeSet(KEYS.access, {
+      tier: 'trainer',
+      brand: sanitizeBrand(rec.brand || ''),
+      at: rec.at || Date.now()
+    });
+    return entitlement();
+  }
+
+  function clearEntitlement() {
+    storeRemove(KEYS.access);
+    return emptyEntitlement();
+  }
+
+  function redeemAccessCode(code, brand) {
+    if (hashAccessCode(code) !== ACCESS_HASH) {
+      return { ok: false, error: 'הקוד לא תואם. אין סליקה באתר — הקוד נשלח אחרי תשלום.' };
+    }
+    setEntitlement({ tier: 'trainer', brand: brand });
+    return { ok: true, entitlement: entitlement() };
   }
 
   function normalizeEntry(id, raw, defaultSource) {
@@ -538,6 +611,27 @@
       tid: meta.tid || ('t_' + Date.now().toString(36))
     };
     return workoutModeUrl() + '#TH.' + utf8ToB64url(JSON.stringify(payload));
+  }
+
+  function shareToClient(workout, meta) {
+    if (!entitlement().canShare) {
+      return { ok: false, gated: true, code: 'share_requires_trainer', offerUrl: offerUrl() };
+    }
+    if (!workout) {
+      return { ok: false, error: 'אין אימון לשיתוף' };
+    }
+    return { ok: true, url: encodeLink(workout, meta || {}) };
+  }
+
+  function gateMarkup(kind) {
+    var title = kind === 'pdf'
+      ? 'ייצוא ממותג ללקוח כלול במסלול מאמן'
+      : 'שיתוף אימון ללקוח כלול במסלול מאמן';
+    return '<div class="th-gate" role="status">' +
+      '<p><strong>' + esc(title) + '</strong></p>' +
+      '<p>₪59 לחודש למאמן אחד, בלי CRM. אין סליקה באתר — אחרי תשלום מקבלים קוד גישה.</p>' +
+      '<p><a class="th-gate-link" href="' + esc(offerUrl()) + '#share">לפרטי ההצעה</a></p>' +
+      '</div>';
   }
 
   function decodeHash(hash) {
@@ -1333,6 +1427,73 @@
     loadCatalog();
   }
 
+  function exercisePrintRow(ex) {
+    ex = ex || {};
+    var bits = [];
+    if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
+    else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+    else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
+    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
+    var name = ex.name || heName(ex.id) || 'תרגיל';
+    return {
+      name: String(name).replace(/\.mp4/ig, '').trim(),
+      detail: bits.join(' · '),
+      id: ex.id || ''
+    };
+  }
+
+  function workoutPrintModel(workout, opts) {
+    opts = opts || {};
+    workout = workout || {};
+    var ent = entitlement();
+    var requestedBrand = sanitizeBrand(opts.brand || ent.brand || '');
+    var branded = !!(ent.canBrandedPdf && requestedBrand && opts.branded !== false);
+    var phases = (workout.phases || []).map(function (ph) {
+      return {
+        name: phaseLabel(ph.name),
+        exercises: (ph.exercises || []).map(exercisePrintRow)
+      };
+    });
+    return {
+      title: String(workout.title || 'אימון').replace(/\.mp4/ig, '').trim(),
+      branded: branded,
+      brand: branded ? requestedBrand : '',
+      phases: phases,
+      footer: branded
+        ? 'הוכן על ידי ' + requestedBrand + ' בספריית התרגילים של TrainerHub.'
+        : 'גרסת תרגול אישית — לא מיועדת למסירה ללקוח. שיתוף ממותג דורש מסלול מאמן.',
+      note: 'אין כאן שמות קבצים. הדפסה או שמירה כ־PDF מהדפדפן, בלי שרת.'
+    };
+  }
+
+  function workoutPrintHtml(model) {
+    model = model || workoutPrintModel({}, {});
+    var phases = (model.phases || []).map(function (ph) {
+      var rows = (ph.exercises || []).map(function (ex) {
+        return '<tr><th scope="row">' + esc(ex.name) + '</th><td>' + esc(ex.detail || '') + '</td></tr>';
+      }).join('');
+      return '<section class="print-phase"><h2>' + esc(ph.name) + '</h2><table>' +
+        (rows || '<tr><td>אין תרגילים בשלב הזה.</td></tr>') + '</table></section>';
+    }).join('');
+    var brandLine = model.branded && model.brand
+      ? '<p class="print-brand">' + esc(model.brand) + '</p>'
+      : '';
+    var mark = model.branded ? '' : '<p class="print-watermark">תרגול — לא למסירה ללקוח</p>';
+    return '<article class="print-sheet" dir="rtl" lang="he">' +
+      brandLine +
+      '<h1>' + esc(model.title) + '</h1>' +
+      phases +
+      mark +
+      '<footer class="print-footer"><p>' + esc(model.footer) + '</p><p>' + esc(model.note) + '</p></footer>' +
+      '</article>';
+  }
+
+  function preparePrint(workout, opts) {
+    opts = opts || {};
+    storeSet(KEYS.print, { workout: workout || {}, brand: sanitizeBrand(opts.brand || '') });
+    return { model: workoutPrintModel(workout, opts), url: printUrl() };
+  }
+
   var api = {
     KEYS: KEYS,
     PHASE_LABELS: PHASE_LABELS,
@@ -1351,6 +1512,19 @@
     compactPlan: compactPlan,
     expandPlan: expandPlan,
     encodeLink: encodeLink,
+    shareToClient: shareToClient,
+    gateMarkup: gateMarkup,
+    offerUrl: offerUrl,
+    printUrl: printUrl,
+    hashAccessCode: hashAccessCode,
+    sanitizeBrand: sanitizeBrand,
+    entitlement: entitlement,
+    setEntitlement: setEntitlement,
+    clearEntitlement: clearEntitlement,
+    redeemAccessCode: redeemAccessCode,
+    workoutPrintModel: workoutPrintModel,
+    workoutPrintHtml: workoutPrintHtml,
+    preparePrint: preparePrint,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
     decodeResult: decodeResult,
@@ -1402,6 +1576,7 @@
   root.TH = api;
   root.ThLink = {
     encodeLink: encodeLink,
+    shareToClient: shareToClient,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
     decodeResult: decodeResult,

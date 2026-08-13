@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ספריית תרגילים בעברית ובונה תוכנית למאמן אישי — בלי CRM ובלי סליקה באתר.">
+  <title>TrainerHub | הצעה למאמנים</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 820px; margin: auto; padding: 36px 20px 80px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); margin: 10px 0 8px; line-height: 1.2; }
+    .top p, .card p { color: var(--muted); line-height: 1.6; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin: 16px 0; }
+    .card h2 { margin: 0 0 10px; font-size: 1.2rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .price { font-size: 2rem; font-weight: 900; color: var(--ink); }
+    .price small { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+    ul { margin: 8px 0 0; padding: 0 1.2rem 0 0; color: var(--ink); line-height: 1.7; }
+    label { display: block; color: var(--muted); font-size: .84rem; margin: 12px 0 6px; }
+    input {
+      width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
+      background: #111513; color: var(--ink); font: inherit;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .actions button, .actions a.th-btn { width: auto; margin-top: 0; text-decoration: none; display: inline-block; }
+    .status { min-height: 1.3em; margin-top: 8px; color: var(--lime); }
+    .warn { color: #f0b542; }
+    .honest { color: var(--muted); font-size: .88rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { text-align: start; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#plans">דלג להצעה</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <span class="chip on">הצעה למאמנים</span>
+  <a href="./pitch.html">דף אחד להדפסה</a>
+  <a href="./frontend/">האפליקציה המלאה</a>
+</nav>
+<div class="th-banner">
+  אין סליקה באתר. אין מנויים רשומים. המחיר למטה הוא הצעה, לא ספירת לקוחות.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / הצעה</small>
+    <h1>ספריית תרגילים בעברית + בונה תוכנית. בלי CRM.</h1>
+    <p>מאמן שרוצה לשלוח ללקוח אימון עם סרטון עברי ודף להדפסה — בלי יומן, בלי סליקה ובלי אפליקציה ממותגת ב־₪300. זה מה שיש כאן. לא יותר.</p>
+  </header>
+
+  <section class="card" aria-labelledby="have">
+    <h2 id="have">מה יש בפועל</h2>
+    <p id="haveStats">המספר המדויק נטען מהמאגר המקומי.</p>
+    <ul>
+      <li>78 קליפים בקטלוג העברי המקומי, מחוברים לבונה.</li>
+      <li>בונה אימון משדה אחד, בונה שבועי, ומצב אימון בדפדפן.</li>
+      <li>שיתוף ללקוח הוא לינק בכתובת — בלי התחברות.</li>
+    </ul>
+    <p class="honest">אין שרת ענן בדמו הציבורי. הסרטונים המקומיים רצים מקבצי הריפו; סרטוני דרייב — מהקישור המשותף.</p>
+  </section>
+
+  <section class="grid" id="plans">
+    <article class="card">
+      <h2>תרגול</h2>
+      <p class="price">₪0 <small>לנצח, בדפדפן</small></p>
+      <ul>
+        <li>בנייה והרצה למאמן עצמו</li>
+        <li>ספרייה וחיפוש</li>
+        <li>הדפסה עם סימן «תרגול»</li>
+      </ul>
+      <p class="honest">לא נספרים כאן משתמשים. אין חשבון.</p>
+    </article>
+    <article class="card" id="share">
+      <h2>מאמן</h2>
+      <p class="price">₪59 <small>לחודש, למושב מאמן אחד</small></p>
+      <ul>
+        <li>שתף אימון ללקוח (לינק)</li>
+        <li>PDF / דף ממותג לשליחה</li>
+        <li>לקוחות בלי תקרה — כי אין ניהול לקוחות</li>
+      </ul>
+      <p class="honest">אין סליקה כאן. אחרי ביט או העברה מקבלים קוד גישה. המחיר לא אומת בראיונות — פירוט ב־<a href="./MONETIZATION.md">MONETIZATION.md</a>.</p>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2>מה במכוון אין</h2>
+    <ul>
+      <li>אין יומן, כרטיסיות, חשבוניות או וואטסאפ־שרת.</li>
+      <li>אין אפליקציה בחנויות ואין רישוי לחדר כושר — 78 קליפים קטנים מדי לזה.</li>
+      <li>אין ספירת מאמנים בדויה. המתחרים הישראלים שמוכרים CRM: AutoFit ₪300–900, Coach מ־₪200, Boostapp מ־₪179.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>הפעלת מסלול מאמן (אחרי תשלום מחוץ לאתר)</h2>
+    <p class="honest" id="entStatus">הדפדפן הזה במסלול תרגול.</p>
+    <form id="redeemForm">
+      <label for="brand">שם שיופיע על דף האימון (לא חובה)</label>
+      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="הסטודיו של…">
+      <label for="code">קוד גישה</label>
+      <input id="code" name="code" type="text" autocomplete="one-time-code" placeholder="הקוד שנשלח אחרי התשלום">
+      <div class="actions">
+        <button type="submit" class="th-btn">הפעל במכשיר הזה</button>
+        <button type="button" class="th-btn ghost" id="clearBtn">בטל גישה במכשיר</button>
+        <a class="th-btn ghost" href="https://github.com/Swissystem7/TrainerHub/issues/new">בקשת גישה בגיטהאב</a>
+      </div>
+      <p class="status" id="redeemStatus" role="status"></p>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>איך זה מתיישב מול מה שמשלמים היום</h2>
+    <table>
+      <thead>
+        <tr><th>כלי</th><th>מה קונים</th><th>רצפה לחודש</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tazman</td><td>יומן + סליקה</td><td>₪0 עד 20 לקוחות, אחר כך מ־₪89</td></tr>
+        <tr><td>Boostapp</td><td>CRM מלא</td><td>₪179 + ₪250 הקמה</td></tr>
+        <tr><td>Coach</td><td>CRM + 2,000 תרגילים עבריים</td><td>מ־₪200</td></tr>
+        <tr><td>AutoFit</td><td>CRM + 10,000+ תרגילים</td><td>₪300</td></tr>
+        <tr><td>TrainerHub מאמן</td><td>ספרייה + שיתוף, בלי CRM</td><td>₪59 מוצע</td></tr>
+      </tbody>
+    </table>
+    <p class="honest">מקורות ותאריכי בדיקה: <a href="./MONETIZATION.md">MONETIZATION.md</a>. דף אחד שאפשר להדפיס ולתת למאמן: <a href="./pitch.html">pitch.html</a>.</p>
+  </section>
+</main>
+<script src="./js/core.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  function paintEnt() {
+    var ent = TH.entitlement();
+    if (ent.tier === 'trainer') {
+      $('entStatus').textContent = ent.brand
+        ? 'המכשיר הזה במסלול מאמן. המותג על הדפים: ' + ent.brand + '.'
+        : 'המכשיר הזה במסלול מאמן. אפשר להוסיף שם מותג ולשמור שוב.';
+      if (ent.brand && !$('brand').value) $('brand').value = ent.brand;
+    } else {
+      $('entStatus').textContent = 'הדפדפן הזה במסלול תרגול. שיתוף ללקוח חסום עד שמוזנים קוד.';
+    }
+  }
+
+  TH.ready(function () {
+    var stats = TH.catalogStats();
+    $('haveStats').textContent = 'במאגר הטעון עכשיו: ' + stats.total +
+      ' פריטים (' + stats.withFile + ' עם קובץ מקומי). הקטלוג הקבוע בריפו הוא 78 קליפים.';
+    paintEnt();
+  });
+
+  $('redeemForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var result = TH.redeemAccessCode($('code').value, $('brand').value);
+    if (!result.ok) {
+      $('redeemStatus').textContent = result.error;
+      $('redeemStatus').className = 'status warn';
+      return;
+    }
+    $('code').value = '';
+    $('redeemStatus').textContent = 'הופעל במכשיר הזה. אין חיוב מתחדש ואין חשבון בשרת.';
+    $('redeemStatus').className = 'status';
+    paintEnt();
+  });
+
+  $('clearBtn').addEventListener('click', function () {
+    TH.clearEntitlement();
+    $('redeemStatus').textContent = 'הגישה בוטלה במכשיר הזה.';
+    paintEnt();
+  });
+})();
+</script>
+</body>
+</html>

@@ -352,6 +352,7 @@
   <a href="../" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בנה אימון</a>
   <a href="../weekly.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בונה שבועי</a>
   <a href="../library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
+  <a href="../offer.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">הצעה למאמנים</a>
   <a href="../manage.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ניהול מאגר</a>
   <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">האפליקציה המלאה</span>
   <a href="./workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
@@ -378,7 +379,7 @@
       🌟 TrainerHub
       <span style="background:#374151;color:#9ca3af;border-radius:10px;padding:1px 7px;font-size:0.72rem;font-weight:700;letter-spacing:.5px">הדגמה</span>
     </div>
-    <button onclick="openPricing()" style="background:#2a2a4a;border:1px solid #3a3a5a;color:#9ca3af;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">Pro · בקרוב</button>
+    <a href="../offer.html" style="background:#2a2a4a;border:1px solid #3a3a5a;color:#c4b5fd;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;text-decoration:none">מסלול מאמן ₪59</a>
     <button id="loginBtn" class="login-btn" onclick="openAuth()">התחבר (הדגמה)</button>
     <div id="avatarWrap" style="position:relative;display:none">
       <div id="userAvatar" onclick="toggleUserMenu(event)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;cursor:pointer;color:#fff">👤</div>
@@ -393,60 +394,11 @@
 
 <!-- ── Pricing Modal ─────────────────────────────────────────────── -->
 <div id="pricingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center">
-  <div style="background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:36px;max-width:720px;width:95%;position:relative;max-height:90vh;overflow-y:auto">
-    <button onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#9ca3af;font-size:1.3rem;cursor:pointer">✕</button>
-    <div style="text-align:center;margin-bottom:28px">
-      <div style="font-size:1.6rem;font-weight:800;color:#f0f0f0;margin-bottom:6px">⚡ שדרג את TrainerHub שלך</div>
-      <div style="color:#9ca3af;font-size:0.9rem">התוכניות בתשלום עדיין לא פעילות — מסומנות כבקרוב</div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
-      <!-- Free -->
-      <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
-        <div style="font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Free</div>
-        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪0</div>
-        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לנצח</div>
-        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
-          <li>✓ עד 5 אימונים/חודש</li>
-          <li>✓ כרטיסיות בסיסיות</li>
-          <li>✓ היסטוריה מקומית</li>
-          <li style="color:#9ca3af">✗ Marketplace</li>
-          <li style="color:#9ca3af">✗ ייצוא PDF</li>
-          <li style="color:#9ca3af">✗ Analytics</li>
-        </ul>
-        <button style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:default;font-size:0.85rem">תוכנית נוכחית</button>
-      </div>
-      <!-- Pro -->
-      <div style="background:linear-gradient(180deg,#2d1f5e,#1a1230);border:2px solid #7c3aed;border-radius:14px;padding:22px;text-align:center;position:relative">
-        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7c3aed;color:#fff;font-size:0.72rem;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.5px">הכי פופולרי</div>
-        <div style="font-size:0.75rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Pro</div>
-        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪49</div>
-        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לחודש</div>
-        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
-          <li>✓ אימונים ללא הגבלה</li>
-          <li>✓ גישה מלאה ל-Marketplace</li>
-          <li>✓ ייצוא PDF</li>
-          <li>✓ Analytics בסיסי</li>
-          <li>✓ תמיכה מועדפת</li>
-          <li style="color:#9ca3af">✗ Multi-trainer</li>
-        </ul>
-        <button disabled style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:not-allowed;font-size:0.85rem">בקרוב</button>
-      </div>
-      <!-- Studio -->
-      <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
-        <div style="font-size:0.75rem;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Studio</div>
-        <div style="font-size:2.2rem;font-weight:800;color:#f0f0f0;margin-bottom:4px">₪149</div>
-        <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:20px">לחודש</div>
-        <ul style="list-style:none;text-align:right;font-size:0.82rem;color:#c4b5fd;line-height:2;margin-bottom:20px">
-          <li>✓ הכל ב-Pro</li>
-          <li>✓ Multi-trainer (עד 10)</li>
-          <li>✓ White-label</li>
-          <li>✓ Analytics מתקדם</li>
-          <li>✓ API גישה</li>
-          <li>✓ מנהל לקוחות</li>
-        </ul>
-        <button disabled style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:not-allowed;font-size:0.85rem">בקרוב</button>
-      </div>
-    </div>
+  <div style="background:#1a1a2e;border:1px solid #3a3a5a;border-radius:20px;padding:36px;max-width:520px;width:95%;position:relative">
+    <button type="button" onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#9ca3af;font-size:1.3rem;cursor:pointer" aria-label="סגור">✕</button>
+    <div style="font-size:1.4rem;font-weight:800;color:#f0f0f0;margin-bottom:8px">מסלול מאמן — ₪59 לחודש</div>
+    <p style="color:#9ca3af;font-size:0.9rem;line-height:1.6;margin-bottom:16px">שיתוף אימון ללקוח ודף ממותג. בלי CRM. אין סליקה כאן ואין ספירת מנויים. אחרי תשלום מחוץ לאתר מקבלים קוד בדף ההצעה.</p>
+    <a href="../offer.html" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:700">לדף ההצעה</a>
   </div>
 </div>
 
@@ -454,14 +406,7 @@
 <div id="saveToast">✅ האימון נשמר בהצלחה!</div>
 
 <!-- ── Upgrade Toast ─────────────────────────────────────────────── -->
-<div id="upgradeToast" style="display:none;position:fixed;bottom:28px;right:28px;background:#1a1a2e;border:1px solid #7c3aed;border-radius:14px;padding:16px 20px;z-index:999;max-width:320px;box-shadow:0 8px 32px rgba(124,58,237,.3)">
-  <div style="font-size:0.9rem;font-weight:700;color:#f0f0f0;margin-bottom:6px">⚠️ הגעת למגבלת Free (3/5 אימונים)</div>
-  <div style="font-size:0.82rem;color:#a78bfa;margin-bottom:12px">שדרג ל-Pro לאימונים ללא הגבלה</div>
-  <div style="display:flex;gap:8px">
-    <button onclick="openPricing();hideToast()" style="flex:1;background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:8px;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:700">שדרג ⚡</button>
-    <button onclick="hideToast()" style="background:none;border:1px solid #3a3a5a;color:#9ca3af;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.82rem">אחר כך</button>
-  </div>
-</div>
+<div id="upgradeToast" hidden></div>
 
 <style>
 .nav-tab{padding:8px 16px;border-radius:8px;border:none;background:transparent;color:#9ca3af;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all.2s}
@@ -555,10 +500,11 @@
       <button class="action-btn" onclick="saveWorkout()">💾 שמור</button>
       <button class="action-btn" onclick="shareToMarketplace()">🛒 שתף · הדגמה</button>
       <button class="action-btn" onclick="downloadJSON()">📥 ייצא JSON</button>
-      <button class="action-btn" onclick="printCard()">🖨️ הדפס</button>
+      <button class="action-btn" onclick="printCard()">🖨️ הדפס כרטיס</button>
+      <button class="action-btn" onclick="exportClientPdf()">דף להדפסה / PDF</button>
       <button class="action-btn" onclick="copyText()">📋 העתק</button>
       <button class="action-btn" onclick="startWorkout()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#7c3aed;color:#fff;font-weight:700;">▶️ התחל אימון</button>
-      <button class="action-btn" onclick="openTraineeLink()">🔗 לינק מתאמן</button>
+      <button class="action-btn" onclick="openTraineeLink()">שתף אימון ללקוח</button>
     </div>
   </div>
 </div>
@@ -913,8 +859,18 @@ function startWorkout() {
   window.location.href = 'workout-mode.html';
 }
 
+function exportClientPdf() {
+  if (!currentWorkout || typeof TH !== 'object') return;
+  TH.preparePrint(currentWorkout, {});
+  window.location.href = TH.printUrl();
+}
+
 function openTraineeLink() {
   if (!currentWorkout) return;
+  if (typeof TH === 'object' && !TH.entitlement().canShare) {
+    window.location.href = TH.offerUrl() + '#share';
+    return;
+  }
   document.getElementById('traineeLinkModal').classList.add('open');
   document.getElementById('tlError').style.display = 'none';
   updateTraineeLinkPreview();
@@ -923,16 +879,18 @@ function closeTraineeLink() {
   document.getElementById('traineeLinkModal').classList.remove('open');
 }
 function updateTraineeLinkPreview() {
-  if (typeof ThLink !== 'object') return;
-  const url = ThLink.encodeLink(currentWorkout, {
+  if (typeof TH !== 'object' || !currentWorkout) return;
+  const shared = TH.shareToClient(currentWorkout, {
     name: document.getElementById('tlName').value.trim(),
     wa: document.getElementById('tlPhone').value.trim()
   });
-  document.getElementById('tlUrl').value = url;
+  document.getElementById('tlUrl').value = shared.ok ? shared.url : '';
+  if (!shared.ok) document.getElementById('tlError').textContent = 'שיתוף ללקוח דורש מסלול מאמן.';
 }
 function copyTraineeLink() {
   updateTraineeLinkPreview();
   const url = document.getElementById('tlUrl').value;
+  if (!url) return;
   navigator.clipboard.writeText(url).then(function () {
     const btn = document.getElementById('tlCopyBtn');
     btn.textContent = '✅ הועתק';
@@ -943,8 +901,9 @@ function sendTraineeLinkWa() {
   updateTraineeLinkPreview();
   const name = document.getElementById('tlName').value.trim() || 'מתאמן';
   const url = document.getElementById('tlUrl').value;
+  if (!url) return;
   const traineePhone = document.getElementById('tlTraineePhone').value.trim();
-  const msg = 'היי ' + name + ' 💪\nהאימון שלך ב-TrainerHub (בלי הרשמה):\n' + url + '\n\nכשתסיים — לחץ «שלח סיכום למאמן» במסך הסיום.';
+  const msg = 'היי ' + name + '\nהאימון שלך ב-TrainerHub (בלי הרשמה):\n' + url + '\n\nכשתסיים — לחץ «שלח סיכום למאמן» במסך הסיום.';
   if (typeof ThLink !== 'object') return;
   window.open(ThLink.waShareUrl(traineePhone, msg), '_blank');
 }
@@ -1164,7 +1123,7 @@ function renderProfileStats() {
 <div class="th-modal-overlay" id="traineeLinkModal">
   <div class="th-modal">
     <button type="button" class="close-x" onclick="closeTraineeLink()" aria-label="סגור">✕</button>
-    <div style="font-size:1.2rem;font-weight:800;margin-bottom:6px">🔗 לינק מתאמן</div>
+    <div style="font-size:1.2rem;font-weight:800;margin-bottom:6px">שתף אימון ללקוח</div>
     <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:14px">התוכנית נשמרת בכתובת עצמה. המתאמן לא מתחבר. בסיום הוא שולח לך סיכום בוואטסאפ. הדגמה — בלי שרת.</p>
     <div class="auth-field">
       <label for="tlName">שם המתאמן</label>
@@ -1331,7 +1290,7 @@ document.getElementById('traineeLinkModal').addEventListener('click', function(e
 const OB_STEPS = [
   { icon: '🏋️', title: 'ברוכים הבאים ל-TrainerHub', desc: 'הפלטפורמה שהופכת כל תיאור אימון חופשי לכרטיסיית אימון מקצועית ומעוצבת — בעזרת AI, תוך שניות.' },
   { icon: '✍️', title: 'איך זה עובד?', desc: 'כתוב או הדבק תיאור אימון בטקסט חופשי בפאנל הימני, לחץ "המר לכרטיסיית אימון" — וקבל כרטיסייה מסודרת עם חימום, עיקר ושחרור. שמור, הדפס או שתף ב-Marketplace.' },
-  { icon: '⚡', title: 'מה בקרוב?', desc: 'מנוי Pro, תשלום ו-Marketplace קהילתי חי עדיין לא פעילים. אפשר להתחיל עכשיו בחינם עם הפענוח המקומי ובונה האימונים.' }
+  { icon: '⚡', title: 'מה בתשלום?', desc: 'שיתוף אימון ללקוח ודף ממותג כלולים במסלול מאמן (₪59). אין סליקה באתר. Marketplace עדיין דוגמאות בלבד.' }
 ];
 let obStep = 0;
 function renderOnboard() {
@@ -1363,7 +1322,7 @@ const LEGAL = {
     <p>ברוכים הבאים ל-TrainerHub. השימוש בפלטפורמה מהווה הסכמה מלאה לתנאים אלה. TrainerHub מספקת כלי AI ליצירת כרטיסיות אימון, שיתוף תכנים בקהילת מאמנים וניהול פרופיל מקצועי.</p>
     <p>התכנים הנוצרים באמצעות הפלטפורמה מיועדים לשימוש מקצועי של מאמני כושר. האחריות על התאמת תוכניות האימון למתאמנים, לרבות בדיקת מצב בריאותי ומגבלות פיזיות, חלה על המאמן בלבד. TrainerHub אינה מספקת ייעוץ רפואי.</p>
     <p>בעת שיתוף אימון ב-Marketplace, אתה מעניק ל-TrainerHub רישיון לא בלעדי להצגת התוכן לשאר משתמשי הפלטפורמה. אתה מתחייב שהתוכן המשותף הוא מקורי או שבידיך הזכויות לפרסמו.</p>
-    <p>תוכניות המנוי (Free, Pro, Studio) מתחדשות מדי חודש. ניתן לבטל בכל עת, והביטול ייכנס לתוקף בסוף תקופת החיוב הנוכחית. לא יינתן החזר יחסי עבור תקופה שנוצלה חלקית.</p>
+    <p>אין סליקה באתר ואין מנוי שמתחדש לבד. מסלול מאמן (₪59 לחודש) מופעל בקוד גישה אחרי תשלום מחוץ לאתר, במכשיר הזה בלבד. פירוט ב־offer.html.</p>
     <p>TrainerHub שומרת לעצמה את הזכות לעדכן תנאים אלה מעת לעת. שינויים מהותיים יפורסמו באפליקציה. המשך שימוש לאחר עדכון מהווה הסכמה לתנאים המעודכנים.</p>
     <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים בתל אביב.</p>` },
   privacy: { title: '🔒 מדיניות פרטיות', body: `

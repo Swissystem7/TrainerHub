@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="דף אימון להדפסה או לשמירה כ־PDF. בלי שמות קבצים.">
+  <title>TrainerHub | דף אימון להדפסה</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101312; color: var(--ink); font-family: Arial, sans-serif; }
+    .wrap { max-width: 760px; margin: auto; padding: 20px 16px 64px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-bottom: 16px; }
+    .toolbar .field { flex: 1; min-width: 180px; }
+    label { display: block; color: var(--muted); font-size: .82rem; margin-bottom: 6px; }
+    input {
+      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);
+      background: #111513; color: var(--ink); font: inherit;
+    }
+    .empty { color: var(--muted); padding: 24px 0; }
+    @media print {
+      body { background: #fff; color: #111; }
+      .print-sheet { color: #111; }
+      .print-sheet th, .print-sheet td { border-bottom-color: #ccc; color: #111; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link no-print" href="#sheet">דלג לדף האימון</a>
+<nav class="th-nav no-print" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">האפליקציה המלאה</a>
+</nav>
+<main class="wrap">
+  <form class="toolbar no-print" id="brandForm">
+    <div class="field">
+      <label for="brand">שם המאמן / הסטודיו על הדף (רק במסלול מאמן)</label>
+      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="יופיע רק אחרי קוד גישה">
+    </div>
+    <button type="submit" class="th-btn ghost">עדכן שם</button>
+    <button type="button" class="th-btn" id="printBtn">הדפס / שמור כ־PDF</button>
+    <a class="th-btn ghost" href="./offer.html">מסלול מאמן</a>
+  </form>
+  <p class="honest no-print" id="hint" style="color:#a7b1ab;font-size:.88rem;line-height:1.5"></p>
+  <div id="sheet"></div>
+</main>
+<script src="./js/core.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  function currentWorkout() {
+    var packed = TH.store.get(TH.KEYS.print, null);
+    if (packed && packed.workout) return packed;
+    var active = TH.store.get(TH.KEYS.active, null);
+    if (active) return { workout: active, brand: '' };
+    return null;
+  }
+
+  function render() {
+    var packed = currentWorkout();
+    var box = $('sheet');
+    if (!packed) {
+      box.innerHTML = '<p class="empty">אין אימון בדפדפן. בנו אימון ואז לחצו «דף להדפסה».</p>';
+      $('hint').textContent = '';
+      return;
+    }
+    var brand = $('brand').value.trim();
+    var model = TH.workoutPrintModel(packed.workout, { brand: brand });
+    box.innerHTML = TH.workoutPrintHtml(model);
+    if (model.branded) {
+      $('hint').textContent = 'מסלול מאמן פעיל. השם יופיע בראש הדף. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
+    } else {
+      $('hint').textContent = 'זו גרסת תרגול עם סימן מים. דף ממותג ללקוח נפתח אחרי קוד גישה בדף ההצעה.';
+    }
+  }
+
+  TH.ready(function () {
+    var ent = TH.entitlement();
+    var packed = currentWorkout();
+    if (ent.brand) $('brand').value = ent.brand;
+    else if (packed && packed.brand) $('brand').value = packed.brand;
+    render();
+  });
+
+  $('brandForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var packed = currentWorkout() || { workout: {}, brand: '' };
+    TH.store.set(TH.KEYS.print, { workout: packed.workout, brand: $('brand').value.trim() });
+    render();
+  });
+
+  $('printBtn').addEventListener('click', function () { window.print(); });
+})();
+</script>
+</body>
+</html>
