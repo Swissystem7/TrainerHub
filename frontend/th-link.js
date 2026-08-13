@@ -72,10 +72,14 @@
   function workoutModeUrl() {
     var here = location.href.split('#')[0].split('?')[0];
     if (/workout-mode\.html$/i.test(here)) return here;
-    if (/\/frontend\/?$/i.test(here) || /\/frontend\/index\.html$/i.test(here)) {
+    if (/\/frontend(\/index\.html)?\/?$/i.test(here)) {
       return here.replace(/index\.html$/i, '').replace(/\/?$/, '/') + 'workout-mode.html';
     }
-    return here.replace(/[^/]*$/, '') + 'frontend/workout-mode.html';
+    if (/\/frontend\//i.test(here)) {
+      return here.replace(/\/frontend\/[^/]*$/, '/frontend/workout-mode.html');
+    }
+    // Root on GitHub Pages may be /TrainerHub with no trailing slash.
+    return here.replace(/\/index\.html$/i, '').replace(/\/?$/, '/') + 'frontend/workout-mode.html';
   }
 
   function encodeLink(workout, meta) {
@@ -165,6 +169,8 @@
     var digits = String(phone || '').replace(/\D/g, '');
     var intl = digits;
     if (intl.charAt(0) === '0') intl = '972' + intl.slice(1);
+    else if (intl.length === 9 && intl.charAt(0) === '5') intl = '972' + intl;
+    if (intl && !/^\d{8,15}$/.test(intl)) intl = '';
     var base = intl ? ('https://wa.me/' + intl) : 'https://wa.me/';
     return base + '?text=' + encodeURIComponent(message);
   }
