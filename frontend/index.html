@@ -553,6 +553,7 @@
       <button class="action-btn" onclick="printCard()">🖨️ הדפס</button>
       <button class="action-btn" onclick="copyText()">📋 העתק</button>
       <button class="action-btn" onclick="startWorkout()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#7c3aed;color:#fff;font-weight:700;">▶️ התחל אימון</button>
+      <button class="action-btn" onclick="openTraineeLink()">🔗 לינק מתאמן</button>
     </div>
   </div>
 </div>
@@ -615,6 +616,7 @@
 </div><!-- /tab-profile -->
 
 <script src="parse-workout.js"></script>
+<script src="th-link.js"></script>
 <script>
 const EXAMPLES = {
   1: `אימון פונקציונלי לקבוצה של 12 אנשים, 50 דקות, ציוד: גומיות וכדורי ולשין.
@@ -911,6 +913,42 @@ function startWorkout() {
   window.location.href = 'workout-mode.html';
 }
 
+function openTraineeLink() {
+  if (!currentWorkout) return;
+  document.getElementById('traineeLinkModal').classList.add('open');
+  document.getElementById('tlError').style.display = 'none';
+  updateTraineeLinkPreview();
+}
+function closeTraineeLink() {
+  document.getElementById('traineeLinkModal').classList.remove('open');
+}
+function updateTraineeLinkPreview() {
+  if (typeof ThLink !== 'object') return;
+  const url = ThLink.encodeLink(currentWorkout, {
+    name: document.getElementById('tlName').value.trim(),
+    wa: document.getElementById('tlPhone').value.trim()
+  });
+  document.getElementById('tlUrl').value = url;
+}
+function copyTraineeLink() {
+  updateTraineeLinkPreview();
+  const url = document.getElementById('tlUrl').value;
+  navigator.clipboard.writeText(url).then(function () {
+    const btn = document.getElementById('tlCopyBtn');
+    btn.textContent = '✅ הועתק';
+    setTimeout(function () { btn.textContent = '📋 העתק קישור'; }, 1600);
+  });
+}
+function sendTraineeLinkWa() {
+  updateTraineeLinkPreview();
+  const name = document.getElementById('tlName').value.trim() || 'מתאמן';
+  const url = document.getElementById('tlUrl').value;
+  const traineePhone = document.getElementById('tlTraineePhone').value.trim();
+  const msg = 'היי ' + name + ' 💪\nהאימון שלך ב-TrainerHub (בלי הרשמה):\n' + url + '\n\nכשתסיים — לחץ «שלח סיכום למאמן» במסך הסיום.';
+  if (typeof ThLink !== 'object') return;
+  window.open(ThLink.waShareUrl(traineePhone, msg), '_blank');
+}
+
 renderHistory();
 
 // ── Pricing modal ────────────────────────────────────────────────
@@ -1118,6 +1156,36 @@ function renderProfileStats() {
 #fbToast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#14532d;border:1px solid #22c55e;color:#86efac;padding:11px 22px;border-radius:12px;font-size:0.88rem;font-weight:600;z-index:1600}
 </style>
 
+<!-- Trainee link modal -->
+<div class="th-modal-overlay" id="traineeLinkModal">
+  <div class="th-modal">
+    <button class="close-x" onclick="closeTraineeLink()">✕</button>
+    <div style="font-size:1.2rem;font-weight:800;margin-bottom:6px">🔗 לינק מתאמן</div>
+    <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:14px">התוכנית נשמרת בכתובת עצמה. המתאמן לא מתחבר. בסיום הוא שולח לך סיכום בוואטסאפ. הדגמה — בלי שרת.</p>
+    <div class="auth-field">
+      <label>שם המתאמן</label>
+      <input type="text" id="tlName" placeholder="יוסי" oninput="updateTraineeLinkPreview()">
+    </div>
+    <div class="auth-field">
+      <label>טלפון המתאמן (לשליחת הלינק)</label>
+      <input type="tel" id="tlTraineePhone" placeholder="050..." dir="ltr">
+    </div>
+    <div class="auth-field">
+      <label>הטלפון שלך — לחזרת הסיכום בוואטסאפ</label>
+      <input type="tel" id="tlPhone" placeholder="050..." dir="ltr" oninput="updateTraineeLinkPreview()">
+    </div>
+    <div class="auth-field">
+      <label>הקישור</label>
+      <textarea id="tlUrl" readonly dir="ltr" style="width:100%;min-height:70px;background:#0f0f13;border:1px solid #3a3a5a;border-radius:10px;padding:10px;color:#c4b5fd;font-size:0.75rem"></textarea>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="auth-submit" id="tlCopyBtn" type="button" style="margin-top:0;flex:1" onclick="copyTraineeLink()">📋 העתק קישור</button>
+      <button class="auth-submit" type="button" style="margin-top:0;flex:1;background:#14532d" onclick="sendTraineeLinkWa()">💬 שלח בוואטסאפ</button>
+    </div>
+    <div class="auth-error" id="tlError"></div>
+  </div>
+</div>
+
 <!-- Auth Modal -->
 <div class="th-modal-overlay" id="authModal">
   <div class="th-modal">
@@ -1252,6 +1320,7 @@ function renderAuthState() {
 }
 renderAuthState();
 document.getElementById('authModal').addEventListener('click', function(e) { if (e.target === this) closeAuth(); });
+document.getElementById('traineeLinkModal').addEventListener('click', function(e) { if (e.target === this) closeTraineeLink(); });
 
 // ── Onboarding ────────────────────────────────────────────────────
 const OB_STEPS = [

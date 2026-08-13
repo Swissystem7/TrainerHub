@@ -240,7 +240,7 @@
 <div class="stage" id="stage">
   <div class="empty-state" id="emptyState">
     <div class="big">🏋️</div>
-    <p>לא נמצא אימון פעיל.<br>חזור ל-Creator Studio ובחר אימון.</p>
+    <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן מהמאמן, או חזור ל-Studio.</p>
     <button class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
   </div>
 </div>
@@ -273,9 +273,17 @@
     <div class="stat-card"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
   <div style="color:#6b7280;font-size:0.9rem">💪 עבודה מצוינת!</div>
+  <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
+    <p style="color:#a78bfa;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
+    <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <label style="display:block;font-size:0.75rem;color:#6b7280;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
+    <textarea id="resultCode" readonly dir="ltr" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
+    <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#1a1a2e;border:1px solid #3a3a5a">📋 העתק קוד</button>
+  </div>
   <button class="done-btn" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
 </div>
 
+<script src="th-link.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -289,7 +297,17 @@ function esc(s) {
   }[c]));
 }
 
+let linkMeta = { wa: '', name: '', tid: '' };
+let skippedSets = 0;
+
 function loadWorkout() {
+  if (typeof ThLink === 'object' && ThLink.decodeHash) {
+    const fromHash = ThLink.decodeHash(location.hash);
+    if (fromHash && fromHash.workout && (fromHash.workout.phases || []).length) {
+      linkMeta = { wa: fromHash.wa || '', name: fromHash.name || '', tid: fromHash.tid || '' };
+      return fromHash.workout;
+    }
+  }
   try {
     const raw = localStorage.getItem('trainerhub_active_workout');
     if (!raw) return null;
@@ -683,6 +701,7 @@ function skipCurrent() {
   clearCountdown();
   const step = steps[stepIdx];
   if (step && step.type === 'exercise') {
+    skippedSets++;
     // Skip this set only (and its following rest), not the whole exercise
     stepIdx++;
     if (stepIdx < steps.length && steps[stepIdx].type === 'rest') {
@@ -734,7 +753,48 @@ function finishWorkout() {
 
   document.getElementById('completionScreen').classList.add('active');
 
-  // Clear active workout from storage
+  const result = {
+    name: linkMeta.name || '',
+    title: (workout && workout.title) || 'אימון',
+    doneAt: new Date().toISOString(),
+    minutes: Math.round(elapsedSeconds / 60),
+    exercises: completedExercises,
+    sets: completedSets,
+    skipped: skippedSets,
+    tid: linkMeta.tid || ''
+  };
+  const code = (typeof ThLink === 'object' && ThLink.encodeResult) ? ThLink.encodeResult(result) : JSON.stringify(result);
+  const wrap = document.getElementById('reportWrap');
+  const codeEl = document.getElementById('resultCode');
+  if (wrap && codeEl) {
+    wrap.style.display = 'block';
+    codeEl.value = code;
+    const msg = [
+      'סיימתי אימון ב-TrainerHub',
+      result.name ? ('מתאמן: ' + result.name) : '',
+      'תוכנית: ' + result.title,
+      'זמן: ' + formatTime(elapsedSeconds) + ' · תרגילים ' + result.exercises + ' · סטים ' + result.sets + (result.skipped ? (' · דולגו ' + result.skipped) : ''),
+      '',
+      'קוד לייבוא ביומן המאמן:',
+      code
+    ].filter(Boolean).join('\n');
+    const waBtn = document.getElementById('btnWaTrainer');
+    if (waBtn && ThLink.waShareUrl) {
+      waBtn.onclick = function () {
+        window.open(ThLink.waShareUrl(linkMeta.wa, msg), '_blank');
+      };
+    }
+    const copyBtn = document.getElementById('btnCopyCode');
+    if (copyBtn) {
+      copyBtn.onclick = function () {
+        navigator.clipboard.writeText(code).then(function () {
+          copyBtn.textContent = '✅ הועתק';
+          setTimeout(function () { copyBtn.textContent = '📋 העתק קוד'; }, 1600);
+        });
+      };
+    }
+  }
+
   localStorage.removeItem('trainerhub_active_workout');
 }
 
