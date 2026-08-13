@@ -247,8 +247,8 @@
 <main class="stage" id="stage">
   <div class="empty-state" id="emptyState">
     <div class="big">🏋️</div>
-    <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור ל-Studio.</p>
-    <button type="button" class="go-back" onclick="window.location.href='index.html'">← חזור ל-Studio</button>
+    <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור למסך בניית האימון.</p>
+    <button type="button" class="go-back" onclick="window.location.href='../'">← בנה אימון</button>
     <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../library.html'">ספריית סרטונים</button>
   </div>
 </main>
@@ -478,9 +478,7 @@ function renderExercise(step) {
 
   const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
-  const videoHtml = clip && clip.file
-    ? `<video class="ex-video" hidden playsinline controls muted preload="metadata" src="${esc(TH.catalogSrc(clip.file))}" onloadeddata="this.hidden=false" onerror="this.remove()"></video>`
-    : '';
+  const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
 
   stage.innerHTML = `
     <div class="phase-label">${esc(step.phase)}</div>
@@ -907,9 +905,16 @@ function exitWorkout() {
     clearCountdown();
     pauseElapsedTimer();
     TH.store.remove(TH.KEYS.active);
-    window.location.href = 'index.html';
+    window.location.href = '../';
   }
 }
+
+window.addEventListener('offline', function () {
+  if (workout && steps.length) renderStep();
+});
+window.addEventListener('online', function () {
+  if (workout && steps.length) renderStep();
+});
 
 document.addEventListener('keydown', function (e) {
   const tag = (e.target && e.target.tagName) || '';

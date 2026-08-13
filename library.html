@@ -46,19 +46,21 @@
 <a class="skip-link" href="#q">דלג לחיפוש</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
-  <a href="./">בונה אימון מהיר</a>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
   <span class="chip on">ספריית סרטונים</span>
+  <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">האפליקציה המלאה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  הסרטונים עצמם מחוץ לריפו. בדמו החי הנגן מופיע רק אם הקובץ נמצא בתיקיית <code>videos/</code> — אין ענן ואין ספריית 95 קליפים מזויפת.
+  סרטוני דרייב מתנגנים מהקישור המשותף. קליפ מקומי מופיע רק אם הקובץ נמצא בתיקיית <code>videos/</code>. קישור חיצוני נפתח מחוץ לאפליקציה — זה לא חיבור למאמנים.
 </div>
 <main class="wrap">
   <header class="top">
     <small>TRAINERHUB / CLIP LIBRARY</small>
     <h1>הספרייה האמיתית, לא מאגר גנרי.</h1>
-    <p>חיפוש והחלפה מ־78 קליפים בעברית. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות הקבצים לא מוצגים — רק שם התרגיל.</p>
+    <p>חיפוש במאגר המאוחד — קליפים מקומיים וסרטוני דרייב. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות קבצים ושמות אנשים לא מוצגים.</p>
   </header>
 
   <section class="draft" id="draftBox" hidden>
@@ -175,10 +177,16 @@
       var tags = TH.catalogTags(e).map(function (t) {
         return '<span class="pill">' + TH.esc(TH.tagLabel(t)) + '</span>';
       }).join('');
-      var src = TH.catalogSrc(e.file);
-      var video = src
-        ? '<video hidden playsinline controls muted preload="metadata" src="' + TH.esc(src) + '" onloadeddata="this.hidden=false" onerror="this.remove()"></video>'
+      var kind = TH.playableKind(e);
+      var sourcePill = e.source
+        ? '<span class="pill source-pill">' + TH.esc({
+            local: 'מקומי', drive: 'דרייב', youtube: 'יוטיוב', link: 'קישור חיצוני', user: 'נוסף במאגר'
+          }[e.source] || e.source) + '</span>'
         : '';
+      var video = TH.mediaMarkup(e, { className: 'ex-media' });
+      if (!video && kind === 'link' && e.externalUrl) {
+        video = '<a class="ex-media-link" href="' + TH.esc(e.externalUrl) + '" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני</a>';
+      }
       var alts = TH.substitutesFor({ id: e.id }, { limit: 3 });
       var altHtml = alts.length
         ? '<div class="alts">חלופות: ' + alts.map(function (a) {
@@ -187,7 +195,7 @@
         : '';
       return '<article class="card" data-id="' + TH.esc(e.id) + '">' +
         '<h2>' + TH.esc(e.he) + '</h2>' +
-        '<div class="meta">' + muscles + eq + tags + '</div>' +
+        '<div class="meta">' + muscles + eq + tags + sourcePill + '</div>' +
         video + altHtml +
         '<div class="actions">' +
           '<button type="button" data-act="copy">העתק לינק</button>' +

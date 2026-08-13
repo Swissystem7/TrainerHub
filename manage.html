@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="הוספת סרטון למאגר TrainerHub בלי לשנות קוד — דרייב, יוטיוב, או קישור חיצוני.">
+  <title>TrainerHub | ניהול מאגר</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 820px; margin: auto; padding: 28px 20px 72px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
+    .top p { color: var(--muted); line-height: 1.6; max-width: 42rem; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 16px 0; }
+    label { display: block; color: var(--muted); font-size: .84rem; margin: 12px 0 6px; }
+    input, select, textarea {
+      width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
+      background: #111513; color: var(--ink); font: inherit;
+    }
+    textarea { min-height: 120px; font-family: ui-monospace, Consolas, monospace; font-size: .82rem; }
+    .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .actions button { width: auto; margin-top: 0; }
+    .hint { color: var(--muted); font-size: .82rem; margin: 6px 0 0; line-height: 1.45; }
+    .status { color: var(--lime); font-size: .88rem; min-height: 1.2em; }
+    .warn { color: #f0b542; }
+    .list { display: grid; gap: 8px; }
+    .item { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; background: #111513; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+    .item b { display: block; }
+    .item span { color: var(--muted); font-size: .78rem; }
+    .item button { width: auto; margin: 0; padding: 6px 10px; font-size: .78rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { background: #26302b; border-radius: 999px; padding: 3px 8px; font-size: .72rem; color: var(--muted); }
+    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#url">דלג לטופס ההוספה</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <span class="chip on">ניהול מאגר</span>
+  <a href="./frontend/">האפליקציה המלאה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  הוספת סרטון נשמרת בדפדפן הזה. כדי שייכנס לקטלוג הקבוע — מייצאים JSON ומדביקים ב־<code>videos/drive-catalog.json</code>. קישור חיצוני הוא קישור בלבד, לא חיבור למאמנים.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / ניהול מאגר</small>
+    <h1>המאגר גדל בלי לגעת בקוד.</h1>
+    <p>מדביקים קישור דרייב או מזהה קובץ, או קישור יוטיוב. האפליקציה מציעה שריר, ציוד ורמה לפי השם — מאשרים או מתקנים. קישור לאינסטגרם נשמר כקישור שנפתח בחוץ, בלי להציג את זה כאינטגרציה.</p>
+  </header>
+
+  <form class="card" id="addForm">
+    <h2>הוספת פריט</h2>
+    <label for="url">קישור או מזהה</label>
+    <input id="url" name="url" type="text" inputmode="url" placeholder="https://drive.google.com/file/d/…/view או מזהה קובץ" autocomplete="off">
+    <p class="hint" id="sourceHint">דרייב / יוטיוב / קישור חיצוני — מזוהה אוטומטית.</p>
+
+    <label for="he">שם התרגיל בעברית</label>
+    <input id="he" name="he" type="text" placeholder="פלאנק צידי" autocomplete="off">
+
+    <div class="row">
+      <div>
+        <label for="muscles">שרירים</label>
+        <select id="muscles" multiple size="5" aria-describedby="musclesHelp">
+          <option value="core">ליבה</option>
+          <option value="legs">רגליים</option>
+          <option value="back">גב</option>
+          <option value="chest">חזה</option>
+          <option value="shoulders">כתפיים</option>
+          <option value="biceps">דו־ראשי</option>
+          <option value="triceps">תלת־ראשי</option>
+        </select>
+        <p class="hint" id="musclesHelp">אפשר לבחור כמה. ההצעה מתעדכנת לפי השם.</p>
+      </div>
+      <div>
+        <label for="equipment">ציוד</label>
+        <select id="equipment">
+          <option value="none">משקל גוף</option>
+          <option value="band">גומיות</option>
+          <option value="cones">קונוסים</option>
+          <option value="ball">כדור</option>
+          <option value="bar">מתח</option>
+          <option value="stairs">מדרגות</option>
+          <option value="ladder">סולם</option>
+          <option value="wall">קיר</option>
+        </select>
+        <label for="level">רמה</label>
+        <select id="level">
+          <option value="beginner">מתחיל</option>
+          <option value="intermediate">ביניים</option>
+          <option value="advanced">מתקדם</option>
+        </select>
+      </div>
+      <div>
+        <label for="folder">תיקייה (רשות)</label>
+        <input id="folder" name="folder" type="text" placeholder="בטן">
+        <p class="hint">לא חובה. עוזר למיין כשמייצאים לקטלוג.</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="th-btn">אשר ושמור במאגר המקומי</button>
+      <button type="button" class="th-btn ghost" id="previewBtn">הצג הצעה</button>
+    </div>
+    <p class="status" id="addStatus" role="status"></p>
+  </form>
+
+  <section class="card">
+    <h2>פריטים שנוספו בדפדפן הזה</h2>
+    <div class="list" id="userList"></div>
+    <div class="actions">
+      <button type="button" class="th-btn ghost" id="exportBtn">ייצוא JSON להדבקה בקטלוג</button>
+    </div>
+    <label for="exportBox">JSON לייצוא</label>
+    <textarea id="exportBox" readonly placeholder="אחרי ייצוא אפשר להעתיק מכאן."></textarea>
+  </section>
+
+  <section class="card">
+    <h2>סרטונים שכדאי לצלם</h2>
+    <p class="hint">תרגילים שנקלטו מאימון מודבק ולא נמצא להם סרטון במאגר.</p>
+    <div class="list" id="wishList"></div>
+  </section>
+</main>
+<script src="./js/core.js"></script>
+<script src="./js/infer.js"></script>
+<script src="./js/ingest.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  function selectedMuscles() {
+    return Array.prototype.slice.call($('muscles').options)
+      .filter(function (o) { return o.selected; })
+      .map(function (o) { return o.value; });
+  }
+
+  function setMuscles(list) {
+    list = list || [];
+    Array.prototype.forEach.call($('muscles').options, function (o) {
+      o.selected = list.indexOf(o.value) !== -1;
+    });
+  }
+
+  function sourceLabel(src) {
+    if (src === 'drive') return 'דרייב';
+    if (src === 'youtube') return 'יוטיוב';
+    if (src === 'link') return 'קישור חיצוני';
+    if (src === 'user') return 'מקומי';
+    return src || 'לא זוהה';
+  }
+
+  function propose() {
+    var raw = $('url').value.trim();
+    var name = $('he').value.trim() || THInfer.extractHebrewName(raw);
+    if (name && !$('he').value.trim()) $('he').value = name;
+    var proposed = THInfer.proposeEntry({
+      url: raw,
+      name: $('he').value.trim(),
+      folder: $('folder').value.trim()
+    });
+    var hint = $('sourceHint');
+    if (proposed.error === 'blocked') {
+      hint.textContent = proposed.message;
+      hint.className = 'hint warn';
+      return proposed;
+    }
+    hint.className = 'hint';
+    if (proposed.source === 'link') {
+      hint.textContent = 'זוהה קישור חיצוני. יישמר כקישור שנפתח בחוץ — לא חיבור למאמנים ולא אינטגרציה.';
+    } else if (proposed.source === 'drive') {
+      hint.textContent = 'זוהה קובץ דרייב. אחרי אישור הוא יתנגן כ־iframe מהקישור המשותף.';
+    } else if (proposed.source === 'youtube') {
+      hint.textContent = 'זוהה סרטון יוטיוב. אין חיפוש ביוטיוב — רק הדבקת קישור לסרטון ספציפי.';
+    } else {
+      hint.textContent = 'לא זוהה מקור. אפשר לשמור שם בלבד, או להדביק קישור דרייב / יוטיוב / חיצוני.';
+    }
+    if (proposed.muscles) setMuscles(proposed.muscles);
+    if (proposed.equipment && proposed.equipment[0]) $('equipment').value = proposed.equipment[0];
+    if (proposed.level) $('level').value = proposed.level;
+    return proposed;
+  }
+
+  function renderUser() {
+    var list = TH.userCatalogList();
+    var box = $('userList');
+    if (!list.length) {
+      box.innerHTML = '<p class="hint">עדיין לא הוספתם פריט בדפדפן הזה.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (e) {
+      var pills = (e.muscles || []).map(function (m) {
+        return '<span class="pill">' + TH.esc(TH.muscleLabel(m)) + '</span>';
+      }).join('') + '<span class="pill">' + TH.esc(sourceLabel(e.source)) + '</span>';
+      return '<div class="item"><div><b>' + TH.esc(e.he) + '</b><span>' + pills + '</span></div>' +
+        '<button type="button" class="th-btn ghost" data-del="' + TH.esc(e.id) + '">מחק</button></div>';
+    }).join('');
+  }
+
+  $('url').addEventListener('input', propose);
+  $('he').addEventListener('input', propose);
+  $('previewBtn').addEventListener('click', function () {
+    var p = propose();
+    $('addStatus').textContent = p && p.error ? (p.message || 'צריך שם בעברית') : 'ההצעה עודכנה. אפשר לתקן ואז לאשר.';
+  });
+
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var proposed = propose();
+    if (!proposed || proposed.error) {
+      $('addStatus').textContent = (proposed && proposed.message) || 'חסר שם או קישור.';
+      return;
+    }
+    var muscles = selectedMuscles();
+    if (!muscles.length) muscles = proposed.muscles || ['core'];
+    var entry = {
+      id: proposed.id,
+      he: $('he').value.trim(),
+      muscles: muscles,
+      equipment: [$('equipment').value || 'none'],
+      level: $('level').value || 'beginner',
+      source: proposed.source || 'user',
+      folder: $('folder').value.trim(),
+      driveId: proposed.driveId || '',
+      youtubeId: proposed.youtubeId || '',
+      externalUrl: proposed.externalUrl || ''
+    };
+    TH.addUserEntry(entry);
+    $('addStatus').textContent = 'נשמר במאגר המקומי. לא נדרש שינוי קוד.';
+    $('url').value = '';
+    $('he').value = '';
+    $('folder').value = '';
+    renderUser();
+  });
+
+  $('userList').addEventListener('click', function (e) {
+    var id = e.target.getAttribute && e.target.getAttribute('data-del');
+    if (!id) return;
+    TH.removeUserEntry(id);
+    renderUser();
+  });
+
+  $('exportBtn').addEventListener('click', function () {
+    var json = TH.exportUserCatalog();
+    $('exportBox').value = json;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(json);
+      $('addStatus').textContent = 'ה־JSON הועתק. מדביקים כשורה / פריט בקטלוג.';
+    }
+  });
+
+  TH.ready(renderUser);
+})();
+</script>
+</body>
+</html>

@@ -1,123 +1,392 @@
-<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TrainerHub | בונה אימון</title>
-<link rel="stylesheet" href="./css/app.css">
-<style>
-:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem;margin-inline-end:8px}.swap-sel{width:auto;max-width:11rem;padding:4px 8px;margin-inline-start:8px;font-size:.75rem}@media(max-width:700px){.layout{grid-template-columns:1fr}}
-</style></head><body>
-<a class="skip-link" href="#form">דלג לטופס</a>
-<nav aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
-  <span style="color:#b9f24a">TrainerHub</span>
-  <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">בונה אימון מהיר</span>
-  <a href="./library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
-  <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">האפליקציה המלאה</a>
-  <a href="./frontend/workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה.">
+  <title>TrainerHub | בנה אימון</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 760px; margin: auto; padding: 36px 20px 72px; }
+    .top small { color: var(--lime); font-weight: bold; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(2rem, 6vw, 3.4rem); margin: 10px 0 8px; line-height: 1.15; }
+    .top p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; max-width: 38rem; }
+    form.prompt { margin: 28px 0 12px; }
+    label[for="prompt"] { display: block; color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
+    #prompt {
+      width: 100%; min-height: 110px; resize: vertical;
+      padding: 16px; border-radius: 14px; border: 1px solid var(--line);
+      background: #111513; color: var(--ink); font: inherit; line-height: 1.5;
+    }
+    .go { width: 100%; margin-top: 12px; padding: 14px; border: 0; border-radius: 12px; background: var(--lime); color: #101312; font-weight: 900; font-size: 1.05rem; cursor: pointer; font-family: inherit; }
+    .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 24px; }
+    .examples button {
+      background: #26302b; border: 1px solid var(--line); color: var(--ink);
+      border-radius: 999px; padding: 7px 12px; font: inherit; font-size: .82rem; cursor: pointer;
+    }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 14px; }
+    .card h2 { margin: 0 0 10px; font-size: 1.2rem; }
+    .notice { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.35); color: #f0b542; }
+    .empty { color: var(--muted); text-align: center; padding: 12px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+    .pill { background: #26302b; border-radius: 999px; padding: 4px 10px; font-size: .78rem; color: var(--muted); }
+    .ex { border-top: 1px solid var(--line); padding: 12px 0; }
+    .ex:first-of-type { border-top: 0; }
+    .ex b { display: block; margin-bottom: 4px; }
+    .why { color: var(--muted); font-size: .85rem; line-height: 1.45; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .actions button { width: auto; margin-top: 0; padding: 10px 16px; }
+    .flags { margin: 8px 0 0; padding: 0; list-style: none; }
+    .flags li { color: #f0b542; font-size: .85rem; margin: 4px 0; }
+    .stim { margin: 8px 0 0; color: var(--ink); line-height: 1.5; }
+    .stim small { display: block; color: var(--muted); margin-top: 4px; }
+    .phase { color: var(--lime); font-size: .78rem; font-weight: 700; margin: 16px 0 4px; }
+    .modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+    .modes button {
+      background: #26302b; border: 1px solid var(--line); color: var(--ink);
+      border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer;
+    }
+    .modes button[aria-selected="true"] { background: rgba(185,242,74,.15); border-color: var(--lime); }
+    .panel[hidden] { display: none !important; }
+    .missing { color: #f0b542; font-size: .82rem; }
+    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: 12px; background: #000; }
+    .ex-media-segment, .honest { color: var(--muted); font-size: .82rem; line-height: 1.45; }
+    @media (max-width: 600px) { .seg-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#prompt">דלג לשדה האימון</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <span class="chip on">בנה אימון</span>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">האפליקציה המלאה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
-<div style="background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:#f0b542;font:600 0.74rem system-ui,sans-serif;padding:7px 14px;text-align:center;direction:rtl">
-  ⚠️ הדגמה — פענוח האימון בטקסט חופשי רץ ב-<code>backend/main.py</code>, שרת שאינו פעיל בדמו הזה. GitHub Pages מגיש קבצים סטטיים בלבד, ולכן התוצאות כאן מקומיות ולא מגיעות מהשרת.
+<div class="th-banner">
+  האימון נבנה בדפדפן מהמאגר האמיתי — בלי שרת, בלי מפתח, בלי המתנה. זה לא מבטיח תוצאה גופנית.
 </div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / מנוע אימון</small>
+    <h1>תגיד איזה אימון אתה רוצה.</h1>
+    <p>שדה אחד. בעברית. תוך פחות משנייה מתקבל אימון מהסרטונים האמיתיים, עם הסבר על מה עובדים ולמה נבחר כל תרגיל.</p>
+  </header>
+  <div class="modes" role="tablist" aria-label="מצב בנייה">
+    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true">מה אתה רוצה</button>
+    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false">הדבק אימון</button>
+    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false">פרק סרטון</button>
+  </div>
+
+  <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
+    <form class="prompt" id="form">
+      <label for="prompt">מה האימון?</label>
+      <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="אימון בטן 20 דקות בלי ציוד" autocomplete="off"></textarea>
+      <button type="submit" class="go">בנה אימון</button>
+    </form>
+    <div class="examples" role="group" aria-label="דוגמאות">
+      <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
+      <button type="button" data-fill="פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
+      <button type="button" data-fill="כוח גב 30 דקות">כוח גב 30 דקות</button>
+      <button type="button" data-fill="ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-ingest" role="tabpanel" aria-labelledby="tab-ingest" hidden>
+    <form class="prompt" id="ingestForm">
+      <label for="ingestText">הדביקו אימון בעברית</label>
+      <textarea id="ingestText" name="ingestText" rows="5" placeholder="3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה, 20 מטפס הרים, דקה מנוחה" autocomplete="off"></textarea>
+      <button type="submit" class="go">פרק לתרגילים</button>
+    </form>
+    <p class="honest">הפרסר מפרק לסטים וחזרות ומתאים כל תרגיל לסרטון במאגר, כולל שגיאות כתיב נפוצות. תרגיל בלי סרטון מוצג כטקסט ונכנס לרשימת «סרטונים שכדאי לצלם».</p>
+  </div>
+
+  <div class="panel" id="panel-seg" role="tabpanel" aria-labelledby="tab-seg" hidden>
+    <form class="prompt" id="segForm">
+      <label for="segSource">סרטון דרייב לפיצול</label>
+      <select id="segSource">
+        <option value="">בחרו סרטון מהמאגר…</option>
+      </select>
+      <label for="segUrl">או הדביקו קישור / מזהה דרייב</label>
+      <input id="segUrl" name="segUrl" type="text" autocomplete="off" placeholder="https://drive.google.com/file/d/…/view">
+      <div id="segPlayer" class="card" hidden></div>
+      <p class="honest">נגן הדרייב לא מוסר זמן מדויק. מתחילים מעקב כשלוחצים «התחל מעקב», או מזינים שניות ידנית. אין זיהוי תרגיל אוטומטי מהווידאו.</p>
+      <div class="actions">
+        <button type="button" class="th-btn ghost" id="segWatch">הצג סרטון</button>
+        <button type="button" class="th-btn ghost" id="segTrack">התחל מעקב</button>
+        <button type="button" class="th-btn ghost" id="segMarkStart">סמן התחלה</button>
+        <button type="button" class="th-btn ghost" id="segMarkEnd">סמן סוף</button>
+      </div>
+      <div class="seg-grid">
+        <div>
+          <label for="segStart">התחלה (שניות)</label>
+          <input id="segStart" name="segStart" type="number" min="0" step="1" value="0">
+        </div>
+        <div>
+          <label for="segEnd">סוף (שניות)</label>
+          <input id="segEnd" name="segEnd" type="number" min="1" step="1" value="30">
+        </div>
+      </div>
+      <label for="segName">שם התרגיל במקטע</label>
+      <input id="segName" name="segName" type="text" autocomplete="off" placeholder="פלאנק צידי">
+      <button type="submit" class="go">שמור מקטע במאגר</button>
+      <p class="status" id="segStatus" role="status"></p>
+    </form>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+</main>
 <script src="./js/core.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button type="submit">בנה אימון</button></form><div class="card" id="result" aria-live="polite"></div></section></main><script>
-const $=x=>document.getElementById(x);
-const esc=s=>TH.esc(s);
+<script src="./js/infer.js"></script>
+<script src="./js/analyzer.js"></script>
+<script src="./js/prompt-parser.js"></script>
+<script src="./js/session-builder.js"></script>
+<script src="./js/ingest.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var last = null;
+  var trackStartedAt = 0;
 
-function startDayWorkout(dayIndex){
-  const raw = window.__lastProgram;
-  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
-  TH.store.set(TH.KEYS.active, workout);
-  window.location.href = './frontend/workout-mode.html';
-}
-function copyDayTraineeLink(dayIndex){
-  const raw = window.__lastProgram;
-  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
-  const url = TH.encodeLink(workout, {});
-  navigator.clipboard.writeText(url).then(function(){
-    alert('לינק המתאמן הועתק. פותחים בלי התחברות; בסיום יש קוד לשלוח למאמן בוואטסאפ.');
-  });
-}
+  function muscleList(ids) {
+    return (ids || []).map(function (m) { return TH.muscleLabel(m); }).join(', ') || '—';
+  }
 
-function renderProgram(p){
-  const eq = $('equipment').value;
-  const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
-    reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
-  })));
-  const clipCount = p.dailyWorkouts.reduce((n, d) => {
-    return n + (d.exercises || []).filter(x => TH.hasClip({ id: x.name, name: x.name })).length;
-  }, 0);
-  $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
-    p.dailyWorkouts.map((d, i) => {
-      const w = TH.toPhasesWorkout(d, window.__lastMeta);
-      const phasesHtml = (w.phases || []).map((phase, pi) => {
-        const label = TH.phaseLabel(phase.name);
-        const exs = (phase.exercises || []).map((x, xi) => {
-          const bits = [];
-          if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
-          else if (x.reps) bits.push(x.reps + ' חזרות');
-          if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
-          if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
-          const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
-          const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
-          const swap = alts.length
-            ? '<label class="sr-only" for="swap-'+i+'-'+pi+'-'+xi+'">החלף '+esc(x.name)+'</label><select id="swap-'+i+'-'+pi+'-'+xi+'" data-day="'+i+'" data-phase="'+pi+'" data-ex="'+xi+'" class="swap-sel" aria-label="החלף '+esc(x.name)+'"><option value="">החלף…</option>'+alts.map(a => '<option value="'+esc(a.id)+'">'+esc(a.he)+'</option>').join('')+'</select>'
-            : '';
-          return '<div class="exercise"><b>'+clip+esc(x.name)+'</b><span>'+esc(bits.join(' · ') || 'הכנה')+' '+swap+'</span></div>';
-        }).join('');
-        return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
+  function switchTab(id) {
+    ['prompt', 'ingest', 'seg'].forEach(function (key) {
+      var tab = $('tab-' + key);
+      var panel = $('panel-' + key);
+      var on = key === id;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (on) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+    });
+  }
+
+  function bindWorkoutActions(w) {
+    $('startBtn').addEventListener('click', function () {
+      TH.store.set(TH.KEYS.active, w);
+      location.href = './frontend/workout-mode.html';
+    });
+    $('copyBtn').addEventListener('click', function () {
+      var url = TH.encodeLink(w, {});
+      navigator.clipboard.writeText(url).then(function () {
+        $('copyBtn').textContent = 'הועתק';
+        setTimeout(function () { $('copyBtn').textContent = 'העתק לינק מתאמן'; }, 1400);
+      });
+    });
+  }
+
+  function render(built) {
+    last = built;
+    var box = $('result');
+    if (!built || !built.workout) {
+      box.innerHTML = '<div class="card notice"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
+      return;
+    }
+    var w = built.workout;
+    var exp = built.explanation || {};
+    var stim = exp.stimulus || {};
+    var notice = built.notice
+      ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
+      : '';
+    var flags = (exp.flags || []).length
+      ? '<ul class="flags">' + exp.flags.map(function (f) {
+          return '<li>' + TH.esc(f.he) + '</li>';
+        }).join('') + '</ul>'
+      : '';
+    var phases = (w.phases || []).map(function (ph) {
+      if (!(ph.exercises || []).length) return '';
+      var label = TH.phaseLabel(ph.name);
+      var rows = (ph.exercises || []).map(function (ex) {
+        var reason = (exp.reasons || []).filter(function (r) { return r.id === ex.id; })[0];
+        var bits = [];
+        if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
+        else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+        var clip = ex.id ? TH.findExercise(ex) : null;
+        var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+        var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
+        return '<div class="ex"><b>' + TH.esc(ex.name) +
+          (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
+          '</b>' + (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
+          miss + media + '</div>';
       }).join('');
-      const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">לינק מתאמן</button></section>';
+      return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
     }).join('');
-  $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
-    sel.addEventListener('change', function () {
-      if (!sel.value) return;
-      const day = window.__lastProgram.dailyWorkouts[Number(sel.dataset.day)];
-      if (!day) return;
-      const workout = TH.toPhasesWorkout(day, window.__lastMeta);
-      TH.swapExercise(workout, Number(sel.dataset.phase), Number(sel.dataset.ex), sel.value);
-      const swapped = workout.phases[Number(sel.dataset.phase)].exercises[Number(sel.dataset.ex)];
-      if (Number(sel.dataset.phase) === 1 && day.exercises && day.exercises[Number(sel.dataset.ex)]) {
-        day.exercises[Number(sel.dataset.ex)] = {
-          name: swapped.id,
-          sets: swapped.sets,
-          reps: swapped.reps,
-          restSeconds: swapped.rest_seconds,
-          rest_seconds: swapped.rest_seconds,
-          notes: swapped.notes
-        };
-      }
-      day.phases = workout.phases;
-      day.title = workout.title;
-      renderProgram(window.__lastProgram);
+
+    box.innerHTML = notice +
+      '<article class="card">' +
+        '<h2>' + TH.esc(w.title) + '</h2>' +
+        '<div class="meta">' +
+          (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
+          '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
+          '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
+        '</div>' +
+        (stim.he
+          ? '<p class="stim"><strong>גירוי צפוי: ' + TH.esc(stim.he) + '</strong>' +
+            '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
+          : '') +
+        flags +
+        phases +
+        '<div class="actions">' +
+          '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="copyBtn">העתק לינק מתאמן</button>' +
+        '</div>' +
+      '</article>';
+
+    bindWorkoutActions(w);
+  }
+
+  function renderIngest(ingested) {
+    var w = ingested.workout;
+    var analysis = w.analysis || (typeof THAnalyzer !== 'undefined' ? THAnalyzer.analyzeSession(w) : null);
+    var unmatched = ingested.unmatched || [];
+    var wish = (ingested.wishlist || []).map(function (item) {
+      return '<li>' + TH.esc(item.he) + '</li>';
+    }).join('');
+    var notice = unmatched.length
+      ? '<div class="card notice" role="status"><p>' +
+        TH.esc(unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
+        '</p><ul class="flags">' + unmatched.map(function (n) {
+          return '<li>' + TH.esc(n) + '</li>';
+        }).join('') + '</ul></div>'
+      : '';
+    render({
+      workout: w,
+      notice: null,
+      explanation: analysis ? {
+        type: 'אימון שנקלט מטקסט',
+        primary: analysis.primary,
+        secondary: analysis.secondary,
+        stimulus: analysis.stimulus,
+        flags: analysis.flags,
+        reasons: []
+      } : { type: 'אימון שנקלט מטקסט', primary: [], secondary: [], stimulus: {}, flags: [], reasons: [] }
+    });
+    if (notice) $('result').insertAdjacentHTML('afterbegin', notice);
+    if (wish) {
+      $('result').insertAdjacentHTML('beforeend',
+        '<div class="card"><h2>סרטונים שכדאי לצלם</h2><ul class="flags">' + wish +
+        '</ul><p class="honest"><a href="./manage.html">ניהול מאגר</a> — הוספת סרטון בלי לגעת בקוד.</p></div>');
+    }
+  }
+
+  function run(e) {
+    if (e) e.preventDefault();
+    var text = $('prompt').value.trim();
+    if (!text) {
+      $('result').innerHTML = '<p class="empty">כתבו מה אתם רוצים — למשל «אימון בטן 20 דקות בלי ציוד».</p>';
+      return;
+    }
+    render(THEngine.buildSession(text));
+  }
+
+  function currentDriveId() {
+    var sel = $('segSource').value;
+    if (sel) {
+      var entry = TH.catalog[sel];
+      return (entry && entry.driveId) || '';
+    }
+    return THInfer.parseDriveId($('segUrl').value.trim()) || '';
+  }
+
+  function showSegPlayer() {
+    var id = currentDriveId();
+    var box = $('segPlayer');
+    if (!id) {
+      box.hidden = true;
+      box.innerHTML = '';
+      $('segStatus').textContent = 'בחרו סרטון מהמאגר או הדביקו מזהה דרייב.';
+      return;
+    }
+    box.hidden = false;
+    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media' });
+  }
+
+  function elapsedSec() {
+    if (!trackStartedAt) return 0;
+    return Math.max(0, Math.round((Date.now() - trackStartedAt) / 1000));
+  }
+
+  function fillSegSelect() {
+    var sel = $('segSource');
+    var opts = ['<option value="">בחרו סרטון מהמאגר…</option>'];
+    TH.catalogList().filter(function (e) { return e.driveId && e.startSec == null; }).forEach(function (e) {
+      opts.push('<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (e.folder ? ' · ' + TH.esc(e.folder) : '') + '</option>');
+    });
+    sel.innerHTML = opts.join('');
+  }
+
+  document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      switchTab(tab.id.replace('tab-', ''));
     });
   });
-}
 
-function run(e){
-  if (e) e.preventDefault();
-  try {
-    const muscle = $('muscle').value, eq = $('equipment').value;
-    const audience = $('audience').value;
-    const profile = {
-      age: 31, gender: 'other', fitnessLevel: $('level').value,
-      goals: [$('goal').value], availableEquipment: [eq],
-      targetMuscles: muscle && muscle !== 'full' ? [muscle] : [],
-      injuries: [],
-      previousWorkouts: 8,
-      audience: audience === 'general' ? '' : audience,
-      preferCatalog: true
-    };
-    const p = TH.generateWorkoutProgram(profile, 1, Number($('days').value));
-    window.__lastProgram = p;
-    window.__lastMeta = {
-      equipment: [TH.eqLabel(eq)],
-      intensity: $('goal').value === 'strength' ? 'high' : 'medium',
-      tags: [muscle, $('goal').value].concat(audience && audience !== 'general' ? [audience] : [])
-    };
-    renderProgram(p);
-  } catch (err) {
-    $('result').innerHTML = '<p class="error">'+esc(err.message)+'</p>';
-  }
-}
-$('form').addEventListener('submit', run);
-TH.ready(run);
-</script></body></html>
+  $('form').addEventListener('submit', run);
+  document.querySelectorAll('[data-fill]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      switchTab('prompt');
+      $('prompt').value = btn.getAttribute('data-fill');
+      $('prompt').focus();
+      run();
+    });
+  });
+
+  $('ingestForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = $('ingestText').value.trim();
+    if (!text) {
+      $('result').innerHTML = '<p class="empty">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
+      return;
+    }
+    renderIngest(THIngest.ingestText(text));
+  });
+
+  $('segWatch').addEventListener('click', showSegPlayer);
+  $('segTrack').addEventListener('click', function () {
+    trackStartedAt = Date.now();
+    $('segStatus').textContent = 'מעקב רץ. סמנו התחלה וסוף לפי מה שאתם רואים בנגן.';
+  });
+  $('segMarkStart').addEventListener('click', function () {
+    if (!trackStartedAt) trackStartedAt = Date.now();
+    $('segStart').value = elapsedSec();
+    $('segStatus').textContent = 'התחלה ב־' + $('segStart').value + ' שנ׳';
+  });
+  $('segMarkEnd').addEventListener('click', function () {
+    if (!trackStartedAt) trackStartedAt = Date.now();
+    $('segEnd').value = Math.max(Number($('segStart').value || 0) + 1, elapsedSec());
+    $('segStatus').textContent = 'סוף ב־' + $('segEnd').value + ' שנ׳';
+  });
+  $('segForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var saved = THIngest.saveSegment({
+      driveId: currentDriveId(),
+      url: $('segUrl').value.trim(),
+      he: $('segName').value.trim(),
+      startSec: $('segStart').value,
+      endSec: $('segEnd').value,
+      segmentOf: $('segSource').value || ''
+    });
+    if (saved.error) {
+      $('segStatus').textContent = saved.message;
+      return;
+    }
+    $('segStatus').textContent = 'נשמר מקטע «' + saved.entry.he + '» במאגר המקומי. אפשר לייצא מניהול מאגר.';
+    $('segName').value = '';
+  });
+
+  TH.ready(function () {
+    fillSegSelect();
+    if ($('prompt').value.trim()) run();
+  });
+})();
+</script>
+</body>
+</html>
