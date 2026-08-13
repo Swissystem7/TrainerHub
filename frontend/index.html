@@ -648,6 +648,12 @@ const EXAMPLES = {
 
 let currentWorkout = null;
 
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 function loadExample(num) {
   document.getElementById('workoutInput').value = EXAMPLES[num];
 }
@@ -716,7 +722,7 @@ async function parseWorkout() {
     document.getElementById('cardContent').innerHTML = `
       <div class="error-card">
         <div class="error-title">⚠️ שרת ה-AI לא זמין כרגע</div>
-        <div style="font-size:0.85rem;margin-top:4px">${err.message}</div>
+        <div style="font-size:0.85rem;margin-top:4px">${esc(err.message)}</div>
         <button class="error-retry" onclick="parseWorkout()">🔄 נסה שוב</button>
         <div class="error-hint">או השתמש באחת מהדוגמאות ↑</div>
       </div>`;
@@ -736,19 +742,19 @@ function renderCard(w, usedFallback) {
 
   const phases = (w.phases || []).map(phase => {
     const phaseClass = { 'Warm-up': 'phase-warmup', 'Main': 'phase-main', 'Cool-down': 'phase-cooldown' }[phase.name] || 'phase-main';
-    const phaseLabel = { 'Warm-up': '🔆 חימום', 'Main': '💥 עיקר', 'Cool-down': '🌙 שחרור' }[phase.name] || phase.name;
+    const phaseLabel = { 'Warm-up': '🔆 חימום', 'Main': '💥 עיקר', 'Cool-down': '🌙 שחרור' }[phase.name] || esc(phase.name);
 
     const exercises = (phase.exercises || []).map(ex => {
       const details = [];
-      if (ex.sets && ex.reps) details.push(`${ex.sets}×${ex.reps}`);
-      else if (ex.reps) details.push(`${ex.reps} חזרות`);
-      if (ex.duration_seconds) details.push(`${ex.duration_seconds}″`);
-      if (ex.rest_seconds) details.push(`מנוחה ${ex.rest_seconds}″`);
+      if (ex.sets && ex.reps) details.push(`${esc(ex.sets)}×${esc(ex.reps)}`);
+      else if (ex.reps) details.push(`${esc(ex.reps)} חזרות`);
+      if (ex.duration_seconds) details.push(`${esc(ex.duration_seconds)}″`);
+      if (ex.rest_seconds) details.push(`מנוחה ${esc(ex.rest_seconds)}″`);
 
       return `<div class="exercise">
         <div>
-          <div class="exercise-name">${ex.name}</div>
-          ${ex.notes ? `<div style="color:#6b7280;font-size:0.78rem;margin-top:2px">${ex.notes}</div>` : ''}
+          <div class="exercise-name">${esc(ex.name)}</div>
+          ${ex.notes ? `<div style="color:#6b7280;font-size:0.78rem;margin-top:2px">${esc(ex.notes)}</div>` : ''}
         </div>
         <div class="exercise-details">${details.join(' · ')}</div>
       </div>`;
@@ -764,15 +770,15 @@ function renderCard(w, usedFallback) {
   }).join('');
 
   const equipment = w.equipment?.length
-    ? `<div class="equipment-list">${w.equipment.map(e => `<span class="badge">🏋️ ${e}</span>`).join('')}</div>` : '';
+    ? `<div class="equipment-list">${w.equipment.map(e => `<span class="badge">🏋️ ${esc(e)}</span>`).join('')}</div>` : '';
   const tags = w.tags?.length
-    ? `<div class="tags">${w.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : '';
+    ? `<div class="tags">${w.tags.map(t => `<span class="tag">#${esc(t)}</span>`).join('')}</div>` : '';
 
   document.getElementById('cardContent').innerHTML = `
     <div class="workout-card" id="printArea">
       ${fallbackNote}
       <div class="card-header">
-        <div class="card-title">${w.title || 'אימון'}</div>
+        <div class="card-title">${esc(w.title || 'אימון')}</div>
         <div class="card-meta">
           ${w.duration_minutes ? `<span class="badge">⏱️ ${w.duration_minutes} דקות</span>` : ''}
           ${w.participants ? `<span class="badge">👥 ${w.participants} משתתפים</span>` : ''}
@@ -875,8 +881,8 @@ function renderHistory() {
   list.innerHTML = saved.map((w, i) => `
     <div class="history-item" onclick="loadSaved(${i})">
       <div>
-        <div class="history-name">${w.title || 'אימון'}</div>
-        <div class="history-meta">${w.savedAt} · ${w.duration_minutes || '?'} דקות</div>
+        <div class="history-name">${esc(w.title || 'אימון')}</div>
+        <div class="history-meta">${esc(w.savedAt)} · ${esc(w.duration_minutes || '?')} דקות</div>
       </div>
       <span class="history-del" onclick="deleteSaved(event,${i})">🗑</span>
     </div>`).join('');
@@ -971,20 +977,20 @@ function renderMarketplace() {
     <div class="mkt-card" style="${w.pro?'position:relative':''}" onclick="${w.pro?'openPricing()':''}">
       ${w.pro ? `<div style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;z-index:1;letter-spacing:.5px">PRO 🔒</div>` : ''}
       <div class="mkt-card-header" style="${w.pro?'filter:blur(0px)':''}">
-        <div class="mkt-card-title">${w.title}</div>
+        <div class="mkt-card-title">${esc(w.title)}</div>
         <div class="mkt-card-meta">
           <span class="badge">⏱️ ${w.duration} דקות</span>
           ${w.participants > 1 ? `<span class="badge">👥 ${w.participants}</span>` : ''}
           <span class="badge ${w.intensity==='high'?'intensity-high':w.intensity==='low'?'intensity-low':'intensity-medium'}">${intensityLabel[w.intensity]}</span>
         </div>
-        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${w.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
+        <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">${w.tags.map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div>
       </div>
       <div class="mkt-trainer">
         <div class="trainer-avatar" style="background:${w.avatar}">${w.avatarTxt}</div>
-        <div><div class="trainer-name">${w.trainer}</div><div class="trainer-cred">${w.cred}</div></div>
+        <div><div class="trainer-name">${esc(w.trainer)}</div><div class="trainer-cred">${esc(w.cred)}</div></div>
       </div>
       <div class="mkt-card-body" style="${w.pro?'filter:blur(3px);pointer-events:none;user-select:none':''}">
-        ${w.phases.map(p=>`<div class="phase-label-small">${{Warmup:'חימום','Warm-up':'חימום',Main:'עיקר','Cool-down':'שחרור'}[p.name]||p.name}</div><div class="exercise-preview">${p.exs.join(' · ')}</div>`).join('')}
+        ${w.phases.map(p=>`<div class="phase-label-small">${{Warmup:'חימום','Warm-up':'חימום',Main:'עיקר','Cool-down':'שחרור'}[p.name]||esc(p.name)}</div><div class="exercise-preview">${p.exs.map(esc).join(' · ')}</div>`).join('')}
       </div>
       <div class="mkt-actions">
         <div style="display:flex;gap:12px">
@@ -1053,7 +1059,7 @@ function renderProfileStats() {
   } else {
     el.innerHTML = shared.map(s => `
       <div class="history-item">
-        <div><div class="history-name">${s.title}</div><div class="history-meta">${s.sharedAt}</div></div>
+        <div><div class="history-name">${esc(s.title)}</div><div class="history-meta">${esc(s.sharedAt)}</div></div>
         <span style="color:#22c55e;font-size:0.78rem">✅ פורסם</span>
       </div>`).join('');
   }
@@ -1377,10 +1383,10 @@ window.renderClients=function(){
     const adh=adherence(c),risk=atRisk(c);
     const dots=c.week.map((d,j)=>`<span title="יום ${days[j]}" style="width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;background:${d?'#14532d':'#2a2a4a'};color:${d?'#86efac':'#4a4a6a'};border:1px solid ${d?'#22c55e':'#3a3a5a'}">${d?'✓':''}</span>`).join('');
     return `<div style="background:#1a1a2e;border:1px solid ${risk?'#7f1d1d':'#2a2a4a'};border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${c.name[0]}</div>
+      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${(typeof esc==='function'?esc(c.name[0]):c.name[0])}</div>
       <div style="flex:1;min-width:150px">
-        <div style="font-weight:700">${c.name} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בסיכון נשירה</span>':''}</div>
-        <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">תוכנית: ${c.plan} · ביצוע ${adh}%</div>
+        <div style="font-weight:700">${(typeof esc==='function'?esc(c.name):c.name)} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בסיכון נשירה</span>':''}</div>
+        <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">תוכנית: ${(typeof esc==='function'?esc(c.plan):c.plan)} · ביצוע ${adh}%</div>
         <div style="display:flex;gap:4px;margin-top:6px">${dots}</div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">

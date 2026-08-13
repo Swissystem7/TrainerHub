@@ -344,7 +344,7 @@ const names={
   dumbbell_ohp:'לחיצת כתפיים משקולות',tricep_kickback:'בעיטת טרייספס'
 };
 const $=x=>document.getElementById(x);
-const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function heName(id){return names[id]||String(id||'').replaceAll('_',' ');}
 
 function dayToPhasesWorkout(d, meta){

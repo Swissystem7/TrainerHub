@@ -273,6 +273,12 @@
 
 const PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
 
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 function loadWorkout() {
   try {
     const raw = localStorage.getItem('trainerhub_active_workout');
@@ -420,13 +426,13 @@ function renderExercise(step) {
   const repsOrTime = step.duration
     ? `<div class="clock-ring" id="clockRing">${buildClockSVG()}<div class="clock-text" id="clockText">${step.duration}</div></div>`
     : step.reps
-      ? `<div class="reps-display">${step.reps} חזרות</div>` : '';
+      ? `<div class="reps-display">${esc(step.reps)} חזרות</div>` : '';
 
-  const notes = step.notes ? `<div class="ex-notes">💡 ${step.notes}</div>` : '';
+  const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
 
   stage.innerHTML = `
-    <div class="phase-label">${step.phase}</div>
-    <div class="exercise-name">${step.name}</div>
+    <div class="phase-label">${esc(step.phase)}</div>
+    <div class="exercise-name">${esc(step.name)}</div>
     ${setInfo}
     ${repsOrTime}
     ${notes}
@@ -455,8 +461,8 @@ function renderRest(step) {
   const nextHtml = step.nextName ? `
     <div class="next-preview">
       <div class="label">הבא:</div>
-      <div class="name">${step.nextName}</div>
-      ${step.nextDetail ? `<div class="detail">${step.nextDetail}</div>` : ''}
+      <div class="name">${esc(step.nextName)}</div>
+      ${step.nextDetail ? `<div class="detail">${esc(step.nextDetail)}</div>` : ''}
     </div>` : '';
 
   stage.innerHTML = `
