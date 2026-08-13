@@ -1,5 +1,5 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TrainerHub | בונה אימון</title><style>
-:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}@media(max-width:700px){.layout{grid-template-columns:1fr}}
+:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem}@media(max-width:700px){.layout{grid-template-columns:1fr}}
 </style></head><body>
 <nav style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
   <span style="color:#b9f24a">TrainerHub</span>
@@ -161,5 +161,122 @@ module.exports = { workoutVolume };
 
 }};const __cache={};function __require(id,from){if(id.startsWith('.')){id=(from.slice(0,from.lastIndexOf('/')+1)+id).split('/').reduce((a,p)=>p==='..'?(a.pop(),a):p==='.'?a:(a.push(p),a),[]).join('/')}if(!id.endsWith('.js'))id+='.js';if(__cache[id])return __cache[id].exports;const fn=__modules[id];if(!fn)throw new Error('Module not bundled: '+id);const module={exports:{}};__cache[id]=module;const localRequire=req=>__require(req,id);localRequire.main=null;fn(localRequire,module,module.exports);return module.exports}
 const Hub={...__require('lib/generateWorkoutProgram.js'),...__require('lib/filterExercises.js'),...__require('lib/workoutVolume.js')};
-const names={squat:'סקוואט',deadlift:'דדליפט',lunges:'מכרעים',leg_press:'לחיצת רגליים',bodyweight_squat:'סקוואט משקל גוף',glute_bridge:'גשר ישבן',step_up:'עליית מדרגה',bench_press:'לחיצת חזה',push_up:'שכיבות סמיכה',plank:'פלאנק',crunches:'כפיפות בטן',barbell_row:'חתירה',pull_up:'מתח',superman:'סופרמן'};const $=x=>document.getElementById(x),esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));function run(e){if(e)e.preventDefault();try{const muscle=$('muscle').value,eq=$('equipment').value;const profile={age:31,gender:'other',fitnessLevel:$('level').value,goals:[$('goal').value],availableEquipment:[eq],injuries:['chest','back','shoulders','biceps','triceps','legs','core'].filter(x=>x!==muscle),previousWorkouts:8};const p=Hub.generateWorkoutProgram(profile,1,Number($('days').value));const sets=p.dailyWorkouts.flatMap(d=>d.exercises.map(x=>({reps:Number(x.reps.split('-')[0]),weightKg:eq==='none'?0:12})));$('result').innerHTML=`<div class="summary"><div class="pill"><b>${p.dailyWorkouts.length}</b> אימונים</div><div class="pill"><b>${p.dailyWorkouts[0]?.exercises.length||0}</b> תרגילים באימון</div><div class="pill"><b>${Hub.workoutVolume(sets)}</b> ק״ג נפח משוער</div></div>${p.dailyWorkouts.map(d=>`<section class="day"><h3>אימון ${d.day}</h3><div class="exercise"><b>חימום: ${esc(names[d.warmUp]||d.warmUp.replaceAll('_',' '))}</b><span>הכנה</span></div>${d.exercises.map(x=>`<div class="exercise"><b>${esc(names[x.name]||x.name.replaceAll('_',' '))}</b><span>${x.sets} סטים · ${x.reps} חזרות · ${x.restSeconds} שנ׳</span></div>`).join('')}<div class="exercise"><b>שחרור: ${esc(d.coolDown.replaceAll('_',' '))}</b><span>סיום</span></div></section>`).join('')}`}catch(err){$('result').innerHTML=`<p class="error">${esc(err.message)}</p>`}}$('form').addEventListener('submit',run);run();
+const names={
+  squat:'סקוואט',deadlift:'דדליפט',lunges:'מכרעים',leg_press:'לחיצת רגליים',
+  bodyweight_squat:'סקוואט משקל גוף',glute_bridge:'גשר ישבן',step_up:'עליית מדרגה',
+  bench_press:'לחיצת חזה',push_up:'שכיבות סמיכה',plank:'פלאנק',crunches:'כפיפות בטן',
+  barbell_row:'חתירה',pull_up:'מתח',superman:'סופרמן',dumbbell_fly:'פרפר משקולות',
+  incline_press:'לחיצה בשיפוע',wide_push_up:'שכיבות רחבות',decline_push_up:'שכיבות שיפוע',
+  lat_pulldown:'פולי עליון',dumbbell_row:'חתירת משקולת',bodyweight_row:'חתירת משקל גוף',
+  reverse_fly:'פרפר הפוך',overhead_press:'לחיצת כתפיים',lateral_raise:'הרחקה צידית',
+  front_raise:'הרמה קדמית',upright_row:'חתירה אנכית',pike_push_up:'שכיבות פאייק',
+  wall_walk:'הליכה על קיר',arm_circles:'מעגלי ידיים',bicep_curl:'כפיפת מרפק',
+  hammer_curl:'פטישים',concentration_curl:'כפיפה מרוכזת',bodyweight_curl:'כפיפת משקל גוף',
+  doorway_curl:'כפיפה במשקוף',tricep_pushdown:'פשיטת מרפק',overhead_extension:'פשיטה מעל הראש',
+  dips:'מקבילים',bench_dips:'דיפס על ספסל',tricep_push_up:'שכיבות טרייספס',
+  russian_twist:'טוויסט רוסי',leg_raise:'הרמת רגליים',mountain_climber:'מטפס הרים',
+  jumping_jacks:'ג׳אמפינג ג׳קס',hip_circles:'מעגלי ירך',leg_swings:'נדנוד רגליים',
+  torso_twists:'סיבובי גו',hamstring_stretch:'מתיחת מיתר',quad_stretch:'מתיחת ארבע ראשי',
+  shoulder_stretch:'מתיחת כתף',cat_cow:'חתול-פרה',child_pose:'מנח הילד'
+};
+const $=x=>document.getElementById(x);
+const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function heName(id){return names[id]||String(id||'').replaceAll('_',' ');}
+
+function dayToPhasesWorkout(d, meta){
+  meta = meta || {};
+  if (d && Array.isArray(d.phases) && d.phases.length){
+    return {
+      title: d.title || ('אימון ' + (d.day || '')),
+      duration_minutes: d.duration_minutes || 45,
+      participants: 1,
+      equipment: meta.equipment || [],
+      intensity: meta.intensity || 'medium',
+      tags: meta.tags || ['program'],
+      phases: d.phases
+    };
+  }
+  const mainEx = (d.exercises || []).map(x => ({
+    name: heName(x.name),
+    id: x.name,
+    sets: x.sets ?? null,
+    reps: x.reps ?? null,
+    duration_seconds: x.duration_seconds ?? null,
+    rest_seconds: x.restSeconds ?? x.rest_seconds ?? null,
+    notes: x.notes || null
+  }));
+  const warm = d.warmUp ? [{
+    name: heName(d.warmUp), id: d.warmUp, sets: 1, reps: null,
+    duration_seconds: 180, rest_seconds: null, notes: null
+  }] : [];
+  const cool = d.coolDown ? [{
+    name: heName(d.coolDown), id: d.coolDown, sets: 1, reps: null,
+    duration_seconds: 180, rest_seconds: null, notes: null
+  }] : [];
+  return {
+    title: d.title || ('אימון ' + (d.day || '')),
+    duration_minutes: 45,
+    participants: 1,
+    equipment: meta.equipment || [],
+    intensity: meta.intensity || 'medium',
+    tags: meta.tags || ['program'],
+    phases: [
+      { name: 'Warm-up', duration_minutes: 5, exercises: warm },
+      { name: 'Main', duration_minutes: 35, exercises: mainEx },
+      { name: 'Cool-down', duration_minutes: 5, exercises: cool }
+    ]
+  };
+}
+
+function startDayWorkout(dayIndex){
+  const raw = window.__lastProgram;
+  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
+  const workout = dayToPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  localStorage.setItem('trainerhub_active_workout', JSON.stringify(workout));
+  window.location.href = './frontend/workout-mode.html';
+}
+
+function run(e){
+  if (e) e.preventDefault();
+  try {
+    const muscle = $('muscle').value, eq = $('equipment').value;
+    const profile = {
+      age: 31, gender: 'other', fitnessLevel: $('level').value,
+      goals: [$('goal').value], availableEquipment: [eq],
+      injuries: ['chest','back','shoulders','biceps','triceps','legs','core'].filter(x => x !== muscle),
+      previousWorkouts: 8
+    };
+    const p = Hub.generateWorkoutProgram(profile, 1, Number($('days').value));
+    window.__lastProgram = p;
+    window.__lastMeta = {
+      equipment: [eq === 'none' ? 'משקל גוף' : 'משקולות'],
+      intensity: $('goal').value === 'strength' ? 'high' : 'medium',
+      tags: [muscle, $('goal').value]
+    };
+    const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
+      reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
+    })));
+    $('result').innerHTML = `<div class="summary"><div class="pill"><b>${p.dailyWorkouts.length}</b> אימונים</div><div class="pill"><b>${p.dailyWorkouts[0]?.exercises?.length||0}</b> תרגילים באימון</div><div class="pill"><b>${Hub.workoutVolume(sets)}</b> ק״ג נפח משוער</div></div>` +
+      p.dailyWorkouts.map((d, i) => {
+        const w = dayToPhasesWorkout(d, window.__lastMeta);
+        const phasesHtml = (w.phases || []).map(phase => {
+          const label = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[phase.name] || phase.name;
+          const exs = (phase.exercises || []).map(x => {
+            const bits = [];
+            if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
+            else if (x.reps) bits.push(x.reps + ' חזרות');
+            if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
+            if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
+            return `<div class="exercise"><b>${esc(x.name)}</b><span>${esc(bits.join(' · ') || 'הכנה')}</span></div>`;
+          }).join('');
+          return `<h3 style="margin:12px 0 4px;font-size:1rem">${esc(label)}</h3>${exs}`;
+        }).join('');
+        return `<section class="day"><h3>אימון ${d.day}</h3>${phasesHtml}<button type="button" class="start-day" onclick="startDayWorkout(${i})">התחל אימון</button></section>`;
+      }).join('');
+  } catch (err) {
+    $('result').innerHTML = `<p class="error">${esc(err.message)}</p>`;
+  }
+}
+$('form').addEventListener('submit', run);
+run();
 </script></body></html>

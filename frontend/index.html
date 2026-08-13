@@ -352,7 +352,7 @@
   <a href="./workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
 </nav>
 <div style="background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:#f0b542;font:600 0.74rem system-ui,sans-serif;padding:7px 14px;text-align:center;direction:rtl">
-  ⚠️ הדגמה — פענוח האימון בטקסט חופשי רץ ב-<code>backend/main.py</code>, שרת שאינו פעיל בדמו הזה. GitHub Pages מגיש קבצים סטטיים בלבד.
+  ⚠️ הדגמה — פענוח האימון בטקסט חופשי רץ ב-<code>backend/main.py</code>. אם השרת המקומי לא זמין, הפענוח עובר אוטומטית למנוע כללים בדפדפן (ללא AI).
 </div>
 
 <header>
@@ -614,6 +614,7 @@
 </div>
 </div><!-- /tab-profile -->
 
+<script src="parse-workout.js"></script>
 <script>
 const EXAMPLES = {
   1: `אימון פונקציונלי לקבוצה של 12 אנשים, 50 דקות, ציוד: גומיות וכדורי ולשין.
@@ -682,24 +683,36 @@ async function parseWorkout() {
     </div>`;
 
   try {
-    const res = await fetch('http://localhost:8001/api/parse-workout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    });
+    let workout = null;
+    let usedFallback = false;
 
-    const data = await res.json();
+    try {
+      const res = await fetch('http://localhost:8001/api/parse-workout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
 
-    if (!res.ok || !data.success) {
-      throw new Error(data.detail || 'שגיאה בניתוח האימון');
+      const data = await res.json();
+
+      if (!res.ok || !data.success || !data.workout) {
+        throw new Error(data.detail || 'שגיאה בניתוח האימון');
+      }
+      workout = data.workout;
+    } catch (netErr) {
+      if (typeof parseWorkoutClient !== 'function') throw netErr;
+      workout = parseWorkoutClient(text);
+      usedFallback = true;
+      if (!workout || !Array.isArray(workout.phases) || !workout.phases.length) {
+        throw netErr;
+      }
     }
 
-    currentWorkout = data.workout;
-    renderCard(currentWorkout);
+    currentWorkout = workout;
+    renderCard(currentWorkout, usedFallback);
     document.getElementById('actionBar').style.display = 'flex';
     checkFreeLimit();
   } catch (err) {
-    const isNetwork = err.message.includes('fetch') || err.message.includes('Failed') || err.message.includes('NetworkError') || err.message.includes('שרת');
     document.getElementById('cardContent').innerHTML = `
       <div class="error-card">
         <div class="error-title">⚠️ שרת ה-AI לא זמין כרגע</div>
@@ -714,9 +727,12 @@ async function parseWorkout() {
   }
 }
 
-function renderCard(w) {
+function renderCard(w, usedFallback) {
   const intensityClass = { high: 'intensity-high', medium: 'intensity-medium', low: 'intensity-low' }[w.intensity] || '';
   const intensityLabel = { high: '🔥 עצימות גבוהה', medium: '⚡ עצימות בינונית', low: '🌿 עצימות נמוכה' }[w.intensity] || '';
+  const fallbackNote = usedFallback || w.source === 'client-fallback'
+    ? `<div class="badge" style="margin-bottom:10px">פענוח מקומי (ללא AI) — השרת ב-localhost:8001 לא היה זמין</div>`
+    : '';
 
   const phases = (w.phases || []).map(phase => {
     const phaseClass = { 'Warm-up': 'phase-warmup', 'Main': 'phase-main', 'Cool-down': 'phase-cooldown' }[phase.name] || 'phase-main';
@@ -754,6 +770,7 @@ function renderCard(w) {
 
   document.getElementById('cardContent').innerHTML = `
     <div class="workout-card" id="printArea">
+      ${fallbackNote}
       <div class="card-header">
         <div class="card-title">${w.title || 'אימון'}</div>
         <div class="card-meta">
