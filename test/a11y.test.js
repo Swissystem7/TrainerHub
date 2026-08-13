@@ -102,6 +102,8 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.weekly, /library\.html/);
   assert.match(pages.studio, /library\.html/);
   assert.match(pages.prompt, /THEngine\.buildSession/);
+  assert.match(pages.prompt, /THIngest\.ingestText/);
+  assert.match(pages.prompt, /THIngest\.saveSegment/);
   assert.match(pages.manage, /ניהול מאגר/);
   assert.match(pages.manage, /לא חיבור למאמנים/);
   assert.doesNotMatch(pages.manage, /חיבור לאינסטגרם|אינטגרציית אינסטגרם/);
