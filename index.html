@@ -44,18 +44,6 @@
     .stim { margin: 8px 0 0; color: var(--ink); line-height: 1.5; }
     .stim small { display: block; color: var(--muted); margin-top: 4px; }
     .phase { color: var(--lime); font-size: .78rem; font-weight: 700; margin: 16px 0 4px; }
-    .modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
-    .modes button {
-      background: #26302b; border: 1px solid var(--line); color: var(--ink);
-      border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer;
-    }
-    .modes button[aria-selected="true"] { background: rgba(185,242,74,.15); border-color: var(--lime); }
-    .panel[hidden] { display: none !important; }
-    .missing { color: #f0b542; font-size: .82rem; }
-    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: 12px; background: #000; }
-    .ex-media-segment, .honest { color: var(--muted); font-size: .82rem; line-height: 1.45; }
-    @media (max-width: 600px) { .seg-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -78,68 +66,17 @@
     <h1>תגיד איזה אימון אתה רוצה.</h1>
     <p>שדה אחד. בעברית. תוך פחות משנייה מתקבל אימון מהסרטונים האמיתיים, עם הסבר על מה עובדים ולמה נבחר כל תרגיל.</p>
   </header>
-  <div class="modes" role="tablist" aria-label="מצב בנייה">
-    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true">מה אתה רוצה</button>
-    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false">הדבק אימון</button>
-    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false">פרק סרטון</button>
+  <form class="prompt" id="form">
+    <label for="prompt">מה האימון?</label>
+    <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="אימון בטן 20 דקות בלי ציוד" autocomplete="off"></textarea>
+    <button type="submit" class="go">בנה אימון</button>
+  </form>
+  <div class="examples" role="group" aria-label="דוגמאות">
+    <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
+    <button type="button" data-fill="פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
+    <button type="button" data-fill="כוח גב 30 דקות">כוח גב 30 דקות</button>
+    <button type="button" data-fill="ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
   </div>
-
-  <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
-    <form class="prompt" id="form">
-      <label for="prompt">מה האימון?</label>
-      <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="אימון בטן 20 דקות בלי ציוד" autocomplete="off"></textarea>
-      <button type="submit" class="go">בנה אימון</button>
-    </form>
-    <div class="examples" role="group" aria-label="דוגמאות">
-      <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
-      <button type="button" data-fill="פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
-      <button type="button" data-fill="כוח גב 30 דקות">כוח גב 30 דקות</button>
-      <button type="button" data-fill="ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-ingest" role="tabpanel" aria-labelledby="tab-ingest" hidden>
-    <form class="prompt" id="ingestForm">
-      <label for="ingestText">הדביקו אימון בעברית</label>
-      <textarea id="ingestText" name="ingestText" rows="5" placeholder="3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה, 20 מטפס הרים, דקה מנוחה" autocomplete="off"></textarea>
-      <button type="submit" class="go">פרק לתרגילים</button>
-    </form>
-    <p class="honest">הפרסר מפרק לסטים וחזרות ומתאים כל תרגיל לסרטון במאגר, כולל שגיאות כתיב נפוצות. תרגיל בלי סרטון מוצג כטקסט ונכנס לרשימת «סרטונים שכדאי לצלם».</p>
-  </div>
-
-  <div class="panel" id="panel-seg" role="tabpanel" aria-labelledby="tab-seg" hidden>
-    <form class="prompt" id="segForm">
-      <label for="segSource">סרטון דרייב לפיצול</label>
-      <select id="segSource">
-        <option value="">בחרו סרטון מהמאגר…</option>
-      </select>
-      <label for="segUrl">או הדביקו קישור / מזהה דרייב</label>
-      <input id="segUrl" name="segUrl" type="text" autocomplete="off" placeholder="https://drive.google.com/file/d/…/view">
-      <div id="segPlayer" class="card" hidden></div>
-      <p class="honest">נגן הדרייב לא מוסר זמן מדויק. מתחילים מעקב כשלוחצים «התחל מעקב», או מזינים שניות ידנית. אין זיהוי תרגיל אוטומטי מהווידאו.</p>
-      <div class="actions">
-        <button type="button" class="th-btn ghost" id="segWatch">הצג סרטון</button>
-        <button type="button" class="th-btn ghost" id="segTrack">התחל מעקב</button>
-        <button type="button" class="th-btn ghost" id="segMarkStart">סמן התחלה</button>
-        <button type="button" class="th-btn ghost" id="segMarkEnd">סמן סוף</button>
-      </div>
-      <div class="seg-grid">
-        <div>
-          <label for="segStart">התחלה (שניות)</label>
-          <input id="segStart" name="segStart" type="number" min="0" step="1" value="0">
-        </div>
-        <div>
-          <label for="segEnd">סוף (שניות)</label>
-          <input id="segEnd" name="segEnd" type="number" min="1" step="1" value="30">
-        </div>
-      </div>
-      <label for="segName">שם התרגיל במקטע</label>
-      <input id="segName" name="segName" type="text" autocomplete="off" placeholder="פלאנק צידי">
-      <button type="submit" class="go">שמור מקטע במאגר</button>
-      <p class="status" id="segStatus" role="status"></p>
-    </form>
-  </div>
-
   <div id="result" aria-live="polite"></div>
 </main>
 <script src="./js/core.js"></script>
@@ -147,29 +84,66 @@
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
 <script src="./js/session-builder.js"></script>
-<script src="./js/ingest.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var last = null;
-  var trackStartedAt = 0;
 
   function muscleList(ids) {
     return (ids || []).map(function (m) { return TH.muscleLabel(m); }).join(', ') || '—';
   }
 
-  function switchTab(id) {
-    ['prompt', 'ingest', 'seg'].forEach(function (key) {
-      var tab = $('tab-' + key);
-      var panel = $('panel-' + key);
-      var on = key === id;
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
-      if (on) panel.removeAttribute('hidden');
-      else panel.setAttribute('hidden', '');
-    });
-  }
+  function render(built) {
+    var box = $('result');
+    if (!built || !built.workout) {
+      box.innerHTML = '<div class="card notice"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
+      return;
+    }
+    var w = built.workout;
+    var exp = built.explanation;
+    var stim = exp.stimulus || {};
+    var notice = built.notice
+      ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
+      : '';
+    var flags = (exp.flags || []).length
+      ? '<ul class="flags">' + exp.flags.map(function (f) {
+          return '<li>' + TH.esc(f.he) + '</li>';
+        }).join('') + '</ul>'
+      : '';
+    var phases = (w.phases || []).map(function (ph) {
+      var label = TH.phaseLabel(ph.name);
+      var rows = (ph.exercises || []).map(function (ex) {
+        var reason = (exp.reasons || []).filter(function (r) { return r.id === ex.id; })[0];
+        var bits = [];
+        if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
+        else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+        var clip = TH.findExercise(ex);
+        var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+        return '<div class="ex"><b>' + TH.esc(ex.name) +
+          (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
+          '</b>' + (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
+          media + '</div>';
+      }).join('');
+      return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
+    }).join('');
 
-  function bindWorkoutActions(w) {
+    box.innerHTML = notice +
+      '<article class="card">' +
+        '<h2>' + TH.esc(w.title) + '</h2>' +
+        '<div class="meta">' +
+          '<span class="pill">' + TH.esc(exp.type) + '</span>' +
+          '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
+          '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
+        '</div>' +
+        '<p class="stim"><strong>גירוי צפוי: ' + TH.esc(stim.he || '') + '</strong>' +
+          '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>' +
+        flags +
+        phases +
+        '<div class="actions">' +
+          '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="copyBtn">העתק לינק מתאמן</button>' +
+        '</div>' +
+      '</article>';
+
     $('startBtn').addEventListener('click', function () {
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
@@ -183,100 +157,6 @@
     });
   }
 
-  function render(built) {
-    last = built;
-    var box = $('result');
-    if (!built || !built.workout) {
-      box.innerHTML = '<div class="card notice"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
-      return;
-    }
-    var w = built.workout;
-    var exp = built.explanation || {};
-    var stim = exp.stimulus || {};
-    var notice = built.notice
-      ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
-      : '';
-    var flags = (exp.flags || []).length
-      ? '<ul class="flags">' + exp.flags.map(function (f) {
-          return '<li>' + TH.esc(f.he) + '</li>';
-        }).join('') + '</ul>'
-      : '';
-    var phases = (w.phases || []).map(function (ph) {
-      if (!(ph.exercises || []).length) return '';
-      var label = TH.phaseLabel(ph.name);
-      var rows = (ph.exercises || []).map(function (ex) {
-        var reason = (exp.reasons || []).filter(function (r) { return r.id === ex.id; })[0];
-        var bits = [];
-        if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
-        else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
-        var clip = ex.id ? TH.findExercise(ex) : null;
-        var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
-        var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
-        return '<div class="ex"><b>' + TH.esc(ex.name) +
-          (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
-          '</b>' + (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
-          miss + media + '</div>';
-      }).join('');
-      return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
-    }).join('');
-
-    box.innerHTML = notice +
-      '<article class="card">' +
-        '<h2>' + TH.esc(w.title) + '</h2>' +
-        '<div class="meta">' +
-          (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
-          '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
-          '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
-        '</div>' +
-        (stim.he
-          ? '<p class="stim"><strong>גירוי צפוי: ' + TH.esc(stim.he) + '</strong>' +
-            '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
-          : '') +
-        flags +
-        phases +
-        '<div class="actions">' +
-          '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
-          '<button type="button" class="th-btn ghost" id="copyBtn">העתק לינק מתאמן</button>' +
-        '</div>' +
-      '</article>';
-
-    bindWorkoutActions(w);
-  }
-
-  function renderIngest(ingested) {
-    var w = ingested.workout;
-    var analysis = w.analysis || (typeof THAnalyzer !== 'undefined' ? THAnalyzer.analyzeSession(w) : null);
-    var unmatched = ingested.unmatched || [];
-    var wish = (ingested.wishlist || []).map(function (item) {
-      return '<li>' + TH.esc(item.he) + '</li>';
-    }).join('');
-    var notice = unmatched.length
-      ? '<div class="card notice" role="status"><p>' +
-        TH.esc(unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
-        '</p><ul class="flags">' + unmatched.map(function (n) {
-          return '<li>' + TH.esc(n) + '</li>';
-        }).join('') + '</ul></div>'
-      : '';
-    render({
-      workout: w,
-      notice: null,
-      explanation: analysis ? {
-        type: 'אימון שנקלט מטקסט',
-        primary: analysis.primary,
-        secondary: analysis.secondary,
-        stimulus: analysis.stimulus,
-        flags: analysis.flags,
-        reasons: []
-      } : { type: 'אימון שנקלט מטקסט', primary: [], secondary: [], stimulus: {}, flags: [], reasons: [] }
-    });
-    if (notice) $('result').insertAdjacentHTML('afterbegin', notice);
-    if (wish) {
-      $('result').insertAdjacentHTML('beforeend',
-        '<div class="card"><h2>סרטונים שכדאי לצלם</h2><ul class="flags">' + wish +
-        '</ul><p class="honest"><a href="./manage.html">ניהול מאגר</a> — הוספת סרטון בלי לגעת בקוד.</p></div>');
-    }
-  }
-
   function run(e) {
     if (e) e.preventDefault();
     var text = $('prompt').value.trim();
@@ -287,103 +167,16 @@
     render(THEngine.buildSession(text));
   }
 
-  function currentDriveId() {
-    var sel = $('segSource').value;
-    if (sel) {
-      var entry = TH.catalog[sel];
-      return (entry && entry.driveId) || '';
-    }
-    return THInfer.parseDriveId($('segUrl').value.trim()) || '';
-  }
-
-  function showSegPlayer() {
-    var id = currentDriveId();
-    var box = $('segPlayer');
-    if (!id) {
-      box.hidden = true;
-      box.innerHTML = '';
-      $('segStatus').textContent = 'בחרו סרטון מהמאגר או הדביקו מזהה דרייב.';
-      return;
-    }
-    box.hidden = false;
-    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media' });
-  }
-
-  function elapsedSec() {
-    if (!trackStartedAt) return 0;
-    return Math.max(0, Math.round((Date.now() - trackStartedAt) / 1000));
-  }
-
-  function fillSegSelect() {
-    var sel = $('segSource');
-    var opts = ['<option value="">בחרו סרטון מהמאגר…</option>'];
-    TH.catalogList().filter(function (e) { return e.driveId && e.startSec == null; }).forEach(function (e) {
-      opts.push('<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (e.folder ? ' · ' + TH.esc(e.folder) : '') + '</option>');
-    });
-    sel.innerHTML = opts.join('');
-  }
-
-  document.querySelectorAll('[role="tab"]').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      switchTab(tab.id.replace('tab-', ''));
-    });
-  });
-
   $('form').addEventListener('submit', run);
   document.querySelectorAll('[data-fill]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      switchTab('prompt');
       $('prompt').value = btn.getAttribute('data-fill');
       $('prompt').focus();
       run();
     });
   });
 
-  $('ingestForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var text = $('ingestText').value.trim();
-    if (!text) {
-      $('result').innerHTML = '<p class="empty">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
-      return;
-    }
-    renderIngest(THIngest.ingestText(text));
-  });
-
-  $('segWatch').addEventListener('click', showSegPlayer);
-  $('segTrack').addEventListener('click', function () {
-    trackStartedAt = Date.now();
-    $('segStatus').textContent = 'מעקב רץ. סמנו התחלה וסוף לפי מה שאתם רואים בנגן.';
-  });
-  $('segMarkStart').addEventListener('click', function () {
-    if (!trackStartedAt) trackStartedAt = Date.now();
-    $('segStart').value = elapsedSec();
-    $('segStatus').textContent = 'התחלה ב־' + $('segStart').value + ' שנ׳';
-  });
-  $('segMarkEnd').addEventListener('click', function () {
-    if (!trackStartedAt) trackStartedAt = Date.now();
-    $('segEnd').value = Math.max(Number($('segStart').value || 0) + 1, elapsedSec());
-    $('segStatus').textContent = 'סוף ב־' + $('segEnd').value + ' שנ׳';
-  });
-  $('segForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var saved = THIngest.saveSegment({
-      driveId: currentDriveId(),
-      url: $('segUrl').value.trim(),
-      he: $('segName').value.trim(),
-      startSec: $('segStart').value,
-      endSec: $('segEnd').value,
-      segmentOf: $('segSource').value || ''
-    });
-    if (saved.error) {
-      $('segStatus').textContent = saved.message;
-      return;
-    }
-    $('segStatus').textContent = 'נשמר מקטע «' + saved.entry.he + '» במאגר המקומי. אפשר לייצא מניהול מאגר.';
-    $('segName').value = '';
-  });
-
   TH.ready(function () {
-    fillSegSelect();
     if ($('prompt').value.trim()) run();
   });
 })();

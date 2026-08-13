@@ -128,8 +128,9 @@
       background: #1a1a2e; border-radius: 10px; padding: 10px 16px;
     }
 
-    .ex-video {
+    .ex-video, .ex-media {
       width: min(340px, 90vw);
+      min-height: 180px;
       max-height: 200px;
       border-radius: 12px;
       background: #000;
@@ -137,6 +138,8 @@
       border: 1px solid #2a2a4a;
     }
     .ex-video[hidden] { display: none; }
+    .ex-media-wrap { width: min(340px, 90vw); }
+    .ex-media-segment, .ex-media-fallback { color: #9ca3af; font-size: 0.8rem; margin-top: 6px; }
 
     /* ── Controls ── */
     .controls {
