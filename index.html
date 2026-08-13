@@ -425,7 +425,7 @@ function run(e){
       p.dailyWorkouts.map((d, i) => {
         const w = dayToPhasesWorkout(d, window.__lastMeta);
         const phasesHtml = (w.phases || []).map(phase => {
-          const label = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[phase.name] || phase.name;
+          const label = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[phase.name] || esc(phase.name);
           const exs = (phase.exercises || []).map(x => {
             const bits = [];
             if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');

@@ -370,11 +370,11 @@
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <div style="background:#2a2a4a;border-radius:20px;padding:6px 14px;font-size:0.8rem;color:#a78bfa;display:flex;align-items:center;gap:6px">
-      🌟 Trainer Pro
-      <span style="background:#374151;color:#9ca3af;border-radius:10px;padding:1px 7px;font-size:0.72rem;font-weight:700;letter-spacing:.5px">FREE</span>
+      🌟 TrainerHub
+      <span style="background:#374151;color:#9ca3af;border-radius:10px;padding:1px 7px;font-size:0.72rem;font-weight:700;letter-spacing:.5px">הדגמה</span>
     </div>
-    <button onclick="openPricing()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">Upgrade ⚡</button>
-    <button id="loginBtn" class="login-btn" onclick="openAuth()">התחבר</button>
+    <button onclick="openPricing()" style="background:#2a2a4a;border:1px solid #3a3a5a;color:#9ca3af;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">Pro · בקרוב</button>
+    <button id="loginBtn" class="login-btn" onclick="openAuth()">התחבר (הדגמה)</button>
     <div id="avatarWrap" style="position:relative;display:none">
       <div id="userAvatar" onclick="toggleUserMenu(event)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;cursor:pointer;color:#fff">👤</div>
       <div id="userMenu" class="user-menu">
@@ -392,7 +392,7 @@
     <button onclick="closePricing()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#6b7280;font-size:1.3rem;cursor:pointer">✕</button>
     <div style="text-align:center;margin-bottom:28px">
       <div style="font-size:1.6rem;font-weight:800;color:#f0f0f0;margin-bottom:6px">⚡ שדרג את TrainerHub שלך</div>
-      <div style="color:#6b7280;font-size:0.9rem">בחר תוכנית שמתאימה לצרכים שלך</div>
+      <div style="color:#6b7280;font-size:0.9rem">התוכניות בתשלום עדיין לא פעילות — מסומנות כבקרוב</div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
       <!-- Free -->
@@ -424,7 +424,7 @@
           <li>✓ תמיכה מועדפת</li>
           <li style="color:#4a4a6a">✗ Multi-trainer</li>
         </ul>
-        <button onclick="track('upgrade_click',{plan:'pro'});closePricing()" style="width:100%;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-weight:700;cursor:pointer;font-size:0.85rem">בחר Pro ⚡</button>
+        <button disabled style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:not-allowed;font-size:0.85rem">בקרוב</button>
       </div>
       <!-- Studio -->
       <div style="background:#0f0f13;border:1px solid #2a2a4a;border-radius:14px;padding:22px;text-align:center">
@@ -439,7 +439,7 @@
           <li>✓ API גישה</li>
           <li>✓ מנהל לקוחות</li>
         </ul>
-        <button onclick="track('upgrade_click',{plan:'studio'});closePricing()" style="width:100%;padding:10px;border-radius:10px;border:1px solid #7c3aed;background:transparent;color:#a78bfa;cursor:pointer;font-size:0.85rem;font-weight:600">בחר Studio</button>
+        <button disabled style="width:100%;padding:10px;border-radius:10px;border:1px solid #3a3a5a;background:transparent;color:#9ca3af;cursor:not-allowed;font-size:0.85rem">בקרוב</button>
       </div>
     </div>
   </div>
@@ -586,16 +586,16 @@
     <div class="profile-avatar">🏋️</div>
     <div style="flex:1">
       <div style="font-size:1.4rem;font-weight:800;margin-bottom:4px">המאמן שלי</div>
-      <div style="color:#a78bfa;font-size:0.9rem;margin-bottom:8px">Trainer Pro · אישור ISSA</div>
+      <div style="color:#a78bfa;font-size:0.9rem;margin-bottom:8px">פרופיל הדגמה · ללא אישור חיצוני</div>
       <div style="color:#6b7280;font-size:0.83rem;line-height:1.6">מאמן כושר אישי ומאמן קבוצות. מתמחה באימוני כוח, HIIT ופונקציונלי. 8 שנות ניסיון עם מגוון אוכלוסיות.</div>
     </div>
-    <button class="mkt-btn primary" style="align-self:flex-start">✏️ ערוך פרופיל</button>
+    <button class="mkt-btn" style="align-self:flex-start;opacity:.7;cursor:default">✏️ ערוך פרופיל · בקרוב</button>
   </div>
   <div class="profile-stats">
     <div class="profile-stat"><div class="profile-stat-n" id="ps-workouts">0</div><div class="profile-stat-l">אימונים שנוצרו</div></div>
-    <div class="profile-stat"><div class="profile-stat-n" id="ps-shared">3</div><div class="profile-stat-l">שותפו בקהילה</div></div>
-    <div class="profile-stat"><div class="profile-stat-n">142</div><div class="profile-stat-l">לייקים</div></div>
-    <div class="profile-stat"><div class="profile-stat-n">28</div><div class="profile-stat-l">עוקבים</div></div>
+    <div class="profile-stat"><div class="profile-stat-n" id="ps-shared">0</div><div class="profile-stat-l">שותפו בקהילה</div></div>
+    <div class="profile-stat"><div class="profile-stat-n" id="ps-likes">0</div><div class="profile-stat-l">לייקים</div></div>
+    <div class="profile-stat"><div class="profile-stat-n" id="ps-followers">0</div><div class="profile-stat-l">עוקבים</div></div>
   </div>
   <div style="background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:20px;margin-bottom:16px">
     <div style="font-size:0.85rem;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">🏅 תגים שהרווחתי</div>
@@ -931,9 +931,6 @@ let freeConversions = parseInt(localStorage.getItem('th_free_conv') || '0');
 function checkFreeLimit() {
   freeConversions++;
   localStorage.setItem('th_free_conv', freeConversions);
-  if (freeConversions === 3) {
-    document.getElementById('upgradeToast').style.display = 'block';
-  }
 }
 function hideToast() {
   document.getElementById('upgradeToast').style.display = 'none';
@@ -974,8 +971,8 @@ function renderMarketplace() {
   const list = mktFilter === 'all' ? MKT_WORKOUTS : MKT_WORKOUTS.filter(w => w.tags.includes(mktFilter));
   const intensityLabel = { high:'🔥 גבוהה', medium:'⚡ בינונית', low:'🌿 נמוכה' };
   document.getElementById('mktGrid').innerHTML = list.map(w => `
-    <div class="mkt-card" style="${w.pro?'position:relative':''}" onclick="${w.pro?'openPricing()':''}">
-      ${w.pro ? `<div style="position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;z-index:1;letter-spacing:.5px">PRO 🔒</div>` : ''}
+    <div class="mkt-card" style="${w.pro?'position:relative':''}">
+      ${w.pro ? `<div style="position:absolute;top:12px;left:12px;background:#374151;color:#d1d5db;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;z-index:1;letter-spacing:.5px">PRO · בקרוב</div>` : ''}
       <div class="mkt-card-header" style="${w.pro?'filter:blur(0px)':''}">
         <div class="mkt-card-title">${esc(w.title)}</div>
         <div class="mkt-card-meta">
@@ -1001,7 +998,7 @@ function renderMarketplace() {
         </div>
         <div class="mkt-btn-row">
           ${w.pro
-            ? `<button class="mkt-btn primary" onclick="event.stopPropagation();openPricing()">🔓 שדרג לPro</button>`
+            ? `<button class="mkt-btn" onclick="event.stopPropagation()" style="cursor:default;opacity:.75">בקרוב</button>`
             : `<button class="mkt-btn" onclick="event.stopPropagation();useMktWorkout(${w.id})" title="פתח ב-Creator Studio">🔁 השתמש</button>
                <button class="mkt-btn ${savedMktIds.has(w.id)?'primary':''}" onclick="event.stopPropagation();saveMkt(${w.id},this)" title="שמור">
                  ${savedMktIds.has(w.id)?'✅ שמור':'🔖 שמור'}
@@ -1122,10 +1119,10 @@ function renderProfileStats() {
   <div class="th-modal">
     <button class="close-x" onclick="closeAuth()">✕</button>
     <div style="text-align:center;font-size:1.3rem;font-weight:800;margin-bottom:6px">🏋️ TrainerHub</div>
-    <div id="authSubtitle">התחבר כדי לשמור ולשתף אימונים</div>
+    <div id="authSubtitle">הדגמה — ההתחברות נשמרת רק בדפדפן זה</div>
     <div class="auth-tabs">
-      <button class="auth-tab active" id="tabLogin" onclick="setAuthMode('login')">התחברות</button>
-      <button class="auth-tab" id="tabSignup" onclick="setAuthMode('signup')">הרשמה</button>
+      <button class="auth-tab active" id="tabLogin" onclick="setAuthMode('login')">התחברות (הדגמה)</button>
+      <button class="auth-tab" id="tabSignup" onclick="setAuthMode('signup')">הרשמה (הדגמה)</button>
     </div>
     <div class="auth-field" id="nameField" style="display:none">
       <label>שם מלא</label>
@@ -1139,7 +1136,7 @@ function renderProfileStats() {
       <label>סיסמה</label>
       <input type="password" id="authPass" placeholder="••••••••" dir="ltr">
     </div>
-    <button class="auth-submit" id="authSubmit" onclick="submitAuth()">התחבר</button>
+    <button class="auth-submit" id="authSubmit" onclick="submitAuth()">התחבר להדגמה</button>
     <div class="auth-error" id="authError"></div>
   </div>
 </div>
@@ -1200,7 +1197,7 @@ function getUser() {
   try { return JSON.parse(localStorage.getItem('trainerhub_user')); } catch (e) { return null; }
 }
 function openAuth(subtitle) {
-  document.getElementById('authSubtitle').textContent = subtitle || 'התחבר כדי לשמור ולשתף אימונים';
+  document.getElementById('authSubtitle').textContent = subtitle || 'הדגמה — ההתחברות נשמרת רק בדפדפן זה';
   if (subtitle) setAuthMode('signup');
   document.getElementById('authModal').classList.add('open');
 }
@@ -1210,7 +1207,7 @@ function setAuthMode(mode) {
   document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
   document.getElementById('tabSignup').classList.toggle('active', mode === 'signup');
   document.getElementById('nameField').style.display = mode === 'signup' ? 'block' : 'none';
-  document.getElementById('authSubmit').textContent = mode === 'signup' ? 'צור חשבון חינם' : 'התחבר';
+  document.getElementById('authSubmit').textContent = mode === 'signup' ? 'צור חשבון הדגמה' : 'התחבר להדגמה';
 }
 function submitAuth() {
   const email = document.getElementById('authEmail').value.trim();
@@ -1256,7 +1253,7 @@ document.getElementById('authModal').addEventListener('click', function(e) { if 
 const OB_STEPS = [
   { icon: '🏋️', title: 'ברוכים הבאים ל-TrainerHub', desc: 'הפלטפורמה שהופכת כל תיאור אימון חופשי לכרטיסיית אימון מקצועית ומעוצבת — בעזרת AI, תוך שניות.' },
   { icon: '✍️', title: 'איך זה עובד?', desc: 'כתוב או הדבק תיאור אימון בטקסט חופשי בפאנל הימני, לחץ "המר לכרטיסיית אימון" — וקבל כרטיסייה מסודרת עם חימום, עיקר ושחרור. שמור, הדפס או שתף ב-Marketplace.' },
-  { icon: '⚡', title: 'מה מקבלים ב-Pro?', desc: 'אימונים ללא הגבלה, גישה מלאה ל-Marketplace הקהילתי, ייצוא PDF ו-Analytics — רק ב-₪49 לחודש. אפשר להתחיל בחינם!' }
+  { icon: '⚡', title: 'מה בקרוב?', desc: 'מנוי Pro, תשלום ו-Marketplace קהילתי חי עדיין לא פעילים. אפשר להתחיל עכשיו בחינם עם הפענוח המקומי ובונה האימונים.' }
 ];
 let obStep = 0;
 function renderOnboard() {
@@ -1383,10 +1380,10 @@ window.renderClients=function(){
     const adh=adherence(c),risk=atRisk(c);
     const dots=c.week.map((d,j)=>`<span title="יום ${days[j]}" style="width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;background:${d?'#14532d':'#2a2a4a'};color:${d?'#86efac':'#4a4a6a'};border:1px solid ${d?'#22c55e':'#3a3a5a'}">${d?'✓':''}</span>`).join('');
     return `<div style="background:#1a1a2e;border:1px solid ${risk?'#7f1d1d':'#2a2a4a'};border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${(typeof esc==='function'?esc(c.name[0]):c.name[0])}</div>
+      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${esc(c.name[0])}</div>
       <div style="flex:1;min-width:150px">
-        <div style="font-weight:700">${(typeof esc==='function'?esc(c.name):c.name)} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בסיכון נשירה</span>':''}</div>
-        <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">תוכנית: ${(typeof esc==='function'?esc(c.plan):c.plan)} · ביצוע ${adh}%</div>
+        <div style="font-weight:700">${esc(c.name)} ${risk?'<span style="background:#7f1d1d33;color:#fca5a5;border:1px solid #7f1d1d;border-radius:12px;padding:1px 8px;font-size:0.68rem;margin-inline-start:6px">⚠️ בסיכון נשירה</span>':''}</div>
+        <div style="font-size:0.75rem;color:#6b7280;margin-top:2px">תוכנית: ${esc(c.plan)} · ביצוע ${adh}%</div>
         <div style="display:flex;gap:4px;margin-top:6px">${dots}</div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -1419,7 +1416,7 @@ window.simulateDone=function(i){
 window.addClient=function(){
   const name=prompt('שם המתאמן:');if(!name)return;
   const phone=prompt('טלפון (05X...):')||'0500000000';
-  clients.push({name,phone,week:[0,0,0,0,0,0,0],plan:'טרם שויכה תוכנית'});
+  clients.push({name:String(name),phone:String(phone),week:[0,0,0,0,0,0,0],plan:'טרם שויכה תוכנית'});
   save();renderClients();
   if(typeof track==='function')track('client_added');
 };
