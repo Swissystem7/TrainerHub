@@ -7,6 +7,7 @@ __pycache__/
 Thumbs.db
 dist/
 build/
+# Optional operator-provided media is local data, not source-distribution content.
 videos/*.mp4
 *.key
 *.pem

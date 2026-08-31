@@ -19,7 +19,7 @@ test('unused lib/ helpers are not in the live tree', function () {
   assert.equal(fs.existsSync(path.join(root, 'lib')), false);
 });
 
-test('local catalog is 78 clips; drive catalog is 44; repo ships 7 sample mp4s', function () {
+test('local catalog is 78 clips; drive catalog is 44; clean repo ships no sample mp4s', function () {
   const catalog = JSON.parse(read('js/catalog.json'));
   const drive = JSON.parse(read('videos/drive-catalog.json'));
   const mp4s = fs.readdirSync(path.join(root, 'videos')).filter(function (f) {
@@ -27,9 +27,11 @@ test('local catalog is 78 clips; drive catalog is 44; repo ships 7 sample mp4s',
   });
   assert.equal(Object.keys(catalog).length, 78);
   assert.equal(drive.items.length, 44);
-  assert.equal(mp4s.length, 7);
+  assert.equal(mp4s.length, 0, 'clean source checkout must contain zero bundled MP4 binaries');
+  assert.match(read('.gitignore'), /^videos\/\*\.mp4$/m);
   assert.match(read('README.md'), /78 קליפ/);
-  assert.match(read('README.md'), /7 קבצי mp4/);
+  assert.doesNotMatch(read('README.md'), /7 קבצי mp4/);
+  assert.match(read('README.md'), /קובצי mp4 מקומיים אינם נכללים בריפו/);
   assert.match(read('README.md'), /44 סרטוני הדרייב/);
 });
 
