@@ -599,7 +599,8 @@
     if (/\/frontend\//i.test(here)) {
       return here.replace(/\/frontend\/[^/]*$/, '/frontend/workout-mode.html');
     }
-    return here.replace(/\/index\.html$/i, '').replace(/\/?$/, '/') + 'frontend/workout-mode.html';
+    var base = here.replace(/\/[^/]+\.html$/i, '/');
+    return base.replace(/\/?$/, '/') + 'frontend/workout-mode.html';
   }
 
   function encodeLink(workout, meta) {
@@ -766,10 +767,28 @@
 
   function rankCandidates(candidates, opts) {
     opts = opts || {};
-    var list = candidates.slice();
-    if (opts.audience === 'kids' || opts.audience === 'sport') {
+    var audience = opts.audience === 'kids' || opts.audience === 'sport' ? opts.audience : '';
+    var reservedTags = ['kids', 'sport', 'partner'];
+    var list = candidates.filter(function (ex) {
+      var tags = ex.tags || [];
+      return !reservedTags.some(function (tag) {
+        return tags.indexOf(tag) !== -1 && tag !== audience;
+      });
+    });
+    var requestedEquipment = (opts.equipment || []).filter(function (eq) {
+      return eq && eq !== 'none';
+    });
+    if (requestedEquipment.length) {
+      var equipped = list.filter(function (ex) {
+        return (ex.equipment || []).some(function (eq) {
+          return requestedEquipment.indexOf(eq) !== -1;
+        });
+      });
+      if (equipped.length) list = equipped;
+    }
+    if (audience) {
       var tagged = list.filter(function (ex) {
-        return (ex.tags || []).indexOf(opts.audience) !== -1;
+        return (ex.tags || []).indexOf(audience) !== -1;
       });
       if (tagged.length) list = tagged;
     }
@@ -866,7 +885,7 @@
       tags: audience ? [goalKey, audience] : [goalKey]
     };
     var dailyWorkouts = [];
-    var pickOpts = { preferClips: preferClips, audience: audience };
+    var pickOpts = { preferClips: preferClips, audience: audience, equipment: equipment };
     for (var d = 0; d < totalDays; d++) {
       var split = splitNameForDay(d, daysPerWeek);
       var muscles = musclesForDay(d, daysPerWeek, targetMuscles, injuredParts);

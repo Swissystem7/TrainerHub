@@ -152,3 +152,24 @@ test('coach pilot form builds and persists a client-specific workout without a s
   assert.ok(workout.phases.length >= 1);
   assert.ok(workout.phases.some(function (phase) { return phase.exercises.length > 0; }));
 });
+
+test('client preview link from journal resolves to the sibling workout page', function () {
+  const previous = global.location;
+  global.location = {
+    href: 'https://example.test/TrainerHub/journal.html?rev=pilot',
+    pathname: '/TrainerHub/journal.html',
+    hash: ''
+  };
+  try {
+    const url = TH.encodeLink({
+      title: 'אימון בדיקה',
+      duration_minutes: 20,
+      phases: [{ name: 'Main', exercises: [{ name: 'סקוואט', id: 'bodyweight_squat', sets: 3, reps: 10 }] }]
+    }, { name: 'מתאמן', tid: 'test-client' });
+    assert.match(url, /^https:\/\/example\.test\/TrainerHub\/frontend\/workout-mode\.html#TH\./);
+    assert.doesNotMatch(url, /journal\.html\/frontend/);
+  } finally {
+    if (previous === undefined) delete global.location;
+    else global.location = previous;
+  }
+});
