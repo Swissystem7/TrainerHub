@@ -117,3 +117,38 @@ test('journal page is a first-class surface, not a buried studio tab', function 
   assert.doesNotMatch(html, /prompt\(/);
   assert.match(fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8'), /journal\.html/);
 });
+
+test('coach pilot form builds and persists a client-specific workout without a server', function () {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'journal.html'), 'utf8');
+  assert.match(html, /id="coachBuildForm"/);
+  ['coachClient', 'coachMuscle', 'coachGoal', 'coachLevel', 'coachEquipment', 'coachAudience'].forEach(function (id) {
+    assert.match(html, new RegExp('<label[^>]+for="' + id + '"'));
+    assert.match(html, new RegExp('<select[^>]+id="' + id + '"'));
+  });
+  assert.match(html, /function refreshCoachClients\(selectedId\)/);
+  assert.match(html, /TH\.generateWorkoutProgram\(profile, 1, 1\)/);
+  assert.match(html, /TH\.toPhasesWorkout\(day,/);
+  assert.match(html, /c\.lastWorkout = workout/);
+  assert.match(html, /c\.lastPlan = TH\.compactPlan\(workout\)/);
+  assert.match(html, /TH\.store\.set\(TH\.KEYS\.active, workout\)/);
+  assert.match(html, /צריך להוסיף ולבחור מתאמן/);
+  assert.match(html, /נשמר בדפדפן הזה בלבד/);
+  assert.doesNotMatch(html, /<form[^>]+action=/i);
+
+  const program = TH.generateWorkoutProgram({
+    fitnessLevel: 'beginner',
+    goals: ['strength'],
+    availableEquipment: ['none'],
+    targetMuscles: ['core'],
+    injuries: [],
+    previousWorkouts: 0,
+    audience: '',
+    preferCatalog: true
+  }, 1, 1);
+  assert.equal(program.dailyWorkouts.length, 1);
+  const workout = TH.toPhasesWorkout(program.dailyWorkouts[0], {
+    equipment: ['none'], intensity: 'high', tags: ['core', 'strength']
+  });
+  assert.ok(workout.phases.length >= 1);
+  assert.ok(workout.phases.some(function (phase) { return phase.exercises.length > 0; }));
+});
