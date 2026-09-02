@@ -71,6 +71,9 @@ test('toPhasesWorkout is a lossless view of a daily workout for workout-mode', f
 test('compactPlan / expandPlan keep the phase contract the journal later imports', function () {
   const program = TH.generateWorkoutProgram(profile(), 1, 1);
   const workout = TH.toPhasesWorkout(program.dailyWorkouts[0], {});
+  workout.participants = 16;
+  workout.equipment = ['גומיות', 'קונוסים'];
+  workout.group_plan = { stations: 4, per_station: 4, he: '16 חניכים: 4 תחנות' };
   const compact = TH.compactPlan(workout);
   assert.equal(compact.p.length, 3);
   assert.equal(compact.p[0].n, 'Warm-up');
@@ -78,6 +81,9 @@ test('compactPlan / expandPlan keep the phase contract the journal later imports
   assert.ok(compact.p[1].e[0].s);
   assert.ok(compact.p[1].e[0].r);
   const expanded = TH.expandPlan(compact);
+  assert.equal(expanded.participants, 16);
+  assert.deepEqual(expanded.equipment, ['גומיות', 'קונוסים']);
+  assert.equal(expanded.group_plan.stations, 4);
   assertPhaseSchema(expanded.phases, 'expandPlan');
   assert.equal(expanded.phases[1].exercises[0].id, workout.phases[1].exercises[0].id);
   assert.equal(expanded.phases[1].exercises[0].sets, workout.phases[1].exercises[0].sets);

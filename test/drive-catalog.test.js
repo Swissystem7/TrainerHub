@@ -22,15 +22,16 @@ const EXCLUDED = [
 const LEVELS = new Set(['beginner', 'intermediate', 'advanced']);
 const MUSCLES = new Set(['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core']);
 const PERSONAL = /aviran|swissa|אבירן|סוויסה|סויסה|avi[\s_-]?ran|^VID[_-]/i;
-const REQUIRED = ['id', 'driveId', 'he', 'muscles', 'equipment', 'level', 'source', 'folder'];
+const REQUIRED = ['id', 'driveId', 'he', 'muscles', 'equipment', 'level', 'source', 'folder', 'available'];
 
 const items = Array.isArray(drive.items) ? drive.items : [];
 
-test('drive-catalog.json has 44 real videos as an items array', function () {
+test('drive-catalog.json preserves 44 source rows and marks 40 verified OneDrive matches', function () {
   assert.ok(drive && typeof drive === 'object');
   assert.ok(Array.isArray(drive.items));
   assert.equal(items.length, 44);
   assert.equal(drive._meta && drive._meta.count, 44);
+  assert.equal(drive._meta && drive._meta.matchedCount, 40);
 });
 
 test('every drive item has the published schema and valid enums', function () {
@@ -42,7 +43,10 @@ test('every drive item has the published schema and valid enums', function () {
       const value = entry[field];
       if (value == null || value === '') missing.push((entry.id || '?') + '.' + field);
     }
-    if (entry.source !== 'drive') missing.push((entry.id || '?') + '.source=' + entry.source);
+    if (entry.available && entry.source !== 'onedrive') missing.push((entry.id || '?') + '.source=' + entry.source);
+    if (entry.available && !/^https:\/\/github\.com\/Swissystem7\/TrainerHub\/releases\/download\/trainerhub-media-v1\/thv-\d{3}\.mp4$/i.test(entry.file || '')) {
+      missing.push((entry.id || '?') + '.file=' + entry.file);
+    }
     if (!Array.isArray(entry.muscles) || !entry.muscles.length) missing.push(entry.id + '.muscles');
     if (!Array.isArray(entry.equipment) || !entry.equipment.length) missing.push(entry.id + '.equipment');
     if (!LEVELS.has(entry.level)) missing.push(entry.id + '.level=' + entry.level);
@@ -55,6 +59,7 @@ test('every drive item has the published schema and valid enums', function () {
     driveIds.add(entry.driveId);
   }
   assert.deepEqual(missing, []);
+  assert.equal(items.filter(function (entry) { return entry.available; }).length, 40);
 });
 
 test('anonymous VID_* clips and personal names stay out of the drive catalog', function () {
@@ -71,24 +76,25 @@ test('anonymous VID_* clips and personal names stay out of the drive catalog', f
 test('mergeCatalogs unifies local + drive behind one lookup, each with source', function () {
   const merged = TH.mergeCatalogs(local, drive, []);
   const keys = Object.keys(merged);
-  assert.ok(keys.length >= Object.keys(local).length + 44);
+  assert.equal(keys.length, Object.keys(local).length);
   keys.forEach(function (id) {
     const e = merged[id];
     assert.ok(e.source, id + ' missing source');
     assert.ok(e.he, id + ' missing he');
     assert.ok(Array.isArray(e.muscles) && e.muscles.length, id + ' muscles');
   });
-  const drivePlank = keys.map(function (k) { return merged[k]; }).find(function (e) {
-    return e.source === 'drive' && e.he === 'פלאנק';
+  const drivePlank = items.find(function (e) {
+    return e.source === 'onedrive' && e.he === 'פלאנק';
   });
   assert.ok(drivePlank);
   assert.ok(drivePlank.driveId);
+  assert.match(drivePlank.file, /trainerhub-media-v1\/thv-\d{3}\.mp4$/);
   assert.equal(TH.drivePreviewUrl(drivePlank.driveId).indexOf('https://drive.google.com/file/d/'), 0);
   TH.setCatalog(merged);
-  const found = TH.findExercise({ id: drivePlank.id });
+  const found = TH.findExercise({ name: drivePlank.he });
   assert.ok(found);
-  assert.equal(TH.hasClip({ id: drivePlank.id }), true);
-  assert.equal(TH.playableKind(found), 'drive');
+  assert.equal(TH.hasClip({ name: drivePlank.he }), true);
+  assert.equal(TH.playableKind(found), 'file');
 });
 
 test('mediaMarkup degrades to exercise text when offline and never embeds an excluded id', function () {
@@ -106,4 +112,12 @@ test('mediaMarkup degrades to exercise text when offline and never embeds an exc
     assert.equal(online.includes(id), false);
     assert.equal(JSON.stringify(drive).includes(id), false);
   });
+});
+
+test('verified OneDrive media renders as a browser video, not a stale Drive iframe', function () {
+  const entry = items.find(function (item) { return item.available && item.source === 'onedrive'; });
+  const html = TH.mediaMarkup(entry, { className: 'ex-media' });
+  assert.match(html, /<video/);
+  assert.match(html, /trainerhub-media-v1\/thv-\d{3}\.mp4/);
+  assert.doesNotMatch(html, /drive\.google\.com/);
 });

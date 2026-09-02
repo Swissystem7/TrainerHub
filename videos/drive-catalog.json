@@ -1,9 +1,10 @@
 {
   "_meta": {
-    "source": "drive",
+    "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
     "count": 44,
-    "note": "הוספת סרטון = שורה חדשה. בלי שינוי קוד."
+    "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
+    "matchedCount": 40
   },
   "items": [
     {
@@ -17,8 +18,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1tLFxcQifJQgGYRZD20YQticZ0S4psv2r",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-015.mp4",
+      "available": true
     },
     {
       "id": "drive_פלאנק_גבוה",
@@ -31,8 +35,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1Q---XrjF-bjqaoXtf76zN8QsfllfgwF6",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-012.mp4",
+      "available": true
     },
     {
       "id": "drive_פלאנק_ברכיים",
@@ -45,8 +52,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1lfq5WACix0Hc0X2Eo1e8AXkZaQGV9KbB",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-011.mp4",
+      "available": true
     },
     {
       "id": "drive_פלאנק_צידי",
@@ -59,8 +69,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1FcJDIXo0DwiUHdXCFVkPi-eU9HY9DHH0",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-014.mp4",
+      "available": true
     },
     {
       "id": "drive_פלאנק_מצד_לצד",
@@ -73,8 +86,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1WguorGnjaGGHy_SXZLgNdA-vP4RVXwGH",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-013.mp4",
+      "available": true
     },
     {
       "id": "drive_פלאנק_שעון",
@@ -88,7 +104,8 @@
       ],
       "level": "intermediate",
       "source": "drive",
-      "folder": "בטן"
+      "folder": "בטן",
+      "available": false
     },
     {
       "id": "drive_מטפס_הרים",
@@ -101,8 +118,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1vK0HbdNXhZ_FChgFKRDf2-Lkm9_g4obj",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-009.mp4",
+      "available": true
     },
     {
       "id": "drive_מטפס_הרים_עם_פלאנק",
@@ -115,8 +135,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1kZGzGL4AsY8-0fh6cSRKRjlkqAKnP_8K",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-008.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן",
@@ -129,8 +152,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1rmf-nflg-5i5JBpsvgS7mAfq8f1bdCE1",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-007.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_סט",
@@ -143,8 +169,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1-Zi3YppzaZo49UPDoT32qsKbb6LwCKKu",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-005.mp4",
+      "available": true
     },
     {
       "id": "drive_סט_בטן",
@@ -157,8 +186,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1blr57fNTIgKOJuO242VR1A8JoyIVgYns",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-010.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_עם_קיר",
@@ -171,8 +203,11 @@
         "wall"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1-yC0OPqGtjoPR0TXMbAEgt19QLiaFMRt",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-006.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_כדור_כדורסל",
@@ -185,8 +220,11 @@
         "basketball"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1X_q9XhNaagWQSDlarXgHcOZCsy6v2Ann",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-004.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_עם_כדור",
@@ -200,7 +238,8 @@
       ],
       "level": "beginner",
       "source": "drive",
-      "folder": "בטן"
+      "folder": "בטן",
+      "available": false
     },
     {
       "id": "drive_בטן_גומיות",
@@ -214,7 +253,8 @@
       ],
       "level": "beginner",
       "source": "drive",
-      "folder": "בטן"
+      "folder": "בטן",
+      "available": false
     },
     {
       "id": "drive_בטן_הגיע_ברגל_אחורית_ולהחליף",
@@ -228,8 +268,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1cKXMjzI6bfZJOmKmjpQ3yqVvPQPt8Cw-",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-002.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_זוגות",
@@ -242,8 +285,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "1mlzxv0uPsoK5A29Oyro1d45lVyX89LTD",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-003.mp4",
+      "available": true
     },
     {
       "id": "drive_בטן_זוגות_2",
@@ -256,8 +302,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "בטן"
+      "source": "onedrive",
+      "folder": "בטן",
+      "legacyDriveId": "13qjHxCt53ZJw6G5AxiVaSkXsOIGnFRwJ",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-003.mp4",
+      "available": true
     },
     {
       "id": "drive_הליכת_חיות_לחיזוק_ידיים",
@@ -273,8 +322,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "11o90mT_qwkWV5hOOrMzqusstC51ZdRzb",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-039.mp4",
+      "available": true
     },
     {
       "id": "drive_ידיים_סוחבות_גוף",
@@ -290,8 +342,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "1D1Z5bBWnQrurMhRiPg_H_C2eJ-lIvhh1",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-041.mp4",
+      "available": true
     },
     {
       "id": "drive_סט_כוח_ידיים",
@@ -305,8 +360,11 @@
         "none"
       ],
       "level": "intermediate",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "1-Dy1_DoOtT9Zy0Q4ENhyULwRdwpfJSTP",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-042.mp4",
+      "available": true
     },
     {
       "id": "drive_אתגר_שכיבות_שמיכה",
@@ -319,8 +377,11 @@
         "none"
       ],
       "level": "intermediate",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "19Cf4diAGBXG2f1jIE-QcmWlrCBQ1mIhu",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-038.mp4",
+      "available": true
     },
     {
       "id": "drive_שכיבות_שמיכה_ובעיטות",
@@ -334,8 +395,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "1HBsxB8etnLWCOaY2Xe2C1QXG70c0PgoL",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-043.mp4",
+      "available": true
     },
     {
       "id": "drive_חימום_שכיבות_שמיכה_קונוסים_על_הגב",
@@ -348,8 +412,11 @@
         "cones"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "ידיים"
+      "source": "onedrive",
+      "folder": "ידיים",
+      "legacyDriveId": "1z3SjL3mf0VKHwwJvuqJZ8xJ-DC0jYA93",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-040.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_בטן",
@@ -362,8 +429,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1CqAWIIDQb3wOdTgj1o4UmaD6T0_au_us",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-022.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_בטן_2",
@@ -376,8 +446,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1te6xhZgQSl35N1wqY8DyOjXTPBBEfwaY",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-022.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_התנגדות",
@@ -393,8 +466,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1qwusTk4WR2N3OI_heGZ-Da43597PLxPQ",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-025.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_ירכיים",
@@ -407,8 +483,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1uJS91LtonuKpO3haNGFvPVcpHo97c4G5",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-026.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_רגליים",
@@ -421,8 +500,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1-2ADpJ6vMwQ-t_AnjJWRZh0LBS4oBXgD",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-028.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_רגליים_2",
@@ -435,8 +517,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1gAOSs0Un8vm7bE9u2v1IOm4dBKdSHsCa",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-028.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_רגליים_2_2",
@@ -449,8 +534,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "19yQeh1BZADdF6IGn553IsirrdKWGtrdJ",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-027.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_ארבע_ראשי",
@@ -463,8 +551,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1U7umRvqLLARg7Jqh_hprsDBgZ1eSqben",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-021.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_ברכיים",
@@ -477,8 +568,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1nxmCOgCxa00RnTzAsQ28w7yGvZNsOOb1",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-024.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_במקום_מכון",
@@ -494,8 +588,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "105_8KC6CTTfVR65QVVKIQk3UeXWoTIdG",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-023.mp4",
+      "available": true
     },
     {
       "id": "drive_גומיות_במקום_מכון_2",
@@ -511,8 +608,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "13xHVT82Aolj3DAAuxcmqYKYKWZWboDa0",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-023.mp4",
+      "available": true
     },
     {
       "id": "drive_עבודה_עם_גומייה",
@@ -528,8 +628,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1lohbQeiqbr1YR12X-gx4bJvVsyQpTfDc",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-029.mp4",
+      "available": true
     },
     {
       "id": "drive_בישיבה_אחד_נגד_השני",
@@ -545,8 +648,11 @@
         "band"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גומיות"
+      "source": "onedrive",
+      "folder": "גומיות",
+      "legacyDriveId": "1R21p49oxpVOfX3PQPv0DXbuuCWKbfqNS",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-020.mp4",
+      "available": true
     },
     {
       "id": "drive_מתח_אוסטרלי",
@@ -560,8 +666,11 @@
         "bar"
       ],
       "level": "intermediate",
-      "source": "drive",
-      "folder": "גב"
+      "source": "onedrive",
+      "folder": "גב",
+      "legacyDriveId": "1p1IXL9cwQBDcOcgbKpJmMNxmIXHXpo_d",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-018.mp4",
+      "available": true
     },
     {
       "id": "drive_גב_תחתון",
@@ -574,8 +683,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גב"
+      "source": "onedrive",
+      "folder": "גב",
+      "legacyDriveId": "1pkjqejGS1Ymc3vA8vYRZwjw4lm-_XTI-",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-016.mp4",
+      "available": true
     },
     {
       "id": "drive_כתפיים_וגב",
@@ -589,8 +701,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גב"
+      "source": "onedrive",
+      "folder": "גב",
+      "legacyDriveId": "1Khc79Hg4NBxeRagfkt25a7NL0Nq0uu1r",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-017.mp4",
+      "available": true
     },
     {
       "id": "drive_קונוסים_גב",
@@ -603,8 +718,11 @@
         "cones"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "גב"
+      "source": "onedrive",
+      "folder": "גב",
+      "legacyDriveId": "1jT59O2m8rdEx9WLRusY9N21z2dzzJMnz",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-019.mp4",
+      "available": true
     },
     {
       "id": "drive_שכיבות_סמיכה_ורגליים",
@@ -618,8 +736,11 @@
         "none"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "רגליים"
+      "source": "onedrive",
+      "folder": "רגליים",
+      "legacyDriveId": "17TLtLaj06GakS7lclm-Ty5QqyKJMNSe3",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-068.mp4",
+      "available": true
     },
     {
       "id": "drive_סולם_רגליים",
@@ -632,8 +753,11 @@
         "ladder"
       ],
       "level": "beginner",
-      "source": "drive",
-      "folder": "רגליים"
+      "source": "onedrive",
+      "folder": "רגליים",
+      "legacyDriveId": "1gY1gCjrWNTRypZvNo07keNxc08rGevTW",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-067.mp4",
+      "available": true
     },
     {
       "id": "drive_מדרגות",
@@ -647,7 +771,8 @@
       ],
       "level": "beginner",
       "source": "drive",
-      "folder": "רגליים"
+      "folder": "רגליים",
+      "available": false
     }
   ]
 }

@@ -15,6 +15,9 @@
     .top h1 { font-size: clamp(2rem, 6vw, 3.4rem); margin: 10px 0 8px; line-height: 1.15; }
     .top p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; max-width: 38rem; }
     form.prompt { margin: 28px 0 12px; }
+    .input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+    .input-grid label { margin-top: 0; }
+    .field-help { color: var(--muted); font-size: .8rem; line-height: 1.4; margin: 7px 0 0; }
     label { display: block; color: var(--muted); font-size: .9rem; margin: 12px 0 8px; }
     #prompt, #ingestText {
       width: 100%; min-height: 110px; resize: vertical;
@@ -60,7 +63,7 @@
     .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: 12px; background: #000; }
     .ex-media-segment, .honest { color: var(--muted); font-size: .82rem; line-height: 1.45; }
-    @media (max-width: 600px) { .seg-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -83,7 +86,7 @@
   <header class="top">
     <small>TRAINERHUB / מנוע אימון</small>
     <h1>תגיד איזה אימון אתה רוצה.</h1>
-    <p>שדה אחד. בעברית. תוך פחות משנייה מתקבל אימון מהסרטונים האמיתיים, עם הסבר על מה עובדים ולמה נבחר כל תרגיל.</p>
+    <p>בוחרים זמן, ציוד וכמות חניכים, מוסיפים מטרה קצרה — ומקבלים אימון מהמאגר עם הסבר על כל בחירה.</p>
   </header>
   <ol class="th-steps">
     <li><b>1. כותבים</b>מה רוצים, או מדביקים אימון קיים.</li>
@@ -101,7 +104,33 @@
   <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
     <form class="prompt" id="form">
       <label for="prompt">מה האימון?</label>
-      <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="אימון בטן 20 דקות בלי ציוד" autocomplete="off"></textarea>
+      <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="למשל: אימון בטן למתחילים" autocomplete="off"></textarea>
+      <div class="input-grid">
+        <div>
+          <label for="durationInput">זמן (דקות)</label>
+          <input id="durationInput" name="duration" type="number" min="5" max="180" step="5" value="20" inputmode="numeric">
+        </div>
+        <div>
+          <label for="equipmentInput">ציוד</label>
+          <select id="equipmentInput" name="equipment">
+            <option value="auto">לפי הבקשה</option>
+            <option value="none">ללא ציוד</option>
+            <option value="band">גומיות</option>
+            <option value="cones">קונוסים</option>
+            <option value="ball">כדור</option>
+            <option value="tennis-ball">כדור טניס</option>
+            <option value="basketball">כדורסל</option>
+            <option value="football">כדורגל</option>
+            <option value="bar">מתח</option>
+            <option value="stairs">מדרגות</option>
+          </select>
+        </div>
+        <div>
+          <label for="participantsInput">כמות חניכים</label>
+          <input id="participantsInput" name="participants" type="number" min="1" max="500" step="1" value="1" inputmode="numeric">
+        </div>
+      </div>
+      <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go">בנה אימון</button>
     </form>
     <div class="examples" role="group" aria-label="דוגמאות">
@@ -246,12 +275,19 @@
       }).join('');
       return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
     }).join('');
+    var equipment = (w.equipment || []).length ? w.equipment.join(', ') : 'לפי המאגר';
+    var groupPlan = w.group_plan && w.group_plan.he
+      ? '<p class="stim"><strong>סידור קבוצה:</strong> ' + TH.esc(w.group_plan.he) + '</p>'
+      : '';
 
     box.innerHTML = notice +
       '<article class="card">' +
         '<h2>' + TH.esc(w.title) + '</h2>' +
         '<div class="meta">' +
           (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
+          '<span class="pill">זמן: ' + TH.esc(w.duration_minutes) + ' דקות</span>' +
+          '<span class="pill">ציוד: ' + TH.esc(equipment) + '</span>' +
+          '<span class="pill">חניכים: ' + TH.esc(w.participants || 1) + '</span>' +
           '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
           '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
         '</div>' +
@@ -260,6 +296,7 @@
             '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
           : '') +
         flags +
+        groupPlan +
         phases +
         '<div class="actions">' +
           '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
@@ -309,11 +346,14 @@
   function run(e) {
     if (e) e.preventDefault();
     var text = $('prompt').value.trim();
-    if (!text) {
-      $('result').innerHTML = '<p class="empty">כתבו מה אתם רוצים — למשל «אימון בטן 20 דקות בלי ציוד».</p>';
-      return;
-    }
-    render(THEngine.buildSession(text));
+    var req = THPrompt.parsePrompt(text || 'אימון גוף מלא');
+    req.duration = Math.max(5, Math.min(180, Number($('durationInput').value) || 20));
+    req.durationSpecified = true;
+    req.participants = Math.max(1, Math.min(500, Math.floor(Number($('participantsInput').value) || 1)));
+    req.participantsSpecified = true;
+    var equipment = $('equipmentInput').value;
+    if (equipment !== 'auto') req.equipment = [equipment];
+    render(THEngine.buildSession(req));
   }
 
   function currentDriveId() {
@@ -375,7 +415,12 @@
   document.querySelectorAll('[data-fill]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       switchTab('prompt');
-      $('prompt').value = btn.getAttribute('data-fill');
+      var example = btn.getAttribute('data-fill');
+      var parsed = THPrompt.parsePrompt(example);
+      $('prompt').value = example;
+      if (parsed.durationSpecified) $('durationInput').value = parsed.duration;
+      if (parsed.participantsSpecified) $('participantsInput').value = parsed.participants;
+      if (parsed.equipment.length === 1) $('equipmentInput').value = parsed.equipment[0];
       $('prompt').focus();
       run();
     });

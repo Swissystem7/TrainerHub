@@ -1,17 +1,17 @@
 # ספריית סרטוני תרגיל
 
-רוב הקליפים **לא בריפו** (גודל + פרטיות). בתיקייה הזו יש 7 קבצי mp4 לדוגמה (`פלאנק`, `בטן`, `מטפס הרים`, `גב תחתון`, `חימום`, `מדרגות`, `מתח אוסטרלי`). שאר 71 הרשומות ב־`js/catalog.json` דורשות העתקה מתיקיית המקור. יש שני מקורות מאחורי שכבת lookup אחת ב־`js/core.js`:
+קובצי הווידאו **לא נשמרים בהיסטוריית Git** בגלל הגודל. 68 קובצי מקור אותרו בתיקיית הכושר ב־OneDrive, נבדקו לקודק נתמך, וקובצי HEVC הומרו ל־H.264. הם מוגשים כנכסי `trainerhub-media-v1` ב־GitHub Releases. יש שתי רשימות מאחורי שכבת lookup אחת ב־`js/core.js`:
 
-- מקומי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"local"}`.
-- דרייב: [`drive-catalog.json`](./drive-catalog.json) — `{id, driveId, he, muscles, equipment, level, source:"drive", folder}`. 44 סרטונים משותפים כ-anyone/reader, נגן: `https://drive.google.com/file/d/{id}/preview`.
+- ראשי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"onedrive", available}`.
+- רשימת ייבוא היסטורית: [`drive-catalog.json`](./drive-catalog.json) — שומרת גם את מזהי Google Drive הישנים לצורכי עקיבות, אך הנגן משתמש בקובץ המאומת מ־OneDrive דרך כתובת ה־release.
 
-הוספת סרטון דרייב = שורה חדשה ב־JSON (או דרך מסך «ניהול מאגר»). בלי שינוי קוד.
+רשומה עם `available:false` נשארת גלויה כתרגיל טקסטואלי, אך אינה נבחרת אוטומטית לאימון ואינה יוצרת נגן שבור.
 
 ## איפה הקבצים באמת
 
-ספריית המקור (מחוץ לריפו, לא להעלות):
+ספריית המקור המסונכרנת (מחוץ לריפו):
 
-`C:\Users\avira\migration-review\claude-node\trainerhub\videos`
+`C:\Users\avira\OneDrive - Afeka College Of Engineering\Documents\כושר`
 
 שם הם מסודרים לפי תיקיות נושא (`בטן`, `רגליים`, `קונוסים` וכו׳). הקטלוג שומר רק את **שם הקובץ**.
 
@@ -22,7 +22,7 @@
 3. אפשר גם להגיש את התיקייה הזו יחד עם שאר האתר (`python -m http.server` משורש הריפו, או כל שרת סטטי).
 4. לינק לקליפ בודד: `workout-mode.html#CLIP.…` — בלי שם קובץ בכתובת. הממשק מציג רק את `he`, לא את `file`.
 
-בלי הקבצים כאן הנגן לא מציג אלמנט וידאו שבור: אם אין מיפוי — אין `<video>`; אם הקובץ חסר בשרת — האלמנט מוסר ב־`onerror`.
+אם קובץ מרוחק נכשל, הנגן מוחבא ומוצגים שם התרגיל והסבר קצר. כך התקלה גלויה אך הזרימה נשארת שימושית.
 
 ## מה לא נכנס לקטלוג
 

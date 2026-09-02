@@ -62,6 +62,19 @@
     return 10;
   }
 
+  function groupPlan(participants, exerciseCount) {
+    var people = Math.max(1, Math.floor(Number(participants) || 1));
+    var available = Math.max(1, Math.floor(Number(exerciseCount) || 1));
+    if (people === 1) return null;
+    var stations = Math.min(available, Math.max(1, Math.ceil(people / 4)));
+    var perStation = Math.ceil(people / stations);
+    return {
+      stations: stations,
+      per_station: perStation,
+      he: people + ' חניכים: ' + stations + ' תחנות, עד ' + perStation + ' חניכים בתחנה. החליפו תחנה בסיום כל סט.'
+    };
+  }
+
   function matchesEquipment(entry, wanted) {
     var have = entry.equipment && entry.equipment.length ? entry.equipment : ['none'];
     if (!wanted || !wanted.length) return true;
@@ -98,6 +111,7 @@
   }
 
   function sourceBonus(entry) {
+    if (entry.source === 'onedrive') return 6;
     if (entry.source === 'drive') return 5;
     if (entry.source === 'youtube') return 2;
     if (entry.file) return 1;
@@ -209,7 +223,8 @@
     if (req.equipment && req.equipment.length && matchesEquipment(entry, req.equipment)) {
       bits.push('מתאים לציוד שביקשת');
     }
-    if (entry.source === 'drive') bits.push('מהמאגר האמיתי בדרייב');
+    if (entry.source === 'onedrive') bits.push('מסרטון OneDrive שאומת ופורסם לנגן');
+    else if (entry.source === 'drive') bits.push('מהמאגר האמיתי בדרייב');
     else if (entry.source === 'youtube') bits.push('סרטון יוטיוב שנשמר במאגר');
     else if (entry.file) bits.push('קליפ מקומי במאגר');
     var inf = Infer.inferFromName(entry.he, { folder: entry.folder || '' });
@@ -230,6 +245,7 @@
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
     parts.push((req.duration || analysis.durationMinutes || 20) + ' דקות');
+    if (Number(req.participants) > 1) parts.push(req.participants + ' חניכים');
     if (req.level && Infer.LEVEL_LABELS[req.level]) parts.push(Infer.LEVEL_LABELS[req.level]);
     return parts.join(' · ');
   }
@@ -312,7 +328,7 @@
     var workout = {
       title: title,
       duration_minutes: req.duration,
-      participants: 1,
+      participants: Math.max(1, Math.floor(Number(req.participants) || 1)),
       equipment: (req.equipment || []).map(function (e) { return Infer.EQ_LABELS[e] || e; }),
       intensity: req.goal === 'strength' ? 'high' : (req.level === 'beginner' ? 'low' : 'medium'),
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
@@ -324,6 +340,7 @@
       ],
       source: 'prompt-engine'
     };
+    workout.group_plan = groupPlan(workout.participants, mainEx.length);
 
     var analysis = Analyzer.analyzeSession(workout);
     var reasons = picked.map(function (e) {
@@ -351,7 +368,7 @@
     };
   }
 
-  var api = { buildSession: buildSession, scoreEntry: scoreEntry };
+  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
     module.exports = api;

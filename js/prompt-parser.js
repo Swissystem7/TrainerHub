@@ -1,6 +1,7 @@
 /**
  * Rule-based Hebrew prompt parser (no network, no API key).
- * Extracts muscle group, duration, equipment, level, goal from one free-text line.
+ * Extracts muscle group, duration, equipment, participant count, level, and goal
+ * from one free-text line.
  * Classic script. Namespace: window.THPrompt
  */
 (function (root) {
@@ -37,6 +38,15 @@
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
     return null;
+  }
+
+  function parseParticipants(text) {
+    var t = Infer.fold(String(text || ''));
+    var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
+    if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
+    if (!m) return null;
+    var n = toInt(m[1]);
+    return n && n > 0 ? Math.min(n, 500) : null;
   }
 
   function parseLevel(text) {
@@ -110,6 +120,7 @@
     var raw = String(text || '').trim();
     var muscleInfo = parseMuscles(raw);
     var duration = parseDuration(raw);
+    var participants = parseParticipants(raw);
     var equipment = parseEquipment(raw);
     var level = parseLevel(raw);
     var goal = parseGoal(raw);
@@ -120,6 +131,8 @@
       focus: muscleInfo.focus || 'full',
       duration: duration || 20,
       durationSpecified: duration != null,
+      participants: participants || 1,
+      participantsSpecified: participants != null,
       equipment: equipment,
       level: level,
       goal: goal,
@@ -131,6 +144,7 @@
   var api = {
     parsePrompt: parsePrompt,
     parseDuration: parseDuration,
+    parseParticipants: parseParticipants,
     parseLevel: parseLevel,
     parseGoal: parseGoal,
     parseEquipment: parseEquipment
