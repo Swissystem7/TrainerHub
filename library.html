@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="ספריית סרטוני תרגיל בעברית — חיפוש, החלפה ושליחה בוואטסאפ. בלי הרשמה ובלי ענן.">
+  <meta name="description" content="ספריית סרטוני תרגיל בעברית — חיפוש, החלפה ושליחה בוואטסאפ. בלי הרשמה.">
   <title>TrainerHub | ספריית סרטונים</title>
   <link rel="stylesheet" href="./css/app.css">
   <style>
@@ -28,6 +28,8 @@
     .pill { background: #26302b; border-radius: 999px; padding: 3px 8px; font-size: .72rem; color: var(--muted); }
     video { width: 100%; max-height: 160px; border-radius: 10px; background: #000; border: 1px solid var(--line); }
     video[hidden] { display: none; }
+    .ex-media-fallback { min-height: 120px; border: 1px dashed var(--line); border-radius: 10px; padding: 16px; color: var(--muted); display: grid; place-items: center; text-align: center; }
+    .ex-media-fallback[hidden] { display: none; }
     .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .actions button { flex: 1; min-width: 96px; margin-top: 0; padding: 8px 10px; font-size: .78rem; font-weight: 700; border: 0; border-radius: 8px; background: var(--lime); color: #101312; cursor: pointer; font-family: inherit; }
     .actions button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
@@ -56,13 +58,13 @@
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  סרטוני דרייב מתנגנים מהקישור המשותף. קליפ מקומי מופיע רק אם הקובץ נמצא בתיקיית <code>videos/</code>. קישור חיצוני נפתח מחוץ לאפליקציה — זה לא חיבור למאמנים.
+  סרטוני OneDrive שנמצאו אומתו והותאמו לנגן ציבורי. אם סרטון מסוים חסר, פרטי התרגיל נשארים מוצגים במקום נגן שבור.
 </div>
 <main class="wrap">
   <header class="top">
     <small>TRAINERHUB / CLIP LIBRARY</small>
     <h1>הספרייה האמיתית, לא מאגר גנרי.</h1>
-    <p>חיפוש במאגר המאוחד — קליפים מקומיים וסרטוני דרייב. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות קבצים ושמות אנשים לא מוצגים.</p>
+    <p>חיפוש במאגר המאוחד — סרטוני OneDrive שאומתו ותרגילים שנשמרו בקטלוג. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות קבצים ושמות אנשים לא מוצגים.</p>
   </header>
 
   <section class="draft" id="draftBox" hidden>
@@ -184,7 +186,7 @@
       var kind = TH.playableKind(e);
       var sourcePill = e.source
         ? '<span class="pill source-pill">' + TH.esc({
-            local: 'מקומי', drive: 'דרייב', youtube: 'יוטיוב', link: 'קישור חיצוני', user: 'נוסף במאגר'
+            local: 'מקומי', onedrive: 'OneDrive מאומת', drive: 'דרייב', youtube: 'יוטיוב', link: 'קישור חיצוני', user: 'נוסף במאגר'
           }[e.source] || e.source) + '</span>'
         : '';
       var video = TH.mediaMarkup(e, { className: 'ex-media' });

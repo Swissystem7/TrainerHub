@@ -44,6 +44,7 @@ test('catalogStats counts the real library and every muscle bucket', function ()
   const stats = TH.catalogStats();
   assert.ok(stats.total >= 70, 'expected the real clip library, got ' + stats.total);
   assert.equal(stats.withFile, stats.total);
+  assert.equal(stats.playable, 70);
   assert.ok(stats.byMuscle.core > 0);
   assert.ok(stats.byMuscle.legs > 0);
   assert.ok(stats.byTag.kids > 0);

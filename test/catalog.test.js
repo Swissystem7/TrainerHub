@@ -42,18 +42,20 @@ test('every catalog entry has id, he, muscles, equipment, level, and file', func
   assert.deepEqual(missing, []);
 });
 
-test('no catalog file path is a placeholder', function () {
+test('available catalog videos use the verified public media mirror', function () {
   const bad = [];
   for (const [key, entry] of entries) {
     const file = String(entry.file || '');
     if (!file || PLACEHOLDER.test(file) || !/\.mp4$/i.test(file)) {
       bad.push(key + ' -> ' + JSON.stringify(file));
     }
-    if (/^https?:\/\//i.test(file) || file.indexOf('about:') === 0) {
-      bad.push(key + ' remote/placeholder url ' + file);
+    if (entry.available !== false && !/^https:\/\/github\.com\/Swissystem7\/TrainerHub\/releases\/download\/trainerhub-media-v1\/thv-\d{3}\.mp4$/i.test(file)) {
+      bad.push(key + ' unverified media url ' + file);
     }
   }
   assert.deepEqual(bad, []);
+  assert.equal(entries.filter(function (row) { return row[1].available !== false; }).length, 70);
+  assert.equal(entries.filter(function (row) { return row[1].available === false; }).length, 8);
 });
 
 test('catalog entries do not use personal names as ids, titles, or files', function () {
@@ -65,10 +67,14 @@ test('catalog entries do not use personal names as ids, titles, or files', funct
   assert.deepEqual(hits, []);
 });
 
-test('findExercise maps every catalog id and Hebrew name to that entry', function () {
+test('findExercise maps every available catalog id and leaves missing files unavailable', function () {
   TH.setCatalog(catalog);
   for (const [id, entry] of entries) {
     const byId = TH.findExercise({ id: id });
+    if (entry.available === false) {
+      assert.equal(byId, null, 'unavailable entry must not be selected: ' + id);
+      continue;
+    }
     assert.ok(byId, 'missing id map for ' + id);
     assert.equal(byId.file, entry.file);
     assert.equal(byId.he, entry.he);
@@ -80,12 +86,12 @@ test('findExercise maps every catalog id and Hebrew name to that entry', functio
 
 test('plan-engine ids that have a clip resolve; unknown ids do not invent a file', function () {
   TH.setCatalog(catalog);
-  assert.equal(TH.findExercise({ id: 'plank' }).file, 'פלאנק.mp4');
-  assert.equal(TH.findExercise({ id: 'crunches' }).file, 'בטן.mp4');
-  assert.equal(TH.findExercise({ id: 'mountain_climber' }).file, 'מטפס הרים.mp4');
-  assert.equal(TH.findExercise({ id: 'superman' }).file, 'גב תחתון.mp4');
+  assert.match(TH.findExercise({ id: 'plank' }).file, /trainerhub-media-v1\/thv-\d{3}\.mp4$/);
+  assert.match(TH.findExercise({ id: 'crunches' }).file, /trainerhub-media-v1\/thv-\d{3}\.mp4$/);
+  assert.match(TH.findExercise({ id: 'mountain_climber' }).file, /trainerhub-media-v1\/thv-\d{3}\.mp4$/);
+  assert.match(TH.findExercise({ id: 'superman' }).file, /trainerhub-media-v1\/thv-\d{3}\.mp4$/);
   assert.equal(TH.findExercise({ name: 'מתח אוסטרלי' }).id, 'bodyweight_row');
   assert.equal(TH.findExercise({ id: 'this_exercise_does_not_exist' }), null);
   assert.equal(TH.heName('plank'), 'פלאנק');
-  assert.equal(TH.catalogSrc('פלאנק.mp4').includes('videos/'), true);
+  assert.equal(TH.catalogSrc(TH.findExercise({ id: 'plank' }).file), TH.findExercise({ id: 'plank' }).file);
 });

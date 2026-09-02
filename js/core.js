@@ -330,6 +330,7 @@
       youtubeId: e.youtubeId || '',
       folder: e.folder || '',
       externalUrl: e.externalUrl || '',
+      available: e.available !== false,
       startSec: e.startSec != null ? Number(e.startSec) : null,
       endSec: e.endSec != null ? Number(e.endSec) : null,
       segmentOf: e.segmentOf || ''
@@ -337,14 +338,14 @@
   }
 
   function isPlayable(e) {
-    return !!(e && (e.file || e.driveId || e.youtubeId));
+    return !!(e && e.available !== false && (e.file || e.driveId || e.youtubeId));
   }
 
   function playableKind(e) {
-    if (!e) return null;
+    if (!e || e.available === false) return null;
+    if (e.file) return 'file';
     if (e.driveId) return 'drive';
     if (e.youtubeId) return 'youtube';
-    if (e.file) return 'file';
     if (e.externalUrl) return 'link';
     return null;
   }
@@ -392,11 +393,15 @@
     }
     driveItemsFrom(driveData).forEach(function (raw) {
       if (!raw) return;
-      var e = normalizeEntry(raw.id || raw.driveId, raw, 'drive');
-      e.source = 'drive';
-      if (!e.driveId) return;
+      var defaultSource = raw.source || (raw.file ? 'onedrive' : 'drive');
+      var e = normalizeEntry(raw.id || raw.driveId || raw.file, raw, defaultSource);
+      if (!isPlayable(e)) return;
+      var duplicateAsset = e.file && Object.keys(out).some(function (existingId) {
+        return out[existingId] && out[existingId].file === e.file;
+      });
+      if (duplicateAsset) return;
       var id = e.id;
-      if (out[id]) id = 'drive_' + (e.driveId || id);
+      if (out[id]) id = (e.source || 'media') + '_' + id;
       e.id = id;
       out[id] = e;
     });
@@ -422,6 +427,7 @@
         youtubeId: e.youtubeId || '',
         folder: e.folder || '',
         externalUrl: e.externalUrl || '',
+        available: e.available !== false,
         startSec: e.startSec != null ? e.startSec : null,
         endSec: e.endSec != null ? e.endSec : null,
         segmentOf: e.segmentOf || ''
@@ -548,6 +554,13 @@
       t: w.title || 'אימון',
       d: w.duration_minutes || null,
       i: w.intensity || null,
+      c: w.participants || 1,
+      q: w.equipment || [],
+      g: w.group_plan ? {
+        s: w.group_plan.stations || 1,
+        p: w.group_plan.per_station || 1,
+        h: w.group_plan.he || ''
+      } : null,
       p: (w.phases || []).map(function (ph) {
         return {
           n: ph.name,
@@ -571,6 +584,9 @@
       title: c.t || 'אימון',
       duration_minutes: c.d || null,
       intensity: c.i || null,
+      participants: c.c || 1,
+      equipment: c.q || [],
+      group_plan: c.g ? { stations: c.g.s || 1, per_station: c.g.p || 1, he: c.g.h || '' } : null,
       phases: (c.p || []).map(function (ph) {
         return {
           name: ph.n,
@@ -988,6 +1004,8 @@
 
   function sourcePref(e) {
     if (!e) return 0;
+    if (e.available === false) return -1;
+    if (e.source === 'onedrive' && e.file) return 5;
     if (e.driveId || e.source === 'drive') return 4;
     if (e.youtubeId || e.source === 'youtube') return 3;
     if (e.file) return 2;
@@ -1054,11 +1072,15 @@
 
   function bestMedia(entry) {
     if (!entry) return null;
-    if (entry.driveId || entry.youtubeId || entry.externalUrl) return entry;
+    if (entry.available !== false && ((entry.file && /^https?:\/\//i.test(entry.file)) || entry.driveId || entry.youtubeId || entry.externalUrl)) return entry;
     var he = foldHe(entry.he);
     if (!he) return entry;
     var keys = Object.keys(catalog);
     var i;
+    for (i = 0; i < keys.length; i++) {
+      var hosted = catalog[keys[i]];
+      if (hosted && hosted.available !== false && hosted.file && /^https?:\/\//i.test(hosted.file) && foldHe(hosted.he) === he) return hosted;
+    }
     for (i = 0; i < keys.length; i++) {
       var e = catalog[keys[i]];
       if (e && e.driveId && foldHe(e.he) === he) return e;
@@ -1093,12 +1115,24 @@
         ? '<span class="' + cls + '-offline"> — בלי רשת מוצג שם התרגיל במקום הנגן.</span>'
         : '') +
       '</div>';
+    if (entry.available === false) {
+      return '<div class="' + cls + '-fallback" role="note">' + esc(mediaFallbackText(entry)) +
+        ' — עדיין אין קובץ וידאו מאומת לתרגיל הזה.</div>';
+    }
     if (!isOnline() || opts.offline) {
       if (entry.externalUrl) {
         return '<p class="' + cls + '-fallback" role="note">' + esc(mediaFallbackText(entry)) +
           ' — הקישור החיצוני דורש רשת.</p>';
       }
       return fallback;
+    }
+    if (entry.file) {
+      return '<div class="' + cls + '-wrap">' +
+        '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" src="' +
+        esc(catalogSrc(entry.file)) +
+        '" onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
+        '<div class="' + cls + '-fallback" hidden role="note">' + esc(mediaFallbackText(entry)) +
+        ' — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>';
     }
     if (entry.driveId) {
       var segNote = '';
@@ -1121,10 +1155,6 @@
         '" src="' + esc(youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec)) +
         '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>' +
         '</div>';
-    }
-    if (entry.file) {
-      return '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" src="' +
-        esc(catalogSrc(entry.file)) + '" onloadeddata="this.hidden=false" onerror="this.remove()"></video>';
     }
     if (entry.externalUrl) {
       return '<a class="' + cls + '-link" href="' + esc(entry.externalUrl) +

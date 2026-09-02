@@ -49,6 +49,14 @@ test('parsePrompt understands quarter-hour and kids audience', function () {
   assert.equal(req.audience, 'kids');
 });
 
+test('parsePrompt extracts a Hebrew participant count for a group workout', function () {
+  const req = Prompt.parsePrompt('אימון תחנות 45 דקות ל-18 חניכים עם קונוסים');
+  assert.equal(req.duration, 45);
+  assert.equal(req.participants, 18);
+  assert.equal(req.participantsSpecified, true);
+  assert.deepEqual(req.equipment, ['cones']);
+});
+
 test('buildSession returns a real core workout from the catalog, not a fabricated outcome', function () {
   TH.setCatalog(FIXTURE);
   const built = Engine.buildSession('אימון בטן 20 דקות בלי ציוד', FIXTURE);
@@ -66,6 +74,21 @@ test('buildSession returns a real core workout from the catalog, not a fabricate
   assert.equal(blob.includes('תרזה'), false);
   assert.equal(blob.includes('5 ק'), false);
   assert.ok(built.explanation.reasons.every(function (r) { return r.why; }));
+});
+
+test('buildSession keeps time, equipment, and participants and creates a station plan', function () {
+  TH.setCatalog(FIXTURE);
+  const req = Prompt.parsePrompt('אימון בטן ל-12 חניכים עם גומיות');
+  req.duration = 35;
+  req.durationSpecified = true;
+  const built = Engine.buildSession(req, FIXTURE);
+  assert.ok(built.workout);
+  assert.equal(built.workout.duration_minutes, 35);
+  assert.equal(built.workout.participants, 12);
+  assert.deepEqual(built.workout.equipment, ['גומיות']);
+  assert.ok(built.workout.group_plan);
+  assert.ok(built.workout.group_plan.stations >= 1);
+  assert.match(built.workout.group_plan.he, /12 חניכים/);
 });
 
 test('buildSession says so when the library cannot satisfy the request and offers the closest thing', function () {

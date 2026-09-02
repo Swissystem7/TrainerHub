@@ -19,7 +19,7 @@ test('unused lib/ helpers are not in the live tree', function () {
   assert.equal(fs.existsSync(path.join(root, 'lib')), false);
 });
 
-test('local catalog is 78 clips; drive catalog is 44; repo ships 7 sample mp4s', function () {
+test('catalog keeps its source rows while verified videos live outside Git history', function () {
   const catalog = JSON.parse(read('js/catalog.json'));
   const drive = JSON.parse(read('videos/drive-catalog.json'));
   const mp4s = fs.readdirSync(path.join(root, 'videos')).filter(function (f) {
@@ -27,10 +27,12 @@ test('local catalog is 78 clips; drive catalog is 44; repo ships 7 sample mp4s',
   });
   assert.equal(Object.keys(catalog).length, 78);
   assert.equal(drive.items.length, 44);
-  assert.equal(mp4s.length, 7);
-  assert.match(read('README.md'), /78 קליפ/);
-  assert.match(read('README.md'), /7 קבצי mp4/);
-  assert.match(read('README.md'), /44 סרטוני הדרייב/);
+  assert.equal(mp4s.length, 0);
+  assert.equal(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).length, 70);
+  assert.equal(new Set(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).map(function (entry) { return entry.file; })).size, 68);
+  assert.match(read('README.md'), /70 רשומות/);
+  assert.match(read('README.md'), /68 קובצי OneDrive/);
+  assert.match(read('README.md'), /GitHub Releases/);
 });
 
 test('live pages do not sell a fake AI marketplace or SaaS login wall', function () {
