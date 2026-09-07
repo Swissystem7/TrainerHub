@@ -116,3 +116,12 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration understands "שעה וחצי" (90) and "שעה ורבע" (75), and a plain hour stays 60', function () {
+  assert.equal(Prompt.parseDuration('אימון רגליים שעה וחצי'), 90);
+  assert.equal(Prompt.parseDuration('אימון גב שעה ורבע'), 75);
+  assert.equal(Prompt.parseDuration('אימון בטן שעה'), 60);
+  assert.equal(Prompt.parseDuration('חצי שעה בטן'), 30);
+  assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').duration, 90);
+  assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').durationSpecified, true);
+});

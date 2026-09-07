@@ -34,6 +34,9 @@
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
+    // "שעה וחצי" / "שעה ורבע" (an hour and a half / and a quarter) were excluded by the plain-hour rule below
+    if (/שעה\s*וחצי/.test(t)) return 90;
+    if (/שעה\s*ורבע/.test(t)) return 75;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
