@@ -23,6 +23,8 @@
   }
 
   function isSessionMeta(line) {
+    // A timed activity may contain instructions about rests or stations.
+    if (/\d+\s*(?:שניות|שנ[׳']|″)/.test(line) && !/^מנוחה|^\d+\s*סבבים/.test(line)) return false;
     return (
       /מנוחה\s+\d+/.test(line) ||
       /^\d+\s*סבבים/.test(line) ||
@@ -85,7 +87,7 @@
   function splitInlineExercises(afterColon) {
     if (!afterColon) return [];
     return afterColon
-      .split(/,| \+ | ו(?=\S)/)
+      .split(/,| \+ /)
       .map(function (s) { return s.replace(/[.]+$/, '').trim(); })
       .filter(function (s) { return s.length > 1 && !isSessionMeta(s); });
   }
@@ -196,7 +198,8 @@
 
     var lines = raw.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
     var defaults = scanSessionDefaults(raw);
-    var duration_minutes = parseDurationMinutes(raw) || 30;
+    var total = raw.match(/(?:סך הכול|סה״כ|סה"כ)\s*(\d+)\s*דק/);
+    var duration_minutes = (total ? toInt(total[1]) : parseDurationMinutes(lines[0])) || 30;
     var participants = parseParticipants(raw);
     var equipment = parseEquipment(raw);
     var intensity = parseIntensity(raw);
@@ -364,6 +367,7 @@
       phases: phases,
       intensity: intensity,
       tags: tags,
+      source_text: raw,
       source: 'client-fallback'
     };
     var api = (typeof globalThis !== 'undefined' && globalThis.TH) || root.TH;
