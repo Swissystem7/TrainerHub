@@ -31,6 +31,12 @@ test('failed storage is reported and never claims a successful save', () => {
   assert.throws(() => WorkoutLibrary.save({get:()=>[],set:()=>false}, 'test', plans), /השמירה נכשלה/);
   assert.throws(() => WorkoutLibrary.save({get:()=>({}),set:()=>true}, 'test', plans), /אינה תקינה/);
 });
+test('a cached legacy storage writer with no return value is verified by readback', () => {
+  let value = [];
+  const store = {get:()=>structuredClone(value),set:(key,data)=>{value=structuredClone(data);}};
+  WorkoutLibrary.save(store, 'test', plans);
+  assert.equal(value.length,5);
+});
 test('storage verifies persistence and handles quota exceptions', () => {
   global.localStorage = {setItem:()=>{throw Error('QuotaExceededError');}};
   assert.equal(TH.store.set('test', plans), false);
