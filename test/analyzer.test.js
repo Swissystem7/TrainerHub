@@ -86,3 +86,10 @@ test('inferFromName follows the spec examples for plank, bands, and australian p
   assert.ok(row.muscles.indexOf('back') !== -1);
   assert.ok(row.muscles.indexOf('biceps') !== -1);
 });
+
+test('empty session reports zero duration and does not invent volume', function () {
+  const s = Analyzer.analyzeSession({ title: 'ריק', phases: [] });
+  assert.equal(s.durationMinutes, 0);
+  assert.deepEqual(s.exercises, []);
+  assert.deepEqual(s.volume, {});
+});
