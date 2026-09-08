@@ -1,0 +1,89 @@
+name: library-gap-agent
+# Extends the exercise library when a video is missing or has no alternative: reads user submissions
+# (issues labelled exercise-suggestion / exercise-gap), searches YouTube through the official Data API
+# (only when YOUTUBE_API_KEY is configured), dedupes against the catalog, and opens/updates ONE Draft PR
+# with the review queue. It never merges, never copies media, and never edits js/catalog.json itself.
+on:
+  issues:
+    types: [opened, edited, labeled]
+  schedule:
+    - cron: "17 3 * * *"        # once a day; the run itself is capped at 5 YouTube searches
+  workflow_dispatch:
+    inputs:
+      max_searches:
+        description: "YouTube searches allowed in this run"
+        default: "5"
+      check_links:
+        description: "HEAD-check media URLs (max 25)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: library-gap-agent
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    if: github.event_name != 'issues' || contains(join(github.event.issue.labels.*.name, ','), 'exercise-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Tests (the agent's own suite must be green before it runs)
+        run: node --test test/library-agent.test.js test/suggest.test.js
+      - name: Load the existing review queue from the agent branch (so it accumulates across runs)
+        run: |
+          BR=library-agent/candidates
+          if git fetch -q origin "$BR" 2>/dev/null; then
+            git checkout "origin/$BR" -- data/library-agent 2>/dev/null || true
+            git reset -q -- data/library-agent || true
+          fi
+      - name: Run the agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.check_links }}" = "true" ]; then EXTRA="--check-links"; fi
+          node scripts/library-agent/run.js --max-searches "${{ github.event.inputs.max_searches || '5' }}" $EXTRA --summary-file /tmp/summary.md
+      - name: Open or update the review PR (never merges)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          BR=library-agent/candidates
+          rm -rf /tmp/queue && cp -r data/library-agent /tmp/queue
+          git config user.name "library-gap-agent"
+          git config user.email "library-gap-agent@users.noreply.github.com"
+          git checkout -q -- . && git clean -fdq -- data
+          if git rev-parse -q --verify "origin/$BR" >/dev/null; then
+            git checkout -q -B "$BR" "origin/$BR"
+          else
+            git checkout -q -B "$BR"
+          fi
+          rm -rf data/library-agent && mkdir -p data && cp -r /tmp/queue data/library-agent
+          git add data/library-agent
+          # last-run.json changes on every run; only publish when the queue itself changed
+          if git diff --cached --quiet -- data/library-agent/candidates.json data/library-agent/sources.json data/library-agent/search-cache.json; then
+            echo "no queue changes"; exit 0
+          fi
+          git commit -q -m "library-agent: review queue update $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -u origin "$BR"
+          N=$(gh pr list --head "$BR" --state open --json number -q '.[0].number' || true)
+          if [ -n "$N" ]; then
+            gh pr edit "$N" --body-file /tmp/summary.md
+          else
+            gh pr create --draft --base "${{ github.event.repository.default_branch }}" --head "$BR" \
+              --title "library-agent: candidates for review" --body-file /tmp/summary.md
+          fi

@@ -16,7 +16,8 @@ const pages = {
   offer: fs.readFileSync(path.join(root, 'offer.html'), 'utf8'),
   pitch: fs.readFileSync(path.join(root, 'pitch.html'), 'utf8'),
   print: fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8'),
-  journal: fs.readFileSync(path.join(root, 'journal.html'), 'utf8')
+  journal: fs.readFileSync(path.join(root, 'journal.html'), 'utf8'),
+  suggest: fs.readFileSync(path.join(root, 'suggest.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -106,6 +107,10 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.pitch, /class="skip-link/);
   assert.match(pages.print, /class="skip-link/);
   assert.match(pages.journal, /class="skip-link/);
+  assert.match(pages.suggest, /class="skip-link/);
+  assert.match(pages.suggest, /THSuggest/);
+  assert.match(pages.suggest, /נשלחה|בבדיקה|אושרה|נדחתה/);
+  assert.doesNotMatch(pages.suggest, /AIza[0-9A-Za-z_-]{20,}|ghp_[0-9A-Za-z]{20,}|api_key=|YOUTUBE_API_KEY/);
   assert.match(pages.prompt, /shareToClient/);
   assert.match(pages.prompt, /encodeLink/);
   assert.match(pages.journal, /suggestNextFromLog/);

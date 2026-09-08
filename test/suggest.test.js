@@ -1,0 +1,137 @@
+'use strict';
+
+// Browser-side helper of the library-gap agent (suggest.html). Runs in Node against js/suggest.js + js/infer.js.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const S = require('../js/suggest.js');
+
+const GOOD = {
+  url: 'https://youtu.be/dQw4w9WgXcQ',
+  title: 'סקוואט בולגרי',
+  description: 'ירידה איטית, ברך אחורית לכיוון הרצפה',
+  equipment: 'ללא',
+  audience: 'מתחילים',
+  start: '0:42',
+  end: '1:10',
+  consent: true
+};
+
+test('suggest: a YouTube link with consent validates and is canonicalised', function () {
+  const v = S.validate(GOOD);
+  assert.equal(v.ok, true, v.errors.join(' | '));
+  assert.equal(v.source, 'youtube');
+  assert.equal(v.sourceId, 'dQw4w9WgXcQ');
+  assert.equal(v.canonicalUrl, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+});
+
+test('suggest: Drive is accepted, Instagram/other hosts and bare ids are refused', function () {
+  const drive = S.validate(Object.assign({}, GOOD, { url: 'https://drive.google.com/file/d/1abcDEFghijKLMNOPqrstuvWXYZ01/view?usp=sharing' }));
+  assert.equal(drive.ok, true, drive.errors.join(' | '));
+  assert.equal(drive.source, 'drive');
+  assert.equal(drive.canonicalUrl, 'https://drive.google.com/file/d/1abcDEFghijKLMNOPqrstuvWXYZ01/view');
+  const ig = S.validate(Object.assign({}, GOOD, { url: 'https://www.instagram.com/reel/abc123/' }));
+  assert.equal(ig.ok, false);
+  assert.match(ig.errors.join(' '), /YouTube/);
+  assert.equal(S.validate(Object.assign({}, GOOD, { url: 'dQw4w9WgXcQ' })).ok, false);
+  assert.equal(S.validate(Object.assign({}, GOOD, { url: '' })).ok, false);
+});
+
+test('suggest: consent, blocked name, missing name and bad time ranges are refused', function () {
+  assert.match(S.validate(Object.assign({}, GOOD, { consent: false })).errors.join(' '), /לאשר/);
+  assert.match(S.validate(Object.assign({}, GOOD, { title: 'VID_20240101_1' })).errors.join(' '), /חסום/);
+  assert.match(S.validate(Object.assign({}, GOOD, { title: '' })).errors.join(' '), /שם/);
+  assert.match(S.validate(Object.assign({}, GOOD, { start: '1:10', end: '0:42' })).errors.join(' '), /סיום/);
+  assert.match(S.validate(Object.assign({}, GOOD, { start: 'abc' })).errors.join(' '), /קטע זמן/);
+  assert.equal(S.validate(Object.assign({}, GOOD, { start: '', end: '' })).ok, true);
+});
+
+test('suggest: control characters are stripped and fields are length-capped', function () {
+  const v = S.validate(Object.assign({}, GOOD, { title: 'פלאנק\u0000 צידי', description: 'x'.repeat(2000) }));
+  assert.equal(v.fields.title, 'פלאנק צידי');
+  assert.equal(v.fields.description.length, S.LIMITS.description);
+});
+
+test('suggest: issue URLs target the templates and URL-encode every field (no raw HTML, no secrets)', function () {
+  const u = S.issueUrl('suggestion', GOOD);
+  assert.match(u, /^https:\/\/github\.com\/Swissystem7\/TrainerHub\/issues\/new\?/);
+  assert.match(u, /template=exercise-suggestion\.yml/);
+  assert.ok(u.includes('url=' + encodeURIComponent(GOOD.url)));
+  assert.ok(u.includes('exercise=' + encodeURIComponent(GOOD.title)));
+  assert.ok(u.includes('title=' + encodeURIComponent('[הצעה] ' + GOOD.title)));
+  assert.match(u, /start=0%3A42/);
+  const g = S.issueUrl('gap', { title: 'כתפיים <script>alert(1)</script>', gap: 'step_up', description: 'a&b=c' });
+  assert.match(g, /template=exercise-gap\.yml/);
+  assert.match(g, /gap=step_up/);
+  assert.doesNotMatch(g, /<script>/);
+  assert.match(g, /description=a%26b%3Dc/);
+  assert.doesNotMatch(u + g, /AIza|ghp_|token=/);
+});
+
+test('suggest: the JSON fallback mirrors the issue body the agent parses', function () {
+  const p = S.payload(GOOD, '2026-09-08T00:00:00.000Z');
+  assert.equal(p.type, 'exercise-suggestion');
+  assert.equal(p.url, 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  assert.equal(p.consent, true);
+  assert.equal(p.createdAt, '2026-09-08T00:00:00.000Z');
+  const body = S.issueBodyFromPayload(p);
+  assert.match(body, /^```json\n/);
+  assert.match(body, /"title": "סקוואט בולגרי"/);
+  assert.match(body, /\n```\n$/);
+});
+
+test('suggest: the disclosure preview lists exactly the public fields', function () {
+  const rows = S.previewRows(GOOD);
+  const labels = rows.map(function (r) { return r[0]; });
+  assert.deepEqual(labels.slice(0, 3), ['קישור לסרטון', 'מקור', 'שם התרגיל']);
+  assert.equal(rows[0][1], 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  assert.equal(rows[1][1], 'יוטיוב');
+  assert.equal(S.previewRows({}).length, 0);
+});
+
+test('suggest: status merge maps queue statuses and unmatched issues to the four Hebrew labels', function () {
+  const queue = { candidates: [
+    { id: 'c1', status: 'in-review', issue: 12, observed: { title: 'A' }, updatedAt: '2026-09-02T00:00:00Z' },
+    { id: 'c2', status: 'approved', observed: { title: 'B' }, updatedAt: '2026-09-03T00:00:00Z' },
+    { id: 'c3', status: 'rejected', observed: { title: 'C' }, updatedAt: '2026-09-01T00:00:00Z' },
+    { id: 'c4', status: 'weird', observed: { title: 'D' } }
+  ] };
+  const issues = [
+    { number: 12, title: '[הצעה] A', state: 'open', html_url: 'https://github.com/Swissystem7/TrainerHub/issues/12', updated_at: '2026-09-02T00:00:00Z' },
+    { number: 13, title: '[הצעה] E', state: 'open', html_url: 'https://github.com/Swissystem7/TrainerHub/issues/13', updated_at: '2026-09-04T00:00:00Z' },
+    { number: 14, title: '[חסר] F <b>x</b>', state: 'closed', html_url: 'javascript:alert(1)', updated_at: '2026-09-05T00:00:00Z' }
+  ];
+  const rows = S.mergeStatus(queue, issues);
+  const by = {};
+  rows.forEach(function (r) { by[r.title] = r; });
+  assert.equal(by.A.label, 'בבדיקה');
+  assert.equal(by.B.label, 'אושרה');
+  assert.equal(by.C.label, 'נדחתה');
+  assert.equal(by.D.label, 'נשלחה');
+  assert.equal(rows.filter(function (r) { return r.issue === 12; }).length, 1, 'issue 12 is not listed twice');
+  assert.equal(by['[הצעה] E'].label, 'נשלחה');
+  assert.match(by['[חסר] F <b>x</b>'].label, /^נדחתה/);
+  assert.equal(by['[חסר] F <b>x</b>'].issueUrl, '', 'non-GitHub URLs from the API are dropped');
+  assert.equal(rows[0].title, '[חסר] F <b>x</b>', 'newest first');
+  assert.deepEqual(S.mergeStatus(null, null), []);
+});
+
+test('suggest: loadStatus tries the queue branch, falls back to the local file, and survives API failure', async function () {
+  const calls = [];
+  const fetchImpl = async function (url) {
+    calls.push(url);
+    if (url.indexOf('raw.githubusercontent.com') >= 0) return { ok: false, status: 404, json: async () => ({}) };
+    if (url.indexOf('candidates.json') >= 0) {
+      return { ok: true, json: async () => ({ version: 1, candidates: [{ id: 'x', status: 'submitted', observed: { title: 'X' } }] }) };
+    }
+    if (url.indexOf('api.github.com') >= 0) throw new Error('rate limited');
+    return { ok: false, status: 500, json: async () => ({}) };
+  };
+  const out = await S.loadStatus(fetchImpl);
+  assert.equal(out.queue.candidates.length, 1);
+  assert.ok(out.errors.some(function (e) { return e.indexOf('issues:') === 0; }));
+  assert.ok(calls[0].indexOf('library-agent/candidates') >= 0, 'queue branch first');
+  assert.ok(calls.some(function (u) { return u === './data/library-agent/candidates.json'; }));
+  const none = await S.loadStatus(async function () { return { ok: false, status: 500, json: async () => ({}) }; });
+  assert.equal(none.queue, null);
+  assert.ok(none.errors.indexOf('queue') >= 0);
+});

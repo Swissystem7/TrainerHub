@@ -1,0 +1,63 @@
+name: הצעת סרטון לספריית התרגילים
+description: "הצע/י סרטון (YouTube או Google Drive) לתרגיל שחסר לו סרטון או חלופה. מה שתכתוב/י כאן ציבורי."
+title: "[הצעה] "
+labels: ["exercise-suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **מה יפורסם:** הקישור, שם התרגיל, התיאור, הציוד וקהל היעד — כולם ציבוריים בתוך ה-issue הזה ובתור הבדיקה.
+        לא מעלים את הסרטון עצמו למאגר: נשמר קישור והטמעה עם ייחוס ליוצר. אל תשלחו סרטון פרטי או פרטים של אנשים בלי הסכמתם.
+        סוכן אוטומטי בודק כפילויות ומכניס לתור; **שום דבר לא נכנס לספרייה בלי אישור ידני של מדריך.**
+  - type: input
+    id: url
+    attributes:
+      label: קישור לסרטון
+      description: YouTube (watch / youtu.be / shorts) או Google Drive בלבד
+      placeholder: https://www.youtube.com/watch?v=...
+    validations:
+      required: true
+  - type: input
+    id: exercise
+    attributes:
+      label: שם התרגיל
+      placeholder: סקוואט בולגרי
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: תיאור
+      description: מה רואים בתנועה, מה חשוב לשים לב אליו
+  - type: input
+    id: equipment
+    attributes:
+      label: ציוד
+      placeholder: ללא / גומייה / קונוסים / כדור
+  - type: input
+    id: audience
+    attributes:
+      label: קהל יעד
+      placeholder: מתחילים / ילדים / מתקדמים
+  - type: input
+    id: start
+    attributes:
+      label: קטע זמן — התחלה
+      placeholder: "0:42"
+  - type: input
+    id: end
+    attributes:
+      label: קטע זמן — סיום
+      placeholder: "1:10"
+  - type: input
+    id: gap
+    attributes:
+      label: תרגיל חסר
+      description: אם ההצעה עונה על "חסר לי תרגיל" ספציפי מהספרייה, כתבו את מזהה התרגיל
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: הסכמה
+      options:
+        - label: אני מאשר/ת שהקישור והפרטים יפורסמו במאגר, ושאין כאן סרטון פרטי או פרטים של אנשים בלי הסכמתם
+          required: true

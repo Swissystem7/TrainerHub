@@ -33,6 +33,8 @@
     .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .actions button { flex: 1; min-width: 96px; margin-top: 0; padding: 8px 10px; font-size: .78rem; font-weight: 700; border: 0; border-radius: 8px; background: var(--lime); color: #101312; cursor: pointer; font-family: inherit; }
     .actions button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    .actions a.suggest { flex: 1; min-width: 96px; padding: 8px 10px; font-size: .78rem; font-weight: 700; border-radius: 8px; border: 1px dashed var(--lime); color: var(--lime); text-align: center; text-decoration: none; }
+    .alts a { color: var(--lime); }
     .empty { color: var(--muted); text-align: center; padding: 40px 12px; }
     .alts { font-size: .8rem; color: var(--muted); }
     .alts button { background: none; border: 0; color: var(--lime); cursor: pointer; font: inherit; padding: 0 4px; }
@@ -54,6 +56,7 @@
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
+  <a href="./suggest.html">הצע סרטון</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
@@ -194,11 +197,13 @@
         video = '<a class="ex-media-link" href="' + TH.esc(e.externalUrl) + '" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני</a>';
       }
       var alts = TH.substitutesFor({ id: e.id }, { limit: 3 });
+      var suggestHref = './suggest.html?gap=' + encodeURIComponent(e.id);
       var altHtml = alts.length
         ? '<div class="alts">חלופות: ' + alts.map(function (a) {
             return '<button type="button" data-jump="' + TH.esc(a.id) + '">' + TH.esc(a.he) + '</button>';
           }).join(' · ') + '</div>'
-        : '';
+        : '<div class="alts">אין חלופה עם סרטון · <a href="' + TH.esc(suggestHref) + '">הצע סרטון</a></div>';
+      var suggest = kind ? '' : '<a class="suggest" href="' + TH.esc(suggestHref) + '">חסר סרטון? הצע</a>';
       return '<article class="card" data-id="' + TH.esc(e.id) + '">' +
         '<h2>' + TH.esc(e.he) + '</h2>' +
         '<div class="meta">' + muscles + eq + tags + sourcePill + '</div>' +
@@ -206,7 +211,7 @@
         '<div class="actions">' +
           '<button type="button" data-act="copy">העתק לינק</button>' +
           '<button type="button" class="ghost" data-act="wa">וואטסאפ</button>' +
-          '<button type="button" class="ghost" data-act="add">הוסף לאימון</button>' +
+          '<button type="button" class="ghost" data-act="add">הוסף לאימון</button>' + suggest +
         '</div></article>';
     }).join('');
   }

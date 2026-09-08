@@ -11,8 +11,12 @@ function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
 
-test('there is no GitHub Actions workflow directory', function () {
-  assert.equal(fs.existsSync(path.join(root, '.github', 'workflows')), false);
+test('the only GitHub Actions workflow is the library-gap agent, and it never merges or deploys', function () {
+  const dir = path.join(root, '.github', 'workflows');
+  assert.deepEqual(fs.readdirSync(dir).sort(), ['library-gap-agent.yml']);
+  const wf = read('.github/workflows/library-gap-agent.yml');
+  assert.match(wf, /--draft/);
+  assert.doesNotMatch(wf, /pr merge|merge --auto|--admin|deploy-pages|pages-build/);
 });
 
 test('unused lib/ helpers are not in the live tree', function () {
