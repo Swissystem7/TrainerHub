@@ -1,0 +1,36 @@
+name: חסר לי תרגיל
+description: "דיווח על חוסר בספרייה: תרגיל בלי סרטון, סרטון שלא נטען, או שאין חלופה לציוד / רמה / תנאי שטח."
+title: "[חסר] "
+labels: ["exercise-gap"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        הדיווח ציבורי. הסוכן ישתמש בו כדי לחפש מועמדים; **הוא לא יקבע התאמה לשטח רטוב או אישור מקצועי על סמך שם בלבד** — זה נשאר למדריך.
+  - type: input
+    id: exercise
+    attributes:
+      label: שם התרגיל או התנועה שחסרה
+      placeholder: תרגיל כתפיים עם גומייה
+    validations:
+      required: true
+  - type: input
+    id: gap
+    attributes:
+      label: תרגיל חסר (מזהה מהספרייה, אם יש)
+      placeholder: drive_פלאנק
+  - type: textarea
+    id: description
+    attributes:
+      label: תיאור החוסר
+      description: מה חיפשת, לאיזה חלק באימון, ומה היה זמין ולא התאים
+  - type: input
+    id: equipment
+    attributes:
+      label: ציוד זמין
+      placeholder: ללא / גומייה / קונוסים
+  - type: input
+    id: audience
+    attributes:
+      label: רמה / קהל
+      placeholder: מתחילים

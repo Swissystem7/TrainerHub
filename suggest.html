@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="חסר לי תרגיל / הצע סרטון — הרחבת ספריית התרגילים של TrainerHub דרך הצעות ציבוריות ובדיקה ידנית של מדריך.">
+  <title>TrainerHub | הצע סרטון</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; --warn:#f0b542; --bad:#ff9d9d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 920px; margin: auto; padding: 28px 20px 64px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
+    .top p { color: var(--muted); max-width: 46rem; line-height: 1.6; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 18px 0; }
+    .card h2 { font-size: 1.15rem; margin: 0 0 10px; }
+    .card h3 { font-size: .95rem; margin: 14px 0 6px; color: var(--lime); }
+    label { display: block; color: var(--muted); font-size: .82rem; margin: 12px 0 6px; }
+    input, select, textarea { width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
+    textarea { min-height: 84px; resize: vertical; }
+    .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .row label { margin-top: 12px; }
+    .hint { color: var(--muted); font-size: .84rem; line-height: 1.6; margin: 8px 0 0; }
+    .hint.warn { color: var(--warn); }
+    .hint.ok { color: var(--lime); }
+    .hint ul { margin: 6px 0 0; padding-inline-start: 18px; }
+    .consent { border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 14px; display: flex; gap: 10px; align-items: flex-start; }
+    .consent input { width: auto; margin-top: 4px; }
+    .consent label { margin: 0; color: var(--ink); font-size: .9rem; line-height: 1.5; }
+    .preview { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 14px; background: #111513; }
+    .preview dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: .88rem; }
+    .preview dt { color: var(--muted); }
+    .preview dd { margin: 0; word-break: break-word; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .status { min-height: 1.4em; color: var(--lime); font-size: .9rem; margin: 10px 0 0; }
+    .list { display: grid; gap: 8px; margin-top: 10px; }
+    .item { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #111513; }
+    .item b { display: block; font-size: .95rem; }
+    .item .sub { color: var(--muted); font-size: .78rem; }
+    .item a { color: var(--lime); }
+    .badge { border-radius: 999px; padding: 4px 10px; font-size: .76rem; font-weight: 700; white-space: nowrap; border: 1px solid var(--line); color: var(--muted); }
+    .badge.in-review { color: var(--warn); border-color: var(--warn); }
+    .badge.approved { color: #101312; background: var(--lime); border-color: var(--lime); }
+    .badge.rejected { color: var(--bad); border-color: var(--bad); }
+    .steps { color: var(--muted); font-size: .86rem; line-height: 1.7; margin: 0; padding-inline-start: 20px; }
+    @media (max-width: 640px) { .row { grid-template-columns: 1fr; } .preview dl { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#s_url">דלג לטופס ההצעה</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./journal.html">יומן ביצוע</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <span class="chip on">הצע סרטון</span>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  ההצעות כאן ציבוריות ונבדקות ידנית על ידי מדריך. לא מעלים סרטונים למאגר — נשמר קישור, הטמעה וייחוס ליוצר. שום דבר לא נכנס לספרייה בלי אישור.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / הצע סרטון</small>
+    <h1>חסר לי תרגיל? הצע סרטון</h1>
+    <p>כשתרגיל בספרייה בלי סרטון, כשסרטון לא נטען, או כשאין חלופה לציוד או לרמה — אפשר לדווח או להציע סרטון YouTube / Google Drive.
+      סוכן אוטומטי בודק כפילויות ומכניס לתור; המדריך מאשר או דוחה. הסוכן לא צופה בסרטונים ולא קובע התאמה לשטח רטוב או אישור מקצועי על סמך שם.</p>
+  </header>
+
+  <section class="card" aria-labelledby="gapTitle">
+    <h2 id="gapTitle">חסר לי תרגיל</h2>
+    <p class="hint">דיווח על חוסר: תרגיל בלי סרטון, סרטון שלא נטען, או שאין חלופה לציוד / רמה / תנאי שטח. הדיווח נפתח כ-issue ציבורי ב-GitHub (דורש חשבון GitHub).</p>
+    <form id="gapForm">
+      <label for="g_gap">תרגיל מהספרייה (אופציונלי)</label>
+      <select id="g_gap" name="g_gap"><option value="">— לא קשור לתרגיל ספציפי —</option></select>
+      <label for="g_title">מה חסר</label>
+      <input id="g_title" name="g_title" type="text" maxlength="80" placeholder="תרגיל כתפיים עם גומייה" autocomplete="off">
+      <label for="g_description">תיאור החוסר</label>
+      <textarea id="g_description" name="g_description" maxlength="600" placeholder="מה חיפשת, לאיזה חלק באימון, ומה היה זמין ולא התאים"></textarea>
+      <div class="row">
+        <div>
+          <label for="g_equipment">ציוד זמין</label>
+          <input id="g_equipment" name="g_equipment" type="text" maxlength="60" placeholder="ללא / גומייה / קונוסים">
+        </div>
+        <div>
+          <label for="g_audience">רמה / קהל</label>
+          <input id="g_audience" name="g_audience" type="text" maxlength="60" placeholder="מתחילים / ילדים">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="th-btn">פתח דיווח ב-GitHub</button>
+      </div>
+      <p class="status" id="gapStatus" role="status"></p>
+    </form>
+  </section>
+
+  <form class="card" id="suggestForm" aria-labelledby="sugTitle">
+    <h2 id="sugTitle">הצע סרטון</h2>
+    <p class="hint">רק YouTube (watch / youtu.be / shorts) או Google Drive. אל תשלחו סרטון פרטי או פרטים של אנשים בלי הסכמתם. השם, התיאור, הציוד וקהל היעד יפורסמו.</p>
+    <label for="s_url">קישור לסרטון</label>
+    <input id="s_url" name="s_url" type="text" inputmode="url" maxlength="300" placeholder="https://www.youtube.com/watch?v=…" autocomplete="off">
+    <label for="s_title">שם התרגיל (בעברית)</label>
+    <input id="s_title" name="s_title" type="text" maxlength="80" placeholder="סקוואט בולגרי" autocomplete="off">
+    <label for="s_description">תיאור — מה רואים בתנועה ומה חשוב לשים לב אליו</label>
+    <textarea id="s_description" name="s_description" maxlength="600"></textarea>
+    <div class="row">
+      <div>
+        <label for="s_equipment">ציוד</label>
+        <input id="s_equipment" name="s_equipment" type="text" maxlength="60" placeholder="ללא / גומייה / כדור">
+      </div>
+      <div>
+        <label for="s_audience">קהל יעד</label>
+        <input id="s_audience" name="s_audience" type="text" maxlength="60" placeholder="מתחילים / ילדים / מתקדמים">
+      </div>
+      <div>
+        <label for="s_gap">עונה על "חסר לי תרגיל"?</label>
+        <select id="s_gap" name="s_gap"><option value="">— לא —</option></select>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="s_start">קטע זמן — התחלה (אופציונלי)</label>
+        <input id="s_start" name="s_start" type="text" inputmode="numeric" maxlength="12" placeholder="0:42">
+      </div>
+      <div>
+        <label for="s_end">קטע זמן — סיום (אופציונלי)</label>
+        <input id="s_end" name="s_end" type="text" inputmode="numeric" maxlength="12" placeholder="1:10">
+      </div>
+    </div>
+    <div class="consent">
+      <input id="consent" name="consent" type="checkbox">
+      <label for="consent">אני מאשר/ת שהקישור והפרטים יפורסמו במאגר, ושאין כאן סרטון פרטי או פרטים של אנשים בלי הסכמתם.</label>
+    </div>
+    <section class="preview" aria-labelledby="prevTitle" aria-live="polite">
+      <h3 id="prevTitle">מה יפורסם</h3>
+      <dl id="previewList"></dl>
+      <div id="previewErrors" class="hint"></div>
+    </section>
+    <div class="actions">
+      <button type="submit" class="th-btn">פתח הצעה ב-GitHub</button>
+      <button type="button" class="th-btn ghost" id="copyBtn">העתק JSON</button>
+      <button type="button" class="th-btn ghost" id="downloadBtn">הורד JSON</button>
+    </div>
+    <p class="status" id="sugStatus" role="status"></p>
+    <label for="jsonBox">JSON להעתקה — למי שאין חשבון GitHub: שולחים למדריך והוא פותח את ה-issue</label>
+    <textarea id="jsonBox" readonly dir="ltr"></textarea>
+  </form>
+
+  <section class="card" aria-labelledby="stTitle">
+    <h2 id="stTitle">סטטוס הצעות</h2>
+    <ol class="steps">
+      <li><b>נשלחה</b> — ה-issue נפתח ומחכה לריצת הסוכן.</li>
+      <li><b>בבדיקה</b> — הסוכן אימת, בדק כפילויות והכניס לתור; המדריך בודק.</li>
+      <li><b>אושרה</b> / <b>נדחתה</b> — החלטת המדריך. רק אחרי אישור התרגיל נכנס לספרייה.</li>
+    </ol>
+    <div class="actions">
+      <button type="button" class="th-btn ghost" id="refreshBtn">רענן</button>
+    </div>
+    <div class="list" id="statusList" aria-live="polite"></div>
+  </section>
+</main>
+
+<script src="./js/core.js"></script>
+<script src="./js/infer.js"></script>
+<script src="./js/suggest.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var S = window.THSuggest;
+  var FIELDS = ['url', 'title', 'description', 'equipment', 'audience', 'start', 'end', 'gap'];
+
+  function param(name) {
+    var m = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.search);
+    try { return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : ''; } catch (err) { return ''; }
+  }
+
+  function flash(id, text) {
+    var el = $(id);
+    el.textContent = text;
+  }
+
+  function readSuggest() {
+    var f = {};
+    FIELDS.forEach(function (k) { f[k] = $('s_' + k).value; });
+    f.consent = $('consent').checked;
+    return f;
+  }
+
+  function readGap() {
+    var gapSel = $('g_gap');
+    return {
+      title: $('g_title').value || (gapSel.value ? gapSel.options[gapSel.selectedIndex].text : ''),
+      gap: gapSel.value,
+      description: $('g_description').value,
+      equipment: $('g_equipment').value,
+      audience: $('g_audience').value
+    };
+  }
+
+  function renderPreview() {
+    var f = readSuggest();
+    var v = S.validate(f);
+    var rows = S.previewRows(f);
+    $('previewList').innerHTML = rows.map(function (r) {
+      return '<dt>' + TH.esc(r[0]) + '</dt><dd>' + TH.esc(r[1]) + '</dd>';
+    }).join('');
+    var box = $('previewErrors');
+    if (!rows.length) {
+      box.className = 'hint';
+      box.textContent = 'מלאו את הטופס כדי לראות בדיוק מה יפורסם.';
+    } else if (v.errors.length) {
+      box.className = 'hint warn';
+      box.innerHTML = '<ul>' + v.errors.map(function (e) { return '<li>' + TH.esc(e) + '</li>'; }).join('') + '</ul>';
+    } else {
+      box.className = 'hint ok';
+      box.textContent = 'תקין. "פתח הצעה ב-GitHub" פותח issue מלא מראש — שם מסמנים שוב את ההסכמה ושולחים.';
+    }
+    $('jsonBox').value = rows.length ? JSON.stringify(S.payload(f), null, 2) : '';
+  }
+
+  function fillGapSelects() {
+    var all = TH.catalogList();
+    var missing = all.filter(function (e) { return !TH.isPlayable(e); });
+    var playable = all.filter(function (e) { return TH.isPlayable(e); });
+    function opt(e) {
+      var m = (e.muscles || []).map(function (x) { return TH.muscleLabel(x); }).join(', ');
+      return '<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (m ? ' (' + TH.esc(m) + ')' : '') + '</option>';
+    }
+    var groups = '<optgroup label="בלי סרטון">' + missing.map(opt).join('') + '</optgroup>' +
+      '<optgroup label="יש סרטון, אולי חסרה חלופה">' + playable.map(opt).join('') + '</optgroup>';
+    $('g_gap').innerHTML = '<option value="">— לא קשור לתרגיל ספציפי —</option>' + groups;
+    $('s_gap').innerHTML = '<option value="">— לא —</option>' + groups;
+    var pre = param('gap');
+    if (pre) {
+      $('g_gap').value = pre;
+      $('s_gap').value = pre;
+      if ($('g_gap').value !== pre) $('g_title').value = pre.slice(0, 80);
+      var focusEl = $('g_gap').value === pre ? $('g_description') : $('g_title');
+      focusEl.focus();
+    }
+  }
+
+  function openIssue(url) {
+    var w = window.open(url, '_blank', 'noopener');
+    return !!w;
+  }
+
+  function renderStatus() {
+    var box = $('statusList');
+    box.innerHTML = '<p class="hint">טוען…</p>';
+    S.loadStatus().then(function (out) {
+      var rows = S.mergeStatus(out.queue, out.issues);
+      var notes = [];
+      if (!out.queue) notes.push('תור הבדיקה עדיין לא פורסם או לא נטען.');
+      if (out.errors.some(function (e) { return e.indexOf('issues:') === 0; })) {
+        notes.push('רשימת ה-issues לא נטענה כרגע (מגבלת GitHub API ללא התחברות) — נסו שוב בעוד כמה דקות.');
+      }
+      var html = rows.length ? rows.map(function (r) {
+        var link = r.issueUrl
+          ? '<a href="' + TH.esc(r.issueUrl) + '" target="_blank" rel="noopener noreferrer">issue #' + TH.esc(String(r.issue)) + '</a>'
+          : (r.issue ? 'issue #' + TH.esc(String(r.issue)) : 'מהסוכן');
+        return '<div class="item"><div><b>' + TH.esc(r.title) + '</b><span class="sub">' + link +
+          (r.updatedAt ? ' · ' + TH.esc(String(r.updatedAt).slice(0, 10)) : '') + '</span></div>' +
+          '<span class="badge ' + TH.esc(r.status) + '">' + TH.esc(r.label) + '</span></div>';
+      }).join('') : '<p class="hint">אין עדיין הצעות בתור.</p>';
+      box.innerHTML = html + (notes.length ? '<p class="hint warn">' + notes.map(function (n) { return TH.esc(n); }).join(' ') + '</p>' : '');
+    });
+  }
+
+  $('suggestForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = readSuggest();
+    var v = S.validate(f);
+    if (!v.ok) { flash('sugStatus', v.errors[0]); renderPreview(); return; }
+    if (openIssue(S.issueUrl('suggestion', f))) {
+      flash('sugStatus', 'נפתח חלון GitHub עם ההצעה. סמנו שם את תיבת ההסכמה ולחצו Submit — ההצעה תופיע כאן כ"נשלחה" אחרי הרענון.');
+    } else {
+      flash('sugStatus', 'הדפדפן חסם חלון קופץ. העתיקו את ה-JSON ושלחו למדריך, או אפשרו חלונות קופצים.');
+    }
+  });
+
+  $('gapForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = readGap();
+    if (!S.clean(f.title)) { flash('gapStatus', 'כתבו מה חסר או בחרו תרגיל מהספרייה.'); return; }
+    if (openIssue(S.issueUrl('gap', f))) flash('gapStatus', 'נפתח חלון GitHub עם הדיווח. בדקו ולחצו Submit.');
+    else flash('gapStatus', 'הדפדפן חסם חלון קופץ — אפשרו חלונות קופצים ונסו שוב.');
+  });
+
+  $('copyBtn').addEventListener('click', function () {
+    renderPreview();
+    var json = $('jsonBox').value;
+    if (!json) { flash('sugStatus', 'אין עדיין מה להעתיק.'); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(json).then(function () { flash('sugStatus', 'ה-JSON הועתק.'); }, function () { flash('sugStatus', 'העתיקו ידנית מהתיבה למטה.'); });
+    } else {
+      flash('sugStatus', 'העתיקו ידנית מהתיבה למטה.');
+    }
+  });
+
+  $('downloadBtn').addEventListener('click', function () {
+    renderPreview();
+    var json = $('jsonBox').value;
+    if (!json) { flash('sugStatus', 'אין עדיין מה להוריד.'); return; }
+    var blob = new Blob([json], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'trainerhub-suggestion.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    flash('sugStatus', 'הקובץ ירד. שולחים אותו למדריך, והוא מדביק אותו ב-issue.');
+  });
+
+  $('refreshBtn').addEventListener('click', renderStatus);
+  FIELDS.forEach(function (k) { $('s_' + k).addEventListener('input', renderPreview); });
+  $('consent').addEventListener('change', renderPreview);
+
+  TH.ready(function () {
+    fillGapSelects();
+    renderPreview();
+    renderStatus();
+  });
+})();
+</script>
+</body>
+</html>
