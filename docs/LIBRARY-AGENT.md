@@ -37,8 +37,8 @@
 |---|---|---|
 | `YOUTUBE_API_KEY` | Settings → Secrets and variables → Actions | לא. בלעדיו הסוכן עדיין מעבד הצעות ומזהה חוסרים, ומדווח `not-configured` |
 | הרשאה ל-Actions לפתוח PR | Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests" | כן, אחרת שלב ה-PR נכשל (התור עדיין נשמר בענף) |
-| תוויות `exercise-suggestion`, `exercise-gap` | נוצרות אוטומטית מתבניות ה-issue | כן |
-| הרצה ידנית | Actions → library-gap-agent → Run workflow (אפשר לבחור מספר חיפושים ובדיקת קישורים) | לא |
+| תוויות `exercise-suggestion`, `exercise-gap` | חייבות להתקיים במאגר (GitHub לא יוצר תוויות מתבנית). נוצרו ב-`gh label create` בזמן ה-PR; אם חסרות: Issues → Labels | כן |
+| הרצה ראשונה | ה-workflow פועל רק מהענף הראשי: אחרי המיזוג, Actions → library-gap-agent → Run workflow (אפשר לבחור מספר חיפושים ובדיקת קישורים) | כן, פעם אחת |
 
 מקומית: `node scripts/library-agent/run.js --dry-run --no-issues` מריץ זיהוי חוסרים בלי רשת;
 `node --test test/library-agent.test.js` מריץ את הבדיקות.
