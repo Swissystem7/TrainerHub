@@ -169,7 +169,7 @@
   <a href="./workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  הפענוח רץ בדפדפן לפי כללים. שרת AI ב-<code>localhost:8001</code> אופציונלי ולא פעיל ב-GitHub Pages.
+  הפענוח רץ בדפדפן לפי כללים. הטקסט נשאר במכשיר ואינו נשלח לשרת פענוח.
 </div>
 <header class="page-head">
   <small>TRAINERHUB / כרטיסייה מטקסט</small>
@@ -188,6 +188,9 @@
     </div>
     <button type="button" class="parse-btn" id="parseBtn">המר לכרטיסייה</button>
     <p class="honest">אין כאן בינה מלאכותית בדמו הציבורי. התוצאה היא פירוק טקסט + התאמה למאגר.</p>
+    <button type="button" class="parse-btn" id="netanyaBtn">הוסף את חמשת אימוני הפתיחה — שלולית החורף נתניה</button>
+    <p class="honest">התאמות מוצעות למדריך. כולל חלופות לקרקע רטובה; תנאי השטח טעונים בדיקה. נשמר בדפדפן זה בלבד.</p>
+    <div id="libraryStatus" role="status" aria-live="polite"></div>
     <div id="historyPanel">
       <div class="history-title">אימונים שמורים בדפדפן</div>
       <div id="historyList"></div>
@@ -209,8 +212,10 @@
     <div id="gateHost"></div>
   </div>
 </div>
-<script src="../js/core.js"></script>
-<script src="parse-workout.js"></script>
+<script src="../js/core.js?v=netanya-2"></script>
+<script src="parse-workout.js?v=netanya-2"></script>
+<script src="saved-workouts.js?v=netanya-2"></script>
+<script src="netanya-opening.js?v=netanya-2"></script>
 <script>
 (function () {
   var EXAMPLES = {
@@ -262,7 +267,9 @@
         (w.duration_minutes ? '<span class="badge">' + w.duration_minutes + ' דקות</span>' : '') +
         (w.participants ? '<span class="badge">' + w.participants + ' משתתפים</span>' : '') +
         (w.intensity ? '<span class="badge ' + intensityClass + '">' + intensityLabel + '</span>' : '') +
-      '</div>' + equipment + tags + '</div>' + phases + '</div>';
+      '</div>' + equipment + tags + '</div>' +
+      (w.notes ? '<p class="honest">' + TH.esc(w.notes) + '</p>' : '') + phases +
+      (w.source_text ? '<details><summary>טקסט המקור והנחיות</summary><pre style="white-space:pre-wrap">' + TH.esc(w.source_text) + '</pre></details>' : '') + '</div>';
   }
 
   function showCard(w, usedFallback) {
@@ -280,41 +287,19 @@
       $('cardEmpty').textContent = 'כתבו תיאור אימון קודם.';
       return;
     }
-    var btn = $('parseBtn');
-    btn.disabled = true;
-    btn.textContent = 'ממיר…';
-    var workout = null;
-    var usedFallback = false;
-    var finish = function () {
-      btn.disabled = false;
-      btn.textContent = 'המר לכרטיסייה';
-    };
-    fetch('http://localhost:8001/api/parse-workout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text }),
-      signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(1200) : undefined
-    }).then(function (res) { return res.json().then(function (data) { return { res: res, data: data }; }); })
-      .then(function (pack) {
-        if (!pack.res.ok || !pack.data.success || !pack.data.workout) throw new Error('no-server');
-        workout = pack.data.workout;
-      })
-      .catch(function () {
-        workout = typeof parseWorkoutClient === 'function' ? parseWorkoutClient(text) : null;
-        usedFallback = true;
-      })
-      .then(function () {
-        if (!workout || !Array.isArray(workout.phases) || !workout.phases.length) {
-          $('cardContent').hidden = false;
-          $('cardEmpty').hidden = true;
-          $('actionBar').hidden = true;
-          $('cardContent').innerHTML = '<div class="error-card">לא הצלחנו לפענח. נסו דוגמה, או את הבונה הראשי.</div>';
-          return;
-        }
-        if (TH.attachCatalogIds) TH.attachCatalogIds(workout);
-        showCard(workout, usedFallback);
-      })
-      .finally(finish);
+    // The public editor is entirely local. No pending server request can
+    // race with Save and accidentally save the preceding workout.
+    try {
+      var workout = parseWorkoutClient(text);
+      workout.source_text = text;
+      workout.saved_id = 'workout-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      showCard(workout, true);
+      $('libraryStatus').textContent = 'הכרטיסייה מוכנה. בדקו זמנים ותוכן לפני שמירה.';
+    } catch (error) {
+      currentWorkout = null;
+      $('actionBar').hidden = true;
+      $('libraryStatus').textContent = 'ההמרה נכשלה. הטקסט נשאר בעורך.';
+    }
   }
 
   function renderHistory() {
@@ -366,18 +351,29 @@
     TH.preparePrint(currentWorkout, {});
     location.href = TH.printUrl();
   });
+  function saveEntries(entries) {
+    try {
+      WorkoutLibrary.save(TH.store, TH.KEYS.saved, entries);
+      renderHistory();
+      $('libraryStatus').textContent = 'נשמרו ' + entries.length + ' אימונים בדפדפן זה.';
+      return true;
+    } catch (error) {
+      $('libraryStatus').textContent = error.message;
+      return false;
+    }
+  }
   $('saveBtn').addEventListener('click', function () {
-    if (!currentWorkout) return;
-    var saved = TH.store.get(TH.KEYS.saved, []);
-    if (!Array.isArray(saved)) saved = [];
-    var entry = {};
-    Object.keys(currentWorkout).forEach(function (k) { entry[k] = currentWorkout[k]; });
-    entry.savedAt = new Date().toLocaleString('he-IL');
-    saved.unshift(entry);
-    TH.store.set(TH.KEYS.saved, saved.slice(0, 20));
-    renderHistory();
-    $('saveToast').classList.add('visible');
-    setTimeout(function () { $('saveToast').classList.remove('visible'); }, 2000);
+    if (currentWorkout) saveEntries([currentWorkout]);
+  });
+  $('netanyaBtn').addEventListener('click', function () {
+    if (saveEntries(NetanyaOpeningWorkouts)) showCard(NetanyaOpeningWorkouts[0], false);
+  });
+  $('workoutInput').addEventListener('input', function () {
+    currentWorkout = null;
+    $('actionBar').hidden = true;
+    $('cardContent').hidden = true;
+    $('cardEmpty').hidden = false;
+    $('cardEmpty').textContent = 'הטקסט השתנה. לחצו על המרה כדי לעדכן את הכרטיסייה.';
   });
   $('jsonBtn').addEventListener('click', function () {
     if (!currentWorkout) return;
@@ -412,13 +408,13 @@
     if (!Array.isArray(saved)) return;
     if (del) {
       saved.splice(Number(del.getAttribute('data-del')), 1);
-      TH.store.set(TH.KEYS.saved, saved);
+      if (!TH.store.set(TH.KEYS.saved, saved)) { $('libraryStatus').textContent = 'המחיקה לא נשמרה.'; return; }
       renderHistory();
       return;
     }
     if (load) {
       currentWorkout = saved[Number(load.getAttribute('data-load'))];
-      if (currentWorkout) showCard(currentWorkout, false);
+      if (currentWorkout) { $('workoutInput').value = currentWorkout.source_text || ''; showCard(currentWorkout, false); }
     }
   });
 

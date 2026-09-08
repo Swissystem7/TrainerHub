@@ -235,7 +235,11 @@
   }
 
   function storeSet(key, val) {
-    try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    try {
+      var serialized = JSON.stringify(val);
+      localStorage.setItem(key, serialized);
+      return localStorage.getItem(key) === serialized;
+    } catch (e) { return false; }
   }
 
   function storeRemove(key) {
