@@ -113,6 +113,7 @@
 
   function estimateDuration(workout, exercises) {
     if (workout && workout.duration_minutes) return Number(workout.duration_minutes) || 0;
+    if (!exercises || !exercises.length) return 0;
     var seconds = 0;
     exercises.forEach(function (ex) {
       var sets = Number(ex.sets) || 1;
