@@ -34,6 +34,9 @@
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
+    // "שעה וחצי" / "שעה ורבע" (an hour and a half / and a quarter) were excluded by the plain-hour rule below
+    if (/שעה\s*וחצי/.test(t)) return 90;
+    if (/שעה\s*ורבע/.test(t)) return 75;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
@@ -42,6 +45,40 @@
 
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
+    
+    // Map Hebrew number words to numeric values
+    var hebrewNumbers = {
+      'אחד': 1,
+      'שניים': 2,
+      'שלושה': 3,
+      'ארבעה': 4,
+      'חמישה': 5,
+      'שישה': 6,
+      'שבעה': 7,
+      'שמונה': 8,
+      'תשעה': 9,
+      'עשרה': 10
+    };
+    
+    // Check for Hebrew number words directly before participant terms
+    var participantTerms = /(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i;
+    var hebrewNumberMatch = null;
+    
+    // Try to match Hebrew number words followed by participant terms
+    for (var word in hebrewNumbers) {
+      var regex = new RegExp(word + '\\s+' + participantTerms.source, 'i');
+      if (regex.test(t)) {
+        hebrewNumberMatch = word;
+        break;
+      }
+    }
+    
+    if (hebrewNumberMatch) {
+      var numValue = hebrewNumbers[hebrewNumberMatch];
+      return numValue && numValue > 0 ? Math.min(numValue, 500) : null;
+    }
+    
+    // Fallback to original numeric parsing
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
     if (!m) return null;
