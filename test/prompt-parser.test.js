@@ -125,3 +125,8 @@ test('parseDuration understands "שעה וחצי" (90) and "שעה ורבע" (75
   assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').duration, 90);
   assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').durationSpecified, true);
 });
+
+test('parseParticipants recognizes Hebrew number words before participant terms', function () {
+  assert.equal(Prompt.parseParticipants('אימון עם עשרה חניכים'), 10);
+  const req = Prompt.parsePrompt('אימון בטן שמונה ילדים');
+  assert.equal(req.participants, 8);});
