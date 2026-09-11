@@ -755,6 +755,50 @@
     return result;
   }
 
+  /* ── The owner's red lines ──────────────────────────────────────────
+     A standing instruction from the owner: nothing this module puts in front of a
+     trainer may say a session is safe or unsafe, imply that a professional or a
+     doctor approved it, or name a professional body. Until now that rule lived as
+     four hand-copied regexes inside four tests, each sampling one call; the notes
+     that travel on EVERY result (RULE_NOTE_HE, SOURCE_NOTE_HE) were covered by
+     none of them. It lives here now, as data, and test/red-lines.test.js runs it
+     over every Hebrew string these rules can produce.
+
+     No /g flags: a shared regex with /g carries lastIndex between calls. */
+
+  var RED_LINE_TERMS = [
+    { term: 'בטוח', rx: /בטוח(?:ה|ים|ות)?/, why: 'calls a session safe or not safe' },
+    { term: 'מסוכן', rx: /מסוכ(?:ן|נת|נים|נות)/, why: 'calls a session or an exercise dangerous' },
+    { term: 'מאושר', rx: /מאושר(?:ת|ים|ות)?/, why: 'implies something approved it' },
+    { term: 'אישור', rx: /אישור/, why: 'implies professional approval' },
+    { term: 'רפואי', rx: /רפואי(?:ת|ים|ות)?/, why: 'implies a medical opinion' },
+    { term: 'ACSM', rx: /ACSM/i, why: 'names a professional body' },
+    { term: 'American College', rx: /American College/i, why: 'names a professional body' },
+    { term: 'Guidelines for Exercise', rx: /Guidelines for Exercise/i, why: 'names the publication' }
+  ];
+
+  /* The only way a red-line word may appear in Hebrew a trainer reads: inside one
+     of these exact denials, which say the opposite of what the term would claim.
+     They are matched as whole literal phrases, so 'אישור מקצועי' on its own is still a
+     hit. Both phrases are clauses of RULE_NOTE_HE. */
+  var RED_LINE_EXEMPT_PHRASES = [
+    'אין כאן אישור מקצועי',
+    'אין ייעוץ רפואי'
+  ];
+
+  /* Pure. Returns the terms `text` crosses, in RED_LINE_TERMS order; [] is clean. */
+  function redLineHits(text) {
+    var s = String(text == null ? '' : text);
+    for (var i = 0; i < RED_LINE_EXEMPT_PHRASES.length; i++) {
+      s = s.split(RED_LINE_EXEMPT_PHRASES[i]).join(' ');
+    }
+    var hits = [];
+    for (var j = 0; j < RED_LINE_TERMS.length; j++) {
+      if (RED_LINE_TERMS[j].rx.test(s)) hits.push(RED_LINE_TERMS[j].term);
+    }
+    return hits;
+  }
+
   function claimsOutcome(text) {
     return FORBIDDEN_RX.test(String(text || ''));
   }
@@ -776,6 +820,9 @@
     checkCatalogTaxonomy: checkCatalogTaxonomy,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
+    RED_LINE_TERMS: RED_LINE_TERMS,
+    RED_LINE_EXEMPT_PHRASES: RED_LINE_EXEMPT_PHRASES,
+    redLineHits: redLineHits,
     muscleLabel: muscleLabel
   };
 
