@@ -290,3 +290,99 @@ test('the card names the day the export button was pressed on', function () {
   assert.equal((page.els.exportFor.textContent.match(new RegExp(title, 'g')) || []).length, 1,
     'the day is named once, not twice');
 });
+
+/* ── The defensive branches of the card ──────────────────────────────────────
+   Everything above drives the happy paths. The guards that keep the card from
+   handing over a workout it does not have had no test at all: deleting any one of
+   the five left the suite green. These three pin the behaviour a trainer would
+   see. Two of the five — the `index == null` return in renderExport and the
+   `__exportDay == null` return in syncExport — stay unkillable on purpose, and
+   saying so is more useful than pretending otherwise: with exportModel's own
+   missing-day guard in place they are early returns to the same outcome, so no
+   assertion can tell them from their absence. The outcome itself is pinned. */
+
+test('pressing export before there is a plan cannot throw and cannot open the card', function () {
+  const page = loadPage();
+  page.ctx.__lastProgram = null;
+
+  page.ctx.exportDayWorkout(0);
+
+  assert.equal(page.els.exportCard.hidden, true, 'no plan, no card');
+  assert.equal(page.els.exportJson.value, '');
+  assert.equal(page.els.exportIcs.value, '');
+  assert.equal(page.download('exportJsonLink'), null);
+  assert.equal(page.download('exportIcsLink'), null);
+  assert.equal(page.ctx.__exportDay, null, 'and nothing is left pointing at a day');
+});
+
+test('a day that disappears from the open plan takes the card down with it', function () {
+  const page = loadPage();
+  page.els.exportDate.value = '2026-09-20';
+  page.ctx.exportDayWorkout(2);
+  const staleJson = page.els.exportJsonLink.href;
+  const staleIcs = page.els.exportIcsLink.href;
+  assert.ok(page.els.exportJson.value.length > 0);
+
+  // an in-place edit of the SAME plan (the token does not move) that drops day 3
+  page.ctx.__lastProgram.dailyWorkouts.length = 1;
+  page.els.exportDate.events.change.forEach(function (fn) { fn({}); });
+
+  assert.equal(page.els.exportCard.hidden, true, 'the day it was opened for is gone');
+  assert.equal(page.els.exportJson.value, '');
+  assert.equal(page.els.exportIcs.value, '');
+  assert.equal(page.download('exportJsonLink'), null, 'nothing stale stays downloadable');
+  assert.equal(page.download('exportIcsLink'), null);
+  assert.ok(page.revoked.includes(staleJson), 'and both stale object URLs are released');
+  assert.ok(page.revoked.includes(staleIcs));
+});
+
+test('picking a date with no day exported leaves the card shut and issues no file', function () {
+  const page = loadPage();
+  const issuedBefore = page.blobs.size;
+  assert.equal(page.els.exportCard.hidden, true);
+
+  page.els.exportDate.value = '2026-09-20';
+  page.els.exportDate.events.change.forEach(function (fn) { fn({}); });
+  page.els.exportTime.value = '06:30';
+  page.els.exportTime.events.change.forEach(function (fn) { fn({}); });
+
+  assert.equal(page.els.exportCard.hidden, true, 'a date alone does not open the card');
+  assert.equal(page.els.exportIcs.value, '');
+  assert.equal(page.els.exportJson.value, '');
+  assert.equal(page.blobs.size, issuedBefore, 'and no file was built for a day nobody asked for');
+});
+
+/* Against today's catalogue nothing a trainer can pick makes
+   TH.generateWorkoutProgram throw: all 1350 combinations of muscle x equipment x
+   level x goal x audience were tried at days = 3, and none of them threw. The
+   catch branch is therefore written for a generator that fails, and that is how
+   it is driven here — the context's TH binding is shadowed for one call, leaving
+   the shared module untouched. */
+test('a build that fails clears the open card instead of leaving it downloadable', function () {
+  const page = loadPage();
+  page.els.exportDate.value = '2026-09-20';
+  page.ctx.exportDayWorkout(0);
+  const staleJson = page.els.exportJsonLink.href;
+  const tokenBefore = page.ctx.__planToken;
+  assert.ok(page.els.exportJson.value.length > 0);
+
+  const realTH = page.ctx.TH;
+  const failing = Object.create(realTH);
+  failing.generateWorkoutProgram = function () { throw new Error('אין במאגר'); };
+  page.ctx.TH = failing;
+  try {
+    page.ctx.run();
+  } finally {
+    page.ctx.TH = realTH;
+  }
+
+  assert.match(page.els.result.innerHTML, /אין במאגר/, 'the failure is shown');
+  assert.equal(page.els.exportCard.hidden, true, 'a failed build closes the card');
+  assert.equal(page.els.exportJson.value, '');
+  assert.equal(page.els.exportIcs.value, '');
+  assert.equal(page.download('exportJsonLink'), null, 'the old day must not stay downloadable');
+  assert.equal(page.download('exportIcsLink'), null);
+  assert.ok(page.revoked.includes(staleJson));
+  assert.equal(page.ctx.__planToken, tokenBefore + 1,
+    'the token moves too, so the next good build cannot revive the old card');
+});
