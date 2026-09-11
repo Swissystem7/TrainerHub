@@ -85,13 +85,33 @@ function setDownload(id, text, mime, filename){
   a.href = url;
   a.download = filename;
 }
+/* Round-2 follow-up 1: a card that outlived its plan handed a trainer a workout
+   that is no longer in the plan. Every build stamps a new plan token; the card
+   remembers the token it was filled from, so a rebuilt plan closes and clears it,
+   while an in-place edit of the same plan (a swap) keeps the token and re-renders
+   the card from the edited day. */
+function clearExport(){
+  window.__exportDay = null;
+  window.__exportToken = null;
+  $('exportIcs').value = '';
+  $('exportJson').value = '';
+  $('exportFor').textContent = '';
+  setDownload('exportIcsLink', '', 'text/calendar', '');
+  setDownload('exportJsonLink', '', 'application/json', '');
+  $('exportCard').hidden = true;
+}
+function syncExport(){
+  if (window.__exportDay == null) return;
+  if (window.__exportToken !== window.__planToken) { clearExport(); return; }
+  renderExport();
+}
 function renderExport(){
   const index = window.__exportDay;
   if (index == null) return;
   const model = exportModel(index);
+  if (!model) { clearExport(); return; }
   const card = $('exportCard');
   card.hidden = false;
-  if (!model) return;
   const json = THExport.workoutToJson(model);
   $('exportJson').value = json;
   setDownload('exportJsonLink', json, 'application/json', 'trainerhub-workout-' + (index + 1) + '.json');
@@ -109,6 +129,7 @@ function renderExport(){
 }
 function exportDayWorkout(dayIndex){
   window.__exportDay = dayIndex;
+  window.__exportToken = window.__planToken;
   renderExport();
   $('exportCard').scrollIntoView({ block: 'nearest' });
 }
@@ -144,6 +165,7 @@ function renderProgram(p){
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
       return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button><button type="button" class="start-day th-btn ghost" onclick="exportDayWorkout('+i+')">ייצוא ליומן / JSON</button></section>';
     }).join('');
+  syncExport();
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {
       if (!sel.value) return;
@@ -185,6 +207,7 @@ function run(e){
     };
     const p = TH.generateWorkoutProgram(profile, 1, Number($('days').value));
     window.__lastProgram = p;
+    window.__planToken = (window.__planToken || 0) + 1;
     window.__lastMeta = {
       equipment: [TH.eqLabel(eq)],
       intensity: $('goal').value === 'strength' ? 'high' : 'medium',
@@ -192,6 +215,8 @@ function run(e){
     };
     renderProgram(p);
   } catch (err) {
+    window.__planToken = (window.__planToken || 0) + 1;
+    clearExport();
     $('result').innerHTML = '<p class="error">'+esc(err.message)+'</p>';
   }
 }
