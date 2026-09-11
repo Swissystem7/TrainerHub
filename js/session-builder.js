@@ -295,7 +295,16 @@
      land on the 10-20 minute figure that rule reports on. Below 60 minutes the rule
      does not apply and the builder keeps its older 5-minute shoulders, shrinking the
      cool-down rather than letting the phases overrun the session the trainer asked for.
-     Pure arithmetic: same input, same budget. */
+
+     Under 10 minutes there is no room for a 5-minute warm-up AND a 5-minute main
+     phase, and the earlier arithmetic simply handed back 5 + 5 + 0 — a 6-minute
+     session budgeted as 10. The main phase now takes at most the session minus one
+     minute for the warm-up, and the warm-up takes only what is left, so the three
+     parts add up to exactly the session the trainer asked for at every length.
+     Derived by hand for 1..400 minutes before it was written; nothing at 10 minutes
+     or above changed. Pure arithmetic: same input, same budget. */
+  var MAIN_FLOOR_MINUTES = 5;
+
   function phaseBudget(duration) {
     var total = Math.max(1, Math.floor(Number(duration) || 20));
     var rule = (Analyzer && Analyzer.PHASE_DURATION_RULE) || {};
@@ -303,9 +312,11 @@
     var shoulder = total >= appliesFrom
       ? (rule.referenceMaxPhaseMinutes || 10)
       : (rule.minPhaseMinutes || 5);
-    var main = Math.max(5, total - shoulder - shoulder);
-    var cooldown = Math.max(0, Math.min(shoulder, total - shoulder - main));
-    return { warmup: shoulder, main: main, cooldown: cooldown };
+    var roomForMain = total - (total >= 2 ? 1 : 0);
+    var main = Math.min(roomForMain, Math.max(MAIN_FLOOR_MINUTES, total - shoulder - shoulder));
+    var warmup = Math.min(shoulder, total - main);
+    var cooldown = Math.max(0, Math.min(shoulder, total - warmup - main));
+    return { warmup: warmup, main: main, cooldown: cooldown };
   }
 
   function buildSession(text, catalogOrList) {

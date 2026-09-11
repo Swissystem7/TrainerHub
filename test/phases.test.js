@@ -155,16 +155,58 @@ function codes(result) {
   return result.findings.map(function (f) { return f.code; });
 }
 
-test('phaseBudget gives a 60- and a 90-minute session 10-minute shoulders and never overruns', function () {
+test('phaseBudget gives a 60- and a 90-minute session 10-minute shoulders', function () {
   assert.deepEqual(Engine.phaseBudget(60), { warmup: 10, main: 40, cooldown: 10 });
   assert.deepEqual(Engine.phaseBudget(90), { warmup: 10, main: 70, cooldown: 10 });
   assert.deepEqual(Engine.phaseBudget(45), { warmup: 5, main: 35, cooldown: 5 });
   assert.deepEqual(Engine.phaseBudget(20), { warmup: 5, main: 10, cooldown: 5 });
+  assert.deepEqual(Engine.phaseBudget(15), { warmup: 5, main: 5, cooldown: 5 });
   assert.deepEqual(Engine.phaseBudget(10), { warmup: 5, main: 5, cooldown: 0 });
-  for (const minutes of [10, 20, 35, 45, 60, 75, 90, 120]) {
+});
+
+/* Round-2 follow-up 6: the earlier version of this test exempted exactly the
+   lengths that were broken — it compared the budget against Math.max(minutes, 10)
+   and started its loop at 10 minutes, so 1..9 could over-budget unseen. Every row
+   below was derived by hand before the arithmetic was rewritten. */
+test('phaseBudget never spends more minutes than the session it was given', function () {
+  const SHORT = {
+    1: { warmup: 0, main: 1, cooldown: 0 },
+    2: { warmup: 1, main: 1, cooldown: 0 },
+    3: { warmup: 1, main: 2, cooldown: 0 },
+    4: { warmup: 1, main: 3, cooldown: 0 },
+    5: { warmup: 1, main: 4, cooldown: 0 },
+    6: { warmup: 1, main: 5, cooldown: 0 },
+    7: { warmup: 2, main: 5, cooldown: 0 },
+    8: { warmup: 3, main: 5, cooldown: 0 },
+    9: { warmup: 4, main: 5, cooldown: 0 },
+    10: { warmup: 5, main: 5, cooldown: 0 }
+  };
+  for (const [minutes, expected] of Object.entries(SHORT)) {
+    assert.deepEqual(Engine.phaseBudget(Number(minutes)), expected, minutes + ' minutes');
+  }
+  for (let minutes = 1; minutes <= 200; minutes += 1) {
     const b = Engine.phaseBudget(minutes);
-    assert.ok(b.warmup + b.main + b.cooldown <= Math.max(minutes, 10),
-      minutes + ' minute session over-budgets its phases');
+    assert.equal(b.warmup + b.main + b.cooldown, minutes,
+      minutes + ' minute session must budget exactly its own minutes');
+    assert.ok(b.main >= 1, minutes + ' minute session needs a main phase');
+    if (minutes >= 2) assert.ok(b.warmup >= 1, minutes + ' minute session needs a warm-up');
+  }
+  // a missing or unusable duration still falls back to the 20-minute default
+  assert.deepEqual(Engine.phaseBudget(undefined), { warmup: 5, main: 10, cooldown: 5 });
+  assert.deepEqual(Engine.phaseBudget('nonsense'), { warmup: 5, main: 10, cooldown: 5 });
+  assert.deepEqual(Engine.phaseBudget(20.7), Engine.phaseBudget(20));
+});
+
+test('a short built session keeps its phases inside the minutes the trainer asked for', function () {
+  for (const minutes of [6, 8, 9, 12, 25]) {
+    const built = longSession(minutes);
+    assert.ok(built.workout, minutes + ' minutes produced no workout');
+    const durations = built.workout.phases.map(function (p) { return p.duration_minutes; });
+    const spent = durations.reduce(function (a, b) { return a + b; }, 0);
+    assert.equal(built.workout.duration_minutes, minutes);
+    assert.equal(spent, minutes, minutes + ' minute plan spends ' + spent + ': ' + durations.join('/'));
+    assert.deepEqual(Analyzer.checkPhaseDurations(built.workout).findings, [],
+      'the duration rule is out of scope below 60 minutes');
   }
 });
 
