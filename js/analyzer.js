@@ -266,34 +266,58 @@
      It reports "this session does not satisfy rule X"; it never reports that a
      session is safe, unsafe, approved, or medically suitable.
 
-     Source of the numbers (RULE_SOURCE_SESSION_STRUCTURE below):
-       ACSM's Guidelines for Exercise Testing and Prescription describes an
-       exercise session as a warm-up of at least 5–10 min of light-to-moderate
-       activity, a conditioning phase of at least 20–60 min, and a cool-down of
-       at least 5–10 min.
+     WHERE THE NUMBERS COME FROM, exactly, because a number behind a
+     safety-adjacent rule must not be mistaken for a standard:
 
-     Honesty note about that citation: it was read on 2026-09-11 from secondhand
-     summaries of the guidelines, not from the printed edition, so the citation is
-     weak and is labelled as such. The source states 5–10 min as a FLOOR ("at
-     least"), not as a window. The round-2 research file read it as a window
-     (5–10 min per phase, 10–20 min combined). This module keeps the two readings
-     apart on purpose:
-       - below 5 minutes  -> the source's own floor is not met  (…-below-minimum)
-       - above 10 minutes -> only above the top of the quoted range, which the
-                             source does not forbid              (…-above-reference)
-       - combined 10–20   -> arithmetic on the two per-phase figures, not a number
-                             the source states on its own        (combined-outside-reference)
-     The 60-minute scope comes from the round-2 backlog, not from the source. */
+       5 and 10 minutes. Attributed to the session structure described in ACSM's
+       Guidelines for Exercise Testing and Prescription (warm-up, conditioning,
+       cool-down). NEITHER the author of this module NOR the independent reviewer
+       who checked it read that text at first hand: on 2026-09-11 every reachable
+       copy was a flashcard site, a document someone had uploaded, or the
+       publisher's product page. So this is an unverified secondhand citation and
+       is labelled as one everywhere it travels.
+
+       What that secondhand wording says is a FLOOR — "at least 5–10 min" — not a
+       window, and it states NO combined figure for the two phases. This module
+       therefore keeps three different things apart:
+         - below 5 minutes   -> the floor in the wording we read is not met
+                                                              (…-below-minimum)
+         - above 10 minutes  -> only above the top of the figure we read, which
+                                forbids nothing               (…-above-reference)
+         - combined 10–20    -> OURS. Arithmetic on the two per-phase figures.
+                                The source states no combined number at all.
+                                                    (combined-outside-reference)
+
+       60 minutes (appliesFromMinutes) is OURS as well — it comes from the round-2
+       backlog, not from any source.
+
+     `source` below is developer-facing English and carries the guideline title.
+     No page renders it, and test/phases.test.js keeps it that way; what a trainer
+     can read is SOURCE_NOTE_HE and the Hebrew findings, which name no guideline
+     and no organisation. */
 
   var RULE_SOURCE_SESSION_STRUCTURE =
-    "ACSM's Guidelines for Exercise Testing and Prescription — exercise session " +
-    'structure: warm-up at least 5–10 min, conditioning 20–60 min, cool-down at ' +
-    'least 5–10 min. Read 2026-09-11 from secondhand summaries, not from the ' +
-    'printed edition — weak citation.';
+    "Attributed to ACSM's Guidelines for Exercise Testing and Prescription — " +
+    'exercise session structure: warm-up "at least 5-10 min", conditioning, ' +
+    'cool-down "at least 5-10 min". UNVERIFIED SECONDHAND CITATION: read ' +
+    '2026-09-11 from flashcard sites, uploaded documents and a publisher product ' +
+    'page; the primary text was never seen by the author or by the reviewer. The ' +
+    'wording read states a FLOOR, not a window, and states NO combined figure. ' +
+    'appliesFromMinutes (60) and the combined 10-20 window are TrainerHub\'s own ' +
+    'numbers, not the source\'s. Developer-facing field: not for display.';
 
   var RULE_NOTE_HE =
     'בדיקת מבנה מול כלל כתוב בלבד. אין כאן אישור מקצועי, אין ייעוץ רפואי, ' +
     'וההחלטה על התאמת האימון למתאמן נשארת אצל המאמן.';
+
+  /* The Hebrew that may reach a trainer's screen. It names no organisation and no
+     publication, and it says which numbers are ours. */
+  var SOURCE_NOTE_HE =
+    'המספרים 5 ו־10 דקות נקראו מסיכומים משניים של הנחיה שפורסמה, ולא מהמקור עצמו — ' +
+    'כל עותק שהגענו אליו היה אתר כרטיסיות, קובץ שמישהו העלה, או דף מוצר של המוציא לאור. ' +
+    'לכן זה ציטוט ממקור שני שלא אימתנו. הנוסח שקראנו מנסח רצפה («לפחות 5–10 דקות»), ' +
+    'לא חלון סגור, ואינו נוקב במספר משותף לחימום ולשחרור. הטווח המשותף 10–20 דקות ' +
+    'והסף של 60 דקות הם המספרים שלנו, לא של המקור.';
 
   var PHASE_DURATION_RULE = {
     id: 'TH-PHASE-DURATION',
@@ -302,7 +326,10 @@
     minCombinedMinutes: 10,
     referenceMaxCombinedMinutes: 20,
     appliesFromMinutes: 60,
-    source: RULE_SOURCE_SESSION_STRUCTURE
+    sourceVerified: false,          // the primary text was never read at first hand
+    ownNumbers: ['minCombinedMinutes', 'referenceMaxCombinedMinutes', 'appliesFromMinutes'],
+    source: RULE_SOURCE_SESSION_STRUCTURE,   // developer-facing English, never rendered
+    sourceNoteHe: SOURCE_NOTE_HE
   };
 
   function findPhase(workout, name) {
@@ -341,6 +368,8 @@
     var result = {
       rule: PHASE_DURATION_RULE.id,
       source: PHASE_DURATION_RULE.source,
+      sourceVerified: false,
+      sourceNote: SOURCE_NOTE_HE,
       note: RULE_NOTE_HE,
       applies: minutes >= PHASE_DURATION_RULE.appliesFromMinutes,
       sessionMinutes: minutes,
@@ -356,34 +385,40 @@
     }
 
     if (!warm) {
-      add('warmup-missing', 'אין שלב חימום בתוכנית. הכלל שנבדק כאן מבקש חימום של 5 דקות לפחות באימון של ' +
-        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה.');
+      add('warmup-missing', 'אין שלב חימום בתוכנית. הכלל שנבדק כאן מבקש חימום של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה. סף ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' הדקות הוא מספר שלנו.');
     } else if (warmMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
       add('warmup-below-minimum', 'החימום ' + warmMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
-        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות.');
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות — מספר שקראנו בסיכום ממקור שני ולא אימתנו.');
     } else if (warmMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
-      add('warmup-above-reference', 'החימום ' + warmMinutes + ' דקות, מעל הטווח של ' +
+      add('warmup-above-reference', 'החימום ' + warmMinutes + ' דקות, מעל ' +
+        PHASE_DURATION_RULE.referenceMaxPhaseMinutes + ' דקות. ' +
         PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
-        ' דקות שמצוטט במקור הכלל. המקור לא אוסר על כך.');
+        ' דקות הן רצפה בנוסח שקראנו («לפחות»), לא חלון סגור, ואין שם איסור על יותר מכך.');
     }
 
     if (!cool) {
-      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל שנבדק כאן מבקש שחרור של 5 דקות לפחות באימון של ' +
-        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה.');
+      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל שנבדק כאן מבקש שחרור של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה. סף ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' הדקות הוא מספר שלנו.');
     } else if (coolMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
       add('cooldown-below-minimum', 'השחרור ' + coolMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
-        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות.');
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות — מספר שקראנו בסיכום ממקור שני ולא אימתנו.');
     } else if (coolMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
-      add('cooldown-above-reference', 'השחרור ' + coolMinutes + ' דקות, מעל הטווח של ' +
+      add('cooldown-above-reference', 'השחרור ' + coolMinutes + ' דקות, מעל ' +
+        PHASE_DURATION_RULE.referenceMaxPhaseMinutes + ' דקות. ' +
         PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
-        ' דקות שמצוטט במקור הכלל. המקור לא אוסר על כך.');
+        ' דקות הן רצפה בנוסח שקראנו («לפחות»), לא חלון סגור, ואין שם איסור על יותר מכך.');
     }
 
     if (result.combinedMinutes < PHASE_DURATION_RULE.minCombinedMinutes ||
         result.combinedMinutes > PHASE_DURATION_RULE.referenceMaxCombinedMinutes) {
       add('combined-outside-reference', 'חימום ושחרור יחד ' + result.combinedMinutes + ' דקות, מחוץ לטווח ' +
         PHASE_DURATION_RULE.minCombinedMinutes + '–' + PHASE_DURATION_RULE.referenceMaxCombinedMinutes +
-        ' דקות שנגזר מהמקור בחיבור שני השלבים.');
+        ' דקות. הטווח המשותף הזה שלנו — חיבור של שני המספרים לכל שלב; אין במקור מספר משותף.');
     }
     return result;
   }
@@ -696,6 +731,7 @@
   var api = {
     STIMULUS: STIMULUS,
     PHASE_DURATION_RULE: PHASE_DURATION_RULE,
+    SOURCE_NOTE_HE: SOURCE_NOTE_HE,
     BEGINNER_EQUIPMENT_RULE: BEGINNER_EQUIPMENT_RULE,
     INTENSITY_ARC_RULE: INTENSITY_ARC_RULE,
     TAXONOMY_RULE: TAXONOMY_RULE,

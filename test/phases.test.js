@@ -233,8 +233,80 @@ test('duration findings state the rule, never safety, approval, or medical fitne
   }
   assert.match(check.note, /אין כאן אישור מקצועי/);
   assert.match(check.note, /אין ייעוץ רפואי/);
-  assert.match(check.source, /weak citation/);
+  assert.equal(check.sourceVerified, false);
   assert.equal(check.rule, 'TH-PHASE-DURATION');
+});
+
+/* ── Round-2 follow-up 5: what the 5-minute floor and the 10-minute reference
+   actually rest on ────────────────────────────────────────────────────────────
+   They sit behind a safety-adjacent rule and neither the author nor the reviewer
+   could reach the primary text — every copy found on 2026-09-11 was a flashcard
+   site, an uploaded document or a publisher's product page. The wording that was
+   read states a floor ("at least 5-10 min"), states no combined figure, and says
+   nothing about 60 minutes. These tests keep the code and every readable string
+   saying exactly that, so nobody downstream mistakes the number for a standard. */
+
+test('the duration numbers state what they rest on, and which of them are ours', function () {
+  const rule = Analyzer.PHASE_DURATION_RULE;
+  assert.equal(rule.sourceVerified, false, 'the citation was never verified at first hand');
+  assert.deepEqual(rule.ownNumbers,
+    ['minCombinedMinutes', 'referenceMaxCombinedMinutes', 'appliesFromMinutes'],
+    'the numbers that are TrainerHub\'s own, not the source\'s');
+
+  for (const clause of ['UNVERIFIED SECONDHAND CITATION', 'flashcard', 'publisher product page',
+    'never seen by the author or by the reviewer', 'FLOOR, not a window', 'NO combined figure',
+    "TrainerHub's own numbers", 'not for display']) {
+    assert.ok(rule.source.indexOf(clause) !== -1, 'the English source field must say: ' + clause);
+  }
+
+  const he = Analyzer.SOURCE_NOTE_HE;
+  assert.equal(rule.sourceNoteHe, he);
+  assert.match(he, /מסיכומים משניים/, 'the Hebrew note must say the reading was secondhand');
+  assert.match(he, /לא אימתנו/, 'and that it was never verified');
+  assert.match(he, /רצפה/, 'and that the wording is a floor');
+  assert.match(he, /אינו נוקב במספר משותף/, 'and that no combined figure was stated');
+  assert.match(he, /המספרים שלנו/, 'and which numbers are ours');
+  assert.doesNotMatch(he, /ACSM|American College|Guidelines for Exercise/,
+    'the Hebrew a trainer reads names no organisation');
+  assert.equal(Analyzer.claimsOutcome(he), false);
+
+  const check = Analyzer.checkPhaseDurations(handPlan(60, 3, 0));
+  assert.equal(check.sourceNote, he, 'the note travels with every result');
+  assert.equal(check.sourceVerified, false);
+});
+
+test('each finding says whose number it failed, and none of them names a source', function () {
+  const thin = Analyzer.checkPhaseDurations(handPlan(60, 3, 0));
+  const wide = Analyzer.checkPhaseDurations(handPlan(90, 14, 14));
+  const gone = Analyzer.checkPhaseDurations(handPlan(60, 0, 0, { dropWarmup: true, dropCooldown: true }));
+  const byCode = {};
+  for (const finding of thin.findings.concat(wide.findings, gone.findings)) {
+    byCode[finding.code] = finding.he;
+    assert.doesNotMatch(finding.he, /ACSM|American College|Guidelines for Exercise/, finding.code);
+    assert.equal(Analyzer.claimsOutcome(finding.he), false, finding.code);
+  }
+  assert.match(byCode['warmup-below-minimum'], /ממקור שני ולא אימתנו/);
+  assert.match(byCode['cooldown-below-minimum'], /ממקור שני ולא אימתנו/);
+  assert.match(byCode['warmup-above-reference'], /רצפה/, 'not a window');
+  assert.match(byCode['warmup-above-reference'], /לא חלון סגור/);
+  assert.match(byCode['cooldown-above-reference'], /לא חלון סגור/);
+  assert.match(byCode['combined-outside-reference'], /הטווח המשותף הזה שלנו/);
+  assert.match(byCode['combined-outside-reference'], /אין במקור מספר משותף/);
+  assert.match(byCode['warmup-missing'], /סף 60 הדקות הוא מספר שלנו/);
+  assert.match(byCode['cooldown-missing'], /סף 60 הדקות הוא מספר שלנו/);
+});
+
+test('the guideline title lives in the code and reaches no page', function () {
+  const files = ['index.html', 'weekly.html', 'library.html', 'manage.html', 'offer.html',
+    'pitch.html', 'journal.html', 'workout-print.html',
+    'frontend/index.html', 'frontend/workout-mode.html'];
+  for (const file of files) {
+    const page = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.doesNotMatch(page, /ACSM|American College|Guidelines for Exercise/i, file);
+    assert.doesNotMatch(page, /PHASE_DURATION_RULE|checkPhaseDurations|phaseDurations/, file +
+      ' renders a rule result: display sourceNote (Hebrew), never source (the English title)');
+  }
+  assert.match(Analyzer.PHASE_DURATION_RULE.source, /ACSM/, 'the citation itself stays in the code');
 });
 
 /* ── Round-2 item 3: the intensity arc ───────────────────────────────────────
