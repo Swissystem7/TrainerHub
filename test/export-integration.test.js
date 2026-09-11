@@ -99,18 +99,26 @@ test('export integration: the UID is stable for the same workout and moves when 
   assert.equal(other.includes('UID:' + EXPECTED_UID), false, 'a changed plan must not keep the same UID');
 });
 
-test('export integration: weekly.html loads the module and wires one export path to it', () => {
+/* What the card DOES is tested by running the page's own script in
+   test/weekly-export-card.test.js — which day's bytes reach the boxes, what the
+   download links actually carry, and what happens when the plan changes. The two
+   assertions left here are about the file itself and cannot be observed at
+   runtime: the page must load the module rather than re-implement it, and the
+   export path must contain no clock, no randomness and no network call. */
+test('export integration: weekly.html loads the module instead of re-implementing it', () => {
   assert.match(weekly, /<script src="\.\/js\/export-workout\.js"><\/script>/);
-  assert.match(weekly, /THExport\.workoutToJson/);
-  assert.match(weekly, /THExport\.workoutToIcs/);
-  assert.match(weekly, /function exportModel/);
-  assert.match(weekly, /exportDayWorkout\(/);
-  assert.match(weekly, /id="exportDate"/);
-  assert.match(weekly, /id="exportTime"/);
-  assert.match(weekly, /id="exportIcs"/);
-  assert.match(weekly, /id="exportJson"/);
-  assert.match(weekly, /ייצוא ליומן/);
+  assert.equal(/function (workoutToIcs|workoutToJson|foldLine|icsEscape)\b/.test(weekly), false,
+    'weekly.html must call the module, not copy it');
+});
+
+test('export integration: nothing on the export path reads a clock, a die or the network', () => {
   assert.doesNotMatch(weekly, /new Date\(\)/, 'the export must not read the clock');
+  assert.doesNotMatch(weekly, /Date\.now\(\)/);
   assert.doesNotMatch(weekly, /Math\.random/);
   assert.doesNotMatch(weekly, /fetch\(/);
+  const exportModule = fs.readFileSync(path.join(__dirname, '..', 'js', 'export-workout.js'), 'utf8');
+  assert.doesNotMatch(exportModule, /new Date\(\)/);
+  assert.doesNotMatch(exportModule, /Date\.now\(\)/);
+  assert.doesNotMatch(exportModule, /Math\.random/);
+  assert.doesNotMatch(exportModule, /fetch\(|require\(/);
 });

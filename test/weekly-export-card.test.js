@@ -229,3 +229,64 @@ test('editing the open day in place refreshes the card instead of serving the ol
   assert.notEqual(page.els.exportIcs.value, beforeIcs);
   assert.equal(page.download('exportIcsLink'), page.els.exportIcs.value);
 });
+
+test('the date and the time fields are wired to the card, not only to a function', function () {
+  const page = loadPage();
+  page.ctx.exportDayWorkout(0);
+  assert.equal(page.els.exportIcs.value, '', 'no date yet');
+
+  page.els.exportDate.value = '2026-09-20';
+  page.els.exportDate.events.change.forEach(function (fn) { fn({}); });
+  const evening = page.els.exportIcs.value;
+  assert.ok(evening.split(CRLF).indexOf('DTSTART:20260920T180000Z') !== -1, 'the default 18:00');
+  assert.equal(page.download('exportIcsLink'), evening);
+
+  page.els.exportTime.value = '06:30';
+  page.els.exportTime.events.change.forEach(function (fn) { fn({}); });
+  const morning = page.els.exportIcs.value;
+  assert.ok(morning.split(CRLF).indexOf('DTSTART:20260920T063000Z') !== -1, 'the time field moves the event');
+  assert.notEqual(morning, evening);
+  assert.equal(page.download('exportIcsLink'), morning, 'the link follows the box');
+});
+
+test('clearing the date takes the calendar file off the card and leaves the JSON', function () {
+  const page = loadPage();
+  page.els.exportDate.value = '2026-09-20';
+  page.ctx.exportDayWorkout(0);
+  const json = page.els.exportJson.value;
+  assert.ok(page.download('exportIcsLink'));
+
+  page.els.exportDate.value = '';
+  page.els.exportDate.events.change.forEach(function (fn) { fn({}); });
+  assert.equal(page.els.exportIcs.value, '', 'no date, no calendar file');
+  assert.equal(page.download('exportIcsLink'), null, 'and nothing left to download');
+  assert.equal(page.els.exportJson.value, json, 'the JSON does not need a date');
+  assert.equal(page.download('exportJsonLink'), json);
+  assert.match(page.els.exportFor.textContent, /בחרו תאריך/);
+  assert.equal(page.els.exportCard.hidden, false);
+});
+
+test('every render releases the object URL it replaces', function () {
+  const page = loadPage();
+  page.els.exportDate.value = '2026-09-20';
+  page.ctx.exportDayWorkout(0);
+  page.ctx.exportDayWorkout(1);
+  page.ctx.exportDayWorkout(2);
+  const live = [page.els.exportIcsLink.href, page.els.exportJsonLink.href].filter(Boolean);
+  assert.equal(page.blobs.size, live.length, 'only the two live files are still held');
+  assert.ok(page.revoked.length >= 4, 'the earlier renders were released');
+  live.forEach(function (url) { assert.equal(page.revoked.includes(url), false); });
+});
+
+test('the card names the day the export button was pressed on', function () {
+  const page = loadPage();
+  page.ctx.exportDayWorkout(2);
+  const title = page.ctx.__lastProgram.dailyWorkouts[2].title;
+  assert.ok(title, 'the fixture day has a title');
+  assert.equal(page.els.exportFor.textContent.indexOf(title) !== -1, true, page.els.exportFor.textContent);
+  assert.equal(page.els.exportJsonLink.download, 'trainerhub-workout-3.json');
+  assert.equal(page.els.exportCard.scrolled, 1, 'the card is brought into view once');
+  assert.equal(page.els.exportJson.value, dayJson(page.ctx, 2));
+  assert.equal((page.els.exportFor.textContent.match(new RegExp(title, 'g')) || []).length, 1,
+    'the day is named once, not twice');
+});
