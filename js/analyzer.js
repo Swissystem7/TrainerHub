@@ -603,6 +603,92 @@
     return result;
   }
 
+  /* ── Taxonomy rule: the catalogue draws from the repository's own enumerations ──
+     js/analyzer.js and js/session-builder.js both branch on muscles, equipment and
+     level, so a typo in js/catalog.json quietly changes which exercises a request
+     can reach. This checker is the guard. The three constrained sets are NOT new:
+     they are the key sets of MUSCLE_LABELS, EQ_LABELS and LEVEL_LABELS in
+     js/infer.js, which is where the rest of the app already reads its vocabulary.
+     Every problem carries the entry id, so a caller can list what to clean rather
+     than only learning that something is wrong. */
+
+  var TAXONOMY_RULE = {
+    id: 'TH-CATALOG-TAXONOMY',
+    source: 'The key sets of MUSCLE_LABELS, EQ_LABELS and LEVEL_LABELS in js/infer.js.'
+  };
+
+  function enumKeys(map) {
+    return map ? Object.keys(map) : [];
+  }
+
+  function taxonomyVocabulary() {
+    return {
+      muscles: enumKeys(Infer.MUSCLE_LABELS),
+      equipment: enumKeys(Infer.EQ_LABELS),
+      levels: enumKeys(Infer.LEVEL_LABELS)
+    };
+  }
+
+  /* Pure. Takes the parsed catalogue object and returns
+     { rule, ok, total, vocabulary, problems } where each problem is
+     { id, field, value, he }. An empty problems list means every entry drew from
+     the enumerations, nothing more. */
+  function checkCatalogTaxonomy(catalog) {
+    var vocabulary = taxonomyVocabulary();
+    var result = {
+      rule: TAXONOMY_RULE.id,
+      source: TAXONOMY_RULE.source,
+      ok: true,
+      total: 0,
+      vocabulary: vocabulary,
+      problems: []
+    };
+    if (!catalog || typeof catalog !== 'object') {
+      result.ok = false;
+      result.problems.push({ id: null, field: 'catalog', value: null, he: 'המאגר אינו אובייקט רשומות.' });
+      return result;
+    }
+    var ids = Object.keys(catalog);
+    result.total = ids.length;
+
+    function problem(id, field, value, he) {
+      result.problems.push({ id: id, field: field, value: value, he: he });
+    }
+
+    ids.forEach(function (id) {
+      var entry = catalog[id];
+      if (!entry || typeof entry !== 'object') {
+        problem(id, 'entry', entry === undefined ? null : entry, 'הרשומה «' + id + '» אינה אובייקט.');
+        return;
+      }
+      if (entry.id !== id) {
+        problem(id, 'id', entry.id === undefined ? null : entry.id,
+          'הרשומה «' + id + '» מצהירה על מזהה «' + entry.id + '».');
+      }
+      ['muscles', 'equipment'].forEach(function (field) {
+        var values = entry[field];
+        var vocab = field === 'muscles' ? vocabulary.muscles : vocabulary.equipment;
+        if (!Array.isArray(values) || !values.length) {
+          problem(id, field, values === undefined ? null : values,
+            'לרשומה «' + id + '» אין ' + field + ' כרשימה לא ריקה.');
+          return;
+        }
+        values.forEach(function (value) {
+          if (vocab.indexOf(value) === -1) {
+            problem(id, field, value,
+              'הרשומה «' + id + '» משתמשת ב' + field + ' «' + value + '» שאינו ברשימה המותרת.');
+          }
+        });
+      });
+      if (vocabulary.levels.indexOf(entry.level) === -1) {
+        problem(id, 'level', entry.level === undefined ? null : entry.level,
+          'הרשומה «' + id + '» ברמה «' + entry.level + '» שאינה ברשימה המותרת.');
+      }
+    });
+    result.ok = result.problems.length === 0;
+    return result;
+  }
+
   function claimsOutcome(text) {
     return FORBIDDEN_RX.test(String(text || ''));
   }
@@ -612,6 +698,7 @@
     PHASE_DURATION_RULE: PHASE_DURATION_RULE,
     BEGINNER_EQUIPMENT_RULE: BEGINNER_EQUIPMENT_RULE,
     INTENSITY_ARC_RULE: INTENSITY_ARC_RULE,
+    TAXONOMY_RULE: TAXONOMY_RULE,
     INTENSITY_SCALE: INTENSITY_SCALE,
     RULE_NOTE_HE: RULE_NOTE_HE,
     analyzeExercise: analyzeExercise,
@@ -619,6 +706,7 @@
     checkPhaseDurations: checkPhaseDurations,
     checkBeginnerEquipment: checkBeginnerEquipment,
     validateIntensityArc: validateIntensityArc,
+    checkCatalogTaxonomy: checkCatalogTaxonomy,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
     muscleLabel: muscleLabel
