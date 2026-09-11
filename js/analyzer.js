@@ -254,6 +254,7 @@
       stimulus: stimulus,
       flags: flags,
       phaseDurations: checkPhaseDurations(workout),
+      beginnerEquipment: checkBeginnerEquipment(workout),
       primary: primarySet,
       secondary: secondarySet
     };
@@ -386,6 +387,90 @@
     return result;
   }
 
+  /* ── List rule: equipment that TrainerHub keeps out of a beginner / kids session ──
+     Deterministic list membership, nothing else. A finding says "this exercise uses
+     equipment that is not on the conservative list for a beginner or kids session".
+     It never says the exercise is dangerous, unsuitable, or forbidden for a person,
+     and it cites no guideline, because no guideline was read for it.
+
+     The list is TrainerHub's own editorial choice, drawn from the repository's own
+     equipment enumeration in js/infer.js (EQ_LABELS). It holds the three tags that
+     put an external load or a fixed movement path on the trainee:
+       bar     (מתח)    — hanging / rowing from a fixed bar
+       barbell (מוט)    — free external load
+       machine (מכונה)  — fixed movement path with a stack
+     Checked against js/catalog.json on 2026-09-11: exactly one of the 78 entries
+     carries any of them (bodyweight_row / מתח אוסטרלי, equipment ["bar"]); barbell
+     and machine are declared in the enumeration but unused by the catalog.
+
+     The round-2 research file proposed "ladder, bar, certain plyometric drills".
+     ladder and stairs are NOT on this list: in this catalog ladder is
+     "סולם רגליים" (agility-ladder footwork, level beginner) and stairs is
+     "מדרגות" (step-up, level beginner) — ordinary kids' footwork drills, and
+     flagging them would make the guardrail noise. Plyometrics are a movement
+     pattern, not an equipment tag, so they are out of scope for this rule. */
+
+  var BEGINNER_EQUIPMENT_RULE = {
+    id: 'TH-BEGINNER-EQUIPMENT',
+    blocked: ['bar', 'barbell', 'machine'],
+    source: "TrainerHub's own conservative list, drawn from the equipment " +
+      'enumeration in js/infer.js. No published guideline was read for it and ' +
+      'none is claimed.'
+  };
+
+  function equipmentLabel(id) {
+    return (Infer.EQ_LABELS && Infer.EQ_LABELS[id]) || id;
+  }
+
+  function audienceOf(workout, opts) {
+    if (opts && opts.audience) return String(opts.audience);
+    if (workout && workout.audience) return String(workout.audience);
+    var tags = (workout && workout.tags) || [];
+    return tags.indexOf('kids') !== -1 ? 'kids' : '';
+  }
+
+  function levelOf(workout, opts) {
+    if (opts && opts.level) return String(opts.level);
+    if (workout && workout.level) return String(workout.level);
+    return '';
+  }
+
+  /* Pure. Applies only when the session is marked beginner or kids; otherwise it
+     returns applies:false and an empty findings list, which means "this rule was
+     not run", not "this session is fine". */
+  function checkBeginnerEquipment(workout, opts) {
+    var level = levelOf(workout, opts);
+    var audience = audienceOf(workout, opts);
+    var result = {
+      rule: BEGINNER_EQUIPMENT_RULE.id,
+      source: BEGINNER_EQUIPMENT_RULE.source,
+      note: RULE_NOTE_HE,
+      applies: level === 'beginner' || audience === 'kids',
+      level: level,
+      audience: audience,
+      blocked: BEGINNER_EQUIPMENT_RULE.blocked.slice(),
+      findings: []
+    };
+    if (!result.applies) return result;
+    var exercises = flattenWorkout(workout);
+    for (var i = 0; i < exercises.length; i++) {
+      var a = analyzeExercise(exercises[i]);
+      var hits = (a.equipment || []).filter(function (eq) {
+        return BEGINNER_EQUIPMENT_RULE.blocked.indexOf(eq) !== -1;
+      });
+      if (!hits.length) continue;
+      result.findings.push({
+        code: 'equipment-off-list',
+        rule: BEGINNER_EQUIPMENT_RULE.id,
+        id: a.id,
+        he: 'התרגיל «' + (a.he || '') + '» משתמש ב' + hits.map(equipmentLabel).join(', ') +
+          ' — ציוד שאינו ברשימה השמרנית שלנו לאימון שסומן מתחילים או ילדים.',
+        equipment: hits
+      });
+    }
+    return result;
+  }
+
   function claimsOutcome(text) {
     return FORBIDDEN_RX.test(String(text || ''));
   }
@@ -393,10 +478,12 @@
   var api = {
     STIMULUS: STIMULUS,
     PHASE_DURATION_RULE: PHASE_DURATION_RULE,
+    BEGINNER_EQUIPMENT_RULE: BEGINNER_EQUIPMENT_RULE,
     RULE_NOTE_HE: RULE_NOTE_HE,
     analyzeExercise: analyzeExercise,
     analyzeSession: analyzeSession,
     checkPhaseDurations: checkPhaseDurations,
+    checkBeginnerEquipment: checkBeginnerEquipment,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
     muscleLabel: muscleLabel

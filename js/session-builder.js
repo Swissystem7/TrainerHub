@@ -137,11 +137,32 @@
     return score;
   }
 
+  /* Round-2 item 2: a session the trainer marked beginner, or aimed at kids, does
+     not draw equipment from THAnalyzer.BEGINNER_EQUIPMENT_RULE.blocked by default.
+     This is list membership, not a safety verdict, and the trainer overrides it
+     simply by naming that equipment in the request. Unlike the relax passes below,
+     this gate is never loosened when the pool runs thin: buildSession would rather
+     say the library cannot satisfy the request. */
+  function offBeginnerList(entry, req) {
+    var rule = (Analyzer && Analyzer.BEGINNER_EQUIPMENT_RULE) || { blocked: [] };
+    var blocked = rule.blocked || [];
+    if (!blocked.length) return false;
+    var beginner = req.level === 'beginner' || req.audience === 'kids';
+    if (!beginner) return false;
+    var have = (entry && entry.equipment) || [];
+    var asked = req.equipment || [];
+    for (var i = 0; i < have.length; i++) {
+      if (blocked.indexOf(have[i]) !== -1 && asked.indexOf(have[i]) === -1) return true;
+    }
+    return false;
+  }
+
   function filterPool(list, req, relax) {
     relax = relax || {};
     return list.filter(function (e) {
       if (!e || !e.he) return false;
       if (Infer.isBlockedName(e.he) || Infer.isBlockedName(e.id)) return false;
+      if (offBeginnerList(e, req)) return false;
       if (!relax.playable && !isPlayable(e) && e.source !== 'link') return false;
       if (e.source === 'link') return false;
       if (!relax.equipment && req.equipment && req.equipment.length && !matchesEquipment(e, req.equipment)) {
@@ -388,7 +409,7 @@
     };
   }
 
-  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan, phaseBudget: phaseBudget };
+  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan, phaseBudget: phaseBudget, offBeginnerList: offBeginnerList };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
     module.exports = api;
