@@ -112,3 +112,127 @@ test('weekly builder, studio, and workout-mode all consume the same phases field
   assert.equal(TH.PHASE_LABELS['Main'], 'עיקר');
   assert.equal(TH.PHASE_LABELS['Cool-down'], 'שחרור');
 });
+
+/* ── Round-2 item 1: warm-up / cool-down minutes ──────────────────────────────
+   The rule and the reading of its source live in js/analyzer.js. These tests pin
+   the arithmetic that was derived by hand before the code was written:
+     session >= 60 min -> builder shoulders are 10 + 10, combined 20
+     session <  60 min -> rule out of scope, no findings at all
+   Nothing here asserts that a session is safe — only which written rule a plan
+   does or does not satisfy. */
+
+const Analyzer = require('../js/analyzer.js');
+const Engine = require('../js/session-builder.js');
+
+const PHASE_FIXTURE = {
+  warmup: { id: 'warmup', he: 'חימום', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'חימום.mp4', source: 'local' },
+  plank: { id: 'plank', he: 'פלאנק', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'פלאנק.mp4', source: 'local' },
+  mountain_climber: { id: 'mountain_climber', he: 'מטפס הרים', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'מטפס.mp4', source: 'local' },
+  crunches: { id: 'crunches', he: 'בטן', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'בטן.mp4', source: 'local' }
+};
+
+function longSession(minutes) {
+  return Engine.buildSession({
+    focus: 'core', muscles: ['core'], equipment: [], level: null, goal: null,
+    duration: minutes, durationSpecified: true, participants: 1
+  }, PHASE_FIXTURE);
+}
+
+function handPlan(minutes, warmMinutes, coolMinutes, opts) {
+  opts = opts || {};
+  const phases = [];
+  if (!opts.dropWarmup) {
+    phases.push({ name: 'Warm-up', duration_minutes: warmMinutes, exercises: [] });
+  }
+  phases.push({ name: 'Main', duration_minutes: minutes - warmMinutes - coolMinutes, exercises: [] });
+  if (!opts.dropCooldown) {
+    phases.push({ name: 'Cool-down', duration_minutes: coolMinutes, exercises: [] });
+  }
+  return { title: 'ידני', duration_minutes: minutes, phases: phases };
+}
+
+function codes(result) {
+  return result.findings.map(function (f) { return f.code; });
+}
+
+test('phaseBudget gives a 60- and a 90-minute session 10-minute shoulders and never overruns', function () {
+  assert.deepEqual(Engine.phaseBudget(60), { warmup: 10, main: 40, cooldown: 10 });
+  assert.deepEqual(Engine.phaseBudget(90), { warmup: 10, main: 70, cooldown: 10 });
+  assert.deepEqual(Engine.phaseBudget(45), { warmup: 5, main: 35, cooldown: 5 });
+  assert.deepEqual(Engine.phaseBudget(20), { warmup: 5, main: 10, cooldown: 5 });
+  assert.deepEqual(Engine.phaseBudget(10), { warmup: 5, main: 5, cooldown: 0 });
+  for (const minutes of [10, 20, 35, 45, 60, 75, 90, 120]) {
+    const b = Engine.phaseBudget(minutes);
+    assert.ok(b.warmup + b.main + b.cooldown <= Math.max(minutes, 10),
+      minutes + ' minute session over-budgets its phases');
+  }
+});
+
+test('a 60- and a 90-minute built session satisfies every part of TH-PHASE-DURATION', function () {
+  for (const [minutes, main] of [[60, 40], [90, 70]]) {
+    const built = longSession(minutes);
+    assert.ok(built.workout, minutes + ' minutes produced no workout');
+    const durations = built.workout.phases.map(function (p) { return p.duration_minutes; });
+    assert.deepEqual(durations, [10, main, 10], minutes + ' minute phase budget');
+    const check = Analyzer.checkPhaseDurations(built.workout);
+    assert.equal(check.applies, true);
+    assert.equal(check.sessionMinutes, minutes);
+    assert.equal(check.combinedMinutes, 20);
+    assert.deepEqual(codes(check), [], minutes + ' minute session should satisfy the rule');
+    assert.deepEqual(codes(built.analysis.phaseDurations), []);
+  }
+});
+
+test('checkPhaseDurations names every part of the rule a hand-written plan misses', function () {
+  const thin = Analyzer.checkPhaseDurations(handPlan(60, 3, 0));
+  assert.equal(thin.applies, true);
+  assert.equal(thin.warmupMinutes, 3);
+  assert.equal(thin.cooldownMinutes, 0);
+  assert.equal(thin.combinedMinutes, 3);
+  assert.deepEqual(codes(thin), [
+    'warmup-below-minimum', 'cooldown-below-minimum', 'combined-outside-reference'
+  ]);
+
+  const wide = Analyzer.checkPhaseDurations(handPlan(90, 14, 14));
+  assert.equal(wide.combinedMinutes, 28);
+  assert.deepEqual(codes(wide), [
+    'warmup-above-reference', 'cooldown-above-reference', 'combined-outside-reference'
+  ]);
+
+  const gone = Analyzer.checkPhaseDurations(
+    handPlan(60, 0, 0, { dropWarmup: true, dropCooldown: true }));
+  assert.deepEqual(codes(gone), [
+    'warmup-missing', 'cooldown-missing', 'combined-outside-reference'
+  ]);
+
+  const exact = Analyzer.checkPhaseDurations(handPlan(60, 5, 5));
+  assert.equal(exact.combinedMinutes, 10);
+  assert.deepEqual(codes(exact), [], '5 + 5 is the floor of the rule, not a miss');
+});
+
+test('the duration rule is out of scope below 60 minutes and reports nothing there', function () {
+  const short = Analyzer.checkPhaseDurations(handPlan(45, 0, 0));
+  assert.equal(short.applies, false);
+  assert.equal(short.sessionMinutes, 45);
+  assert.deepEqual(codes(short), []);
+  assert.equal(Analyzer.PHASE_DURATION_RULE.appliesFromMinutes, 60);
+  assert.equal(Analyzer.PHASE_DURATION_RULE.minPhaseMinutes, 5);
+  assert.equal(Analyzer.PHASE_DURATION_RULE.referenceMaxPhaseMinutes, 10);
+  assert.equal(Analyzer.PHASE_DURATION_RULE.minCombinedMinutes, 10);
+  assert.equal(Analyzer.PHASE_DURATION_RULE.referenceMaxCombinedMinutes, 20);
+});
+
+test('duration findings state the rule, never safety, approval, or medical fitness', function () {
+  const check = Analyzer.checkPhaseDurations(handPlan(60, 3, 0));
+  assert.ok(check.findings.length >= 1);
+  for (const finding of check.findings) {
+    assert.equal(finding.rule, 'TH-PHASE-DURATION');
+    assert.ok(finding.he.length > 0);
+    assert.doesNotMatch(finding.he, /בטוח|לא בטוח|מסוכן|מאושר|אישור|רפואי|ACSM/, finding.code);
+    assert.equal(Analyzer.claimsOutcome(finding.he), false, finding.code);
+  }
+  assert.match(check.note, /אין כאן אישור מקצועי/);
+  assert.match(check.note, /אין ייעוץ רפואי/);
+  assert.match(check.source, /weak citation/);
+  assert.equal(check.rule, 'TH-PHASE-DURATION');
+});

@@ -268,6 +268,25 @@
       '. ' + got;
   }
 
+  /* Minute budget for the three phases.
+     For a session of THAnalyzer.PHASE_DURATION_RULE.appliesFromMinutes (60) or more,
+     warm-up and cool-down each get referenceMaxPhaseMinutes (10), so the two together
+     land on the 10-20 minute figure that rule reports on. Below 60 minutes the rule
+     does not apply and the builder keeps its older 5-minute shoulders, shrinking the
+     cool-down rather than letting the phases overrun the session the trainer asked for.
+     Pure arithmetic: same input, same budget. */
+  function phaseBudget(duration) {
+    var total = Math.max(1, Math.floor(Number(duration) || 20));
+    var rule = (Analyzer && Analyzer.PHASE_DURATION_RULE) || {};
+    var appliesFrom = rule.appliesFromMinutes || 60;
+    var shoulder = total >= appliesFrom
+      ? (rule.referenceMaxPhaseMinutes || 10)
+      : (rule.minPhaseMinutes || 5);
+    var main = Math.max(5, total - shoulder - shoulder);
+    var cooldown = Math.max(0, Math.min(shoulder, total - shoulder - main));
+    return { warmup: shoulder, main: main, cooldown: cooldown };
+  }
+
   function buildSession(text, catalogOrList) {
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
     var list = catalogList(catalogOrList);
@@ -324,6 +343,7 @@
       : req.focus && Infer.MUSCLE_LABELS[req.focus] ? ('אימון ' + Infer.MUSCLE_LABELS[req.focus])
       : 'אימון מהמאגר';
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
+    var budget = phaseBudget(req.duration);
 
     var workout = {
       title: title,
@@ -334,9 +354,9 @@
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
       goal: req.goal || null,
       phases: [
-        { name: 'Warm-up', duration_minutes: 5, exercises: warmEx },
-        { name: 'Main', duration_minutes: Math.max(5, (req.duration || 20) - 10), exercises: mainEx },
-        { name: 'Cool-down', duration_minutes: 0, exercises: [] }
+        { name: 'Warm-up', duration_minutes: budget.warmup, exercises: warmEx },
+        { name: 'Main', duration_minutes: budget.main, exercises: mainEx },
+        { name: 'Cool-down', duration_minutes: budget.cooldown, exercises: [] }
       ],
       source: 'prompt-engine'
     };
@@ -368,7 +388,7 @@
     };
   }
 
-  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan };
+  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan, phaseBudget: phaseBudget };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
     module.exports = api;

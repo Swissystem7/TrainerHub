@@ -253,9 +253,137 @@
       intensity: intensity,
       stimulus: stimulus,
       flags: flags,
+      phaseDurations: checkPhaseDurations(workout),
       primary: primarySet,
       secondary: secondarySet
     };
+  }
+
+  /* ── Session-structure rule: warm-up and cool-down minutes ─────────────────
+     This is a deterministic check of a written rule, not a medical judgement.
+     It reports "this session does not satisfy rule X"; it never reports that a
+     session is safe, unsafe, approved, or medically suitable.
+
+     Source of the numbers (RULE_SOURCE_SESSION_STRUCTURE below):
+       ACSM's Guidelines for Exercise Testing and Prescription describes an
+       exercise session as a warm-up of at least 5–10 min of light-to-moderate
+       activity, a conditioning phase of at least 20–60 min, and a cool-down of
+       at least 5–10 min.
+
+     Honesty note about that citation: it was read on 2026-09-11 from secondhand
+     summaries of the guidelines, not from the printed edition, so the citation is
+     weak and is labelled as such. The source states 5–10 min as a FLOOR ("at
+     least"), not as a window. The round-2 research file read it as a window
+     (5–10 min per phase, 10–20 min combined). This module keeps the two readings
+     apart on purpose:
+       - below 5 minutes  -> the source's own floor is not met  (…-below-minimum)
+       - above 10 minutes -> only above the top of the quoted range, which the
+                             source does not forbid              (…-above-reference)
+       - combined 10–20   -> arithmetic on the two per-phase figures, not a number
+                             the source states on its own        (combined-outside-reference)
+     The 60-minute scope comes from the round-2 backlog, not from the source. */
+
+  var RULE_SOURCE_SESSION_STRUCTURE =
+    "ACSM's Guidelines for Exercise Testing and Prescription — exercise session " +
+    'structure: warm-up at least 5–10 min, conditioning 20–60 min, cool-down at ' +
+    'least 5–10 min. Read 2026-09-11 from secondhand summaries, not from the ' +
+    'printed edition — weak citation.';
+
+  var RULE_NOTE_HE =
+    'בדיקת מבנה מול כלל כתוב בלבד. אין כאן אישור מקצועי, אין ייעוץ רפואי, ' +
+    'וההחלטה על התאמת האימון למתאמן נשארת אצל המאמן.';
+
+  var PHASE_DURATION_RULE = {
+    id: 'TH-PHASE-DURATION',
+    minPhaseMinutes: 5,
+    referenceMaxPhaseMinutes: 10,
+    minCombinedMinutes: 10,
+    referenceMaxCombinedMinutes: 20,
+    appliesFromMinutes: 60,
+    source: RULE_SOURCE_SESSION_STRUCTURE
+  };
+
+  function findPhase(workout, name) {
+    var phases = (workout && workout.phases) || [];
+    for (var i = 0; i < phases.length; i++) {
+      if (phases[i] && phases[i].name === name) return phases[i];
+    }
+    return null;
+  }
+
+  function phaseMinutes(phase) {
+    if (!phase) return 0;
+    var n = Number(phase.duration_minutes);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+
+  function sessionMinutes(workout) {
+    var declared = Number(workout && workout.duration_minutes);
+    if (isFinite(declared) && declared > 0) return declared;
+    var total = 0;
+    ((workout && workout.phases) || []).forEach(function (ph) {
+      total += phaseMinutes(ph);
+    });
+    return total;
+  }
+
+  /* Pure. Returns the measured minutes plus one finding per part of the rule
+     the session does not satisfy. An empty findings list means "nothing in this
+     rule was violated", never "this session is fine". */
+  function checkPhaseDurations(workout) {
+    var minutes = sessionMinutes(workout);
+    var warm = findPhase(workout, 'Warm-up');
+    var cool = findPhase(workout, 'Cool-down');
+    var warmMinutes = phaseMinutes(warm);
+    var coolMinutes = phaseMinutes(cool);
+    var result = {
+      rule: PHASE_DURATION_RULE.id,
+      source: PHASE_DURATION_RULE.source,
+      note: RULE_NOTE_HE,
+      applies: minutes >= PHASE_DURATION_RULE.appliesFromMinutes,
+      sessionMinutes: minutes,
+      warmupMinutes: warmMinutes,
+      cooldownMinutes: coolMinutes,
+      combinedMinutes: warmMinutes + coolMinutes,
+      findings: []
+    };
+    if (!result.applies) return result;
+
+    function add(code, he) {
+      result.findings.push({ code: code, rule: PHASE_DURATION_RULE.id, he: he });
+    }
+
+    if (!warm) {
+      add('warmup-missing', 'אין שלב חימום בתוכנית. הכלל שנבדק כאן מבקש חימום של 5 דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה.');
+    } else if (warmMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
+      add('warmup-below-minimum', 'החימום ' + warmMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות.');
+    } else if (warmMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
+      add('warmup-above-reference', 'החימום ' + warmMinutes + ' דקות, מעל הטווח של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
+        ' דקות שמצוטט במקור הכלל. המקור לא אוסר על כך.');
+    }
+
+    if (!cool) {
+      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל שנבדק כאן מבקש שחרור של 5 דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה.');
+    } else if (coolMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
+      add('cooldown-below-minimum', 'השחרור ' + coolMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות.');
+    } else if (coolMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
+      add('cooldown-above-reference', 'השחרור ' + coolMinutes + ' דקות, מעל הטווח של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
+        ' דקות שמצוטט במקור הכלל. המקור לא אוסר על כך.');
+    }
+
+    if (result.combinedMinutes < PHASE_DURATION_RULE.minCombinedMinutes ||
+        result.combinedMinutes > PHASE_DURATION_RULE.referenceMaxCombinedMinutes) {
+      add('combined-outside-reference', 'חימום ושחרור יחד ' + result.combinedMinutes + ' דקות, מחוץ לטווח ' +
+        PHASE_DURATION_RULE.minCombinedMinutes + '–' + PHASE_DURATION_RULE.referenceMaxCombinedMinutes +
+        ' דקות שנגזר מהמקור בחיבור שני השלבים.');
+    }
+    return result;
   }
 
   function claimsOutcome(text) {
@@ -264,8 +392,11 @@
 
   var api = {
     STIMULUS: STIMULUS,
+    PHASE_DURATION_RULE: PHASE_DURATION_RULE,
+    RULE_NOTE_HE: RULE_NOTE_HE,
     analyzeExercise: analyzeExercise,
     analyzeSession: analyzeSession,
+    checkPhaseDurations: checkPhaseDurations,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
     muscleLabel: muscleLabel
