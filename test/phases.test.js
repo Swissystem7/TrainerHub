@@ -338,10 +338,28 @@ test('each finding says whose number it failed, and none of them names a source'
   assert.match(byCode['cooldown-missing'], /סף 60 הדקות הוא מספר שלנו/);
 });
 
+/* The pages are read off the tree, not typed. A hand-kept list silently exempts
+   the next page somebody adds, which is the one most likely to paste the title in.
+   The floor below is what the tree held when this was written: it fails if the
+   walk ever comes back empty or short, so the test cannot pass vacuously. */
+function htmlPages(dir, prefix, into) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name === '.git') continue;
+    const rel = prefix ? prefix + '/' + entry.name : entry.name;
+    if (entry.isDirectory()) htmlPages(path.join(dir, entry.name), rel, into);
+    else if (/\.html$/i.test(entry.name)) into.push(rel);
+  }
+  return into;
+}
+
 test('the guideline title lives in the code and reaches no page', function () {
-  const files = ['index.html', 'weekly.html', 'library.html', 'manage.html', 'offer.html',
+  const files = htmlPages(root, '', []).sort();
+  assert.ok(files.length >= 10, 'the walk found ' + files.length + ' pages: ' + files.join(', '));
+  for (const known of ['index.html', 'weekly.html', 'library.html', 'manage.html', 'offer.html',
     'pitch.html', 'journal.html', 'workout-print.html',
-    'frontend/index.html', 'frontend/workout-mode.html'];
+    'frontend/index.html', 'frontend/workout-mode.html']) {
+    assert.ok(files.indexOf(known) !== -1, known + ' is no longer reached by the walk');
+  }
   for (const file of files) {
     const page = fs.readFileSync(path.join(root, file), 'utf8');
     assert.doesNotMatch(page, /ACSM|American College|Guidelines for Exercise/i, file);
