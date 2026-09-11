@@ -99,13 +99,13 @@ function renderExport(){
   if (!start) {
     $('exportIcs').value = '';
     setDownload('exportIcsLink', '', 'text/calendar', '');
-    $('exportFor').textContent = 'אימון ' + (index + 1) + ' · ' + model.name + ' — בחרו תאריך כדי לייצר קובץ יומן.';
+    $('exportFor').textContent = 'ייצוא ' + model.name + ' — בחרו תאריך כדי לייצר גם קובץ יומן.';
     return;
   }
   const ics = THExport.workoutToIcs(model, { start: start });
   $('exportIcs').value = ics;
   setDownload('exportIcsLink', ics, 'text/calendar', 'trainerhub-workout-' + (index + 1) + '.ics');
-  $('exportFor').textContent = 'אימון ' + (index + 1) + ' · ' + model.name;
+  $('exportFor').textContent = 'ייצוא ' + model.name;
 }
 function exportDayWorkout(dayIndex){
   window.__exportDay = dayIndex;
