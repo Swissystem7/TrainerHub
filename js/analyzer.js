@@ -471,6 +471,23 @@
     return '';
   }
 
+  /* An exercise is checked against the list through the equipment it declares, or
+     failing that through the equipment its Hebrew name implies (js/infer.js reads
+     מוט, מתח, מכונה and the rest). An exercise that declares no equipment and whose
+     name the catalogue does not know leaves the rule with nothing to look at — a
+     free-text "Barbell back squat" used to pass in silence. It now returns an
+     `equipment-unknown` finding that says the rule could not run on it. With no
+     catalogue loaded at all there is nothing to recognise a name against, so the
+     rule stays quiet rather than flagging every exercise. */
+  function declaresEquipment(ex) {
+    return !!(ex && Array.isArray(ex.equipment) && ex.equipment.length);
+  }
+
+  function knownToCatalog(ex) {
+    if (!root.TH || typeof root.TH.findExercise !== 'function') return true;
+    return !!root.TH.findExercise(ex);
+  }
+
   /* Pure. Applies only when the session is marked beginner or kids; otherwise it
      returns applies:false and an empty findings list, which means "this rule was
      not run", not "this session is fine". */
@@ -490,19 +507,33 @@
     if (!result.applies) return result;
     var exercises = flattenWorkout(workout);
     for (var i = 0; i < exercises.length; i++) {
-      var a = analyzeExercise(exercises[i]);
+      var ex = exercises[i] || {};
+      var a = analyzeExercise(ex);
       var hits = (a.equipment || []).filter(function (eq) {
         return BEGINNER_EQUIPMENT_RULE.blocked.indexOf(eq) !== -1;
       });
-      if (!hits.length) continue;
-      result.findings.push({
-        code: 'equipment-off-list',
-        rule: BEGINNER_EQUIPMENT_RULE.id,
-        id: a.id,
-        he: 'התרגיל «' + (a.he || '') + '» משתמש ב' + hits.map(equipmentLabel).join(', ') +
-          ' — ציוד שאינו ברשימה השמרנית שלנו לאימון שסומן מתחילים או ילדים.',
-        equipment: hits
-      });
+      if (hits.length) {
+        result.findings.push({
+          code: 'equipment-off-list',
+          rule: BEGINNER_EQUIPMENT_RULE.id,
+          id: a.id,
+          he: 'התרגיל «' + (a.he || '') + '» משתמש ב' + hits.map(equipmentLabel).join(', ') +
+            ' — ציוד שאינו ברשימה השמרנית שלנו לאימון שסומן מתחילים או ילדים.',
+          equipment: hits
+        });
+        continue;
+      }
+      if (!declaresEquipment(ex) && !knownToCatalog(ex)) {
+        result.findings.push({
+          code: 'equipment-unknown',
+          rule: BEGINNER_EQUIPMENT_RULE.id,
+          id: a.id,
+          he: 'לא זיהינו את «' + (a.he || '') + '» במאגר ולא צורפה לו רשימת ציוד, ' +
+            'ולכן הכלל הזה לא יכול לדעת באיזה ציוד הוא משתמש. הבדיקה מול הרשימה ' +
+            'השמרנית לא רצה על התרגיל הזה.',
+          equipment: []
+        });
+      }
     }
     return result;
   }

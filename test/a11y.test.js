@@ -141,11 +141,14 @@ test('muted text uses a contrast-safe gray, not #6b7280 or #4a4a6a', function ()
 
 /* Round-2 item 6: the shared stylesheet keeps its grayscale in one place.
    The convention is the one the test above already sets — #6b7280 and #4a4a6a are
-   banned because against the six dark backgrounds TrainerHub paints
-   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b) they reach only 3.96:1 and
-   2.26:1, short of the 4.5:1 WCAG 2.1 asks for normal text. The ratios below were
-   computed from the WCAG 2.1 relative luminance formula before this test was
-   written; css/app.css carries the same table in a comment. */
+   banned because of contrast against the six dark backgrounds TrainerHub paints
+   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b). Stated precisely, since the
+   direction matters: 3.96:1 and 2.26:1 are their BEST case, on the darkest
+   background #0d100f; their worst case, on #26302b, is 2.82:1 and 1.61:1. Both
+   ends are short of the 4.5:1 WCAG 2.1 asks for normal text. The token ratios
+   below are each token's WORST case, on #26302b, and every one of them clears
+   4.5:1 there. All of it was computed from the WCAG 2.1 relative luminance formula
+   before this test was written; css/app.css carries the same table in a comment. */
 
 const TEXT_TOKENS = {
   '--th-ink': '#f6f8f6',
@@ -176,7 +179,11 @@ test('css/app.css defines the grayscale tokens once, with the contrast-safe valu
   assert.match(css, /WCAG 2\.1/, 'the tokens must say where their contrast numbers come from');
 });
 
-test('every colour in css/app.css comes from a token, so nothing new slips in', function () {
+/* Scope, so the name does not promise more than the test does: this walks the
+   `color:` declarations — the text colours — and every var(--th-*) the file uses.
+   Backgrounds, borders, gradients and rgba() shadows are NOT covered and still
+   carry literal values. */
+test('every color: declaration in css/app.css is a defined token', function () {
   const offenders = [];
   for (const m of css.matchAll(/(?<![-\w])color:\s*([^;]+);/g)) {
     const value = m[1].replace(/\s*!important\s*$/, '').trim();

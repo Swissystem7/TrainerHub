@@ -5,11 +5,12 @@
    (written without the leading hash here so that ban still means something in
    this file too). The reason
    is contrast: against the six dark backgrounds TrainerHub actually paints
-   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b) the best either of them
-   reaches is 3.96:1 and 2.26:1, both short of the 4.5:1 that WCAG 2.1 asks for
+   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b) the BEST either of them
+   reaches is 3.96:1 and 2.26:1, on the darkest of the six; on #26302b they fall
+   to 2.82:1 and 1.61:1. Both ends are short of the 4.5:1 that WCAG 2.1 asks for
    normal text. Every token below was measured with the WCAG 2.1 relative
-   luminance formula against the worst of those six, and the ink tokens clear
-   4.5:1 there:
+   luminance formula against the WORST of those six (#26302b), and the ink tokens
+   clear 4.5:1 even there:
        --th-ink        #f6f8f6   12.78:1
        --th-muted      #a7b1ab    6.18:1
        --th-muted-soft #9ca3af    5.37:1
