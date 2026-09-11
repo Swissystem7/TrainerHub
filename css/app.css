@@ -1,4 +1,41 @@
 /* Shared surface chrome — weekly builder, Studio, workout-mode */
+
+/* Grayscale and accent tokens for every shared control.
+   test/a11y.test.js already bans the grays 6b7280 and 4a4a6a from the pages
+   (written without the leading hash here so that ban still means something in
+   this file too). The reason
+   is contrast: against the six dark backgrounds TrainerHub actually paints
+   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b) the best either of them
+   reaches is 3.96:1 and 2.26:1, both short of the 4.5:1 that WCAG 2.1 asks for
+   normal text. Every token below was measured with the WCAG 2.1 relative
+   luminance formula against the worst of those six, and the ink tokens clear
+   4.5:1 there:
+       --th-ink        #f6f8f6   12.78:1
+       --th-muted      #a7b1ab    6.18:1
+       --th-muted-soft #9ca3af    5.37:1
+       --th-lime       #b9f24a   10.30:1
+       --th-amber      #f0b542    7.40:1
+       --th-violet     #c4b5fd    7.39:1
+   The two print tokens are measured on white instead, where the page inverts:
+       --th-print-ink    #111     18.88:1
+       --th-print-muted  #444      9.74:1
+   and --th-on-lime is measured on the lime it sits on: 14.11:1 on #b9f24a. */
+:root {
+  --th-ink: #f6f8f6;
+  --th-muted: #a7b1ab;
+  --th-muted-soft: #9ca3af;
+  --th-lime: #b9f24a;
+  --th-amber: #f0b542;
+  --th-violet: #c4b5fd;
+  --th-on-lime: #101312;
+  --th-on-accent: #fff;
+  --th-print-ink: #111;
+  --th-print-muted: #444;
+  --th-nav-bg: #0d100f;
+  --th-surface: #1a1f1d;
+  --th-surface-deep: #111513;
+  --th-line: #303834;
+}
 .th-nav {
   display: flex;
   flex-wrap: wrap;
@@ -6,17 +43,17 @@
   align-items: center;
   justify-content: center;
   padding: 8px 12px;
-  background: #0d100f;
-  border-bottom: 1px solid #303834;
+  background: var(--th-nav-bg);
+  border-bottom: 1px solid var(--th-line);
   font: 600 0.78rem system-ui, sans-serif;
   position: relative;
   z-index: 9999;
   direction: rtl;
 }
-.th-nav .brand { color: #b9f24a; }
+.th-nav .brand { color: var(--th-lime); }
 .th-nav a, .th-nav .chip {
-  color: #f6f8f6;
-  border: 1px solid #303834;
+  color: var(--th-ink);
+  border: 1px solid var(--th-line);
   border-radius: 14px;
   padding: 3px 11px;
   text-decoration: none;
@@ -28,7 +65,7 @@
 .th-banner {
   background: rgba(245, 158, 11, 0.1);
   border-bottom: 1px solid rgba(245, 158, 11, 0.3);
-  color: #f0b542;
+  color: var(--th-amber);
   font: 600 0.74rem system-ui, sans-serif;
   padding: 7px 14px;
   text-align: center;
@@ -36,7 +73,7 @@
 }
 .th-btn {
   background: linear-gradient(135deg, #7c3aed, #5b21b6);
-  color: #fff;
+  color: var(--th-on-accent);
   border: 1px solid #7c3aed;
   border-radius: 10px;
   padding: 9px 16px;
@@ -46,13 +83,13 @@
 }
 .th-btn.ghost {
   background: #1a1a2e;
-  color: #c4b5fd;
+  color: var(--th-violet);
   border-color: #3a3a5a;
 }
 
 /* Shared a11y: visible focus, skip link, live-region helper, reduced motion */
 :focus-visible {
-  outline: 2px solid #c4b5fd;
+  outline: 2px solid var(--th-violet);
   outline-offset: 3px;
 }
 .skip-link {
@@ -60,8 +97,8 @@
   inset-inline-start: 8px;
   top: -48px;
   z-index: 10000;
-  background: #b9f24a;
-  color: #101312;
+  background: var(--th-lime);
+  color: var(--th-on-lime);
   padding: 8px 12px;
   border-radius: 8px;
   font-weight: 700;
@@ -86,7 +123,7 @@
   width: 100%;
   text-align: center;
   font-size: 0.78rem;
-  color: #9ca3af;
+  color: var(--th-muted-soft);
   margin-top: 4px;
 }
 .ex-media-wrap { width: 100%; }
@@ -100,18 +137,18 @@
 }
 video.ex-media { max-height: 160px; aspect-ratio: auto; }
 .ex-media-fallback {
-  background: #111513;
-  border: 1px solid #303834;
+  background: var(--th-surface-deep);
+  border: 1px solid var(--th-line);
   border-radius: 10px;
   padding: 12px 14px;
-  color: #a7b1ab;
+  color: var(--th-muted);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 .ex-media-link {
   display: inline-block;
   margin-top: 6px;
-  color: #b9f24a;
+  color: var(--th-lime);
   font-weight: 700;
 }
 .source-pill { font-size: 0.72rem; }
@@ -122,12 +159,12 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   border-radius: 12px;
   padding: 12px 14px;
   margin-top: 12px;
-  color: #f0b542;
+  color: var(--th-amber);
   line-height: 1.5;
 }
 .th-gate p { margin: 0 0 8px; }
 .th-gate p:last-child { margin-bottom: 0; }
-.th-gate-link { color: #b9f24a; font-weight: 700; }
+.th-gate-link { color: var(--th-lime); font-weight: 700; }
 .print-sheet { max-width: 720px; margin: 0 auto; }
 .print-sheet h1 { font-size: 1.8rem; margin: 0 0 8px; }
 .print-brand { font-weight: 800; font-size: 1.05rem; margin: 0 0 4px; }
@@ -137,21 +174,21 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
 .print-sheet th, .print-sheet td {
   text-align: start;
   padding: 8px 6px;
-  border-bottom: 1px solid #303834;
+  border-bottom: 1px solid var(--th-line);
 }
 .print-watermark {
   margin: 20px 0 0;
   padding: 10px 12px;
-  border: 1px dashed #f0b542;
-  color: #f0b542;
+  border: 1px dashed var(--th-amber);
+  color: var(--th-amber);
   font-weight: 700;
 }
-.print-footer { margin-top: 24px; color: #a7b1ab; font-size: 0.85rem; }
+.print-footer { margin-top: 24px; color: var(--th-muted); font-size: 0.85rem; }
 @media print {
   .no-print { display: none !important; }
-  body { background: #fff !important; color: #111 !important; }
+  body { background: #fff !important; color: var(--th-print-ink) !important; }
   .print-sheet th, .print-sheet td { border-bottom-color: #ccc; }
-  .print-footer { color: #444; }
+  .print-footer { color: var(--th-print-muted); }
 }
 
 .th-steps {
@@ -163,15 +200,15 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   list-style: none;
 }
 .th-steps li {
-  background: #1a1f1d;
-  border: 1px solid #303834;
+  background: var(--th-surface);
+  border: 1px solid var(--th-line);
   border-radius: 12px;
   padding: 10px 12px;
-  color: #a7b1ab;
+  color: var(--th-muted);
   font-size: 0.82rem;
   line-height: 1.45;
 }
-.th-steps b { display: block; color: #f6f8f6; margin-bottom: 4px; }
+.th-steps b { display: block; color: var(--th-ink); margin-bottom: 4px; }
 @media (max-width: 700px) {
   .th-steps { grid-template-columns: 1fr 1fr; }
 }

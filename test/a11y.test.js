@@ -138,3 +138,54 @@ test('muted text uses a contrast-safe gray, not #6b7280 or #4a4a6a', function ()
   assert.match(pages.studio, /#9ca3af/);
   assert.doesNotMatch(pages.library, /#6b7280/);
 });
+
+/* Round-2 item 6: the shared stylesheet keeps its grayscale in one place.
+   The convention is the one the test above already sets — #6b7280 and #4a4a6a are
+   banned because against the six dark backgrounds TrainerHub paints
+   (#0d100f #101312 #111513 #17221c #1a1f1d #26302b) they reach only 3.96:1 and
+   2.26:1, short of the 4.5:1 WCAG 2.1 asks for normal text. The ratios below were
+   computed from the WCAG 2.1 relative luminance formula before this test was
+   written; css/app.css carries the same table in a comment. */
+
+const TEXT_TOKENS = {
+  '--th-ink': '#f6f8f6',
+  '--th-muted': '#a7b1ab',
+  '--th-muted-soft': '#9ca3af',
+  '--th-lime': '#b9f24a',
+  '--th-amber': '#f0b542',
+  '--th-violet': '#c4b5fd',
+  '--th-on-lime': '#101312',
+  '--th-on-accent': '#fff',
+  '--th-print-ink': '#111',
+  '--th-print-muted': '#444'
+};
+
+test('css/app.css defines the grayscale tokens once, with the contrast-safe values', function () {
+  const root = css.match(/:root \{([^}]+)\}/);
+  assert.ok(root, 'css/app.css needs a :root token block');
+  const defined = {};
+  for (const m of root[1].matchAll(/(--[\w-]+):\s*([^;]+);/g)) {
+    defined[m[1]] = m[2].trim();
+  }
+  for (const [token, value] of Object.entries(TEXT_TOKENS)) {
+    assert.equal(defined[token], value, token);
+  }
+  assert.doesNotMatch(css, /#6b7280/, 'css/app.css still uses #6b7280');
+  assert.doesNotMatch(css, /#4a4a6a/, 'css/app.css still uses #4a4a6a');
+  assert.match(css, /#9ca3af/, 'the contrast-safe gray the pages use must stay in the tokens');
+  assert.match(css, /WCAG 2\.1/, 'the tokens must say where their contrast numbers come from');
+});
+
+test('every colour in css/app.css comes from a token, so nothing new slips in', function () {
+  const offenders = [];
+  for (const m of css.matchAll(/(?<![-\w])color:\s*([^;]+);/g)) {
+    const value = m[1].replace(/\s*!important\s*$/, '').trim();
+    if (!/^var\(--th-[\w-]+\)$/.test(value)) offenders.push(value);
+  }
+  assert.deepEqual(offenders, [], 'colour declarations outside the token set');
+
+  const used = [...css.matchAll(/var\((--th-[\w-]+)\)/g)].map(function (m) { return m[1]; });
+  for (const token of new Set(used)) {
+    assert.match(css, new RegExp('\\n  ' + token + ':'), token + ' is used but never defined');
+  }
+});
