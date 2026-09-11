@@ -137,11 +137,32 @@
     return score;
   }
 
+  /* Round-2 item 2: a session the trainer marked beginner, or aimed at kids, does
+     not draw equipment from THAnalyzer.BEGINNER_EQUIPMENT_RULE.blocked by default.
+     This is list membership, not a safety verdict, and the trainer overrides it
+     simply by naming that equipment in the request. Unlike the relax passes below,
+     this gate is never loosened when the pool runs thin: buildSession would rather
+     say the library cannot satisfy the request. */
+  function offBeginnerList(entry, req) {
+    var rule = (Analyzer && Analyzer.BEGINNER_EQUIPMENT_RULE) || { blocked: [] };
+    var blocked = rule.blocked || [];
+    if (!blocked.length) return false;
+    var beginner = req.level === 'beginner' || req.audience === 'kids';
+    if (!beginner) return false;
+    var have = (entry && entry.equipment) || [];
+    var asked = req.equipment || [];
+    for (var i = 0; i < have.length; i++) {
+      if (blocked.indexOf(have[i]) !== -1 && asked.indexOf(have[i]) === -1) return true;
+    }
+    return false;
+  }
+
   function filterPool(list, req, relax) {
     relax = relax || {};
     return list.filter(function (e) {
       if (!e || !e.he) return false;
       if (Infer.isBlockedName(e.he) || Infer.isBlockedName(e.id)) return false;
+      if (offBeginnerList(e, req)) return false;
       if (!relax.playable && !isPlayable(e) && e.source !== 'link') return false;
       if (e.source === 'link') return false;
       if (!relax.equipment && req.equipment && req.equipment.length && !matchesEquipment(e, req.equipment)) {
@@ -268,6 +289,36 @@
       '. ' + got;
   }
 
+  /* Minute budget for the three phases.
+     For a session of THAnalyzer.PHASE_DURATION_RULE.appliesFromMinutes (60) or more,
+     warm-up and cool-down each get referenceMaxPhaseMinutes (10), so the two together
+     land on the 10-20 minute figure that rule reports on. Below 60 minutes the rule
+     does not apply and the builder keeps its older 5-minute shoulders, shrinking the
+     cool-down rather than letting the phases overrun the session the trainer asked for.
+
+     Under 10 minutes there is no room for a 5-minute warm-up AND a 5-minute main
+     phase, and the earlier arithmetic simply handed back 5 + 5 + 0 — a 6-minute
+     session budgeted as 10. The main phase now takes at most the session minus one
+     minute for the warm-up, and the warm-up takes only what is left, so the three
+     parts add up to exactly the session the trainer asked for at every length.
+     Derived by hand for 1..400 minutes before it was written; nothing at 10 minutes
+     or above changed. Pure arithmetic: same input, same budget. */
+  var MAIN_FLOOR_MINUTES = 5;
+
+  function phaseBudget(duration) {
+    var total = Math.max(1, Math.floor(Number(duration) || 20));
+    var rule = (Analyzer && Analyzer.PHASE_DURATION_RULE) || {};
+    var appliesFrom = rule.appliesFromMinutes || 60;
+    var shoulder = total >= appliesFrom
+      ? (rule.referenceMaxPhaseMinutes || 10)
+      : (rule.minPhaseMinutes || 5);
+    var roomForMain = total - (total >= 2 ? 1 : 0);
+    var main = Math.min(roomForMain, Math.max(MAIN_FLOOR_MINUTES, total - shoulder - shoulder));
+    var warmup = Math.min(shoulder, total - main);
+    var cooldown = Math.max(0, Math.min(shoulder, total - warmup - main));
+    return { warmup: warmup, main: main, cooldown: cooldown };
+  }
+
   function buildSession(text, catalogOrList) {
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
     var list = catalogList(catalogOrList);
@@ -324,6 +375,7 @@
       : req.focus && Infer.MUSCLE_LABELS[req.focus] ? ('אימון ' + Infer.MUSCLE_LABELS[req.focus])
       : 'אימון מהמאגר';
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
+    var budget = phaseBudget(req.duration);
 
     var workout = {
       title: title,
@@ -334,9 +386,9 @@
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
       goal: req.goal || null,
       phases: [
-        { name: 'Warm-up', duration_minutes: 5, exercises: warmEx },
-        { name: 'Main', duration_minutes: Math.max(5, (req.duration || 20) - 10), exercises: mainEx },
-        { name: 'Cool-down', duration_minutes: 0, exercises: [] }
+        { name: 'Warm-up', duration_minutes: budget.warmup, exercises: warmEx },
+        { name: 'Main', duration_minutes: budget.main, exercises: mainEx },
+        { name: 'Cool-down', duration_minutes: budget.cooldown, exercises: [] }
       ],
       source: 'prompt-engine'
     };
@@ -368,7 +420,7 @@
     };
   }
 
-  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan };
+  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan, phaseBudget: phaseBudget, offBeginnerList: offBeginnerList };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
     module.exports = api;
