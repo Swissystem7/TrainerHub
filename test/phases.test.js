@@ -236,3 +236,85 @@ test('duration findings state the rule, never safety, approval, or medical fitne
   assert.match(check.source, /weak citation/);
   assert.equal(check.rule, 'TH-PHASE-DURATION');
 });
+
+/* ── Round-2 item 3: the intensity arc ───────────────────────────────────────
+   Every intensity below was derived by hand from js/infer.js patterns and levels
+   plus the scale written in js/analyzer.js, before the checker existed:
+     חימום / מתיחות / פלאנק  core + beginner      = 2
+     שכיבות שמיכה            push + beginner      = 3
+     מטפס הרים               plyo + beginner      = 4
+     מתח אוסטרלי             pull + intermediate  = 4
+     מטפס הרים (intermediate) plyo + intermediate = 5
+   A phase scores the highest of its exercises; an empty phase scores 0. */
+
+const ARC = {
+  warm: { name: 'Warm-up', exercises: [{ name: 'חימום' }] },
+  cool: { name: 'Cool-down', exercises: [{ name: 'מתיחות' }] },
+  main: { name: 'Main', exercises: [{ name: 'שכיבות שמיכה' }, { name: 'מטפס הרים' }] },
+  plyo: { name: 'Main', exercises: [{ name: 'מטפס הרים' }] },
+  calm: { name: 'Main', exercises: [{ name: 'פלאנק' }] },
+  hard: { name: 'Main', exercises: [{ name: 'מטפס הרים', level: 'intermediate' }] },
+  barWarm: { name: 'Warm-up', exercises: [{ name: 'מתח אוסטרלי' }] },
+  barCool: { name: 'Cool-down', exercises: [{ name: 'מתח אוסטרלי' }] },
+  emptyCool: { name: 'Cool-down', exercises: [] }
+};
+
+function arcCodes(phases) {
+  return Analyzer.validateIntensityArc(phases).findings.map(function (f) { return f.code; });
+}
+
+test('validateIntensityArc accepts warm-up to conditioning to cool-down with one peak', function () {
+  const good = Analyzer.validateIntensityArc([ARC.warm, ARC.main, ARC.cool]);
+  assert.equal(good.ok, true);
+  assert.deepEqual(good.intensities, [2, 4, 2]);
+  assert.equal(good.peakIndex, 1);
+  assert.deepEqual(good.findings, []);
+
+  const built = longSession(60);
+  const fromBuilder = Analyzer.validateIntensityArc(built.workout);
+  assert.deepEqual(fromBuilder.findings, [], 'a built session must satisfy its own arc rule');
+  assert.equal(fromBuilder.ok, true);
+  assert.equal(built.analysis.intensityArc.ok, true);
+});
+
+test('validateIntensityArc rejects conditioning before warm-up and a missing cool-down', function () {
+  assert.deepEqual(arcCodes([ARC.plyo, ARC.warm, ARC.cool]), ['warmup-not-first']);
+  assert.deepEqual(arcCodes([ARC.warm, ARC.plyo]), ['cooldown-missing']);
+  assert.deepEqual(arcCodes([ARC.warm, ARC.cool, ARC.plyo]),
+    ['cooldown-not-last', 'conditioning-missing'],
+    'a cool-down in the middle also leaves nothing between warm-up and cool-down');
+  assert.deepEqual(arcCodes([ARC.warm, ARC.cool]), ['conditioning-missing']);
+  assert.deepEqual(arcCodes([]), ['phases-missing']);
+  assert.deepEqual(arcCodes(null), ['phases-missing']);
+});
+
+test('validateIntensityArc needs the rise and the fall, not just the order', function () {
+  assert.deepEqual(arcCodes([ARC.barWarm, ARC.calm, ARC.cool]), ['no-rise']);
+  assert.deepEqual(arcCodes([ARC.warm, ARC.plyo, ARC.barCool]), ['no-fall']);
+  assert.deepEqual(arcCodes([ARC.warm, ARC.plyo, ARC.calm, ARC.hard, ARC.cool]), ['not-monotonic-rise']);
+  assert.deepEqual(arcCodes([ARC.warm, ARC.hard, ARC.calm, ARC.plyo, ARC.cool]), ['not-monotonic-fall']);
+  assert.deepEqual(
+    Analyzer.validateIntensityArc([ARC.warm, ARC.plyo, ARC.calm, ARC.hard, ARC.cool]).intensities,
+    [2, 4, 2, 5, 2]);
+});
+
+test('a declared but empty cool-down passes the arc and is left to the duration rule', function () {
+  const arc = Analyzer.validateIntensityArc([ARC.warm, ARC.plyo, ARC.emptyCool]);
+  assert.deepEqual(arc.intensities, [2, 4, 0]);
+  assert.deepEqual(arc.findings, []);
+  assert.equal(arc.ok, true);
+});
+
+test('arc findings describe the plan shape, never a person or a medical verdict', function () {
+  const arc = Analyzer.validateIntensityArc([ARC.barWarm, ARC.calm, ARC.cool]);
+  assert.ok(arc.findings.length >= 1);
+  for (const finding of arc.findings) {
+    assert.equal(finding.rule, 'TH-INTENSITY-ARC');
+    assert.doesNotMatch(finding.he, /בטוח|לא בטוח|מסוכן|מאושר|אישור|רפואי|ACSM/, finding.code);
+    assert.equal(Analyzer.claimsOutcome(finding.he), false, finding.code);
+  }
+  assert.match(arc.source, /No published guideline was read for it/);
+  assert.deepEqual(Analyzer.INTENSITY_SCALE.pattern,
+    { core: 2, hinge: 3, squat: 3, push: 3, pull: 3, plyo: 4 });
+  assert.deepEqual(Analyzer.INTENSITY_SCALE.level, { beginner: 0, intermediate: 1, advanced: 2 });
+});

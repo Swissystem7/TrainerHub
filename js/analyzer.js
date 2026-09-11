@@ -255,6 +255,7 @@
       flags: flags,
       phaseDurations: checkPhaseDurations(workout),
       beginnerEquipment: checkBeginnerEquipment(workout),
+      intensityArc: validateIntensityArc(workout),
       primary: primarySet,
       secondary: secondarySet
     };
@@ -471,6 +472,137 @@
     return result;
   }
 
+  /* ── Shape rule: the intensity arc of a session ───────────────────────────────
+     Warm-up first, conditioning in the middle, cool-down last, with the simple
+     intensity scale below rising to one peak and falling from it. This is a shape
+     check on a plan, not a judgement about a person: a finding says which part of
+     the shape the plan does not have.
+
+     The scale is TrainerHub's own, defined here and nowhere else. Per exercise it
+     is a movement-pattern number plus a level step, both read from the existing
+     js/infer.js inference:
+         core 2 · hinge 3 · squat 3 · push 3 · pull 3 · plyo 4
+       + beginner 0 · intermediate 1 · advanced 2
+     so one exercise scores 2..6. A phase scores the highest of its exercises, and
+     an empty phase scores 0. Nothing here is claimed to be a published scale, and
+     no guideline is cited for it.
+
+     Two deliberate choices:
+       - when the phase ORDER is wrong there is no arc to measure, so the order
+         findings are returned on their own and the rise/fall checks are skipped;
+       - a Cool-down phase that exists but holds no exercises scores 0 and passes
+         the fall check. Whether it is long enough is TH-PHASE-DURATION's business,
+         not this rule's. */
+
+  var INTENSITY_SCALE = {
+    pattern: { core: 2, hinge: 3, squat: 3, push: 3, pull: 3, plyo: 4 },
+    level: { beginner: 0, intermediate: 1, advanced: 2 },
+    defaultPattern: 2,
+    defaultLevel: 0
+  };
+
+  var INTENSITY_ARC_RULE = {
+    id: 'TH-INTENSITY-ARC',
+    order: ['Warm-up', 'Main', 'Cool-down'],
+    source: "TrainerHub's own shape rule over its own intensity scale. No " +
+      'published guideline was read for it and none is claimed.'
+  };
+
+  function exerciseIntensity(ex) {
+    var a = analyzeExercise(ex);
+    var base = INTENSITY_SCALE.pattern[a.pattern];
+    if (base == null) base = INTENSITY_SCALE.defaultPattern;
+    var step = INTENSITY_SCALE.level[a.difficulty];
+    if (step == null) step = INTENSITY_SCALE.defaultLevel;
+    return base + step;
+  }
+
+  function phaseIntensity(phase) {
+    var list = (phase && phase.exercises) || [];
+    var max = 0;
+    for (var i = 0; i < list.length; i++) {
+      var v = exerciseIntensity(list[i]);
+      if (v > max) max = v;
+    }
+    return max;
+  }
+
+  /* Pure. Takes the phases array (or a workout that holds one) and returns
+     { ok, intensities, peakIndex, findings }. */
+  function validateIntensityArc(phases) {
+    if (phases && !Array.isArray(phases) && Array.isArray(phases.phases)) {
+      phases = phases.phases;
+    }
+    var result = {
+      rule: INTENSITY_ARC_RULE.id,
+      source: INTENSITY_ARC_RULE.source,
+      note: RULE_NOTE_HE,
+      ok: false,
+      intensities: [],
+      peakIndex: -1,
+      findings: []
+    };
+    function add(code, he) {
+      result.findings.push({ code: code, rule: INTENSITY_ARC_RULE.id, he: he });
+    }
+    if (!Array.isArray(phases) || !phases.length) {
+      add('phases-missing', 'אין שלבים בתוכנית, ואי אפשר לבדוק את קשת העצימות.');
+      return result;
+    }
+
+    var names = phases.map(function (ph) { return (ph && ph.name) || ''; });
+    var coolIndex = names.lastIndexOf('Cool-down');
+    if (names[0] !== 'Warm-up') {
+      add('warmup-not-first', 'השלב הראשון בתוכנית הוא «' + (names[0] || '') +
+        '» ולא חימום. הכלל הזה מצפה לחימום ראשון.');
+    }
+    if (coolIndex === -1) {
+      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל הזה מצפה לשחרור בסוף.');
+    } else if (coolIndex !== phases.length - 1) {
+      add('cooldown-not-last', 'שלב השחרור אינו האחרון בתוכנית. הכלל הזה מצפה לשחרור בסוף.');
+    }
+    var innerCount = (coolIndex === -1 ? phases.length : coolIndex) - 1;
+    if (innerCount < 1) {
+      add('conditioning-missing', 'אין שלב עבודה בין החימום לשחרור. הכלל הזה מצפה לשלב עבודה אחד לפחות.');
+    }
+    result.intensities = phases.map(phaseIntensity);
+    if (result.findings.length) return result;   // no arc to measure while the order is wrong
+
+    var peak = 0;
+    for (var i = 1; i < result.intensities.length; i++) {
+      if (result.intensities[i] > result.intensities[peak]) peak = i;
+    }
+    result.peakIndex = peak;
+    var warm = result.intensities[0];
+    var cool = result.intensities[result.intensities.length - 1];
+    var top = result.intensities[peak];
+
+    for (var r = 1; r <= peak; r++) {
+      if (result.intensities[r] < result.intensities[r - 1]) {
+        add('not-monotonic-rise', 'העצימות יורדת בשלב «' + names[r] + '» לפני שיא האימון. ' +
+          'הכלל הזה מצפה לעלייה רציפה עד השיא.');
+        break;
+      }
+    }
+    for (var f = peak + 1; f < result.intensities.length; f++) {
+      if (result.intensities[f] > result.intensities[f - 1]) {
+        add('not-monotonic-fall', 'העצימות עולה בשלב «' + names[f] + '» אחרי שיא האימון. ' +
+          'הכלל הזה מצפה לירידה רציפה מהשיא.');
+        break;
+      }
+    }
+    if (top <= warm) {
+      add('no-rise', 'העצימות לא עולה מעל שלב החימום (' + warm + ' מול שיא ' + top +
+        ' בסולם הפנימי). הכלל הזה מצפה לעלייה.');
+    }
+    if (cool >= top) {
+      add('no-fall', 'העצימות בשחרור (' + cool + ') אינה נמוכה משיא האימון (' + top +
+        ') בסולם הפנימי. הכלל הזה מצפה לירידה.');
+    }
+    result.ok = result.findings.length === 0;
+    return result;
+  }
+
   function claimsOutcome(text) {
     return FORBIDDEN_RX.test(String(text || ''));
   }
@@ -479,11 +611,14 @@
     STIMULUS: STIMULUS,
     PHASE_DURATION_RULE: PHASE_DURATION_RULE,
     BEGINNER_EQUIPMENT_RULE: BEGINNER_EQUIPMENT_RULE,
+    INTENSITY_ARC_RULE: INTENSITY_ARC_RULE,
+    INTENSITY_SCALE: INTENSITY_SCALE,
     RULE_NOTE_HE: RULE_NOTE_HE,
     analyzeExercise: analyzeExercise,
     analyzeSession: analyzeSession,
     checkPhaseDurations: checkPhaseDurations,
     checkBeginnerEquipment: checkBeginnerEquipment,
+    validateIntensityArc: validateIntensityArc,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
     muscleLabel: muscleLabel
