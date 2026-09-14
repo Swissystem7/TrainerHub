@@ -116,3 +116,7 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseParticipants correctly handles fractional Hebrew participant expressions like "כיתה של חצי"', function () {
+  assert.equal(Prompt.parseParticipants('כיתה של חצי'), 0.5);
+});

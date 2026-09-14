@@ -44,7 +44,12 @@
     var t = Infer.fold(String(text || ''));
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
-    if (!m) return null;
+    if (!m) {
+      // Handle fractional expressions like "כיתה של חצי"
+      if (/כיתה\s*של\s*חצי/.test(t)) return 0.5;
+      if (/כיתה\s*של\s*רבע/.test(t)) return 0.25;
+      return null;
+    }
     var n = toInt(m[1]);
     return n && n > 0 ? Math.min(n, 500) : null;
   }
