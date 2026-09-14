@@ -35,6 +35,7 @@
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
+    if (/שעה וنصف/.test(t)) return 90;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
     return null;
