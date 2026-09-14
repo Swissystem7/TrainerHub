@@ -116,3 +116,7 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration correctly handles Hebrew non-integer durations like "שעה וنصف"', function () {
+  assert.equal(Prompt.parseDuration('שעה וنصف'), 90);
+});
