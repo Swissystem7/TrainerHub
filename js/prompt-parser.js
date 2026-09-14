@@ -37,6 +37,14 @@
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
+    
+    // Handle Hebrew half-minute expressions like "1 וחצי דקה"
+    var halfMatch = t.match(/(\d+)\s*וחצי\s*דק/);
+    if (halfMatch) {
+      var num = toInt(halfMatch[1]);
+      return num !== null ? num + 0.5 : null;
+    }
+    
     return null;
   }
 
