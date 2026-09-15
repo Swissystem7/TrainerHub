@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ייבוא אימונים מקובץ הייצוא הרשמי של אינסטגרם אל הספרייה המקומית של TrainerHub. בלי התחברות, בלי גלישה, בלי פרסום.">
+  <title>TrainerHub | ייבוא מאינסטגרם</title>
+  <link rel="stylesheet" href="../css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; --warn:#f2c24a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    main { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 1.6rem; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 10px; }
+    ol, ul { margin: 0; padding-inline-start: 20px; line-height: 1.7; }
+    .boundary { border-color: var(--lime); }
+    label.pick { display: block; margin: 10px 0; }
+    input[type=file] { display: block; margin-top: 6px; color: var(--ink); }
+    button { background: var(--lime); color: #101312; border: 0; border-radius: 8px; padding: 10px 18px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+    button[disabled] { opacity: .45; cursor: default; }
+    .status { color: var(--muted); margin-top: 10px; min-height: 1.4em; }
+    .status.err { color: var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: .95rem; }
+    th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: normal; }
+    .ex { color: var(--muted); font-size: .88rem; }
+    .muted { color: var(--muted); }
+    .counts { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .counts span b { color: var(--lime); }
+    a { color: var(--lime); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>ייבוא אימונים מאינסטגרם</h1>
+  <p class="sub">מקובץ הייצוא הרשמי שלך בלבד. הכול נשאר בדפדפן הזה.</p>
+
+  <section class="card boundary">
+    <h2>מה הדף הזה לא עושה</h2>
+    <ul>
+      <li>לא מתחבר לאינסטגרם ולא נוגע בסיסמאות, בעוגיות או בפרופיל הדפדפן.</li>
+      <li>לא גולש ולא סורק את instagram.com ולא מפרסם דבר.</li>
+      <li>לא שולח שום קובץ לשום מקום. הקריאה והשמירה נעשות מקומית.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>איך מקבלים את קובץ הייצוא</h2>
+    <ol>
+      <li>באפליקציה או באתר: הגדרות ← הפעילות שלך ← הורדת המידע שלך.</li>
+      <li>בוחרים פורמט <b>JSON</b> (לא HTML), ומבקשים לפחות את "פוסטים".</li>
+      <li>כשקובץ ה-ZIP מגיע, מחלצים אותו. הפוסטים נמצאים ב-<code>your_instagram_activity/media/posts_1.json</code> (ייצוא חדש) או ב-<code>content/posts_1.json</code> (ייצוא ישן).</li>
+      <li>בוחרים כאן את התיקייה המחולצת, או ישירות את קובצי <code>posts_N.json</code>.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>בחירת הקובץ</h2>
+    <label class="pick">תיקיית הייצוא המחולצת (מומלץ)
+      <input id="dirInput" type="file" webkitdirectory directory multiple>
+    </label>
+    <label class="pick">או קובצי posts_N.json בלבד
+      <input id="fileInput" type="file" accept=".json,application/json" multiple>
+    </label>
+    <div id="pickStatus" class="status"></div>
+  </section>
+
+  <section class="card" id="previewCard" hidden>
+    <h2>תצוגה מקדימה - עדיין לא נשמר דבר</h2>
+    <div class="counts">
+      <span>פוסטים בקובץ: <b id="cPosts">0</b></span>
+      <span>יתווספו: <b id="cAdded">0</b></span>
+      <span>ידולגו: <b id="cSkipped">0</b></span>
+      <span>כבר קיימים: <b id="cDup">0</b></span>
+    </div>
+    <table id="addedTable"><thead><tr><th>תאריך</th><th>כותרת</th><th>תרגילים</th></tr></thead><tbody></tbody></table>
+    <details style="margin-top:10px"><summary class="muted">פוסטים שדולגו ולמה</summary>
+      <table id="skippedTable"><thead><tr><th>תאריך</th><th>כותרת</th><th>סיבה</th></tr></thead><tbody></tbody></table>
+    </details>
+    <p style="margin-top:14px"><button id="confirmBtn" disabled>אישור: שמור את האימונים שיתווספו</button></p>
+    <div id="saveStatus" class="status"></div>
+  </section>
+
+  <section class="card">
+    <h2>מגבלות הזיהוי (בכוונה שמרני)</h2>
+    <ul>
+      <li>תרגיל מזוהה רק אם שמו בכיתוב תואם שם עברי בקטלוג התרגילים, או מזהה אנגלי של הקטלוג (warmup, crunches, plank, superman, mountain climber, bodyweight row).</li>
+      <li>כמויות: <code>3x12</code>, <code>4×10</code>, <code>3 סטים 12 חזרות</code>, <code>3 sets of 12 reps</code>, <code>30 שניות</code>, <code>2 דקות</code>, <code>מנוחה 60 שניות</code>, <code>rest 60s</code>. טווחים: סטים 1-20, חזרות 1-200, משך 5-3600 שניות, מנוחה 5-600 שניות. מחוץ לטווח - השדה נשאר ריק.</li>
+      <li>פוסט נחשב אימון אם יש בו לפחות תרגיל אחד עם כמות, או שני תרגילים מהקטלוג. השורה הראשונה היא הכותרת ואינה נחשבת כתרגיל אלא אם יש בה כמות.</li>
+      <li>לייצוא של אינסטגרם אין מזהה פוסט. המזהה נגזר מחותמת הזמן ומשם קובץ המדיה הראשון, ולכן ייבוא חוזר של אותו ייצוא לא משנה דבר.</li>
+      <li>משך האימון נקבע ל-45 דקות כברירת מחדל. אין שלב שחרור. ציוד נלקח מרשומות הקטלוג בלבד.</li>
+    </ul>
+  </section>
+
+  <p class="muted">אחרי השמירה האימונים מופיעים ב<a href="./index.html">סטודיו</a> יחד עם שאר האימונים השמורים בדפדפן הזה.</p>
+</main>
+
+<script src="../js/core.js"></script>
+<script src="saved-workouts.js"></script>
+<script src="../js/instagram-import.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var REASON_HE = {
+    no_caption: 'אין כיתוב',
+    no_known_exercise: 'לא נמצא תרגיל מהקטלוג',
+    single_mention_no_prescription: 'תרגיל אחד בלי כמות',
+    duplicate: 'כבר יובא בעבר',
+    malformed_post: 'רשומה לא תקינה בקובץ'
+  };
+  var preview = null;
+  var catalogPromise = null;
+
+  function loadCatalog() {
+    if (catalogPromise) return catalogPromise;
+    catalogPromise = fetch('../js/catalog.json').then(function (r) {
+      if (!r.ok) throw new Error('catalog ' + r.status);
+      return r.json();
+    });
+    return catalogPromise;
+  }
+
+  function isPostsFile(f) {
+    var p = (f.webkitRelativePath || f.name).replace(/\\/g, '/');
+    return /(^|\/)posts_\d+\.json$/i.test(p);
+  }
+
+  function readAll(fileList) {
+    var files = Array.prototype.filter.call(fileList, isPostsFile);
+    if (!files.length) return Promise.reject(new Error('לא נמצאו קובצי posts_N.json בבחירה.'));
+    return Promise.all(files.map(function (f) {
+      return f.text().then(function (text) { return [f.webkitRelativePath || f.name, text]; });
+    })).then(function (pairs) {
+      var map = {};
+      pairs.forEach(function (p) { map[p[0]] = p[1]; });
+      return map;
+    });
+  }
+
+  function fmtDate(iso) { return iso ? iso.slice(0, 10) : ''; }
+  function fmtExercises(w) {
+    var out = [];
+    w.phases.forEach(function (ph) {
+      ph.exercises.forEach(function (e) {
+        var bits = [e.name];
+        if (e.sets && e.reps) bits.push(e.sets + ' × ' + e.reps);
+        else if (e.sets && e.duration_seconds) bits.push(e.sets + ' × ' + e.duration_seconds + ' שנ׳');
+        else if (e.duration_seconds) bits.push(e.duration_seconds + ' שנ׳');
+        else if (e.reps) bits.push(e.reps + ' חזרות');
+        if (e.rest_seconds) bits.push('מנוחה ' + e.rest_seconds);
+        out.push(bits.join(' '));
+      });
+    });
+    return out.join(' · ');
+  }
+  function cell(text) { var td = document.createElement('td'); td.textContent = text; return td; }
+
+  function render(result) {
+    preview = result.preview;
+    $('cPosts').textContent = preview.counts.posts;
+    $('cAdded').textContent = preview.counts.added;
+    $('cSkipped').textContent = preview.counts.skipped;
+    $('cDup').textContent = preview.counts.duplicates;
+    var tb = $('addedTable').querySelector('tbody');
+    tb.innerHTML = '';
+    preview.added.forEach(function (w) {
+      var tr = document.createElement('tr');
+      tr.appendChild(cell(fmtDate(w.source.created_at)));
+      tr.appendChild(cell(w.title));
+      var ex = cell(fmtExercises(w)); ex.className = 'ex';
+      tr.appendChild(ex);
+      tb.appendChild(tr);
+    });
+    var sb = $('skippedTable').querySelector('tbody');
+    sb.innerHTML = '';
+    preview.skipped.forEach(function (s) {
+      var tr = document.createElement('tr');
+      tr.appendChild(cell(fmtDate(s.created_at)));
+      tr.appendChild(cell(s.title || ''));
+      tr.appendChild(cell(REASON_HE[s.reason] || s.reason));
+      sb.appendChild(tr);
+    });
+    $('previewCard').hidden = false;
+    $('confirmBtn').disabled = preview.added.length === 0;
+    $('saveStatus').textContent = preview.added.length ? '' : 'אין מה להוסיף. הספרייה לא תשתנה.';
+    $('pickStatus').textContent = 'נקראו ' + result.files.length + ' קבצים: ' + result.files.map(function (f) {
+      return f.path + ' (' + (f.error ? 'שגיאה: ' + f.error : f.layout + ', ' + f.posts + ' פוסטים') + ')';
+    }).join(' ; ');
+  }
+
+  function handle(fileList) {
+    $('pickStatus').className = 'status';
+    $('pickStatus').textContent = 'קורא...';
+    $('previewCard').hidden = true;
+    Promise.all([readAll(fileList), loadCatalog()]).then(function (pair) {
+      var existing = TH.store.get(TH.KEYS.saved, []);
+      var result = InstagramImport.importFromFiles(pair[0], { catalog: pair[1], existing: Array.isArray(existing) ? existing : [] });
+      if (!result.ok) throw new Error('הקובץ לא נקרא כייצוא פוסטים (' + result.error + ').');
+      render(result);
+    }).catch(function (e) {
+      $('pickStatus').className = 'status err';
+      $('pickStatus').textContent = e && e.message ? e.message : String(e);
+    });
+  }
+
+  $('dirInput').addEventListener('change', function () { handle(this.files); });
+  $('fileInput').addEventListener('change', function () { handle(this.files); });
+
+  $('confirmBtn').addEventListener('click', function () {
+    if (!preview || !preview.added.length) return;
+    try {
+      // Same path the studio uses: WorkoutLibrary.save replaces by saved_id and never truncates.
+      WorkoutLibrary.save(TH.store, TH.KEYS.saved, preview.added);
+      $('saveStatus').textContent = 'נשמרו ' + preview.added.length + ' אימונים בדפדפן זה.';
+      $('confirmBtn').disabled = true;
+    } catch (e) {
+      $('saveStatus').className = 'status err';
+      $('saveStatus').textContent = e && e.message ? e.message : String(e);
+    }
+  });
+})();
+</script>
+</body>
+</html>
