@@ -188,7 +188,10 @@
     reps: new RegExp('(\\d+)\\s*(?:חזרות|חז[\'׳]?' + NOT_HEB + '|reps?\\b)', 'i'),
     minutes: new RegExp('(\\d+)\\s*(?:דקות|דקה|דק[\'׳]?' + NOT_HEB + '|min(?:ute)?s?\\b)', 'i'),
     seconds: new RegExp('(\\d+)\\s*(?:שניות|שנייה|שניה|שנ[\'׳]?' + NOT_HEB + '|sec(?:ond)?s?\\b|s\\b)', 'i'),
-    nxm: /(\d+)\s*x\s*(\d+)/i
+    nxm: /(\d+)\s*x\s*(\d+)/i,
+    // "8-12 חזרות" / "8 to 12 reps": a RANGE, not a number. Checked before RX.reps, which
+    // would otherwise match the second number and silently record the high end as the target.
+    reps_range: new RegExp('(\\d+)\\s*(?:-|–|—|עד|to)\\s*(\\d+)\\s*(?:חזרות|חז[\'׳]?' + NOT_HEB + '|reps?\\b)', 'i')
   };
 
   function isMinuteUnit(u) {
@@ -200,6 +203,7 @@
   function parsePrescription(line) {
     var t = String(line).replace(/[×✕✖*]/g, 'x').toLowerCase();
     var sets = null, reps = null, duration = null, rest = null, m;
+    var repsRange = null;
 
     m = t.match(RX.restA) || t.match(RX.restB);
     if (m) {
@@ -207,7 +211,12 @@
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(RX.sets))) sets = inRange(+m[1], LIMITS.sets);
-    if ((m = t.match(RX.reps))) reps = inRange(+m[1], LIMITS.reps);
+    if ((m = t.match(RX.reps_range))) {
+      // the LOW end is the number a trainee is certain to do; the range itself is kept as a note
+      reps = inRange(+m[1], LIMITS.reps);
+      repsRange = m[1] + '-' + m[2];
+      t = t.replace(m[0], ' ');
+    } else if ((m = t.match(RX.reps))) reps = inRange(+m[1], LIMITS.reps);
     var durRaw = null;
     if ((m = t.match(RX.minutes))) { durRaw = +m[1]; duration = inRange(durRaw * 60, LIMITS.duration_seconds); }
     else if ((m = t.match(RX.seconds))) { durRaw = +m[1]; duration = inRange(durRaw, LIMITS.duration_seconds); }
@@ -215,7 +224,8 @@
       sets = inRange(+m[1], LIMITS.sets);
       if (durRaw === null || +m[2] !== durRaw) reps = inRange(+m[2], LIMITS.reps);
     }
-    return { sets: sets, reps: reps, duration_seconds: duration, rest_seconds: rest };
+    return { sets: sets, reps: reps, duration_seconds: duration, rest_seconds: rest,
+             reps_range: repsRange };
   }
 
   function hasPrescription(rx) {
@@ -255,7 +265,7 @@
           reps: rx.reps,
           duration_seconds: rx.duration_seconds,
           rest_seconds: rx.rest_seconds,
-          notes: null
+          notes: rx.reps_range ? ('בפוסט נכתב ' + rx.reps_range + ' חזרות') : null
         });
       });
     });

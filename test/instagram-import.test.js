@@ -98,7 +98,8 @@ test('mojibake captions are decoded, clean text is left alone', () => {
 
 test('sets x reps grammar in Hebrew and English', () => {
   const p = (s) => IG.parsePrescription(s);
-  const rx = (sets, reps, duration_seconds, rest_seconds) => ({ sets, reps, duration_seconds, rest_seconds });
+  const rx = (sets, reps, duration_seconds, rest_seconds, reps_range = null) =>
+  ({ sets, reps, duration_seconds, rest_seconds, reps_range });
   assert.deepEqual(p('3x12'), rx(3, 12, null, null));
   assert.deepEqual(p('4×10'), rx(4, 10, null, null));
   assert.deepEqual(p('3 * 12'), rx(3, 12, null, null));
@@ -215,4 +216,40 @@ test('pure and deterministic: same input, byte-identical output', () => {
   assert.equal(a, b);
   const src = require('node:fs').readFileSync(path.join(__dirname, '..', 'js', 'instagram-import.js'), 'utf8');
   assert.doesNotMatch(src, /Math\.random|Date\.now|new Date\(\)|fetch\(|XMLHttpRequest|document\.|localStorage/);
+});
+
+// --- added 2026-09-15 after an adversarial verifier deleted the classification guard and NOTHING went red.
+// These three assertions sit exactly on the `exercises.length < 2 && withRx < 1` boundary: remove that
+// rule from js/instagram-import.js and the first one fails. A guard whose deletion keeps the suite green
+// has not been tested (LESSONS.md class 10).
+test('single_mention_no_prescription boundary: the classification guard is real', () => {
+  // ONE known exercise, no parsable prescription ("3 על 12" is not grammar this parser claims to read)
+  const one = IG.classifyCaption('אימון קצר\nחימום 3 על 12', catalog);
+  assert.equal(one.workout, false, 'one exercise with no prescription must not become a workout');
+  assert.equal(one.reason, 'single_mention_no_prescription');
+  assert.equal(one.exercises.length, 1, 'the exercise is still reported, only the post is not a workout');
+
+  // the same single exercise WITH a prescription crosses the line
+  const oneRx = IG.classifyCaption('אימון קצר\nחימום 3x12', catalog);
+  assert.equal(oneRx.workout, true, 'one exercise with a prescription is a workout');
+
+  // TWO known exercises with no prescription also cross it (withRx < 1 alone is not enough to reject)
+  const two = IG.classifyCaption('אימון\nפלאנק\nחימום', catalog);
+  assert.equal(two.workout, true, 'two exercises are a workout even without a prescription');
+});
+
+test('a reps RANGE is recorded at its low end and disclosed in notes', () => {
+  const p = IG.parsePrescription('3 סטים 8-12 חזרות');
+  assert.equal(p.sets, 3);
+  assert.equal(p.reps, 8, 'the low end, not the high end');
+  assert.equal(p.reps_range, '8-12');
+  assert.equal(IG.parsePrescription('8 עד 12 חזרות').reps, 8);
+  assert.equal(IG.parsePrescription('8 to 12 reps').reps, 8);
+  assert.equal(IG.parsePrescription('12 חזרות').reps_range, null, 'a plain number is not a range');
+
+  const c = IG.classifyCaption('אימון\nפלאנק 3 סטים 8-12 חזרות\nחימום 3x10', catalog);
+  assert.equal(c.workout, true);
+  assert.equal(c.exercises[0].reps, 8);
+  assert.equal(c.exercises[0].notes, 'בפוסט נכתב 8-12 חזרות');
+  assert.equal(c.exercises[1].notes, null);
 });
