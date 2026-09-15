@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סרטונים שמורים מאינסטגרם - תור סקירה</title>
+<style>
+  :root { --bg:#f7f7f8; --card:#fff; --line:#e3e3e7; --ink:#1b1b1f; --muted:#666; --warn:#8a5a00; --warnbg:#fff8e6; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 system-ui, "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width:860px; margin:0 auto; padding:20px 16px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:14px; }
+  .boundary { background:var(--warnbg); border-color:#f0dfb0; color:var(--warn); }
+  .boundary ul { margin:8px 0 0; padding-inline-start:20px; }
+  .muted { color:var(--muted); }
+  .status { margin-top:8px; color:var(--muted); font-size:14px; }
+  .pick { display:block; margin:8px 0; }
+  .counts { display:flex; gap:14px; flex-wrap:wrap; font-size:14px; }
+  .counts b { font-size:18px; display:block; }
+  .row { border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:10px 0; }
+  .row h3 { margin:0 0 2px; font-size:15px; }
+  .row .meta { color:var(--muted); font-size:13px; margin-bottom:8px; }
+  .tag { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:1px 8px; margin-inline-end:6px; font-size:12px; color:var(--muted); }
+  textarea { width:100%; box-sizing:border-box; min-height:74px; font:inherit; padding:8px; border:1px solid var(--line); border-radius:8px; }
+  button { font:inherit; padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; }
+  button.primary { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; align-items:center; }
+  .ok { color:#16643a; }
+  a { color:#0b57d0; }
+  @media (max-width:520px){ .counts { gap:10px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>סרטונים שמורים מאינסטגרם</h1>
+  <p class="sub">תור סקירה של הפוסטים ששמרת. הכול רץ בדפדפן הזה בלבד - שום דבר לא נשלח לשום מקום.</p>
+
+  <section class="card boundary">
+    <strong>מה הדף הזה לא עושה, ולמה</strong>
+    <ul>
+      <li>לא מתחבר לאינסטגרם, לא סורק אותה ולא מוריד ממנה כלום. אין כאן סיסמה ואין טוקן.</li>
+      <li>לא מפרסם כלום ולא שומר עותק של סרטון של מישהו אחר - רק קישור, שם המשתמש של מי שפרסם, והתאריך שבו שמרת.</li>
+      <li><strong>קובץ הייצוא של אינסטגרם לא כולל את הטקסט של הפוסט השמור.</strong> הוא מוסר בדיוק שלושה דברים: מי פרסם, הקישור, ומתי שמרת. לכן יש כאן תיבת הדבקה: אתה פותח את הפוסט, מעתיק את הכיתוב, ומדביק. אין דרך חוקית אחרת להביא אותו.</li>
+      <li>פריט שלא מילאת נשאר <em>ממתין</em>. המערכת לא ממציאה לו תרגילים.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <strong>איך משיגים את הקובץ (פעם אחת)</strong>
+    <p class="muted" style="margin:6px 0 0">
+      אינסטגרם ← הגדרות ← מרכז החשבונות ← המידע וההרשאות שלך ← הורדת המידע שלך ←
+      לבחור <strong>Saved</strong>, פורמט <strong>JSON</strong>, טווח <strong>All time</strong>.
+      מטא שולחת קובץ ZIP למייל. לחלץ, ואז לבחור כאן את התיקייה.
+      הקבצים הרלוונטיים: <code>saved/saved_posts.json</code> ואם יש גם <code>saved/saved_collections.json</code>.
+    </p>
+  </section>
+
+  <section class="card">
+    <label class="pick">תיקיית הייצוא המחולצת (מומלץ)
+      <input type="file" id="pickDir" webkitdirectory directory multiple>
+    </label>
+    <label class="pick">או קובצי saved_posts.json / saved_collections.json בלבד
+      <input type="file" id="pickFiles" accept=".json" multiple>
+    </label>
+    <label class="pick">שם המשתמש שלך באינסטגרם (לא חובה - כדי לסמן פוסטים שלך עצמך)
+      <input type="text" id="ownHandle" placeholder="@your_handle" style="font:inherit;padding:6px;border:1px solid var(--line);border-radius:8px">
+    </label>
+    <div id="pickStatus" class="status"></div>
+  </section>
+
+  <section class="card" id="queueCard" hidden>
+    <div class="counts">
+      <div><b id="cItems">0</b> פריטים שמורים</div>
+      <div><b id="cPending">0</b> ממתינים</div>
+      <div><b id="cAdded">0</b> מוכנים לשמירה</div>
+      <div><b id="cSkipped">0</b> דילוגים</div>
+    </div>
+    <div class="status" id="dedupeNote"></div>
+    <div class="actions">
+      <button class="primary" id="saveBtn">שמור לספרייה את המוכנים</button>
+      <button id="clearBtn">נקה את מצב התור</button>
+    </div>
+    <div id="saveStatus" class="status"></div>
+  </section>
+
+  <div id="rows"></div>
+
+  <p class="muted">אחרי השמירה האימונים מופיעים ב<a href="./index.html">סטודיו</a> יחד עם שאר האימונים השמורים בדפדפן הזה.
+  הטקסט שהדבקת נשמר כציטוט מקומי ומיוחס למי שכתב אותו, ולא מתפרסם בשום מקום.</p>
+</div>
+
+<script src="../js/core.js"></script>
+<script src="saved-workouts.js"></script>
+<script src="../js/instagram-import.js"></script>
+<script src="../js/instagram-saved.js"></script>
+<script>
+(function () {
+  'use strict';
+  var STATE_KEY = 'trainerhub_ig_saved_queue';
+  var parsed = null, catalogCache = null, state = { texts: {}, skips: {} };
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(STATE_KEY);
+      if (raw) {
+        var o = JSON.parse(raw);
+        if (o && typeof o === 'object') state = { texts: o.texts || {}, skips: o.skips || {} };
+      }
+    } catch (e) { /* private window or blocked storage: the queue just is not remembered */ }
+  }
+  function saveState() {
+    try { window.localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function catalog() {
+    if (catalogCache) return Promise.resolve(catalogCache);
+    return fetch('../js/catalog.json').then(function (r) {
+      if (!r.ok) throw new Error('catalog ' + r.status);
+      return r.json();
+    }).then(function (j) { catalogCache = j; return j; });
+  }
+
+  var WANT = /(^|\/)(saved_posts\.json|saved_collections\.json|saved\.json)$/i;
+  function readFiles(list) {
+    var picked = Array.prototype.slice.call(list || []).filter(function (f) {
+      return WANT.test(f.webkitRelativePath || f.name);
+    });
+    if (!picked.length) return Promise.resolve(null);
+    return Promise.all(picked.map(function (f) {
+      return new Promise(function (res) {
+        var fr = new FileReader();
+        fr.onload = function () { res({ path: f.webkitRelativePath || f.name, text: String(fr.result) }); };
+        fr.onerror = function () { res({ path: f.webkitRelativePath || f.name, text: '' }); };
+        fr.readAsText(f);
+      });
+    })).then(function (arr) {
+      var files = {};
+      arr.forEach(function (x) { files[x.path] = x.text; });
+      return files;
+    });
+  }
+
+  function esc(s) { return String(s === null || s === undefined ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+  function dateOf(iso) { return iso ? String(iso).slice(0, 10) : 'ללא תאריך'; }
+
+  function reasonText(r) {
+    return ({
+      pending_no_text: 'ממתין - לא הודבק טקסט',
+      malformed_saved_item: 'רשומה פגומה בייצוא',
+      duplicate: 'כבר קיים בספרייה',
+      skipped_by_owner: 'דילגת על הפריט הזה',
+      no_caption: 'אין טקסט',
+      no_known_exercise: 'לא זוהה אף תרגיל מהקטלוג',
+      single_mention_no_prescription: 'תרגיל אחד בלי סטים/חזרות'
+    })[r] || r;
+  }
+
+  function render() {
+    if (!parsed) return;
+    catalog().then(function (cat) {
+      var existing = TH.store.get(TH.KEYS.saved, []);
+      var preview = InstagramSaved.buildSavedPreview(parsed.items, {
+        catalog: cat,
+        existing: Array.isArray(existing) ? existing : [],
+        texts: state.texts,
+        skips: state.skips
+      });
+      window.__preview = preview;
+      document.getElementById('queueCard').hidden = false;
+      document.getElementById('cItems').textContent = preview.counts.items;
+      document.getElementById('cPending').textContent = preview.counts.pending;
+      document.getElementById('cAdded').textContent = preview.counts.added;
+      document.getElementById('cSkipped').textContent = preview.counts.skipped;
+      document.getElementById('dedupeNote').textContent = parsed.duplicates_collapsed
+        ? ('אוחדו ' + parsed.duplicates_collapsed + ' כפילויות לפי הקישור.') : '';
+
+      var signals = InstagramSaved.triageSignals(parsed.items).reduce(function (m, s) { m[s.saved_id] = s; return m; }, {});
+      var status = {};
+      preview.added.forEach(function (w) { status[w.saved_id] = { kind: 'added', workout: w }; });
+      preview.skipped.forEach(function (s) { status[s.saved_id] = { kind: 'skipped', reason: s.reason }; });
+      preview.pending.forEach(function (p) { status[p.saved_id] = { kind: 'pending', reason: p.reason }; });
+
+      var html = parsed.items.map(function (it) {
+        var st = status[it.saved_id] || { kind: 'pending' };
+        var sig = signals[it.saved_id] || {};
+        var tags = [];
+        if (it.media_kind) tags.push(it.media_kind === 'reel' ? 'ריל' : 'פוסט');
+        if (sig.in_collection) tags.push('באוסף: ' + esc(it.collections.join(', ')));
+        if (sig.author_saves > 1) tags.push('שמרת ' + sig.author_saves + ' פוסטים מהחשבון הזה');
+        if (it.is_own) tags.push('פוסט שלך');
+        var body = '';
+        if (st.kind === 'added') {
+          var ex = st.workout.phases.reduce(function (n, p) { return n + p.exercises.length; }, 0);
+          body = '<div class="ok">זוהה אימון: ' + ex + ' תרגילים - ' + esc(st.workout.title) + '</div>';
+        } else if (st.kind === 'skipped') {
+          body = '<div class="muted">' + esc(reasonText(st.reason)) + '</div>';
+        }
+        return '<div class="row" data-id="' + esc(it.saved_id) + '">' +
+          '<h3>' + esc(it.author || 'ללא שם משתמש') + '</h3>' +
+          '<div class="meta">נשמר ב-' + esc(dateOf(it.saved_at)) + ' &middot; ' +
+            (it.permalink ? '<a href="' + esc(it.permalink) + '" target="_blank" rel="noopener noreferrer">פתח באינסטגרם</a>' : 'ללא קישור') +
+          '</div>' +
+          '<div>' + tags.map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('') + '</div>' +
+          body +
+          (it.malformed ? '' :
+            '<textarea data-text="' + esc(it.saved_id) + '" placeholder="הדבק כאן את הכיתוב של הפוסט, או כתוב בעצמך את התרגילים">' + esc(state.texts[it.saved_id] || '') + '</textarea>' +
+            '<div class="actions">' +
+              '<button data-apply="' + esc(it.saved_id) + '">נתח את הטקסט</button>' +
+              '<button data-skip="' + esc(it.saved_id) + '">' + (state.skips[it.saved_id] ? 'בטל דילוג' : 'דלג') + '</button>' +
+            '</div>') +
+          '</div>';
+      }).join('');
+      document.getElementById('rows').innerHTML = html;
+    }).catch(function (e) {
+      document.getElementById('pickStatus').textContent = 'שגיאה בטעינת קטלוג התרגילים: ' + e.message;
+    });
+  }
+
+  function onPick(list) {
+    readFiles(list).then(function (files) {
+      var el = document.getElementById('pickStatus');
+      if (!files) { el.textContent = 'לא נמצא saved_posts.json בבחירה.'; return; }
+      var r = InstagramSaved.parseSavedFiles(files);
+      if (!r.ok) {
+        el.textContent = r.error === 'invalid_json' ? 'הקובץ אינו JSON תקין.' : 'לא נמצאו פוסטים שמורים בקבצים שנבחרו.';
+        return;
+      }
+      parsed = r;
+      var handle = document.getElementById('ownHandle').value;
+      if (handle) InstagramSaved.markOwnItems(parsed.items, handle);
+      el.textContent = 'נקראו ' + Object.keys(files).length + ' קבצים, ' + r.items.length + ' פריטים שמורים.';
+      render();
+    });
+  }
+
+  document.getElementById('pickDir').addEventListener('change', function (e) { onPick(e.target.files); });
+  document.getElementById('pickFiles').addEventListener('change', function (e) { onPick(e.target.files); });
+
+  document.getElementById('rows').addEventListener('click', function (e) {
+    var apply = e.target.getAttribute && e.target.getAttribute('data-apply');
+    var skip = e.target.getAttribute && e.target.getAttribute('data-skip');
+    if (apply) {
+      var ta = document.querySelector('textarea[data-text="' + apply.replace(/"/g, '\\"') + '"]');
+      var val = ta ? ta.value : '';
+      if (val && val.trim()) state.texts[apply] = val; else delete state.texts[apply];
+      saveState(); render();
+    } else if (skip) {
+      if (state.skips[skip]) delete state.skips[skip]; else state.skips[skip] = true;
+      saveState(); render();
+    }
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    var preview = window.__preview;
+    var el = document.getElementById('saveStatus');
+    if (!preview || !preview.added.length) { el.textContent = 'אין פריטים מוכנים לשמירה.'; return; }
+    // Same path the studio uses: WorkoutLibrary.save replaces by saved_id and never truncates.
+    WorkoutLibrary.save(TH.store, TH.KEYS.saved, preview.added);
+    el.textContent = 'נשמרו ' + preview.added.length + ' אימונים לספרייה.';
+    render();
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    state = { texts: {}, skips: {} };
+    saveState(); render();
+    document.getElementById('saveStatus').textContent = 'מצב התור נוקה. האימונים שכבר נשמרו בספרייה לא נגעו.';
+  });
+
+  loadState();
+})();
+</script>
+</body>
+</html>
