@@ -342,7 +342,7 @@ test('a permalink with no recognisable shortcode still gets a stable id', () => 
   const odd = IGS.normalizeSavedItem({ title: 'synthetic_odd', string_map_data: { x: { href: 'https://www.instagram.com/synthetic_odd/', timestamp: 1700000000 } } }, { file: P_CURRENT, layout: 'current' });
   assert.equal(odd.malformed, false);
   assert.equal(odd.shortcode, null);
-  assert.equal(odd.saved_id, 'igs:url:https://www.instagram.com/synthetic_odd/');
+  assert.equal(odd.saved_id, 'igs:url:https://www.instagram.com/synthetic_odd');
   // the ?igsh= strip has to happen for links with no shortcode too, otherwise the
   // same bookmark saved twice would become two rows keyed by two different urls
   const tracked = IGS.normalizePermalink('https://www.instagram.com/synthetic_odd/?igsh=TRACK#frag');
@@ -426,4 +426,27 @@ test('hostile hrefs never become links (only instagram.com survives)', () => {
   const other = np('https://instagram.com/somecoach/');
   assert.equal(other.permalink, 'https://instagram.com/somecoach/');
   assert.equal(other.shortcode, null);
+});
+
+// --- added 2026-09-15: the .toLowerCase() on the url-keyed id was the one guard of seven whose
+// deletion left the suite green, and it dropped no trailing slash - so one saved link written two
+// ways became two rows in the queue. Either mutation now fails here.
+test('same link, two spellings, one row (case and trailing slash)', () => {
+  const mk = (href) => ({ title: 'coach', string_list_data: [{ href, timestamp: 1700000000 }] });
+  const spellings = [
+    'https://www.instagram.com/SomeCoach/',
+    'https://www.instagram.com/somecoach',
+    'https://www.instagram.com/somecoach/',
+    'https://WWW.instagram.com/SomeCoach//'
+  ];
+  const ids = spellings.map((h, i) => IGS.normalizeSavedItem(mk(h), { file: 'f', index: i }).saved_id);
+  assert.equal(new Set(ids).size, 1, 'all four spellings must share one saved_id, got ' + JSON.stringify(ids));
+  assert.ok(ids[0].startsWith('igs:url:'), 'a non-post instagram link is keyed by url');
+  assert.ok(!/\/$/.test(ids[0]), 'no trailing slash survives into the id: ' + ids[0]);
+  assert.equal(ids[0], ids[0].toLowerCase(), 'the id is lower-cased: ' + ids[0]);
+
+  // a genuine post link is still keyed by its case-SENSITIVE shortcode, which is not the same thing
+  const a = IGS.normalizeSavedItem(mk('https://www.instagram.com/reel/AbC123/'), { file: 'f', index: 9 });
+  const b = IGS.normalizeSavedItem(mk('https://www.instagram.com/reel/abc123/'), { file: 'f', index: 10 });
+  assert.notEqual(a.saved_id, b.saved_id, 'two different shortcodes must stay two rows');
 });

@@ -145,6 +145,12 @@
     };
   }
 
+  // The identity of a link-keyed row. Case and a trailing slash are not differences: the same saved
+  // profile link written two ways used to appear as two rows in the review queue.
+  function urlKey(url) {
+    return String(url || '').toLowerCase().replace(/\/+$/, '');
+  }
+
   // raw: one element of saved_saved_media ; meta: { file, layout, index }
   function normalizeSavedItem(raw, meta) {
     meta = meta || {};
@@ -170,7 +176,7 @@
     return {
       malformed: false,
       reason: null,
-      saved_id: link.shortcode ? 'igs:' + link.shortcode : 'igs:url:' + link.permalink.toLowerCase(),
+      saved_id: link.shortcode ? 'igs:' + link.shortcode : 'igs:url:' + urlKey(link.permalink),
       author: author,
       permalink: link.permalink,
       shortcode: link.shortcode,
