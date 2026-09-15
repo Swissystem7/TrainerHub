@@ -403,3 +403,27 @@ test('nothing generated claims professional or medical endorsement', () => {
     assert.equal(re.test(blob), false, 'endorsement claim found: ' + re);
   });
 });
+
+// --- added 2026-09-15 after a verifier fed hostile hrefs into an export file and they came back as
+// clickable links. The page renders `permalink` into an <a href>, so the rule has to hold HERE.
+test('hostile hrefs never become links (only instagram.com survives)', () => {
+  const np = IGS.normalizePermalink;
+  for (const bad of ['javascript:alert(1)',
+                     'data:text/html,<script>alert(1)</script>',
+                     'https://evil.example.com/reel/ABC123/',
+                     'file:///etc/passwd',
+                     '//evil.example.com/p/ABC/']) {
+    const r = np(bad);
+    assert.equal(r.permalink, null, 'must not hand back ' + bad + ' as a link');
+    assert.equal(r.link_reason, 'not_an_instagram_link');
+  }
+  // the real thing still works, and still normalises
+  const ok = np('https://www.instagram.com/reel/ABC123def/?igsh=tracking');
+  assert.equal(ok.permalink, 'https://www.instagram.com/reel/ABC123def/');
+  assert.equal(ok.shortcode, 'ABC123def');
+  assert.equal(ok.media_kind, 'reel');
+  // an instagram.com URL we do not parse as a post is kept as a link but carries no shortcode
+  const other = np('https://instagram.com/somecoach/');
+  assert.equal(other.permalink, 'https://instagram.com/somecoach/');
+  assert.equal(other.shortcode, null);
+});

@@ -121,12 +121,21 @@
   // Strip ?igsh=/?utm_= tracking suffixes and the fragment, then rebuild the
   // canonical permalink from the shortcode so the same post saved twice
   // collapses to one row.
+  // http(s) on instagram.com only - no javascript:, no data:, no other host.
+  var INSTAGRAM_HOST_RE = /^https?:\/\/(?:www\.|m\.)?instagram\.com\//i;
+
   function normalizePermalink(href) {
     var s = String(href || '').trim();
     if (!s) return { permalink: null, shortcode: null, media_kind: null };
     var bare = s.split('#')[0].split('?')[0];
     var m = PERMALINK_RE.exec(bare);
-    if (!m) return { permalink: bare, shortcode: null, media_kind: null };
+    if (!m) {
+      // Anything we do not recognise as an instagram.com post is NOT handed back as a link. A crafted
+      // export offered javascript: and data: URLs, and the page renders this value into an <a href>.
+      // The row still shows its author and date; there is simply nothing to click.
+      return { permalink: INSTAGRAM_HOST_RE.test(bare) ? bare : null, shortcode: null, media_kind: null,
+               link_reason: INSTAGRAM_HOST_RE.test(bare) ? null : 'not_an_instagram_link' };
+    }
     var kind = KIND_OF[m[1].toLowerCase()] || 'post';
     var path = kind === 'reel' ? 'reel' : 'p';
     return {
