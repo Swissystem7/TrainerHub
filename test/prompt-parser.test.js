@@ -116,3 +116,9 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseParticipants recognizes Hebrew number words before participant terms', function () {
+  assert.equal(Prompt.parseParticipants('אימון עם עשרה חניכים'), 10);
+  const req = Prompt.parsePrompt('אימון בטן שמונה ילדים');
+  assert.equal(req.participants, 8);
+});
