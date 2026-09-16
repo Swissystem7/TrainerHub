@@ -30,6 +30,13 @@
 
   function parseDuration(text) {
     var t = String(text || '');
+    
+    // Handle plain numeric strings
+    if (/^\d+$/.test(t)) {
+      var num = toInt(t);
+      return num !== null ? num : 20;
+    }
+    
     var m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
