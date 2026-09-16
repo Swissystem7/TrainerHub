@@ -37,6 +37,9 @@
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
+    // Fallback for numeric strings
+    var num = toInt(t);
+    if (num !== null) return num;
     return null;
   }
 
