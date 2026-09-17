@@ -30,6 +30,10 @@
 
   function parseDuration(text) {
     var t = String(text || '');
+    // Check for empty or whitespace-only input
+    if (!t.trim()) {
+      return 20;
+    }
     var m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
