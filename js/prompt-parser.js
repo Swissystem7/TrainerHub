@@ -25,7 +25,7 @@
 
   function toInt(v) {
     var n = parseInt(v, 10);
-    return isNaN(n) ? null : n;
+    return n > 0 ? n : null;
   }
 
   function parseDuration(text) {
@@ -37,7 +37,7 @@
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
-    return null;
+    return 20;
   }
 
   function parseParticipants(text) {
