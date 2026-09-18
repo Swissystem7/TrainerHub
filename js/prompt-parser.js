@@ -31,13 +31,19 @@
   function parseDuration(text) {
     var t = String(text || '');
     var m = t.match(/(\d+)\s*דק/);
-    if (m) return toInt(m[1]);
+    if (m) {
+      var duration = toInt(m[1]);
+      return duration > 0 ? duration : 20;
+    }
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
-    if (m) return toInt(m[1]);
-    return null;
+    if (m) {
+      var duration = toInt(m[1]);
+      return duration > 0 ? duration : 20;
+    }
+    return 20;
   }
 
   function parseParticipants(text) {
