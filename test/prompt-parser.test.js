@@ -116,3 +116,8 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration returns default value 20 for invalid inputs like negative numbers and non-numeric strings', function () {
+  assert.equal(Prompt.parseDuration('-5'), 20);
+  assert.equal(Prompt.parseDuration('abc'), 20);
+});
