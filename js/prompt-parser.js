@@ -24,18 +24,18 @@
   };
 
   function toInt(v) {
-    var n = parseInt(v, 10);
+    var n = Math.floor(parseFloat(v));
     return isNaN(n) ? null : n;
   }
 
   function parseDuration(text) {
     var t = String(text || '');
-    var m = t.match(/(\d+)\s*דק/);
+    var m = t.match(/(\d+(?:\.\d+)?)\s*דק/);
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
-    m = t.match(/(\d+)\s*min/i);
+    m = t.match(/(\d+(?:\.\d+)?)\s*min/i);
     if (m) return toInt(m[1]);
     return null;
   }
