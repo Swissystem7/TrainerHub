@@ -29,7 +29,7 @@
   }
 
   function parseDuration(text) {
-    var t = String(text || '');
+    var t = String(text || '').trim();
     var m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
@@ -37,6 +37,7 @@
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
+    if (t === '') return 20;
     return null;
   }
 
