@@ -30,14 +30,17 @@
 
   function parseDuration(text) {
     var t = String(text || '');
-    var m = t.match(/(\d+)\s*דק/);
-    if (m) return toInt(m[1]);
+    var m = t.match(/(\d+(?:\.\d+)?)/);
+    if (m) {
+      var num = parseFloat(m[1]);
+      return Math.floor(num);
+    }
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
-    return null;
+    return 20;
   }
 
   function parseParticipants(text) {

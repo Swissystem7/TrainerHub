@@ -116,3 +116,8 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration handles decimal duration values by converting them to integers with Math.floor', function () {
+  const result = Prompt.parseDuration('1.5 דקות');
+  assert.equal(result, 1);
+});
