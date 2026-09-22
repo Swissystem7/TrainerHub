@@ -116,3 +116,9 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration handles empty and whitespace-only inputs correctly', function () {
+  assert.equal(Prompt.parseDuration(''), 20);
+  assert.equal(Prompt.parseDuration('   '), 20);
+  assert.equal(Prompt.parseDuration('\t\n\r'), 20);
+});
