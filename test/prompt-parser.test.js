@@ -116,3 +116,51 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+/* ── Round-2 item 2, builder side ────────────────────────────────────────────
+   A session marked beginner or kids does not draw equipment from
+   THAnalyzer.BEGINNER_EQUIPMENT_RULE.blocked unless the trainer names that
+   equipment in the request. FIXTURE.bodyweight_row is the only entry here with
+   equipment ["bar"], so it is the one the gate has to move. */
+
+const Analyzer = require('../js/analyzer.js');
+
+function request(over) {
+  return Object.assign({
+    focus: 'back', muscles: ['back'], equipment: [], level: null, goal: null,
+    duration: 20, durationSpecified: true, participants: 1, audience: ''
+  }, over || {});
+}
+
+test('offBeginnerList moves bar/barbell/machine out of a beginner or kids pool only', function () {
+  assert.equal(Engine.offBeginnerList({ equipment: ['bar'] }, request({ level: 'beginner' })), true);
+  assert.equal(Engine.offBeginnerList({ equipment: ['bar'] }, request({ audience: 'kids' })), true);
+  assert.equal(Engine.offBeginnerList({ equipment: ['bar'] }, request({ level: 'intermediate' })), false);
+  assert.equal(Engine.offBeginnerList({ equipment: ['bar'] }, request()), false);
+  assert.equal(Engine.offBeginnerList({ equipment: ['ladder'] }, request({ level: 'beginner' })), false);
+  assert.equal(Engine.offBeginnerList({ equipment: ['stairs'] }, request({ audience: 'kids' })), false);
+  assert.equal(Engine.offBeginnerList({ equipment: ['none'] }, request({ level: 'beginner' })), false);
+  assert.equal(
+    Engine.offBeginnerList({ equipment: ['bar'] }, request({ level: 'beginner', equipment: ['bar'] })),
+    false,
+    'a trainer who names the equipment gets it');
+});
+
+test('a beginner back session says the library cannot satisfy it rather than reaching for the bar', function () {
+  TH.setCatalog(FIXTURE);
+  const built = Engine.buildSession(request({ level: 'beginner' }), FIXTURE);
+  const ids = built.workout
+    ? Analyzer.flattenWorkout(built.workout).map(function (ex) { return ex.id; })
+    : [];
+  assert.equal(ids.indexOf('bodyweight_row'), -1, 'bar work must not reach a beginner plan by default');
+  assert.equal(built.satisfied, false);
+  assert.ok(built.notice);
+  assert.match(built.notice, /אין במאגר/);
+
+  const asked = Engine.buildSession(request({ level: 'beginner', equipment: ['bar'] }), FIXTURE);
+  const askedIds = asked.workout
+    ? Analyzer.flattenWorkout(asked.workout).map(function (ex) { return ex.id; })
+    : [];
+  assert.ok(askedIds.indexOf('bodyweight_row') !== -1,
+    'naming the equipment in the request overrides the default');
+});

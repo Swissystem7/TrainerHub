@@ -1,7 +1,7 @@
 <!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TrainerHub | בונה שבועי</title>
 <link rel="stylesheet" href="./css/app.css">
 <style>
-:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem;margin-inline-end:8px}.swap-sel{width:auto;max-width:11rem;padding:4px 8px;margin-inline-start:8px;font-size:.75rem}@media(max-width:700px){.layout{grid-template-columns:1fr}}
+:root{--bg:#101312;--card:#1a1f1d;--line:#303834;--ink:#f6f8f6;--muted:#a7b1ab;--lime:#b9f24a}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#101312,#17221c);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh}.wrap{max-width:1000px;margin:auto;padding:42px 20px}.top{margin-bottom:24px}.top small{color:var(--lime);font-weight:bold}.top h1{font-size:clamp(2.2rem,6vw,4rem);margin:8px 0}.top p{color:var(--muted)}.layout{display:grid;grid-template-columns:320px 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}label{display:block;color:var(--muted);font-size:.84rem;margin:13px 0 6px}select,input,textarea{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#111513;color:var(--ink);font:inherit}button{width:100%;padding:13px;margin-top:18px;border:0;border-radius:10px;background:var(--lime);color:#101312;font-weight:900;cursor:pointer}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.pill{background:#26302b;border-radius:10px;padding:10px 13px;color:var(--muted)}.pill b{color:var(--ink)}.day{border-top:1px solid var(--line);padding:16px 0}.day:first-of-type{border:0}.exercise{display:grid;grid-template-columns:1fr auto;gap:5px;padding:9px 0}.exercise span{color:var(--muted);font-size:.83rem}.error{color:#ff9d9d}.start-day{width:auto;margin-top:12px;padding:9px 16px;font-size:.85rem;margin-inline-end:8px}.swap-sel{width:auto;max-width:11rem;padding:4px 8px;margin-inline-start:8px;font-size:.75rem}#exportCard{grid-column:1/-1}#exportCard textarea{font-family:monospace;font-size:.75rem;line-height:1.4;white-space:pre;direction:ltr;text-align:left}#exportCard .dl{display:inline-block;margin-top:12px;margin-inline-end:12px;color:var(--lime);font-weight:700}#exportCard .honest{color:var(--muted);font-size:.8rem}@media(max-width:700px){.layout{grid-template-columns:1fr}}
 </style></head><body>
 <a class="skip-link" href="#form">דלג לטופס</a>
 <nav aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
@@ -19,7 +19,8 @@
   התוכנית השבועית נבנית בדפדפן מהמאגר. אין שרת חי בדמו הזה.
 </div>
 <script src="./js/core.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button type="submit">בנה אימון</button></form><div class="card" id="result" aria-live="polite"></div></section></main><script>
+<script src="./js/export-workout.js"></script>
+<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form"><h2>העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><button type="submit">בנה אימון</button></form><div class="card" id="result" aria-live="polite"></div><section class="card" id="exportCard" hidden><h2>ייצוא אימון</h2><p id="exportFor" role="status"></p><label for="exportDate">תאריך האימון</label><input id="exportDate" type="date"><label for="exportTime">שעת התחלה</label><input id="exportTime" type="time" value="18:00"><label for="exportIcs">קובץ יומן (ICS)</label><textarea id="exportIcs" rows="10" readonly></textarea><label for="exportJson">קובץ JSON</label><textarea id="exportJson" rows="10" readonly></textarea><p><a class="dl" id="exportIcsLink" href="#" download="trainerhub-workout.ics">הורדת קובץ יומן</a><a class="dl" id="exportJsonLink" href="#" download="trainerhub-workout.json">הורדת JSON</a></p><p class="honest">מה שמופיע בתיבות הוא בדיוק מה שיירד — הקובץ נוצר בדפדפן, בלי שרת ובלי שליחה לשום מקום. השעה נכתבת לפי אזור הזמן של המחשב הזה.</p></section></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
 
@@ -61,6 +62,78 @@ function printDayWorkout(dayIndex){
   window.location.href = TH.printUrl();
 }
 
+/* Round-2 item 4: hand the built day to js/export-workout.js and show the exact
+   bytes it produces. Deterministic: the start instant comes from the two fields
+   below, never from the clock, and nothing leaves the browser. */
+function exportModel(dayIndex){
+  const raw = window.__lastProgram;
+  if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return null;
+  const w = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  return { name: w.title, phases: w.phases };
+}
+function exportStart(){
+  const date = $('exportDate').value;
+  const time = $('exportTime').value || '00:00';
+  return date ? (date + 'T' + time + ':00') : null;
+}
+function setDownload(id, text, mime, filename){
+  const a = $(id);
+  if (a.dataset.url) URL.revokeObjectURL(a.dataset.url);
+  if (!text) { a.removeAttribute('href'); a.dataset.url = ''; return; }
+  const url = URL.createObjectURL(new Blob([text], { type: mime + ';charset=utf-8' }));
+  a.dataset.url = url;
+  a.href = url;
+  a.download = filename;
+}
+/* Round-2 follow-up 1: a card that outlived its plan handed a trainer a workout
+   that is no longer in the plan. Every build stamps a new plan token; the card
+   remembers the token it was filled from, so a rebuilt plan closes and clears it,
+   while an in-place edit of the same plan (a swap) keeps the token and re-renders
+   the card from the edited day. */
+function clearExport(){
+  window.__exportDay = null;
+  window.__exportToken = null;
+  $('exportIcs').value = '';
+  $('exportJson').value = '';
+  $('exportFor').textContent = '';
+  setDownload('exportIcsLink', '', 'text/calendar', '');
+  setDownload('exportJsonLink', '', 'application/json', '');
+  $('exportCard').hidden = true;
+}
+function syncExport(){
+  if (window.__exportDay == null) return;
+  if (window.__exportToken !== window.__planToken) { clearExport(); return; }
+  renderExport();
+}
+function renderExport(){
+  const index = window.__exportDay;
+  if (index == null) return;
+  const model = exportModel(index);
+  if (!model) { clearExport(); return; }
+  const card = $('exportCard');
+  card.hidden = false;
+  const json = THExport.workoutToJson(model);
+  $('exportJson').value = json;
+  setDownload('exportJsonLink', json, 'application/json', 'trainerhub-workout-' + (index + 1) + '.json');
+  const start = exportStart();
+  if (!start) {
+    $('exportIcs').value = '';
+    setDownload('exportIcsLink', '', 'text/calendar', '');
+    $('exportFor').textContent = 'ייצוא ' + model.name + ' — בחרו תאריך כדי לייצר גם קובץ יומן.';
+    return;
+  }
+  const ics = THExport.workoutToIcs(model, { start: start });
+  $('exportIcs').value = ics;
+  setDownload('exportIcsLink', ics, 'text/calendar', 'trainerhub-workout-' + (index + 1) + '.ics');
+  $('exportFor').textContent = 'ייצוא ' + model.name;
+}
+function exportDayWorkout(dayIndex){
+  window.__exportDay = dayIndex;
+  window.__exportToken = window.__planToken;
+  renderExport();
+  $('exportCard').scrollIntoView({ block: 'nearest' });
+}
+
 function renderProgram(p){
   const eq = $('equipment').value;
   const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
@@ -90,8 +163,9 @@ function renderProgram(p){
         return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
       }).join('');
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button></section>';
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button><button type="button" class="start-day th-btn ghost" onclick="exportDayWorkout('+i+')">ייצוא ליומן / JSON</button></section>';
     }).join('');
+  syncExport();
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {
       if (!sel.value) return;
@@ -133,6 +207,7 @@ function run(e){
     };
     const p = TH.generateWorkoutProgram(profile, 1, Number($('days').value));
     window.__lastProgram = p;
+    window.__planToken = (window.__planToken || 0) + 1;
     window.__lastMeta = {
       equipment: [TH.eqLabel(eq)],
       intensity: $('goal').value === 'strength' ? 'high' : 'medium',
@@ -140,9 +215,13 @@ function run(e){
     };
     renderProgram(p);
   } catch (err) {
+    window.__planToken = (window.__planToken || 0) + 1;
+    clearExport();
     $('result').innerHTML = '<p class="error">'+esc(err.message)+'</p>';
   }
 }
+$('exportDate').addEventListener('change', renderExport);
+$('exportTime').addEventListener('change', renderExport);
 $('form').addEventListener('submit', run);
 TH.ready(run);
 </script></body></html>
