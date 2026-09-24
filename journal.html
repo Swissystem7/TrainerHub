@@ -16,7 +16,7 @@
     .top p { color: var(--muted); line-height: 1.6; max-width: 44rem; }
     .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 16px 0; }
     label { display: block; color: var(--muted); font-size: .84rem; margin: 12px 0 6px; }
-    input, textarea {
+    input, textarea, select {
       width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
       background: #111513; color: var(--ink); font: inherit;
     }
@@ -90,6 +90,66 @@
     <p class="honest">השם והטלפון לא נשלחים לשום שרת. תזכורת פותחת wa.me במכשיר.</p>
   </form>
 
+  <form class="card" id="coachBuildForm">
+    <h2>בנה ושייך אימון למתאמן</h2>
+    <p class="honest">בוחרים מתאמן שכבר הוספתם. האימון נבנה מהמאגר ונשמר בדפדפן הזה בלבד.</p>
+    <label for="coachClient">מתאמן</label>
+    <select id="coachClient" name="coachClient" required></select>
+    <div class="row">
+      <div>
+        <label for="coachMuscle">קבוצת שרירים מרכזית</label>
+        <select id="coachMuscle" name="coachMuscle">
+          <option value="full">גוף מלא</option>
+          <option value="legs">רגליים</option>
+          <option value="chest">חזה</option>
+          <option value="back">גב</option>
+          <option value="shoulders">כתפיים</option>
+          <option value="core">ליבה</option>
+        </select>
+      </div>
+      <div>
+        <label for="coachGoal">מטרה</label>
+        <select id="coachGoal" name="coachGoal">
+          <option value="strength">כוח</option>
+          <option value="hypertrophy">היפרטרופיה</option>
+          <option value="muscle_gain">עלייה במסת שריר</option>
+          <option value="endurance">סיבולת</option>
+          <option value="general_fitness">כושר כללי</option>
+        </select>
+      </div>
+      <div>
+        <label for="coachLevel">רמה</label>
+        <select id="coachLevel" name="coachLevel">
+          <option value="beginner">מתחילים</option>
+          <option value="intermediate">ביניים</option>
+          <option value="advanced">מתקדמים</option>
+        </select>
+      </div>
+      <div>
+        <label for="coachEquipment">ציוד</label>
+        <select id="coachEquipment" name="coachEquipment">
+          <option value="none">משקל גוף</option>
+          <option value="dumbbells">משקולות</option>
+          <option value="band">גומיות</option>
+          <option value="cones">קונוסים</option>
+          <option value="ball">כדור</option>
+        </select>
+      </div>
+      <div>
+        <label for="coachAudience">קהל</label>
+        <select id="coachAudience" name="coachAudience">
+          <option value="general">מבוגרים / כללי</option>
+          <option value="kids">ילדים</option>
+          <option value="sport">ספורט (כדור / מגרש)</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="submit" class="th-btn">בנה ושייך אימון</button>
+    </div>
+    <p class="status" id="coachStatus" role="status" aria-live="polite"></p>
+  </form>
+
   <div class="stats" aria-live="polite">
     <div class="stat"><b id="clActive">0</b> פעילים ב־7 ימים</div>
     <div class="stat"><b id="clAdherence">0%</b> ימים עם ביצוע (28)</div>
@@ -158,7 +218,24 @@
     return activeWorkout();
   }
 
-  function render() {
+  function refreshCoachClients(selectedId) {
+    var select = $('coachClient');
+    if (!select) return;
+    var wanted = selectedId || select.value;
+    if (!clients.length) {
+      select.innerHTML = '<option value="">הוסיפו מתאמן קודם</option>';
+      select.disabled = true;
+      return;
+    }
+    select.disabled = false;
+    select.innerHTML = clients.map(function (c) {
+      return '<option value="' + TH.esc(c.id || '') + '">' + TH.esc(c.name || 'מתאמן') + '</option>';
+    }).join('');
+    if (wanted && clients.some(function (c) { return c.id === wanted; })) select.value = wanted;
+  }
+
+  function render(selectedClientId) {
+    refreshCoachClients(selectedClientId);
     var list = $('list');
     if (!clients.length) {
       list.innerHTML = '<p class="empty">עדיין אין מתאמנים אמיתיים. הוסיפו שם או ייבאו קוד TH1 ממסך הסיום.</p>';
@@ -247,6 +324,57 @@
     window.open(TH.waShareUrl(c.phone, msg), '_blank');
   }
 
+  $('coachBuildForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var clientId = $('coachClient').value;
+    var c = clients.filter(function (x) { return x.id === clientId; })[0];
+    if (!c) {
+      setStatus($('coachStatus'), 'צריך להוסיף ולבחור מתאמן לפני בניית אימון.', true);
+      return;
+    }
+    setStatus($('coachStatus'), 'בונה אימון מהמאגר המקומי…');
+    TH.ready(function () {
+      try {
+        var muscle = $('coachMuscle').value;
+        var goal = $('coachGoal').value;
+        var equipment = $('coachEquipment').value;
+        var audience = $('coachAudience').value;
+        var profile = {
+          fitnessLevel: $('coachLevel').value,
+          goals: [goal],
+          availableEquipment: [equipment],
+          targetMuscles: muscle === 'full' ? [] : [muscle],
+          injuries: [],
+          previousWorkouts: 0,
+          audience: audience === 'general' ? '' : audience,
+          preferCatalog: true
+        };
+        var program = TH.generateWorkoutProgram(profile, 1, 1);
+        var day = program && program.dailyWorkouts && program.dailyWorkouts[0];
+        if (!day) throw new Error('לא נמצא אימון מתאים להעדפות שנבחרו.');
+        var tags = [muscle, goal];
+        if (audience !== 'general') tags.push(audience);
+        var workout = TH.toPhasesWorkout(day, {
+          equipment: [equipment],
+          intensity: goal === 'strength' ? 'high' : 'medium',
+          tags: tags
+        });
+        if (!workout || !Array.isArray(workout.phases) || !workout.phases.length) {
+          throw new Error('האימון נבנה בלי שלבים ולכן לא נשמר.');
+        }
+        c.plan = workout.title || 'אימון';
+        c.lastWorkout = workout;
+        c.lastPlan = TH.compactPlan(workout);
+        TH.store.set(TH.KEYS.active, workout);
+        save();
+        setStatus($('coachStatus'), 'נבנה ושויך «' + c.plan + '» ל' + c.name + '. אפשר לפתוח כמתאמן או לשתף מהכרטיס שלו.');
+        render(c.id);
+      } catch (err) {
+        setStatus($('coachStatus'), err && err.message ? err.message : 'לא הצלחנו לבנות אימון.', true);
+      }
+    });
+  });
+
   $('importForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var parsed = TH.decodeResult($('importCode').value);
@@ -278,7 +406,7 @@
     save();
     $('importCode').value = '';
     setStatus($('importStatus'), dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.'));
-    render();
+    render(c.id);
   });
 
   $('addForm').addEventListener('submit', function (e) {
@@ -288,18 +416,19 @@
       setStatus($('importStatus'), 'צריך שם כדי להוסיף מתאמן.', true);
       return;
     }
-    clients.push({
+    var newClient = {
       id: 't_' + Date.now().toString(36),
       name: name,
       phone: $('newPhone').value.trim(),
       plan: 'טרם שויכה תוכנית',
       logs: []
-    });
+    };
+    clients.push(newClient);
     $('newName').value = '';
     $('newPhone').value = '';
     save();
     setStatus($('importStatus'), 'נוסף «' + name + '». הנתונים נשארים בדפדפן.');
-    render();
+    render(newClient.id);
   });
 
   $('list').addEventListener('click', function (e) {

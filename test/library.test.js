@@ -178,6 +178,48 @@ test('kids audience + cones picks tagged kids drills from the catalog', function
   assert.ok(names.indexOf('ילדים_קונוסים') !== -1, 'got ' + names.join(','));
 });
 
+test('general audience excludes drills reserved for kids or sport', function () {
+  useFixture();
+  const program = TH.generateWorkoutProgram({
+    age: 31,
+    fitnessLevel: 'intermediate',
+    goals: ['hypertrophy'],
+    availableEquipment: ['cones', 'football'],
+    targetMuscles: ['legs'],
+    injuries: [],
+    previousWorkouts: 8,
+    audience: '',
+    preferCatalog: true
+  }, 1, 1);
+  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
+  assert.ok(names.length > 0);
+  assert.equal(names.indexOf('ילדים_קונוסים'), -1, 'kids drill leaked into ' + names.join(','));
+  assert.equal(names.indexOf('כדורגל_אחד_על_אחד'), -1, 'sport drill leaked into ' + names.join(','));
+});
+
+test('explicit dumbbell choice outranks unrelated bodyweight catalog clips', function () {
+  useFixture();
+  const program = TH.generateWorkoutProgram({
+    age: 31,
+    fitnessLevel: 'intermediate',
+    goals: ['hypertrophy'],
+    availableEquipment: ['dumbbells'],
+    targetMuscles: ['legs'],
+    injuries: [],
+    previousWorkouts: 8,
+    audience: '',
+    preferCatalog: true
+  }, 1, 1);
+  const dumbbellLegMoves = new Set([
+    'lunges', 'step_up', 'calf_raise', 'goblet_squat', 'dumbbell_lunge', 'romanian_deadlift_db'
+  ]);
+  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
+  assert.ok(names.length > 0);
+  names.forEach(function (name) {
+    assert.equal(dumbbellLegMoves.has(name), true, 'non-dumbbell leg move: ' + name);
+  });
+});
+
 test('empty catalog keeps the generic pool (no invented clip files)', function () {
   TH.setCatalog({});
   const program = TH.generateWorkoutProgram({
@@ -234,4 +276,43 @@ test('filterCatalog and clip payloads never leak a personal name from a filename
     if (prev === undefined) delete global.location;
     else global.location = prev;
   }
+});
+
+test('kids + dumbbells or band still gets the kids drills (audience before equipment)', function () {
+  // a kids drill that needs no equipment, so a dumbbell or band plan can use it
+  TH.setCatalog(Object.assign({}, FIXTURE, {
+    ילדים_הוקי_נעליים: { id: 'ילדים_הוקי_נעליים', he: 'ילדים הוקי נעליים', muscles: ['legs', 'core'], equipment: ['none'], level: 'beginner', file: 'ילדים הוקי נעליים.mp4' }
+  }));
+  ['dumbbells', 'band'].forEach(function (eq) {
+    const program = TH.generateWorkoutProgram({
+      age: 12,
+      fitnessLevel: 'beginner',
+      goals: ['general_fitness'],
+      availableEquipment: [eq],
+      targetMuscles: [],
+      injuries: [],
+      previousWorkouts: 8,
+      audience: 'kids',
+      preferCatalog: true
+    }, 1, 1);
+    const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
+    assert.ok(names.indexOf('ילדים_הוקי_נעליים') !== -1, eq + ': kids drill lost, got ' + names.join(','));
+  });
+});
+
+test('kids plans keep kids drills with every equipment choice on the real catalog', function () {
+  TH.setCatalog(catalog);
+  const kidsIds = new Set(TH.filterCatalog({ tag: 'kids' }).map(function (e) { return e.id; }));
+  ['dumbbells', 'band'].forEach(function (eq) {
+    let kids = 0;
+    ['full', 'legs', 'chest', 'back', 'core'].forEach(function (muscle) {
+      const program = TH.generateWorkoutProgram({
+        age: 12, fitnessLevel: 'beginner', goals: ['general_fitness'], availableEquipment: [eq],
+        targetMuscles: muscle === 'full' ? [] : [muscle], injuries: [], previousWorkouts: 8,
+        audience: 'kids', preferCatalog: true
+      }, 1, 1);
+      program.dailyWorkouts[0].exercises.forEach(function (ex) { if (kidsIds.has(ex.name)) kids += 1; });
+    });
+    assert.ok(kids > 0, eq + ': a kids plan with no kids drill at all');
+  });
 });
