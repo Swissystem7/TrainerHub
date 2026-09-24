@@ -152,7 +152,8 @@
       skipped_by_owner: 'דילגת על הפריט הזה',
       no_caption: 'אין טקסט',
       no_known_exercise: 'לא זוהה אף תרגיל מהקטלוג',
-      single_mention_no_prescription: 'תרגיל אחד בלי סטים/חזרות'
+      single_mention_no_prescription: 'תרגיל אחד בלי סטים/חזרות',
+      warmup_only: 'נמצא רק חימום, בלי תרגילי אימון'
     })[r] || r;
   }
 
@@ -255,8 +256,15 @@
     var preview = window.__preview;
     var el = document.getElementById('saveStatus');
     if (!preview || !preview.added.length) { el.textContent = 'אין פריטים מוכנים לשמירה.'; return; }
-    // Same path the studio uses: WorkoutLibrary.save replaces by saved_id and never truncates.
-    WorkoutLibrary.save(TH.store, TH.KEYS.saved, preview.added);
+    try {
+      // Same path the studio uses: WorkoutLibrary.save replaces by saved_id and never truncates.
+      WorkoutLibrary.save(TH.store, TH.KEYS.saved, preview.added);
+    } catch (e) {
+      // WorkoutLibrary throws Hebrew messages; anything else (a browser error) gets a Hebrew one.
+      var msg = e && e.message && /[א-ת]/.test(e.message) ? e.message : '';
+      el.textContent = msg || 'השמירה נכשלה. בדקו מקום פנוי והרשאות אחסון בדפדפן.';
+      return;
+    }
     el.textContent = 'נשמרו ' + preview.added.length + ' אימונים לספרייה.';
     render();
   });

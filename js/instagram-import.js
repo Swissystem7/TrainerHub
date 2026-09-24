@@ -21,6 +21,7 @@
     no_caption: 'no_caption',
     no_known_exercise: 'no_known_exercise',
     single_mention_no_prescription: 'single_mention_no_prescription',
+    warmup_only: 'warmup_only',
     duplicate: 'duplicate',
     malformed_post: 'malformed_post'
   };
@@ -51,6 +52,25 @@
     mountain_climber: ['mountain climbers', 'mountain climber'],
     bodyweight_row: ['bodyweight rows', 'bodyweight row', 'inverted rows', 'inverted row']
   };
+
+  // The app's own name tables in js/core.js: NAME_ALIASES (a written name -> catalogue id,
+  // e.g. 'שכיבות שמיכה' -> אתגר_שכיבות_שמיכה, 'סופרמן' -> superman) and HE_NAMES (the Hebrew
+  // name of every exercise the app knows, with or without a clip, e.g. squat -> 'סקוואט').
+  function appNameTables() {
+    var TH = root.TH;
+    if (!TH && typeof module === 'object' && module.exports && typeof require === 'function') {
+      try { TH = require('./core.js'); } catch (e) { TH = null; }
+    }
+    return {
+      aliases: (TH && TH.NAME_ALIASES) || {},
+      heNames: (TH && TH.HE_NAMES) || {}
+    };
+  }
+
+  // 'squat' also reads 'squats'; 'lunges' also reads 'lunge'.
+  function englishForms(n) {
+    return /s$/.test(n) ? [n, n.replace(/s$/, '')] : [n, n + 's'];
+  }
 
   // ---------- text ----------
 
@@ -141,21 +161,41 @@
   }
 
   // Returns [{ name, id, he, english }] sorted longest name first; first id wins a shared name.
+  // Catalogue names come first; then the app's alias table and its Hebrew exercise names, which
+  // match as whole words only (english: true) so a short name never fires inside another word.
   function buildCatalogIndex(catalog) {
     var seen = {};
     var out = [];
+    var byId = {};
+    function add(n, id, he, english, equipment) {
+      if (!n || n.length < 2 || seen[n]) return;
+      seen[n] = true;
+      out.push({ name: n, id: id, he: he, english: english, equipment: equipment });
+    }
     catalogEntries(catalog).forEach(function (e) {
       var id = String(e.id || '');
       var he = typeof e.he === 'string' && e.he.trim() ? e.he.trim() : id;
+      var equipment = Array.isArray(e.equipment) ? e.equipment.slice() : [];
+      if (!byId[id]) byId[id] = { he: he, equipment: equipment };
       var names = [];
       if (typeof e.he === 'string' && e.he.trim()) names.push({ n: normName(e.he), english: false });
       if (/^[a-z0-9_ -]+$/i.test(id)) names.push({ n: normName(id), english: true });
       (ENGLISH_ALIASES[id] || []).forEach(function (a) { names.push({ n: normName(a), english: true }); });
-      names.forEach(function (x) {
-        if (!x.n || x.n.length < 2 || seen[x.n]) return;
-        seen[x.n] = true;
-        out.push({ name: x.n, id: id, he: he, english: x.english, equipment: Array.isArray(e.equipment) ? e.equipment.slice() : [] });
-      });
+      names.forEach(function (x) { add(x.n, id, he, x.english, equipment); });
+    });
+    var tables = appNameTables();
+    Object.keys(tables.aliases).forEach(function (alias) {
+      var target = byId[tables.aliases[alias]];
+      if (!target) return;
+      var hebrew = /[א-ת]/.test(alias);
+      add(normName(alias), tables.aliases[alias], hebrew ? alias : target.he, true, target.equipment);
+    });
+    Object.keys(tables.heNames).forEach(function (id) {
+      var he = tables.heNames[id];
+      var target = byId[id];
+      var equipment = target ? target.equipment : [];
+      add(normName(he), id, he, true, equipment);
+      englishForms(normName(id)).forEach(function (n) { add(n, id, he, true, equipment); });
     });
     out.sort(function (a, b) { return b.name.length - a.name.length || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0); });
     return out;
@@ -276,6 +316,10 @@
     }
     if (exercises.length < 2 && withRx < 1) {
       return { workout: false, reason: REASONS.single_mention_no_prescription, exercises: exercises, title: title };
+    }
+    // A warm-up on its own is not a workout ("חימום התנור ל-180 מעלות 20 דקות" is a recipe).
+    if (exercises.every(function (e) { return e.id === 'warmup'; })) {
+      return { workout: false, reason: REASONS.warmup_only, exercises: exercises, title: title };
     }
     return {
       workout: true,

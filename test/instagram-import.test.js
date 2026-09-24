@@ -230,7 +230,8 @@ test('single_mention_no_prescription boundary: the classification guard is real'
   assert.equal(one.exercises.length, 1, 'the exercise is still reported, only the post is not a workout');
 
   // the same single exercise WITH a prescription crosses the line
-  const oneRx = IG.classifyCaption('אימון קצר\nחימום 3x12', catalog);
+  // (a main exercise: a warm-up on its own is not a workout, see the warm-up-only test below)
+  const oneRx = IG.classifyCaption('אימון קצר\nפלאנק 3x12', catalog);
   assert.equal(oneRx.workout, true, 'one exercise with a prescription is a workout');
 
   // TWO known exercises with no prescription also cross it (withRx < 1 alone is not enough to reject)
@@ -252,4 +253,60 @@ test('a reps RANGE is recorded at its low end and disclosed in notes', () => {
   assert.equal(c.exercises[0].reps, 8);
   assert.equal(c.exercises[0].notes, 'בפוסט נכתב 8-12 חזרות');
   assert.equal(c.exercises[1].notes, null);
+});
+
+// --- added 2026-09-24: a warm-up alone is not a workout, and the app's own name tables are used.
+test('a caption whose only match is a warm-up is not imported as a workout', () => {
+  const recipe = IG.classifyCaption(
+    'מתכון לארוחת בוקר: 2 ביצים, חצי כוס שיבולת שועל\nחימום התנור ל-180 מעלות 20 דקות', catalog);
+  assert.equal(recipe.workout, false, 'a recipe that warms up an oven is not a workout');
+  assert.equal(recipe.reason, IG.REASONS.warmup_only);
+
+  const warmOnly = IG.classifyCaption('אימון קצר\nחימום 3x12', catalog);
+  assert.equal(warmOnly.workout, false);
+  assert.equal(warmOnly.reason, IG.REASONS.warmup_only);
+
+  const posts = [{ malformed: false, post_id: 'ig:1:a.jpg', caption: 'מתכון\nחימום התנור 20 דקות', created_at: null, media: [], layout: 'current', file: 'x' }];
+  const preview = IG.buildPreview(posts, { catalog });
+  assert.equal(preview.added.length, 0);
+  assert.equal(preview.skipped[0].reason, IG.REASONS.warmup_only);
+});
+
+test('exercises are matched through the app name tables, so none of them is dropped', () => {
+  const legs = IG.classifyCaption('Leg day\nsquats 4x10\nlunges 3x12\nplank 3x45s', catalog);
+  assert.equal(legs.workout, true);
+  assert.equal(legs.exercises.length, 3, JSON.stringify(legs.exercises));
+  assert.deepEqual(legs.exercises.map((e) => [e.name, e.sets, e.reps, e.duration_seconds]), [
+    ['סקוואט', 4, 10, null],
+    ['מכרעים', 3, 12, null],
+    ['פלאנק', 3, null, 45]
+  ]);
+
+  const heb = IG.classifyCaption('חימום 10 דקות\nשכיבות שמיכה 3x15\nסופרמן 3x12', catalog);
+  assert.equal(heb.workout, true);
+  assert.equal(heb.exercises.length, 3, JSON.stringify(heb.exercises));
+  assert.deepEqual(heb.exercises.map((e) => [e.id, e.name, e.sets, e.reps, e.duration_seconds]), [
+    ['warmup', 'חימום', null, null, 600],
+    ['אתגר_שכיבות_שמיכה', 'שכיבות שמיכה', 3, 15, null],
+    ['superman', 'סופרמן', 3, 12, null]
+  ]);
+  const w = IG.toWorkout({ post_id: 'ig:1:a.jpg', caption: '', created_at: null, media: [], layout: 'current', file: 'x' }, heb);
+  assert.equal(w.phases[0].exercises.length, 1, 'warm-up phase');
+  assert.equal(w.phases[1].exercises.length, 2, 'main phase keeps both exercises');
+
+  // a table name is matched as a whole word, not inside another word
+  const beginners = IG.classifyCaption('אימון\nמתאים למתחילים 3 סטים', catalog);
+  assert.equal(beginners.exercises.some((e) => e.id === 'pull_up'), false, '"מתח" is not inside "למתחילים"');
+});
+
+test('both import pages have Hebrew text for every skip reason', () => {
+  const fs = require('node:fs');
+  // The saved page never parses own-posts files, so malformed_post cannot reach it.
+  const pages = { 'instagram-import.html': [], 'instagram-saved.html': ['malformed_post'] };
+  for (const page of Object.keys(pages)) {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'frontend', page), 'utf8');
+    for (const reason of Object.keys(IG.REASONS).filter((r) => pages[page].indexOf(r) === -1)) {
+      assert.match(html, new RegExp('\\b' + reason + ":\\s*'[^']*[\\u0590-\\u05FF]"), page + ' has no Hebrew text for ' + reason);
+    }
+  }
 });
