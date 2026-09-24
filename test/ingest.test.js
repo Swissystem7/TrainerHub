@@ -125,3 +125,33 @@ test('parseExerciseToken drops a leftover × after sets × duration', function (
   assert.equal(parsed.sets, 3);
   assert.equal(parsed.duration_seconds, 45);
 });
+
+test('"12 שני הצדדים" is 12 reps per side, not a 12-second exercise', function () {
+  const alone = Ingest.parseExerciseToken('12 שני הצדדים', { sets: null });
+  assert.equal(alone.duration_seconds, null);
+  assert.equal(alone.reps, 12);
+  assert.equal(alone.name, 'שני הצדדים');
+  const named = Ingest.parseExerciseToken('מכרעים 12 שני הצדדים', { sets: null });
+  assert.equal(named.duration_seconds, null);
+  assert.ok(/שני הצדדים/.test(named.name));
+  // The short seconds spellings still read as seconds.
+  assert.equal(Ingest.parseExerciseToken('30 שנ פלאנק', { sets: null }).duration_seconds, 30);
+  assert.equal(Ingest.parseExerciseToken('פלאנק 30 שנ׳', { sets: null }).duration_seconds, 30);
+  assert.equal(Ingest.parseExerciseToken("פלאנק 30 שנ'", { sets: null }).duration_seconds, 30);
+  assert.equal(Ingest.scanDefaults('עבודה 40 שני סטים').workSeconds, null);
+});
+
+test('a rest or work line does not borrow the seconds of the line next to it', function () {
+  const d = Ingest.scanDefaults('3 סבבים\nסקוואט 15\nשכיבות שמיכה 10\nפלאנק 30 שניות\nמנוחה דקה');
+  assert.equal(d.sets, 3);
+  assert.equal(d.rest, 60);
+  assert.equal(d.workSeconds, null);
+  assert.equal(Ingest.scanDefaults('פלאנק 40 שניות\nעבודה בזוגות').workSeconds, null);
+  assert.equal(Ingest.scanDefaults('מנוחה\n30 שניות פלאנק').rest, null);
+  assert.equal(Ingest.scanDefaults('עבודה\n30 שניות פלאנק').workSeconds, null);
+  // Same-line phrasing keeps working.
+  assert.equal(Ingest.scanDefaults('30 שניות מנוחה').rest, 30);
+  assert.equal(Ingest.scanDefaults('מנוחה 20 שנ׳').rest, 20);
+  assert.equal(Ingest.scanDefaults('40 שניות עבודה').workSeconds, 40);
+  assert.equal(Ingest.scanDefaults('עבודה 40 שנ').workSeconds, 40);
+});

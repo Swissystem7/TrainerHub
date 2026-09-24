@@ -45,44 +45,27 @@
 
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
-    
-    // Map Hebrew number words to numeric values
-    var hebrewNumbers = {
-      'אחד': 1,
-      'שניים': 2,
-      'שלושה': 3,
-      'ארבעה': 4,
-      'חמישה': 5,
-      'שישה': 6,
-      'שבעה': 7,
-      'שמונה': 8,
-      'תשעה': 9,
-      'עשרה': 10
-    };
-    
-    // Check for Hebrew number words directly before participant terms
-    var participantTerms = /(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i;
-    var hebrewNumberMatch = null;
-    
-    // Try to match Hebrew number words followed by participant terms
-    for (var word in hebrewNumbers) {
-      var regex = new RegExp(word + '\\s+' + participantTerms.source, 'i');
-      if (regex.test(t)) {
-        hebrewNumberMatch = word;
-        break;
-      }
-    }
-    
-    if (hebrewNumberMatch) {
-      var numValue = hebrewNumbers[hebrewNumberMatch];
-      return numValue && numValue > 0 ? Math.min(numValue, 500) : null;
-    }
-    
-    // Fallback to original numeric parsing
-    var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
+    var terms = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+
+    // Digits first: "20 ילדים, מתוכם ארבעה ילדים מתחילים" is a group of 20, not 4.
+    var m = t.match(new RegExp('(\\d+)\\s*' + terms, 'i'));
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
-    if (!m) return null;
-    var n = toInt(m[1]);
+    var n = m ? toInt(m[1]) : null;
+
+    // Then Hebrew number words, masculine and feminine, 1-10 and the teens 11-19
+    // ("חמש עשרה ילדים" is 15; its "עשרה" alone must not read as 10).
+    if (n == null) {
+      var units = [
+        ['שניים', 2], ['שנים', 2], ['שתיים', 2], ['שתים', 2], ['שני', 2], ['שתי', 2],
+        ['שלושה', 3], ['שלוש', 3], ['ארבעה', 4], ['ארבע', 4], ['חמישה', 5], ['חמש', 5],
+        ['שישה', 6], ['שש', 6], ['שבעה', 7], ['שבע', 7], ['שמונה', 8], ['תשעה', 9], ['תשע', 9],
+        ['עשרה', 10], ['עשר', 10], ['אחד', 1], ['אחת', 1]
+      ];
+      var values = {};
+      var alt = units.map(function (u) { values[u[0]] = u[1]; return u[0]; }).join('|');
+      var w = t.match(new RegExp('(?:^|[^\\u0590-\\u05FF])[ולבהמש]?(' + alt + ')(?:\\s+(עשרה|עשר))?\\s+' + terms, 'i'));
+      if (w) n = values[w[1]] + (w[2] && values[w[1]] < 10 ? 10 : 0);
+    }
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 

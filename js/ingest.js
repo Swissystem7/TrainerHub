@@ -33,7 +33,7 @@
     var t = Infer.fold(s);
     if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
     if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
-    var m = t.match(/(\d+)\s*(?:שניות|שנ[׳']?)/);
+    var m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
     if (m && /מנוחה/.test(t)) return toInt(m[1]);
     m = t.match(/מנוחה\s+(\d+)/);
     if (m) return toInt(m[1]);
@@ -45,15 +45,17 @@
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
-    var rest = raw.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ[׳']?)/) ||
-      raw.match(/(\d+)\s*(?:שניות|שנ[׳']?)\s*מנוחה/);
+    // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
+    // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
+    var rest = raw.match(/מנוחה[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
+      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*מנוחה/);
     if (rest) defaults.rest = toInt(rest[1]);
     if (/דקה מנוחה|מנוחה דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
     if (/שתי דקות מנוחה|מנוחה שתי דקות|2 דקות מנוחה|מנוחה 2 דקות/.test(raw) && defaults.rest == null) {
       defaults.rest = 120;
     }
-    var work = raw.match(/(\d+)\s*(?:שניות|שנ[׳']?)\s*עבודה/) ||
-      raw.match(/עבודה\s+(\d+)\s*(?:שניות|שנ[׳']?)/);
+    var work = raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*עבודה/) ||
+      raw.match(/עבודה[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
   }
@@ -119,7 +121,7 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']?|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF]))|″)/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
