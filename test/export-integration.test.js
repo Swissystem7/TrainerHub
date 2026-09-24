@@ -42,7 +42,9 @@ function exportModel() {
   return { name: w.title, phases: w.phases };
 }
 
-const EXPECTED_SECONDS = 580;
+// The day's phases are 5/35/5 minutes, so the event lasts the planned 45 minutes (2700 s).
+// Its exercises alone add up to less: 180 + (3x30 + 60) + (3x40 + 30) + 180 = 660 s.
+const EXPECTED_SECONDS = 2700;
 const EXPECTED_UID = "trainerhub-33a8876f";
 const EXPECTED_JSON = [
   "{\n  \"version\": 1,\n  \"name\": \"אימון 1\",\n  \"phases\": [\n    {\n      \"name\": \"Warm-up\",\n      \"exercises\": [\n        {\n          \"name\": \"מעגלי ידיים\",\n          \"id\": \"arm_circles\",\n          \"sets\": 1,\n          \"reps\": null,\n          \"duration_seconds\": 180,\n          \"rest_seconds\": null,\n          \"notes\": null\n        }\n      ]\n    },\n    {\n      \"name\": \"Main\",\n      \"exercises\": [\n        {\n          \"name\": \"שכיבות סמיכה\",\n          \"id\": \"push_up\",\n          \"sets\": 3,\n          \"reps\": \"8-12\",\n          \"duration_seconds\": null,\n          \"rest_seconds\": 60,\n          \"notes\": null\n        },\n        {\n          \"name\": \"פלאנק\",\n          \"id\": \"plank\",\n          \"sets\": 3,\n          \"reps\": null,\n          \"duration_seconds\": 40,\n          \"rest_seconds\": 30,\n          \"notes\": null\n        }\n      ]\n    },\n    {\n      \"name\": \"Cool-down\",\n      \"exercises\": [\n        {\n          \"name\": \"מתיחת מיתר\",\n          \"id\": \"hamstring_stretch\",\n          \"sets\": 1,\n          \"reps\": null,\n          \"duration_seconds\": 180,\n          \"rest_seconds\": null,\n          \"notes\": null\n        }\n      ]\n    }\n  ]\n}"
@@ -55,7 +57,7 @@ const EXPECTED_ICS = [
   "UID:trainerhub-33a8876f",
   "DTSTAMP:20260920T180000Z",
   "DTSTART:20260920T180000Z",
-  "DURATION:PT580S",
+  "DURATION:PT2700S",
   "SUMMARY:אימון 1",
   "DESCRIPTION:Warm-up · מעגלי ידיים · 180 שניות\\nMain · ש",
   " כיבות סמיכה · 3×8-12\\nMain · פלאנק · 40 שניות\\nCoo",

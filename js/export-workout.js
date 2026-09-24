@@ -64,19 +64,41 @@
     return JSON.stringify(out, null, 2);
   }
 
-  // Working time plus rest. An exercise with no duration counts as sets x 30s (one set when unstated).
-  function totalSeconds(workout) {
+  // A set count the trainer actually gave; anything else (missing, 0, junk) is one set.
+  function setsOf(ex) {
+    var n = ex.sets == null ? NaN : Number(ex.sets);
+    return isFiniteNumber(n) && n >= 1 ? Math.round(n) : 1;
+  }
+
+  // Working time plus rest. Every set counts: a set with no duration is 30s, a timed set its
+  // duration (3 sets of 40s is 120s). Rest is counted once per exercise.
+  function exerciseSeconds(workout) {
     var total = 0;
     eachExercise(workout, function (ex) {
-      var work;
-      if (ex.duration_seconds != null) {
-        work = nonNegative(ex.duration_seconds, 0);
-      } else {
-        work = nonNegative(ex.sets, 1) * DEFAULT_SET_SECONDS;
-      }
-      total += work + (ex.rest_seconds == null ? 0 : nonNegative(ex.rest_seconds, 0));
+      var perSet = ex.duration_seconds != null ? nonNegative(ex.duration_seconds, 0) : DEFAULT_SET_SECONDS;
+      total += setsOf(ex) * perSet + (ex.rest_seconds == null ? 0 : nonNegative(ex.rest_seconds, 0));
     });
     return total;
+  }
+
+  function minutesOf(v) {
+    var n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() ? Number(v) : NaN);
+    return isFiniteNumber(n) && n > 0 ? n : 0;
+  }
+
+  // The minutes the plan gives its phases (weekly.html passes only {name, phases}), or the
+  // workout's own duration_minutes when no phase carries one.
+  function plannedSeconds(workout) {
+    var minutes = 0;
+    phasesOf(workout).forEach(function (phase) { minutes += minutesOf(phase && phase.duration_minutes); });
+    if (!minutes && workout) minutes = minutesOf(workout.duration_minutes);
+    return Math.round(minutes * 60);
+  }
+
+  // The calendar event is never shorter than the plan: the planned minutes, or the exercises'
+  // own time when that is longer.
+  function totalSeconds(workout) {
+    return Math.max(plannedSeconds(workout), exerciseSeconds(workout));
   }
 
   // RFC 5545 3.3.11: escape backslash, semicolon, comma and newline in TEXT values.

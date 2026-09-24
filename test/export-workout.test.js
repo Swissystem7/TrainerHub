@@ -118,3 +118,31 @@ test('export: text from a workout is escaped, never interpreted', () => {
   assert.equal(unfolded.split('\r\n').filter((l) => l.startsWith('BEGIN:VEVENT')).length, 1,
     'a name cannot inject a second event');
 });
+
+test('export: the calendar event is never shorter than the plan', () => {
+  // weekly.html passes {name, phases}; each phase carries the minutes the plan gives it.
+  const day = {
+    name: 'אימון 1',
+    phases: [
+      { name: 'Warm-up', duration_minutes: 5, exercises: [{ name: 'מעגלי ידיים', sets: 1, duration_seconds: 180 }] },
+      { name: 'Main', duration_minutes: 35, exercises: [{ name: 'שכיבות סמיכה', sets: 3, reps: 10, rest_seconds: 60 }] },
+      { name: 'Cool-down', duration_minutes: 5, exercises: [{ name: 'מתיחה', sets: 1, duration_seconds: 180 }] }
+    ]
+  };
+  assert.equal(totalSeconds(day), 45 * 60, 'a 5/35/5 day is a 45-minute event');
+  assert.ok(workoutToIcs(day, { start: START }).includes('DURATION:PT2700S'));
+  // When the exercises themselves run longer than the phase budget, the longer figure wins.
+  const packed = { phases: [{ duration_minutes: 1, exercises: [{ sets: 3, duration_seconds: 60, rest_seconds: 30 }] }] };
+  assert.equal(totalSeconds(packed), 3 * 60 + 30);
+  // Minutes that are not a usable number are ignored rather than counted.
+  assert.equal(totalSeconds({ phases: [{ duration_minutes: 'abc', exercises: [] }, { duration_minutes: -5 }] }), 0);
+  // No phase minutes: the workout's own duration_minutes is the plan.
+  assert.equal(totalSeconds({ duration_minutes: 20, phases: [] }), 20 * 60);
+});
+
+test('export: a timed exercise counts every one of its sets', () => {
+  const plank = { phases: [{ exercises: [{ name: 'פלאנק', sets: 3, duration_seconds: 40 }] }] };
+  assert.equal(totalSeconds(plank), 3 * 40);
+  const unstated = { phases: [{ exercises: [{ name: 'פלאנק', sets: null, duration_seconds: 40 }] }] };
+  assert.equal(totalSeconds(unstated), 40, 'no set count means one set, not zero');
+});

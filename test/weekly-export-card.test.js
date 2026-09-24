@@ -386,3 +386,16 @@ test('a build that fails clears the open card instead of leaving it downloadable
   assert.equal(page.ctx.__planToken, tokenBefore + 1,
     'the token moves too, so the next good build cannot revive the old card');
 });
+
+test('the calendar file lasts as long as the day the builder planned', function () {
+  const page = loadPage();
+  page.els.exportDate.value = '2026-09-20';
+  page.ctx.exportDayWorkout(0);
+  const day = TH.toPhasesWorkout(page.ctx.__lastProgram.dailyWorkouts[0], page.ctx.__lastMeta || {});
+  const planned = day.phases.reduce(function (sum, p) { return sum + p.duration_minutes; }, 0);
+  assert.deepEqual(day.phases.map(function (p) { return p.duration_minutes; }), [5, 35, 5]);
+  assert.equal(planned, 45);
+  const lines = page.els.exportIcs.value.split(CRLF);
+  assert.ok(lines.indexOf('DURATION:PT' + (planned * 60) + 'S') !== -1,
+    'a 45-minute day must not export a shorter event: ' + lines.filter(function (l) { return /^DURATION/.test(l); }));
+});
