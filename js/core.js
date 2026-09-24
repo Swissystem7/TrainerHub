@@ -795,6 +795,14 @@
         return tags.indexOf(tag) !== -1 && tag !== audience;
       });
     });
+    // Audience first: a kids plan with dumbbells or bands must keep its kids drills, and only
+    // then prefer the ones that use the chosen equipment.
+    if (audience) {
+      var tagged = list.filter(function (ex) {
+        return (ex.tags || []).indexOf(audience) !== -1;
+      });
+      if (tagged.length) list = tagged;
+    }
     var requestedEquipment = (opts.equipment || []).filter(function (eq) {
       return eq && eq !== 'none';
     });
@@ -805,12 +813,6 @@
         });
       });
       if (equipped.length) list = equipped;
-    }
-    if (audience) {
-      var tagged = list.filter(function (ex) {
-        return (ex.tags || []).indexOf(audience) !== -1;
-      });
-      if (tagged.length) list = tagged;
     }
     if (opts.preferClips) {
       var clipped = list.filter(function (ex) { return ex.hasClip; });
