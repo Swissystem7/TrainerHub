@@ -116,3 +116,36 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseDuration understands "שעה וחצי" (90) and "שעה ורבע" (75), and a plain hour stays 60', function () {
+  assert.equal(Prompt.parseDuration('אימון רגליים שעה וחצי'), 90);
+  assert.equal(Prompt.parseDuration('אימון גב שעה ורבע'), 75);
+  assert.equal(Prompt.parseDuration('אימון בטן שעה'), 60);
+  assert.equal(Prompt.parseDuration('חצי שעה בטן'), 30);
+  assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').duration, 90);
+  assert.equal(Prompt.parsePrompt('אימון רגליים שעה וחצי').durationSpecified, true);
+});
+
+test('parseParticipants recognizes Hebrew number words before participant terms', function () {
+  assert.equal(Prompt.parseParticipants('אימון עם עשרה חניכים'), 10);
+  const req = Prompt.parsePrompt('אימון בטן שמונה ילדים');
+  assert.equal(req.participants, 8);});
+
+test('parseParticipants reads digits first and does not turn a Hebrew teen number into 10', function () {
+  assert.equal(Prompt.parseParticipants('20 ילדים, מתוכם ארבעה ילדים מתחילים'), 20);
+  assert.equal(Prompt.parseParticipants('אימון ל 12 חניכים, שלושה חניכים פצועים'), 12);
+  assert.equal(Prompt.parseParticipants('קבוצה של 14, מתוכם שלושה ילדים חדשים'), 14);
+  assert.equal(Prompt.parseParticipants('אחת עשרה ילדות'), 11);
+  assert.equal(Prompt.parseParticipants('שתים עשרה חניכות'), 12);
+  assert.equal(Prompt.parseParticipants('שלוש עשרה חניכות'), 13);
+  assert.equal(Prompt.parseParticipants('חמש עשרה ילדים'), 15);
+  assert.equal(Prompt.parseParticipants('שבע עשרה חניכים'), 17);
+  assert.equal(Prompt.parseParticipants('אימון לשמונה עשרה שחקנים'), 18);
+  assert.equal(Prompt.parseParticipants('אחד עשר ילדים'), 11);
+  assert.equal(Prompt.parseParticipants('שנים עשר חניכים'), 12);
+  assert.equal(Prompt.parseParticipants('שלושה עשר ילדים'), 13);
+  assert.equal(Prompt.parseParticipants('עשרה חניכים'), 10);
+  assert.equal(Prompt.parseParticipants('שמונה ילדים'), 8);
+  assert.equal(Prompt.parseParticipants('ארבע ילדות'), 4);
+  assert.equal(Prompt.parseParticipants('אימון בטן'), null);
+});
