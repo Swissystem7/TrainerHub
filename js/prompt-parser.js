@@ -32,6 +32,7 @@
     var t = String(text || '');
     var m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
+    if (/שעה\s*וחצי/.test(t)) return 90;
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
