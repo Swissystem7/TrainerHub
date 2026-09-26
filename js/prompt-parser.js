@@ -42,6 +42,7 @@
 
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
+    if (/זוג/.test(t)) return 2;
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
     if (!m) return null;
