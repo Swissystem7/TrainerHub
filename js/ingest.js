@@ -31,10 +31,15 @@
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
-    if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    var m = t.match(/(\d+)\s*(?:שניות|שנ)/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]);
+    if (!/מנוחה/.test(t)) return null;
+    if (/דקה\s*וחצי/.test(t)) return 90;
+    if (/חצי\s*דקה/.test(t)) return 30;
+    if (/שתי\s*דקות/.test(t)) return 120;
+    var m = t.match(/(\d+)\s*דקות?/);
+    if (m) return toInt(m[1]) * 60;
+    if (/דקה/.test(t)) return 60;
+    m = t.match(/(\d+)\s*(?:שניות|שנ)/);
+    if (m) return toInt(m[1]);
     m = t.match(/מנוחה\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
@@ -60,7 +65,7 @@
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) body = after[1];
     return body
-      .split(/\n+|[,،]|\s+ו(?=\d|\s*[\u0590-\u05FF])/)
+      .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
       .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
       .filter(function (s) { return s.length > 1; });
   }
@@ -70,7 +75,11 @@
     var s = String(token || '').trim();
     if (!s) return null;
     if (isRestToken(s)) {
-      return { restOnly: true, rest_seconds: parseRestSeconds(s) || defaults.rest || 60 };
+      var sec = parseRestSeconds(s) || defaults.rest || 60;
+      if (/^מנוחה\s+\d+\s*(?:דקות?|שניות|שנ)|(?:^מנוחה$)/.test(s)) {
+        return { restOnly: true, rest_seconds: sec };
+      }
+      return sec;
     }
     var sets = defaults.sets != null ? defaults.sets : null;
     var reps = null;
@@ -236,8 +245,8 @@
     for (var i = 0; i < tokens.length; i++) {
       var parsed = parseExerciseToken(tokens[i], defaults);
       if (!parsed) continue;
-      if (parsed.restOnly) {
-        lastRest = parsed.rest_seconds;
+      if (typeof parsed === 'number' || (parsed && parsed.restOnly)) {
+        lastRest = typeof parsed === 'number' ? parsed : parsed.rest_seconds;
         if (exercises.length) exercises[exercises.length - 1].rest_seconds = lastRest;
         continue;
       }
