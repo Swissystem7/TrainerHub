@@ -98,6 +98,19 @@
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
+    } else {
+      // Work time written in minutes: "3 דקות", "דקה", "חצי דקה", "דקה וחצי".
+      m = s.match(/(?:^|\s)(\d+)\s*דקות?(\s+וחצי)?(?=\s|$)/);
+      if (m) {
+        duration_seconds = toInt(m[1]) * 60 + (m[2] ? 30 : 0);
+        s = s.replace(m[0], ' ');
+      } else {
+        m = s.match(/(?:^|\s)(חצי\s+דקה|דקה\s+וחצי|שתי\s+דקות|דקה)(?=\s|$)/);
+        if (m) {
+          duration_seconds = { 'חצי דקה': 30, 'דקה וחצי': 90, 'שתי דקות': 120, 'דקה': 60 }[m[1].replace(/\s+/g, ' ')];
+          s = s.replace(m[0], ' ');
+        }
+      }
     }
     m = s.match(/^(\d+)\s+/);
     if (m && reps == null && duration_seconds == null) {
