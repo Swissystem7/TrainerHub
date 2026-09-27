@@ -1469,11 +1469,15 @@
     else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
     var name = ex.name || heName(ex.id) || 'תרגיל';
-    return {
+    var row = {
       name: String(name).replace(/\.mp4/ig, '').trim(),
       detail: bits.join(' · '),
       id: ex.id || ''
     };
+    if (ex.notes && String(ex.notes).trim()) {
+      row.notes = String(ex.notes).trim();
+    }
+    return row;
   }
 
   function workoutPrintModel(workout, opts) {
@@ -1504,7 +1508,8 @@
     model = model || workoutPrintModel({}, {});
     var phases = (model.phases || []).map(function (ph) {
       var rows = (ph.exercises || []).map(function (ex) {
-        return '<tr><th scope="row">' + esc(ex.name) + '</th><td>' + esc(ex.detail || '') + '</td></tr>';
+        var note = ex.notes ? ('<td>' + esc(ex.notes) + '</td>') : '';
+        return '<tr><th scope="row">' + esc(ex.name) + '</th><td>' + esc(ex.detail || '') + '</td>' + note + '</tr>';
       }).join('');
       return '<section class="print-phase"><h2>' + esc(ph.name) + '</h2><table>' +
         (rows || '<tr><td>אין תרגילים בשלב הזה.</td></tr>') + '</table></section>';
