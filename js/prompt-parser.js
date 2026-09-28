@@ -66,6 +66,9 @@
       var w = t.match(new RegExp('(?:^|[^\\u0590-\\u05FF])[ולבהמש]?(' + alt + ')(?:\\s+(עשרה|עשר))?\\s+' + terms, 'i'));
       if (w) n = values[w[1]] + (w[2] && values[w[1]] < 10 ? 10 : 0);
     }
+    // A couple ("לזוג", "אימון זוגי", "בני זוג") is two people; "בזוגות" (in pairs)
+    // and "זוג משקולות" (a pair of dumbbells) are not a head count.
+    if (n == null && /(?:^|[^\u0590-\u05FF])(?:[לב]זוג|זוגי|בני\s+זוג)(?![\u0590-\u05FF])|זוג\s+(?:מתאמנים|חניכים|אנשים)/.test(t)) n = 2;
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
