@@ -21,21 +21,29 @@
     return isNaN(n) ? null : n;
   }
 
+  // "הפסקה" (break) is used for rest as often as "מנוחה" in trainers' messages.
+  var REST_RX = /מנוחה|הפסקה/;
+
   function isRestToken(s) {
     var t = Infer.fold(s);
     if (!t) return false;
-    if (/^מנוחה$/.test(t)) return true;
-    if (/מנוחה/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
+    if (/^(?:מנוחה|הפסקה)$/.test(t)) return true;
+    if (REST_RX.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
     return false;
   }
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
-    var m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]);
-    m = t.match(/מנוחה\s+(\d+)/);
+    if (!REST_RX.test(t)) return null;
+    if (/דקה\s*וחצי/.test(t)) return 90;
+    if (/חצי\s*דקה/.test(t)) return 30;
+    if (/שתי\s*דקות/.test(t)) return 120;
+    var m = t.match(/(\d+)\s*דקות?/);
+    if (m) return toInt(m[1]) * 60;
+    if (/דקה/.test(t)) return 60;
+    m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
+    if (m) return toInt(m[1]);
+    m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
   }
@@ -47,10 +55,10 @@
     if (rounds) defaults.sets = toInt(rounds[1]);
     // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
     // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
-    var rest = raw.match(/מנוחה[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
-      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*מנוחה/);
+    var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
+      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*(?:מנוחה|הפסקה)/);
     if (rest) defaults.rest = toInt(rest[1]);
-    if (/דקה מנוחה|מנוחה דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/דקה (?:מנוחה|הפסקה)|(?:מנוחה|הפסקה) דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
     if (/שתי דקות מנוחה|מנוחה שתי דקות|2 דקות מנוחה|מנוחה 2 דקות/.test(raw) && defaults.rest == null) {
       defaults.rest = 120;
     }
@@ -83,7 +91,7 @@
       }
     }
     return body
-      .split(/\n+|[,،]|\s+ו(?=\d|\s*[\u0590-\u05FF])/)
+      .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
       .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
       .filter(function (s) {
         if (s.length <= 1) return false;
