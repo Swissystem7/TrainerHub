@@ -44,7 +44,10 @@ test('the issue form exists in Hebrew, warns it is public, and asks for no conta
   assert.match(yml, /^name: /m);
   assert.match(yml, /ציבורי/);
   assert.match(yml, /אל תכתבו (כאן )?טלפון/);
-  assert.equal(fs.existsSync(path.join(root, '.github', 'workflows')), false);
+  // A form, not a workflow. The repo-wide no-workflows rule lives in honesty.test.js
+  // (PR #20 edits it there on purpose); this test does not repeat it.
+  assert.match(yml, /^body:/m);
+  assert.doesNotMatch(yml, /^(jobs|runs-on|on):/m);
 });
 
 test('offer.html uses the contact component instead of a bare empty-issue link', function () {
