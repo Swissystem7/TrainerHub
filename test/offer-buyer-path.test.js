@@ -12,6 +12,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.join(__dirname, '..');
+const TH = require('../js/core.js');
+const Code = require('./helpers/access-code.js');
 
 function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
@@ -20,6 +22,9 @@ function read(rel) {
 test('MONETIZATION.md explains the access code without printing it', function () {
   const doc = read('MONETIZATION.md');
   assert.doesNotMatch(doc, /TH-MAAMEN-59/);
+  for (const token of doc.match(/TH-[A-Z0-9]+-\d+/gi) || []) {
+    assert.notEqual(TH.hashAccessCode(token), Code.realAccessHash());
+  }
   assert.match(doc, /קוד הגישה/);
 });
 

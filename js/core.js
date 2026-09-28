@@ -20,8 +20,9 @@
   };
 
   // Hash of the trainer access code (sent after payment) — product boundary
-  // on a static demo, not security. The code itself is not written in any served file.
-  var ACCESS_HASH = 3194953836;
+  // on a static demo, not security. The code itself is not written in any file of
+  // this repo (tests included). Replaced 28.9.2026: the earlier code leaked and is revoked.
+  var ACCESS_HASH = 1690937514;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];

@@ -27,7 +27,8 @@ global.location = {
   hash: ''
 };
 
-const TH = require('../js/core.js');
+const Code = require('./helpers/access-code.js');
+const TH = Code.loadCoreWithTestCode();
 const Ingest = require('../js/ingest.js');
 
 function read(rel) {
@@ -37,7 +38,7 @@ function read(rel) {
 test('redeeming the right code on a browser that cannot store is not reported as activated', function () {
   global.localStorage = blocked;
   try {
-    const r = TH.redeemAccessCode('TH-MAAMEN-59', 'סטודיו');
+    const r = TH.redeemAccessCode(Code.TEST_ONLY_CODE, 'סטודיו');
     assert.equal(r.ok, false);
     assert.match(r.error, /לא נשמר|חוסם/);
     assert.equal(TH.entitlement().canShare, false);
@@ -47,7 +48,7 @@ test('redeeming the right code on a browser that cannot store is not reported as
 });
 
 test('redeeming still works when storage works', function () {
-  const r = TH.redeemAccessCode('TH-MAAMEN-59', 'סטודיו');
+  const r = TH.redeemAccessCode(Code.TEST_ONLY_CODE, 'סטודיו');
   assert.equal(r.ok, true);
   assert.equal(TH.entitlement().canShare, true);
   TH.clearEntitlement();
