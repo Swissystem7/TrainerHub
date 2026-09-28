@@ -31,9 +31,13 @@
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
+    if (/דקה וחצי/.test(t) && /מנוחה/.test(t)) return 90;
+    if (/חצי דקה/.test(t) && /מנוחה/.test(t)) return 30;
+    var m = t.match(/(\d+)\s*דקות/);
+    if (m && /מנוחה/.test(t)) return toInt(m[1]) * 60;
     if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    var m = t.match(/(\d+)\s*(?:שניות|שנ)/);
+    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
+    m = t.match(/(\d+)\s*(?:שניות|שנ)/);
     if (m && /מנוחה/.test(t)) return toInt(m[1]);
     m = t.match(/מנוחה\s+(\d+)/);
     if (m) return toInt(m[1]);
@@ -60,7 +64,7 @@
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) body = after[1];
     return body
-      .split(/\n+|[,،]|\s+ו(?=\d|\s*[\u0590-\u05FF])/)
+      .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
       .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
       .filter(function (s) { return s.length > 1; });
   }
