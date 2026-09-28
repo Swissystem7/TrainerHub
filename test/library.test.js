@@ -65,6 +65,22 @@ test('matchCatalog maps free-text Hebrew (and aliases) onto catalog ids', functi
   assert.equal(TH.matchCatalog('תרגיל שלא קיים'), null);
 });
 
+test('matchCatalog prefers the closest title for a short Hebrew query', function () {
+  TH.setCatalog({
+    short_pull: {
+      id: 'short_pull', he: 'מתח צבאי', muscles: ['back'], equipment: ['bar'],
+      level: 'intermediate', file: 'a.mp4', source: 'local'
+    },
+    long_pull: {
+      id: 'long_pull', he: 'חימום מתח צבאי על מתקן גבוה עם קונוסים', muscles: ['back'],
+      equipment: ['bar', 'cones'], level: 'beginner', file: 'b.mp4', source: 'onedrive'
+    }
+  });
+  assert.equal(TH.matchCatalog('מתח').id, 'short_pull');
+  TH.setCatalog(catalog);
+  assert.equal(TH.matchCatalog('שכיבות').id, 'אתגר_שכיבות_שמיכה');
+});
+
 test('attachCatalogIds writes ids onto parsed phases without inventing files', function () {
   useFixture();
   const workout = {
