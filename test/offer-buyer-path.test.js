@@ -1,9 +1,10 @@
 'use strict';
 
 // Buyer-facing pages (offer.html, pitch.html) must not send a trainer to
-// MONETIZATION.md: that page is served on GitHub Pages and prints the paid
-// access code in plain text. The price comparison on those pages must also
-// show the free and cheap 2026 alternatives, not only CRMs priced above ₪59.
+// MONETIZATION.md: that page is served on GitHub Pages and is a research doc,
+// not a buyer page (it no longer prints the paid access code either). The price
+// comparison on those pages must also show the free and cheap 2026
+// alternatives, not only CRMs priced above ₪59.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -16,8 +17,10 @@ function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
 
-test('the research doc that holds the access code is where the code lives', function () {
-  assert.match(read('MONETIZATION.md'), /TH-MAAMEN-59/);
+test('MONETIZATION.md explains the access code without printing it', function () {
+  const doc = read('MONETIZATION.md');
+  assert.doesNotMatch(doc, /TH-MAAMEN-59/);
+  assert.match(doc, /קוד הגישה/);
 });
 
 test('offer and pitch do not link or point buyers to MONETIZATION.md', function () {

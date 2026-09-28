@@ -19,7 +19,8 @@
     print: 'trainerhub_print_workout'
   };
 
-  // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
+  // Hash of the trainer access code (sent after payment) — product boundary
+  // on a static demo, not security. The code itself is not written in any served file.
   var ACCESS_HASH = 3194953836;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
