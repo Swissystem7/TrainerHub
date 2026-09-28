@@ -112,8 +112,10 @@
       <div class="actions">
         <button type="submit" class="th-btn">הפעל במכשיר הזה</button>
         <button type="button" class="th-btn ghost" id="clearBtn">בטל גישה במכשיר</button>
-        <a class="th-btn ghost" href="https://github.com/Swissystem7/TrainerHub/issues/new">בקשת גישה בגיטהאב</a>
+        <a class="th-btn ghost" id="contactDirect" href="#" hidden>פנייה ישירה לקוד גישה</a>
+        <a class="th-btn ghost" id="contactForm" href="https://github.com/Swissystem7/TrainerHub/issues/new?template=access-request.yml">בקשת קוד גישה (טופס בעברית)</a>
       </div>
+      <p class="honest" id="contactNote">הטופס נפתח בגיטהאב והוא ציבורי: לא כותבים בו טלפון או מייל, ועונים לכם בתגובה שם.</p>
       <p class="status" id="redeemStatus" role="status"></p>
     </form>
   </section>
@@ -136,6 +138,7 @@
   </section>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/contact.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
