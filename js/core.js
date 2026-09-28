@@ -272,7 +272,13 @@
   }
 
   function sanitizeBrand(name) {
-    var s = String(name == null ? '' : name).replace(/<[^>]*>/g, '').replace(/\.mp4/ig, '').trim();
+    var s = String(name == null ? '' : name);
+    var prev;
+    do {
+      prev = s;
+      s = s.replace(/<[^>]*>/g, '');
+    } while (s !== prev);
+    s = s.replace(/\.mp4/ig, '').trim();
     if (s.length > 60) s = s.slice(0, 60);
     return s;
   }
@@ -1110,7 +1116,7 @@
 
   function mediaMarkup(entry, opts) {
     opts = opts || {};
-    var cls = opts.className || 'ex-media';
+    var cls = esc(opts.className || 'ex-media');
     if (!entry) return '';
     entry = bestMedia(entry) || entry;
     var fallback = '<div class="' + cls + '-fallback" role="note">' +
