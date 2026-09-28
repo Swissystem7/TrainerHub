@@ -1,15 +1,17 @@
 /**
  * TrainerHub — ערוץ פנייה אחד, מוגדר במקום אחד.
  *
- * הבעלים ממלא ערך אחד: CONTACT. דוגמאות לצורה (לא פרטים אמיתיים):
+ * ערך אחד: CONTACT. לפי החלטת הבעלים (28.9) זה טופס Google «משוב על האפליקציות»,
+ * עם TrainerHub ממולא מראש. צורות אחרות אפשריות (לא פרטים אמיתיים):
  *   'https://wa.me/9725XXXXXXXX'   או כתובת שמתחילה ב־mailto:
- * כל עוד הוא ריק, קישור הפנייה הישירה מוסתר והדף מפנה לטופס GitHub בעברית.
+ * כשהוא מלא, הקישור הישיר מחליף את טופס GitHub. אם מרוקנים אותו, הקישור הישיר
+ * מוסתר והדף מפנה לטופס GitHub בעברית.
  * לא ממציאים כאן טלפון או מייל.
  */
 (function (root) {
   'use strict';
 
-  var CONTACT = '';
+  var CONTACT = 'https://docs.google.com/forms/d/e/1FAIpQLSdT8YduNx-VWKM3bWGUJdiSj4Sw9D-EA6R6c-oYVYCQmOVXxQ/viewform?usp=pp_url&entry.368039752=TrainerHub';
 
   var FORM_URL = 'https://github.com/Swissystem7/TrainerHub/issues/new?template=access-request.yml';
 
@@ -33,10 +35,17 @@
     var direct = doc.getElementById('contactDirect');
     var form = doc.getElementById('contactForm');
     var note = doc.getElementById('contactNote');
-    if (form) form.href = r.formUrl;
+    if (form) {
+      form.href = r.formUrl;
+      // With a direct channel the public GitHub form steps aside (it only stood in for one).
+      form.hidden = !!(r.direct && direct);
+    }
     if (direct) {
       if (r.direct) {
         direct.href = r.direct;
+        if (/^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)/i.test(r.direct)) {
+          direct.textContent = 'בקשת קוד גישה (טופס Google)';
+        }
         direct.hidden = false;
       } else {
         direct.hidden = true;

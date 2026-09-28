@@ -16,11 +16,15 @@ function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
 
-test('js/contact.js holds exactly one owner-filled CONTACT value, empty for now', function () {
+// The owner decided on 28.9: the public contact channel for all his apps is his Google Form
+// "משוב על האפליקציות", with the app field pre-filled as TrainerHub (an exact option of the form).
+const OWNER_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdT8YduNx-VWKM3bWGUJdiSj4Sw9D-EA6R6c-oYVYCQmOVXxQ/viewform?usp=pp_url&entry.368039752=TrainerHub';
+
+test('js/contact.js holds exactly one CONTACT value: the owner\'s Google Form', function () {
   const src = read('js/contact.js');
   const decls = src.match(/var CONTACT = '[^']*';/g) || [];
   assert.equal(decls.length, 1);
-  assert.equal(decls[0], "var CONTACT = '';");
+  assert.equal(decls[0], "var CONTACT = '" + OWNER_FORM + "';");
   assert.doesNotMatch(src, /05\d-?\d{7}|\+?972\d{8,9}|@[a-z0-9-]+\.[a-z]{2,}/i);
 });
 
@@ -56,4 +60,20 @@ test('offer.html uses the contact component instead of a bare empty-issue link',
   assert.match(offer, /id="contactDirect"[^>]*hidden/);
   assert.match(offer, /id="contactForm"[^>]*template=access-request\.yml/);
   assert.match(offer, /js\/contact\.js/);
+});
+
+test('offer.html with the shipped CONTACT: the form link takes over from the public GitHub form', function () {
+  const Contact = require('../js/contact.js');
+  assert.equal(Contact.value, OWNER_FORM);
+  const els = {
+    contactDirect: { hidden: true, href: '#', textContent: 'פנייה ישירה לקוד גישה' },
+    contactForm: { hidden: false, href: '' },
+    contactNote: { hidden: false },
+  };
+  Contact.render({ getElementById: function (id) { return els[id] || null; } });
+  assert.equal(els.contactDirect.hidden, false);
+  assert.equal(els.contactDirect.href, OWNER_FORM);
+  assert.match(els.contactDirect.textContent, /טופס Google/);
+  assert.equal(els.contactForm.hidden, true, 'the GitHub issue button steps aside');
+  assert.equal(els.contactNote.hidden, true, 'and so does its "public on GitHub" note');
 });
