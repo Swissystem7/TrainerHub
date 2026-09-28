@@ -220,6 +220,16 @@
   var catalogReady = false;
   var readyWaiters = [];
 
+  // Stated length wins; a pasted workout has none, so show the analyzer's
+  // estimate marked as such, and never an empty "זמן:  דקות".
+  function durationLabel(minutes, estimate) {
+    var m = Number(minutes);
+    if (m > 0) return m + ' דקות';
+    var e = Number(estimate);
+    if (e > 0) return Math.round(e) <= 1 ? 'כדקה (הערכה)' : 'כ־' + Math.round(e) + ' דקות (הערכה)';
+    return 'לא צוין';
+  }
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -1620,6 +1630,7 @@
     EQ_LABELS: EQ_LABELS,
     TAG_LABELS: TAG_LABELS,
     esc: esc,
+    durationLabel: durationLabel,
     store: { get: storeGet, set: storeSet, remove: storeRemove },
     assetUrl: assetUrl,
     heName: heName,
