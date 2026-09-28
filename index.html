@@ -229,7 +229,7 @@
         host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
         return;
       }
-      navigator.clipboard.writeText(shared.url).then(function () {
+      TH.copyOrShow(shared.url, host, function () {
         $('copyBtn').textContent = 'הועתק';
         setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });

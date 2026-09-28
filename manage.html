@@ -256,10 +256,11 @@
   $('exportBtn').addEventListener('click', function () {
     var json = TH.exportUserCatalog();
     $('exportBox').value = json;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(json);
-      $('addStatus').textContent = 'ה־JSON הועתק. מדביקים כשורה / פריט בקטלוג.';
-    }
+    TH.copyText(json).then(function (r) {
+      $('addStatus').textContent = r.ok
+        ? 'ה־JSON הועתק. מדביקים כשורה / פריט בקטלוג.'
+        : 'ה־JSON מוצג בתיבה. סמנו והעתיקו ידנית.';
+    });
   });
 
   TH.ready(renderUser);
