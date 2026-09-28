@@ -316,8 +316,11 @@
     if (hashAccessCode(code) !== ACCESS_HASH) {
       return { ok: false, error: 'הקוד לא תואם. אין סליקה באתר — הקוד נשלח אחרי תשלום.' };
     }
-    setEntitlement({ tier: 'trainer', brand: brand });
-    return { ok: true, entitlement: entitlement() };
+    var ent = setEntitlement({ tier: 'trainer', brand: brand });
+    if (ent.tier !== 'trainer') {
+      return { ok: false, error: 'הקוד נכון, אבל הגישה לא נשמרה: הדפדפן חוסם שמירה (למשל גלישה פרטית). פתחו בדפדפן רגיל ונסו שוב.' };
+    }
+    return { ok: true, entitlement: ent };
   }
 
   function normalizeEntry(id, raw, defaultSource) {
@@ -1389,13 +1392,13 @@
           (entry.driveId && list[i].driveId === entry.driveId) ||
           (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
         list[i] = entry;
-        storeSet(KEYS.userCatalog, list);
+        if (!storeSet(KEYS.userCatalog, list)) return null;
         catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
         return entry;
       }
     }
     list.push(entry);
-    storeSet(KEYS.userCatalog, list);
+    if (!storeSet(KEYS.userCatalog, list)) return null;
     catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
     return entry;
   }
