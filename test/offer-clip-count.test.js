@@ -20,10 +20,23 @@ const catalog = JSON.parse(read('js/catalog.json'));
 const rows = Object.values(catalog);
 const playable = rows.filter(function (e) { return e.available !== false; }).length;
 const unavailable = rows.length - playable;
+// Two playable rows repeat another row's name and video file, so the number of
+// distinct clips a trainer gets is smaller than the number of playable rows.
+const distinctClips = new Set(rows.filter(function (e) { return e.available !== false; })
+  .map(function (e) { return e.file; })).size;
 
 test('catalog numbers the sales pages rely on', function () {
   assert.equal(playable, 70);
   assert.equal(unavailable, 8);
+  assert.equal(distinctClips, 68);
+});
+
+test('offer and pitch count distinct clips, not rows that repeat the same video', function () {
+  for (const name of ['offer.html', 'pitch.html']) {
+    const html = read(name);
+    assert.doesNotMatch(html, new RegExp(playable + ' קליפ'), name + ' counts a repeated clip twice');
+    assert.match(html, new RegExp(distinctClips + ' קליפ'), name + ' must state the distinct clip count');
+  }
 });
 
 test('offer and pitch do not sell unavailable rows as clips connected to the builder', function () {
@@ -31,7 +44,6 @@ test('offer and pitch do not sell unavailable rows as clips connected to the bui
   const pitch = read('pitch.html');
   for (const [name, html] of [['offer', offer], ['pitch', pitch]]) {
     assert.doesNotMatch(html, new RegExp(rows.length + ' קליפ'), name + ' claims every catalog row is a clip');
-    assert.match(html, new RegExp(playable + ' קליפ'), name + ' must state the playable clip count');
   }
   assert.match(offer, new RegExp(unavailable + ' רשומות'), 'offer must say how many rows have no video');
 });

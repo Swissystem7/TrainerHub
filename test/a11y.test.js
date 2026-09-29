@@ -113,7 +113,7 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.offer, /אין סליקה/);
   assert.match(pages.offer, /₪59/);
   assert.doesNotMatch(pages.offer, /1,?800 מאמנים|הכי פופולרי|כבר עובדים איתנו/);
-  assert.match(pages.pitch, /70 קליפ/);
+  assert.match(pages.pitch, /68 קליפ/);
   assert.match(pages.print, /workoutPrintHtml/);
   assert.match(pages.library, /ספריית סרטונים/);
   assert.match(pages.weekly, /library\.html/);
