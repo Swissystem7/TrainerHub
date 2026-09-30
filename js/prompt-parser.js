@@ -45,8 +45,10 @@
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
     if (!m) return null;
+    if (m.index > 0 && t.charAt(m.index - 1) === '-' &&
+        (m.index === 1 || /\s/.test(t.charAt(m.index - 2)))) return null;
     var n = toInt(m[1]);
-    return n && n > 0 ? Math.min(n, 500) : null;
+    return n > 0 && n <= 500 ? n : null;
   }
 
   function parseLevel(text) {
