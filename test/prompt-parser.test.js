@@ -116,3 +116,7 @@ test('infer and proposeEntry parse Drive / YouTube / external links without call
   const blocked = Infer.proposeEntry({ url: '1xxxx', name: 'VID_20240101' });
   assert.equal(blocked.error, 'blocked');
 });
+
+test('parseParticipants returns null for negative participant counts', function () {
+  assert.equal(Prompt.parseParticipants('קבוצה של -5 אנשים'), null);
+});
