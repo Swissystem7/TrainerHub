@@ -1,0 +1,3773 @@
+{
+ "_meta": {
+  "schema": 1,
+  "title": "חוברת קורס מאמנים – עמותת אחריי (ספטמבר 2026)",
+  "organization": "עמותת אחריי",
+  "extracted": "2026-10-02",
+  "language": "he",
+  "credit": "התוכן הועתק מחוברות הקורס של עמותת אחריי שבדרייב של אבירן (ספטמבר 2026). הניסוח המקורי נשמר; תוקנו רק רווחים וסימני פיסוק שנשברו בחילוץ הטקסט מ־PDF. שמות אנשים הוסרו.",
+  "sources": [
+   {
+    "id": "prep",
+    "title": "חלק מכין לאימון - חוברת כשג אחרי",
+    "driveFileId": "1kCgpPMMXbD1A7mmcB_w-oIb2SxqBmjEw",
+    "kind": "pdf",
+    "pages": 4,
+    "topic": "חלק מכין: עקרונות, תרגילי הכנה, מתיחות ומשחקי הכנה"
+   },
+   {
+    "id": "team_file",
+    "title": "תיק קבוצה - פורמט",
+    "driveFileId": "12VmSY1kFhyBts1VDU1-GqsvhBq13dHQ3",
+    "kind": "docx",
+    "pages": null,
+    "topic": "תיק בטיחות קבוצה: ניהול סיכונים, מבדק שטח, מקרים ותגובות"
+   },
+   {
+    "id": "foundations",
+    "title": "יסודות בתורת האימון",
+    "driveFileId": "1D3HVIVAvSQ9Q4FI79lLMEeDhrZJul0ps",
+    "kind": "pdf",
+    "pages": 5,
+    "topic": "בניית יחידת אימון, עומסים, עומס יתר והתאוששות"
+   },
+   {
+    "id": "opening",
+    "title": "אימוני פתיחה הכנצ",
+    "driveFileId": "1II8Dih0EqaggO6FJ6KjBZIkQcDaQ6QYH",
+    "kind": "pdf",
+    "pages": 6,
+    "topic": "תבנית אימון פתיחה ובנק חמישה אימונים"
+   },
+   {
+    "id": "limited_space",
+    "title": "אימונים בשטח מוגבל - הכנצ",
+    "driveFileId": "1I8j05TWrAHJtEIzVBsV5KveyI7ZP4ih1",
+    "kind": "pdf",
+    "pages": 3,
+    "topic": "שיטות אימון משקל גוף בשטח מוגבל"
+   },
+   {
+    "id": "flexibility",
+    "title": "אוצר תרגילי גמישות - אחרי",
+    "driveFileId": "1niXRSI1GRAE5iJE7RqcUE4UnEGWm05l_",
+    "kind": "pdf",
+    "pages": 14,
+    "topic": "נוהל מתיחות, 41 תרגילי גמישות ומתיחות בזוגות"
+   },
+   {
+    "id": "fitness_test",
+    "title": "בוחן כושר גופני עמותת אחרי",
+    "driveFileId": "1PfX3_g44k9BOuqwkAbZhDZNelzhJD4Yd",
+    "kind": "pdf",
+    "pages": 7,
+    "topic": "בוחן כושר: רכיבים, משקלות וטבלאות ציון"
+   },
+   {
+    "id": "winter",
+    "title": "חורף - דגשי בטיחות הכנצ",
+    "driveFileId": "1Wky4t82zezc0vDiQsRIYJOW_6y7B9QfJ",
+    "kind": "pdf",
+    "pages": 2,
+    "topic": "דגשי בטיחות לאימוני חורף"
+   },
+   {
+    "id": "zohar",
+    "title": "חוקת כדור זוהר",
+    "driveFileId": "1ga2vcIq1rn_x7M9_G7if8hBRwYMDR5Hc",
+    "kind": "pdf",
+    "pages": 2,
+    "topic": "חוקי משחק כדור זוהר"
+   }
+  ],
+  "notIncluded": [
+   "שיווי משקל וזריזות.pdf – סריקה של ספר שיצא לאור; לא הועתק בגלל זכויות יוצרים",
+   "שכבת טקסט נסתרת (תוכנית ריצה ל־8 שבועות) בקובצי בוחן הכושר והחורף – לא מוצגת בדפים עצמם ולכן לא נכללה"
+  ]
+ },
+ "principles": {
+  "sessionStructure": {
+   "source": "foundations",
+   "parts": [
+    {
+     "id": "prep",
+     "he": "חלק מכין (חימום)",
+     "phase": "Warm-up",
+     "text": "החלק המכין נועד להכנה גופנית ונפשית, והוא בנוי מתרגילי חימום, כלומר עומסים גופניים קלים ההולכים ומתגברים בהדרגה ומכשירים את האיברים השונים לקראת העומס העיקרי. החימום מכשיר לקראת מוכנות מוטורית ונפשית. משך הזמן והעצימות מותנים במזג האוויר, במשך האימון, בסוג האימון, ברמת החניכים, בהרגלים שלהם ובאופי שלהם."
+    },
+    {
+     "id": "main",
+     "he": "חלק עיקרי",
+     "phase": "Main",
+     "text": "החלק העיקרי מטרתו להמשיך את פיתוח יכולתו של החניך. הדגש הוא בתחומים הבאים: לימוד ופיתוח היכולת הטכנית, שיפור היכולת הגופנית וייצובה, לימוד ותרגול מיומנויות, בדיקת היכולות (באמצעות מבחן או תחרות)."
+    },
+    {
+     "id": "closing",
+     "he": "חלק מסיים (הרפיה)",
+     "phase": "Cool-down",
+     "text": "החלק המסיים אמור להביא את החניכים למצב של התאוששות ורגיעה לאחר המאמץ של האימון. החלק מבוצע בעומסים גופניים קלים. רצוי לסיים בפעילות מהנה שאין בה לחץ נפשי."
+    }
+   ]
+  },
+  "warmup": {
+   "source": "prep",
+   "title": "הכנה לפעילות גופנית (חלק מכין)",
+   "durations": [
+    {
+     "id": "summer",
+     "he": "משך ההכנה בקיץ ללא מתיחות",
+     "minutes": 5
+    },
+    {
+     "id": "winter",
+     "he": "משך ההכנה בחורף ללא מתיחות",
+     "minutes": 10
+    },
+    {
+     "id": "long",
+     "he": "לפעילות ממושכת ורציפה ללא מתיחות",
+     "minutes": 5
+    },
+    {
+     "id": "short",
+     "he": "לפעילות קצרה ועצימה ללא מתיחות",
+     "minutes": 10
+    }
+   ],
+   "principles": [
+    "תנועה להעלאת הטמפרטורה בקצב איטי שמתגבר.",
+    "תרגול מישורי תנועה",
+    "תרגילי תנועה קלים ואח\"כ בינוניים בדרגת קואורדינציה, עצימות וקושי.",
+    "זמנים עפ\"י אופי הפעילות (פעילות קצרה ועצימה או ממושכת) ועונת הפעילות (יום חם או יום קר).",
+    "תרגילי מתיחה סטטיים",
+    "תרגילי סבולת כוח",
+    "חלק עיקרי",
+    "חלק מסיים גמישות הרפיה ושתייה."
+   ],
+   "gamesNote": "החלק של המכין הכללי יכול וצריך להיות מגוון ככל האפשר! באימון שבו החלק העיקרי זה ריצת רצף של 5 ק\"מ, אין טעם שהחימום יהיה סיבובי ריצה, סיבובי ידיים, דילוגים וכו'. החימום באימון כזה יכול להיות כל משחק קבוצתי מהנה שיענה על המטרות של האימון הספציפי, כאשר הקו המנחה אותנו במציאת משחק מתאים הוא: משחק בו כל חברי הקבוצה שותפים פעילים.",
+   "eliminationRule": "שימו לב: במשחק בו יש \"פסילה\" של חניך הוא אינו יוצא מחוץ למשחק אלא מבצע כל משימה תנועתית אפשרית ולאחר שהשלים את המשימה הוא חוזר לשחק."
+  },
+  "flexibilityProtocol": {
+   "source": "flexibility",
+   "title": "אימון גמישות (כחלק מסיים וכחלק מכין)",
+   "rule": "יש לבצע את המתיחה עד הגעה לכאב קל ולשהות במצב בהתאם לזמן הנדרש.",
+   "minutes": {
+    "closing": 15,
+    "prep": 5
+   },
+   "minutesNote": "יש לבצע 15 דקות בחלק המסיים של האימון ו־5 דקות בחלק המכין של האימון.",
+   "beforeAfterMain": [
+    "ניעורי רגליים – התנועה יוצאת מהירך (רגל רפויה לחלוטין) ממצב עמידה או עמידת שש או שכיבה.",
+    "הנפות רגליים לפנים.",
+    "הנפות רגליים לצדדים.",
+    "תרגילי מתיחה לרגליים: תאומים (שרירי שוק אחורי); המסטרינגס (פושטי ירך: חצי גידי, חצי קרומי ודו ראשי ירכי) – שרירי ירך אחורי; עכוז – שריר ישבן אחורי וצידי; מותן כסל – שריר מותן קדמי; ארבע ראשי – שרירי ירך קדמי; מקרבי ירך – שרירי ירך פנימיים.",
+    "ניעורי ידיים",
+    "הנפות ידיים",
+    "תרגילי מתיחה לידיים: למקרבים אופקית של הכתף; לפושטי כתף; לפושטי מרפק; לכופפי מרפק.",
+    "תרגילי מתיחה לגו: תרגיל העריסה – גלגול לאחור על הגו; משיכת ישבן לאחור ממצב עמידה שפופה באחיזת (גזע, ספסל, גדר); הפנית רגליים כפופות לצדדים ממצב של שכיבת פרקדן; תליה על מתח במגע של כפות פיסות הרגליים על הקרקע."
+   ]
+  },
+  "energySystems": {
+   "source": "foundations",
+   "aerobic": "פעילות אירובית היא פעילות גופנית שנמשכת ברצף מעל ל־2 דקות. הגוף מפיק את ביצועיו מחמצן. לדוגמה: ריצת 5 ק\"מ, אופניים, שחייה למרחקים.",
+   "anaerobic": "פעילות אנאירובית היא פעילות גופנית קצרה וממוקדת. הגוף לא משתמש בחמצן. לדוגמה: הטלת כידון, אגרוף, היאבקות, ניתור, ריצת 400 מטר.",
+   "mixed": "פעילויות רבות משלבות בין אירובי לאנאירובי.",
+   "aerobicMethods": [
+    {
+     "id": "continuous",
+     "he": "אימון רצף",
+     "text": "הריצה לא נפסקת, אך הקצב משתנה. לדוגמה, ריצת פארטלק (ריצה בקצב נמוך 2-3 דקות, ספרינט 4-8 שניות) או ריצת שינויי קצב (2-3 דקות קצב נמוך, 2-3 דקות קצב בינוני)."
+    },
+    {
+     "id": "intervals",
+     "he": "אימון הפוגות (אינטרוולים)",
+     "text": "הריצה נפסקת בין הסטים כדי לאגור אנרגיה לסט הבא. מרחק קבוע + קצב קבוע + משך ההפסקה קבוע. לדוגמה, אימון הפוגות נרחב (3-5 דקות ב־85% מאמץ, 3 דקות מנוחה) או אימון הפוגות עצים (1-2 דקות ב־95% מאמץ, 3-6 דקות מנוחה)."
+    }
+   ],
+   "trainingIdeas": [
+    "פיתוח מהירות תגובה",
+    "פיתוח מהירות",
+    "פיתוח זריזות",
+    "פיתוח כוח מתפרץ",
+    "פיתוח סיבולת שרירים",
+    "ניתורים",
+    "מדרגות",
+    "פיתוח סיבולת כללית",
+    "פיתוח סיבולת ייחודית",
+    "פיתוח יכולת גמישות"
+   ]
+  },
+  "load": {
+   "source": "foundations",
+   "intro": "לשיפור רמת היכולת והביצוע נדרשים גירויים גופניים מתאימים. רק כאשר העלייה בעומס היא שיטתית, מדורגת ונכונה ניתן לשפר את רמת הביצוע. תכנון לא נכון עלול לגרום לפציעות, לעומס יתר ולקיפאון בהישגים.",
+   "biologicalProcess": [
+    "העמסה",
+    "ירידה ביכולת ההישגית (עייפות)",
+    "תהליך שיקום והתאוששות",
+    "הסתגלות ביולוגית לעומסים קשים יותר"
+   ],
+   "components": [
+    {
+     "id": "volume",
+     "he": "היקף העומסים",
+     "text": "מספר חזרות, מספר סדרות, מרחק במטרים/בק\"מ"
+    },
+    {
+     "id": "intensity",
+     "he": "עצימות העומסים",
+     "text": "% מאמץ, דופק, מהירות"
+    },
+    {
+     "id": "duration",
+     "he": "משך העומסים",
+     "text": "זמן הביצוע"
+    },
+    {
+     "id": "density",
+     "he": "צפיפות העומסים",
+     "text": "משך ההפסקות בין הביצועים"
+    },
+    {
+     "id": "frequency",
+     "he": "תדירות העומסים",
+     "text": "מספר ימי האימון בשבוע"
+    }
+   ],
+   "principles": [
+    {
+     "id": "progressive",
+     "he": "עקרון הגברת העומס",
+     "text": "כדי לשפר את יכולת הביצוע, עלינו להעלות את העומס באופן שיטתי, מדורג וקבוע. בתחילת השנה האימון יהיה בעומס של כ־30% על מנת לראות שיפור אצל החניך, ואילו בסוף השנה האימון יהיה בעומס של כ־70% לפחות על מנת לשפר הישגים ולשמור עליהם. אם נעשה קפיצה גדולה מדי בהעמסה – החניך לא יכיל את העומס וייפצע. העלייה בעומסים הינה הדרגתית ולאורך זמן.",
+     "startPercent": 30,
+     "endPercent": 70
+    },
+    {
+     "id": "persistence",
+     "he": "עקרון ההתמדה בעומס",
+     "text": "במקרים רבים חניכים מתאמנים בהיקף או בעצימות שאין להם סיכוי להתמיד בהם. חשוב לזכור שיש להתאמן בעומסים שניתן להתמיד בהם לאורך זמן."
+    },
+    {
+     "id": "alternating",
+     "he": "עקרון העומס המתחלף",
+     "text": "יש לשלב מרכיבים שונים של עומסים, לדוגמה: כוח, מהירות, גמישות, סיבולת, קואורדינציה. לגיוון יש חשיבות רבה מבחינה מנטלית ופיזית. על מנת למצות את יכולות החניך, יש לתכנן אימונים עם בסיס מגוון ורחב של מרכיבים."
+    },
+    {
+     "id": "individual",
+     "he": "עקרון האימון האישי",
+     "text": "בגלל ההבדל ביכולותיהם של החניכים, תהליך האימונים יכול לכלול גם אימון אישי. היקף ומשך האימונים במסגרת הקבוצה אינם מאפשרים קיום של כל המרכיבים הנדרשים להכשרת החניך.",
+     "note": "שימו לב: יש לאשר את אימוני הבית והם יכולים לכלול ריצה או כוח בלבד."
+    }
+   ]
+  },
+  "overtraining": {
+   "source": "foundations",
+   "definition": "עומס יתר הוא תסמונת כללית הבאה לידי ביטוי בעייפות זמנית או כרונית של מרכזי העצבים, של מערכות הגוף ושל חילוף החומרים. בעקבות זאת, חלות הפרעות בתפקוד השרירים ובתהליך ההתאוששות לאחר מאמץ, וקיימת ירידה כללית במצב הגופני.",
+   "types": [
+    {
+     "id": "muscular",
+     "he": "עומס יתר בשרירים",
+     "text": "נובע ממאמץ גדול על קבוצת שרירים מסוימת"
+    },
+    {
+     "id": "physiological",
+     "he": "עומס יתר פיזיולוגי",
+     "text": "נובע מעומסים עצימים וצפופים מדי"
+    },
+    {
+     "id": "mental",
+     "he": "עומס יתר מנטלי",
+     "text": "נובע משובע, מקונפליקט או ממתח נפשי"
+    }
+   ],
+   "signs": [
+    "חוסר תיאבון",
+    "שינה לא עמוקה",
+    "חוסר מוטיבציה",
+    "דיכאון ומצב רוח ירוד",
+    "רגישות",
+    "תלונות",
+    "עייפות קבועה"
+   ],
+   "functionalChanges": [
+    "ירידה בהישגיות",
+    "התאוששות איטית",
+    "ירידה במשקל",
+    "דופק מואץ",
+    "לחץ דם גבוה",
+    "כאבי שרירים"
+   ]
+  },
+  "recovery": {
+   "source": "foundations",
+   "items": [
+    {
+     "id": "rest",
+     "he": "מנוחה",
+     "text": "יש לנוח לפני אימון ולהימנע מחשיפה מוגזמת לשמש."
+    },
+    {
+     "id": "sleep",
+     "he": "שינה",
+     "text": "נדרשות 7-8 שעות שינה ביום לאדם בוגר. במהלך האימון הגוף עובר תהליכי הרס, ובזמן השינה מופרשים הורמוני גדילה שבונים את הרקמות שלנו. השעות שבהן ההורמונים מופרשים בכמות גדולה: 23:00-4:00."
+    },
+    {
+     "id": "nutrition",
+     "he": "תזונה",
+     "text": "יש להקפיד על ארוחות מסודרות ומאוזנות. יש לספק לגוף אנרגיה לפני האימון כדי למנוע ירידה של רמת הסוכר בדם. יש להקפיד על נוהל רוויה לפני אימון או פעילות עצימה. כאשר מדובר באימון בוקר, ההכנה התזונתית מתחילה ערב לפני (ארוחה עשירה בפחמימות ובנוזלים ומכילה מנת חלבון). לאחר האימון: ארוחה קלה תתקיים עד שעה לאחר הפעילות (כריך/פרי) וארוחה כבדה תתקיים עד שעתיים לאחר הפעילות (פסטה/אורז ומנת בשר/דג)."
+    },
+    {
+     "id": "injuries",
+     "he": "טיפול בפגיעות גופניות",
+     "text": "טיפול מיידי במחלות קלות, יבלות, כאבים, פציעות וכו' ימנע התפתחות של סיבוכים שונים."
+    },
+    {
+     "id": "prevention",
+     "he": "מניעת פציעות ומחלות",
+     "text": "יש להרבות במתיחות ובהרפיה לאחר האימון, ולהקפיד על לבוש חם."
+    },
+    {
+     "id": "hydration",
+     "he": "שתייה",
+     "text": "מאמצים פיזיים מגבירים את תהליך ייצור החום בגוף. החניך חייב לשמור על מאזן נוזלים חיובי בגופו כדי שיוכל להיפטר מעודפי החום ביעילות מרבית, בעיקר באמצעות הזעה. קצב ההזעה משתנה מאדם לאדם ומגיע עד ל־3 ליטר לשעת אימון."
+    }
+   ]
+  },
+  "reading": {
+   "source": "foundations",
+   "text": "החומר מתייחס לספורט ולאתלטיקה באופן כללי, ואינו מתמקד בכושר קרבי. מקור מומלץ להעמקה: הספר \"תורת האימון והתחרות/משחק בספורט התחרותי וההישגי\" (ד\"ר איציק בן מלך) וספרים נוספים של וינגייט. נושאים נוספים מומלצים: כושר גופני, אנטומיה, תזונה, פסיכולוגיית ספורט."
+  }
+ },
+ "drills": [
+  {
+   "id": "prep-warmup-01",
+   "he": "ריצה לפנים תוך סיבובי ידיים לפנים.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 1,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-02",
+   "he": "ריצה לפנים תוך סיבובי ידיים לאחור.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 2,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-03",
+   "he": "ריצה לאחור תוך סיבובי ידיים לפנים.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 3,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-04",
+   "he": "ריצה לאחור תוך סיבובי ידיים לאחור.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 4,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-05",
+   "he": "צעדי רדיפה לצד ימין תוך הנפת ידיים לפנים.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 5,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-06",
+   "he": "צעדי רדיפה לצד שמאל תוך מפגש כפות ידיים מעל לראש ומאחורי הגו.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 6,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-07",
+   "he": "ריצה צידית תוך שיכול (הצלבת הרגליים) לצד אחד וסיבוב חגורת כתפיים וידיים לכיוון שני.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 7,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-08",
+   "he": "ריצה בהרמת בירכיים.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 8,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-09",
+   "he": "ריצה בהבאת עקב לישבן.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 9,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-10",
+   "he": "ריצה תוך מפגש כפות רגליים באוויר (פעם פיסת כף רגל ימין נפגשת עם שמאל ופעם שמאל עם ימין).",
+   "category": "warmup",
+   "source": "prep",
+   "order": 10,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-11",
+   "he": "ריצה צידית הצלבת רגליים על הקרקע והרחקת ירך תוך כדי ניתור באוויר.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 11,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-12",
+   "he": "דילוגים לאורך או לגובה כל צעד שלישי או חמישי.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 12,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-13",
+   "he": "ריצה וביצוע סיבוב דרך כתף ימין או שמאל והמשך ריצה.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 13,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-14",
+   "he": "קפיצות מרגל אחת לרגל שנייה.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 14,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-15",
+   "he": "ריצה תוך שינויי כיוון קלים.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 15,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-16",
+   "he": "ריצה קלה במדרגות.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 16,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "stairs"
+   ],
+   "partner": false,
+   "catalogId": "step_up"
+  },
+  {
+   "id": "prep-warmup-17",
+   "he": "משחקון של ריצה אחרי הצל של החבר.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 17,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "prep-warmup-18",
+   "he": "ריצה קלה תוך שימוש בדלגית וסיבובי ידיים לפנים ולאחור.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 18,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "jump_rope"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-warmup-19",
+   "he": "ריצה תוך ביצוע משימות גופניות, למשל: לשריקה הליכת מכרעיים קדמיים, צידיים, אחוריים, גלגול לפנים, לאחור, אלכסוני, ניתורים תוך סיבוב האגן מצד לצד, ניתורים מצד לצד, אחרון הופך ראשון בטור, הנפת רגל לפנים, פישוק רגליים באוויר וכיוצ\"ב.",
+   "category": "warmup",
+   "source": "prep",
+   "order": 19,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-01",
+   "he": "משיכת ידיים מעלה.",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 1,
+   "muscles": [
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-02",
+   "he": "קרוב שכמות וביצוע הרחקה אופקית של הזרועות.",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 2,
+   "muscles": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-03",
+   "he": "משיכת גו הצידה.",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 3,
+   "muscles": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-04",
+   "he": "ביצוע הפנייה בהרמת עקב רגל נגדית לכיוון ההפניה.",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 4,
+   "muscles": [
+    "core",
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-05",
+   "he": "משיכת ישבן לאחור באחיזת גדר/גזע עץ/ספסל",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 5,
+   "muscles": [
+    "legs",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "prep-static-06",
+   "he": "שכיבה עם הצד על קיר תוך הרחקת פיסות כפות רגליים מהקיר.",
+   "category": "static_stretch",
+   "source": "prep",
+   "order": 6,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false
+  },
+  {
+   "id": "flex-01",
+   "he": "תאומים – שריר שוק אחוריים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 1,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "כף רגל אחורי מקבילה לכף רגל קדמית וב 90 -מעלות ביחס לקיר.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-02",
+   "he": "מקרבי ירך ישיבת כף אל כף (מעוין)",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 2,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות לשתי הרגליים 3 פעמים",
+   "notes": "הטית גו מהירך ולא קמור של גו עליון. מבט באלכסון קדימה. אפשר ללחוץ עם המרפקים על השוקיים. מתיחה של שרירי ירך פנימיים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-03",
+   "he": "מקרבי ירך בשכיבת פרקדן (על הגב)",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 3,
+   "muscles": [
+    "legs",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות לשתי הרגליים 3 פעמים",
+   "notes": "או 2 או 3",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-04",
+   "he": "הטית גו לפנים ממצב של ישיבת משוכה פנימית",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 4,
+   "muscles": [
+    "legs",
+    "core",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "הטית גו מהירך ולא קמור של גו עליון. מי שאינו מגיע לכף הרגל יכול לאחוז בשוק או לאחוז במגבת הכרוכה סביב פיסת כף הרגל. מתיחה של שרירי ירך אחוריים, שרירי עכוז ושרירי גו תחתון",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-05",
+   "he": "שכיבת פרקדן ומתיחת שרירי גו קדמיים ואחוריים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 5,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות בכל הגוף 3 פעמים",
+   "notes": "מתח את אצבעות פיסת כפות ידיים וגב פיסת כפות רגליים. אפשר להסתייע בחברים שימשכו משני הצדדים בעדינות מרבית.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-06",
+   "he": "שיכול רגליים והורדת ברך לקרקע משכיבת פרקדן",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 6,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "מתיחת מרחיקי ירך וירך קדמי חיצוני",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-07",
+   "he": "שכיבת פרקדן ומשיכת צוואר לחזה.",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 7,
+   "muscles": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי צוואר אחוריים יש לבצע את המתיחה בעדינות מופלאה",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-08",
+   "he": "משיכת ברך לחזה משכיבת פרקדן",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 8,
+   "muscles": [
+    "legs",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "מתיכת שרירי ירך אחוריים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-09",
+   "he": "הבאת בירכיים למצח משכיבת פרקדן",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 9,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת גו עליון ועכוז",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-10",
+   "he": "משיכת ברך לכיוון כתף נגדית משכיבת פרקדן",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 10,
+   "muscles": [
+    "legs",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך קדמיים חיצוניים ושרירי עכוז חיצוניים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-11",
+   "he": "משיכת ברך חיצוני לקרקע משכיבה צדית",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 11,
+   "muscles": [
+    "legs",
+    "core",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "יד נגדית לברך מבצעת נמצאת במגע רציף עם הקרקע. מתיחת שרירי ירך קדמי צידי, עכוז צידי וחלק מוגבה של הגו.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-12",
+   "he": "הבאת עקב לישבן משכיבה צידית",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 12,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל ולחילופין 3 פעמים",
+   "notes": "מתיחת שרירי המותן והירך הקדמיים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-13",
+   "he": "משיכת בית חזה לקרקע מישיבת עקבים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 13,
+   "muscles": [
+    "legs",
+    "core",
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי זרוע וגו צידיים.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-14",
+   "he": "הפיכת כפות ידיים מעמידת בירכיים כפות רגליים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 14,
+   "muscles": [
+    "legs",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי אמה קדמיים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-15",
+   "he": "שילוב כפות ידיים מעל לראש או הפיכת כפות ידיים לפנים מעמידה רגילה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 15,
+   "muscles": [
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי ידיים וגו צידיים. בשני מתיחת שרירי ידיים וכתף צידיים",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-16",
+   "he": "משיכת זרוע לחזה מעמידה רגילה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 16,
+   "muscles": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל יד 3 פעמים",
+   "notes": "מתיחת שרירי כתף וזרוע צידיים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-17",
+   "he": "משיכת מרפק מטה מעמידה רגילה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 17,
+   "muscles": [
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל יד ולחילופין 3 פעמים",
+   "notes": "מתיחת שרירי אמה אחוריים ו שרירי גו צידיים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-18",
+   "he": "יצירת ריבוע מעל לראש ומשיכת מרפקים לאחור מעמידה רגילה.",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 18,
+   "muscles": [
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי אמות אחוריים ושרירי גו צידיים.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-19",
+   "he": "יצירת ריבוע מעל לראש כפיפה הצידה מעמידת פישוק",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 19,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל צד לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי גו צידיים.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-20",
+   "he": "מפגש פיסות כפות ידיים מאחורי הגו שיד אחת באה מלמעלה והשנייה מלמטה מעמידת פישוק",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 20,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל יד לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי אמות אחוריים ושרירי גו צידיים של היד בעליונה ומתיחה של שרירי כתף ואמה אחוריים של היד התחתונה.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-21",
+   "he": "משיכת יד אחת מטה ע\"י היד השנייה וכפיפת צוואר הצידה מעמידה רגילה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 21,
+   "muscles": [
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל יד לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי צוואר, כתף וזרוע צידיים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-22",
+   "he": "קרוב שכמות אחת לשנייה ע\"י אחיזה במסגרת של דלת (גדר)",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 22,
+   "muscles": [
+    "chest",
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי חזה וככתפיים צידיים.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-23",
+   "he": "ישיבת עקבים עם סמיכת ידיים (לפנים ולאחור) וללא סמיכת ידיים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 23,
+   "muscles": [
+    "legs",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי ירך ושוק קדמיים ישבן יושב על עקבים ולא ישבן במקביל לעקבים.",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-24",
+   "he": "מכרע קדמי",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 24,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך אחוריים של רגל קדמית שרירי מותן וירך קדמיים של רגל אחורית",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-25",
+   "he": "מכרע מעמידת ברך",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 25,
+   "muscles": [
+    "legs",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך קדמיים וגב פיסת כף הרגל",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-26",
+   "he": "כפיפת גו לפנים מעמידה בברכיים כפופות",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 26,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת גו תחתון, עכוז ירכיים ושוקיים אחוריים. הגעה לשיא מתיחה סטטית ולא לבצע ניעות בסופה.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-27",
+   "he": "שיכול ברך והפניית צוואר לכיוון נגדי",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 27,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך אחוריים, עכוז וגו של צד היד הנסמכת. אין להזיז את פיסת כף היד הסומכת מהקרקע",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-28",
+   "he": "תרגיל העריסה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 28,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי ירך אחוריים, עכוז וגו אחורי.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-29",
+   "he": "עמידה שפופה באחיזת עמוד",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 29,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת עכוז וגו תחתון.",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-30",
+   "he": "הטיה לצד של הרגל האחורית מעמידת פסיעה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 30,
+   "muscles": [
+    "legs",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי עכוז צידיים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-31",
+   "he": "משיכת עקב מטה מעמידה על מדרגה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 31,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "step"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי שוק אחוריים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-32",
+   "he": "משיכת ברך לחזה מעמידת חסידה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 32,
+   "muscles": [
+    "legs",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך אחוריים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-33",
+   "he": "הבאת עקב לישבן ביד נגדית לרגל מבצעת מעמידת חסידה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 33,
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך ושוק קדמיים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-34",
+   "he": "הטית גו לפנים מעמידת חסידה ומסמיכת שוק של רגל מבצעת על משטח מוגבה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 34,
+   "muscles": [
+    "legs",
+    "core",
+    "back"
+   ],
+   "equipment": [
+    "step"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך אחוריים",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-35",
+   "he": "הטית גו הצידה מעמידת חסידה הנתמכת על משטח מוגבה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 35,
+   "muscles": [
+    "legs",
+    "core",
+    "back"
+   ],
+   "equipment": [
+    "step"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי ירך פנימיים (מקרבי ירך).",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-36",
+   "he": "הפנית גו מעמידת פישוק",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 36,
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות לכל כיוון לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי בטן אלכסוניים",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-37",
+   "he": "משיכת בית חזה מטה מעמידת פישוק בתליית ידיים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 37,
+   "muscles": [
+    "legs",
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "pullup_bar"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת שרירי חזה, בית שחי",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-38",
+   "he": "שיכול אחורי מעמידה בתליית ידיים",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 38,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "pullup_bar"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל רגל אחורית משכלת לחילופין 3 פעמים",
+   "notes": "מתיחה של צד הרגל המשכל לאחור (יד, גו ועכוז).",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-39",
+   "he": "הפנית גו באחיזת יד בניגוד להפניה מעמידה רגילה",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 39,
+   "muscles": [
+    "core",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות בכל יד לחילופין 3 פעמים",
+   "notes": "מתיחת שרירי חזה",
+   "prepFriendly": false
+  },
+  {
+   "id": "flex-40",
+   "he": "תליה בשתי ידיים וביד אחת",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 40,
+   "muscles": [
+    "legs",
+    "core",
+    "shoulders"
+   ],
+   "equipment": [
+    "pullup_bar"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": true,
+   "timing": "15 שניות 3 פעמים בביצוע תליה ביד אחת 15 שניות בכל יד לחילופין 3 פעמים",
+   "notes": "מתיחת שני צדי הגוף. אפשר לסמוך את כפות רגליים על הקרקע. תליה ביד אחת מתיחה של צד היד התלויה. אפשר לבצע קימור של הצד",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-41",
+   "he": "משיכת ידיים לאחור באחיזת מגבת",
+   "category": "flexibility",
+   "source": "flexibility",
+   "order": 41,
+   "muscles": [
+    "chest",
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "towel"
+   ],
+   "partner": false,
+   "holdSeconds": 15,
+   "repeats": 3,
+   "perSide": false,
+   "timing": "15 שניות 3 פעמים",
+   "notes": "מתיחת בית חזה ופושטי זרוע בכתף",
+   "prepFriendly": true
+  },
+  {
+   "id": "flex-pair-standing-01",
+   "he": "א' – יד אחת בין השכמות. ברכיים כפופות, גב ישר. ב' – לוחץ לו את היד כמה שיותר נמוך בין השכמות.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 1,
+   "position": "עמידה",
+   "muscles": [
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-02",
+   "he": "א' – ידיים בריבוע מעל לראש. ברכיים כפופות, גב ישר. ב' – מושך את הידיים של א' לאחור.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 2,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-03",
+   "he": "א' – עומד מול ב', כל אחד מהם שם יד על הכתף של השני כאשר גב היד מונח על הכתף ומבצעים הפניה של הגב כל אחד לצד אחר.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 3,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-04",
+   "he": "א' – פושט ידיים לאחור שהמרפקים שלו מופנים כלפי פנים. ב' – מנסה לקרב את הידיים של א' זו לזו.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 4,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-05",
+   "he": "א' משלב ידיים מאחורי הגב ומתכופף לפנים (ברכיים כפופות). ב' – עומד לפניו, יד אחת מונחת באזור השכמות יד שנייה מותחת את הידיים של א' למעלה וקדימה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 5,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-06",
+   "he": "א' ו־ב' עומדים זה מול זה – מניחים ידיים על הכתפיים של האחר, מתרחקים וכופפים לפנים (ברכיים כפופות) כל אחד מפעיל לחץ על הכתפיים של בן הזוג ואותו הדבר תוך הפנית גב הצידה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 6,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-07",
+   "he": "א' ו־ב' עומדים זה לצד זה – כל אחד מניח יד על הכתף של בן הזוג, ומבצעים כפיפה במישור החזיתי תוך נתינת ידיים מעל לראש (שמירה על ידיים ישרות).",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 7,
+   "position": "עמידה",
+   "muscles": [
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-08",
+   "he": "בני הזוג נעזרים אחד בשני – כל אחד אוחז בקרסול שלו ומנסה לקרב אותו כמה שיותר לישבן – תוך הטיית הגוף מעט לפנים.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 8,
+   "position": "עמידה",
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-09",
+   "he": "מכרע צידי נמוך – אחד מול השני, כל אחד מתכופף לכיוון הרגל הישרה של בן זוגו.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 9,
+   "position": "עמידה",
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-10",
+   "he": "א' – עומד עמידה ישרה על רגל אחת – רגל שנייה מוחזקת ע\"י ב'. ב' – תוך כדי תמיכה ב־א', מרים את הרגל של א' כמה שיותר גבוה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 10,
+   "position": "עמידה",
+   "muscles": [
+    "legs",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-11",
+   "he": "א' – בעמידת ברך רגל. ב' – גם הוא בעמידה זו, אלא שהוא מניח רגל אחת שהיא ישרה על ברך א' וכופף לעברה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 11,
+   "position": "עמידה",
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-standing-12",
+   "he": "באותה צורה אלא שהפעם ב' יושב על הרצפה כשרגל אחת שלו מונחת על הברך של א'.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 12,
+   "position": "עמידה",
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-01",
+   "he": "א' – ישיבה מזרחית כופף לפנים. ב' – עומד מאחוריו ומפעיל עליו לחץ באזור המותניים.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 1,
+   "position": "ישיבה",
+   "muscles": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-02",
+   "he": "א' – ישיבה מזרחית ידיים על העורף. ב' – ברך אחת שלו תומכת בגב של א' ומבצע מתיחה לצדדים לידיים של א'.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 2,
+   "position": "ישיבה",
+   "muscles": [
+    "legs",
+    "shoulders",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-03",
+   "he": "א' – ישיבת כף אל כף. ב' – נמצא מאחוריו שידיו מונחות על הברכיים של א' ומבצע לחיצה של הברכיים של א' לכיוון הרצפה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 3,
+   "position": "ישיבה",
+   "muscles": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-04",
+   "he": "א' – יושב ישיבה מזרחית ומבצע הפנייה במישור האופקי של חלק גוף עליון. ב' – מקפיד על ביצוע נכון – שומר על גב ישר של א'.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 4,
+   "position": "ישיבה",
+   "muscles": [
+    "core",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-05",
+   "he": "שני בני הזוג אחד מול השני בישיבה מעורבת – כל אחד מנסה לאחוז בברך של בן הזוג ולכפוף לפנים (לכיוון הרגל הישרה שלו).",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 5,
+   "position": "ישיבה",
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-06",
+   "he": "ישיבה שלמה אחד מול השני (רגליים ישרות לפנים) – ניסיון להחזיק ידיים תוך כפיפה לפנים כמה שיותר.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 6,
+   "position": "ישיבה",
+   "muscles": [
+    "legs",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-07",
+   "he": "ישיבת פיסוק – (1) א' – יושב ישיבת פיסוק, ב' – מגדיל ל־א' את הפיסוק שלו כמה שיותר. (2) יושבים אחד מול השני בפיסוק תוך נתינת ידיים, ומבצעים מעין נדנדה: פעם א' נשכב לאחור ו־ב' כופף, ולהיפך. (3) באותה צורה כופפים גם לצדדים.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 7,
+   "position": "ישיבה",
+   "muscles": [
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-seated-08",
+   "he": "ישיבת משוכה אחד מול השני (יוצרים מעין מלבן) וכופפים אל הרגל הישרה או למרכז.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 8,
+   "position": "ישיבה",
+   "muscles": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-lying-01",
+   "he": "א' – שוכב על הגב כשרגל אחת שלו ישרה על הקרקע והשנייה כפופה לכיוון החזה. ב' – מניח יד אחת שלו על הרגל הישרה של א' ומפעיל לחץ על הרגל הכפופה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 1,
+   "position": "שכיבה",
+   "muscles": [
+    "legs",
+    "chest",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-lying-02",
+   "he": "באותה צורה אלא שהפעם הרגל שמופנית לכיוון החזה ישרה. א' – שוכב. ב' – מקרב את הרגל הישרה של א' כמה שיותר לכיוון החזה שלו (א').",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 2,
+   "position": "שכיבה",
+   "muscles": [
+    "legs",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-lying-03",
+   "he": "א' – שוכב על הגב מעביר רגליים מעבר לראש. ב' – עוזר לו.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 3,
+   "position": "שכיבה",
+   "muscles": [
+    "legs",
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  },
+  {
+   "id": "flex-pair-lying-04",
+   "he": "א' – שוכב על הבטן. ב' – מקרב כמה שיותר קרסול של א' לישבן תוך הרמת ברך מעט מהרצפה.",
+   "category": "partner_stretch",
+   "source": "flexibility",
+   "order": 4,
+   "position": "שכיבה",
+   "muscles": [
+    "legs",
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "partner": true
+  }
+ ],
+ "partnerStretchRules": [
+  "יש להקפיד על קשר עם בן הזוג.",
+  "תרגילים שאותם מבצע רק אחד מבני הזוג בעוד שהאחר מפעיל עליו לחץ."
+ ],
+ "games": [
+  {
+   "id": "tag-mice",
+   "he": "תופסת עכברים",
+   "kind": "tag",
+   "description": "הנתפס עומד בפישוק רגליים, \"הצלתו\" ע\"י מעבר בין רגליו.",
+   "notes": "בטיחות – מעבר אך ורק מלפנים, הנתפס עומד עם ידיים לצדדים.",
+   "source": "prep"
+  },
+  {
+   "id": "tag-chain",
+   "he": "תופסת שרשרת",
+   "kind": "tag",
+   "description": "הנתפס אוחז ידיים עם התופס וכך הלאה ליצירת שרשרת.",
+   "notes": "האחרון שאינו נתפס הופך לתופס.",
+   "source": "prep"
+  },
+  {
+   "id": "tag-tails",
+   "he": "תופסת זנבות",
+   "kind": "tag",
+   "description": "מטרת התופס \"לגנוב\" את הזנב של המשתתפים.",
+   "notes": "זנב – מוכנס במכנס מאחור, עשוי מבד/שקית או כל דבר אחר.",
+   "source": "prep"
+  },
+  {
+   "id": "tag-eagle",
+   "he": "העיט והזפטה",
+   "kind": "tag",
+   "description": "ברביעיות, כאשר שלושה עומדים בטור, הראשון בטור מניף את ידיו לצדדים והשניים מאחוריו אוחזים בכתפיים של זה שלפניו. מטרתם להגן על האחרון בטור שהתופס שעומד מולם לא יצליח לתפוס אותו.",
+   "notes": "לשלישייה אסור להתנתק, במידה והתנתקו זה לא נחשב תפיסה. כאשר התופס הצליח הוא נהפך להיות ראשון בטור וכך הלאה עד שכולם גם תופסים וגם נתפסים.",
+   "source": "prep"
+  },
+  {
+   "id": "tag-circle",
+   "he": "תופסת מעגל",
+   "kind": "tag",
+   "description": "הקבוצה אוחזת ידיים במעגל, כל אחד ממוספר, התופס עומד מחוץ למעגל ומטרתו לתפוס את אחד המספרים שהתבקש מהמדריך. הקבוצה מגנה על המספר שנדרש לתפוס ע\"י סיבובים.",
+   "notes": "ניתן להוסיף יותר מתופס אחד.",
+   "source": "prep"
+  },
+  {
+   "id": "tag-wizard",
+   "he": "בית הקוסם",
+   "kind": "tag",
+   "description": "מכינים איזור במרכז המגרש שלתוכו נכנס מי שנתפס (לדוגמא – העיגול במרכז המגרש). ניתן להציל את הנתפס ע\"י נגיעה בו.",
+   "notes": "יש להוסיף תופסים – חלק יהיו תופסים וחלק שומרים על \"בית הקוסם\".",
+   "source": "prep"
+  },
+  {
+   "id": "ball-sara",
+   "he": "חיי שרה",
+   "kind": "ball",
+   "description": "המטרה – להוציא את כל השחקנים לביצוע משימה תנועתית מחוץ למגרש, ע\"י פגיעת הכדור בגופם, וחזרתם כאשר הוציאו את זה שהוציא אותם.",
+   "notes": "השחקנים \"הפסולים\" אינם יושבים סתם כך בחוץ ומחכים שהפוסל שלהם יצא, הם מבצעים משימה תנועתית כל שהי.",
+   "source": "prep"
+  },
+  {
+   "id": "ball-21",
+   "he": "21 בקבוצות",
+   "kind": "ball",
+   "description": "2 קבוצות שמטרתן להגיע ל־21 מסירות ביניהן מבלי שהכדור ייפול או ייחטף ע\"י הקבוצה השנייה.",
+   "notes": "קבוצה שהגיעה ל־21 מסירות ללא פסילה מורה על הקבוצה השנייה משימה תנועתית לביצוע.",
+   "source": "prep"
+  },
+  {
+   "id": "ball-dodge",
+   "he": "מחניים חילוני",
+   "kind": "ball",
+   "description": "2 קבוצות המנסות להוציא את חברי הקבוצה השנייה מעבר לגבולות המגרש ע\"י פגיעת הכדור בגופם.",
+   "notes": "משתתף שנפגע יוצא מחוץ לגבולות המגרש וממשיך את המשחק משם.",
+   "source": "prep"
+  },
+  {
+   "id": "ball-eliminator",
+   "he": "\"המוציא\"",
+   "kind": "ball",
+   "description": "התופס עם כדור – מתקדם בעזרת כדרור בלבד, מטרתו – במהלך חצי דקה להוציא כמה שיותר משתתפים ע\"י פגיעת הכדור בהם.",
+   "notes": "בחירת תופס חדש כל חצי דקה. כולם משתתפים. המנצח – זה שהצליח להוציא כמה שיותר משתתפים.",
+   "source": "prep"
+  },
+  {
+   "id": "ball-touchdown",
+   "he": "משחק טאצ' דאון",
+   "kind": "ball",
+   "description": "2 קבוצות. מטרת הקבוצה להבקיע שער לקבוצה היריבה ע\"י הנחת הכדור על קו השער של הקבוצה היריבה.",
+   "notes": "חוקים – א. ההתקדמות עם הכדור נעשית אך ורק ע\"י מסירות בין הקבוצה. ב. יש למסור את הכדור לפחות ל־5 שחקנים לפני הבקעת שער.",
+   "source": "prep"
+  },
+  {
+   "id": "ball-touch",
+   "he": "גע גע גע",
+   "kind": "ball",
+   "description": "המטרה – פגיעת הכדור במשתתפים (באזור הגפיים התחתונות בלבד) ע\"י חבטה בכדור. אין לתפוס את הכדור ביד, המשחק מתנהל רק בהדיפת הכדור.",
+   "notes": "השחקנים \"הפסולים\" אינם יושבים סתם כך בחוץ ומחכים שהפוסל שלהם יצא, הם מבצעים משימה תנועתית כל שהי.",
+   "source": "prep"
+  }
+ ],
+ "gameRules": {
+  "tag": [
+   "כמו שצוין, כל משחק תופסת בו כל חברי הקבוצה משתתפים נחשב כחימום מצוין.",
+   "ניתן להוסיף תופסים לפי הצורך.",
+   "יש להחליף את התופס כל הזמן.",
+   "תפיסה נחשבת כנגיעה בגוף ולא מחייב תפיסה פיזית."
+  ],
+  "ball": [
+   "כל משחק כדור, בו כל חברי הקבוצה שותפים פעילים, יכול לשמש כחימום טוב."
+  ]
+ },
+ "methods": [
+  {
+   "id": "igo-ugo",
+   "he": "שיטת אימון IGO-UGO",
+   "source": "limited_space",
+   "text": "IGO (אני הולך) ו־UGO (אתה הולך) זה אומר שכל אחד מהמתאמנים מבצע סט מסוים בזמן שהשני נח, וכך מתחלפים בין תרגילים או סטים. זה יוצר דינמיקה טובה ומנוחה מספקת, ניתן לשמר קצב גבוה ומוטיבציה לאורך כל האימון.",
+   "pairs": true,
+   "restBetweenRoundsSeconds": 180,
+   "notes": [
+    "לאחר שהזוגות סיימו את 5 הסטים הם מקבלים מנוחה של מינימום 3 דקות מנוחה ולאחר מכן יוצאים לסבב נוסף.",
+    "מומלץ לפתוח זמן ולראות כמה זמן לקח לחניכים לבצע את הסט הראשון ואת הסט השני – דבר יכול להעיד הרבה על חלוקת הכוחות ומוטיבציה של החניכים."
+   ],
+   "examples": [
+    {
+     "he": "דוגמא לאימון",
+     "warmup": "חימום ע\"פ טבלה/חימום כללי.",
+     "cooldown": "מתיחות ע\"פ נספח/מתיחות חזה, רגליים, גב ובטן.",
+     "blocks": [
+      {
+       "he": "סט ראשון – חזה",
+       "muscles": [
+        "chest"
+       ],
+       "exercises": [
+        {
+         "he": "שכיבות שמיכה רגילות",
+         "reps": 20,
+         "catalogId": "אתגר_שכיבות_שמיכה"
+        },
+        {
+         "he": "שכיבות שמיכה בהתקדמות",
+         "reps": 10
+        }
+       ]
+      },
+      {
+       "he": "סט שני – רגליים",
+       "muscles": [
+        "legs"
+       ],
+       "exercises": [
+        {
+         "he": "סקוואטים",
+         "reps": 15
+        },
+        {
+         "he": "לאנצים בהתקדמות",
+         "reps": 16
+        }
+       ]
+      },
+      {
+       "he": "סט שלישי – גב תחתון",
+       "muscles": [
+        "back"
+       ],
+       "exercises": [
+        {
+         "he": "הרמות גוף בשכיבה על הבטן",
+         "reps": 15,
+         "catalogId": "superman"
+        }
+       ]
+      },
+      {
+       "he": "סט רביעי – בטן",
+       "muscles": [
+        "core"
+       ],
+       "exercises": [
+        {
+         "he": "אולר יד לרגל נגדית",
+         "reps": 10
+        },
+        {
+         "he": "פלאנק",
+         "seconds": 45,
+         "catalogId": "plank"
+        }
+       ]
+      },
+      {
+       "he": "סט חמישי – משולב",
+       "muscles": [
+        "chest",
+        "legs",
+        "core"
+       ],
+       "exercises": [
+        {
+         "he": "סמוך-קום",
+         "reps": 15
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tabata",
+   "he": "שיטת אימון TABATA",
+   "source": "limited_space",
+   "text": "טבטה היא תבנית אימון של 8 תרגילים. לכל תרגיל מוקצב זמן של 20 שניות שלאחריהן 10 שניות מנוחה. כלומר: 20 שניות תרגיל אינטרוולים בעצימות גבוהה, ו־10 שניות מנוחה מוחלטת למשך 4 דקות.",
+   "workSeconds": 20,
+   "restSeconds": 10,
+   "exercisesPerSet": 8,
+   "sets": 4,
+   "restBetweenSetsSeconds": [
+    120,
+    180
+   ],
+   "notes": [
+    "ניתן לבצע 4 סטים טאבטה עם מנוחה של 2-3 דקות או כסט סופי לאימון."
+   ],
+   "video": "https://youtu.be/yLuHTtH8DEs"
+  },
+  {
+   "id": "21-reps",
+   "he": "21-REPS",
+   "source": "limited_space",
+   "text": "שיטה שבה מחלקים ביצוע של תנועה ל־7 כפול 3. לדוגמה – חצי מטווח תנועה 7 פעמים, חצי שני מטווח התנועה עוד 7 ואז עוד 7 על כל הטווח. כל שריר שניקח אפשר לחלק את טווח התנועה לשני חלקים. הרעיון הוא להתמקד בטווחי תנועה שונים. שיטת אימון זו רלוונטית כמעט עבור כל התרגילים הדינאמיים.",
+   "recommendedFor": [
+    "שכיבות שמיכה",
+    "סקוואטים",
+    "לאנצים",
+    "תרגיל אולר מפורק"
+   ],
+   "video": "https://youtu.be/xuueJk50Ppk"
+  },
+  {
+   "id": "combined",
+   "he": "אימון משולב – תרגיל אירובי + כוח",
+   "source": "limited_space",
+   "text": "ביצוע אימונים משולבים של תרגילי כוח ותרגילים לכלל הגוף בדופק גבוה, מסייע בפיתוח מנגנונים אנרגטיים וכן יכולות של סיבולת שריר.",
+   "workSeconds": 40,
+   "restSeconds": 20,
+   "examples": [
+    {
+     "he": "דוגמה 1",
+     "exercises": [
+      {
+       "he": "תרגיל \"מטפס\"",
+       "kind": "aerobic",
+       "catalogId": "mountain_climber"
+      },
+      {
+       "he": "סקווט ללא אמצעי",
+       "kind": "strength"
+      },
+      {
+       "he": "סמוך קום",
+       "kind": "aerobic"
+      },
+      {
+       "he": "שכיבות סמיכה",
+       "kind": "strength"
+      },
+      {
+       "he": "קפיצות כוכב",
+       "kind": "aerobic"
+      },
+      {
+       "he": "הרמות אגן",
+       "kind": "strength"
+      },
+      {
+       "he": "עליות וירידות על האמות",
+       "kind": "aerobic"
+      },
+      {
+       "he": "כפיפות בטן עד 30°",
+       "kind": "strength",
+       "catalogId": "crunches"
+      }
+     ]
+    },
+    {
+     "he": "דוגמה 2",
+     "exercises": [
+      {
+       "he": "עליות וירידות על האמות",
+       "kind": "aerobic"
+      },
+      {
+       "he": "מכרע בתמיכת רגל אחורית",
+       "kind": "strength"
+      },
+      {
+       "he": "קפיצות כוכב",
+       "kind": "aerobic"
+      },
+      {
+       "he": "שכיבות סמיכה",
+       "kind": "strength"
+      },
+      {
+       "he": "תרגיל \"מטפס\"",
+       "kind": "aerobic",
+       "catalogId": "mountain_climber"
+      },
+      {
+       "he": "כפיפות בטן עד 30°",
+       "kind": "strength",
+       "catalogId": "crunches"
+      },
+      {
+       "he": "סמוך קום",
+       "kind": "aerobic"
+      },
+      {
+       "he": "סקווט ללא אמצעי",
+       "kind": "strength"
+      }
+     ]
+    },
+    {
+     "he": "דוגמה 3",
+     "exercises": [
+      {
+       "he": "סקיפינג גבוה",
+       "kind": "aerobic"
+      },
+      {
+       "he": "מכרע קדמי",
+       "kind": "strength"
+      },
+      {
+       "he": "סקיפינג נמוך",
+       "kind": "aerobic"
+      },
+      {
+       "he": "שכיבות סמיכה",
+       "kind": "strength"
+      },
+      {
+       "he": "קפיצות כוכב",
+       "kind": "aerobic"
+      },
+      {
+       "he": "סמיכה קדמית",
+       "kind": "strength",
+       "catalogId": "plank"
+      },
+      {
+       "he": "סקווט קפיצה",
+       "kind": "aerobic"
+      },
+      {
+       "he": "סמיכה צידית (20 שניות כל צד)",
+       "kind": "strength",
+       "catalogId": "פלאנק_צידי"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pyramid",
+   "he": "אימון כוח בשיטת הפירמידה (עולה/יורדת)",
+   "source": "limited_space",
+   "text": "שיטת הפירמידה היא מתודה מומלצת וידועה לגירוי שריר במינימום זמן. בשיטה זו ניתן לעבוד במספר אופנים: פירמידה עולה/יורדת/קטומה/כפולה.",
+   "notes": [
+    "מומלץ להגביל את החניכים בכמות החזרות ע\"פ יכולתם האישית – איכות הביצוע הרבה יותר חשובה מהכמות."
+   ],
+   "examples": [
+    {
+     "he": "פירמידה 5→30→5",
+     "exercises": [
+      {
+       "he": "Burpees",
+       "reps": 5
+      },
+      {
+       "he": "Push-ups",
+       "reps": 10
+      },
+      {
+       "he": "Squats",
+       "reps": 15
+      },
+      {
+       "he": "Lunges",
+       "reps": 20
+      },
+      {
+       "he": "Jumping jacks",
+       "reps": 25
+      },
+      {
+       "he": "Squat jacks",
+       "reps": 30
+      },
+      {
+       "he": "High knees",
+       "reps": 30
+      },
+      {
+       "he": "Pike to plank",
+       "reps": 25
+      },
+      {
+       "he": "Hip dips",
+       "reps": 20
+      },
+      {
+       "he": "Shoulder taps",
+       "reps": 15
+      },
+      {
+       "he": "Leg throughs",
+       "reps": 10
+      },
+      {
+       "he": "V-ups",
+       "reps": 5
+      }
+     ]
+    },
+    {
+     "he": "פירמידה 10→60→10",
+     "exercises": [
+      {
+       "he": "Squats",
+       "reps": 10
+      },
+      {
+       "he": "Pushups",
+       "reps": 20
+      },
+      {
+       "he": "Alt reverse lunges",
+       "reps": 30
+      },
+      {
+       "he": "Jumping jacks",
+       "reps": 40
+      },
+      {
+       "he": "Mountain climbers",
+       "reps": 50,
+       "catalogId": "mountain_climber"
+      },
+      {
+       "he": "Plank",
+       "seconds": 60,
+       "catalogId": "plank"
+      },
+      {
+       "he": "Butt kickers",
+       "reps": 50
+      },
+      {
+       "he": "High knees",
+       "reps": 40
+      },
+      {
+       "he": "Alt forward lunges",
+       "reps": 30
+      },
+      {
+       "he": "Bench dips",
+       "reps": 20
+      },
+      {
+       "he": "Burpees",
+       "reps": 10
+      }
+     ]
+    },
+    {
+     "he": "פירמידה 2→10→2 (ברפיז, סקוואט, שכיבות שמיכה)",
+     "ladder": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      8,
+      6,
+      4,
+      2
+     ],
+     "exercises": [
+      {
+       "he": "Burpees"
+      },
+      {
+       "he": "Squats"
+      },
+      {
+       "he": "Push-ups"
+      }
+     ],
+     "text": "2 חזרות מכל תרגיל, ואז 4, וכך הלאה בתוספת 2 בכל סבב עד 10, ואז יורדים ב־2 בכל סבב עד 2."
+    }
+   ]
+  }
+ ],
+ "sessionTemplate": {
+  "id": "opening-template",
+  "he": "אימוני פתיחה – תבנית",
+  "source": "opening",
+  "totalMinutes": [
+   85,
+   90
+  ],
+  "parts": [
+   {
+    "n": 1,
+    "he": "פתיחה",
+    "minutes": 10,
+    "phase": "Warm-up",
+    "items": [
+     "הצגת הצוות",
+     "לוודא שכלל החניכים מרגישים טוב",
+     "כולם ממלאים הצהרת בריאות (עדיף שימלאו לפני האימון)",
+     "חלוקת מספרי ברזל",
+     "וידוא מים לכולם – מי שאין לו אז להראות להם איפה הקולר הקרוב",
+     "סבב – מה רמת המוטיבציה שלי לאימון עכשיו מ־1-10 (ושיזכרו את זה)"
+    ]
+   },
+   {
+    "n": 2,
+    "he": "זמנים ומשמעת",
+    "minutes": 10,
+    "phase": "Warm-up",
+    "items": [
+     "כמו בטירונות – סטנדרט בעמידה וציוד.",
+     "עד 5 ספרינטים של 30 מ', עד 60 ש' מצב 2, עד 30 שכיבות שמיכה (מצטבר)."
+    ]
+   },
+   {
+    "n": 3,
+    "he": "חימום",
+    "minutes": 10,
+    "phase": "Warm-up",
+    "items": [
+     "מתוך בנק חימום."
+    ]
+   },
+   {
+    "n": 4,
+    "he": "חלק עיקרי",
+    "minutes": 45,
+    "phase": "Main",
+    "items": [
+     "בחירה מתוך בנק אימונים."
+    ]
+   },
+   {
+    "n": 5,
+    "he": "מעגל סיכום",
+    "minutes": [
+     10,
+     15
+    ],
+    "phase": "Cool-down",
+    "items": [
+     "נחזור לסבב של פתיחת האימון – האם רמת המוטיבציה ירדה או עלתה אחרי האימון? האם זה שיקף את המוטיבציה שבאתם איתה?",
+     "כל אחד מציין משהו על עצמו (היה לו קשה ב־X, למדתי משהו חדש או כללי) ומשהו על הקבוצה – איך הקבוצה עבדה או לפרגן למישהו מהקבוצה שעבד טוב וכד'.",
+     "סיום ברבאק – אם יש מסורת לקבוצה – לתת לחניכים להוביל מעגל מי משוגע או כל דבר אחר שמאפיין את הקבוצה."
+    ]
+   }
+  ]
+ },
+ "sessions": [
+  {
+   "id": "opening-1",
+   "he": "אימון פתיחה 1",
+   "source": "opening",
+   "equipment": [
+    "none"
+   ],
+   "parts": [
+    {
+     "he": "חלק א' – מרוץ שליחים",
+     "minutes": 20,
+     "text": "מחלקים את הצוות לקבוצות שוות. כל חניך בקבוצה צריך לרוץ לנקודה שהוגדרה מראש ואז חזרה לקבוצה. בסוף המקטע כל הקבוצה צריכה לדעת לענות על שאלה שנשאלה מראש. הקבוצה שזוכה במרוץ צריכה גם לדעת את התשובה לשאלה.",
+     "examples": [
+      "מה השם של כל אחד מחברי הקבוצה?",
+      "מאכל אהוב של כל אחד.",
+      "כמה אחים יש לכל אחד.",
+      "איזה בית ספר כל אחד לומד?",
+      "מה השם משפחה של כל אחד?"
+     ],
+     "variations": [
+      "קפיצה על רגל אחת",
+      "הליכת לאנצים",
+      "קפיצה למרחק",
+      "ריצה לאחור"
+     ]
+    },
+    {
+     "he": "חלק ב' – תחנות כוח",
+     "minutes": 20,
+     "text": "חלוקה לקבוצות שוות. כל קבוצה מקבלת תרגיל כוח. את התרגיל עושים במשך 40 ש' עבודה – 20 ש' מנוחה X2. מנוחה של 3 דק' בין הסטים. בסוף הזמן מחליפים עם הקבוצה הבאה.",
+     "workSeconds": 40,
+     "restSeconds": 20,
+     "rounds": 2,
+     "restBetweenSetsSeconds": 180,
+     "exercises": [
+      {
+       "he": "סקוטים"
+      },
+      {
+       "he": "שכיבות שמיכה",
+       "catalogId": "אתגר_שכיבות_שמיכה"
+      },
+      {
+       "he": "סקווט קפיצה"
+      },
+      {
+       "he": "אדמה בוערת"
+      },
+      {
+       "he": "לאנצ'"
+      },
+      {
+       "he": "יד אחורית"
+      },
+      {
+       "he": "מטפס הרים",
+       "catalogId": "mountain_climber"
+      }
+     ]
+    }
+   ],
+   "safety": [
+    "סיור שטח מקדים והגדרת ציר ריצה ברור ובטיחותי",
+    "הדגמה של טכניקה נכונה בתרגילים",
+    "הפסקות שתיית מים ומנוחה 5 ד' בין תרגילים מרכזיים",
+    "התאמת תרגילים לחניכים מתקשים או מובילים"
+   ]
+  },
+  {
+   "id": "opening-2",
+   "he": "אימון פתיחה 2",
+   "source": "opening",
+   "equipment": [
+    "cones"
+   ],
+   "parts": [
+    {
+     "he": "חלק א' – ריצה בשרשרת",
+     "minutes": 20,
+     "text": "חלוקה לקבוצות (2-4 חניכים). קונוס במרחק של 20 מ'. ריצה בשרשרת במספר תרגילים – בהזנקה של המדריך.",
+     "steps": [
+      "הראשון רץ לקונוס, חוזר חזרה ולוקח איתו חניך נוסף וכן הלאה.",
+      "ישיבה על הברכיים באחיזת ידיים.",
+      "ישיבה במעגל באחיזת ידיים.",
+      "שכיבה על הגב רגליים מקופלות (מנח כפיפות בטן) ואחיזת ידיים.",
+      "תחרות בזוגות – חניך אחד במצב 2, השני קופץ מעליו בג'אמפ סקוואט ונכנס למצב 2 וחוזר חלילה עד הגעה לקו."
+     ]
+    },
+    {
+     "he": "חלק ב' – כוח",
+     "minutes": 20,
+     "text": "כל תרגיל מבצעים 30 עבודה, 30 שניות מנוחה במעגל. כ־3-5 סטים עם מנוחה של 2 ד' לפחות בין סט לסט.",
+     "workSeconds": 30,
+     "restSeconds": 30,
+     "rounds": [
+      3,
+      5
+     ],
+     "restBetweenSetsSeconds": 120,
+     "exercises": [
+      {
+       "he": "שכיבות שמיכה",
+       "catalogId": "אתגר_שכיבות_שמיכה"
+      },
+      {
+       "he": "סקווט קפיצה"
+      },
+      {
+       "he": "אדמה בוערת"
+      },
+      {
+       "he": "לאנצ'"
+      },
+      {
+       "he": "יד אחורית – ג'קסונים או שכיבות שמיכה במצב אוהל"
+      },
+      {
+       "he": "מטפס הרים",
+       "catalogId": "mountain_climber"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "opening-3",
+   "he": "אימון פתיחה 3",
+   "source": "opening",
+   "equipment": [
+    "stretcher",
+    "rope"
+   ],
+   "parts": [
+    {
+     "he": "חלק א' – אלונקה",
+     "minutes": null,
+     "text": "הדגמת פתיחת אלונקה והעמסת שקים, תרגול הרמת אלונקה וחילופים. נחלק את הקבוצה ל־2. נגדיר מסלול של 200 מ' (היקפי או 100 מ' הלוך חזור). קבוצה 1 – המטרה היא שכל חברי הקבוצה ישלימו הקפה עם האלונקה; כל 30 שנ' (המדריך עם השעון מכריז חילוף) מתבצע חילוף של כל האלונקה, ממשיכים לרוץ במסלול עד שכלל החניכים בקבוצה נכנסו תחת האלונקה. בזמן שקבוצה 1 עם האלונקה, קבוצה 2 נמצאת במצב סטטי (פלאנק/מצב 2/סקוואט סטטי) ואז מתחלפים. לאחר מכן ניתן להם לנסות לשפר את התוצאה שלהם.",
+     "exercises": [
+      {
+       "he": "פלאנק",
+       "catalogId": "plank"
+      },
+      {
+       "he": "מצב 2"
+      },
+      {
+       "he": "סקוואט סטטי"
+      }
+     ]
+    },
+    {
+     "he": "חלק ב' – משיכה בחבל",
+     "minutes": null,
+     "text": "נמשיך ב־2 קבוצות, חבל מונח במרכז המגרש, כל קבוצה עומדת בצד אחד של המגרש בשורה לאורך השער. מגדירים זמן של 30 שנ' בהן מבצעים תרגיל כוח (שכיבות סמיכה/סקוואט/בטן) ואז בשריקה/הזנקה החניכים רצים, תופסים את החבל ומתחילים למשוך; קבוצה שניצחה צוברת נקודה. ניתן להמשיך ככה לכל תרגיל 3 סבבים. קבוצה שמפסידה בחבל ניתן לתת להם \"עונש\" של 5 סמוכקום.",
+     "workSeconds": 30,
+     "rounds": 3
+    }
+   ]
+  },
+  {
+   "id": "opening-4",
+   "he": "אימון פתיחה 4",
+   "source": "opening",
+   "equipment": [
+    "none"
+   ],
+   "parts": [
+    {
+     "he": "חלק א' – זוגות היכרות",
+     "minutes": null,
+     "text": "נחלק את הקבוצה ונעמיד אותם בשורה אחת מול השנייה כך שמול כל חניך יש חניך אחר. הזוגות יעשו היכרות קצרה – שם מלא, כמה אחים, תחביב וזמר אהוב. הזוגות יבצעו 4 תרגילים בזוג – כל תרגיל 45 שנ' עבודה ו־15 שנ' מנוחה. לאחר מכן טור אחד יזוז ימינה וכך ייוותרו זוגות חדשים ונבצע שוב את ההיכרות ותרגילי הכוח, ניתן לבצע כ־4-6 פעמים.",
+     "workSeconds": 45,
+     "restSeconds": 15,
+     "rounds": [
+      4,
+      6
+     ],
+     "partner": true,
+     "exercises": [
+      {
+       "he": "סקוואטים עם החזקת אמות/ידיים"
+      },
+      {
+       "he": "שכיבות סמיכה עם כיף"
+      },
+      {
+       "he": "סמוכקום בסנכרון מלא בין בני הזוג"
+      },
+      {
+       "he": "כפיפות בטן – כפות רגליים \"נושקות\" אחת לשנייה",
+       "catalogId": "זוגות_בטן"
+      }
+     ]
+    },
+    {
+     "he": "חלק ב' – זחילות",
+     "minutes": null,
+     "text": "נדגים איך זוחלים ונבצע זחילת היכרות של 30-45 שנ' בדשא, כל חניך בקצב שלו. נעשה תחרות זחילה 15-20 מ' – כל הקבוצה תצא לזחילה ביחד, ו־2 האחרונים יוצאים מהתחרות אחרי זחילה אחת וכך הלאה עד שתישאר תחרות בין 2 אחרונים; החניכים שסיימו אחרונים בכל מקצה יוצאים לריצה קלה/בינונית סביב שטח הזחילות עד סיום התחרות. נחלק את הקבוצה ל־2 – נבצע תחרות זחילה קבוצתית – אוחזים ידיים וזוחלים לאורך 25 מ'; בסיום הזחילה על הקבוצה לבצע פירמידה אנושית (לא יותר מ־2 קומות). הקבוצה שמסיימת ראשונה את הזחילה והפירמידה עומדת ניצחה."
+    }
+   ]
+  },
+  {
+   "id": "opening-5",
+   "he": "אימון פתיחה 5",
+   "source": "opening",
+   "equipment": [
+    "cones",
+    "rope"
+   ],
+   "parts": [
+    {
+     "he": "חלק א' – מסלול משימות קבוצתי",
+     "minutes": null,
+     "text": "מחלקים את הקבוצה ל־2-3 קבוצות. הקבוצה צריכה לעבור מסלול משימות קבוצתיות (בצעו \"קשר\" מסובך עם החבל השחור ושימו אותו בקונוס מספר 4). מפזרים לאורך \"מגרש\" 4 קונוסים במרחקים שווים. ניתן לפתוח זמן ולבצע את האתגר ל־3 סטים עם מנוחה של 5 ד' בין כל סט.",
+     "steps": [
+      "מהקונוס 1 ל־2 הקבוצה עוברת בזחילה בשורה אחידה – כשמגיעים לקונוס השני מבצעים 15 סמוכקום.",
+      "מהקונוס 2 ל־3 מבצעים הליכת לאנצ'ים (בסנכרון בשורה), וכשמגיעים לקונוס 3 מבצעים 20 בטן אולר.",
+      "מקונוס 3 ל־4 מבצעים הליכת דב כקבוצה, וכשמגיעים לקונוס 4 הקבוצה צריכה להתיר את הקשר המסובך של החבל השחור ולרוץ איתו בספרינט חזרה לקונוס 1."
+     ],
+     "rounds": 3,
+     "restBetweenSetsSeconds": 300
+    },
+    {
+     "he": "חלק ב' – \"הדגל\"",
+     "minutes": null,
+     "text": "הכנה: מגדירים גבולות גזרה למשחק, יש להגדיר סימון לקו אמצע, ובנוסף לכל קבוצה יש להגדיר נק' בצד שלה שבה מניחים את הדגל (יכול להיות סטיקלייט/דגל עם מקל/קונוס וכו', העיקר שב־2 הצדדים האביזר יהיה זהה אך שונה בצבע). המטרה: כל קבוצה צריכה להצליח לקחת את הדגל של הקבוצה השנייה ולהעביר אותו לשטח שלה. במידה ושחקן מקבוצה א' עובר את החצי לתוך שטח קבוצה ב', אז שחקני קבוצה ב' יכולים לתפוס אותו (מספיק נגיעה) ואז הוא עומד במקום והוא \"שבוי\" עד שחברי הקבוצה שלו יגיעו לשחרר אותו ע\"י כיף. ניתן להוסיף כל מיני חוקים תוך כדי המשחק כדי להקשות ולעשות את המשחק למעניין – רק אחד מדבר, מגדירים מראש מי יכול לתפוס את הדגל ומי לא ועוד."
+    }
+   ],
+   "safety": [
+    "סיור שטח ובחירת שטח כמה שיותר סטרילי (ללא מפגעים בטיחותיים)"
+   ]
+  }
+ ],
+ "fitnessTest": {
+  "source": "fitness_test",
+  "title": "בוחן כושר קרבי",
+  "goals": [
+   "מדידה והערכת יכולותיו הגופניות הבסיסיות של החניך, בכל אחד מהרכיבים הנמדדים בבוחן, המהווים תשתית גופנית לכשירותו הקרבית של הלוחם/ת.",
+   "קבלת מידע ובקרה אחרי הכושר הגופני של החניך בפרט ושל המסגרת ככלל.",
+   "הקניית מודעות לפעילות גופנית ואתגר לשיפור הכושר הגופני/קרבי של החניך."
+  ],
+  "floorScore": 40,
+  "components": [
+   {
+    "id": "pullups",
+    "he": "עליות און על מתקן מתח/בסיוע ממתח גומי",
+    "group": "כוח – פלג גוף עליון",
+    "weight": 20,
+    "unit": "reps",
+    "higherIsBetter": true,
+    "text": "תרגיל דו מפרקי, המניע את מפרק הכתף ומפרק המרפק. התנועות המתרחשות במפרקים בשלב העלייה הן: פשיטה בכתף וכפיפה במרפק. מטרת התרגיל היא למדוד את כוחו של פלג הגוף העליון בתנועת המשיכה.",
+    "table": [
+     {
+      "minReps": 20,
+      "score": 100
+     },
+     {
+      "minReps": 19,
+      "score": 95
+     },
+     {
+      "minReps": 18,
+      "score": 90
+     },
+     {
+      "minReps": 17,
+      "score": 85
+     },
+     {
+      "minReps": 15,
+      "score": 80
+     },
+     {
+      "minReps": 13,
+      "score": 75
+     },
+     {
+      "minReps": 11,
+      "score": 70
+     },
+     {
+      "minReps": 9,
+      "score": 65
+     },
+     {
+      "minReps": 7,
+      "score": 60
+     },
+     {
+      "minReps": 5,
+      "score": 55
+     },
+     {
+      "minReps": 3,
+      "score": 50
+     },
+     {
+      "minReps": 2,
+      "score": 45
+     },
+     {
+      "minReps": 1,
+      "score": 40
+     }
+    ]
+   },
+   {
+    "id": "pushups",
+    "he": "שכיבות שמיכה – קרקע/ספסל",
+    "group": "כוח – פלג גוף עליון",
+    "weight": 20,
+    "unit": "reps",
+    "higherIsBetter": true,
+    "text": "פשיטת מרפקים בסמיכה קדמית: תרגיל דו מפרקי, המניע את מפרק הכתף ואת מפרק המרפק. התנועות המתרחשות במפרקים בשלב העלייה הן: כפיפה בכתף ופשיטה במרפק. מטרת התרגיל היא למדוד את כוחו של פלג הגוף העליון בתנועת הדחיפה.",
+    "technique": [
+     "מנח התחלתי: תשכב על הבטן כשהידיים מעט רחבות יותר מרוחב הכתפיים – תרים את הגוף על כפות הידיים והבהונות, כך שהידיים ישרות. שמור על קו ישר מהראש ועד לעקבים.",
+     "ביצוע נכון: תתחיל להוריד את הגוף למטה, כופף את המרפקים, ושמור על הגוף בקו ישר. הישבן, הגב והראש צריכים לנוע יחד – הורד את הגוף עד שהחזה כמעט נוגע ברצפה (או לפחות עד שמפרק המרפק ב־90 מעלות). תדחף את עצמך בחזרה כלפי מעלה בעזרת הידיים, עד שהן ישרות שוב.",
+     "דגשים: מיקום הידיים – הידיים צריכות להיות מתחת לכתפיים או מעט רחבות יותר. הימנע מכיפוף יתר בגב התחתון או מ\"התרוממות\" של הישבן."
+    ],
+    "table": [
+     {
+      "minReps": 40,
+      "score": 100
+     },
+     {
+      "minReps": 36,
+      "score": 95
+     },
+     {
+      "minReps": 32,
+      "score": 90
+     },
+     {
+      "minReps": 28,
+      "score": 85
+     },
+     {
+      "minReps": 25,
+      "score": 80
+     },
+     {
+      "minReps": 22,
+      "score": 75
+     },
+     {
+      "minReps": 18,
+      "score": 70
+     },
+     {
+      "minReps": 16,
+      "score": 65
+     },
+     {
+      "minReps": 14,
+      "score": 60
+     },
+     {
+      "minReps": 12,
+      "score": 55
+     },
+     {
+      "minReps": 10,
+      "score": 50
+     },
+     {
+      "minReps": 8,
+      "score": 45
+     },
+     {
+      "minReps": 6,
+      "score": 40
+     }
+    ]
+   },
+   {
+    "id": "plank",
+    "he": "פלאנק (סמיכה קדמית)",
+    "group": "כוח סטטי",
+    "weight": 20,
+    "unit": "seconds",
+    "higherIsBetter": true,
+    "text": "תרגיל סטטי אשר מחזק את כל השרירים שעוזרים לשמירה וייצוב עמוד השדרה – שרירי הליבה (שרירי הבטן הרוחביים והישרים) ושרירי הגב התחתון (זוקפי הגב).",
+    "technique": [
+     "מנח התחלתי: תשכב על הרצפה עם הפנים כלפי מטה – תניח את האמות על הקרקע כך שהמרפקים יהיו בקו ישר מתחת לכתפיים – תרים את הגוף מהרצפה, כך שהברכיים, הירכיים והגב התחתון בקו אחד, כשהבהונות נוגעות ברצפה.",
+     "ביצוע נכון: שמור על הגוף בקו ישר מהראש ועד לעקבים. אסור שהגב התחתון ישקע או שהאגן יתרומם גבוה מדי – כווץ את שרירי הבטן ושרירי הישבן כדי לשמור על יציבות.",
+     "וודא שהכתפיים מעל המרפקים וששניהם בקו ישר."
+    ],
+    "table": [
+     {
+      "minSeconds": 180,
+      "score": 100
+     },
+     {
+      "minSeconds": 165,
+      "score": 95
+     },
+     {
+      "minSeconds": 150,
+      "score": 90
+     },
+     {
+      "minSeconds": 135,
+      "score": 85
+     },
+     {
+      "minSeconds": 120,
+      "score": 80
+     },
+     {
+      "minSeconds": 105,
+      "score": 75
+     },
+     {
+      "minSeconds": 90,
+      "score": 70
+     },
+     {
+      "minSeconds": 75,
+      "score": 65
+     },
+     {
+      "minSeconds": 60,
+      "score": 60
+     },
+     {
+      "minSeconds": 45,
+      "score": 55
+     },
+     {
+      "minSeconds": 30,
+      "score": 50
+     },
+     {
+      "minSeconds": 20,
+      "score": 45
+     },
+     {
+      "minSeconds": 10,
+      "score": 40
+     }
+    ]
+   },
+   {
+    "id": "run300",
+    "he": "ריצת 300 מטר, 2X150 הלוך חזור",
+    "group": "סיבולת אנאירובית",
+    "weight": 10,
+    "unit": "seconds",
+    "higherIsBetter": false,
+    "text": "מטרתו של מבדק זה היא לבחון את היכולת של הגוף לשמר הספק של מאמץ, נוכח רמות גבוהות של חמצת ולבצע התרסה לחומציות הנוצרת בפעילות.",
+    "tables": {
+     "female": [
+      {
+       "maxSeconds": 50,
+       "score": 100
+      },
+      {
+       "maxSeconds": 52,
+       "score": 95
+      },
+      {
+       "maxSeconds": 54,
+       "score": 90
+      },
+      {
+       "maxSeconds": 56,
+       "score": 85
+      },
+      {
+       "maxSeconds": 59,
+       "score": 80
+      },
+      {
+       "maxSeconds": 62,
+       "score": 75
+      },
+      {
+       "maxSeconds": 64,
+       "score": 70
+      },
+      {
+       "maxSeconds": 66,
+       "score": 65
+      },
+      {
+       "maxSeconds": 69,
+       "score": 60
+      },
+      {
+       "maxSeconds": 72,
+       "score": 55
+      },
+      {
+       "maxSeconds": 74,
+       "score": 50
+      },
+      {
+       "maxSeconds": 76,
+       "score": 45
+      }
+     ],
+     "male": [
+      {
+       "maxSeconds": 43,
+       "score": 100
+      },
+      {
+       "maxSeconds": 44,
+       "score": 95
+      },
+      {
+       "maxSeconds": 46,
+       "score": 90
+      },
+      {
+       "maxSeconds": 48,
+       "score": 85
+      },
+      {
+       "maxSeconds": 50,
+       "score": 80
+      },
+      {
+       "maxSeconds": 53,
+       "score": 75
+      },
+      {
+       "maxSeconds": 56,
+       "score": 70
+      },
+      {
+       "maxSeconds": 59,
+       "score": 65
+      },
+      {
+       "maxSeconds": 61,
+       "score": 60
+      },
+      {
+       "maxSeconds": 64,
+       "score": 55
+      },
+      {
+       "maxSeconds": 67,
+       "score": 50
+      },
+      {
+       "maxSeconds": 70,
+       "score": 45
+      }
+     ]
+    }
+   },
+   {
+    "id": "run3k",
+    "he": "ריצת 3 ק\"מ",
+    "group": "סיבולת אירובית",
+    "weight": 30,
+    "unit": "seconds",
+    "higherIsBetter": false,
+    "text": "מטרתו של מבדק זה היא לבחון את היכולת של המערכות המרכזיות (מערכת הלב וכלי הדם, מערכת הנשימה ומערכת העצבים) לתמוך בפעילות מתמשכת שמפעילה את קבוצות שרירי השלד הגדולות.",
+    "protocol": [
+     "המטרה: מעבר 3 ק\"מ בזמן הקצר ביותר.",
+     "מסלול הריצה יהיה בשטח מישורי ככל האפשר, ובמתווה הלוך – חזור.",
+     "בכל מקרה – נקודת ההתחלה היא נקודת הסיום.",
+     "משך הביצוע יימדד בדקות ובשניות."
+    ],
+    "tables": {
+     "male": [
+      {
+       "maxSeconds": 657,
+       "score": 100
+      },
+      {
+       "maxSeconds": 663,
+       "score": 99
+      },
+      {
+       "maxSeconds": 669,
+       "score": 98
+      },
+      {
+       "maxSeconds": 675,
+       "score": 97
+      },
+      {
+       "maxSeconds": 680,
+       "score": 96
+      },
+      {
+       "maxSeconds": 685,
+       "score": 95
+      },
+      {
+       "maxSeconds": 690,
+       "score": 94
+      },
+      {
+       "maxSeconds": 695,
+       "score": 93
+      },
+      {
+       "maxSeconds": 700,
+       "score": 92
+      },
+      {
+       "maxSeconds": 705,
+       "score": 91
+      },
+      {
+       "maxSeconds": 710,
+       "score": 90
+      },
+      {
+       "maxSeconds": 715,
+       "score": 89
+      },
+      {
+       "maxSeconds": 720,
+       "score": 88
+      },
+      {
+       "maxSeconds": 725,
+       "score": 87
+      },
+      {
+       "maxSeconds": 730,
+       "score": 86
+      },
+      {
+       "maxSeconds": 735,
+       "score": 85
+      },
+      {
+       "maxSeconds": 740,
+       "score": 84
+      },
+      {
+       "maxSeconds": 745,
+       "score": 83
+      },
+      {
+       "maxSeconds": 750,
+       "score": 82
+      },
+      {
+       "maxSeconds": 755,
+       "score": 81
+      },
+      {
+       "maxSeconds": 760,
+       "score": 80
+      },
+      {
+       "maxSeconds": 765,
+       "score": 79
+      },
+      {
+       "maxSeconds": 770,
+       "score": 78
+      },
+      {
+       "maxSeconds": 775,
+       "score": 77
+      },
+      {
+       "maxSeconds": 780,
+       "score": 76
+      },
+      {
+       "maxSeconds": 785,
+       "score": 75
+      },
+      {
+       "maxSeconds": 790,
+       "score": 74
+      },
+      {
+       "maxSeconds": 795,
+       "score": 73
+      },
+      {
+       "maxSeconds": 800,
+       "score": 72
+      },
+      {
+       "maxSeconds": 805,
+       "score": 71
+      },
+      {
+       "maxSeconds": 811,
+       "score": 70
+      },
+      {
+       "maxSeconds": 817,
+       "score": 69
+      },
+      {
+       "maxSeconds": 822,
+       "score": 68
+      },
+      {
+       "maxSeconds": 828,
+       "score": 67
+      },
+      {
+       "maxSeconds": 834,
+       "score": 66
+      },
+      {
+       "maxSeconds": 840,
+       "score": 65
+      },
+      {
+       "maxSeconds": 845,
+       "score": 64
+      },
+      {
+       "maxSeconds": 851,
+       "score": 63
+      },
+      {
+       "maxSeconds": 857,
+       "score": 62
+      },
+      {
+       "maxSeconds": 863,
+       "score": 61
+      },
+      {
+       "maxSeconds": 869,
+       "score": 60
+      },
+      {
+       "maxSeconds": 879,
+       "score": 59
+      },
+      {
+       "maxSeconds": 889,
+       "score": 58
+      },
+      {
+       "maxSeconds": 899,
+       "score": 57
+      },
+      {
+       "maxSeconds": 909,
+       "score": 56
+      },
+      {
+       "maxSeconds": 920,
+       "score": 55
+      },
+      {
+       "maxSeconds": 926,
+       "score": 54
+      },
+      {
+       "maxSeconds": 932,
+       "score": 53
+      },
+      {
+       "maxSeconds": 939,
+       "score": 52
+      },
+      {
+       "maxSeconds": 945,
+       "score": 51
+      },
+      {
+       "maxSeconds": 952,
+       "score": 50
+      },
+      {
+       "maxSeconds": 959,
+       "score": 49
+      },
+      {
+       "maxSeconds": 965,
+       "score": 48
+      },
+      {
+       "maxSeconds": 971,
+       "score": 47
+      },
+      {
+       "maxSeconds": 978,
+       "score": 46
+      },
+      {
+       "maxSeconds": 984,
+       "score": 45
+      },
+      {
+       "maxSeconds": 991,
+       "score": 44
+      },
+      {
+       "maxSeconds": 997,
+       "score": 43
+      },
+      {
+       "maxSeconds": 1003,
+       "score": 42
+      },
+      {
+       "maxSeconds": 1010,
+       "score": 41
+      }
+     ],
+     "female": [
+      {
+       "maxSeconds": 758,
+       "score": 100
+      },
+      {
+       "maxSeconds": 767,
+       "score": 99
+      },
+      {
+       "maxSeconds": 777,
+       "score": 98
+      },
+      {
+       "maxSeconds": 786,
+       "score": 97
+      },
+      {
+       "maxSeconds": 795,
+       "score": 96
+      },
+      {
+       "maxSeconds": 804,
+       "score": 95
+      },
+      {
+       "maxSeconds": 813,
+       "score": 94
+      },
+      {
+       "maxSeconds": 822,
+       "score": 93
+      },
+      {
+       "maxSeconds": 831,
+       "score": 92
+      },
+      {
+       "maxSeconds": 840,
+       "score": 91
+      },
+      {
+       "maxSeconds": 849,
+       "score": 90
+      },
+      {
+       "maxSeconds": 858,
+       "score": 89
+      },
+      {
+       "maxSeconds": 867,
+       "score": 88
+      },
+      {
+       "maxSeconds": 877,
+       "score": 87
+      },
+      {
+       "maxSeconds": 886,
+       "score": 86
+      },
+      {
+       "maxSeconds": 895,
+       "score": 85
+      },
+      {
+       "maxSeconds": 904,
+       "score": 84
+      },
+      {
+       "maxSeconds": 913,
+       "score": 83
+      },
+      {
+       "maxSeconds": 922,
+       "score": 82
+      },
+      {
+       "maxSeconds": 931,
+       "score": 81
+      },
+      {
+       "maxSeconds": 940,
+       "score": 80
+      },
+      {
+       "maxSeconds": 949,
+       "score": 79
+      },
+      {
+       "maxSeconds": 958,
+       "score": 78
+      },
+      {
+       "maxSeconds": 968,
+       "score": 77
+      },
+      {
+       "maxSeconds": 977,
+       "score": 76
+      },
+      {
+       "maxSeconds": 986,
+       "score": 75
+      },
+      {
+       "maxSeconds": 995,
+       "score": 74
+      },
+      {
+       "maxSeconds": 1004,
+       "score": 73
+      },
+      {
+       "maxSeconds": 1013,
+       "score": 72
+      },
+      {
+       "maxSeconds": 1022,
+       "score": 71
+      },
+      {
+       "maxSeconds": 1031,
+       "score": 70
+      },
+      {
+       "maxSeconds": 1040,
+       "score": 69
+      },
+      {
+       "maxSeconds": 1049,
+       "score": 68
+      },
+      {
+       "maxSeconds": 1059,
+       "score": 67
+      },
+      {
+       "maxSeconds": 1068,
+       "score": 66
+      },
+      {
+       "maxSeconds": 1077,
+       "score": 65
+      },
+      {
+       "maxSeconds": 1086,
+       "score": 64
+      },
+      {
+       "maxSeconds": 1095,
+       "score": 63
+      },
+      {
+       "maxSeconds": 1104,
+       "score": 62
+      },
+      {
+       "maxSeconds": 1113,
+       "score": 61
+      },
+      {
+       "maxSeconds": 1122,
+       "score": 60
+      },
+      {
+       "maxSeconds": 1131,
+       "score": 59
+      },
+      {
+       "maxSeconds": 1140,
+       "score": 58
+      },
+      {
+       "maxSeconds": 1149,
+       "score": 57
+      },
+      {
+       "maxSeconds": 1159,
+       "score": 56
+      },
+      {
+       "maxSeconds": 1168,
+       "score": 55
+      },
+      {
+       "maxSeconds": 1177,
+       "score": 54
+      },
+      {
+       "maxSeconds": 1186,
+       "score": 53
+      },
+      {
+       "maxSeconds": 1195,
+       "score": 52
+      },
+      {
+       "maxSeconds": 1204,
+       "score": 51
+      },
+      {
+       "maxSeconds": 1213,
+       "score": 50
+      },
+      {
+       "maxSeconds": 1222,
+       "score": 49
+      },
+      {
+       "maxSeconds": 1231,
+       "score": 48
+      },
+      {
+       "maxSeconds": 1240,
+       "score": 47
+      },
+      {
+       "maxSeconds": 1250,
+       "score": 46
+      },
+      {
+       "maxSeconds": 1259,
+       "score": 45
+      },
+      {
+       "maxSeconds": 1268,
+       "score": 44
+      },
+      {
+       "maxSeconds": 1277,
+       "score": 43
+      },
+      {
+       "maxSeconds": 1286,
+       "score": 42
+      },
+      {
+       "maxSeconds": 1295,
+       "score": 41
+      }
+     ]
+    },
+    "tableNote": "טבלת 3 ק\"מ הראשונה בחוברת אינה מסומנת; הטבלה השנייה מסומנת \"בנות\". הראשונה נשמרת כאן כ־male."
+   }
+  ]
+ },
+ "safety": {
+  "winter": {
+   "source": "winter",
+   "title": "דגשי בטיחות חורף – אימוני הכנ\"צ",
+   "sections": [
+    {
+     "he": "לבוש מתאים",
+     "points": [
+      "חשוב להקפיד על לבוש בשכבות, כך שניתן יהיה להוריד שכבות במידת הצורך כדי למנוע התחממות יתר.",
+      "יש להעדיף בגדים מנדפי זיעה המאפשרים נידוף לחות מהגוף ולא בגדים מכותנה שסופגים את הזיעה וגורמים להתקררות.",
+      "כובע וכפפות מומלצים במזג אוויר קר מאוד, כדי למנוע איבוד חום דרך הראש והידיים."
+     ]
+    },
+    {
+     "he": "חימום ממושך",
+     "points": [
+      "בשל הקור, יש להאריך את שלב החימום לפני תחילת האימון. השרירים והמפרקים נוטים להיות נוקשים יותר בטמפרטורות נמוכות, ולכן חימום טוב מפחית את הסיכון לפציעות.",
+      "ניתן לשלב תרגילי דינמיים/אתלטיקה לחימום השרירים (לדוגמה: קפיצות קלות, ריצה קלה במקום, צעדי רדיפה בשילוב סיבובי ידיים)."
+     ]
+    },
+    {
+     "he": "תנאי שטח רטובים וחלקלקים",
+     "points": [
+      "יש לשים לב לתנאי הקרקע, במיוחד בגשם או בשלג, ולהימנע מאימון במשטחים חלקים שעלולים להוביל להחלקות ונפילות.",
+      "חשוב לשים דגש על נעליים בעלות סוליה מונעת החלקה שמתאימה לאימון בתנאים רטובים."
+     ]
+    },
+    {
+     "he": "הקפדה על שתייה",
+     "points": [
+      "גם בחורף, חשוב לשתות מים במהלך ואחרי האימון. אף על פי שההזעה פחות מורגשת, הגוף עדיין מאבד נוזלים, וחשוב למנוע התייבשות."
+     ]
+    },
+    {
+     "he": "מניעת איבוד חום אחרי אימון",
+     "points": [
+      "לאחר סיום האימון, יש להחליף לבגדים יבשים במהירות האפשרית כדי למנוע איבוד חום וקור גוף פתאומי.",
+      "מומלץ להצטייד במגבת ובגדים חמים להחלפה, במיוחד אחרי אימון אינטנסיבי."
+     ]
+    },
+    {
+     "he": "התאמת תרגילים ותוכנית האימון",
+     "points": [
+      "אם מזג האוויר סוער מאוד, יש לצמצם תרגילים שדורשים שיווי משקל גבוה או שינויי כיוון חדים, ריצה מהירה כדי להימנע מפציעות.",
+      "ניתן וכדאי לשלב באימון דגש רב יותר על אלמנטים של כוח דינאמיים וסטטיים המתאימים לתנאי מזג האוויר, כגון תרגילים (planks, סקוואטים, שכיבות שמיכה) שבטוחים יותר במזג אוויר בעייתי."
+     ]
+    },
+    {
+     "he": "מנוחה מספקת והקשבה לגוף",
+     "points": [
+      "חשוב לעודד את החניכים להקשיב לגוף שלהם. אם מישהו מרגיש קור חזק, כאב, עייפות מוגזמת או סימנים של היפותרמיה (כגון רעד בלתי נשלט), יש לעצור ולתת מנוחה, ולוודא שאף אחד לא מסכן את עצמו."
+     ]
+    },
+    {
+     "he": "סיור שטח",
+     "points": [
+      "מומלץ לבצע סיור שטח ולמצוא מחסה בו ניתן לקיים את האימון במידה ומזג האוויר אינו מאפשר."
+     ]
+    }
+   ],
+   "seeAlso": "limited_space"
+  }
+ },
+ "rules": {
+  "zoharBall": {
+   "source": "zohar",
+   "title": "חוקת כדור זוהר",
+   "rules": [
+    {
+     "n": 1,
+     "text": "התנועה במגרש במסירות בין חברי הקבוצה, אסור ללכת עם הכדור, אסור לכדרר את הכדור"
+    },
+    {
+     "n": 2,
+     "text": "כיבוש השער יכול להיעשות בהנחתה של הכדור לשער, חבטה(מכה) בכדור לשער, איגרוף הכדור לשער (נקודה אחת) נגיחה של הכדור (שתי נקודות), ברכיה של הכדור (שתי נקודות) כל שער שנכבש ע\"י בת בקבוצות משחק מעורבות (שתי נקודות). אסור להבקיע בשתי ידיים, אסור לזרוק את הכדור לשער (אופן כזה של ניסיון הבקעה מצד הקבוצה התוקפת, לא יזכה את הקבוצה התוקפת בשער ובניקוד, השוער יתחיל את ההתקפה משערו לכיוון הקבוצה המגנה"
+    },
+    {
+     "n": 3,
+     "text": "אסור להכין לעצמך להבקעת השער. הבקעת השער יכולה להיעשות ע\"י הכנת מסירה ע\"י חבר דרך הקרקע או באוויר, או כתוצאה מפגיעת הכדור בקורה של השער או במשקוף של השער"
+    },
+    {
+     "n": 4,
+     "text": "שער עצמי בכל אופן וצורה נחשב לנקודה אחת."
+    },
+    {
+     "n": 5,
+     "text": "כדור שנגע בשחקן ופגע בקרקע או התרחק בצעד אחד באוויר מהשחקן בו נגע, אסור במגע נוסף ע\"י אותו שחקן."
+    },
+    {
+     "n": 6,
+     "text": "אסור לשחקן שהכדור פגע בו ונפל לקרקע או התרחק ממנו בצעד לבצע חסימה על הכדור ולמנוע מבין קבוצה שנייה(היריבה) מגע בכדור"
+    },
+    {
+     "n": 7,
+     "text": "אסור לכדור לפגוע בשוק ו /או בקרסול של שחקן"
+    },
+    {
+     "n": 8,
+     "text": "אסור לשחקן התקפה לקפוץ עם הכדור בידיו ולנחות אתו בידיו."
+    },
+    {
+     "n": 9,
+     "text": "אסור לשחקן לאחוז את הכדור אם שומרים עליו יותר משלוש שניות ואם לא שומרים עליו חמש שניות. לשוער מותר לאחוז שלוש שניות בלבד ולמסור את הכדור לשחקן מקבוצתו מחוץ לתחום רחבתו"
+    },
+    {
+     "n": 10,
+     "text": "לשוער יש חוקים מקלים, מותר לו לעצור את הכדור בכל אחד מאברי גופו, להדוף את הכדור מעבר לקו הרוחב של שערו, ללכת עם הכדור ברחבתו ולנגוע בכדור כמה פעמים שיפוץ בתוך רחבתו. לשוער יש שלוש שניות להוציא את הכדור לבן קבוצתו מחוץ לתחום רחבתו. שוער שיוצא מתחום רחבתו כל חוקי שחקן ההתקפה, או ההגנה חלים עליו"
+    },
+    {
+     "n": 11,
+     "text": "אסור לבצע עבירות כנגד גופו של שחקן ולסכן את בריאותו הפיסית"
+    },
+    {
+     "n": 12,
+     "text": "אסור לגדף /לקלל שחקן"
+    },
+    {
+     "n": 13,
+     "text": "ניתן להוציא את הכדור מידיו של שחקן התקפה במכה על הכדור בלבד, אם הכדור עף יותר מצעד לכל כיוון לאחר ניסיון המכה בכדור או נפל לקרקע, לא ניתן לנגוע בכדור פעם שניה ברצף ע\"י שחקן ההגנה, שניסה להשתלט על הכדור מידי שחקן ההתקפה."
+    },
+    {
+     "n": 14,
+     "text": "לאחר ששחקן הוציא את הכדור מתחום המגרש יועבר הכדור לקבוצה היריבה בסמוך לנקודת הוצאת הכדור מתחומי המגרש"
+    },
+    {
+     "n": 15,
+     "text": "מותר לשחקנים לבצע חילוף כאשר קבוצתם בהתקפה בלבד ומאמצע המגרש. קודם יצא שחקן מהקבוצה שרוצה חילוף ואז יכנס השחקן החדש למשחק"
+    },
+    {
+     "n": 16,
+     "text": "אם קבוצה תכניס יותר מחמישה שחקנים על המגרש יישרק כנגדה פנדל"
+    },
+    {
+     "n": 17,
+     "text": "פנדל יעשה כחמישה מטר מהשער, כאשר שחקן אחד מרים את הכדור והשחקן השני מקבוצתו חובט את הכדור לשער"
+    },
+    {
+     "n": 18,
+     "text": "פנדל יעשה כחמישה מטרים משער ההגנה, ללא שחקני הגנה שעומדים בין החובט לשער, להוציא את השוער. בפנדל, אחד משחקני ההתקפה מרים את הכדור לחובט והחובט מכה את הכדור לשער. ברגע שנגע החובט בכדור מותר לכל השחקנים להתייצב בתוך רחבת השער"
+    },
+    {
+     "n": 19,
+     "text": "שער נחשב רק אם הכדור עבר במלוא היקפו את קו השער"
+    },
+    {
+     "n": 20,
+     "text": "עבירה בלתי ספורטיבית תגורר אחריה פנדל. עבירה בלתי ספורטיבית היא כל עבירה שמסכנת את גופו של שחקן ההתקפה, או כל עבירה שמנע שער ודאי."
+    },
+    {
+     "n": 21,
+     "text": "אחרי ביצוע הפנדל המשחק ימשך"
+    },
+    {
+     "n": 22,
+     "text": "כדור ביניים יהיה בין כל חברי שתי הקבוצות"
+    },
+    {
+     "n": 23,
+     "text": "אורך מחצית ברוטו 10 דקות. אין הפסקת מחצית והקבוצות תחלפנה את מקומן למחצית השנייה"
+    },
+    {
+     "n": 24,
+     "text": "הקבוצה המנצחת היא הקבוצה שצברה מספר נקודות הרב ביותר בתום המשחק"
+    },
+    {
+     "n": 25,
+     "text": "הקבוצות נדרשות להגיע עשר דקות לפני מועד משחקן עם שתי חולצות בצבעים שונים, חולצה אחת בצבע שחור וחולצה שניה בצבע לבן"
+    }
+   ],
+   "moreInfo": "כדור זוהר ביוטיוב ובחוקת כדור זוהר באתר sadezohar.co.il",
+   "halfMinutes": 10,
+   "maxPlayersOnCourt": 5
+  }
+ }
+}
