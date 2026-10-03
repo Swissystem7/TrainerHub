@@ -220,11 +220,14 @@
     var exercises = flattenWorkout(workout);
     var analyses = exercises.map(analyzeExercise);
     var volume = {};
-    analyses.forEach(function (a) {
+    analyses.forEach(function (a, i) {
       var m = a.primary || 'core';
-      volume[m] = (volume[m] || 0) + 1;
+      var setCount = Number(exercises[i] && exercises[i].sets) || 1;
+      volume[m] = (volume[m] || 0) + setCount;
     });
-    var total = analyses.length || 1;
+    var total = 0;
+    Object.keys(volume).forEach(function (k) { total += volume[k]; });
+    if (!total) total = 1;
     var volumePct = {};
     Object.keys(volume).forEach(function (k) {
       volumePct[k] = Math.round((100 * volume[k]) / total);
