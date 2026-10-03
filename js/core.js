@@ -575,6 +575,7 @@
             if (ex.reps != null) row.r = ex.reps;
             if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
             if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
+            if (ex.notes != null && ex.notes !== '') row.no = ex.notes;
             return row;
           })
         };
@@ -602,7 +603,7 @@
               reps: ex.r != null ? ex.r : null,
               duration_seconds: ex.ds != null ? ex.ds : null,
               rest_seconds: ex.rs != null ? ex.rs : null,
-              notes: null
+              notes: ex.no != null && ex.no !== '' ? ex.no : null
             };
           })
         };
