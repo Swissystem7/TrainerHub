@@ -253,9 +253,550 @@
       intensity: intensity,
       stimulus: stimulus,
       flags: flags,
+      phaseDurations: checkPhaseDurations(workout),
+      beginnerEquipment: checkBeginnerEquipment(workout),
+      intensityArc: validateIntensityArc(workout),
       primary: primarySet,
       secondary: secondarySet
     };
+  }
+
+  /* ── Session-structure rule: warm-up and cool-down minutes ─────────────────
+     This is a deterministic check of a written rule, not a medical judgement.
+     It reports "this session does not satisfy rule X"; it never reports that a
+     session is safe, unsafe, approved, or medically suitable.
+
+     WHERE THE NUMBERS COME FROM, exactly, because a number behind a
+     safety-adjacent rule must not be mistaken for a standard:
+
+       5 and 10 minutes. Attributed to the session structure described in ACSM's
+       Guidelines for Exercise Testing and Prescription (warm-up, conditioning,
+       cool-down). NEITHER the author of this module NOR the independent reviewer
+       who checked it read that text at first hand: on 2026-09-11 every reachable
+       copy was a flashcard site, a document someone had uploaded, or the
+       publisher's product page. So this is an unverified secondhand citation and
+       is labelled as one everywhere it travels.
+
+       What that secondhand wording says is a FLOOR — "at least 5–10 min" — not a
+       window, and it states NO combined figure for the two phases. This module
+       therefore keeps three different things apart:
+         - below 5 minutes   -> the floor in the wording we read is not met
+                                                              (…-below-minimum)
+         - above 10 minutes  -> only above the top of the figure we read, which
+                                forbids nothing               (…-above-reference)
+         - combined 10–20    -> OURS. Arithmetic on the two per-phase figures.
+                                The source states no combined number at all.
+                                                    (combined-outside-reference)
+
+       60 minutes (appliesFromMinutes) is OURS as well — it comes from the round-2
+       backlog, not from any source.
+
+     `source` below is developer-facing English and carries the guideline title.
+     No page renders it, and test/phases.test.js keeps it that way; what a trainer
+     can read is SOURCE_NOTE_HE and the Hebrew findings, which name no guideline
+     and no organisation. */
+
+  var RULE_SOURCE_SESSION_STRUCTURE =
+    "Attributed to ACSM's Guidelines for Exercise Testing and Prescription — " +
+    'exercise session structure: warm-up "at least 5-10 min", conditioning, ' +
+    'cool-down "at least 5-10 min". UNVERIFIED SECONDHAND CITATION: read ' +
+    '2026-09-11 from flashcard sites, uploaded documents and a publisher product ' +
+    'page; the primary text was never seen by the author or by the reviewer. The ' +
+    'wording read states a FLOOR, not a window, and states NO combined figure. ' +
+    'appliesFromMinutes (60) and the combined 10-20 window are TrainerHub\'s own ' +
+    'numbers, not the source\'s. Developer-facing field: not for display.';
+
+  var RULE_NOTE_HE =
+    'בדיקת מבנה מול כלל כתוב בלבד. אין כאן אישור מקצועי, אין ייעוץ רפואי, ' +
+    'וההחלטה על התאמת האימון למתאמן נשארת אצל המאמן.';
+
+  /* The Hebrew that may reach a trainer's screen. It names no organisation and no
+     publication, and it says which numbers are ours. */
+  var SOURCE_NOTE_HE =
+    'המספרים 5 ו־10 דקות נקראו מסיכומים משניים של הנחיה שפורסמה, ולא מהמקור עצמו — ' +
+    'כל עותק שהגענו אליו היה אתר כרטיסיות, קובץ שמישהו העלה, או דף מוצר של המוציא לאור. ' +
+    'לכן זה ציטוט ממקור שני שלא אימתנו. הנוסח שקראנו מנסח רצפה («לפחות 5–10 דקות»), ' +
+    'לא חלון סגור, ואינו נוקב במספר משותף לחימום ולשחרור. הטווח המשותף 10–20 דקות ' +
+    'והסף של 60 דקות הם המספרים שלנו, לא של המקור.';
+
+  var PHASE_DURATION_RULE = {
+    id: 'TH-PHASE-DURATION',
+    minPhaseMinutes: 5,
+    referenceMaxPhaseMinutes: 10,
+    minCombinedMinutes: 10,
+    referenceMaxCombinedMinutes: 20,
+    appliesFromMinutes: 60,
+    sourceVerified: false,          // the primary text was never read at first hand
+    ownNumbers: ['minCombinedMinutes', 'referenceMaxCombinedMinutes', 'appliesFromMinutes'],
+    source: RULE_SOURCE_SESSION_STRUCTURE,   // developer-facing English, never rendered
+    sourceNoteHe: SOURCE_NOTE_HE
+  };
+
+  function findPhase(workout, name) {
+    var phases = (workout && workout.phases) || [];
+    for (var i = 0; i < phases.length; i++) {
+      if (phases[i] && phases[i].name === name) return phases[i];
+    }
+    return null;
+  }
+
+  function phaseMinutes(phase) {
+    if (!phase) return 0;
+    var n = Number(phase.duration_minutes);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+
+  function sessionMinutes(workout) {
+    var declared = Number(workout && workout.duration_minutes);
+    if (isFinite(declared) && declared > 0) return declared;
+    var total = 0;
+    ((workout && workout.phases) || []).forEach(function (ph) {
+      total += phaseMinutes(ph);
+    });
+    return total;
+  }
+
+  /* Pure. Returns the measured minutes plus one finding per part of the rule
+     the session does not satisfy. An empty findings list means "nothing in this
+     rule was violated", never "this session is fine". */
+  function checkPhaseDurations(workout) {
+    var minutes = sessionMinutes(workout);
+    var warm = findPhase(workout, 'Warm-up');
+    var cool = findPhase(workout, 'Cool-down');
+    var warmMinutes = phaseMinutes(warm);
+    var coolMinutes = phaseMinutes(cool);
+    var result = {
+      rule: PHASE_DURATION_RULE.id,
+      source: PHASE_DURATION_RULE.source,
+      sourceVerified: false,
+      sourceNote: SOURCE_NOTE_HE,
+      note: RULE_NOTE_HE,
+      applies: minutes >= PHASE_DURATION_RULE.appliesFromMinutes,
+      sessionMinutes: minutes,
+      warmupMinutes: warmMinutes,
+      cooldownMinutes: coolMinutes,
+      combinedMinutes: warmMinutes + coolMinutes,
+      findings: []
+    };
+    if (!result.applies) return result;
+
+    function add(code, he) {
+      result.findings.push({ code: code, rule: PHASE_DURATION_RULE.id, he: he });
+    }
+
+    if (!warm) {
+      add('warmup-missing', 'אין שלב חימום בתוכנית. הכלל שנבדק כאן מבקש חימום של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה. סף ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' הדקות הוא מספר שלנו.');
+    } else if (warmMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
+      add('warmup-below-minimum', 'החימום ' + warmMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות — מספר שקראנו בסיכום ממקור שני ולא אימתנו.');
+    } else if (warmMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
+      add('warmup-above-reference', 'החימום ' + warmMinutes + ' דקות, מעל ' +
+        PHASE_DURATION_RULE.referenceMaxPhaseMinutes + ' דקות. ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
+        ' דקות הן רצפה בנוסח שקראנו («לפחות»), לא חלון סגור, ואין שם איסור על יותר מכך.');
+    }
+
+    if (!cool) {
+      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל שנבדק כאן מבקש שחרור של ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות באימון של ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' דקות ומעלה. סף ' +
+        PHASE_DURATION_RULE.appliesFromMinutes + ' הדקות הוא מספר שלנו.');
+    } else if (coolMinutes < PHASE_DURATION_RULE.minPhaseMinutes) {
+      add('cooldown-below-minimum', 'השחרור ' + coolMinutes + ' דקות. הכלל שנבדק כאן מבקש ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + ' דקות לפחות — מספר שקראנו בסיכום ממקור שני ולא אימתנו.');
+    } else if (coolMinutes > PHASE_DURATION_RULE.referenceMaxPhaseMinutes) {
+      add('cooldown-above-reference', 'השחרור ' + coolMinutes + ' דקות, מעל ' +
+        PHASE_DURATION_RULE.referenceMaxPhaseMinutes + ' דקות. ' +
+        PHASE_DURATION_RULE.minPhaseMinutes + '–' + PHASE_DURATION_RULE.referenceMaxPhaseMinutes +
+        ' דקות הן רצפה בנוסח שקראנו («לפחות»), לא חלון סגור, ואין שם איסור על יותר מכך.');
+    }
+
+    if (result.combinedMinutes < PHASE_DURATION_RULE.minCombinedMinutes ||
+        result.combinedMinutes > PHASE_DURATION_RULE.referenceMaxCombinedMinutes) {
+      add('combined-outside-reference', 'חימום ושחרור יחד ' + result.combinedMinutes + ' דקות, מחוץ לטווח ' +
+        PHASE_DURATION_RULE.minCombinedMinutes + '–' + PHASE_DURATION_RULE.referenceMaxCombinedMinutes +
+        ' דקות. הטווח המשותף הזה שלנו — חיבור של שני המספרים לכל שלב; אין במקור מספר משותף.');
+    }
+    return result;
+  }
+
+  /* ── List rule: equipment that TrainerHub keeps out of a beginner / kids session ──
+     Deterministic list membership, nothing else. A finding says "this exercise uses
+     equipment that is not on the conservative list for a beginner or kids session".
+     It never says the exercise is dangerous, unsuitable, or forbidden for a person,
+     and it cites no guideline, because no guideline was read for it.
+
+     The list is TrainerHub's own editorial choice, drawn from the repository's own
+     equipment enumeration in js/infer.js (EQ_LABELS). It holds the three tags that
+     put an external load or a fixed movement path on the trainee:
+       bar     (מתח)    — hanging / rowing from a fixed bar
+       barbell (מוט)    — free external load
+       machine (מכונה)  — fixed movement path with a stack
+     Checked against js/catalog.json on 2026-09-11: exactly one of the 78 entries
+     carries any of them (bodyweight_row / מתח אוסטרלי, equipment ["bar"]); barbell
+     and machine are declared in the enumeration but unused by the catalog.
+
+     The round-2 research file proposed "ladder, bar, certain plyometric drills".
+     ladder and stairs are NOT on this list: in this catalog ladder is
+     "סולם רגליים" (agility-ladder footwork, level beginner) and stairs is
+     "מדרגות" (step-up, level beginner) — ordinary kids' footwork drills, and
+     flagging them would make the guardrail noise. Plyometrics are a movement
+     pattern, not an equipment tag, so they are out of scope for this rule. */
+
+  var BEGINNER_EQUIPMENT_RULE = {
+    id: 'TH-BEGINNER-EQUIPMENT',
+    blocked: ['bar', 'barbell', 'machine'],
+    source: "TrainerHub's own conservative list, drawn from the equipment " +
+      'enumeration in js/infer.js. No published guideline was read for it and ' +
+      'none is claimed.'
+  };
+
+  function equipmentLabel(id) {
+    return (Infer.EQ_LABELS && Infer.EQ_LABELS[id]) || id;
+  }
+
+  function audienceOf(workout, opts) {
+    if (opts && opts.audience) return String(opts.audience);
+    if (workout && workout.audience) return String(workout.audience);
+    var tags = (workout && workout.tags) || [];
+    return tags.indexOf('kids') !== -1 ? 'kids' : '';
+  }
+
+  function levelOf(workout, opts) {
+    if (opts && opts.level) return String(opts.level);
+    if (workout && workout.level) return String(workout.level);
+    return '';
+  }
+
+  /* An exercise is checked against the list through the equipment it declares, or
+     failing that through the equipment its Hebrew name implies (js/infer.js reads
+     מוט, מתח, מכונה and the rest). An exercise that declares no equipment and whose
+     name the catalogue does not know leaves the rule with nothing to look at — a
+     free-text "Barbell back squat" used to pass in silence. It now returns an
+     `equipment-unknown` finding that says the rule could not run on it. With no
+     catalogue loaded at all there is nothing to recognise a name against, so the
+     rule stays quiet rather than flagging every exercise. */
+  function declaresEquipment(ex) {
+    return !!(ex && Array.isArray(ex.equipment) && ex.equipment.length);
+  }
+
+  function knownToCatalog(ex) {
+    if (!root.TH || typeof root.TH.findExercise !== 'function') return true;
+    return !!root.TH.findExercise(ex);
+  }
+
+  /* Pure. Applies only when the session is marked beginner or kids; otherwise it
+     returns applies:false and an empty findings list, which means "this rule was
+     not run", not "this session is fine". */
+  function checkBeginnerEquipment(workout, opts) {
+    var level = levelOf(workout, opts);
+    var audience = audienceOf(workout, opts);
+    var result = {
+      rule: BEGINNER_EQUIPMENT_RULE.id,
+      source: BEGINNER_EQUIPMENT_RULE.source,
+      note: RULE_NOTE_HE,
+      applies: level === 'beginner' || audience === 'kids',
+      level: level,
+      audience: audience,
+      blocked: BEGINNER_EQUIPMENT_RULE.blocked.slice(),
+      findings: []
+    };
+    if (!result.applies) return result;
+    var exercises = flattenWorkout(workout);
+    for (var i = 0; i < exercises.length; i++) {
+      var ex = exercises[i] || {};
+      var a = analyzeExercise(ex);
+      var hits = (a.equipment || []).filter(function (eq) {
+        return BEGINNER_EQUIPMENT_RULE.blocked.indexOf(eq) !== -1;
+      });
+      if (hits.length) {
+        result.findings.push({
+          code: 'equipment-off-list',
+          rule: BEGINNER_EQUIPMENT_RULE.id,
+          id: a.id,
+          he: 'התרגיל «' + (a.he || '') + '» משתמש ב' + hits.map(equipmentLabel).join(', ') +
+            ' — ציוד שאינו ברשימה השמרנית שלנו לאימון שסומן מתחילים או ילדים.',
+          equipment: hits
+        });
+        continue;
+      }
+      if (!declaresEquipment(ex) && !knownToCatalog(ex)) {
+        result.findings.push({
+          code: 'equipment-unknown',
+          rule: BEGINNER_EQUIPMENT_RULE.id,
+          id: a.id,
+          he: 'לא זיהינו את «' + (a.he || '') + '» במאגר ולא צורפה לו רשימת ציוד, ' +
+            'ולכן הכלל הזה לא יכול לדעת באיזה ציוד הוא משתמש. הבדיקה מול הרשימה ' +
+            'השמרנית לא רצה על התרגיל הזה.',
+          equipment: []
+        });
+      }
+    }
+    return result;
+  }
+
+  /* ── Shape rule: the intensity arc of a session ───────────────────────────────
+     Warm-up first, conditioning in the middle, cool-down last, with the simple
+     intensity scale below rising to one peak and falling from it. This is a shape
+     check on a plan, not a judgement about a person: a finding says which part of
+     the shape the plan does not have.
+
+     The scale is TrainerHub's own, defined here and nowhere else. Per exercise it
+     is a movement-pattern number plus a level step, both read from the existing
+     js/infer.js inference:
+         core 2 · hinge 3 · squat 3 · push 3 · pull 3 · plyo 4
+       + beginner 0 · intermediate 1 · advanced 2
+     so one exercise scores 2..6. A phase scores the highest of its exercises, and
+     an empty phase scores 0. Nothing here is claimed to be a published scale, and
+     no guideline is cited for it.
+
+     Two deliberate choices:
+       - when the phase ORDER is wrong there is no arc to measure, so the order
+         findings are returned on their own and the rise/fall checks are skipped;
+       - a Cool-down phase that exists but holds no exercises scores 0 and passes
+         the fall check. Whether it is long enough is TH-PHASE-DURATION's business,
+         not this rule's. */
+
+  var INTENSITY_SCALE = {
+    pattern: { core: 2, hinge: 3, squat: 3, push: 3, pull: 3, plyo: 4 },
+    level: { beginner: 0, intermediate: 1, advanced: 2 },
+    defaultPattern: 2,
+    defaultLevel: 0
+  };
+
+  var INTENSITY_ARC_RULE = {
+    id: 'TH-INTENSITY-ARC',
+    order: ['Warm-up', 'Main', 'Cool-down'],
+    source: "TrainerHub's own shape rule over its own intensity scale. No " +
+      'published guideline was read for it and none is claimed.'
+  };
+
+  function exerciseIntensity(ex) {
+    var a = analyzeExercise(ex);
+    var base = INTENSITY_SCALE.pattern[a.pattern];
+    if (base == null) base = INTENSITY_SCALE.defaultPattern;
+    var step = INTENSITY_SCALE.level[a.difficulty];
+    if (step == null) step = INTENSITY_SCALE.defaultLevel;
+    return base + step;
+  }
+
+  function phaseIntensity(phase) {
+    var list = (phase && phase.exercises) || [];
+    var max = 0;
+    for (var i = 0; i < list.length; i++) {
+      var v = exerciseIntensity(list[i]);
+      if (v > max) max = v;
+    }
+    return max;
+  }
+
+  /* Pure. Takes the phases array (or a workout that holds one) and returns
+     { ok, intensities, peakIndex, findings }. */
+  function validateIntensityArc(phases) {
+    if (phases && !Array.isArray(phases) && Array.isArray(phases.phases)) {
+      phases = phases.phases;
+    }
+    var result = {
+      rule: INTENSITY_ARC_RULE.id,
+      source: INTENSITY_ARC_RULE.source,
+      note: RULE_NOTE_HE,
+      ok: false,
+      intensities: [],
+      peakIndex: -1,
+      findings: []
+    };
+    function add(code, he) {
+      result.findings.push({ code: code, rule: INTENSITY_ARC_RULE.id, he: he });
+    }
+    if (!Array.isArray(phases) || !phases.length) {
+      add('phases-missing', 'אין שלבים בתוכנית, ואי אפשר לבדוק את קשת העצימות.');
+      return result;
+    }
+
+    var names = phases.map(function (ph) { return (ph && ph.name) || ''; });
+    var coolIndex = names.lastIndexOf('Cool-down');
+    if (names[0] !== 'Warm-up') {
+      add('warmup-not-first', 'השלב הראשון בתוכנית הוא «' + (names[0] || '') +
+        '» ולא חימום. הכלל הזה מצפה לחימום ראשון.');
+    }
+    if (coolIndex === -1) {
+      add('cooldown-missing', 'אין שלב שחרור בתוכנית. הכלל הזה מצפה לשחרור בסוף.');
+    } else if (coolIndex !== phases.length - 1) {
+      add('cooldown-not-last', 'שלב השחרור אינו האחרון בתוכנית. הכלל הזה מצפה לשחרור בסוף.');
+    }
+    var innerCount = (coolIndex === -1 ? phases.length : coolIndex) - 1;
+    if (innerCount < 1) {
+      add('conditioning-missing', 'אין שלב עבודה בין החימום לשחרור. הכלל הזה מצפה לשלב עבודה אחד לפחות.');
+    }
+    result.intensities = phases.map(phaseIntensity);
+    if (result.findings.length) return result;   // no arc to measure while the order is wrong
+
+    var peak = 0;
+    for (var i = 1; i < result.intensities.length; i++) {
+      if (result.intensities[i] > result.intensities[peak]) peak = i;
+    }
+    result.peakIndex = peak;
+    var warm = result.intensities[0];
+    var cool = result.intensities[result.intensities.length - 1];
+    var top = result.intensities[peak];
+
+    for (var r = 1; r <= peak; r++) {
+      if (result.intensities[r] < result.intensities[r - 1]) {
+        add('not-monotonic-rise', 'העצימות יורדת בשלב «' + names[r] + '» לפני שיא האימון. ' +
+          'הכלל הזה מצפה לעלייה רציפה עד השיא.');
+        break;
+      }
+    }
+    for (var f = peak + 1; f < result.intensities.length; f++) {
+      if (result.intensities[f] > result.intensities[f - 1]) {
+        add('not-monotonic-fall', 'העצימות עולה בשלב «' + names[f] + '» אחרי שיא האימון. ' +
+          'הכלל הזה מצפה לירידה רציפה מהשיא.');
+        break;
+      }
+    }
+    if (top <= warm) {
+      add('no-rise', 'העצימות לא עולה מעל שלב החימום (' + warm + ' מול שיא ' + top +
+        ' בסולם הפנימי). הכלל הזה מצפה לעלייה.');
+    }
+    if (cool >= top) {
+      add('no-fall', 'העצימות בשחרור (' + cool + ') אינה נמוכה משיא האימון (' + top +
+        ') בסולם הפנימי. הכלל הזה מצפה לירידה.');
+    }
+    result.ok = result.findings.length === 0;
+    return result;
+  }
+
+  /* ── Taxonomy rule: the catalogue draws from the repository's own enumerations ──
+     js/analyzer.js and js/session-builder.js both branch on muscles, equipment and
+     level, so a typo in js/catalog.json quietly changes which exercises a request
+     can reach. This checker is the guard. The three constrained sets are NOT new:
+     they are the key sets of MUSCLE_LABELS, EQ_LABELS and LEVEL_LABELS in
+     js/infer.js, which is where the rest of the app already reads its vocabulary.
+     Every problem carries the entry id, so a caller can list what to clean rather
+     than only learning that something is wrong. */
+
+  var TAXONOMY_RULE = {
+    id: 'TH-CATALOG-TAXONOMY',
+    source: 'The key sets of MUSCLE_LABELS, EQ_LABELS and LEVEL_LABELS in js/infer.js.'
+  };
+
+  function enumKeys(map) {
+    return map ? Object.keys(map) : [];
+  }
+
+  function taxonomyVocabulary() {
+    return {
+      muscles: enumKeys(Infer.MUSCLE_LABELS),
+      equipment: enumKeys(Infer.EQ_LABELS),
+      levels: enumKeys(Infer.LEVEL_LABELS)
+    };
+  }
+
+  /* Pure. Takes the parsed catalogue object and returns
+     { rule, ok, total, vocabulary, problems } where each problem is
+     { id, field, value, he }. An empty problems list means every entry drew from
+     the enumerations, nothing more. */
+  function checkCatalogTaxonomy(catalog) {
+    var vocabulary = taxonomyVocabulary();
+    var result = {
+      rule: TAXONOMY_RULE.id,
+      source: TAXONOMY_RULE.source,
+      ok: true,
+      total: 0,
+      vocabulary: vocabulary,
+      problems: []
+    };
+    if (!catalog || typeof catalog !== 'object') {
+      result.ok = false;
+      result.problems.push({ id: null, field: 'catalog', value: null, he: 'המאגר אינו אובייקט רשומות.' });
+      return result;
+    }
+    var ids = Object.keys(catalog);
+    result.total = ids.length;
+
+    function problem(id, field, value, he) {
+      result.problems.push({ id: id, field: field, value: value, he: he });
+    }
+
+    ids.forEach(function (id) {
+      var entry = catalog[id];
+      if (!entry || typeof entry !== 'object') {
+        problem(id, 'entry', entry === undefined ? null : entry, 'הרשומה «' + id + '» אינה אובייקט.');
+        return;
+      }
+      if (entry.id !== id) {
+        problem(id, 'id', entry.id === undefined ? null : entry.id,
+          'הרשומה «' + id + '» מצהירה על מזהה «' + entry.id + '».');
+      }
+      ['muscles', 'equipment'].forEach(function (field) {
+        var values = entry[field];
+        var vocab = field === 'muscles' ? vocabulary.muscles : vocabulary.equipment;
+        if (!Array.isArray(values) || !values.length) {
+          problem(id, field, values === undefined ? null : values,
+            'לרשומה «' + id + '» אין ' + field + ' כרשימה לא ריקה.');
+          return;
+        }
+        values.forEach(function (value) {
+          if (vocab.indexOf(value) === -1) {
+            problem(id, field, value,
+              'הרשומה «' + id + '» משתמשת ב' + field + ' «' + value + '» שאינו ברשימה המותרת.');
+          }
+        });
+      });
+      if (vocabulary.levels.indexOf(entry.level) === -1) {
+        problem(id, 'level', entry.level === undefined ? null : entry.level,
+          'הרשומה «' + id + '» ברמה «' + entry.level + '» שאינה ברשימה המותרת.');
+      }
+    });
+    result.ok = result.problems.length === 0;
+    return result;
+  }
+
+  /* ── The owner's red lines ──────────────────────────────────────────
+     A standing instruction from the owner: nothing this module puts in front of a
+     trainer may say a session is safe or unsafe, imply that a professional or a
+     doctor approved it, or name a professional body. Until now that rule lived as
+     four hand-copied regexes inside four tests, each sampling one call; the notes
+     that travel on EVERY result (RULE_NOTE_HE, SOURCE_NOTE_HE) were covered by
+     none of them. It lives here now, as data, and test/red-lines.test.js runs it
+     over every Hebrew string these rules can produce.
+
+     No /g flags: a shared regex with /g carries lastIndex between calls. */
+
+  var RED_LINE_TERMS = [
+    { term: 'בטוח', rx: /בטוח(?:ה|ים|ות)?/, why: 'calls a session safe or not safe' },
+    { term: 'מסוכן', rx: /מסוכ(?:ן|נת|נים|נות)/, why: 'calls a session or an exercise dangerous' },
+    { term: 'מאושר', rx: /מאושר(?:ת|ים|ות)?/, why: 'implies something approved it' },
+    { term: 'אישור', rx: /אישור/, why: 'implies professional approval' },
+    { term: 'רפואי', rx: /רפואי(?:ת|ים|ות)?/, why: 'implies a medical opinion' },
+    { term: 'ACSM', rx: /ACSM/i, why: 'names a professional body' },
+    { term: 'American College', rx: /American College/i, why: 'names a professional body' },
+    { term: 'Guidelines for Exercise', rx: /Guidelines for Exercise/i, why: 'names the publication' }
+  ];
+
+  /* The only way a red-line word may appear in Hebrew a trainer reads: inside one
+     of these exact denials, which say the opposite of what the term would claim.
+     They are matched as whole literal phrases, so 'אישור מקצועי' on its own is still a
+     hit. Both phrases are clauses of RULE_NOTE_HE. */
+  var RED_LINE_EXEMPT_PHRASES = [
+    'אין כאן אישור מקצועי',
+    'אין ייעוץ רפואי'
+  ];
+
+  /* Pure. Returns the terms `text` crosses, in RED_LINE_TERMS order; [] is clean. */
+  function redLineHits(text) {
+    var s = String(text == null ? '' : text);
+    for (var i = 0; i < RED_LINE_EXEMPT_PHRASES.length; i++) {
+      s = s.split(RED_LINE_EXEMPT_PHRASES[i]).join(' ');
+    }
+    var hits = [];
+    for (var j = 0; j < RED_LINE_TERMS.length; j++) {
+      if (RED_LINE_TERMS[j].rx.test(s)) hits.push(RED_LINE_TERMS[j].term);
+    }
+    return hits;
   }
 
   function claimsOutcome(text) {
@@ -264,10 +805,24 @@
 
   var api = {
     STIMULUS: STIMULUS,
+    PHASE_DURATION_RULE: PHASE_DURATION_RULE,
+    SOURCE_NOTE_HE: SOURCE_NOTE_HE,
+    BEGINNER_EQUIPMENT_RULE: BEGINNER_EQUIPMENT_RULE,
+    INTENSITY_ARC_RULE: INTENSITY_ARC_RULE,
+    TAXONOMY_RULE: TAXONOMY_RULE,
+    INTENSITY_SCALE: INTENSITY_SCALE,
+    RULE_NOTE_HE: RULE_NOTE_HE,
     analyzeExercise: analyzeExercise,
     analyzeSession: analyzeSession,
+    checkPhaseDurations: checkPhaseDurations,
+    checkBeginnerEquipment: checkBeginnerEquipment,
+    validateIntensityArc: validateIntensityArc,
+    checkCatalogTaxonomy: checkCatalogTaxonomy,
     flattenWorkout: flattenWorkout,
     claimsOutcome: claimsOutcome,
+    RED_LINE_TERMS: RED_LINE_TERMS,
+    RED_LINE_EXEMPT_PHRASES: RED_LINE_EXEMPT_PHRASES,
+    redLineHits: redLineHits,
     muscleLabel: muscleLabel
   };
 

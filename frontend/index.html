@@ -246,8 +246,14 @@
           (ex.notes ? '<div class="history-meta">' + TH.esc(ex.notes) + '</div>' : '') +
           '</div><div class="exercise-details">' + details.join(' · ') + '</div></div>';
       }).join('');
+      /* The minutes badge belongs to a phase a trainer can read: a phase with no
+         exercises would otherwise render as nothing but a number. The builder now
+         budgets cool-down minutes it does not yet fill, so that case is real. */
+      var phaseMinutes = phase.duration_minutes && (phase.exercises || []).length
+        ? '<span>' + phase.duration_minutes + ' דקות</span>'
+        : '';
       return '<div class="phase"><div class="phase-header ' + phaseClass + '"><span>' + phaseLabel + '</span>' +
-        (phase.duration_minutes ? '<span>' + phase.duration_minutes + ' דקות</span>' : '') +
+        phaseMinutes +
         '</div>' + exercises + '</div>';
     }).join('');
     var equipment = (w.equipment || []).length

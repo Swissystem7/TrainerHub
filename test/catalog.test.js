@@ -95,3 +95,53 @@ test('plan-engine ids that have a clip resolve; unknown ids do not invent a file
   assert.equal(TH.heName('plank'), 'פלאנק');
   assert.equal(TH.catalogSrc(TH.findExercise({ id: 'plank' }).file), TH.findExercise({ id: 'plank' }).file);
 });
+
+/* ── Round-2 item 5: the catalogue draws from the repository's own enumerations ──
+   The three constrained sets are the key sets of MUSCLE_LABELS, EQ_LABELS and
+   LEVEL_LABELS in js/infer.js, read here directly so the test and the checker
+   cannot drift apart. The entry count (78) is the one honesty.test.js already
+   pins. When an entry is wrong the checker names it, so the assertion below
+   prints the offending entries instead of only failing. */
+
+const Analyzer = require('../js/analyzer.js');
+const Infer = require('../js/infer.js');
+
+test('every catalog entry draws its muscles, equipment and level from the enumerations', function () {
+  const report = Analyzer.checkCatalogTaxonomy(catalog);
+  assert.deepEqual(report.problems, [], 'catalog entries outside the enumerations');
+  assert.equal(report.ok, true);
+  assert.equal(report.total, 78);
+  assert.deepEqual(report.vocabulary.muscles, Object.keys(Infer.MUSCLE_LABELS));
+  assert.deepEqual(report.vocabulary.equipment, Object.keys(Infer.EQ_LABELS));
+  assert.deepEqual(report.vocabulary.levels, Object.keys(Infer.LEVEL_LABELS));
+  assert.deepEqual(report.vocabulary.muscles,
+    ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core']);
+  assert.deepEqual(report.vocabulary.levels, ['beginner', 'intermediate', 'advanced']);
+  assert.equal(report.vocabulary.equipment.length, 15);
+});
+
+test('the taxonomy checker names every offending entry rather than only failing', function () {
+  const broken = {
+    good: { id: 'good', he: 'טוב', muscles: ['core'], equipment: ['none'], level: 'beginner' },
+    typo_muscle: { id: 'typo_muscle', he: 'שריר', muscles: ['abs'], equipment: ['none'], level: 'beginner' },
+    typo_equipment: { id: 'typo_equipment', he: 'ציוד', muscles: ['legs'], equipment: ['kettlebell'], level: 'beginner' },
+    typo_level: { id: 'typo_level', he: 'רמה', muscles: ['legs'], equipment: ['none'], level: 'pro' },
+    empty_lists: { id: 'empty_lists', he: 'ריק', muscles: [], equipment: ['none'], level: 'beginner' },
+    wrong_key: { id: 'other_id', he: 'מזהה', muscles: ['core'], equipment: ['none'], level: 'beginner' }
+  };
+  const report = Analyzer.checkCatalogTaxonomy(broken);
+  assert.equal(report.ok, false);
+  assert.equal(report.total, 6);
+  assert.deepEqual(report.problems.map(function (row) { return [row.id, row.field, row.value]; }), [
+    ['typo_muscle', 'muscles', 'abs'],
+    ['typo_equipment', 'equipment', 'kettlebell'],
+    ['typo_level', 'level', 'pro'],
+    ['empty_lists', 'muscles', []],
+    ['wrong_key', 'id', 'other_id']
+  ]);
+  for (const row of report.problems) {
+    assert.ok(row.he.indexOf(row.id) !== -1, 'a problem must name its entry: ' + row.he);
+  }
+  assert.deepEqual(Analyzer.checkCatalogTaxonomy(null).problems.map(function (r) { return r.field; }),
+    ['catalog']);
+});
