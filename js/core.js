@@ -1608,6 +1608,8 @@
     catalogList: catalogList,
     filterCatalog: filterCatalog,
     matchCatalog: matchCatalog,
+    NAME_ALIASES: NAME_ALIASES,
+    HE_NAMES: HE_NAMES,
     attachCatalogIds: attachCatalogIds,
     hasClip: hasClip,
     substitutesFor: substitutesFor,
