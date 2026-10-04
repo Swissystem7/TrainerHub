@@ -31,10 +31,15 @@
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה/.test(t) && /(?:מנוחה|הפסקה)/.test(t)) return 60;
-    if (/שתי דקות|2 דקות/.test(t) && /(?:מנוחה|הפסקה)/.test(t)) return 120;
-    var m = t.match(/(\d+)\s*(?:שניות|שנ)/);
-    if (m && /(?:מנוחה|הפסקה)/.test(t)) return toInt(m[1]);
+    var hasRest = /(?:מנוחה|הפסקה)/;
+    if (/דקה וחצי/.test(t) && hasRest.test(t)) return 90;
+    if (/חצי דקה/.test(t) && hasRest.test(t)) return 30;
+    var m = t.match(/(\d+)\s*דקות/);
+    if (m && hasRest.test(t)) return toInt(m[1]) * 60;
+    if (/שתי דקות|2 דקות/.test(t) && hasRest.test(t)) return 120;
+    if (/דקה/.test(t) && hasRest.test(t)) return 60;
+    m = t.match(/(\d+)\s*(?:שניות|שנ)/);
+    if (m && hasRest.test(t)) return toInt(m[1]);
     m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
@@ -60,7 +65,7 @@
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) body = after[1];
     return body
-      .split(/\n+|[,،]|\s+ו(?=\d|\s*[\u0590-\u05FF])/)
+      .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
       .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
       .filter(function (s) { return s.length > 1; });
   }
@@ -98,6 +103,21 @@
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
+    } else {
+      m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
+      if (m) {
+        duration_seconds = toInt(m[1]) * 60;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/דקה וחצי/))) {
+        duration_seconds = 90;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/חצי דקה/))) {
+        duration_seconds = 30;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/(^|\s)דקה(?=\s|$)/))) {
+        duration_seconds = 60;
+        s = s.replace(m[0], ' ');
+      }
     }
     m = s.match(/^(\d+)\s+/);
     if (m && reps == null && duration_seconds == null) {
@@ -119,7 +139,8 @@
       reps: reps,
       duration_seconds: duration_seconds,
       rest_seconds: rest_seconds,
-      notes: null
+      notes: null,
+      restOnly: undefined
     };
   }
 
