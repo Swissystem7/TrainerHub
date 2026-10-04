@@ -895,7 +895,7 @@ function finishWorkout() {
     const copyBtn = document.getElementById('btnCopyCode');
     if (copyBtn) {
       copyBtn.onclick = function () {
-        navigator.clipboard.writeText(refreshReport()).then(function () {
+        TH.copyOrShow(refreshReport(), copyBtn, function () {
           copyBtn.textContent = '✅ הועתק';
           setTimeout(function () { copyBtn.textContent = '📋 העתק קוד'; }, 1600);
         });

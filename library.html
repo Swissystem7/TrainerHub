@@ -244,9 +244,10 @@
     var id = card.getAttribute('data-id');
     if (act === 'copy') {
       var url = TH.encodeClip(id, {});
-      navigator.clipboard.writeText(url).then(function () {
-        e.target.textContent = 'הועתק';
-        setTimeout(function () { e.target.textContent = 'העתק לינק'; }, 1400);
+      var btn = e.target;
+      TH.copyOrShow(url, btn.parentNode, function () {
+        btn.textContent = 'הועתק';
+        setTimeout(function () { btn.textContent = 'העתק לינק'; }, 1400);
       });
     } else if (act === 'wa') {
       window.open(TH.waShareUrl('', TH.clipShareMessage(id, '')), '_blank');
@@ -274,10 +275,10 @@
       $('draftBox').insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
       return;
     }
-    navigator.clipboard.writeText(shared.url).then(function () {
+    TH.copyOrShow(shared.url, $('draftBox'), function () {
       $('draftCopy').textContent = 'הועתק';
       setTimeout(function () { $('draftCopy').textContent = 'שתף אימון ללקוח'; }, 1400);
-    });
+    }, 'beforeend');
   });
   $('draftPdf').addEventListener('click', function () {
     TH.preparePrint(TH.draftGet(), {});

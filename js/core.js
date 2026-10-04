@@ -19,8 +19,10 @@
     print: 'trainerhub_print_workout'
   };
 
-  // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
-  var ACCESS_HASH = 3194953836;
+  // Hash of the trainer access code (sent after payment) — product boundary
+  // on a static demo, not security. The code itself is not written in any file of
+  // this repo (tests included). Replaced 28.9.2026: the earlier code leaked and is revoked.
+  var ACCESS_HASH = 1690937514;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
@@ -196,6 +198,7 @@
     'שכיבות שמיכה': 'אתגר_שכיבות_שמיכה',
     'שכיבת שמיכה': 'אתגר_שכיבות_שמיכה',
     'שכיבת סמיכה': 'אתגר_שכיבות_שמיכה',
+    'שכיבות': 'אתגר_שכיבות_שמיכה',
     'פלנק': 'plank',
     'plank': 'plank',
     'סייד פלאנק': 'פלאנק_צידי',
@@ -217,6 +220,16 @@
   var catalog = {};
   var catalogReady = false;
   var readyWaiters = [];
+
+  // Stated length wins; a pasted workout has none, so show the analyzer's
+  // estimate marked as such, and never an empty "זמן:  דקות".
+  function durationLabel(minutes, estimate) {
+    var m = Number(minutes);
+    if (m > 0) return m + ' דקות';
+    var e = Number(estimate);
+    if (e > 0) return Math.round(e) <= 1 ? 'כדקה (הערכה)' : 'כ־' + Math.round(e) + ' דקות (הערכה)';
+    return 'לא צוין';
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -316,8 +329,11 @@
     if (hashAccessCode(code) !== ACCESS_HASH) {
       return { ok: false, error: 'הקוד לא תואם. אין סליקה באתר — הקוד נשלח אחרי תשלום.' };
     }
-    setEntitlement({ tier: 'trainer', brand: brand });
-    return { ok: true, entitlement: entitlement() };
+    var ent = setEntitlement({ tier: 'trainer', brand: brand });
+    if (ent.tier !== 'trainer') {
+      return { ok: false, error: 'הקוד נכון, אבל הגישה לא נשמרה: הדפדפן חוסם שמירה (למשל גלישה פרטית). פתחו בדפדפן רגיל ונסו שוב.' };
+    }
+    return { ok: true, entitlement: ent };
   }
 
   function normalizeEntry(id, raw, defaultSource) {
@@ -642,6 +658,42 @@
       return { ok: false, error: 'אין אימון לשיתוף' };
     }
     return { ok: true, url: encodeLink(workout, meta || {}) };
+  }
+
+  // Copy text to the clipboard. Resolves {ok:true} only after a real copy.
+  function copyText(text) {
+    return new Promise(function (resolve) {
+      try {
+        var nav = typeof navigator !== 'undefined' ? navigator : root.navigator;
+        var clip = nav && nav.clipboard;
+        if (!clip || typeof clip.writeText !== 'function') { resolve({ ok: false }); return; }
+        clip.writeText(String(text)).then(function () { resolve({ ok: true }); }, function () { resolve({ ok: false }); });
+      } catch (e) { resolve({ ok: false }); }
+    });
+  }
+
+  function manualCopyMarkup(text) {
+    return '<div class="th-manual-copy" role="status">' +
+      '<p>הדפדפן חסם העתקה אוטומטית. סמנו את הטקסט והעתיקו ידנית:</p>' +
+      '<textarea readonly rows="3" style="width:100%;direction:ltr">' + esc(text) + '</textarea>' +
+      '</div>';
+  }
+
+  // Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
+  function copyOrShow(text, anchor, onOk, position) {
+    return copyText(text).then(function (r) {
+      if (r.ok) {
+        if (onOk) onOk();
+        return r;
+      }
+      if (anchor && anchor.insertAdjacentHTML) {
+        var host = anchor.parentNode;
+        var prev = host && host.querySelector && host.querySelector('.th-manual-copy');
+        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        anchor.insertAdjacentHTML(position || 'afterend', manualCopyMarkup(text));
+      }
+      return r;
+    });
   }
 
   function gateMarkup(kind) {
@@ -1043,15 +1095,29 @@
     }
     var best = null;
     var bestLen = 0;
+    var bestDist = Infinity;
     for (i = 0; i < keys.length; i++) {
       var e2 = catalog[keys[i]];
       if (!e2) continue;
       var he2 = normalizeName(e2.he);
-      if (he2.length >= 3 && (n.indexOf(he2) !== -1 || he2.indexOf(n) !== -1)) {
-        if (he2.length > bestLen || (he2.length === bestLen && sourcePref(e2) > sourcePref(best))) {
-          best = e2;
-          bestLen = he2.length;
-        }
+      if (he2.length < 3) continue;
+      var nameInQuery = n.indexOf(he2) !== -1;
+      var queryInName = he2.indexOf(n) !== -1;
+      if (!nameInQuery && !queryInName) continue;
+      // Short free-text like "שכיבות" must prefer the closest catalog title,
+      // not the longest name that happens to contain the query.
+      var dist = Math.abs(he2.length - n.length);
+      var better = false;
+      if (!best) better = true;
+      else if (dist < bestDist) better = true;
+      else if (dist === bestDist && sourcePref(e2) > sourcePref(best)) better = true;
+      else if (dist === bestDist && sourcePref(e2) === sourcePref(best) && he2.length < bestLen && queryInName) {
+        better = true;
+      }
+      if (better) {
+        best = e2;
+        bestLen = he2.length;
+        bestDist = dist;
       }
     }
     return best;
@@ -1390,13 +1456,13 @@
           (entry.driveId && list[i].driveId === entry.driveId) ||
           (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
         list[i] = entry;
-        storeSet(KEYS.userCatalog, list);
+        if (!storeSet(KEYS.userCatalog, list)) return null;
         catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
         return entry;
       }
     }
     list.push(entry);
-    storeSet(KEYS.userCatalog, list);
+    if (!storeSet(KEYS.userCatalog, list)) return null;
     catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
     return entry;
   }
@@ -1566,6 +1632,7 @@
     EQ_LABELS: EQ_LABELS,
     TAG_LABELS: TAG_LABELS,
     esc: esc,
+    durationLabel: durationLabel,
     store: { get: storeGet, set: storeSet, remove: storeRemove },
     assetUrl: assetUrl,
     heName: heName,
@@ -1579,6 +1646,9 @@
     encodeLink: encodeLink,
     shareToClient: shareToClient,
     gateMarkup: gateMarkup,
+    copyText: copyText,
+    copyOrShow: copyOrShow,
+    manualCopyMarkup: manualCopyMarkup,
     offerUrl: offerUrl,
     printUrl: printUrl,
     hashAccessCode: hashAccessCode,

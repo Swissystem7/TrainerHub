@@ -21,25 +21,29 @@
     return isNaN(n) ? null : n;
   }
 
+  // "הפסקה" (break) is used for rest as often as "מנוחה" in trainers' messages.
+  var REST_RX = /מנוחה|הפסקה/;
+
   function isRestToken(s) {
     var t = Infer.fold(s);
     if (!t) return false;
-    if (/^מנוחה$/.test(t)) return true;
-    if (/מנוחה/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
+    if (/^(?:מנוחה|הפסקה)$/.test(t)) return true;
+    if (REST_RX.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
     return false;
   }
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה וחצי/.test(t) && /מנוחה/.test(t)) return 90;
-    if (/חצי דקה/.test(t) && /מנוחה/.test(t)) return 30;
-    var m = t.match(/(\d+)\s*דקות/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]) * 60;
-    if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
-    m = t.match(/(\d+)\s*(?:שניות|שנ)/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]);
-    m = t.match(/מנוחה\s+(\d+)/);
+    if (!REST_RX.test(t)) return null;
+    if (/דקה\s*וחצי/.test(t)) return 90;
+    if (/חצי\s*דקה/.test(t)) return 30;
+    if (/שתי\s*דקות/.test(t)) return 120;
+    var m = t.match(/(\d+)\s*דקות?/);
+    if (m) return toInt(m[1]) * 60;
+    if (/דקה/.test(t)) return 60;
+    m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
+    if (m) return toInt(m[1]);
+    m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
   }
@@ -49,10 +53,17 @@
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
-    var rest = raw.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ)/) || raw.match(/(\d+)\s*שניות מנוחה/);
+    // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
+    // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
+    var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
+      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*(?:מנוחה|הפסקה)/);
     if (rest) defaults.rest = toInt(rest[1]);
-    if (/דקה מנוחה/.test(raw) && defaults.rest == null) defaults.rest = 60;
-    var work = raw.match(/(\d+)\s*שניות עבודה/);
+    if (/דקה (?:מנוחה|הפסקה)|(?:מנוחה|הפסקה) דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/שתי דקות מנוחה|מנוחה שתי דקות|2 דקות מנוחה|מנוחה 2 דקות/.test(raw) && defaults.rest == null) {
+      defaults.rest = 120;
+    }
+    var work = raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*עבודה/) ||
+      raw.match(/עבודה[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
   }
@@ -62,11 +73,31 @@
     if (!raw) return [];
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
-    if (after) body = after[1];
+    if (after) {
+      body = after[1];
+    } else {
+      after = raw.match(/(?:^|\n)\s*\d+\s*סבבים?\s*(?:\n+|[,،]\s*)([\s\S]+)/);
+      if (after) {
+        body = after[1];
+      } else {
+        var colon = raw.indexOf(':');
+        if (colon > 0 && colon < 80) {
+          var left = raw.slice(0, colon).trim();
+          var right = raw.slice(colon + 1).trim();
+          if (right && (/^[^\d\n]{2,40}$/.test(left) || /עבודה|מנוחה|שניות|שנ/.test(left))) {
+            body = right;
+          }
+        }
+      }
+    }
     return body
       .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
       .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
-      .filter(function (s) { return s.length > 1; });
+      .filter(function (s) {
+        if (s.length <= 1) return false;
+        if (/^\d+\s*סבבים?$/.test(s)) return false;
+        return true;
+      });
   }
 
   function parseExerciseToken(token, defaults) {
@@ -98,7 +129,7 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF]))|″)/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
@@ -124,7 +155,7 @@
       s = s.replace(m[0], ' ');
     }
 
-    var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var name = s.replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) return null;
     if (/^\d+$/.test(name)) return null;
     if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
@@ -346,7 +377,9 @@
       endSec: Math.floor(endSec),
       segmentOf: opts.segmentOf || driveId
     };
-    api.addUserEntry(entry);
+    if (!api.addUserEntry(entry)) {
+      return { error: 'storage', message: 'המקטע לא נשמר: הדפדפן חוסם שמירה מקומית (למשל גלישה פרטית).' };
+    }
     return { entry: entry };
   }
 

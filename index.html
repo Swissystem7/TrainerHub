@@ -229,7 +229,7 @@
         host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
         return;
       }
-      navigator.clipboard.writeText(shared.url).then(function () {
+      TH.copyOrShow(shared.url, host, function () {
         $('copyBtn').textContent = 'הועתק';
         setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });
@@ -285,7 +285,7 @@
         '<h2>' + TH.esc(w.title) + '</h2>' +
         '<div class="meta">' +
           (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
-          '<span class="pill">זמן: ' + TH.esc(w.duration_minutes) + ' דקות</span>' +
+          '<span class="pill">זמן: ' + TH.esc(TH.durationLabel(w.duration_minutes, exp.durationMinutes)) + '</span>' +
           '<span class="pill">ציוד: ' + TH.esc(equipment) + '</span>' +
           '<span class="pill">חניכים: ' + TH.esc(w.participants || 1) + '</span>' +
           '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
@@ -328,6 +328,7 @@
       notice: null,
       explanation: analysis ? {
         type: 'אימון שנקלט מטקסט',
+        durationMinutes: analysis.durationMinutes,
         primary: analysis.primary,
         secondary: analysis.secondary,
         stimulus: analysis.stimulus,

@@ -34,7 +34,7 @@
     }
   };
 
-  var FORBIDDEN_RX = /תרזה|תרדי|תרד במשקל|תרז[הי]|קילוגרם|ק״ג|ק"ג|מובטח|תוצאות מובטחות|קוביות בטן מובטח|תעלה במסה/i;
+  var FORBIDDEN_RX = /תרזה|תרדי|תרד במשקל|תרז[הי]|קילוגרם|ק״ג|ק"ג|מובטח|תוצאות מובטחות|קוביות בטן מובטח|תעלה במסה|שריפת שומן|שורף שומן|(שריפת|שורף|שורפת|שורפי|שורפים|שורפות|לשרוף)[\s-]+(את[\s-]+)?ה?(שומן|שומנים)/i;
 
   function muscleLabel(id) {
     return (Infer.MUSCLE_LABELS && Infer.MUSCLE_LABELS[id]) || id;
@@ -113,6 +113,7 @@
 
   function estimateDuration(workout, exercises) {
     if (workout && workout.duration_minutes) return Number(workout.duration_minutes) || 0;
+    if (!exercises || !exercises.length) return 0;
     var seconds = 0;
     exercises.forEach(function (ex) {
       var sets = Number(ex.sets) || 1;
