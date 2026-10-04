@@ -32,6 +32,7 @@
     var t = String(text || '');
     var m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
+    if (/שעה\s*וחצי/.test(t)) return 90;
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
@@ -42,6 +43,7 @@
 
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
+    if (/זוג/.test(t)) return 2;
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
     if (!m) return null;
