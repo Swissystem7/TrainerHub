@@ -128,6 +128,21 @@
       var sec = toInt(m[1]);
       duration_seconds = minSec != null ? minSec + sec : sec;
       s = s.replace(m[0], ' ');
+    } else {
+      m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
+      if (m) {
+        duration_seconds = toInt(m[1]) * 60;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/דקה וחצי/))) {
+        duration_seconds = 90;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/חצי דקה/))) {
+        duration_seconds = 30;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/(^|\s)דקה(?=\s|$)/))) {
+        duration_seconds = 60;
+        s = s.replace(m[0], ' ');
+      }
     }
     m = s.match(/^(\d+)\s+/);
     if (m && reps == null && duration_seconds == null) {

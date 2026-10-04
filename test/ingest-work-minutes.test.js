@@ -44,4 +44,19 @@ test('parseExerciseToken handles minute-based exercise durations correctly', () 
     notes: null,
     restOnly: undefined
   });
+
+  assert.deepStrictEqual(Ingest.parseExerciseToken('פלאנק 40 שניות', {}), {
+    name: 'פלאנק',
+    sets: 1,
+    reps: null,
+    duration_seconds: 40,
+    rest_seconds: null,
+    notes: null,
+    restOnly: undefined
+  });
+
+  assert.deepStrictEqual(Ingest.parseExerciseToken('מנוחה 3 דקות', {}), {
+    restOnly: true,
+    rest_seconds: 180
+  });
 });
