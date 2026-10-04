@@ -1,10 +1,12 @@
-
-
 'use strict';
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const THIngest = require('../js/ingest.js');
+
+function restSeconds(result) {
+  return typeof result === 'number' ? result : result.rest_seconds;
+}
 
 test('parseRestSeconds and splitTokens with Hebrew time expressions', () => {
   // Test parseExerciseToken with 'מנוחה 3 דקות' -> { restOnly: true, rest_seconds: 180 }
@@ -37,4 +39,13 @@ test('parseRestSeconds and splitTokens with Hebrew time expressions', () => {
   assert.strictEqual(r.exercises.length, 1);
   assert.strictEqual(r.exercises[0].name, 'פלאנק');
   assert.strictEqual(r.exercises[0].rest_seconds, 90);
+
+  assert.strictEqual(restSeconds(THIngest.parseExerciseToken('מנוחה 45 שניות', {})), 45);
+  assert.strictEqual(restSeconds(THIngest.parseExerciseToken('דקה מנוחה', {})), 60);
+  assert.strictEqual(restSeconds(THIngest.parseExerciseToken('מנוחה 2 דקות', {})), 120);
+  assert.strictEqual(restSeconds(THIngest.parseExerciseToken('מנוחה שתי דקות', {})), 120);
+
+  r = THIngest.ingestText('פלאנק חצי דקה ומנוחה 2 דקות', []);
+  assert.strictEqual(r.exercises.length, 1);
+  assert.strictEqual(r.exercises[0].rest_seconds, 120);
 });
