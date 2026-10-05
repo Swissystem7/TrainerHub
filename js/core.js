@@ -1559,6 +1559,29 @@
     };
   }
 
+  // The workout rules live in their own module. Resolved on call, not on load,
+  // because core.js is the first script on the page.
+  function rulesModule() {
+    if (root.THRules) return root.THRules;
+    if (typeof module === 'object' && module.exports) return require('./rules-with-sources.js');
+    return null;
+  }
+
+  function rulesWithSources(input) {
+    var mod = rulesModule();
+    return mod ? mod.rulesWithSources(input) : { description: '', request: null, rules: [], sources: [] };
+  }
+
+  function findRule(input, query) {
+    var mod = rulesModule();
+    return mod ? mod.findRule(input, query) : null;
+  }
+
+  function rulesMarkup(input, opts) {
+    var mod = rulesModule();
+    return mod ? mod.rulesMarkup(input, opts) : '';
+  }
+
   var api = {
     KEYS: KEYS,
     PHASE_LABELS: PHASE_LABELS,
@@ -1591,6 +1614,9 @@
     workoutPrintHtml: workoutPrintHtml,
     preparePrint: preparePrint,
     suggestNextFromLog: suggestNextFromLog,
+    rulesWithSources: rulesWithSources,
+    findRule: findRule,
+    rulesMarkup: rulesMarkup,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
     decodeResult: decodeResult,
