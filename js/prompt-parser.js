@@ -23,6 +23,22 @@
     arms: ['ידיים', 'יד']
   };
 
+  // Short muscle words that are substrings of common unrelated words:
+  // "גב" in "גבוהה" (עצימות גבוהה, ברכיים גבוהות), "יד" in "בעמידה" / "תמיד",
+  // "רגל" in "כדורגל". These must match as whole words, optionally with a
+  // ו/ב/ל/ה prefix ("וגב", "לגב"). "ליד" (next to) is deliberately excluded.
+  var WHOLE_WORD_RX = {
+    'גב': /(?:^|[^א-ת])[ובלה]{0,2}גב(?=$|[^א-ת])/,
+    'יד': /(?:^|[^א-ת])[ובה]?יד(?=$|[^א-ת])/,
+    'רגל': /(?:^|[^א-ת])[ובלה]{0,2}רגל(?=$|[^א-ת])/
+  };
+
+  function hasMuscleWord(t, word) {
+    var rx = WHOLE_WORD_RX[word];
+    if (rx) return rx.test(t);
+    return t.indexOf(Infer.fold(word)) !== -1;
+  }
+
   function toInt(v) {
     var n = parseInt(v, 10);
     return isNaN(n) ? null : n;
@@ -99,7 +115,7 @@
     }
     Object.keys(MUSCLE_KEYS).forEach(function (key) {
       MUSCLE_KEYS[key].forEach(function (word) {
-        if (t.indexOf(Infer.fold(word)) !== -1) {
+        if (hasMuscleWord(t, word)) {
           if (key === 'arms') {
             muscles.push('biceps', 'triceps');
             if (!focus) focus = 'arms';
@@ -110,7 +126,7 @@
         }
       });
     });
-    if (/מתח/.test(t) && !/מתחיל/.test(t)) {
+    if (Infer.mentionsPullUp(t)) {
       muscles.push('back', 'biceps');
       if (!focus) focus = 'back';
     }
