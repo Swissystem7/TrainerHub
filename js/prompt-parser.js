@@ -110,7 +110,7 @@
         }
       });
     });
-    if (/מתח/.test(t) && !/מתחיל/.test(t)) {
+    if (Infer.mentionsPullUp(t)) {
       muscles.push('back', 'biceps');
       if (!focus) focus = 'back';
     }
