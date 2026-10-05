@@ -59,10 +59,11 @@
 
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
-    if (/זוג/.test(t)) return 2;
+    // An explicit count wins over "זוג": "20 חניכים בזוגות" is a group of 20
+    // working in pairs, not a couple. "זוג" alone (no number) still means 2.
     var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
     if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
-    if (!m) return null;
+    if (!m) return /זוג/.test(t) ? 2 : null;
     var n = toInt(m[1]);
     return n && n > 0 ? Math.min(n, 500) : null;
   }
