@@ -44,11 +44,24 @@
     return isNaN(n) ? null : n;
   }
 
+  // Hebrew hour phrases. Checked before the bare minute regex so that
+  // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
-    var t = String(text || '');
-    var m = t.match(/(\d+)\s*דק/);
-    if (m) return toInt(m[1]);
+    var t = Infer.fold(String(text || ''));
+    var m;
+    if (/שעתיים/.test(t)) {
+      m = t.match(/שעתיים\s*ו[\s-]*(\d+)\s*דק/);
+      if (m) return 120 + toInt(m[1]);
+      if (/שעתיים\s*וחצי/.test(t)) return 150;
+      if (/שעתיים\s*ורבע/.test(t)) return 135;
+      return 120;
+    }
+    m = t.match(/שעה\s*ו[\s-]*(\d+)\s*דק/);
+    if (m) return 60 + toInt(m[1]);
     if (/שעה\s*וחצי/.test(t)) return 90;
+    if (/שעה\s*ורבע/.test(t)) return 75;
+    m = t.match(/(\d+)\s*דק/);
+    if (m) return toInt(m[1]);
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
