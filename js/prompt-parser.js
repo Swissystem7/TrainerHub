@@ -197,8 +197,12 @@
     var t = Infer.fold(text);
     if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
     if (/חיזוק כוח/.test(t)) return 'strength';
+    // "muscular endurance" names a muscle but is an endurance goal.
+    if (/muscular endurance/.test(t)) return 'endurance';
     if (/היפרטרופ|מסת שריר|muscle/.test(t)) return 'hypertrophy';
-    if (/סיבולת|endurance/.test(t)) return 'endurance';
+    // Both spellings, "סיבולת" and the app's own "סבולת" (analyzer, README).
+    // "אירובי" / "קרדיו" ask for the same stimulus: high reps, short rests.
+    if (/סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/.test(t)) return 'endurance';
     if (/ליבה|ייצוב|core/.test(t) && /מטרה|גירוי/.test(t)) return 'core';
     return null;
   }
