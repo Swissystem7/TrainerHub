@@ -96,7 +96,9 @@
     return null;
   }
 
-  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  // "איש" (20 איש), "בנים"/"בנות" and "נערים"/"נערות" must end at a word
+  // boundary: "אימון אישי", "אישור" and "אישה" are not head counts.
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות))(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
   var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
   // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
   // "עשרים וחמישה מתאמנים"). Only a space may separate them.
