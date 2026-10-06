@@ -186,7 +186,9 @@
   function parseLevel(text) {
     var t = Infer.fold(text);
     if (/מתקדמ|advanced/.test(t)) return 'advanced';
-    if (/ביניים|בינים|intermediate/.test(t)) return 'intermediate';
+    // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
+    // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
+    if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
     if (/מתחיל|beginner/.test(t)) return 'beginner';
     return null;
   }
