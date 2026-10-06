@@ -111,6 +111,21 @@
     return isNaN(n) ? null : n;
   }
 
+  /**
+   * The rest an exercise states, in seconds, or null when it states none.
+   * An explicit 0 ("ללא מנוחה", a circuit) is a stated rest of zero, not a
+   * missing one.
+   */
+  function statedRest(ex) {
+    if (!ex) return null;
+    var raw = ex.rest_seconds != null ? ex.rest_seconds : ex.restSeconds;
+    if (raw == null || raw === '') return null;
+    var n = Number(raw);
+    return isFinite(n) && n >= 0 ? n : null;
+  }
+
+  var DEFAULT_REST_SECONDS = 45;
+
   function estimateDuration(workout, exercises) {
     if (workout && workout.duration_minutes) return Number(workout.duration_minutes) || 0;
     var seconds = 0;
@@ -121,7 +136,8 @@
         var reps = parseRepMid(ex.reps);
         work = reps ? reps * 3 : 30;
       }
-      var rest = Number(ex.rest_seconds || ex.restSeconds) || 45;
+      var rest = statedRest(ex);
+      if (rest == null) rest = DEFAULT_REST_SECONDS;
       seconds += sets * work + Math.max(0, sets - 1) * rest;
     });
     return Math.max(1, Math.round(seconds / 60));
@@ -152,18 +168,24 @@
     var avgReps = 0;
     var avgRest = 0;
     var counted = 0;
+    var restCounted = 0;
     exercises.forEach(function (ex) {
       var r = parseRepMid(ex.reps);
       if (r != null) {
         avgReps += r;
         counted++;
       }
-      if (ex.rest_seconds != null || ex.restSeconds != null) {
-        avgRest += Number(ex.rest_seconds || ex.restSeconds) || 0;
+      // Only exercises that state a rest take part in the average: a pasted
+      // workout names the rest once, so lines without one must not pull the
+      // average toward zero and turn a 3x5 strength session into hypertrophy.
+      var rest = statedRest(ex);
+      if (rest != null) {
+        avgRest += rest;
+        restCounted++;
       }
     });
     if (counted) avgReps = avgReps / counted;
-    if (exercises.length) avgRest = avgRest / exercises.length;
+    if (restCounted) avgRest = avgRest / restCounted;
 
     var goal = workout && (workout.goal || (workout.tags && workout.tags[0]));
     if (goal === 'strength') return STIMULUS.strength;
