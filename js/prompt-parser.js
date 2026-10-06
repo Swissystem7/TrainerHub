@@ -70,14 +70,90 @@
     return null;
   }
 
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
+  // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
+  // "עשרים וחמישה מתאמנים"). Only a space may separate them.
+  var WORDS_BEFORE_TERM = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + PARTICIPANT_TERM, 'i');
+  var GROUP_OF_DIGITS = /(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/;
+  var GROUP_OF_WORDS = /(?:קבוצה|כיתה) (?:של |עם )?((?:[א-ת]+ )?[א-ת]+)(?=$|[^א-ת])/;
+
+  // Hebrew number words, masculine and feminine, 1-10 plus the tens.
+  // "שנים"/"שתים" only appear in 12 ("שנים עשר", "שתים עשרה").
+  var HEB_UNITS = {
+    'אחד': 1, 'אחת': 1,
+    'שני': 2, 'שניים': 2, 'שתי': 2, 'שתיים': 2, 'שנים': 2, 'שתים': 2,
+    'שלושה': 3, 'שלוש': 3,
+    'ארבעה': 4, 'ארבע': 4,
+    'חמישה': 5, 'חמש': 5,
+    'שישה': 6, 'שש': 6,
+    'שבעה': 7, 'שבע': 7,
+    'שמונה': 8,
+    'תשעה': 9, 'תשע': 9,
+    'עשרה': 10, 'עשר': 10
+  };
+  var HEB_TENS = {
+    'עשרים': 20, 'שלושים': 30, 'ארבעים': 40, 'חמישים': 50,
+    'שישים': 60, 'שבעים': 70, 'שמונים': 80, 'תשעים': 90
+  };
+
+  // Strip one ל/ב/כ prefix ("לשמונה חניכים") when the rest is a number word.
+  function unitValue(word) {
+    if (HEB_UNITS.hasOwnProperty(word)) return HEB_UNITS[word];
+    if (/^[לבכ]/.test(word) && HEB_UNITS.hasOwnProperty(word.slice(1))) return HEB_UNITS[word.slice(1)];
+    return null;
+  }
+
+  function tensValue(word) {
+    if (HEB_TENS.hasOwnProperty(word)) return HEB_TENS[word];
+    if (/^[לבכ]/.test(word) && HEB_TENS.hasOwnProperty(word.slice(1))) return HEB_TENS[word.slice(1)];
+    return null;
+  }
+
+  // Turns "שמונה", "שלוש עשרה", "שנים עשר", "עשרים וחמישה" into a number.
+  // A feminine teen ("שלוש עשרה") must give 13, not the trailing "עשרה" (10).
+  function hebrewNumber(phrase) {
+    var words = String(phrase || '').split(' ').filter(Boolean);
+    var last = words[words.length - 1];
+    var first = words.length === 2 ? words[0] : null;
+    var unit, tens;
+    if (first !== null) {
+      unit = unitValue(first);
+      if (unit !== null && unit < 10 && (last === 'עשר' || last === 'עשרה')) return 10 + unit;
+      tens = tensValue(first);
+      if (tens !== null && /^ו/.test(last)) {
+        unit = unitValue(last.slice(1));
+        if (unit !== null && unit < 10) return tens + unit;
+      }
+    }
+    unit = unitValue(last);
+    if (unit !== null) return unit;
+    tens = tensValue(last);
+    if (tens !== null) return tens;
+    return null;
+  }
+
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
     // An explicit count wins over "זוג": "20 חניכים בזוגות" is a group of 20
     // working in pairs, not a couple. "זוג" alone (no number) still means 2.
-    var m = t.match(/(\d+)\s*(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)/i);
-    if (!m) m = t.match(/(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/);
-    if (!m) return /זוג/.test(t) ? 2 : null;
-    var n = toInt(m[1]);
+    var n = null;
+    var m = t.match(DIGITS_BEFORE_TERM);
+    if (!m) m = t.match(GROUP_OF_DIGITS);
+    if (m) {
+      n = toInt(m[1]);
+    } else {
+      // Number words: "שמונה חניכים", "שלוש עשרה חניכות", "קבוצה של עשרה".
+      m = t.match(WORDS_BEFORE_TERM);
+      if (m) n = hebrewNumber(m[1]);
+      if (n === null) {
+        m = t.match(GROUP_OF_WORDS);
+        if (m) n = hebrewNumber(m[1]);
+        // "קבוצה של שמונה בזוגות": the number is the first word, not the last.
+        if (m && n === null) n = hebrewNumber(m[1].split(' ')[0]);
+      }
+    }
+    if (n === null) return /זוג/.test(t) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
