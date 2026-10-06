@@ -103,6 +103,13 @@
   var WORDS_BEFORE_TERM = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + PARTICIPANT_TERM, 'i');
   var GROUP_OF_DIGITS = /(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/;
   var GROUP_OF_WORDS = /(?:קבוצה|כיתה) (?:של |עם )?((?:[א-ת]+ )?[א-ת]+)(?=$|[^א-ת])/;
+  // "5 זוגות" / "חמישה זוגות" is 10 trainees, "3 שלשות" is 9. Only a bare
+  // unit word counts: "בזוגות" (working in pairs) has no space before זוגות,
+  // so it never matches here and stays the plain "זוג" fallback.
+  var GROUP_UNIT_SIZE = { 'זוגות': 2, 'שלשות': 3, 'רביעיות': 4 };
+  var GROUP_UNIT = '(זוגות|שלשות|רביעיות)(?=$|[^א-ת])';
+  var DIGITS_BEFORE_UNIT = new RegExp('(\\d+)\\s*' + GROUP_UNIT);
+  var WORDS_BEFORE_UNIT = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + GROUP_UNIT);
 
   // Hebrew number words, masculine and feminine, 1-10 plus the tens.
   // "שנים"/"שתים" only appear in 12 ("שנים עשר", "שתים עשרה").
@@ -159,6 +166,23 @@
     return null;
   }
 
+  // Number of trainees in "N זוגות" / "N שלשות" / "N רביעיות", or null.
+  function groupUnitCount(t) {
+    var m = t.match(DIGITS_BEFORE_UNIT);
+    var n = null;
+    if (m) {
+      n = toInt(m[1]);
+    } else {
+      m = t.match(WORDS_BEFORE_UNIT);
+      if (!m) return null;
+      // hebrewNumber reads the last word when the first is not a number,
+      // so "אימון של שלושה זוגות" gives 3 here.
+      n = hebrewNumber(m[1]);
+    }
+    if (n === null || n <= 0) return null;
+    return n * GROUP_UNIT_SIZE[m[2]];
+  }
+
   function parseParticipants(text) {
     var t = Infer.fold(String(text || ''));
     // An explicit count wins over "זוג": "20 חניכים בזוגות" is a group of 20
@@ -178,6 +202,10 @@
         // "קבוצה של שמונה בזוגות": the number is the first word, not the last.
         if (m && n === null) n = hebrewNumber(m[1].split(' ')[0]);
       }
+      // "5 זוגות" / "שלושה זוגות": a count of pairs (or triples) is multiplied
+      // by the unit size. Runs after the trainee words so "10 חניכים בזוגות"
+      // keeps its explicit 10.
+      if (n === null) n = groupUnitCount(t);
     }
     if (n === null) return /זוג/.test(t) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
