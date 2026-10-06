@@ -259,7 +259,33 @@
     }
   });
 
-  TH.ready(renderUser);
+  function renderWishlist() {
+    var box = $('wishList');
+    if (!THIngest || !THIngest.wishlistList) return;
+    var list = THIngest.wishlistList();
+    if (!list || !list.length) {
+      box.innerHTML = '<p class="hint">אין תרגילים ברשימה. הדביקו אימון בבונה כדי לזהות חוסרים.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function(w) {
+      var reason = w.reason || 'חסר סרטון במאגר';
+      return '<div class="item"><div><b>' + TH.esc(w.he) + '</b><span>' + TH.esc(reason) + '</span></div>' +
+             '<button type="button" class="th-btn ghost" data-add-wish="' + TH.esc(w.he) + '">הוסף למאגר</button></div>';
+    }).join('');
+  }
+
+  $('wishList').addEventListener('click', function (e) {
+    var he = e.target.getAttribute && e.target.getAttribute('data-add-wish');
+    if (!he) return;
+    $('he').value = he;
+    $('url').focus();
+    propose();
+  });
+
+  TH.ready(function() {
+    renderUser();
+    renderWishlist();
+  });
 })();
 </script>
 </body>
