@@ -100,7 +100,7 @@
     var blob = foldName(entry) + ' ' + Infer.fold(entry.folder || '');
     var score = 0;
     if (req.focus === 'core' && /בטן|פלאנק|ליבה|מטפס/.test(blob)) score += 6;
-    if (req.focus === 'legs' && /רגל|ירכ|סולם|מדרג|ארבע/.test(blob)) score += 6;
+    if (req.focus === 'legs' && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
     if (req.focus === 'back' && /גב|מתח|אוסטרל/.test(blob)) score += 6;
     if (req.focus === 'arms' && /יד|שכיב|כוח ידיים/.test(blob)) score += 6;
     if (req.focus === 'chest' && /חזה|שכיב/.test(blob)) score += 6;
