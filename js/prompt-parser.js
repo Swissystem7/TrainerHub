@@ -44,24 +44,50 @@
     return isNaN(n) ? null : n;
   }
 
+  // Minutes written as Hebrew number words: "עשרים דקות", "ארבעים וחמש דקות",
+  // "חמש עשרה דקות". Up to two words right before דק/דקות, like the
+  // participant words. A non-number word ("כמה דקות") gives null.
+  var MINUTE_WORDS = '((?:[א-ת]+ )?[א-ת]+) דק';
+  var MINUTE_WORDS_RX = new RegExp('(?:^|[^א-ת])' + MINUTE_WORDS);
+  var HOUR_PLUS_MINUTE_WORDS_RX = new RegExp('שעה ו' + MINUTE_WORDS);
+  var TWO_HOURS_PLUS_MINUTE_WORDS_RX = new RegExp('שעתיים ו' + MINUTE_WORDS);
+
+  function minuteWords(t, rx) {
+    var m = t.match(rx);
+    if (!m) return null;
+    var n = hebrewNumber(m[1]);
+    // "אימון של עשר דקות": the first word is not a number, the second is.
+    if (n === null) n = hebrewNumber(m[1].split(' ').pop());
+    return n !== null && n > 0 ? n : null;
+  }
+
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
     var t = Infer.fold(String(text || ''));
     var m;
+    var n;
     if (/שעתיים/.test(t)) {
       m = t.match(/שעתיים\s*ו[\s-]*(\d+)\s*דק/);
       if (m) return 120 + toInt(m[1]);
+      n = minuteWords(t, TWO_HOURS_PLUS_MINUTE_WORDS_RX);
+      if (n !== null) return 120 + n;
       if (/שעתיים\s*וחצי/.test(t)) return 150;
       if (/שעתיים\s*ורבע/.test(t)) return 135;
       return 120;
     }
     m = t.match(/שעה\s*ו[\s-]*(\d+)\s*דק/);
     if (m) return 60 + toInt(m[1]);
+    n = minuteWords(t, HOUR_PLUS_MINUTE_WORDS_RX);
+    if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
     if (/שעה\s*ורבע/.test(t)) return 75;
     m = t.match(/(\d+)\s*דק/);
     if (m) return toInt(m[1]);
+    n = minuteWords(t, MINUTE_WORDS_RX);
+    if (n !== null) return n;
+    // "שלושת רבעי שעה" / "שלוש רבעי שעה" = 45 minutes.
+    if (/שלושת?\s*רבעי\s*שעה/.test(t)) return 45;
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
