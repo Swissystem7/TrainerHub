@@ -274,18 +274,25 @@
     var rx = prescription(req);
     var need = wantedCount(req.duration);
     var relax = { muscle: false, equipment: false, level: false };
-    var pool = filterPool(list, req, relax);
+    // The designated warm-up clip belongs to the Warm-up phase only. Without
+    // this it scored into the Main phase of full-body / unfocused prompts as
+    // 3 sets x 8-12 reps of "warm-up", and the Warm-up phase came out empty.
+    var warmup = findWarmup(list);
+    var mainList = warmup ? list.filter(function (e) {
+      return foldName(e) !== foldName(warmup);
+    }) : list;
+    var pool = filterPool(mainList, req, relax);
     if (pool.length < 2 && req.level) {
       relax.level = true;
-      pool = filterPool(list, req, relax);
+      pool = filterPool(mainList, req, relax);
     }
     if (pool.length < 2 && req.equipment && req.equipment.length) {
       relax.equipment = true;
-      pool = filterPool(list, req, relax);
+      pool = filterPool(mainList, req, relax);
     }
     if (pool.length < 2 && req.muscles && req.muscles.length) {
       relax.muscle = true;
-      pool = filterPool(list, req, relax);
+      pool = filterPool(mainList, req, relax);
     }
     var scored = pool.map(function (e) {
       return { entry: e, score: scoreEntry(e, req) };
@@ -304,10 +311,17 @@
       };
     }
 
-    var warmup = findWarmup(list);
     var mainEx = picked.map(function (e) { return toExercise(e, rx); });
+
+    // Phase minutes add up to the requested duration: the warm-up block gets
+    // up to 5 minutes (at most half the session, and only when the 3-minute
+    // warm-up clip fits), the Main phase gets the rest. Before this the plan
+    // was Warm-up 5 + Main (duration - 10) + Cool-down 0, which left 5 minutes
+    // unaccounted for and showed a 5-minute warm-up block with no clip in it.
+    var totalMinutes = Math.max(1, Math.floor(Number(req.duration) || 20));
+    var warmMinutes = Math.min(5, Math.floor(totalMinutes / 2));
     var warmEx = [];
-    if (warmup && foldName(warmup) !== foldName(picked[0]) && isPlayable(warmup)) {
+    if (warmup && isPlayable(warmup) && warmMinutes >= 3) {
       warmEx.push({
         name: warmup.he,
         id: warmup.id,
@@ -324,6 +338,7 @@
       : req.focus && Infer.MUSCLE_LABELS[req.focus] ? ('אימון ' + Infer.MUSCLE_LABELS[req.focus])
       : 'אימון מהמאגר';
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
+    if (!warmEx.length) warmMinutes = 0;
 
     var workout = {
       title: title,
@@ -334,8 +349,8 @@
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
       goal: req.goal || null,
       phases: [
-        { name: 'Warm-up', duration_minutes: 5, exercises: warmEx },
-        { name: 'Main', duration_minutes: Math.max(5, (req.duration || 20) - 10), exercises: mainEx },
+        { name: 'Warm-up', duration_minutes: warmMinutes, exercises: warmEx },
+        { name: 'Main', duration_minutes: totalMinutes - warmMinutes, exercises: mainEx },
         { name: 'Cool-down', duration_minutes: 0, exercises: [] }
       ],
       source: 'prompt-engine'
