@@ -68,10 +68,15 @@
     if (people === 1) return null;
     var stations = Math.min(available, Math.max(1, Math.ceil(people / 4)));
     var perStation = Math.ceil(people / stations);
+    // תחנה אחת (2-4 חניכים, או מאגר עם תרגיל יחיד): אין בין מה להחליף,
+    // אז לא מבקשים להחליף תחנה ולא כותבים «1 תחנות».
+    var he = stations === 1
+      ? people + ' חניכים: תחנה אחת, כולם מבצעים את אותו התרגיל יחד.'
+      : people + ' חניכים: ' + stations + ' תחנות, עד ' + perStation + ' חניכים בתחנה. החליפו תחנה בסיום כל סט.';
     return {
       stations: stations,
       per_station: perStation,
-      he: people + ' חניכים: ' + stations + ' תחנות, עד ' + perStation + ' חניכים בתחנה. החליפו תחנה בסיום כל סט.'
+      he: he
     };
   }
 
