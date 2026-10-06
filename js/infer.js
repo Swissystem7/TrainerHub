@@ -114,6 +114,13 @@
     return PULL_UP_RX.test(fold(text));
   }
 
+  // "קיר" (wall) and "מוט" (bar) are substrings of common unrelated words:
+  // "קירור" (the cool-down in "חימום וקירור") and "מוטיבציה" (motivation).
+  // Match them as whole words, optionally with a ו/ב/ל/ה/מ prefix ("על הקיר",
+  // "מקיר לקיר", "עם מוט") and an optional plural ("קירות", "מוטות").
+  var WALL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}קיר(?:ות)?(?=$|[^א-ת])/;
+  var BARBELL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}מוט(?:ות)?(?=$|[^א-ת])/;
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
@@ -123,7 +130,7 @@
     if (/כדורגל|פוטבול/.test(t)) eq.push('football');
     if (/טניס/.test(t)) eq.push('tennis-ball');
     if (/חישוק/.test(t)) eq.push('hoop');
-    if (/קיר/.test(t)) eq.push('wall');
+    if (WALL_RX.test(t)) eq.push('wall');
     if (/סולם/.test(t)) eq.push('ladder');
     if (/מדרג/.test(t)) eq.push('stairs');
     if (/אוסטרל/.test(t) || mentionsPullUp(t)) eq.push('bar');
@@ -132,7 +139,7 @@
       eq.push('ball');
     }
     if (/משקולת|משקולות|דאמבל/.test(t)) eq.push('dumbbells');
-    if (/מוט|ברבל/.test(t) && eq.indexOf('bar') === -1) eq.push('barbell');
+    if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
     if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
   }
