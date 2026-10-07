@@ -1,0 +1,9 @@
+# Owner step - not deployed from CI. See README.md.
+name = "trainerhub-site-scan"
+main = "worker.mjs"
+compatibility_date = "2026-10-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://swissystem7.github.io"
+GEMINI_MODEL = "gemini-2.5-flash"
+# GEMINI_API_KEY is a secret: wrangler secret put GEMINI_API_KEY (never commit it)
