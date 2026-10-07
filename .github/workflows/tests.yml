@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: JS tests
+        run: npm test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Backend parser tests
+        run: python -m unittest discover -s tests -p 'test_*.py'
