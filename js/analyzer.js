@@ -180,7 +180,26 @@
     return STIMULUS.hypertrophy;
   }
 
-  function qualityFlags(workout, analyses, volumePct, push, pull) {
+  /**
+   * A warm-up exercise wherever it sits: the catalog clip (id 'warmup') or a
+   * line whose name is / starts with "חימום" (pasted workouts put it in Main).
+   */
+  function isWarmupExercise(ex) {
+    if (!ex) return false;
+    if (ex.id === 'warmup' || ex.name === 'warmup') return true;
+    var label = Infer.fold(ex.he || ex.name || '');
+    return label === 'חימום' || label.indexOf('חימום ') === 0;
+  }
+
+  function hasWarmup(workout, exercises) {
+    var phases = (workout && workout.phases) || [];
+    for (var i = 0; i < phases.length; i++) {
+      if (phases[i].name === 'Warm-up' && phases[i].exercises && phases[i].exercises.length) return true;
+    }
+    return (exercises || []).some(isWarmupExercise);
+  }
+
+  function qualityFlags(workout, analyses, volumePct, push, pull, exercises) {
     var flags = [];
     var corePct = volumePct.core || 0;
     if (corePct >= 70 && !volumePct.back) {
@@ -200,12 +219,7 @@
     if (push === 0 && pull > 0) {
       flags.push({ key: 'no-push', he: 'אין תרגילי דחיפה' });
     }
-    var phases = (workout && workout.phases) || [];
-    var warm = null;
-    for (var i = 0; i < phases.length; i++) {
-      if (phases[i].name === 'Warm-up') warm = phases[i];
-    }
-    if (!warm || !(warm.exercises && warm.exercises.length)) {
+    if (!hasWarmup(workout, exercises)) {
       flags.push({ key: 'no-warmup', he: 'חסר חימום' });
     }
     var used = {};
@@ -238,7 +252,7 @@
     var durationMinutes = estimateDuration(workout, exercises);
     var intensity = estimateIntensity(workout, analyses);
     var stimulus = estimateStimulus(workout, analyses, exercises);
-    var flags = qualityFlags(workout, analyses, volumePct, push, pull);
+    var flags = qualityFlags(workout, analyses, volumePct, push, pull, exercises);
 
     var primarySet = Infer.uniq(analyses.map(function (a) { return a.primary; }));
     var secondarySet = Infer.uniq(analyses.reduce(function (acc, a) {
@@ -267,6 +281,8 @@
     analyzeExercise: analyzeExercise,
     analyzeSession: analyzeSession,
     flattenWorkout: flattenWorkout,
+    hasWarmup: hasWarmup,
+    isWarmupExercise: isWarmupExercise,
     claimsOutcome: claimsOutcome,
     muscleLabel: muscleLabel
   };
