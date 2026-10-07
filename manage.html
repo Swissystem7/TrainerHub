@@ -207,6 +207,21 @@
     }).join('');
   }
 
+  function renderWishlist() {
+    var box = $('wishList');
+    if (!window.THIngest) return;
+    var list = THIngest.wishlistList();
+    if (!list.length) {
+      box.innerHTML = '<p class="hint">אין כרגע סרטונים חסרים שנקלטו מהדבקה.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (e) {
+      var date = e.addedAt ? new Date(e.addedAt).toLocaleDateString('he-IL') : '';
+      return '<div class="item"><div><b>' + TH.esc(e.he) + '</b><span>' + (e.reason ? TH.esc(e.reason) : '') + (date ? ' · ' + date : '') + '</span></div>' +
+        '<button type="button" class="th-btn ghost" data-fill="' + TH.esc(e.he) + '">הוסף</button></div>';
+    }).join('');
+  }
+
   $('url').addEventListener('input', propose);
   $('he').addEventListener('input', propose);
   $('previewBtn').addEventListener('click', function () {
@@ -236,11 +251,13 @@
       externalUrl: proposed.externalUrl || ''
     };
     TH.addUserEntry(entry);
+    if (window.THIngest && THIngest.wishlistRemove) THIngest.wishlistRemove(entry.he);
     $('addStatus').textContent = 'נשמר במאגר המקומי. לא נדרש שינוי קוד.';
     $('url').value = '';
     $('he').value = '';
     $('folder').value = '';
     renderUser();
+    renderWishlist();
   });
 
   $('userList').addEventListener('click', function (e) {
@@ -248,6 +265,15 @@
     if (!id) return;
     TH.removeUserEntry(id);
     renderUser();
+  });
+
+  $('wishList').addEventListener('click', function (e) {
+    var fill = e.target.getAttribute && e.target.getAttribute('data-fill');
+    if (!fill) return;
+    $('he').value = fill;
+    propose();
+    $('url').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   $('exportBtn').addEventListener('click', function () {
@@ -259,7 +285,10 @@
     }
   });
 
-  TH.ready(renderUser);
+  TH.ready(function () {
+    renderUser();
+    renderWishlist();
+  });
 })();
 </script>
 </body>

@@ -210,6 +210,19 @@
     return list;
   }
 
+  function wishlistRemove(name) {
+    var api = th();
+    if (!api || !name) return;
+    var list = wishlistList();
+    var key = Infer.normalizeSynonym(name);
+    var filtered = list.filter(function (e) {
+      return Infer.normalizeSynonym(e.he) !== key;
+    });
+    if (filtered.length !== list.length) {
+      api.store.set(api.KEYS.wishlist, filtered);
+    }
+  }
+
   function learnFromWorkout(workout) {
     var api = th();
     if (!api || !workout) return;
@@ -357,6 +370,7 @@
     matchName: matchName,
     wishlistList: wishlistList,
     wishlistAdd: wishlistAdd,
+    wishlistRemove: wishlistRemove,
     learnFromWorkout: learnFromWorkout,
     patternScore: patternScore,
     saveSegment: saveSegment,
