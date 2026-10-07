@@ -38,6 +38,7 @@
     hoop: 'חישוק',
     dumbbells: 'משקולות',
     barbell: 'מוט',
+    kettlebell: 'קטלבלס',
     machine: 'מכונה'
   };
   var PATTERN_LABELS = {
@@ -140,6 +141,7 @@
     }
     if (/משקולת|משקולות|דאמבל/.test(t)) eq.push('dumbbells');
     if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
+    if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
     if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
   }
