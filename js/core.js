@@ -285,7 +285,13 @@
   }
 
   function sanitizeBrand(name) {
-    var s = String(name == null ? '' : name).replace(/<[^>]*>/g, '').replace(/\.mp4/ig, '').trim();
+    var s = String(name == null ? '' : name);
+    var prev;
+    do {
+      prev = s;
+      s = s.replace(/<[^>]*>/g, '');
+    } while (s !== prev);
+    s = s.replace(/\.mp4/ig, '').trim();
     if (s.length > 60) s = s.slice(0, 60);
     return s;
   }
@@ -1177,7 +1183,7 @@
 
   function mediaMarkup(entry, opts) {
     opts = opts || {};
-    var cls = opts.className || 'ex-media';
+    var cls = esc(opts.className || 'ex-media');
     if (!entry) return '';
     entry = bestMedia(entry) || entry;
     var fallback = '<div class="' + cls + '-fallback" role="note">' +
@@ -1536,11 +1542,15 @@
     else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
     var name = ex.name || heName(ex.id) || 'תרגיל';
-    return {
+    var row = {
       name: String(name).replace(/\.mp4/ig, '').trim(),
       detail: bits.join(' · '),
       id: ex.id || ''
     };
+    if (ex.notes && String(ex.notes).trim()) {
+      row.notes = String(ex.notes).trim();
+    }
+    return row;
   }
 
   function workoutPrintModel(workout, opts) {
@@ -1571,7 +1581,8 @@
     model = model || workoutPrintModel({}, {});
     var phases = (model.phases || []).map(function (ph) {
       var rows = (ph.exercises || []).map(function (ex) {
-        return '<tr><th scope="row">' + esc(ex.name) + '</th><td>' + esc(ex.detail || '') + '</td></tr>';
+        var note = ex.notes ? ('<td>' + esc(ex.notes) + '</td>') : '';
+        return '<tr><th scope="row">' + esc(ex.name) + '</th><td>' + esc(ex.detail || '') + '</td>' + note + '</tr>';
       }).join('');
       return '<section class="print-phase"><h2>' + esc(ph.name) + '</h2><table>' +
         (rows || '<tr><td>אין תרגילים בשלב הזה.</td></tr>') + '</table></section>';

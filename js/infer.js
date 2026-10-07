@@ -38,6 +38,7 @@
     hoop: 'חישוק',
     dumbbells: 'משקולות',
     barbell: 'מוט',
+    kettlebell: 'קטלבלס',
     machine: 'מכונה'
   };
   var PATTERN_LABELS = {
@@ -104,6 +105,16 @@
     return false;
   }
 
+  // "מתח" as the pull-up bar / pull-up exercise, as a whole word (optionally
+  // prefixed with ו/ב/ל/ה, optionally plural "מתחים"). Deliberately does not
+  // match "מתחילים" (beginners) or "מתחנה" (from a station), so a prompt like
+  // "אימון מתח למתחילים" still reads as a pull-up workout for beginners.
+  var PULL_UP_RX = /(?:^|[^א-ת])[ובלה]{0,2}מתח(?:ים|י)?(?=$|[^א-ת])/;
+
+  function mentionsPullUp(text) {
+    return PULL_UP_RX.test(fold(text));
+  }
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
@@ -116,13 +127,14 @@
     if (/קיר/.test(t)) eq.push('wall');
     if (/סולם/.test(t)) eq.push('ladder');
     if (/מדרג/.test(t)) eq.push('stairs');
-    if (/אוסטרל/.test(t) || (/מתח/.test(t) && !/מתחיל/.test(t))) eq.push('bar');
+    if (/אוסטרל/.test(t) || mentionsPullUp(t)) eq.push('bar');
     if (/(?:^| )כדור(?: |$)/.test(t) && eq.indexOf('basketball') === -1 &&
         eq.indexOf('football') === -1 && eq.indexOf('tennis-ball') === -1) {
       eq.push('ball');
     }
     if (/משקולת|משקולות|דאמבל/.test(t)) eq.push('dumbbells');
     if (/מוט|ברבל/.test(t) && eq.indexOf('bar') === -1) eq.push('barbell');
+    if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
     if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
   }
@@ -134,7 +146,7 @@
     if (/פלאנק|בטן|ליבה|קראנץ|כפיפ(ות|ת) בטן/.test(t)) found.push('core');
     if (/מטפס/.test(t)) found.push('core');
     if (/גב תחתון|סופרמן|ארקטור/.test(t)) found.push('back');
-    if (/חתיר|אוסטרל/.test(t) || (/מתח/.test(t) && !/מתחיל/.test(t))) {
+    if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
       found.push('back');
       found.push('biceps');
     }
@@ -179,7 +191,7 @@
       if (primary.indexOf('triceps') === -1) sec.push('triceps');
       if (primary.indexOf('core') === -1 && /פלאנק|בטן/.test(t) === false) sec.push('core');
     }
-    if (pattern === 'pull' || /אוסטרל|חתיר/.test(t) || (/מתח/.test(t) && !/מתחיל/.test(t))) {
+    if (pattern === 'pull' || /אוסטרל|חתיר/.test(t) || mentionsPullUp(t)) {
       if (primary.indexOf('biceps') === -1) sec.push('biceps');
     }
     if (/פלאנק/.test(t) && primary.indexOf('shoulders') === -1) sec.push('shoulders');
@@ -202,7 +214,7 @@
     var t = fold(text);
     if (/מטפס|בעיט|סולם|קפיצ|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
     if (/שכיב|לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
-    if (/חתיר|אוסטרל|כפיפת|פטיש/.test(t) || (/מתח/.test(t) && !/מתחיל/.test(t))) return 'pull';
+    if (/חתיר|אוסטרל|כפיפת|פטיש/.test(t) || mentionsPullUp(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר/.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג/.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t)) return 'core';
@@ -380,6 +392,7 @@
     normalizeSynonym: normalizeSynonym,
     uniq: uniq,
     isBlockedName: isBlockedName,
+    mentionsPullUp: mentionsPullUp,
     inferFromName: inferFromName,
     inferEquipment: inferEquipment,
     inferMuscles: inferMuscles,
