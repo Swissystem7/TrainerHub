@@ -33,6 +33,8 @@
     table { width: 100%; border-collapse: collapse; font-size: .88rem; }
     th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; vertical-align: top; }
     th { background: #151a18; }
+    /* Wide tables (risk matrix, roster) scroll inside themselves on a phone instead of widening the page. */
+    @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
     .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
     .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
     @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
