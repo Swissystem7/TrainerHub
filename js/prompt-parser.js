@@ -61,10 +61,20 @@
     return n !== null && n > 0 ? n : null;
   }
 
+  // A clock time is not a duration: "בשעה 17:00", "משעה 4 עד 5", "השעה 9",
+  // "עד שעה 18:30". The phrase is removed before the hour regexes run, so
+  // "אימון של שעה בשעה 18:00" still keeps its real hour. "עד שעה" with no
+  // digits stays (up to an hour), and "שעה 20 דקות" is not a clock time.
+  var CLOCK_TIME_RX = /(?:^|[^א-ת])ו?(?:ב|מ|ה|עד |עד ה|לפני ה|אחרי ה)שעה\s*\d{1,2}(?:[:.]\d{2})?(?!\d|\s*דק)|שעה\s*\d{1,2}[:.]\d{2}/g;
+
+  function stripClockTimes(t) {
+    return t.replace(CLOCK_TIME_RX, ' ');
+  }
+
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
-    var t = Infer.fold(String(text || ''));
+    var t = stripClockTimes(Infer.fold(String(text || '')));
     var m;
     var n;
     if (/שעתיים/.test(t)) {
