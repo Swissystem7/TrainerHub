@@ -499,7 +499,7 @@ function renderExercise(step) {
   // Update done button label
   const btnDone = document.getElementById('btnDone');
   btnDone.style.display = '';
-  btnDone.querySelector('.label').textContent = step.duration ? 'דלג' : 'סיימתי סט';
+  btnDone.querySelector('.label').textContent = step.duration ? 'סיימתי' : 'סיימתי סט';
   const btnSwapEx = document.getElementById('btnSwap');
   if (btnSwapEx) btnSwapEx.style.display = '';
 
