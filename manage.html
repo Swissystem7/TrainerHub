@@ -259,7 +259,24 @@
     }
   });
 
-  TH.ready(renderUser);
+  function renderWish() {
+    if (!window.THIngest || !THIngest.wishlistList) return;
+    var list = THIngest.wishlistList();
+    var box = $('wishList');
+    if (!list || !list.length) {
+      box.innerHTML = '<p class="hint">אין כרגע בקשות להוספת תרגילים חדשים.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (w) {
+      var d = w.at ? new Date(w.at).toLocaleDateString('he-IL') : '';
+      return '<div class="item"><div><b>' + TH.esc(w.he) + '</b><div class="hint" style="margin:0;font-size:0.75rem">' + TH.esc(w.reason) + (d ? ' &middot; ' + d : '') + '</div></div></div>';
+    }).join('');
+  }
+
+  TH.ready(function() {
+    renderUser();
+    renderWish();
+  });
 })();
 </script>
 </body>
