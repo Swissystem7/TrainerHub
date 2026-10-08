@@ -184,3 +184,6 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
     scroll-behavior: auto !important;
   }
 }
+
+[hidden] { display: none !important; }
+
