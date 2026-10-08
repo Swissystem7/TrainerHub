@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import anthropic
 import json
@@ -8,6 +9,7 @@ import asyncio
 
 from demo_workout import DEMO_WORKOUT
 from parser import parse_workout_json, validate_workout
+import site_scan
 
 app = FastAPI(title="TrainerHub API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -83,3 +85,12 @@ async def parse_workout(req: WorkoutRequest):
         raise HTTPException(502, "AI returned an unusable workout: " + "; ".join(problems))
 
     return {"success": True, "workout": workout}
+
+
+@app.post("/api/site-scan")
+async def scan_site(request: Request):
+    # Same contract as worker/site-scan (see site_scan.py). Without GEMINI_API_KEY
+    # this answers 503 and the page stays on the manual checklist.
+    raw = await request.body()
+    status, body = await asyncio.to_thread(site_scan.scan, raw, os.environ)
+    return JSONResponse(body, status_code=status)
