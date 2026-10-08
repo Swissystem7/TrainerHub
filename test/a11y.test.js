@@ -138,3 +138,19 @@ test('muted text uses a contrast-safe gray, not #6b7280 or #4a4a6a', function ()
   assert.match(pages.studio, /#9ca3af/);
   assert.doesNotMatch(pages.library, /#6b7280/);
 });
+
+test('every button has an accessible name', function () {
+  const unlabeled = [];
+  for (const [name, html] of Object.entries(pages)) {
+    const buttons = [...html.matchAll(/<button([^>]*)>(.*?)<\/button>/gis)];
+    for (const m of buttons) {
+      const attrs = m[1];
+      const text = m[2].replace(/<[^>]+>/g, '').trim();
+      const hasAria = /aria-label=|aria-labelledby=/.test(attrs);
+      if (!text && !hasAria) {
+        unlabeled.push(name + ':' + m[0]);
+      }
+    }
+  }
+  assert.deepEqual(unlabeled, []);
+});
