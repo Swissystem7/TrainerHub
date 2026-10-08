@@ -69,6 +69,10 @@
       .filter(function (s) { return s.length > 1; });
   }
 
+  // Work time written in words: "שתי דקות ריצה במקום", "פלאנק שלוש דקות".
+  var MINUTE_WORDS = { 'שתי': 2, 'שלוש': 3, 'ארבע': 4, 'חמש': 5, 'שש': 6, 'שבע': 7, 'שמונה': 8, 'תשע': 9, 'עשר': 10 };
+  var MINUTE_WORDS_RE = /(^|\s)(שתי|שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\s+דקות(?=\s|$)/;
+
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
     var s = String(token || '').trim();
@@ -98,14 +102,24 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנייה|שניה|שנ[׳']|″)/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
     } else {
-      m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
+      // "1.5 דקות" is 90 seconds and "2 דקות וחצי" is 150, not "1" in the name or a dangling "וחצי".
+      m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳'])(\s+וחצי)?/);
       if (m) {
-        duration_seconds = toInt(m[1]) * 60;
+        duration_seconds = Math.round(parseFloat(m[1]) * 60) + (m[2] ? 30 : 0);
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/(^|\s)דקתיים(?=\s|$)/))) {
+        duration_seconds = 120;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(MINUTE_WORDS_RE))) {
+        duration_seconds = MINUTE_WORDS[m[2]] * 60;
+        s = s.replace(m[0], ' ');
+      } else if ((m = s.match(/(^|\s)דקה אחת(?=\s|$)/))) {
+        duration_seconds = 60;
         s = s.replace(m[0], ' ');
       } else if ((m = s.match(/דקה וחצי/))) {
         duration_seconds = 90;
