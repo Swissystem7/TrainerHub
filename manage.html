@@ -207,6 +207,19 @@
     }).join('');
   }
 
+  function renderWishlist() {
+    var list = THIngest.wishlistList();
+    var box = $('wishList');
+    if (!list.length) {
+      box.innerHTML = '<p class="hint">אין כרגע בקשות מיוחדות לסרטונים.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (w) {
+      return '<div class="item"><div><b>' + TH.esc(w.he) + '</b><span>' + TH.esc(w.reason || 'חסר סרטון') + '</span></div>' +
+        '<button type="button" class="th-btn ghost" data-fill-name="' + TH.esc(w.he) + '">הוסף</button></div>';
+    }).join('');
+  }
+
   $('url').addEventListener('input', propose);
   $('he').addEventListener('input', propose);
   $('previewBtn').addEventListener('click', function () {
@@ -250,6 +263,14 @@
     renderUser();
   });
 
+  $('wishList').addEventListener('click', function (e) {
+    var name = e.target.getAttribute && e.target.getAttribute('data-fill-name');
+    if (!name) return;
+    $('he').value = name;
+    $('url').focus();
+    propose();
+  });
+
   $('exportBtn').addEventListener('click', function () {
     var json = TH.exportUserCatalog();
     $('exportBox').value = json;
@@ -259,7 +280,10 @@
     }
   });
 
-  TH.ready(renderUser);
+  TH.ready(function() {
+    renderUser();
+    renderWishlist();
+  });
 })();
 </script>
 </body>
