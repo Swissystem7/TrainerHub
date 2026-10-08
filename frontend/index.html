@@ -356,6 +356,11 @@
       WorkoutLibrary.save(TH.store, TH.KEYS.saved, entries);
       renderHistory();
       $('libraryStatus').textContent = 'נשמרו ' + entries.length + ' אימונים בדפדפן זה.';
+      var t = $('saveToast');
+      if (t) {
+        t.classList.add('visible');
+        setTimeout(function () { t.classList.remove('visible'); }, 3000);
+      }
       return true;
     } catch (error) {
       $('libraryStatus').textContent = error.message;
