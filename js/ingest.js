@@ -70,6 +70,10 @@
       .filter(function (s) { return s.length > 1; });
   }
 
+  // Work time written in words: "שתי דקות ריצה במקום", "פלאנק שלוש דקות".
+  var MINUTE_WORDS = { 'שתי': 2, 'שלוש': 3, 'ארבע': 4, 'חמש': 5, 'שש': 6, 'שבע': 7, 'שמונה': 8, 'תשע': 9, 'עשר': 10 };
+  var MINUTE_WORDS_RE = /(^|\s)(שתי|שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\s+דקות(?=\s|$)/;
+
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
     var s = String(token || '').trim();
@@ -116,6 +120,12 @@
     } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳']|′)/))) {
       minSec = Math.round(parseFloat(m[1]) * 60);
       minMatch = m[0];
+    } else if ((m = s.match(/(^|\s)דקתיים(?=\s|$)/))) {
+      minSec = 120;
+      minMatch = m[0];
+    } else if ((m = s.match(MINUTE_WORDS_RE))) {
+      minSec = MINUTE_WORDS[m[2]] * 60;
+      minMatch = m[0];
     } else if ((m = s.match(/(?:^|[\s\-–—,.:])(דקה(?:\s*אחת)?)(?:[\s\-–—,.:]|$)/))) {
       minSec = 60;
       minMatch = m[0];
@@ -124,7 +134,7 @@
       duration_seconds = minSec;
       s = s.replace(minMatch, ' ');
     }
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנייה|שניה|שנ[׳']|″)/);
     if (m) {
       var sec = toInt(m[1]);
       duration_seconds = minSec != null ? minSec + sec : sec;
