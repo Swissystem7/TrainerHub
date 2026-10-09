@@ -104,3 +104,27 @@ test('summary line in Hebrew', function () {
   assert.equal(S.summaryHe(p), 'רוחב: צר ~4 מ׳ · משטח: אספלט · מדרגות, ספסל · סכנה: מכוניות · יש צל');
   assert.equal(S.summaryHe(S.emptyProfile()), 'רוחב: בינוני');
 });
+
+test('model drift in values still lands on schema ids', function () {
+  const p = S.normalize({
+    surface: ['Artificial Turf'],
+    features: ['Steps', 'benches', 'stair', 'railings', 'ספסל'],
+    hazards: ['Cars', 'glasses'],
+    confidence: { Benches: 0.4, steps: 0.9, Width: 0.7 }
+  }, 'ai');
+  assert.deepEqual(p.surface, ['turf']);
+  assert.deepEqual(p.features, ['stairs', 'bench', 'railing']);
+  assert.deepEqual(p.hazards, ['cars', 'glass']);
+  assert.deepEqual(p.confidence, { bench: 0.4, stairs: 0.9, width: 0.7 });
+  assert.deepEqual(S.normalize({ features: ['trampolines', '', null, 'ss'] }).features, []);
+});
+
+test('prose braces before the JSON object do not hide it', function () {
+  const r = S.parseAiResponse('I filled in {width} and {features}:\n```json\n{"width":"narrow","features":["stairs"]}\n```');
+  assert.equal(r.ok, true);
+  assert.equal(r.profile.width, 'narrow');
+  assert.deepEqual(r.profile.features, ['stairs']);
+  const nested = S.parseAiResponse('{width: narrow, "confidence": {"stairs": 0.9}}');
+  assert.equal(nested.ok, false);
+  assert.equal(nested.error, 'bad-json');
+});
