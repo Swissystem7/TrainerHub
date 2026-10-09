@@ -13,7 +13,7 @@ test('site scan page is Hebrew RTL and labels every field', function () {
   assert.match(page, /lang="he"/);
   assert.match(page, /dir="rtl"/);
   const ids = [...page.matchAll(/<(?:input|select)\b[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ['photos', 'group', 'season']);
+  assert.deepEqual(ids, ['photos', 'meters', 'group', 'season']);
   ids.forEach((id) => assert.match(page, new RegExp('for="' + id + '"'), id));
 });
 
