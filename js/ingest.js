@@ -98,9 +98,35 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
+    var minMatch = null;
+    var minSec = null;
+    m = s.match(/(?:(\d+)\s*דקות|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
+    if (m) {
+      if (m[1]) minSec = toInt(m[1]) * 60 + 30;
+      else if (/שתי/.test(m[0])) minSec = 150;
+      else minSec = 90;
+      minMatch = m[0];
+    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*דקה/))) {
+      minSec = 30;
+      minMatch = m[0];
+    } else if ((m = s.match(/שתי\s*דקות/))) {
+      minSec = 120;
+      minMatch = m[0];
+    } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳']|′)/))) {
+      minSec = Math.round(parseFloat(m[1]) * 60);
+      minMatch = m[0];
+    } else if ((m = s.match(/(?:^|[\s\-–—,.:])(דקה(?:\s*אחת)?)(?:[\s\-–—,.:]|$)/))) {
+      minSec = 60;
+      minMatch = m[0];
+    }
+    if (minMatch) {
+      duration_seconds = minSec;
+      s = s.replace(minMatch, ' ');
+    }
     m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
     if (m) {
-      duration_seconds = toInt(m[1]);
+      var sec = toInt(m[1]);
+      duration_seconds = minSec != null ? minSec + sec : sec;
       s = s.replace(m[0], ' ');
     } else {
       m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
