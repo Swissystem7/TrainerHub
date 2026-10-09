@@ -69,9 +69,9 @@ no server. No personal data beyond localStorage.
 | Site profile schema, validate/clamp, AI JSON parsing, chips | `js/site-profile.js` | merged (#79) |
 | Builder adaptation: width→method, site drills, games, layout, hazards | `js/site-plan.js` | merged (#80) |
 | Local dev endpoint with the same prompt | `backend/site_scan.py` | merged (#83) |
-| Provider interface + manual fallback + proxy provider | `js/site-scan.js` | this branch |
-| Gemini proxy Worker (not deployed, no key) | `worker/site-scan/` | this branch |
-| Pilot mode: entitlement, branding, booklet preference, feedback | `js/pilot.js` | this branch |
-| Builder hint for preferred catalog clips | `js/session-builder.js` (`opts.prefer`) | this branch |
-| Buttons, camera input, client-side resize, chip card, 390px check | pages + `css/` | UI branch |
+| Provider client with manual-checklist fallback, client-side resize | `js/site-scan.js` | merged (#81) |
+| Gemini proxy Worker (not deployed, no key) | `worker/site-scan/` | merged (#81) |
+| Pilot mode: entitlement, branding, feedback | `js/pilot.js` | merged (#82) |
+| Builder hint for preferred catalog clips | `js/session-builder.js` (`opts.prefer`) + `THPilot.builderOpts` | #98 |
+| Buttons, camera input, chip card, 390px check | `site-scan.html` + links in `index.html` / `booklet.html` | merged (#84) |
 | Worker deploy + `GEMINI_API_KEY` + pointing the page at it | Cloudflare | owner step |

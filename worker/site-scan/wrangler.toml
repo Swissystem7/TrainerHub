@@ -1,14 +1,9 @@
-# TrainerHub — site scan proxy. Free Cloudflare Workers plan.
-# No key here on purpose: GEMINI_API_KEY is a secret, set with
-#   wrangler secret put GEMINI_API_KEY
-# Never add it to this file (it is public) or to [vars].
-
+# Owner step - not deployed from CI. See README.md.
 name = "trainerhub-site-scan"
 main = "worker.mjs"
-compatibility_date = "2026-01-01"
+compatibility_date = "2026-10-01"
 
 [vars]
+ALLOWED_ORIGIN = "https://swissystem7.github.io"
 GEMINI_MODEL = "gemini-2.5-flash"
-# Extra origins allowed to call the Worker, comma separated. The page on
-# https://swissystem7.github.io and http://localhost:* are always allowed.
-# ALLOWED_ORIGINS = ""
+# GEMINI_API_KEY is a secret: wrangler secret put GEMINI_API_KEY (never commit it)

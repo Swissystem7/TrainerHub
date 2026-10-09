@@ -1,60 +1,27 @@
-# worker/site-scan — פרוקסי לסריקת שטח
+# Site-scan proxy (Cloudflare Worker)
 
-Worker קטן ב-Cloudflare (תוכנית חינם) שמעביר 1–3 תמונות מהדף ל-Gemini vision ומחזיר את ה-JSON של המודל.
-קיים כדי שמפתח ה-API **לא** יהיה בדפדפן ולא במאגר הציבורי: הוא Secret של ה-Worker.
+Sends the coach's 1–3 site photos to Google Gemini vision and returns its JSON reply to the
+TrainerHub page. Gemini's key stays a Worker secret, so it never reaches the public repo or GitHub Pages.
+Images are passed through and **never stored**.
 
-הקוד כאן לא פרוס. **הפריסה והמפתח הם צעד של הבעלים** — השלבים למטה. בלי פריסה הפיצ'ר עובד במלואו
-דרך הצ'קליסט הידני ("מה יש בשטח?"), בלי AI.
+**Not deployed.** This is an owner step. Until you do it, the app uses the manual "מה יש בשטח?" checklist,
+and every part of the feature still works through it.
 
-## חוזה
+## Owner steps (free plans)
+1. Get a Gemini API key (free tier): https://aistudio.google.com/apikey
+2. `npm i -g wrangler && wrangler login` (Cloudflare account, free plan).
+3. From this folder: `wrangler secret put GEMINI_API_KEY` and paste the key.
+4. `wrangler deploy`. Note the URL, e.g. `https://trainerhub-site-scan.<you>.workers.dev`.
+5. Optional hard cap: Cloudflare dashboard → Security → WAF → Rate limiting rule on the Worker route
+   (the in-code limit of 6 requests/min per IP is best effort, per isolate).
+6. Point the page at it: set `window.TH_SITE_SCAN_ENDPOINT = '<worker URL>'` before `js/site-scan.js`
+   (or pass `{ endpoint }` to `THSiteScan.analyzeSitePhotos`).
 
-```
-POST /  { "images": [ { "mime": "image/jpeg", "data": "<base64>" } ] }   // 1–3 תמונות
-200 { "text": "<JSON של המודל כמו שהוא>" }
-400 bad-json | images · 403 origin · 405 method · 413 too-large · 429 rate · 502 upstream | empty · 503 not-configured
-```
+## Contract
+`POST { images: [{ mime: 'image/jpeg'|'image/png'|'image/webp', data: '<base64>' }] }` (1–3 images, body ≤ 4 MB)
+→ `200 { text }`, where `text` is the model's JSON. The client validates and clamps it with `THSiteProfile.parseAiResponse`.
+Errors: 400 bad input, 403 wrong origin, 405 method, 413 too large, 429 rate limited, 502 upstream, 503 key not set.
+In every error case the client shows the manual checklist.
 
-הדף לא סומך על המודל: `THSiteProfile.parseAiResponse` (ב-`js/site-profile.js`) מאמת וחותך לסכימה, וכל תשובה
-שאינה 200 מחזירה את המאמן לצ'קליסט הידני. אותו חוזה ואותו פרומפט ממש קיימים ב-`backend/site_scan.py`
-לפיתוח מקומי (`tests/test_site_scan.py` מאמת שהפרומפטים זהים).
-
-## פריסה (בעלים, פעם אחת)
-
-```bash
-npm install -g wrangler        # או npx wrangler
-cd worker/site-scan
-wrangler login
-wrangler secret put GEMINI_API_KEY    # מדביקים את המפתח מ-https://aistudio.google.com/apikey
-wrangler deploy
-```
-
-`wrangler deploy` מדפיס כתובת כמו `https://trainerhub-site-scan.<subdomain>.workers.dev`. מחברים אליה את הדף:
-
-```html
-<script>window.TH_SITE_SCAN_ENDPOINT = 'https://trainerhub-site-scan.<subdomain>.workers.dev';</script>
-```
-
-בדיקה מהירה (ה-Worker דורש `Origin` מורשה, לכן שולחים אותו ידנית):
-
-```bash
-curl -i -X POST https://trainerhub-site-scan.<subdomain>.workers.dev \
-  -H 'Origin: https://swissystem7.github.io' -H 'Content-Type: application/json' \
-  -d '{"images":[{"mime":"image/jpeg","data":"QUJD"}]}'
-```
-
-`503 not-configured` = המפתח לא הוגדר. `403 origin` = הכתובת שממנה נקראנו לא ברשימה.
-
-## מה שמור ומה לא
-
-* התמונות מועברות ל-Gemini ולא נשמרות: אין KV, אין D1, אין לוג של גוף הבקשה.
-* CORS מוגבל ל-`https://swissystem7.github.io` ול-`http://localhost:*` לפיתוח. דומיין נוסף — `ALLOWED_ORIGINS`
-  ב-`wrangler.toml` (מופרד בפסיקים), לא Secret.
-* חסימת קצב: עד 6 בקשות לדקה לכל IP, בזיכרון ה-isolate. זה בלם לפרץ מהדף, לא הגנה גלובלית; החסם האמיתי
-  על העלות הוא המדרגה החינמית של Gemini ושל Workers (100K בקשות ביום).
-* מודל ברירת המחדל: `gemini-2.5-flash` (`GEMINI_MODEL` ב-`wrangler.toml` לשינוי).
-* תוכנית חינם בלבד. אין להפעיל חיוב או credits.
-
-## בדיקות
-
-`npm test` מריץ את `test/site-scan-worker.test.js` מול הפונקציות כאן (אימות תמונות, CORS, חסימת קצב, מיפוי
-שגיאות) עם `fetch` מוזרק — בלי רשת ובלי מפתח.
+CORS only allows `ALLOWED_ORIGIN` (default `https://swissystem7.github.io`).
+Tests: `test/site-scan.test.js` (runs the handler with a stubbed upstream; no network, no key).

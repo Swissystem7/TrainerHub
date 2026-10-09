@@ -14,13 +14,13 @@
 
   var MUSCLE_KEYS = {
     core: ['בטן', 'ליבה', 'פלאנק', 'קראנץ', 'כפיפות בטן'],
-    legs: ['רגליים', 'רגל', 'ירכיים', 'ארבע ראשי', 'סקוואט', 'מכרעים'],
+    legs: ['רגליים', 'רגל', 'ירכיים', 'ארבע ראשי', 'סקוואט', 'מכרעים', 'ישבן', 'עכוז', 'גלוט', 'glute'],
     back: ['גב', 'חתירה', 'אוסטרלי'],
     chest: ['חזה', 'שכיבות'],
     shoulders: ['כתפיים', 'כתף'],
     biceps: ['דו ראשי', 'דו-ראשי', 'דו־ראשי', 'בייספס'],
     triceps: ['תלת ראשי', 'תלת-ראשי', 'תלת־ראשי', 'טרייספס'],
-    arms: ['ידיים', 'יד']
+    arms: ['ידיים', 'יד', 'זרועות', 'זרוע']
   };
 
   // Short muscle words that are substrings of common unrelated words:
@@ -86,6 +86,19 @@
       if (/שעתיים\s*ורבע/.test(t)) return 135;
       return 120;
     }
+    // Digit hours: "2 שעות", "3 שעות ו-20 דקות", "1.5 שעות", "2 שעות וחצי".
+    // Checked before "שעה ו" so the hours are not lost to the trailing minutes.
+    m = t.match(/(\d+(?:[.,]\d+)?)\s*שעות/);
+    if (m) {
+      n = Math.round(parseFloat(m[1].replace(',', '.')) * 60);
+      if (n > 0) {
+        var extra = t.match(/שעות\s*ו[\s-]*(\d+)\s*דק/);
+        if (extra) return n + toInt(extra[1]);
+        if (/שעות\s*וחצי/.test(t)) return n + 30;
+        if (/שעות\s*ורבע/.test(t)) return n + 15;
+        return n;
+      }
+    }
     m = t.match(/שעה\s*ו[\s-]*(\d+)\s*דק/);
     if (m) return 60 + toInt(m[1]);
     n = minuteWords(t, HOUR_PLUS_MINUTE_WORDS_RX);
@@ -106,7 +119,9 @@
     return null;
   }
 
-  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  // "איש" (20 איש), "בנים"/"בנות" and "נערים"/"נערות" must end at a word
+  // boundary: "אימון אישי", "אישור" and "אישה" are not head counts.
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות))(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
   var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
   // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
   // "עשרים וחמישה מתאמנים"). Only a space may separate them.
@@ -221,13 +236,18 @@
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
+  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
+  // A bare "גבוהה" does not: "עצימות גבוהה" and "ברכיים גבוהות" are drills.
+  var LEVEL_HIGH_RX = /רמה גבוהה|ברמה הגבוהה|רמה מאוד גבוהה|רמה גבוהה מאוד/;
+  var LEVEL_LOW_RX = /רמה נמוכה|ברמה הנמוכה|רמה בסיסית|רמה התחלתית|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
+
   function parseLevel(text) {
     var t = Infer.fold(text);
-    if (/מתקדמ|advanced/.test(t)) return 'advanced';
+    if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
     if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
-    if (/מתחיל|beginner/.test(t)) return 'beginner';
+    if (/מתחיל|beginner/.test(t) || LEVEL_LOW_RX.test(t)) return 'beginner';
     return null;
   }
 
