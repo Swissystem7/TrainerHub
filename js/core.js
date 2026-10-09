@@ -651,6 +651,42 @@
     return { ok: true, url: encodeLink(workout, meta || {}) };
   }
 
+  // Copy text to the clipboard. Resolves {ok:true} only after a real copy.
+  function copyText(text) {
+    return new Promise(function (resolve) {
+      try {
+        var nav = typeof navigator !== 'undefined' ? navigator : root.navigator;
+        var clip = nav && nav.clipboard;
+        if (!clip || typeof clip.writeText !== 'function') { resolve({ ok: false }); return; }
+        clip.writeText(String(text)).then(function () { resolve({ ok: true }); }, function () { resolve({ ok: false }); });
+      } catch (e) { resolve({ ok: false }); }
+    });
+  }
+
+  function manualCopyMarkup(text) {
+    return '<div class="th-manual-copy" role="status">' +
+      '<p>הדפדפן חסם העתקה אוטומטית. סמנו את הטקסט והעתיקו ידנית:</p>' +
+      '<textarea readonly rows="3" style="width:100%;direction:ltr">' + esc(text) + '</textarea>' +
+      '</div>';
+  }
+
+  // Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
+  function copyOrShow(text, anchor, onOk, position) {
+    return copyText(text).then(function (r) {
+      if (r.ok) {
+        if (onOk) onOk();
+        return r;
+      }
+      if (anchor && anchor.insertAdjacentHTML) {
+        var host = anchor.parentNode;
+        var prev = host && host.querySelector && host.querySelector('.th-manual-copy');
+        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        anchor.insertAdjacentHTML(position || 'afterend', manualCopyMarkup(text));
+      }
+      return r;
+    });
+  }
+
   function gateMarkup(kind) {
     var title = kind === 'pdf'
       ? 'ייצוא ממותג ללקוח כלול במסלול מאמן'
@@ -1611,6 +1647,9 @@
     encodeLink: encodeLink,
     shareToClient: shareToClient,
     gateMarkup: gateMarkup,
+    copyText: copyText,
+    copyOrShow: copyOrShow,
+    manualCopyMarkup: manualCopyMarkup,
     offerUrl: offerUrl,
     printUrl: printUrl,
     hashAccessCode: hashAccessCode,
