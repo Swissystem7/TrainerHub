@@ -81,7 +81,17 @@
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
-    var m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
+    // Clock time "1:30" / "3x0:40" and seconds marked with " or ״ ("30"", "45״").
+    var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d{1,2}):([0-5]\d)/i);
+    if (m) {
+      if (m[1]) sets = toInt(m[1]);
+      duration_seconds = toInt(m[2]) * 60 + toInt(m[3]);
+      s = s.replace(m[0], ' ');
+    } else if ((m = s.match(/(\d+)\s*["״]/))) {
+      duration_seconds = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+    m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
       if (m[2]) reps = toInt(m[2]);
@@ -119,6 +129,12 @@
       }
     }
     m = s.match(/^(\d+)\s+/);
+    if (m && reps == null && duration_seconds == null) {
+      reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+    // A count after the name: "שכיבות סמיכה 15".
+    m = s.match(/\s(\d+)\s*$/);
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
