@@ -19,8 +19,10 @@
     print: 'trainerhub_print_workout'
   };
 
-  // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
-  var ACCESS_HASH = 3194953836;
+  // Hash of the trainer access code (sent after payment) — product boundary
+  // on a static demo, not security. The code itself is not written in any file of
+  // this repo (tests included). Replaced 28.9.2026: the earlier code leaked and is revoked.
+  var ACCESS_HASH = 1690937514;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
@@ -322,8 +324,11 @@
     if (hashAccessCode(code) !== ACCESS_HASH) {
       return { ok: false, error: 'הקוד לא תואם. אין סליקה באתר — הקוד נשלח אחרי תשלום.' };
     }
-    setEntitlement({ tier: 'trainer', brand: brand });
-    return { ok: true, entitlement: entitlement() };
+    var ent = setEntitlement({ tier: 'trainer', brand: brand });
+    if (ent.tier !== 'trainer') {
+      return { ok: false, error: 'הקוד נכון, אבל הגישה לא נשמרה: הדפדפן חוסם שמירה (למשל גלישה פרטית). פתחו בדפדפן רגיל ונסו שוב.' };
+    }
+    return { ok: true, entitlement: ent };
   }
 
   function normalizeEntry(id, raw, defaultSource) {
@@ -1417,13 +1422,13 @@
           (entry.driveId && list[i].driveId === entry.driveId) ||
           (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
         list[i] = entry;
-        storeSet(KEYS.userCatalog, list);
+        if (!storeSet(KEYS.userCatalog, list)) return null;
         catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
         return entry;
       }
     }
     list.push(entry);
-    storeSet(KEYS.userCatalog, list);
+    if (!storeSet(KEYS.userCatalog, list)) return null;
     catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
     return entry;
   }

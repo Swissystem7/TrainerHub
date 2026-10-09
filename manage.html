@@ -235,7 +235,10 @@
       youtubeId: proposed.youtubeId || '',
       externalUrl: proposed.externalUrl || ''
     };
-    TH.addUserEntry(entry);
+    if (!TH.addUserEntry(entry)) {
+      $('addStatus').textContent = 'לא נשמר: הדפדפן חוסם שמירה מקומית (למשל גלישה פרטית).';
+      return;
+    }
     $('addStatus').textContent = 'נשמר במאגר המקומי. לא נדרש שינוי קוד.';
     $('url').value = '';
     $('he').value = '';

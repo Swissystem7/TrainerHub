@@ -373,7 +373,9 @@
       endSec: Math.floor(endSec),
       segmentOf: opts.segmentOf || driveId
     };
-    api.addUserEntry(entry);
+    if (!api.addUserEntry(entry)) {
+      return { error: 'storage', message: 'המקטע לא נשמר: הדפדפן חוסם שמירה מקומית (למשל גלישה פרטית).' };
+    }
     return { entry: entry };
   }
 
