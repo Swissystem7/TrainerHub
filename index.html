@@ -185,9 +185,12 @@
   </div>
 
   <div id="result" aria-live="polite"></div>
+  <div id="pilotCode" class="card"></div>
 </main>
 <script src="./js/core.js"></script>
 <script src="./js/pilot.js"></script>
+<script src="./js/pilot-feedback.js"></script>
+<script>THPilotFeedback.mountCode(document.getElementById('pilotCode'), { TH: TH });</script>
 <script src="./js/infer.js"></script>
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
