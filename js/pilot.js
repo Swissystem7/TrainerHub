@@ -156,6 +156,26 @@
     return lines.join('\n');
   }
 
+  // Builder hint: ids of catalog clips the Acharai booklet teaches, for
+  // THBuilder.buildSession(text, catalog, THPilot.builderOpts(catalog)). Between
+  // two clips that fit equally well, the booklet clip wins. { prefer: [] } when
+  // no pilot is on or the booklet data is not loaded yet, which changes nothing.
+  function builderOpts(catalog) {
+    var booklet = root.THBooklet;
+    if (!booklet && typeof module === 'object' && module.exports) {
+      try { booklet = require('./booklet.js'); } catch (e) { booklet = null; }
+    }
+    if (!prefersBooklet() || !booklet || typeof booklet.catalogLinks !== 'function') return { prefer: [] };
+    var links;
+    try { links = booklet.catalogLinks(catalog); } catch (e) { return { prefer: [] }; }
+    var seen = {};
+    var prefer = [];
+    (links.linked || []).forEach(function (x) {
+      if (x && x.id && !seen[x.id]) { seen[x.id] = true; prefer.push(x.id); }
+    });
+    return { prefer: prefer };
+  }
+
   // phone ריק → wa.me בלי נמען, והמאמן בוחר למי לשלוח.
   function waUrl(rec, phone) {
     var digits = String(phone == null ? '' : phone).replace(/\D/g, '');
@@ -172,6 +192,7 @@
     current: current,
     isActive: isActive,
     prefersBooklet: prefersBooklet,
+    builderOpts: builderOpts,
     activate: activate,
     redeemCode: redeemCode,
     init: init,
