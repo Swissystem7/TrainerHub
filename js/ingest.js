@@ -24,22 +24,23 @@
   function isRestToken(s) {
     var t = Infer.fold(s);
     if (!t) return false;
-    if (/^מנוחה$/.test(t)) return true;
-    if (/מנוחה/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
+    if (/^(?:מנוחה|הפסקה)$/.test(t)) return true;
+    if (/(?:מנוחה|הפסקה)/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
     return false;
   }
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה וחצי/.test(t) && /מנוחה/.test(t)) return 90;
-    if (/חצי דקה/.test(t) && /מנוחה/.test(t)) return 30;
+    var hasRest = /(?:מנוחה|הפסקה)/;
+    if (/דקה וחצי/.test(t) && hasRest.test(t)) return 90;
+    if (/חצי דקה/.test(t) && hasRest.test(t)) return 30;
     var m = t.match(/(\d+)\s*דקות/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]) * 60;
-    if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
+    if (m && hasRest.test(t)) return toInt(m[1]) * 60;
+    if (/שתי דקות|2 דקות/.test(t) && hasRest.test(t)) return 120;
+    if (/דקה/.test(t) && hasRest.test(t)) return 60;
     m = t.match(/(\d+)\s*(?:שניות|שנ)/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]);
-    m = t.match(/מנוחה\s+(\d+)/);
+    if (m && hasRest.test(t)) return toInt(m[1]);
+    m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
   }
@@ -49,9 +50,9 @@
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
-    var rest = raw.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ)/) || raw.match(/(\d+)\s*שניות מנוחה/);
+    var rest = raw.match(/(?:מנוחה|הפסקה)\s+(\d+)\s*(?:שניות|שנ)/) || raw.match(/(\d+)\s*שניות (?:מנוחה|הפסקה)/);
     if (rest) defaults.rest = toInt(rest[1]);
-    if (/דקה מנוחה/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/(?:דקה מנוחה|דקה הפסקה)/.test(raw) && defaults.rest == null) defaults.rest = 60;
     var work = raw.match(/(\d+)\s*שניות עבודה/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
@@ -98,9 +99,35 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
+    var minMatch = null;
+    var minSec = null;
+    m = s.match(/(?:(\d+)\s*דקות|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
+    if (m) {
+      if (m[1]) minSec = toInt(m[1]) * 60 + 30;
+      else if (/שתי/.test(m[0])) minSec = 150;
+      else minSec = 90;
+      minMatch = m[0];
+    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*דקה/))) {
+      minSec = 30;
+      minMatch = m[0];
+    } else if ((m = s.match(/שתי\s*דקות/))) {
+      minSec = 120;
+      minMatch = m[0];
+    } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳']|′)/))) {
+      minSec = Math.round(parseFloat(m[1]) * 60);
+      minMatch = m[0];
+    } else if ((m = s.match(/(?:^|[\s\-–—,.:])(דקה(?:\s*אחת)?)(?:[\s\-–—,.:]|$)/))) {
+      minSec = 60;
+      minMatch = m[0];
+    }
+    if (minMatch) {
+      duration_seconds = minSec;
+      s = s.replace(minMatch, ' ');
+    }
     m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
     if (m) {
-      duration_seconds = toInt(m[1]);
+      var sec = toInt(m[1]);
+      duration_seconds = minSec != null ? minSec + sec : sec;
       s = s.replace(m[0], ' ');
     } else {
       m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
