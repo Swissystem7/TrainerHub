@@ -161,3 +161,7 @@ test('booklet page is Hebrew RTL, labelled, linked from home, and never stores t
   assert.doesNotMatch(page, /store\.set\([^)]*(score|fitness)/i);
   assert.match(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), /booklet\.html/);
 });
+
+test('wide booklet tables scroll inside themselves on a 390px phone', function () {
+  assert.match(page, /@media screen and \(max-width: 600px\) \{ table \{ display: block; overflow-x: auto; \} \}/);
+});
