@@ -24,22 +24,23 @@
   function isRestToken(s) {
     var t = Infer.fold(s);
     if (!t) return false;
-    if (/^מנוחה$/.test(t)) return true;
-    if (/מנוחה/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
+    if (/^(?:מנוחה|הפסקה)$/.test(t)) return true;
+    if (/(?:מנוחה|הפסקה)/.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
     return false;
   }
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
-    if (/דקה וחצי/.test(t) && /מנוחה/.test(t)) return 90;
-    if (/חצי דקה/.test(t) && /מנוחה/.test(t)) return 30;
+    var hasRest = /(?:מנוחה|הפסקה)/;
+    if (/דקה וחצי/.test(t) && hasRest.test(t)) return 90;
+    if (/חצי דקה/.test(t) && hasRest.test(t)) return 30;
     var m = t.match(/(\d+)\s*דקות/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]) * 60;
-    if (/שתי דקות|2 דקות/.test(t) && /מנוחה/.test(t)) return 120;
-    if (/דקה/.test(t) && /מנוחה/.test(t)) return 60;
+    if (m && hasRest.test(t)) return toInt(m[1]) * 60;
+    if (/שתי דקות|2 דקות/.test(t) && hasRest.test(t)) return 120;
+    if (/דקה/.test(t) && hasRest.test(t)) return 60;
     m = t.match(/(\d+)\s*(?:שניות|שנ)/);
-    if (m && /מנוחה/.test(t)) return toInt(m[1]);
-    m = t.match(/מנוחה\s+(\d+)/);
+    if (m && hasRest.test(t)) return toInt(m[1]);
+    m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
     if (m) return toInt(m[1]);
     return null;
   }
@@ -49,9 +50,9 @@
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
-    var rest = raw.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ)/) || raw.match(/(\d+)\s*שניות מנוחה/);
+    var rest = raw.match(/(?:מנוחה|הפסקה)\s+(\d+)\s*(?:שניות|שנ)/) || raw.match(/(\d+)\s*שניות (?:מנוחה|הפסקה)/);
     if (rest) defaults.rest = toInt(rest[1]);
-    if (/דקה מנוחה/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/(?:דקה מנוחה|דקה הפסקה)/.test(raw) && defaults.rest == null) defaults.rest = 60;
     var work = raw.match(/(\d+)\s*שניות עבודה/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
