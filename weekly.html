@@ -49,9 +49,9 @@ function copyDayTraineeLink(dayIndex){
     $('result').insertAdjacentHTML('afterbegin', TH.gateMarkup('share'));
     return;
   }
-  navigator.clipboard.writeText(shared.url).then(function(){
+  TH.copyOrShow(shared.url, $('result'), function(){
     $('result').insertAdjacentHTML('afterbegin', '<p class="honest" id="copyStatus" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
-  });
+  }, 'afterbegin');
 }
 function printDayWorkout(dayIndex){
   const raw = window.__lastProgram;

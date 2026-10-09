@@ -212,7 +212,7 @@
     <div id="gateHost"></div>
   </div>
 </div>
-<script src="../js/core.js?v=netanya-2"></script>
+<script src="../js/core.js?v=netanya-3"></script>
 <script src="parse-workout.js?v=netanya-2"></script>
 <script src="saved-workouts.js?v=netanya-2"></script>
 <script src="netanya-opening.js?v=netanya-2"></script>
@@ -341,7 +341,7 @@
       host.innerHTML = TH.gateMarkup('share');
       return;
     }
-    navigator.clipboard.writeText(shared.url).then(function () {
+    TH.copyOrShow(shared.url, host, function () {
       $('shareBtn').textContent = 'הועתק';
       setTimeout(function () { $('shareBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
     });
@@ -396,7 +396,7 @@
       });
       text += '\n';
     });
-    navigator.clipboard.writeText(text).then(function () {
+    TH.copyOrShow(text, $('actionBar'), function () {
       $('copyBtn').textContent = 'הועתק';
       setTimeout(function () { $('copyBtn').textContent = 'העתק'; }, 1400);
     });
