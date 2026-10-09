@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta name="description" content="סריקת שטח: מצלמים את מקום האימון, מסמנים מה יש בו, ומקבלים אימון מחוברת אחריי שמתאים לשטח ולקבוצה.">
+  <title>TrainerHub | סריקת שטח</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; --warn:#ffb454; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    .wrap { max-width: 760px; margin: auto; padding: 24px 16px 64px; }
+    .top small { color: var(--lime); font-weight: bold; }
+    .top h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); margin: 8px 0; }
+    .top p, .muted { color: var(--muted); line-height: 1.6; }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 0 0 16px; }
+    section h2 { margin: 0 0 10px; font-size: 1.2rem; }
+    h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--lime); }
+    ol, ul { padding-inline-start: 1.3rem; line-height: 1.6; }
+    label { display: block; color: var(--muted); font-size: .82rem; margin: 8px 0 4px; }
+    input, select { width: 100%; padding: 10px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+    button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--lime); color: #101312; font-weight: 700; cursor: pointer; font: inherit; margin-top: 10px; }
+    button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    .shot { display: block; text-align: center; padding: 18px; border: 2px dashed var(--line); border-radius: 14px; color: var(--ink); font-size: 1.1rem; cursor: pointer; margin: 0; }
+    .shot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .thumbs { display: flex; gap: 8px; margin-top: 10px; }
+    .thumbs img { width: 31%; max-width: 160px; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+    .chips button { margin: 0; padding: 7px 11px; border-radius: 999px; background: #111513; color: var(--muted); border: 1px solid var(--line); font-weight: 400; font-size: .9rem; }
+    .chips button[aria-pressed="true"] { background: #26302b; color: var(--ink); border-color: var(--lime); }
+    .chips button[aria-pressed="true"]::before { content: '✓ '; color: var(--lime); }
+    .chips button.unsure::after { content: ' ?'; color: var(--warn); }
+    .warn { border-inline-start: 4px solid var(--warn); background: #2a2216; padding: 8px 10px; border-radius: 8px; margin: 6px 0; line-height: 1.5; }
+    .why li { color: var(--muted); }
+    .pill { display: inline-block; background: #26302b; border-radius: 999px; padding: 2px 8px; font-size: .72rem; color: var(--lime); margin-inline-start: 4px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <span class="chip on">סריקת שטח</span>
+  <a href="./booklet.html">חוברת הקורס</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / סריקת שטח</small>
+    <h1>📷 סרוק את השטח</h1>
+    <p>מצלמים את מקום האימון (עד 3 תמונות), בודקים מה זוהה, ומקבלים אימון מחוברת אחריי שמתאים לשטח. הזיהוי הוא הצעה בלבד: אתם מתקנים כל דבר לפני הבנייה.</p>
+  </header>
+
+  <section aria-labelledby="photos-h">
+    <h2 id="photos-h">1. צילום השטח</h2>
+    <label class="shot" for="photos">📷 צלמו או בחרו עד 3 תמונות
+      <input id="photos" type="file" accept="image/*" capture="environment" multiple>
+    </label>
+    <div class="thumbs" id="thumbs"></div>
+    <p class="muted" id="scanStatus" aria-live="polite">אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.</p>
+  </section>
+
+  <section aria-labelledby="chips-h">
+    <h2 id="chips-h">2. מה יש בשטח?</h2>
+    <p class="muted">לחיצה מסמנת או מבטלת. סימן ? = זיהוי לא בטוח, כדאי לבדוק.</p>
+    <div id="chipsOut"></div>
+    <p id="summary" class="muted"></p>
+  </section>
+
+  <section aria-labelledby="build-h">
+    <h2 id="build-h">3. בניית האימון</h2>
+    <div class="row">
+      <div><label for="group">כמות חניכים</label><input id="group" type="number" min="1" max="200" value="12" inputmode="numeric"></div>
+      <div><label for="season">עונה</label><select id="season"><option value="summer">קיץ</option><option value="winter">חורף</option></select></div>
+    </div>
+    <button type="button" id="build">בנה אימון לשטח</button>
+    <div id="planOut" aria-live="polite"></div>
+    <button type="button" id="start" class="ghost" hidden>התחל במצב אימון</button>
+  </section>
+</main>
+<script src="./js/core.js"></script>
+<script src="./js/booklet.js"></script>
+<script src="./js/site-profile.js"></script>
+<script src="./js/site-plan.js"></script>
+<script src="./js/site-scan.js"></script>
+<script>
+(function () {
+  'use strict';
+  var esc = TH.esc;
+  var SP = THSiteProfile;
+  var GROUPS = [
+    { kind: 'width', he: 'רוחב השטח' },
+    { kind: 'surface', he: 'משטח' },
+    { kind: 'features', he: 'מה יש בשטח' },
+    { kind: 'hazards', he: 'סכנות' },
+    { kind: 'shade', he: 'צל' }
+  ];
+  var profile = SP.emptyProfile();
+  var current = null;
+  function $(id) { return document.getElementById(id); }
+
+  function unsure(c) {
+    var key = c.kind === 'features' || c.kind === 'hazards' ? c.id : c.kind;
+    var v = profile.confidence[key];
+    return c.on && typeof v === 'number' && v < 0.6;
+  }
+
+  function renderChips() {
+    var all = SP.chips(profile);
+    $('chipsOut').innerHTML = GROUPS.map(function (g) {
+      var mine = all.filter(function (c) { return c.kind === g.kind; });
+      return '<h3>' + esc(g.he) + '</h3><div class="chips" role="group" aria-label="' + esc(g.he) + '">' + mine.map(function (c) {
+        return '<button type="button" data-kind="' + esc(c.kind) + '" data-id="' + esc(c.id) + '" aria-pressed="' + c.on + '"' +
+          (unsure(c) ? ' class="unsure" title="זיהוי לא בטוח"' : '') + '>' + esc(c.he.replace(/^(רוחב|משטח|סכנה): /, '')) + '</button>';
+      }).join('') + '</div>';
+    }).join('');
+    $('summary').textContent = (profile.source === 'ai' ? 'זיהוי אוטומטי: ' : 'סימנתם: ') + SP.summaryHe(profile);
+  }
+
+  $('chipsOut').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-kind]');
+    if (!b) return;
+    profile = SP.toggle(profile, b.dataset.kind, b.dataset.id);
+    renderChips();
+  });
+
+  function showThumbs(files) {
+    $('thumbs').innerHTML = '';
+    files.forEach(function (f) {
+      var img = document.createElement('img');
+      img.alt = 'תמונת השטח';
+      img.src = URL.createObjectURL(f);
+      img.onload = function () { URL.revokeObjectURL(img.src); };
+      $('thumbs').appendChild(img);
+    });
+  }
+
+  $('photos').addEventListener('change', function () {
+    var files = Array.prototype.slice.call(this.files || [], 0, 3);
+    if (!files.length) return;
+    showThumbs(files);
+    var Scan = window.THSiteScan;
+    if (!Scan || !(window.TH_SITE_SCAN_ENDPOINT)) {
+      $('scanStatus').textContent = 'הזיהוי האוטומטי עוד לא מחובר. סמנו למטה מה יש בשטח לפי התמונות.';
+      return;
+    }
+    $('scanStatus').textContent = 'מזהה את השטח…';
+    Promise.all(files.map(function (f) { return Scan.resizeImage(f); })).then(function (imgs) {
+      return Scan.analyzeSitePhotos(imgs);
+    }).then(function (res) {
+      if (res.ok) {
+        profile = res.profile;
+        $('scanStatus').textContent = 'זה מה שזיהיתי. בדקו ותקנו לפני הבנייה.';
+      } else {
+        $('scanStatus').textContent = 'לא הצלחתי לזהות הפעם. סמנו למטה מה יש בשטח.';
+      }
+      renderChips();
+    }).catch(function () {
+      $('scanStatus').textContent = 'לא הצלחתי לקרוא את התמונות. סמנו למטה מה יש בשטח.';
+    });
+  });
+
+  function fmtEx(x) {
+    var bits = [];
+    if (x.sets && x.sets > 1) bits.push(x.sets + ' סבבים');
+    if (x.reps != null) bits.push(x.reps + ' חזרות');
+    if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
+    return '<li><strong>' + esc(x.name) + '</strong>' + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') +
+      (x.notes ? '<div class="muted">' + esc(x.notes) + '</div>' : '') + '</li>';
+  }
+
+  function buildNow() {
+    if (!THBooklet.data) { $('planOut').innerHTML = '<p class="muted">תוכן החוברת עוד לא נטען.</p>'; return; }
+    var res = THSitePlan.build(profile, { group: $('group').value, season: $('season').value });
+    current = res.workout;
+    var layout = { waves: 'בגלים', stations: 'בתחנות' }[res.layout];
+    $('planOut').innerHTML =
+      res.warnings.map(function (w) { return '<div class="warn">⚠️ ' + esc(w) + '</div>'; }).join('') +
+      '<h3>' + esc(current.title) + ' · ' + current.duration_minutes + ' דק׳' + (layout ? '<span class="pill">' + layout + '</span>' : '') + '</h3>' +
+      '<ul class="why">' + res.reasons.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
+      current.phases.map(function (p) {
+        return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
+      }).join('');
+    $('start').hidden = false;
+  }
+
+  $('build').addEventListener('click', buildNow);
+  $('start').addEventListener('click', function () {
+    if (!current) return;
+    TH.store.set(TH.KEYS.active, current);
+    location.href = './frontend/workout-mode.html';
+  });
+
+  renderChips();
+  THBooklet.load();
+})();
+</script>
+</body>
+</html>
