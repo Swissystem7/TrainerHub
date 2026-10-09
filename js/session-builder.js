@@ -388,7 +388,15 @@
     };
   }
 
-  var api = { buildSession: buildSession, scoreEntry: scoreEntry, groupPlan: groupPlan };
+  // prescription + wantedCount are exported so the rules panel can quote the
+  // numbers this engine actually runs instead of keeping a second copy of them.
+  var api = {
+    buildSession: buildSession,
+    scoreEntry: scoreEntry,
+    groupPlan: groupPlan,
+    prescription: prescription,
+    wantedCount: wantedCount
+  };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
     module.exports = api;

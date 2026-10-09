@@ -63,6 +63,16 @@
     .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: 12px; background: #000; }
     .ex-media-segment, .honest { color: var(--muted); font-size: .82rem; line-height: 1.45; }
+    .rules { margin-top: 16px; }
+    .rules h2 { font-size: 1.05rem; }
+    .rules-for { color: var(--muted); font-size: .82rem; line-height: 1.45; margin: 6px 0 0; }
+    .rules-list { margin: 10px 0 0; padding: 0; list-style: none; }
+    .rule { border-top: 1px solid var(--line); padding: 10px 0; }
+    .rule:first-of-type { border-top: 0; }
+    .rule b { display: block; margin-bottom: 4px; }
+    .rule-value { display: block; color: var(--ink); font-size: .92rem; line-height: 1.45; }
+    .rule-source { display: inline-block; margin-top: 6px; }
+    .rule-detail { display: block; color: var(--muted); font-size: .8rem; line-height: 1.45; margin-top: 4px; }
     @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -193,6 +203,7 @@
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
 <script src="./js/session-builder.js"></script>
+<script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
 <script>
 (function () {
@@ -278,6 +289,10 @@
       }).join('');
       return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
     }).join('');
+    // Every assumption behind the plan, with its source, so it can be read before «התחל אימון».
+    var rules = built.request
+      ? TH.rulesMarkup(built, { className: 'rules', title: 'הנחות האימון ומקורותיהן' })
+      : '';
     var equipment = (w.equipment || []).length ? w.equipment.join(', ') : 'לפי המאגר';
     var groupPlan = w.group_plan && w.group_plan.he
       ? '<p class="stim"><strong>סידור קבוצה:</strong> ' + TH.esc(w.group_plan.he) + '</p>'
@@ -301,6 +316,7 @@
         flags +
         groupPlan +
         phases +
+        rules +
         '<div class="actions">' +
           '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn">פתח כמתאמן</button>' +
