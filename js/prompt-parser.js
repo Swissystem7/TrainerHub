@@ -221,13 +221,18 @@
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
+  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
+  // A bare "גבוהה" does not: "עצימות גבוהה" and "ברכיים גבוהות" are drills.
+  var LEVEL_HIGH_RX = /רמה גבוהה|ברמה הגבוהה|רמה מאוד גבוהה|רמה גבוהה מאוד/;
+  var LEVEL_LOW_RX = /רמה נמוכה|ברמה הנמוכה|רמה בסיסית|רמה התחלתית|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
+
   function parseLevel(text) {
     var t = Infer.fold(text);
-    if (/מתקדמ|advanced/.test(t)) return 'advanced';
+    if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
     if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
-    if (/מתחיל|beginner/.test(t)) return 'beginner';
+    if (/מתחיל|beginner/.test(t) || LEVEL_LOW_RX.test(t)) return 'beginner';
     return null;
   }
 
