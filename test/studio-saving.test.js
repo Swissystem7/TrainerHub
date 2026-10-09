@@ -51,3 +51,26 @@ test('Hebrew conjunctions do not split instructions into phantom timed exercises
   assert.equal(w.phases[1].exercises.length,3);
   assert.equal(w.phases[2].exercises.length,1);
 });
+
+test('saveWorkouts prevents duplicate workout objects by comparing entire objects not just titles', () => {
+  let value = [];
+  const store = {get: () => structuredClone(value), set: (k,v) => {value = structuredClone(v); return true;}};
+  const workout = {"title":"אימון בודד","phases":[{"name":"Main","exercises":[{"name":"סקוואט","sets":3,"reps":10}]}]};
+  const duplicateWorkout = {"title":"אימון בודד","phases":[{"name":"Main","exercises":[{"name":"סקוואט","sets":3,"reps":10}]}]};
+  
+  const result = WorkoutLibrary.save(store, 'test-key', [workout, duplicateWorkout]);
+  
+  // Check that only one instance of the workout exists
+  assert.equal(result.length, 1);
+  
+  // Check that the savedAt field is present and valid
+  assert.ok(result[0].savedAt);
+  assert.equal(typeof result[0].savedAt, 'string');
+  
+  // Check that the workout object is exactly as expected
+  assert.deepEqual(result[0], {
+    "title":"אימון בודד",
+    "phases":[{"name":"Main","exercises":[{"name":"סקוואט","sets":3,"reps":10}]}],
+    "savedAt": result[0].savedAt
+  });
+});
