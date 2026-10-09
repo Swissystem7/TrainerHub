@@ -62,11 +62,11 @@
     <h2 id="have">מה יש בפועל</h2>
     <p id="haveStats">המספר המדויק נטען מהמאגר המקומי.</p>
     <ul>
-      <li>78 קליפים בקטלוג העברי המקומי, מחוברים לבונה.</li>
+      <li>68 קליפים בעברית שמתנגנים ומחוברים לבונה (70 רשומות, כי שתי רשומות חוזרות על אותו קליפ). בקטלוג יש עוד 8 רשומות בלי סרטון — הן מסומנות כלא זמינות ולא נכנסות לאימון.</li>
       <li>בונה אימון משדה אחד, בונה שבועי, ומצב אימון בדפדפן.</li>
       <li>שיתוף ללקוח הוא לינק בכתובת — בלי התחברות.</li>
     </ul>
-    <p class="honest">אין שרת ענן בדמו הציבורי. הסרטונים המקומיים רצים מקבצי הריפו; סרטוני דרייב — מהקישור המשותף.</p>
+    <p class="honest">אין שרת ענן בדמו הציבורי. קובצי הווידאו מתפרסמים כנכסים ב־GitHub Releases ולא נשמרים בריפו; בלי רשת מוצגים פרטי התרגיל במקום נגן.</p>
   </section>
 
   <section class="grid" id="plans">
@@ -88,7 +88,7 @@
         <li>PDF / דף ממותג לשליחה</li>
         <li>לקוחות בלי תקרה — כי אין ניהול לקוחות</li>
       </ul>
-      <p class="honest">אין סליקה כאן. אחרי ביט או העברה מקבלים קוד גישה. המחיר לא אומת בראיונות — פירוט ב־<a href="./MONETIZATION.md">MONETIZATION.md</a>.</p>
+      <p class="honest">אין סליקה כאן. אחרי ביט או העברה מקבלים קוד גישה. המחיר הוא הצעה ולא אומת בראיונות עם מאמנים.</p>
     </article>
   </section>
 
@@ -96,7 +96,7 @@
     <h2>מה במכוון אין</h2>
     <ul>
       <li>אין CRM: כרטיסיות, חשבוניות או וואטסאפ־שרת. יש יומן מקומי לייבוא קוד TH1 — לא מוצר ניהול לקוחות.</li>
-      <li>אין אפליקציה בחנויות ואין רישוי לחדר כושר — 78 קליפים קטנים מדי לזה.</li>
+      <li>אין אפליקציה בחנויות ואין רישוי לחדר כושר — 68 קליפים קטנים מדי לזה.</li>
       <li>אין ספירת מאמנים בדויה. המתחרים הישראלים שמוכרים CRM: AutoFit ₪300–900, Coach מ־₪200, Boostapp מ־₪179.</li>
     </ul>
   </section>
@@ -112,8 +112,10 @@
       <div class="actions">
         <button type="submit" class="th-btn">הפעל במכשיר הזה</button>
         <button type="button" class="th-btn ghost" id="clearBtn">בטל גישה במכשיר</button>
-        <a class="th-btn ghost" href="https://github.com/Swissystem7/TrainerHub/issues/new">בקשת גישה בגיטהאב</a>
+        <a class="th-btn ghost" id="contactDirect" href="#" hidden>פנייה ישירה לקוד גישה</a>
+        <a class="th-btn ghost" id="contactForm" href="https://github.com/Swissystem7/TrainerHub/issues/new?template=access-request.yml">בקשת קוד גישה (טופס בעברית)</a>
       </div>
+      <p class="honest" id="contactNote">הטופס נפתח בגיטהאב והוא ציבורי: לא כותבים בו טלפון או מייל, ועונים לכם בתגובה שם.</p>
       <p class="status" id="redeemStatus" role="status"></p>
     </form>
   </section>
@@ -125,17 +127,21 @@
         <tr><th>כלי</th><th>מה קונים</th><th>רצפה לחודש</th></tr>
       </thead>
       <tbody>
-        <tr><td>Tazman</td><td>יומן + סליקה</td><td>₪0 עד 20 לקוחות, אחר כך מ־₪89</td></tr>
-        <tr><td>Boostapp</td><td>CRM מלא</td><td>₪179 + ₪250 הקמה</td></tr>
-        <tr><td>Coach</td><td>CRM + 2,000 תרגילים עבריים</td><td>מ־₪200</td></tr>
-        <tr><td>AutoFit</td><td>CRM + 10,000+ תרגילים</td><td>₪300</td></tr>
-        <tr><td>TrainerHub מאמן</td><td>ספרייה + שיתוף, בלי CRM</td><td>₪59 מוצע</td></tr>
+        <tr><td><a href="https://basecrm.co.il/pro/personal-trainers/">BaseCRM</a></td><td>ניהול מתאמנים, בונה עם 35+ תרגילים, שיתוף בלינק</td><td>₪0 במסלול החינמי; ₪249 בלי תקרת מתאמנים</td></tr>
+        <tr><td><a href="https://tazman.co.il/">Tazman</a></td><td>יומן + סליקה</td><td>₪0 עד 20 לקוחות, אחר כך מ־₪89 (לפני מע״מ)</td></tr>
+        <tr><td><a href="https://www.quickcoach.fit/everfit-pricing-2026.html">Everfit</a></td><td>בונה + ספרייה, באנגלית</td><td>$0 עד 5 לקוחות, אחר כך מ־$19</td></tr>
+        <tr><td><a href="https://landing.nutricloudpro.com/">NutriCal</a></td><td>תפריטים ואימונים + וואטסאפ</td><td>₪75 עד 5 לקוחות</td></tr>
+        <tr><td><a href="https://www.boostapp.co.il/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F">Boostapp</a></td><td>CRM מלא</td><td>₪179 + ₪250 הקמה (לפני מע״מ)</td></tr>
+        <tr><td><a href="https://www.coach-platform.com/">Coach</a></td><td>CRM + 2,000 תרגילים עבריים</td><td>₪200 עד 10 מתאמנים</td></tr>
+        <tr><td><a href="https://auto-fit.co.il/">AutoFit</a></td><td>CRM + 10,000+ תרגילים</td><td>₪300 עד 25 לקוחות</td></tr>
+        <tr><td>TrainerHub מאמן</td><td>68 קליפים בעברית + בונה + שיתוף, בלי CRM</td><td>₪59 מוצע</td></tr>
       </tbody>
     </table>
-    <p class="honest">מקורות ותאריכי בדיקה: <a href="./MONETIZATION.md">MONETIZATION.md</a>. דף אחד שאפשר להדפיס ולתת למאמן: <a href="./pitch.html">pitch.html</a>.</p>
+    <p class="honest">מדפי המחיר של כל כלי, נבדק 28.9.2026. יש היום אפשרויות חינמיות לשיתוף אימון בלינק, ולכן ₪59 הוא לא «הכי זול» — הוא מחיר על ספרייה בעברית ובונה בלי CRM. דף אחד שאפשר להדפיס ולתת למאמן: <a href="./pitch.html">pitch.html</a>.</p>
   </section>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/contact.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -155,7 +161,7 @@
   TH.ready(function () {
     var stats = TH.catalogStats();
     $('haveStats').textContent = 'במאגר הטעון עכשיו: ' + stats.total +
-      ' פריטים (' + stats.withFile + ' עם קובץ מקומי). הקטלוג הקבוע בריפו הוא 78 קליפים.';
+      ' רשומות, מהן ' + stats.playable + ' עם סרטון זמין. השאר מסומנות כלא זמינות ולא נכנסות לאימון.';
     paintEnt();
   });
 
