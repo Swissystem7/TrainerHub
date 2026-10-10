@@ -6,8 +6,14 @@
 (function (root) {
   'use strict';
 
+  var SessionTracker = root.THSessionTracker;
+  if (!SessionTracker && typeof module === 'object' && module.exports) {
+    SessionTracker = require('./session-tracker.js');
+  }
+
   var KEYS = {
     active: 'trainerhub_active_workout',
+    activeSession: 'trainerhub_active_session',
     saved: 'trainerhub_workouts',
     clients: 'trainerhub_clients',
     user: 'trainerhub_user',
@@ -1561,6 +1567,20 @@
     return { model: workoutPrintModel(workout, opts), url: printUrl() };
   }
 
+  function createWorkoutSession(workoutPlan) {
+    if (!SessionTracker || typeof SessionTracker.createSession !== 'function') return null;
+    return SessionTracker.createSession(workoutPlan);
+  }
+
+  function saveWorkoutSession(sessionState) {
+    if (!sessionState || !Array.isArray(sessionState.exercises)) return false;
+    return storeSet(KEYS.activeSession, sessionState);
+  }
+
+  function loadWorkoutSession() {
+    return storeGet(KEYS.activeSession, null);
+  }
+
   function suggestNextFromLog(compact, lastLog) {
     lastLog = lastLog || {};
     var hard = (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
@@ -1622,6 +1642,10 @@
     workoutPrintModel: workoutPrintModel,
     workoutPrintHtml: workoutPrintHtml,
     preparePrint: preparePrint,
+    createWorkoutSession: createWorkoutSession,
+    saveWorkoutSession: saveWorkoutSession,
+    loadWorkoutSession: loadWorkoutSession,
+    SessionTracker: SessionTracker,
     suggestNextFromLog: suggestNextFromLog,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
