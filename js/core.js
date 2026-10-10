@@ -16,7 +16,8 @@
     wishlist: 'trainerhub_film_wishlist',
     patterns: 'trainerhub_ingest_patterns',
     access: 'trainerhub_content_access',
-    print: 'trainerhub_print_workout'
+    print: 'trainerhub_print_workout',
+    clientProfiles: 'trainerhub_client_profiles'
   };
 
   // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
