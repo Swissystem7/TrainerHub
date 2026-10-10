@@ -1689,7 +1689,15 @@
   };
   root.esc = esc;
 
+  function readyWorkouts() {
+    return root.THReadyWorkouts || null;
+  }
+  api.readyWorkouts = readyWorkouts;
+
   if (typeof module === 'object' && module.exports) {
+    try {
+      api.readyWorkouts = require('./ready-workouts.js');
+    } catch (e) {}
     module.exports = api;
   }
 
