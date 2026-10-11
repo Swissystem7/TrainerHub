@@ -65,11 +65,35 @@
     return Math.max(0, Math.min(1, n));
   }
 
+  /** Words a model sometimes uses instead of the schema id. */
+  var SYNONYMS = { steps: 'stairs', staircase: 'stairs', 'artificial turf': 'turf', 'synthetic turf': 'turf' };
+
+  /**
+   * One model value → a schema id of list, or null. Tolerates case, spaces,
+   * plural/singular drift ("benches", "stair"), a few synonyms and the Hebrew label.
+   */
+  function canonId(list, value) {
+    var v = String(value == null ? '' : value).trim().toLowerCase().replace(/[\s_-]+/g, ' ');
+    if (!v) return null;
+    var cands = [v, SYNONYMS[v], v.replace(/es$/, ''), v.replace(/s$/, ''), v + 's'];
+    for (var i = 0; i < list.length; i++) {
+      if (cands.indexOf(list[i].id) !== -1 || list[i].he === v) return list[i].id;
+    }
+    return null;
+  }
+
   /** Keep only known ids, in schema order, without duplicates. */
   function pickKnown(list, value) {
     var wanted = Array.isArray(value) ? value : (typeof value === 'string' ? [value] : []);
-    var folded = wanted.map(function (v) { return String(v).trim().toLowerCase(); });
-    return ids(list).filter(function (id) { return folded.indexOf(id) !== -1; });
+    var found = wanted.map(function (v) { return canonId(list, v); });
+    return ids(list).filter(function (id) { return found.indexOf(id) !== -1; });
+  }
+
+  /** A confidence key → width / surface / shade or a feature/hazard id, else null. */
+  function confidenceKey(k) {
+    var f = String(k).trim().toLowerCase();
+    if (f === 'width' || f === 'surface' || f === 'shade') return f;
+    return canonId(FEATURES, k) || canonId(HAZARDS, k);
   }
 
   function widthFromMeters(m) {
@@ -99,10 +123,9 @@
     else if (out.approxMeters) out.width = widthFromMeters(out.approxMeters);
     var conf = raw.confidence && typeof raw.confidence === 'object' ? raw.confidence : {};
     Object.keys(conf).forEach(function (k) {
-      var known = k === 'width' || k === 'surface' || k === 'shade' ||
-        ids(FEATURES).indexOf(k) !== -1 || ids(HAZARDS).indexOf(k) !== -1;
+      var key = confidenceKey(k);
       var c = clamp01(conf[k]);
-      if (known && c != null) out.confidence[k] = c;
+      if (key && c != null) out.confidence[key] = c;
     });
     return out;
   }
@@ -110,11 +133,8 @@
   /** Empty manual profile — the no-AI path starts here. */
   function emptyProfile() { return normalize({}, 'manual'); }
 
-  /** Pull the first JSON object out of a model reply (plain, fenced, or with prose around it). */
-  function extractJson(text) {
-    var s = String(text == null ? '' : text);
-    var start = s.indexOf('{');
-    if (start === -1) return null;
+  /** The balanced {...} that starts at index start, or null when it never closes. */
+  function balancedFrom(s, start) {
     var depth = 0;
     var inStr = false;
     for (var i = start; i < s.length; i++) {
@@ -127,6 +147,24 @@
       else if (ch === '}' && --depth === 0) return s.slice(start, i + 1);
     }
     return null;
+  }
+
+  /**
+   * Pull the JSON object out of a model reply (plain, fenced, or with prose around it).
+   * Prose braces before the object ("{width}") are skipped: the first top-level {...} that
+   * parses wins, else the first balanced one, so a broken object still reports bad-json
+   * (its inner objects are never tried on their own).
+   */
+  function extractJson(text) {
+    var s = String(text == null ? '' : text);
+    var first = null;
+    for (var start = s.indexOf('{'); start !== -1; start = s.indexOf('{', start + 1)) {
+      var cand = balancedFrom(s, start);
+      if (cand == null) continue;
+      if (first == null) first = cand;
+      try { JSON.parse(cand); return cand; } catch (e) { start += cand.length - 1; }
+    }
+    return first;
   }
 
   /** Model reply → { ok, profile, error }. Never throws; a bad reply falls back to an empty AI profile. */
