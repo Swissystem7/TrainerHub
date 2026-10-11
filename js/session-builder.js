@@ -123,8 +123,25 @@
     return 0;
   }
 
-  function scoreEntry(entry, req) {
+  // Ids the caller would rather see, as a lookup. Pilot mode passes the clips
+  // the Acharai booklet teaches (THPilot.builderOpts), so between two clips that
+  // fit the request equally well the one the coach was trained on wins. The
+  // bonus stays below one muscle match, so it never pulls in a wrong exercise.
+  var PREFER_BONUS = 8;
+
+  function preferMap(prefer) {
+    if (!prefer) return null;
+    if (!Array.isArray(prefer)) return typeof prefer === 'object' ? prefer : null;
+    if (!prefer.length) return null;
+    var map = {};
+    prefer.forEach(function (id) { if (id) map[id] = true; });
+    return map;
+  }
+
+  function scoreEntry(entry, req, prefer) {
     var score = 0;
+    var preferred = preferMap(prefer);
+    if (preferred && entry && preferred[entry.id]) score += PREFER_BONUS;
     var overlap = muscleOverlap(entry, req.muscles);
     if (req.muscles && req.muscles.length) {
       score += overlap * 12;
@@ -273,7 +290,9 @@
       '. ' + got;
   }
 
-  function buildSession(text, catalogOrList) {
+  function buildSession(text, catalogOrList, opts) {
+    opts = opts || {};
+    var prefer = preferMap(opts.prefer);
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
     var list = catalogList(catalogOrList);
     var rx = prescription(req);
@@ -300,7 +319,7 @@
       pool = filterPool(mainList, req, relax);
     }
     var scored = pool.map(function (e) {
-      return { entry: e, score: scoreEntry(e, req) };
+      return { entry: e, score: scoreEntry(e, req, prefer) };
     });
     var picked = pickDiverse(scored, need);
     var satisfied = !relax.muscle && !relax.equipment && picked.length >= Math.min(3, need);
