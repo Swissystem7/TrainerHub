@@ -267,8 +267,16 @@
     var s = String(v == null ? '' : v).trim().replace(/[׳'"″]+$/, '');
     if (!s) return NaN;
     if (s.indexOf(':') !== -1) {
+      // m:ss or a stopwatch's h:mm:ss. Every part after the first must be 0-59.
       var p = s.split(':');
-      return Number(p[0]) * 60 + Number(p[1]);
+      if (p.length > 3) return NaN;
+      var total = 0;
+      for (var i = 0; i < p.length; i++) {
+        var n = p[i].trim() === '' ? NaN : Number(p[i]);
+        if (!isFinite(n) || n < 0 || (i > 0 && n >= 60)) return NaN;
+        total = total * 60 + n;
+      }
+      return total;
     }
     return Number(s);
   }
@@ -294,6 +302,8 @@
     }
     var table = c.tables[sex === 'female' ? 'female' : 'male'];
     if (!table) return null;
+    // A run time of zero is an empty stopwatch, not the best score.
+    if (v === 0) return null;
     for (i = 0; i < table.length; i++) if (v <= table[i].maxSeconds) return table[i].score;
     return floor;
   }
