@@ -16,7 +16,8 @@
     wishlist: 'trainerhub_film_wishlist',
     patterns: 'trainerhub_ingest_patterns',
     access: 'trainerhub_content_access',
-    print: 'trainerhub_print_workout'
+    print: 'trainerhub_print_workout',
+    clientProfiles: 'trainerhub_client_profiles'
   };
 
   // Hash of the trainer access code (sent after payment) — product boundary
