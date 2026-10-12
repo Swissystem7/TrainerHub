@@ -21,11 +21,27 @@ function search(query) {
 
 function toWorkout(entry) {
   if (!entry) {
-    return null;
+    return {
+      "title": "",
+      "duration_minutes": 0,
+      "participants": 0,
+      "equipment": [],
+      "phases": [],
+      "intensity": "",
+      "tags": []
+    };
   }
   const text = typeof entry === 'string' ? entry : entry.text;
   if (!text) {
-    return null;
+    return {
+      "title": "",
+      "duration_minutes": 0,
+      "participants": 0,
+      "equipment": [],
+      "phases": [],
+      "intensity": "",
+      "tags": []
+    };
   }
   return THIngest.ingestText(text);
 }

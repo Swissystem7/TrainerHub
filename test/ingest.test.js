@@ -75,3 +75,17 @@ test('saveSegment refuses a reverse time range and stores a playable Drive clip 
   assert.equal(ok.entry.source, 'drive');
   assert.ok(ok.entry.id);
 });
+
+test('toWorkout returns default empty workout object for null input', function () {
+  const readyWorkouts = require('../js/ready-workouts.js');
+  const result = readyWorkouts.toWorkout(null);
+  assert.deepEqual(result, {
+    "title": "",
+    "duration_minutes": 0,
+    "participants": 0,
+    "equipment": [],
+    "phases": [],
+    "intensity": "",
+    "tags": []
+  });
+});
