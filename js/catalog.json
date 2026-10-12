@@ -345,6 +345,10 @@
       "bar"
     ],
     "level": "intermediate",
+    "tags": [
+      "dangerous"
+    ],
+    "warningHe": "מתח על מוט — סיכון לכתפיים בלי ניסיון קודם; מומלץ פיקוח.",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-018.mp4",
     "source": "onedrive",
     "available": true
