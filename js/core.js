@@ -23,7 +23,8 @@
     patterns: 'trainerhub_ingest_patterns',
     access: 'trainerhub_content_access',
     print: 'trainerhub_print_workout',
-    clientProfiles: 'trainerhub_client_profiles'
+    clientProfiles: 'trainerhub_client_profiles',
+    journal: 'trainerhub_journal_entries'
   };
 
   // Hash of the trainer access code (sent after payment) — product boundary
@@ -1793,6 +1794,12 @@
     try {
       api.readyWorkouts = require('./ready-workouts.js');
     } catch (e) {}
+    Object.defineProperty(api, 'journalStorage', {
+      enumerable: true,
+      get: function () {
+        return require('./journal-storage.js');
+      }
+    });
     module.exports = api;
   }
 
