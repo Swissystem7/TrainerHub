@@ -41,6 +41,18 @@
    * images: [{ mime, data(base64) }] (use resizeImage first). opts: { endpoint, fetch }.
    * → Promise<{ ok, error, profile }>; never rejects.
    */
+  var HTML_UNSAFE = /[<>"']/;
+
+  /** Throws when user text is concatenated into HTML without TH.esc (site-scan XSS guard). */
+  function siteScanSecurity(text, opts) {
+    opts = opts || {};
+    if (!opts.asHtml) return;
+    var s = String(text == null ? '' : text);
+    if (HTML_UNSAFE.test(s)) {
+      throw new Error('site-scan-security: text must be escaped before HTML insertion');
+    }
+  }
+
   function analyzeSitePhotos(images, opts) {
     opts = opts || {};
     var url = endpoint(opts);
@@ -69,7 +81,8 @@
     MAX_IMAGES: MAX_IMAGES,
     MAX_SIDE: MAX_SIDE,
     resizeImage: resizeImage,
-    analyzeSitePhotos: analyzeSitePhotos
+    analyzeSitePhotos: analyzeSitePhotos,
+    siteScanSecurity: siteScanSecurity
   };
 
   root.THSiteScan = api;
