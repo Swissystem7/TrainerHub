@@ -1,17 +1,23 @@
-const test = require('node:test');
-const assert = require('node:assert');
+'use strict';
 
-const store = {};
+const test = require('node:test');
+const assert = require('node:assert/strict');
+
+const mem = {};
 global.localStorage = {
-  getItem: (k) => (Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null),
-  setItem: (k, v) => { store[k] = String(v); },
-  removeItem: (k) => { delete store[k]; },
-  clear: () => { for (const k in store) delete store[k]; }
+  getItem: function (k) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; },
+  setItem: function (k, v) { mem[k] = String(v); },
+  removeItem: function (k) { delete mem[k]; }
+};
+global.location = {
+  href: 'https://swissystem7.github.io/TrainerHub/index.html',
+  pathname: '/TrainerHub/index.html',
+  hash: ''
 };
 
 const TH = require('../js/core.js');
 
-test('workoutPrintModel and workoutPrintHtml include notes when present', () => {
+test('workoutPrintModel and workoutPrintHtml include notes when present', function () {
   const w = {
     title: 'אימון',
     phases: [{
@@ -27,12 +33,12 @@ test('workoutPrintModel and workoutPrintHtml include notes when present', () => 
     }]
   };
   const model = TH.workoutPrintModel(w, {});
-  assert.strictEqual(model.phases[0].exercises[0].notes, 'גב ישר');
+  assert.equal(model.phases[0].exercises[0].notes, 'גב ישר');
   const html = TH.workoutPrintHtml(model);
   assert.match(html, /גב ישר/);
 });
 
-test('workoutPrintHtml escapes notes through esc', () => {
+test('workoutPrintHtml escapes notes through esc', function () {
   const w = {
     title: 'אימון',
     phases: [{
@@ -48,13 +54,13 @@ test('workoutPrintHtml escapes notes through esc', () => {
     }]
   };
   const model = TH.workoutPrintModel(w, {});
-  assert.strictEqual(model.phases[0].exercises[0].notes, '<b>x</b>');
+  assert.equal(model.phases[0].exercises[0].notes, '<b>x</b>');
   const html = TH.workoutPrintHtml(model);
   assert.ok(html.includes('&lt;b&gt;x&lt;/b&gt;'));
   assert.ok(!html.includes('<b>x</b>'));
 });
 
-test('exercise without notes renders exactly as today with no empty note cell', () => {
+test('exercise without notes renders exactly as today with no empty note cell', function () {
   const w = {
     title: 'אימון',
     phases: [{
@@ -69,7 +75,7 @@ test('exercise without notes renders exactly as today with no empty note cell', 
     }]
   };
   const model = TH.workoutPrintModel(w, {});
-  assert.strictEqual(model.phases[0].exercises[0].notes, undefined);
+  assert.equal(model.phases[0].exercises[0].notes, undefined);
   const html = TH.workoutPrintHtml(model);
   assert.ok(!html.includes('<td></td>'));
   assert.ok(html.includes('<tr><th scope="row">פלאנק</th><td>3 × 40 שנ׳ · מנוחה 30 שנ׳</td></tr>'));
