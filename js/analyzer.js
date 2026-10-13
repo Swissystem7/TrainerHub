@@ -301,6 +301,30 @@
     return FORBIDDEN_RX.test(String(text || ''));
   }
 
+  function enrichJournalEntry(entry) {
+    entry = entry && typeof entry === 'object' ? entry : {};
+    var sets = Array.isArray(entry.sets) ? entry.sets : [];
+    var TH = root.TH;
+    var tonnage = typeof TH !== 'undefined' && TH && typeof TH.workoutVolume === 'function'
+      ? TH.workoutVolume(sets)
+      : 0;
+    var bestByExercise = {};
+    sets.forEach(function (set) {
+      if (!set || !set.exerciseId) return;
+      var reps = Number(set.reps);
+      var w = Number(set.weightKg);
+      if (!(reps > 0) || !(w > 0)) return;
+      var load = Math.round(reps * w * 10) / 10;
+      if (!bestByExercise[set.exerciseId] || load > bestByExercise[set.exerciseId]) {
+        bestByExercise[set.exerciseId] = load;
+      }
+    });
+    return Object.assign({}, entry, {
+      volume: entry.volume != null ? entry.volume : tonnage,
+      bestSetTonnageByExercise: bestByExercise
+    });
+  }
+
   var api = {
     STIMULUS: STIMULUS,
     analyzeExercise: analyzeExercise,
@@ -309,6 +333,7 @@
     hasWarmup: hasWarmup,
     isWarmupExercise: isWarmupExercise,
     claimsOutcome: claimsOutcome,
+    enrichJournalEntry: enrichJournalEntry,
     muscleLabel: muscleLabel
   };
 
