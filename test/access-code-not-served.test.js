@@ -63,6 +63,10 @@ test('the app still redeems the code through its hash only', function () {
   assert.match(core, /var ACCESS_HASH = \d+;/);
 });
 
+test('ACCESS_HASH is not the revoked predecessor from public git history', function () {
+  assert.notEqual(Code.realAccessHash(), Code.REVOKED_ACCESS_HASH);
+});
+
 test('the leaked code is revoked: it no longer unlocks', function () {
   assert.notEqual(TH.hashAccessCode(Code.REVOKED_CODE), Code.realAccessHash());
   const r = TH.redeemAccessCode(Code.REVOKED_CODE, 'סטודיו');
