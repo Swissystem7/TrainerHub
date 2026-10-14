@@ -14,6 +14,7 @@ const path = require('node:path');
 const CORE_PATH = path.join(__dirname, '..', '..', 'js', 'core.js');
 const TEST_ONLY_CODE = 'TEST-ONLY-NOT-A-REAL-CODE';
 const REVOKED_CODE = 'TH-MAAMEN-59'; // leaked on the live site; revoked 28.9.2026
+const REVOKED_ACCESS_HASH = 1690937514; // prior ACCESS_HASH, public in git history; revoked 13.10.2026
 const HASH_RE = /var ACCESS_HASH = (\d+);/;
 
 function coreSource() {
@@ -43,6 +44,7 @@ function loadCoreWithTestCode() {
 module.exports = {
   TEST_ONLY_CODE,
   REVOKED_CODE,
+  REVOKED_ACCESS_HASH,
   realAccessHash,
   loadCoreWithHash,
   loadCoreWithTestCode,
