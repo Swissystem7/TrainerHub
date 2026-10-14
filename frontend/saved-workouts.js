@@ -4,6 +4,15 @@
     var existing = store.get(key, []);
     if (!Array.isArray(existing)) throw new Error('רשימת האימונים השמורים אינה תקינה. יש לייצא גיבוי לפני המשך.');
     if (!Array.isArray(workouts) || !workouts.length) throw new Error('אין אימונים לשמירה.');
+    var seenSavedIds = {};
+    for (var d = 0; d < workouts.length; d++) {
+      var savedId = workouts[d] && workouts[d].saved_id;
+      if (!savedId) continue;
+      if (seenSavedIds[savedId]) {
+        throw new Error('אימונים עם saved_id זהים נמצאו. יש לוודא שכל אימון בעל saved_id ייחודי.');
+      }
+      seenSavedIds[savedId] = true;
+    }
     var entries = workouts.map(function (workout) {
       if (!workout || !workout.title || !Array.isArray(workout.phases) || !workout.phases.length) {
         throw new Error('האימון אינו תקין. השמירה בוטלה.');
