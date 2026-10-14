@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const TH = require('../js/core.js');
+const { WorkoutLibrary } = require('../frontend/saved-workouts.js');
 
 const catalog = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'js', 'catalog.json'), 'utf8'));
 
@@ -22,6 +23,19 @@ const FIXTURE = {
 function useFixture() {
   TH.setCatalog(FIXTURE);
 }
+
+test('saveWorkouts rejects duplicate saved_id values in the input batch', function () {
+  const store = { get: function () { return []; }, set: function () { return true; } };
+  assert.throws(
+    function () {
+      WorkoutLibrary.save(store, 'trainerhub_workouts', [
+        { title: 'Test', saved_id: 'abc' },
+        { title: 'Test2', saved_id: 'abc' }
+      ]);
+    },
+    /saved_id זהים/
+  );
+});
 
 test('filterCatalog searches Hebrew names and respects muscle / equipment / tag', function () {
   useFixture();
