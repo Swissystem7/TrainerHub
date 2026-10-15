@@ -317,6 +317,7 @@ const PHASE_LABELS = TH.PHASE_LABELS;
 
 let linkMeta = { wa: '', name: '', tid: '' };
 let skippedSets = 0;
+let skippedStepIds = new Set();
 
 function loadWorkout() {
   if (typeof ThLink === 'object' && ThLink.decodeClipHash) {
@@ -734,7 +735,10 @@ function skipCurrent() {
   clearCountdown();
   const step = steps[stepIdx];
   if (step && step.type === 'exercise') {
-    skippedSets++;
+    if (!skippedStepIds.has(stepIdx)) {
+      skippedStepIds.add(stepIdx);
+      skippedSets++;
+    }
     // Skip this set only (and its following rest), not the whole exercise
     stepIdx++;
     if (stepIdx < steps.length && steps[stepIdx].type === 'rest') {
@@ -814,6 +818,10 @@ function goBack() {
   clearCountdown();
   if (stepIdx > 0) {
     stepIdx--;
+    // «דלג» jumps over the set and its rest; «חזור» returns to that set in one tap
+    if (stepIdx > 0 && steps[stepIdx] && steps[stepIdx].type === 'rest' && skippedStepIds.has(stepIdx - 1)) {
+      stepIdx--;
+    }
     if (completedStepIds.has(stepIdx)) {
       const step = steps[stepIdx];
       completedStepIds.delete(stepIdx);
@@ -821,6 +829,10 @@ function goBack() {
         if (completedSets > 0) completedSets--;
         if (step.set === step.totalSets && completedExercises > 0) completedExercises--;
       }
+    }
+    if (skippedStepIds.has(stepIdx)) {
+      skippedStepIds.delete(stepIdx);
+      if (skippedSets > 0) skippedSets--;
     }
     countdown = 0;
     renderStep();
