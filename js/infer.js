@@ -122,6 +122,11 @@
   var WALL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}קיר(?:ות)?(?=$|[^א-ת])/;
   var BARBELL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}מוט(?:ות)?(?=$|[^א-ת])/;
 
+  // Lunges in every spelling coaches use: «לאנץ׳», «לאנג'», «לאנצים», «לנג׳»,
+  // «לנצ'ים» (fold() already dropped the geresh). The short «לנג/לנץ» form
+  // must start a word so «סלנג» or «בלנצ'ר» do not become leg work.
+  var LUNGE_RX = /לאנ[גצץ]|(?:^|[^א-ת])[ובלה]{0,2}לנ[גצץ]/;
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
@@ -160,7 +165,11 @@
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
     if (/כתף|כתפי/.test(t)) found.push('shoulders');
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
-    if (/ברכי/.test(t) && !/פלאנק/.test(t)) found.push('legs');
+    // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
+    // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
+    if (LUNGE_RX.test(t) || /גשר|ישיבה על קיר|וול סיט|ניתור|קפיצ/.test(t)) found.push('legs');
+    // «על הברכיים» is the knee variant of a push-up or plank, not a leg drill.
+    if (/ברכי/.test(t) && !/פלאנק|שכיב/.test(t)) found.push('legs');
     if (/רגל|רגלי|סולם|מדרג/.test(t)) found.push('legs');
     if (/שכיב(ות|ה)|חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
     if (/דו.?ראש|בייספס|כפיפת מרפק|פטיש/.test(t)) found.push('biceps');
@@ -219,11 +228,11 @@
 
   function inferPattern(text, muscles) {
     var t = fold(text);
-    if (/מטפס|בעיט|סולם|קפיצ|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
+    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
     if (/שכיב|לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|כפיפת|פטיש/.test(t) || mentionsPullUp(t)) return 'pull';
-    if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר/.test(t)) return 'squat';
-    if (/דדליפט|גב תחתון|סופרמן|הינג/.test(t)) return 'hinge';
+    if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
+    if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t)) return 'core';
     if (muscles && muscles.length === 1 && muscles[0] === 'core') return 'core';
     if (muscles && muscles.indexOf('legs') !== -1 && muscles.length === 1) return 'squat';
