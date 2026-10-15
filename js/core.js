@@ -1314,9 +1314,16 @@
     var muscles = (current && current.muscles) || opts.muscles || [];
     var excludeId = (current && current.id) || (step && (step.id || step.name)) || '';
     var have = opts.equipment;
+    // The designated warm-up clip («חימום») is a core clip in the catalog, so
+    // it outscored real core alternatives: library.html listed it first under
+    // «חלופות» for 22 of 78 cards, and workout-mode / weekly.html offered to
+    // swap a Main exercise for it. It stays a Warm-up clip only - unless the
+    // step being replaced is the warm-up clip itself. Same rule as catalogAsPool.
+    var keepWarmup = isWarmupClip(current);
     var list = catalogList().filter(function (e) {
       if (!isPlayable(e)) return false;
       if (e.id === excludeId) return false;
+      if (!keepWarmup && isWarmupClip(e)) return false;
       if (muscles.length && !e.muscles.some(function (m) { return muscles.indexOf(m) !== -1; })) return false;
       if (Array.isArray(have) && have.length && !userCanDo(e, have)) return false;
       return true;
