@@ -139,6 +139,14 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   padding: 8px 6px;
   border-bottom: 1px solid #303834;
 }
+.print-safety {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-inline-start: 4px solid #ffb454;
+  background: #2a2216;
+}
+.print-safety h2 { font-size: 1rem; margin: 0 0 6px; color: #ffb454; }
+.print-safety ul { margin: 0; padding-inline-start: 1.2rem; line-height: 1.55; }
 .print-watermark {
   margin: 20px 0 0;
   padding: 10px 12px;
@@ -151,6 +159,8 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   .no-print { display: none !important; }
   body { background: #fff !important; color: #111 !important; }
   .print-sheet th, .print-sheet td { border-bottom-color: #ccc; }
+  .print-safety { background: #fff; border-inline-start-color: #a15c00; }
+  .print-safety h2 { color: #a15c00; }
   .print-footer { color: #444; }
 }
 

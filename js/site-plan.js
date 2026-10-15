@@ -177,6 +177,10 @@
       if (longer) warnings.push('חורף: ' + longer);
     }
 
+    // The warnings travel with the workout, so the print sheet and anything else
+    // that only gets the workout still shows what this site demands.
+    workout.safety_notes = warnings.slice();
+
     return {
       workout: workout,
       method: base.id,

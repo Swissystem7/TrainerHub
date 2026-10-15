@@ -74,4 +74,5 @@ no server. No personal data beyond localStorage.
 | Pilot mode: entitlement, branding, feedback | `js/pilot.js` | merged (#82) |
 | Builder hint for preferred catalog clips | `js/session-builder.js` (`opts.prefer`) + `THPilot.builderOpts` | #98 |
 | Buttons, camera input, chip card, 390px check | `site-scan.html` + links in `index.html` / `booklet.html` | merged (#84) |
+| Printable sheet for the site plan, site warnings at the top | `site-scan.html` + `workout.safety_notes` in `js/core.js` | #90 |
 | Worker deploy + `GEMINI_API_KEY` + pointing the page at it | Cloudflare | owner step |

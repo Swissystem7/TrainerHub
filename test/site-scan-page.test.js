@@ -53,6 +53,14 @@ test('build shows warnings, one reason line per choice, and opens workout mode',
   assert.match(page, /TH\.store\.set\(TH\.KEYS\.active, current\)/);
 });
 
+test('a built site plan can be printed, like every other builder page', function () {
+  assert.match(page, /id="pdf"[^>]*>דף להדפסה \/ PDF</);
+  assert.match(page, /TH\.preparePrint\(current, \{\}\);\s*location\.href = TH\.printUrl\(\);/);
+  assert.match(page, /<div class="actions" id="planActions" hidden>/, 'the plan actions appear only after building');
+  assert.match(page, /\$\('planActions'\)\.hidden = false;/);
+  assert.match(page, /\$\('planActions'\)\.hidden = true;/, 'and «נקה והתחל מחדש» hides them again');
+});
+
 test('page output is escaped', function () {
   const inner = page.split('\n').filter((l) => /\+ (c\.he|g\.he|w|r|x\.name|x\.notes|current\.title)\b/.test(l));
   inner.forEach((l) => assert.doesNotMatch(l, /\+ (c\.he|g\.he|w|r|x\.name|x\.notes|current\.title) \+/, l.trim()));

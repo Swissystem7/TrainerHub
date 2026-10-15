@@ -1687,6 +1687,18 @@
     return row;
   }
 
+  /** Hebrew safety / site lines a builder attached to the workout (`safety_notes`), cleaned for the sheet. */
+  function printSafetyNotes(workout) {
+    var seen = {};
+    return (Array.isArray(workout.safety_notes) ? workout.safety_notes : [])
+      .map(function (line) { return String(line == null ? '' : line).trim(); })
+      .filter(function (line) {
+        if (!line || seen[line]) return false;
+        seen[line] = true;
+        return true;
+      });
+  }
+
   function workoutPrintModel(workout, opts) {
     opts = opts || {};
     workout = workout || {};
@@ -1703,6 +1715,7 @@
       title: String(workout.title || 'אימון').replace(/\.mp4/ig, '').trim(),
       branded: branded,
       brand: branded ? requestedBrand : '',
+      safety: printSafetyNotes(workout),
       phases: phases,
       footer: branded
         ? 'הוכן על ידי ' + requestedBrand + ' בספריית התרגילים של TrainerHub.'
@@ -1725,9 +1738,15 @@
       ? '<p class="print-brand">' + esc(model.brand) + '</p>'
       : '';
     var mark = model.branded ? '' : '<p class="print-watermark">תרגול — לא למסירה ללקוח</p>';
+    var safety = (model.safety || []).length
+      ? '<section class="print-safety"><h2>דגשי בטיחות ושטח</h2><ul>' +
+        model.safety.map(function (line) { return '<li>' + esc(line) + '</li>'; }).join('') +
+        '</ul></section>'
+      : '';
     return '<article class="print-sheet" dir="rtl" lang="he">' +
       brandLine +
       '<h1>' + esc(model.title) + '</h1>' +
+      safety +
       phases +
       mark +
       '<footer class="print-footer"><p>' + esc(model.footer) + '</p><p>' + esc(model.note) + '</p></footer>' +

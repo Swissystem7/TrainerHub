@@ -75,6 +75,13 @@ test('hazards → warning lines, slippery uses the Acharai winter rule', functio
   assert.equal(Plan.build({ hazards: ['heat'] }).warnings.length, 1);
 });
 
+test('the warnings ride on the workout, so the print sheet shows them too', function () {
+  const r = Plan.build({ width: 'narrow', hazards: ['cars'] }, { group: 20 });
+  assert.ok(r.warnings.length >= 2);
+  assert.deepEqual(r.workout.safety_notes, r.warnings);
+  assert.deepEqual(Plan.build({ width: 'medium' }).workout.safety_notes, [], 'a safe site carries no notes');
+});
+
 test('winter adds the longer warm-up and its rule', function () {
   const summer = Plan.build({ width: 'wide' }, { season: 'summer' });
   const winter = Plan.build({ width: 'wide' }, { season: 'winter' });

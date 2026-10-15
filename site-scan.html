@@ -86,7 +86,10 @@
       <button type="button" id="reset" class="ghost">נקה והתחל מחדש</button>
     </div>
     <div id="planOut" aria-live="polite"></div>
-    <button type="button" id="start" class="ghost" hidden>התחל במצב אימון</button>
+    <div class="actions" id="planActions" hidden>
+      <button type="button" id="start" class="ghost">התחל במצב אימון</button>
+      <button type="button" id="pdf" class="ghost">דף להדפסה / PDF</button>
+    </div>
   </section>
 </main>
 <script src="./js/core.js"></script>
@@ -203,7 +206,7 @@
       current.phases.map(function (p) {
         return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
       }).join('');
-    $('start').hidden = false;
+    $('planActions').hidden = false;
     if ($('planOut').scrollIntoView) $('planOut').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -215,7 +218,7 @@
     $('thumbs').innerHTML = '';
     $('meters').value = '';
     $('planOut').innerHTML = '';
-    $('start').hidden = true;
+    $('planActions').hidden = true;
     $('scanStatus').textContent = 'אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.';
     renderChips();
   });
@@ -223,6 +226,12 @@
     if (!current) return;
     TH.store.set(TH.KEYS.active, current);
     location.href = './frontend/workout-mode.html';
+  });
+  // The printed sheet carries the same site warnings (workout.safety_notes), for a coach without a phone in the field.
+  $('pdf').addEventListener('click', function () {
+    if (!current) return;
+    TH.preparePrint(current, {});
+    location.href = TH.printUrl();
   });
 
   renderChips();
