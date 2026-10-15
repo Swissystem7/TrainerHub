@@ -196,6 +196,10 @@
     return line;
   }
 
+  // Pieces on one line: a comma, a «ו» before the next exercise, and the inline separators a
+  // pasted list uses instead of a comma - «סופרמן 3x10 | פלאנק 30 שניות», «;», « • », «←», «->».
+  var PIECE_SEP_RX = /[,،;|•·←→]|\s-+>\s|\s<-+\s|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/;
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = String(text || '').trim();
@@ -236,13 +240,13 @@
       }
       line = stripped;
       if (held) {
-        var head = parseExerciseToken(line.split(/[,،]/)[0], {});
+        var head = parseExerciseToken(line.split(PIECE_SEP_RX)[0], {});
         if (!head || head.continuation) line = held + ' ' + line;
       }
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
       maskVavNames(line, vavRxs)
-        .split(/[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/)
+        .split(PIECE_SEP_RX)
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
