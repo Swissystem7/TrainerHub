@@ -458,7 +458,8 @@
       setsExplicit = false;
     }
 
-    var name =s.replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
+    // «סופרמן 3 סטים / 12 חזרות»: the slash only divided the counts, it is not part of the name.
+    var name =s.replace(/^[\s\/]+|[\s\/]+$/g, '').replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       if (setsExplicit || (restClause.found && restClause.rest != null)) {
