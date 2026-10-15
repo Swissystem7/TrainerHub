@@ -445,20 +445,21 @@
     }
     var minMatch = null;
     var minSec = null;
-    // «דק׳» is «דקה» too: «2 דק׳ וחצי» is 150 s, «1/2 דק׳» is 30 s (was 120 s and a name «פלאנק 1»).
-    m = s.match(/(?:(\d+)\s*(?:דקות|דקה|דק[׳']|′)|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
+    // «דק׳» is «דקה» too: «2 דק׳ וחצי» is 150 s, «1/2 דק׳» is 30 s (was 120 s and a name «פלאנק 1»);
+    // a bare «דק» too («פלאנק 2 דק» was a name «פלאנק 2 דק» with 10 invented reps), not «דקירות».
+    m = s.match(/(?:(\d+)\s*(?:דקות|דקה|דק(?:[׳']|(?![\u0590-\u05FF]))|′)|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
     if (m) {
       if (m[1]) minSec = toInt(m[1]) * 60 + 30;
       else if (/שתי/.test(m[0])) minSec = 150;
       else minSec = 90;
       minMatch = m[0];
-    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*(?:דקה|דק[׳']|′)/))) {
+    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*(?:דקה|דק(?:[׳']|(?![\u0590-\u05FF]))|′)/))) {
       minSec = 30;
       minMatch = m[0];
     } else if ((m = s.match(/שתי\s*דקות/))) {
       minSec = 120;
       minMatch = m[0];
-    } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳']|′)/))) {
+    } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק(?:[׳']|(?![\u0590-\u05FF]))|′)/))) {
       minSec = Math.round(parseFloat(m[1]) * 60);
       minMatch = m[0];
     } else if ((m = s.match(/(^|\s)דקתיים(?=\s|$)/))) {
@@ -481,7 +482,7 @@
       duration_seconds = minSec != null ? minSec + sec : sec;
       s = s.replace(m[0], ' ');
     } else {
-      m = s.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
+      m = s.match(/(\d+)\s*(?:דקות|דקה|דק(?:[׳']|(?![\u0590-\u05FF])))/);
       if (m) {
         duration_seconds = toInt(m[1]) * 60;
         s = s.replace(m[0], ' ');
