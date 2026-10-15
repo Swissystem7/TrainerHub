@@ -191,6 +191,8 @@
     var tokens = [];
     body.split(/\n+/).forEach(function (line) {
       var first = tokens.length;
+      line = stripSectionLabel(line);
+      if (!line) return;
       maskVavNames(line, vavRxs)
         .split(/[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/)
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
@@ -207,6 +209,23 @@
         });
     });
     return tokens;
+  }
+
+  // Section headers inside a paste: «עיקרי:», «קירור», «סבב 2», «חלק ב׳» are not exercises.
+  // A digit-free line ending in a colon is a header too («תרגילי בטן:»). A header word as a
+  // label («עיקרי: סופרמן 3x10») is dropped and the exercise after it is kept.
+  var SECTION_RX = /^(?:(?:ה?חלק|סבב|סט|שלב|תחנה|בלוק|מחזור)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון|עיקרי)))?|(?:ה?חלק\s+)?ה?(?:עיקרי|סיום|שחרור|קירור|פתיחה|הכנה)|גוף\s+האימון)$/;
+  var LABEL_RX = /^([^\d:]{2,30}?)\s*:\s*(?=[^\d\s])/;
+
+  function stripSectionLabel(line) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
+    if (!/\d/.test(t) && /:$/.test(t)) return '';
+    if (SECTION_RX.test(t.replace(/[.:]+$/, '').trim())) return '';
+    var m = t.match(LABEL_RX);
+    if (m && (SECTION_RX.test(m[1].trim()) || /^(?:ה?חימום|מתיחות|תרגילי\s|אימון\s)/.test(m[1].trim()))) {
+      return line.slice(line.indexOf(':') + 1);
+    }
+    return line;
   }
 
   // A comma piece that is a coaching cue, not an exercise: tempo («לאט», «ירידה איטית»,
