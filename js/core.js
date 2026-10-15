@@ -963,10 +963,13 @@
       if (ex.muscles.some(function (m) { return injuredParts.indexOf(m) !== -1; })) return false;
       return true;
     });
+    // Exercise notes reach the trainee: workout-mode shows them under the
+    // exercise, the print sheet gets a notes column and the share link carries
+    // them. The whole app speaks Hebrew, so the notes do too.
     var noteParts = [];
-    if (isSenior) noteParts.push('low intensity');
-    if (isNew) noteParts.push('focus on form');
-    var notes = noteParts.join('; ');
+    if (isSenior) noteParts.push('עצימות נמוכה');
+    if (isNew) noteParts.push('דגש על טכניקה');
+    var notes = noteParts.join(' · ');
     var numExercises = isSenior ? 4 : (fitnessLevel === 'advanced' ? 6 : fitnessLevel === 'beginner' ? 4 : 5);
     var meta = {
       equipment: equipment[0] === 'none' ? ['משקל גוף'] : equipment.map(function (e) { return eqLabel(e); }),
