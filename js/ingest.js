@@ -254,6 +254,21 @@
   // pasted list uses instead of a comma - «סופרמן 3x10 | פלאנק 30 שניות», «;», « • », «←», «->».
   var PIECE_SEP_RX = /[,،;|•·←→]|\s-+>\s|\s<-+\s|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/;
 
+  // «שכיבות סמיכה 20 + פלאנק 30 שניות» is two exercises: a «+» after a counted exercise and
+  // before a named one splits like a comma. «סקוואט + קפיצה 10» (one combo move) and
+  // «פלאנק 30+30 שניות» (no name after the «+») stay one piece.
+  function splitPlus(line) {
+    var parts = line.split(/(\s*\+\s*)/);
+    var out = parts[0];
+    for (var i = 2; i < parts.length; i += 2) {
+      var left = out.split(PIECE_SEP_RX).pop();
+      var right = parseExerciseToken(parts[i].split(PIECE_SEP_RX)[0], {});
+      var split = /\d/.test(left) && /[א-תa-zA-Z]/.test(left) && right && !right.continuation && right.name;
+      out += (split ? ', ' : parts[i - 1]) + parts[i];
+    }
+    return out;
+  }
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = String(text || '').trim();
@@ -298,6 +313,7 @@
         var head = parseExerciseToken(line.split(PIECE_SEP_RX)[0], {});
         if (!head || head.continuation) line = held + ' ' + line;
       }
+      line = splitPlus(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
       maskVavNames(line, vavRxs)
