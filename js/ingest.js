@@ -57,6 +57,14 @@
   var FAILURE_RX = /(?:^|\s)(?:עד\s+(?:ה)?כשל|מקס(?:ימום)?\s+חזרות|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
   var DISTANCE_RX = /(?:^|\s|(?<=[x×]))(\d+)\s*(?:מטרים|מטר|מ[׳'])(?![\u0590-\u05FF])/;
 
+  // A cue after a spaced dash: «סקוואט 15 - ירידה איטית», «שכיבות סמיכה 3x12 – מרפקים צמודים».
+  // Only a digit-free tail that is not itself the prescription («פלאנק - דקה», «סקוואט - 15 חזרות»);
+  // a hyphen inside a word («פשיטת-ברך») has no spaces around it.
+  var DASH_CUE_RX = /\s[\-–—]\s+([^\d\-–—]*[\u0590-\u05FFa-zA-Z][^\d\-–—]*)$/;
+  var PRESCRIPTION_WORD_RX = /דק|שני|שנ[׳']|חזרות|סטים?|סבבים?|חצי|מנוחה|הפסקה/;
+  // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
+  var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
+
   function splitCues(s) {
     var t = String(s || '');
     var notes = [];
@@ -81,6 +89,11 @@
       open = true;
       t = t.replace(m[0], ' ');
     }
+    if ((m = t.match(DASH_CUE_RX)) && /[\u0590-\u05FFa-zA-Z]/.test(t.slice(0, m.index)) && !PRESCRIPTION_WORD_RX.test(m[1])) {
+      notes.push(m[1].trim());
+      t = t.slice(0, m.index) + ' ';
+    }
+    t = t.replace(PER_SET_RX, ' ').replace(/\s[\-–—,]+\s*$/, ' ');
     return { text: t, notes: notes, open: open };
   }
 
