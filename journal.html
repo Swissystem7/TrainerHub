@@ -211,6 +211,19 @@
     })[0] || null;
   }
 
+  // Identifies the report a «הצע שבוע הבא» suggestion was built from, so a second
+  // press on the same report does not drop (or add) another set.
+  function logKey(l) {
+    return l ? (String(l.at || l.doneAt || '') + '|' + String(l.title || '')) : '';
+  }
+
+  // A plan the client has not run yet: the last report may adjust it once more.
+  function assignPlan(c, workout) {
+    c.lastWorkout = workout;
+    c.lastPlan = TH.compactPlan(workout);
+    delete c.nextFrom;
+  }
+
   function activeWorkout() {
     return TH.store.get(TH.KEYS.active, null);
   }
@@ -366,8 +379,7 @@
           throw new Error('האימון נבנה בלי שלבים ולכן לא נשמר.');
         }
         c.plan = workout.title || 'אימון';
-        c.lastWorkout = workout;
-        c.lastPlan = TH.compactPlan(workout);
+        assignPlan(c, workout);
         TH.store.set(TH.KEYS.active, workout);
         save();
         setStatus($('coachStatus'), 'נבנה ושויך «' + c.plan + '» ל' + c.name + '. אפשר לפתוח כמתאמן או לשתף מהכרטיס שלו.');
@@ -412,6 +424,7 @@
         c.lastPlan = parsed.plan;
         c.lastWorkout = TH.expandPlan(parsed.plan);
       }
+      delete c.nextFrom;
     }
     save();
     $('importCode').value = '';
@@ -459,8 +472,7 @@
         return;
       }
       c.plan = w.title || 'אימון';
-      c.lastWorkout = w;
-      c.lastPlan = TH.compactPlan(w);
+      assignPlan(c, w);
       save();
       setStatus($('importStatus'), 'שויך «' + c.plan + '» ל' + c.name + '.');
       render();
@@ -469,10 +481,17 @@
         setStatus($('importStatus'), 'אין תוכנית שמורה. פתחו כמתאמן או שייכו אימון פעיל קודם.', true);
         return;
       }
-      var suggested = TH.suggestNextFromLog(c.lastPlan, lastLog(c) || {});
+      var last = lastLog(c);
+      if (last && c.nextFrom && c.nextFrom === logKey(last)) {
+        setStatus($('importStatus'), 'ההצעה לשבוע הבא כבר הוחלה לפי הביצוע מ־' + dayKey(last.at || last.doneAt) +
+          '. ייבאו קוד TH1 חדש או שייכו אימון אחר כדי להציע שוב.', true);
+        return;
+      }
+      var suggested = TH.suggestNextFromLog(c.lastPlan, last || {});
       c.lastPlan = suggested.compact;
       c.lastWorkout = suggested.workout;
       c.plan = suggested.workout.title;
+      c.nextFrom = logKey(last);
       TH.store.set(TH.KEYS.active, suggested.workout);
       save();
       setStatus($('importStatus'), suggested.why + ' אפשר לפתוח כמתאמן בלי קוד גישה.');
