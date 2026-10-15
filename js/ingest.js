@@ -182,17 +182,33 @@
         if (colon > 0 && colon < 80) {
           var left = raw.slice(0, colon).trim();
           var right = raw.slice(colon + 1).trim();
-          if (right && (/^[^\d\n]{2,40}$/.test(left) || /עבודה|מנוחה|שניות|שנ/.test(left))) {
+          // «אימון רגליים: סקוואט 15» is a title; «פלאנק: 30 שניות» is the exercise itself.
+          if (right && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || /עבודה|מנוחה|שניות|שנ/.test(left))) {
             body = right;
           }
         }
       }
     }
     var tokens = [];
+    var pendingName = null;
     body.split(/\n+/).forEach(function (line) {
       var first = tokens.length;
-      line = stripSectionLabel(line);
-      if (!line) return;
+      var held = pendingName;
+      pendingName = null;
+      var stripped = stripSectionLabel(line);
+      if (!stripped) {
+        // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
+        var label = line.replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:\s]+$/, '').replace(/\s+/g, ' ').trim();
+        if (/:\s*$/.test(line.replace(/[*#_~]/g, '')) && label.length > 1 && !SECTION_RX.test(label) && !TITLE_RX.test(label)) pendingName = label;
+        return;
+      }
+      line = stripped;
+      if (held) {
+        var head = parseExerciseToken(line.split(/[,،]/)[0], {});
+        if (!head || head.continuation) line = held + ' ' + line;
+      }
+      // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
+      if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
       maskVavNames(line, vavRxs)
         .split(/[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/)
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
@@ -216,6 +232,7 @@
   // label («עיקרי: סופרמן 3x10») is dropped and the exercise after it is kept.
   var SECTION_RX = /^(?:(?:ה?חלק|סבב|סט|שלב|תחנה|בלוק|מחזור)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון|עיקרי)))?|(?:ה?חלק\s+)?ה?(?:עיקרי|סיום|שחרור|קירור|פתיחה|הכנה)|גוף\s+האימון)$/;
   var LABEL_RX = /^([^\d:]{2,30}?)\s*:\s*(?=[^\d\s])/;
+  var TITLE_RX = /^(?:ה?(?:אימון|תוכנית|תכנית|שיעור)\s|ה?(?:חימום|מתיחות)$|תרגילי\s)/;
 
   function stripSectionLabel(line) {
     var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
