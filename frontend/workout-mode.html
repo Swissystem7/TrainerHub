@@ -776,15 +776,18 @@ function applySwap(newId) {
   if (!step || !workout) return;
   const entry = TH.catalog[newId];
   if (!entry) return;
-  const oldName = step.name;
-  const oldId = step.id;
-  TH.swapExerciseById(workout, oldId || oldName, newId);
-  steps.forEach(function (s) {
-    if (s.type === 'exercise' && (s.id === oldId || s.name === oldName)) {
-      s.id = entry.id;
-      s.name = entry.he;
-    }
-    if (s.type === 'rest' && s.nextName === oldName) s.nextName = entry.he;
+  // The same key swapExerciseById uses on the workout: the catalog id when the
+  // step has one, else the name. A step without an id (a pasted line with no
+  // clip) must not match every other id-less step, so null never compares.
+  const needle = step.id || step.name;
+  TH.swapExerciseById(workout, needle, newId);
+  steps.forEach(function (s, i) {
+    if (s.type !== 'exercise' || (s.id !== needle && s.name !== needle)) return;
+    s.id = entry.id;
+    s.name = entry.he;
+    // The rest step right before a set previews that set.
+    const before = steps[i - 1];
+    if (before && before.type === 'rest' && before.nextName) before.nextName = entry.he;
   });
   const panel = document.getElementById('swapPanel');
   const btn = document.getElementById('btnSwap');
