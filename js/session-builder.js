@@ -127,7 +127,7 @@
     var blob = foldName(entry) + ' ' + Infer.fold(entry.folder || '');
     var score = 0;
     if (req.focus === 'core' && /בטן|פלאנק|ליבה|מטפס/.test(blob)) score += 6;
-    if (req.focus === 'legs' && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
+    if ((req.focus === 'legs' || req.focus === 'lower') && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
     if (req.focus === 'back' && /גב|מתח|אוסטרל/.test(blob)) score += 6;
     if (req.focus === 'arms' && /יד|שכיב|כוח ידיים/.test(blob)) score += 6;
     if (req.focus === 'chest' && /חזה|שכיב/.test(blob)) score += 6;
@@ -278,12 +278,22 @@
     return bits.join(' · ') || 'זמין במאגר ומתאים לבקשה';
   }
 
+  // Focus values that are not a single muscle key (see THPrompt.parseMuscles).
+  var FOCUS_LABELS = {
+    full: 'גוף מלא',
+    arms: 'ידיים',
+    upper: 'פלג גוף עליון',
+    lower: 'פלג גוף תחתון'
+  };
+
+  function focusLabel(req) {
+    if (!req || !req.focus) return '';
+    return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+  }
+
   function typeLabel(req, analysis) {
     var parts = [];
-    if (req.focus === 'full') parts.push('גוף מלא');
-    else if (req.focus === 'arms') parts.push('ידיים');
-    else if (req.focus && Infer.MUSCLE_LABELS[req.focus]) parts.push(Infer.MUSCLE_LABELS[req.focus]);
-    else parts.push('אימון מהמאגר');
+    parts.push(focusLabel(req) || 'אימון מהמאגר');
     if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
     else if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
@@ -301,9 +311,7 @@
   // notice:null and the page showed a 45-minute plan of 2 exercises in silence.
   function closestNotice(req, picked) {
     var want = [];
-    if (req.focus === 'full') want.push('גוף מלא');
-    else if (req.focus === 'arms') want.push('ידיים');
-    else if (req.focus && Infer.MUSCLE_LABELS[req.focus]) want.push(Infer.MUSCLE_LABELS[req.focus]);
+    if (focusLabel(req)) want.push(focusLabel(req));
     if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       want.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
@@ -388,10 +396,7 @@
       });
     }
 
-    var title = req.focus === 'full' ? 'אימון גוף מלא'
-      : req.focus === 'arms' ? 'אימון ידיים'
-      : req.focus && Infer.MUSCLE_LABELS[req.focus] ? ('אימון ' + Infer.MUSCLE_LABELS[req.focus])
-      : 'אימון מהמאגר';
+    var title = focusLabel(req) ? ('אימון ' + focusLabel(req)) : 'אימון מהמאגר';
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
     if (!warmEx.length) warmMinutes = 0;
 

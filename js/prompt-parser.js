@@ -33,6 +33,16 @@
     'רגל': /(?:^|[^א-ת])[ובלה]{0,2}רגל(?=$|[^א-ת])/
   };
 
+  // "פלג גוף עליון" / "גוף תחתון" / "חלק עליון" name a half of the body, not a
+  // muscle. Without these the prompt fell through to the full-body default,
+  // so an upper-body request came back titled «אימון גוף מלא» and filled with
+  // crunch variants. The word must follow גוף/פלג/חלק: «פולי עליון» (the lat
+  // pulldown) is a back exercise, not a half-body request.
+  var UPPER_BODY_RX = /(?:פלג|חלק|גוף)[ -]?(?:ה?גוף[ -]?)?ה?עליון|upper.?body/;
+  var LOWER_BODY_RX = /(?:פלג|חלק|גוף)[ -]?(?:ה?גוף[ -]?)?ה?תחתון|lower.?body/;
+  var UPPER_MUSCLES = ['chest', 'back', 'shoulders', 'biceps', 'triceps'];
+  var LOWER_MUSCLES = ['legs'];
+
   function hasMuscleWord(t, word) {
     var rx = WHOLE_WORD_RX[word];
     if (rx) return rx.test(t);
@@ -293,6 +303,14 @@
     var focus = null;
     if (/פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/.test(t)) {
       return { muscles: [], focus: 'full' };
+    }
+    if (UPPER_BODY_RX.test(t)) {
+      muscles = muscles.concat(UPPER_MUSCLES);
+      focus = 'upper';
+    }
+    if (LOWER_BODY_RX.test(t)) {
+      muscles = muscles.concat(LOWER_MUSCLES);
+      if (!focus) focus = 'lower';
     }
     Object.keys(MUSCLE_KEYS).forEach(function (key) {
       MUSCLE_KEYS[key].forEach(function (word) {
