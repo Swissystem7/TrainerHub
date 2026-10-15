@@ -335,8 +335,13 @@
       if (m[1]) sets = toInt(m[1]);
       duration_seconds = toInt(m[2]) * 60 + toInt(m[3]);
       s = s.replace(m[0], ' ');
-    } else if ((m = s.match(/(\d+)\s*["״]/))) {
-      duration_seconds = toInt(m[1]);
+    } else if ((m = s.match(/(?:(?:^|\s)([1-9])\s*\/\s*)?(\d+)\s*["״]/))) {
+      // «פלאנק 3/30"» is 3 sets of 30 s.
+      if (m[1]) {
+        sets = toInt(m[1]);
+        setsExplicit = true;
+      }
+      duration_seconds = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
     // "3 סטים של 12 חזרות", "10 חזרות 3 סבבים"; the count after the sets is reps
@@ -350,6 +355,16 @@
     }
     // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds).
     m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d:])\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
+    if (m) {
+      sets = toInt(m[1]);
+      setsExplicit = true;
+      if (m[3] && m[3] !== 'חזרות' && m[3] !== 'פעמים') duration_seconds = toInt(m[2]);
+      else reps = toInt(m[2]);
+      s = s.replace(m[0], ' ');
+    }
+    // «סקוואט 4/12» is 4 sets of 12 like «4x12»; «פלאנק 3/30 שניות» is 3 × 30 s.
+    // «1/2 דקה» / «דקה ו-1/2» stay half a minute.
+    m = setsExplicit ? null : s.match(/(?:^|\s)([1-9])\s*\/\s*(\d+)(?![\d:\/.]|\s*(?:דק|′))\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״″])?/);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
