@@ -594,8 +594,17 @@
     return store.follows[prevId + '>' + nextId] || 0;
   }
 
+  // WhatsApp pastes: «סופרמן 3x10 💪», «✅ פלאנק 30 שניות», «1️⃣ סקוואט 15». The emoji is
+  // decoration; left in, it stays in the name and the clip is not found.
+  var KEYCAP_RX = /[0-9#*]\uFE0F?\u20E3/g;
+  var EMOJI_RX = /\p{Extended_Pictographic}|\p{Emoji_Modifier}|\p{Regional_Indicator}|[\uFE0F\u200D]/gu;
+
+  function stripEmoji(text) {
+    return String(text || '').replace(KEYCAP_RX, ' ').replace(EMOJI_RX, ' ');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = String(text || '').trim();
+    var raw = stripEmoji(text).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
