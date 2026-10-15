@@ -416,8 +416,21 @@
       return { error: 'bad-range', message: 'סמנו התחלה וסוף — זמן הסיום חייב להיות אחרי ההתחלה.' };
     }
     var inferred = Infer.inferFromName(he, { folder: opts.folder || '' });
+    // Re-saving the same slice (same video, same start and end) updates it.
+    // Any other slice gets an id no catalog or user entry already holds, so a
+    // second "פלאנק" segment becomes seg_פלאנק_2 instead of replacing the first.
+    var start = Math.floor(startSec);
+    var end = Math.floor(endSec);
+    var users = typeof api.userCatalogList === 'function' ? api.userCatalogList() : [];
+    var same = users.filter(function (e) {
+      return e && e.driveId === driveId && e.startSec != null &&
+        Number(e.startSec) === start && Number(e.endSec) === end;
+    })[0];
+    var used = {};
+    Object.keys(api.catalog || {}).forEach(function (k) { used[k] = true; });
+    users.forEach(function (e) { if (e && e.id) used[e.id] = true; });
     var entry = {
-      id: Infer.makeId('seg', he, {}),
+      id: same ? same.id : Infer.makeId('seg', he, used),
       he: he,
       muscles: inferred.muscles,
       equipment: inferred.equipment,
@@ -425,8 +438,8 @@
       source: 'drive',
       folder: opts.folder || '',
       driveId: driveId,
-      startSec: Math.floor(startSec),
-      endSec: Math.floor(endSec),
+      startSec: start,
+      endSec: end,
       segmentOf: opts.segmentOf || driveId
     };
     if (!api.addUserEntry(entry)) {

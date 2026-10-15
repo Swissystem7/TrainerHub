@@ -1491,14 +1491,27 @@
     return Array.isArray(list) ? list : [];
   }
 
+  // Two user entries are the same clip when they share an id or point at the
+  // same hosted video. A segment (startSec set) is one slice of a long video:
+  // other slices of that video are separate entries, not duplicates of it,
+  // so the "פרק סרטון" tab can keep every slice it saves from one Drive file.
+  function sameUserClip(a, b) {
+    if (!a || !b) return false;
+    if (a.id === b.id) return true;
+    var sameVideo = (!!a.driveId && a.driveId === b.driveId) ||
+      (!!a.youtubeId && a.youtubeId === b.youtubeId);
+    if (!sameVideo) return false;
+    if (a.startSec == null && b.startSec == null) return true;
+    if (a.startSec == null || b.startSec == null) return false;
+    return Number(a.startSec) === Number(b.startSec) && Number(a.endSec) === Number(b.endSec);
+  }
+
   function addUserEntry(entry) {
     if (!entry || !entry.id || !entry.he) return null;
     var list = userCatalogList();
     var i;
     for (i = 0; i < list.length; i++) {
-      if (list[i] && (list[i].id === entry.id ||
-          (entry.driveId && list[i].driveId === entry.driveId) ||
-          (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
+      if (sameUserClip(list[i], entry)) {
         list[i] = entry;
         if (!storeSet(KEYS.userCatalog, list)) return null;
         catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
