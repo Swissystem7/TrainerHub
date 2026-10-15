@@ -1479,12 +1479,49 @@
     };
   }
 
+  var DRAFT_MAIN_MINUTES = 20;
+
+  // Seconds a draft exercise takes in workout mode: its sets of work (a rep
+  // is ~3 s, the midpoint of a «8-12» range) plus the rests between them.
+  function draftExerciseSeconds(ex) {
+    var sets = Math.max(1, Number(ex.sets) || 1);
+    var work = Number(ex.duration_seconds) || 0;
+    if (!work) {
+      var m = String(ex.reps == null ? '' : ex.reps).match(/(\d+)(?:\s*-\s*(\d+))?/);
+      var reps = m ? (Number(m[1]) + Number(m[2] || m[1])) / 2 : 0;
+      work = reps ? reps * 3 : 30;
+    }
+    var rest = Number(ex.rest_seconds) || 0;
+    return sets * work + (sets - 1) * rest;
+  }
+
+  // The draft starts as a 20-minute Main; once the picked clips take longer
+  // than that (about 3 min each with the default 3×8-12 and 45 s rest) the
+  // phase and the workout total grow with them, so the trainee page and the
+  // print sheet do not promise «30 דקות» for a 12-exercise session.
+  function draftSettleMinutes(w) {
+    var main = w.phases[1] || w.phases[0];
+    var seconds = (main.exercises || []).reduce(function (a, ex) { return a + draftExerciseSeconds(ex); }, 0);
+    main.duration_minutes = Math.max(DRAFT_MAIN_MINUTES, Math.round(seconds / 60));
+    w.duration_minutes = w.phases.reduce(function (a, ph) { return a + (Number(ph.duration_minutes) || 0); }, 0);
+    return w;
+  }
+
+  function draftHas(id) {
+    var w = draftGet();
+    var main = w.phases[1] || w.phases[0];
+    return (main.exercises || []).some(function (ex) { return ex.id === id; });
+  }
+
+  // A clip already in the draft is not pushed again: a double tap on
+  // «הוסף לאימון» used to put the same exercise twice in a row.
   function draftAdd(id) {
     var entry = catalog[id];
     if (!entry) return null;
     var w = draftGet();
     var main = w.phases[1] || w.phases[0];
     if (!main.exercises) main.exercises = [];
+    if (main.exercises.some(function (ex) { return ex.id === entry.id; })) return w;
     main.exercises.push({
       name: entry.he,
       id: entry.id,
@@ -1494,6 +1531,7 @@
       rest_seconds: 45,
       notes: null
     });
+    draftSettleMinutes(w);
     storeSet(KEYS.draft, w);
     return w;
   }
@@ -1815,6 +1853,7 @@
     daysSinceLast: daysSinceLast,
     draftGet: draftGet,
     draftAdd: draftAdd,
+    draftHas: draftHas,
     draftClear: draftClear,
     isPlayable: isPlayable,
     playableKind: playableKind,

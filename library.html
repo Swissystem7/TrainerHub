@@ -162,7 +162,7 @@
     box.hidden = false;
     $('draftList').innerHTML = main.map(function (ex) {
       return '<div class="pill">' + TH.esc(ex.name) + (ex.sets ? ' · ' + ex.sets + '×' + (ex.reps || '') : '') + '</div>';
-    }).join(' ');
+    }).join(' ') + '<div class="pill">' + main.length + ' תרגילים · כ־' + TH.esc(w.duration_minutes) + ' דקות</div>';
   }
 
   function render() {
@@ -263,9 +263,10 @@
     } else if (act === 'wa') {
       window.open(TH.waShareUrl('', TH.clipShareMessage(id, '')), '_blank');
     } else if (act === 'add') {
+      var already = TH.draftHas(id);
       TH.draftAdd(id);
       renderDraft();
-      e.target.textContent = 'נוסף';
+      e.target.textContent = already ? 'כבר באימון' : 'נוסף';
       setTimeout(function () { e.target.textContent = 'הוסף לאימון'; }, 1400);
     }
   });
