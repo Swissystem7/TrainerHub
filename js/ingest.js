@@ -27,8 +27,10 @@
   // The rest clause of one line: «מנוחה 30 שניות», «עם 60 שניות מנוחה»,
   // «מנוחה של דקה בין הסטים», «מנוחה 1:00». A line that holds nothing else is
   // a rest line; an exercise line keeps its name and takes the clause as its rest.
-  var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|דקות|דקה|דק[׳\'])';
-  var TIMED = '(?:\\d{1,2}:[0-5]\\d|\\d+\\s*' + TIME_UNIT + '(?:\\s*וחצי)?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
+  var MINUTE_UNIT = '(?:דקות|דקה|דק(?:[׳\'′]|(?![\\u0590-\\u05FF])))';
+  var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|' + MINUTE_UNIT + ')';
+  var HALF = '\\s*(?:וחצי|ו-?(?:1\\/2|½))';
+  var TIMED = '(?:\\d{1,2}:[0-5]\\d|(?:1\\/2|½|חצי)\\s*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?\\s*' + TIME_UNIT + '(?:' + HALF + ')?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
   var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))|(?:ל|אחרי\\s+)כל\\s+ה?(?:סט|סבב|תרגיל)))*';
   var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
@@ -40,18 +42,31 @@
   var PER_EXERCISE_WORK_RX = new RegExp('(?<!(?:מנוחה|הפסקה)[\\s:\\-–]*)(?<![\\d:])(' + TIMED + ')\\s*' + PER_EXERCISE + '|' +
     PER_EXERCISE + '\\s*[:\\-–]?\\s*(' + TIMED + ')(?!\\s*(?:מנוחה|הפסקה))');
 
+  // Minutes as trainers write them: «2 דקות», «2 דק׳» («2 דק» once fold() dropped the geresh),
+  // «2 דק׳ וחצי», «1/2 דקה», «½ דק׳», «1.5 דקות», «דקה וחצי». Null when there are none.
+  var HALF_RX = new RegExp(HALF);
+  var HALF_MINUTE_RX = new RegExp('(?:1\\/2|½|(?<!ו)חצי)\\s*' + MINUTE_UNIT);
+  var MINUTES_RX = new RegExp('(\\d+(?:\\.\\d+)?)\\s*' + MINUTE_UNIT);
+
+  function minuteSeconds(s) {
+    var t = String(s || '');
+    var half = HALF_RX.test(t) ? 30 : 0;
+    if (HALF_MINUTE_RX.test(t)) return 30;
+    if (/שתי\s*דקות/.test(t)) return 120 + half;
+    var m = t.match(MINUTES_RX);
+    if (m) return Math.round(parseFloat(m[1]) * 60) + half;
+    if (/דקה/.test(t)) return 60 + half;
+    return null;
+  }
+
   function timedSeconds(s) {
     var t = String(s || '');
     var clock = t.match(/(\d{1,2}):([0-5]\d)/);
     if (clock) return toInt(clock[1]) * 60 + toInt(clock[2]);
-    var half = /וחצי/.test(t) ? 30 : 0;
-    if (/חצי\s*דקה/.test(t)) return 30;
-    if (/שתי\s*דקות/.test(t)) return 120 + half;
-    var m = t.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
-    if (m) return toInt(m[1]) * 60 + half;
-    if (/דקה/.test(t)) return 60 + half;
-    m = t.match(/(\d+)/);
-    return m ? toInt(m[1]) + half : null;
+    var secs = minuteSeconds(t);
+    if (secs != null) return secs;
+    var m = t.match(/(\d+)/);
+    return m ? toInt(m[1]) + (/וחצי/.test(t) ? 30 : 0) : null;
   }
 
   function splitRest(s) {
@@ -153,13 +168,11 @@
     if (!REST_RX.test(t)) return null;
     var clock = t.match(/(\d{1,2}):([0-5]\d)/);
     if (clock) return toInt(clock[1]) * 60 + toInt(clock[2]);
-    if (/דקה\s*וחצי/.test(t)) return 90;
-    if (/חצי\s*דקה/.test(t)) return 30;
-    if (/שתי\s*דקות/.test(t)) return 120;
-    var m = t.match(/(\d+)\s*דקות?/);
-    if (m) return toInt(m[1]) * 60;
-    if (/דקה/.test(t)) return 60;
-    m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
+    // «מנוחה 2 דק׳» is 120 s, «מנוחה 2 דקות וחצי» 150 s, «מנוחה 1/2 דקה» 30 s
+    // (were 2 s, 120 s and 1 s: the number was read as seconds and the half was dropped).
+    var secs = minuteSeconds(t);
+    if (secs != null) return secs;
+    var m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
     if (m) return toInt(m[1]);
     m = t.match(/(?:מנוחה|הפסקה)\s*[:\-–]?\s*(\d+)/);
     if (m) return toInt(m[1]);
@@ -199,8 +212,9 @@
     if (rest) defaults.rest = toInt(rest[1]);
     var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
     if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
-    if (/דקה[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
-    if (/(?:שתי|2)[ \t]*דקות[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(?:שתי|2)[ \t]*דקות/.test(raw) && defaults.rest == null) {
+    // «מנוחה דקה וחצי» / «מנוחה 2 דקות וחצי» are not a whole minute or two (the rest line itself gives 90 / 150).
+    if (/דקה[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*דקה(?![ \t]*(?:וחצי|ו-?(?:1\/2|½)))/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/(?:שתי|2)[ \t]*דקות[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(?:שתי|2)[ \t]*דקות(?![ \t]*(?:וחצי|ו-?(?:1\/2|½)))/.test(raw) && defaults.rest == null) {
       defaults.rest = 120;
     }
     var work = raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*עבודה/) ||
