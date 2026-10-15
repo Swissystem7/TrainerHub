@@ -268,8 +268,12 @@
     renderPlanOptions(); renderPrinciples(); renderDrills(); renderGames(); renderFitnessInfo(); renderSafety(); renderZohar(); buildPlan();
   });
   $('preview').addEventListener('click', buildPlan);
+  // The preview and «התחל במצב אימון» follow the controls as they are now:
+  // starting right after changing the dropdown used to open the plan that
+  // was previewed before the change.
+  ['plan', 'season', 'activity'].forEach(function (id) { $(id).addEventListener('change', buildPlan); });
   $('start').addEventListener('click', function () {
-    if (!current) buildPlan();
+    buildPlan();
     if (!current) return;
     TH.store.set(TH.KEYS.active, current);
     location.href = './frontend/workout-mode.html';
