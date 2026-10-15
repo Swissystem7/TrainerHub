@@ -129,7 +129,7 @@
 
   <section class="card">
     <h2>סרטונים שכדאי לצלם</h2>
-    <p class="hint">תרגילים שנקלטו מאימון מודבק ולא נמצא להם סרטון במאגר.</p>
+    <p class="hint">תרגילים שנקלטו מאימון מודבק ולא נמצא להם סרטון במאגר. ברגע שנשמר סרטון עם השם הזה, התרגיל יורד מהרשימה.</p>
     <div class="list" id="wishList"></div>
   </section>
 </main>
@@ -261,6 +261,7 @@
     $('folder').value = '';
     corrected = {};
     renderUser();
+    renderWish();
   });
 
   $('userList').addEventListener('click', function (e) {
@@ -268,6 +269,54 @@
     if (!id) return;
     TH.removeUserEntry(id);
     renderUser();
+  });
+
+  function wishDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+  }
+
+  // «סרטונים שכדאי לצלם»: the paste on the home page writes this list
+  // (THIngest.wishlistAdd) but this page never read it, so the section was
+  // always blank. Wishes whose name now matches a clip are pruned first.
+  function renderWish() {
+    var box = $('wishList');
+    if (typeof THIngest === 'undefined' || !THIngest.wishlistList) {
+      box.innerHTML = '';
+      return;
+    }
+    var list = THIngest.wishlistPrune ? THIngest.wishlistPrune() : THIngest.wishlistList();
+    if (!list.length) {
+      box.innerHTML = '<p class="hint">אין כרגע תרגילים שחסר להם סרטון. כשמדביקים אימון בדף הבית ותרגיל לא נמצא במאגר, הוא יופיע כאן.</p>';
+      return;
+    }
+    box.innerHTML = list.map(function (item) {
+      var when = wishDate(item.at);
+      var meta = TH.esc(item.reason || 'חסר סרטון במאגר') + (when ? ' · ' + TH.esc(when) : '');
+      return '<div class="item"><div><b>' + TH.esc(item.he) + '</b><span>' + meta + '</span></div>' +
+        '<div class="pills">' +
+        '<button type="button" class="th-btn ghost" data-wish-fill="' + TH.esc(item.he) + '">הוסף סרטון</button>' +
+        '<button type="button" class="th-btn ghost" data-wish-del="' + TH.esc(item.he) + '">מחק</button>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  $('wishList').addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.getAttribute) return;
+    var del = t.getAttribute('data-wish-del');
+    if (del) {
+      THIngest.wishlistRemove(del);
+      renderWish();
+      return;
+    }
+    var fill = t.getAttribute('data-wish-fill');
+    if (fill) {
+      $('he').value = fill;
+      propose();
+      $('addStatus').textContent = 'השם «' + fill + '» מולא בטופס למעלה. הדביקו קישור לסרטון ואשרו.';
+    }
   });
 
   $('exportBtn').addEventListener('click', function () {
@@ -280,7 +329,10 @@
     });
   });
 
-  TH.ready(renderUser);
+  TH.ready(function () {
+    renderUser();
+    renderWish();
+  });
 })();
 </script>
 </body>
