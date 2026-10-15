@@ -445,13 +445,14 @@
     }
     var minMatch = null;
     var minSec = null;
-    m = s.match(/(?:(\d+)\s*דקות|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
+    // «דק׳» is «דקה» too: «2 דק׳ וחצי» is 150 s, «1/2 דק׳» is 30 s (was 120 s and a name «פלאנק 1»).
+    m = s.match(/(?:(\d+)\s*(?:דקות|דקה|דק[׳']|′)|שתי\s*דקות|דקה)\s*(?:וחצי|ו-?(?:1\/2|½))/);
     if (m) {
       if (m[1]) minSec = toInt(m[1]) * 60 + 30;
       else if (/שתי/.test(m[0])) minSec = 150;
       else minSec = 90;
       minMatch = m[0];
-    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*דקה/))) {
+    } else if ((m = s.match(/(?:1\/2|½|חצי)\s*(?:דקה|דק[׳']|′)/))) {
       minSec = 30;
       minMatch = m[0];
     } else if ((m = s.match(/שתי\s*דקות/))) {
