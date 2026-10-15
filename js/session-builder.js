@@ -272,8 +272,12 @@
     return parts.join(' · ');
   }
 
-  function closestNotice(req, relax, picked) {
-    if (!relax.muscle && !relax.equipment && !relax.level) return null;
+  // Shown whenever the result is only "the closest thing": a filter had to be
+  // relaxed, or the pool was too small to fill even a minimal session. Before
+  // this the notice keyed on relax alone, so a request whose pool held 2
+  // matching clips (nothing relaxed, 2 picked) returned closest:true with
+  // notice:null and the page showed a 45-minute plan of 2 exercises in silence.
+  function closestNotice(req, picked) {
     var want = [];
     if (req.focus === 'full') want.push('גוף מלא');
     else if (req.focus === 'arms') want.push('ידיים');
@@ -322,7 +326,12 @@
       return { entry: e, score: scoreEntry(e, req, prefer) };
     });
     var picked = pickDiverse(scored, need);
-    var satisfied = !relax.muscle && !relax.equipment && picked.length >= Math.min(3, need);
+    // Satisfied means exactly what the request asked for, in enough clips:
+    // nothing relaxed (level included - a relaxed level already produces a
+    // notice, so satisfied:true next to it was a contradiction) and at least
+    // the minimal session length.
+    var relaxed = relax.muscle || relax.equipment || relax.level;
+    var satisfied = !relaxed && picked.length >= Math.min(3, need);
     if (picked.length === 0) {
       return {
         request: req,
@@ -400,7 +409,7 @@
       request: req,
       satisfied: satisfied,
       closest: !satisfied,
-      notice: closestNotice(req, relax, picked),
+      notice: satisfied ? null : closestNotice(req, picked),
       workout: workout,
       explanation: explanation,
       analysis: analysis
