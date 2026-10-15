@@ -509,7 +509,11 @@ function renderExercise(step) {
   // Update done button label
   const btnDone = document.getElementById('btnDone');
   btnDone.style.display = '';
-  btnDone.querySelector('.label').textContent = step.duration ? 'דלג' : 'סיימתי סט';
+  // On a timed step this button ends the hold early and still counts the set
+  // as done (markSetDone). It must not read «דלג»: the real skip button sits
+  // right next to it with that label, and a skip is what the trainer sees in
+  // the completion code.
+  btnDone.querySelector('.label').textContent = step.duration ? 'סיימתי' : 'סיימתי סט';
   const btnSwapEx = document.getElementById('btnSwap');
   if (btnSwapEx) btnSwapEx.style.display = '';
 
