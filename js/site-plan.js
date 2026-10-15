@@ -73,6 +73,29 @@
     };
   }
 
+  /** Seconds an added exercise takes: its sets of work (a rep ≈ 3 s, as in the analyzer) plus the rests between them. */
+  function exerciseSeconds(x) {
+    var sets = Math.max(1, Number(x.sets) || 1);
+    var work = x.duration_seconds != null ? (Number(x.duration_seconds) || 0) : (Number(x.reps) || 0) * 3;
+    var rest = Number(x.rest_seconds) || 0;
+    return sets * work + (sets - 1) * rest;
+  }
+
+  /** Adds an exercise to a phase and stretches the phase's declared minutes by the time it takes (whole minutes, never shrinking). */
+  function addExercise(phase, exercise, atStart) {
+    if (atStart) phase.exercises.unshift(exercise); else phase.exercises.push(exercise);
+    phase.added_seconds = (phase.added_seconds || 0) + exerciseSeconds(exercise);
+  }
+
+  /** Folds the seconds added by site drills / games into the phase minutes and the workout total. */
+  function settleMinutes(workout) {
+    workout.phases.forEach(function (ph) {
+      if (ph.added_seconds) ph.duration_minutes = (Number(ph.duration_minutes) || 0) + Math.round(ph.added_seconds / 60);
+      delete ph.added_seconds;
+    });
+    workout.duration_minutes = workout.phases.reduce(function (a, ph) { return a + (Number(ph.duration_minutes) || 0); }, 0);
+  }
+
   /** Which base workout fits the width. Narrow space → a limited-space method from the booklet. */
   function baseChoice(p, group) {
     if (p.width === 'narrow') {
@@ -117,7 +140,7 @@
     Object.keys(SITE_DRILLS).forEach(function (feature) {
       if (p.features.indexOf(feature) === -1) return;
       SITE_DRILLS[feature].forEach(function (d) {
-        main.exercises.push(siteExercise(d, floorNote(d, slippery, uneven)));
+        addExercise(main, siteExercise(d, floorNote(d, slippery, uneven)));
         reasons.push(d.reason);
       });
     });
@@ -128,7 +151,7 @@
     if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars) {
       var game = Booklet.games('tag')[0];
       if (game) {
-        warm.exercises.unshift({ name: game.he, id: null, sets: 1, reps: null, duration_seconds: 300, rest_seconds: null, notes: game.description });
+        addExercise(warm, { name: game.he, id: null, sets: 1, reps: null, duration_seconds: 300, rest_seconds: null, notes: game.description }, true);
         reasons.push('פתחתי ב' + game.he + ' כי השטח רחב והקבוצה גדולה (' + group + ')');
       }
     } else if (group >= 6 && p.width !== 'wide') {
@@ -136,6 +159,8 @@
     } else if (group >= 6) {
       reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + (cars ? 'יש מכוניות ליד השטח' : 'המשטח לא בטוח לריצה'));
     }
+
+    settleMinutes(workout);
 
     var lay = layoutFor(p, group);
     if (lay.line) warnings.push(lay.line);
