@@ -216,6 +216,17 @@
     return (ids || []).map(function (m) { return TH.muscleLabel(m); }).join(', ') || '—';
   }
 
+  // The equipment select value for a parsed equipment list: exactly one id that the
+  // select offers, otherwise «לפי הבקשה» so the request text decides.
+  function equipmentOption(list) {
+    if (!Array.isArray(list) || list.length !== 1) return 'auto';
+    var options = $('equipmentInput').options || [];
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].value === list[0]) return list[0];
+    }
+    return 'auto';
+  }
+
   function switchTab(id) {
     ['prompt', 'ingest', 'seg'].forEach(function (key) {
       var tab = $('tab-' + key);
@@ -440,9 +451,13 @@
       var example = btn.getAttribute('data-fill');
       var parsed = THPrompt.parsePrompt(example);
       $('prompt').value = example;
-      if (parsed.durationSpecified) $('durationInput').value = parsed.duration;
-      if (parsed.participantsSpecified) $('participantsInput').value = parsed.participants;
-      if (parsed.equipment.length === 1) $('equipmentInput').value = parsed.equipment[0];
+      // The example stands on its own: every field follows the example text, so a
+      // group request typed a moment ago (18 חניכים, קונוסים) does not leak into
+      // «אימון בטן 20 דקות בלי ציוד». Fields the example does not name go back to
+      // the parser defaults (20 דקות, מתאמן אחד, ציוד לפי הבקשה).
+      $('durationInput').value = parsed.duration;
+      $('participantsInput').value = parsed.participants;
+      $('equipmentInput').value = equipmentOption(parsed.equipment);
       $('prompt').focus();
       run();
     });
