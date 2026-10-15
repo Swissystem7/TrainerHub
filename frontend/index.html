@@ -228,6 +228,19 @@
   var currentWorkout = null;
   var $ = function (id) { return document.getElementById(id); };
 
+  // One source of truth for the sets/reps/seconds/rest line, used by the card
+  // on screen and by the «העתק» text, so what gets pasted equals what is shown.
+  function exerciseDetailBits(ex) {
+    var bits = [];
+    if (ex.sets && ex.reps) bits.push(ex.sets + '×' + ex.reps);
+    else if (ex.reps) bits.push(ex.reps + ' חזרות');
+    if (ex.duration_seconds) {
+      bits.push((ex.sets > 1 && !ex.reps ? ex.sets + '×' : '') + ex.duration_seconds + '″');
+    }
+    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + '″');
+    return bits;
+  }
+
   function renderCard(w, usedFallback) {
     var intensityClass = { high: 'intensity-high', medium: 'intensity-medium', low: 'intensity-low' }[w.intensity] || '';
     var intensityLabel = { high: 'עצימות גבוהה', medium: 'עצימות בינונית', low: 'עצימות נמוכה' }[w.intensity] || '';
@@ -238,11 +251,7 @@
       var phaseClass = { 'Warm-up': 'phase-warmup', 'Main': 'phase-main', 'Cool-down': 'phase-cooldown' }[phase.name] || 'phase-main';
       var phaseLabel = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[phase.name] || TH.esc(phase.name);
       var exercises = (phase.exercises || []).map(function (ex) {
-        var details = [];
-        if (ex.sets && ex.reps) details.push(TH.esc(ex.sets) + '×' + TH.esc(ex.reps));
-        else if (ex.reps) details.push(TH.esc(ex.reps) + ' חזרות');
-        if (ex.duration_seconds) details.push(TH.esc(ex.duration_seconds) + '″');
-        if (ex.rest_seconds) details.push('מנוחה ' + TH.esc(ex.rest_seconds) + '″');
+        var details = exerciseDetailBits(ex).map(TH.esc);
         var clipMark = TH.hasClip(ex) ? ' · יש סרטון' : '';
         return '<div class="exercise"><div><div>' + TH.esc(ex.name) + clipMark + '</div>' +
           (ex.notes ? '<div class="history-meta">' + TH.esc(ex.notes) + '</div>' : '') +
@@ -391,10 +400,8 @@
     (currentWorkout.phases || []).forEach(function (ph) {
       text += (TH.phaseLabel(ph.name) || ph.name) + '\n';
       (ph.exercises || []).forEach(function (ex) {
-        text += '- ' + ex.name;
-        if (ex.sets && ex.reps) text += ' ' + ex.sets + '×' + ex.reps;
-        if (ex.duration_seconds) text += ' ' + ex.duration_seconds + ' שנ׳';
-        text += '\n';
+        var bits = exerciseDetailBits(ex);
+        text += '- ' + ex.name + (bits.length ? ' ' + bits.join(' · ') : '') + '\n';
       });
       text += '\n';
     });

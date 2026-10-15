@@ -416,7 +416,14 @@
         rpe: parsed.rpe
       });
       c.plan = parsed.title || c.plan;
-      if (parsed.plan) c.lastPlan = parsed.plan;
+      if (parsed.plan) {
+        // The report carries the plan the trainee actually ran. «פתח כמתאמן» and
+        // «שתף» read lastWorkout while «הצע שבוע הבא» reads lastPlan, so both must
+        // follow the import - otherwise the preview opens the coach's own active
+        // workout and overwrites the imported plan with it.
+        c.lastPlan = parsed.plan;
+        c.lastWorkout = TH.expandPlan(parsed.plan);
+      }
       delete c.nextFrom;
     }
     save();

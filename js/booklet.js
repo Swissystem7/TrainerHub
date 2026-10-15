@@ -164,10 +164,20 @@
     };
   }
 
+  /** True when the part prescribes its exercises (work seconds, reps or hold time),
+   *  as opposed to merely naming them inside the drill text. */
+  function prescribes(part) {
+    if (part.workSeconds != null) return true;
+    return (part.exercises || []).some(function (x) {
+      return x.reps != null || x.seconds != null || x.holdSeconds != null || x.repeats != null;
+    });
+  }
+
   function partExercises(part) {
     var rounds = Array.isArray(part.rounds) ? part.rounds[0] : (part.rounds || 1);
-    if (Array.isArray(part.exercises) && part.exercises.length) {
-      return part.exercises.map(function (x) {
+    var exercises = Array.isArray(part.exercises) ? part.exercises : [];
+    if (exercises.length && prescribes(part)) {
+      return exercises.map(function (x) {
         return exerciseFrom(x, {
           sets: rounds,
           seconds: part.workSeconds != null ? part.workSeconds : null,
@@ -176,15 +186,23 @@
         });
       });
     }
-    // Text-only drills (relay, flag game, crawling) stay as one timed card.
+    // Text drills (relay, stretcher, rope pull, flag game, crawling) stay as one card:
+    // the drill itself, timed by the part's minutes or by its work seconds x rounds.
+    // Exercises the text only names (the waiting group's static holds) ride along in the notes.
+    var notes = part.text || null;
+    if (exercises.length) {
+      var names = exercises.map(function (x) { return x.he; }).join(' / ');
+      notes = notes ? notes + '\n' + names : names;
+    }
+    var timed = part.workSeconds != null;
     return [{
       name: part.he,
       id: null,
-      sets: 1,
+      sets: timed ? rounds : 1,
       reps: null,
-      duration_seconds: part.minutes ? part.minutes * 60 : null,
-      rest_seconds: null,
-      notes: part.text || null
+      duration_seconds: timed ? part.workSeconds : (part.minutes ? part.minutes * 60 : null),
+      rest_seconds: timed && part.restSeconds != null ? part.restSeconds : null,
+      notes: notes
     }];
   }
 

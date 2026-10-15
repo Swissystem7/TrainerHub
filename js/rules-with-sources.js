@@ -125,7 +125,7 @@
 
   function stationsText(req) {
     if (req.participants <= 1) return '1 חניך — בלי חלוקה לתחנות';
-    var plan = Engine.groupPlan(req.participants, Engine.wantedCount(req.duration));
+    var plan = Engine.groupPlan(req.participants, Engine.wantedCount(req.duration, prescription(req)));
     return plan && plan.he ? plan.he : req.participants + ' חניכים';
   }
 
@@ -146,10 +146,10 @@
     {
       id: 'exercise_count',
       he: 'מספר התרגילים',
-      detail: 'נגזר ממשך האימון לפי מדרגות קבועות, לא לפי כמה סרטונים יש.',
+      detail: 'נגזר ממשך האימון לפי מדרגות קבועות, לא לפי כמה סרטונים יש; מרשם כבד (כוח: 4 סטים ו-120 שנ׳ מנוחה) מצמצם אותו כדי שהאימון ייכנס בזמן.',
       evaluate: function (req) {
         return {
-          value: Engine.wantedCount(req.duration) + ' תרגילים לאימון של ' + req.duration + ' דקות',
+          value: Engine.wantedCount(req.duration, prescription(req)) + ' תרגילים לאימון של ' + req.duration + ' דקות',
           source: 'engine'
         };
       }

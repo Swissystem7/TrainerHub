@@ -53,13 +53,35 @@
     return RX.hypertrophy;
   }
 
-  function wantedCount(duration) {
+  function repMid(reps) {
+    var m = String(reps == null ? '' : reps).match(/(\d+)(?:\s*-\s*(\d+))?/);
+    if (!m) return 0;
+    var lo = Number(m[1]);
+    var hi = m[2] ? Number(m[2]) : lo;
+    return (lo + hi) / 2;
+  }
+
+  // Seconds one exercise takes in workout mode: every set is followed by its
+  // rest, and a reps set is counted at ~3 s per rep.
+  function exerciseSeconds(rx) {
+    var sets = Number(rx && rx.sets) || 1;
+    var work = Number(rx && rx.duration) || repMid(rx && rx.reps) * 3 || 30;
+    var rest = Number(rx && rx.rest) || 0;
+    return sets * (work + rest);
+  }
+
+  // The duration steps were calibrated on the default prescription (3 sets of
+  // 8-12 with 60 s rest, about 4.5 min per exercise). A heavier prescription
+  // kept the same step: strength is 4 sets with 120 s rest, twice as long, so
+  // a «20 minute» strength session carried 5 exercises and 40 minutes of rest
+  // alone. The count shrinks by the ratio of the two, never below 2 and never
+  // above the step. Without a prescription the steps are returned as they are.
+  function wantedCount(duration, rx) {
     var d = Number(duration) || 20;
-    if (d <= 10) return 3;
-    if (d <= 20) return 5;
-    if (d <= 30) return 6;
-    if (d <= 45) return 8;
-    return 10;
+    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8 : 10;
+    if (!rx) return base;
+    var ratio = exerciseSeconds(RX.hypertrophy) / exerciseSeconds(rx);
+    return Math.max(2, Math.min(base, Math.floor(base * ratio)));
   }
 
   function groupPlan(participants, exerciseCount) {
@@ -105,7 +127,7 @@
     var blob = foldName(entry) + ' ' + Infer.fold(entry.folder || '');
     var score = 0;
     if (req.focus === 'core' && /בטן|פלאנק|ליבה|מטפס/.test(blob)) score += 6;
-    if (req.focus === 'legs' && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
+    if ((req.focus === 'legs' || req.focus === 'lower') && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
     if (req.focus === 'back' && /גב|מתח|אוסטרל/.test(blob)) score += 6;
     if (req.focus === 'arms' && /יד|שכיב|כוח ידיים/.test(blob)) score += 6;
     if (req.focus === 'chest' && /חזה|שכיב/.test(blob)) score += 6;
@@ -181,26 +203,55 @@
     });
   }
 
+  // The muscle group a pick "spends" when the request names no muscle (a
+  // full-body or unfocused prompt), or null when it names one. The catalog is
+  // core-heavy (25 of its 78 clips) and without a muscle in the request every
+  // clip scores the same, so «אימון גוף מלא 45 דקות» came out 7 of 8 core
+  // (crunches variants) and the analyzer flagged its own result
+  // «88% ליבה, אין עבודת גב». With a group on each row pickDiverse takes the
+  // best clip of every group before the second clip of any group. A request
+  // that names muscles keeps the plain score order, where the muscle match
+  // already decides.
+  function spreadGroup(entry, req) {
+    if (req.muscles && req.muscles.length) return null;
+    var muscles = (entry && entry.muscles) || [];
+    return muscles.length ? muscles[0] : 'other';
+  }
+
   function pickDiverse(scored, count) {
     var picked = [];
     var usedName = {};
     var usedPattern = {};
+    var usedGroup = {};
     scored.sort(function (a, b) { return b.score - a.score; });
     function take(pred) {
-      for (var i = 0; i < scored.length && picked.length < count; i++) {
-        var e = scored[i].entry;
-        var name = foldName(e);
-        if (usedName[name]) continue;
-        if (pred && !pred(e, scored[i])) continue;
-        usedName[name] = true;
-        var inf = Infer.inferFromName(e.he, { folder: e.folder || '' });
-        usedPattern[inf.pattern] = (usedPattern[inf.pattern] || 0) + 1;
-        picked.push(e);
-        if (root.THIngest && typeof root.THIngest.patternScore === 'function') {
-          scored.forEach(function (row) {
-            row.score += root.THIngest.patternScore(e.id, row.entry.id);
-          });
+      // One round takes at most one clip per group (rows without a group are
+      // never held back). Rounds repeat until the count is reached or a round
+      // takes nothing.
+      var round = 0;
+      var took = true;
+      while (took && picked.length < count) {
+        took = false;
+        for (var i = 0; i < scored.length && picked.length < count; i++) {
+          var e = scored[i].entry;
+          var name = foldName(e);
+          if (usedName[name]) continue;
+          if (pred && !pred(e, scored[i])) continue;
+          var group = scored[i].group;
+          if (group != null && (usedGroup[group] || 0) > round) continue;
+          usedName[name] = true;
+          if (group != null) usedGroup[group] = round + 1;
+          var inf = Infer.inferFromName(e.he, { folder: e.folder || '' });
+          usedPattern[inf.pattern] = (usedPattern[inf.pattern] || 0) + 1;
+          picked.push(e);
+          took = true;
+          if (root.THIngest && typeof root.THIngest.patternScore === 'function') {
+            scored.forEach(function (row) {
+              row.score += root.THIngest.patternScore(e.id, row.entry.id);
+            });
+          }
         }
+        round++;
       }
     }
     take(function (e, row) { return row.score >= 10; });
@@ -256,12 +307,22 @@
     return bits.join(' · ') || 'זמין במאגר ומתאים לבקשה';
   }
 
+  // Focus values that are not a single muscle key (see THPrompt.parseMuscles).
+  var FOCUS_LABELS = {
+    full: 'גוף מלא',
+    arms: 'ידיים',
+    upper: 'פלג גוף עליון',
+    lower: 'פלג גוף תחתון'
+  };
+
+  function focusLabel(req) {
+    if (!req || !req.focus) return '';
+    return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+  }
+
   function typeLabel(req, analysis) {
     var parts = [];
-    if (req.focus === 'full') parts.push('גוף מלא');
-    else if (req.focus === 'arms') parts.push('ידיים');
-    else if (req.focus && Infer.MUSCLE_LABELS[req.focus]) parts.push(Infer.MUSCLE_LABELS[req.focus]);
-    else parts.push('אימון מהמאגר');
+    parts.push(focusLabel(req) || 'אימון מהמאגר');
     if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
     else if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
@@ -272,12 +333,14 @@
     return parts.join(' · ');
   }
 
-  function closestNotice(req, relax, picked) {
-    if (!relax.muscle && !relax.equipment && !relax.level) return null;
+  // Shown whenever the result is only "the closest thing": a filter had to be
+  // relaxed, or the pool was too small to fill even a minimal session. Before
+  // this the notice keyed on relax alone, so a request whose pool held 2
+  // matching clips (nothing relaxed, 2 picked) returned closest:true with
+  // notice:null and the page showed a 45-minute plan of 2 exercises in silence.
+  function closestNotice(req, picked) {
     var want = [];
-    if (req.focus === 'full') want.push('גוף מלא');
-    else if (req.focus === 'arms') want.push('ידיים');
-    else if (req.focus && Infer.MUSCLE_LABELS[req.focus]) want.push(Infer.MUSCLE_LABELS[req.focus]);
+    if (focusLabel(req)) want.push(focusLabel(req));
     if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       want.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
@@ -296,7 +359,7 @@
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
     var list = catalogList(catalogOrList);
     var rx = prescription(req);
-    var need = wantedCount(req.duration);
+    var need = wantedCount(req.duration, rx);
     var relax = { muscle: false, equipment: false, level: false };
     // The designated warm-up clip belongs to the Warm-up phase only. Without
     // this it scored into the Main phase of full-body / unfocused prompts as
@@ -319,10 +382,15 @@
       pool = filterPool(mainList, req, relax);
     }
     var scored = pool.map(function (e) {
-      return { entry: e, score: scoreEntry(e, req, prefer) };
+      return { entry: e, score: scoreEntry(e, req, prefer), group: spreadGroup(e, req) };
     });
     var picked = pickDiverse(scored, need);
-    var satisfied = !relax.muscle && !relax.equipment && picked.length >= Math.min(3, need);
+    // Satisfied means exactly what the request asked for, in enough clips:
+    // nothing relaxed (level included - a relaxed level already produces a
+    // notice, so satisfied:true next to it was a contradiction) and at least
+    // the minimal session length.
+    var relaxed = relax.muscle || relax.equipment || relax.level;
+    var satisfied = !relaxed && picked.length >= Math.min(3, need);
     if (picked.length === 0) {
       return {
         request: req,
@@ -357,10 +425,7 @@
       });
     }
 
-    var title = req.focus === 'full' ? 'אימון גוף מלא'
-      : req.focus === 'arms' ? 'אימון ידיים'
-      : req.focus && Infer.MUSCLE_LABELS[req.focus] ? ('אימון ' + Infer.MUSCLE_LABELS[req.focus])
-      : 'אימון מהמאגר';
+    var title = focusLabel(req) ? ('אימון ' + focusLabel(req)) : 'אימון מהמאגר';
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
     if (!warmEx.length) warmMinutes = 0;
 
@@ -400,7 +465,7 @@
       request: req,
       satisfied: satisfied,
       closest: !satisfied,
-      notice: closestNotice(req, relax, picked),
+      notice: satisfied ? null : closestNotice(req, picked),
       workout: workout,
       explanation: explanation,
       analysis: analysis

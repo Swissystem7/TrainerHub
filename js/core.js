@@ -891,6 +891,8 @@
   function pickExercises(dayIndex, muscles, pool, count, rx, notes, opts) {
     opts = opts || {};
     var used = {};
+    // The day's warm-up / cool-down drill is not also a Main exercise.
+    (opts.exclude || []).forEach(function (id) { if (id) used[id] = true; });
     var exercises = [];
     var slot = 0;
     var guard = 0;
@@ -946,9 +948,14 @@
     var pool = PROGRAM_POOL.map(function (ex) {
       var copy = { id: ex.id, muscles: ex.muscles, equipment: ex.equipment };
       seenIds[ex.id] = true;
-      if (catalog[ex.id] && isPlayable(catalog[ex.id])) {
+      var clip = catalog[ex.id];
+      if (clip && isPlayable(clip)) {
         copy.hasClip = true;
-        copy.tags = catalogTags(catalog[ex.id]);
+        copy.tags = catalogTags(clip);
+        // The trainee gets the catalog clip, so its equipment decides what the exercise
+        // needs: bodyweight_row plays «מתח אוסטרלי» on a bar, not a bodyweight row, and
+        // must not land in a «משקל גוף» program just because the built-in list says 'none'.
+        if (Array.isArray(clip.equipment) && clip.equipment.length) copy.equipment = clip.equipment;
       }
       return copy;
     });
@@ -981,9 +988,10 @@
     for (var d = 0; d < totalDays; d++) {
       var split = splitNameForDay(d, daysPerWeek);
       var muscles = musclesForDay(d, daysPerWeek, targetMuscles, injuredParts);
-      var exercises = pickExercises(d, muscles, pool, numExercises, rx, notes, pickOpts);
       var warmUp = WARM_UPS[d % WARM_UPS.length];
       var coolDown = COOL_DOWNS[d % COOL_DOWNS.length];
+      var dayOpts = Object.assign({ exclude: [warmUp, coolDown] }, pickOpts);
+      var exercises = pickExercises(d, muscles, pool, numExercises, rx, notes, dayOpts);
       var day = {
         day: d + 1,
         split: targetMuscles.length ? 'focus' : split,
@@ -1033,9 +1041,17 @@
     return tags;
   }
 
+  // The designated warm-up clip («חימום») belongs to the Warm-up phase only.
+  // Without this the weekly builder prescribed it in Main as 3 sets x 8-12 reps
+  // of "warm-up" (its catalog muscle is core), next to the real warm-up drill.
+  // Same rule as findWarmup in session-builder.js.
+  function isWarmupClip(e) {
+    return !!e && (e.id === 'warmup' || foldHe(e.he) === 'חימום');
+  }
+
   function catalogAsPool() {
     return catalogList().filter(function (e) {
-      return isPlayable(e) && e.muscles && e.muscles.length;
+      return isPlayable(e) && e.muscles && e.muscles.length && !isWarmupClip(e);
     }).map(function (e) {
       return {
         id: e.id,

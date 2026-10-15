@@ -33,6 +33,16 @@
     'רגל': /(?:^|[^א-ת])[ובלה]{0,2}רגל(?=$|[^א-ת])/
   };
 
+  // "פלג גוף עליון" / "גוף תחתון" / "חלק עליון" name a half of the body, not a
+  // muscle. Without these the prompt fell through to the full-body default,
+  // so an upper-body request came back titled «אימון גוף מלא» and filled with
+  // crunch variants. The word must follow גוף/פלג/חלק: «פולי עליון» (the lat
+  // pulldown) is a back exercise, not a half-body request.
+  var UPPER_BODY_RX = /(?:פלג|חלק|גוף)[ -]?(?:ה?גוף[ -]?)?ה?עליון|upper.?body/;
+  var LOWER_BODY_RX = /(?:פלג|חלק|גוף)[ -]?(?:ה?גוף[ -]?)?ה?תחתון|lower.?body/;
+  var UPPER_MUSCLES = ['chest', 'back', 'shoulders', 'biceps', 'triceps'];
+  var LOWER_MUSCLES = ['legs'];
+
   function hasMuscleWord(t, word) {
     var rx = WHOLE_WORD_RX[word];
     if (rx) return rx.test(t);
@@ -208,8 +218,18 @@
     return n * GROUP_UNIT_SIZE[m[2]];
   }
 
+  // "זוג משקולות" / "זוג דמבלים" / "זוג גומיות" is a pair of equipment, not a
+  // couple: neither a head count nor a partner workout. The phrase is blanked
+  // out before the "זוג" checks so a solo trainee with two dumbbells does not
+  // get a session of partner drills.
+  var PAIR_OF_GEAR_RX = /זוג(?:ות)?\s+(משקולות|משקוליות|משקולת|דאמבלים|דמבלים|דאמבל|דמבל|גומיות|גומיה|קטלבלים|קטלבל)(?=$|[^א-ת])/g;
+
+  function withoutGearPairs(t) {
+    return t.replace(PAIR_OF_GEAR_RX, ' ');
+  }
+
   function parseParticipants(text) {
-    var t = Infer.fold(String(text || ''));
+    var t = withoutGearPairs(Infer.fold(String(text || '')));
     // An explicit count wins over "זוג": "20 חניכים בזוגות" is a group of 20
     // working in pairs, not a couple. "זוג" alone (no number) still means 2.
     var n = null;
@@ -232,8 +252,8 @@
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
     }
-    // "זוג משקולות" is a pair of dumbbells, not a head count.
-    if (n === null) return /זוג/.test(t) && !/זוג\s+משקולות/.test(t) ? 2 : null;
+    // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple.
+    if (n === null) return /זוג/.test(t) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
@@ -280,7 +300,7 @@
   }
 
   function parseAudience(text) {
-    var t = Infer.fold(text);
+    var t = withoutGearPairs(Infer.fold(text));
     if (/ילד/.test(t)) return 'kids';
     if (/זוג|פרטנר/.test(t)) return 'partner';
     if (/ספורט|כדורגל|כדורסל/.test(t)) return 'sport';
@@ -293,6 +313,14 @@
     var focus = null;
     if (/פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/.test(t)) {
       return { muscles: [], focus: 'full' };
+    }
+    if (UPPER_BODY_RX.test(t)) {
+      muscles = muscles.concat(UPPER_MUSCLES);
+      focus = 'upper';
+    }
+    if (LOWER_BODY_RX.test(t)) {
+      muscles = muscles.concat(LOWER_MUSCLES);
+      if (!focus) focus = 'lower';
     }
     Object.keys(MUSCLE_KEYS).forEach(function (key) {
       MUSCLE_KEYS[key].forEach(function (word) {
