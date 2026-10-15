@@ -342,57 +342,66 @@ function buildSteps(workout) {
   const steps = [];
   const phases = workout.phases || [];
 
+  // Flatten first: the prompt engine and the pasted-workout ingest end every
+  // workout with an empty Cool-down phase, so "last exercise of the last
+  // phase" never matched and the workout ended on a pointless rest step.
+  // The flat list also lets the rest before a new phase preview its first
+  // exercise instead of showing nothing.
+  const flat = [];
   phases.forEach(phase => {
     const phaseLabel = PHASE_LABELS[phase.name] || phase.name;
     const exercises = phase.exercises || [];
-
     exercises.forEach((ex, exIdx) => {
-      const sets = ex.sets || 1;
-      const hasDuration = !!ex.duration_seconds;
-
-      for (let s = 1; s <= sets; s++) {
-        // Exercise step
-        steps.push({
-          type: 'exercise',
-          id: ex.id || null,
-          name: ex.name,
-          phase: phaseLabel,
-          set: s,
-          totalSets: sets,
-          reps: ex.reps || null,
-          duration: hasDuration ? ex.duration_seconds : null,
-          notes: ex.notes || null,
-          isLastSet: s === sets,
-          isLastExercise: exIdx === exercises.length - 1
-        });
-
-        // Rest step (after each set except the last set of the last exercise)
-        const restSeconds = ex.rest_seconds || 0;
-        const isVeryLast = (s === sets) && (exIdx === exercises.length - 1) && (phase === phases[phases.length - 1]);
-
-        if (!isVeryLast && restSeconds > 0) {
-          // Find next exercise for preview
-          let nextName = null, nextDetail = null;
-          if (s < sets) {
-            nextName = ex.name;
-            nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : '';
-          } else {
-            // next exercise
-            const nextEx = exercises[exIdx + 1];
-            if (nextEx) {
-              nextName = nextEx.name;
-              nextDetail = nextEx.reps ? `${nextEx.sets || 1}×${nextEx.reps}` : nextEx.duration_seconds ? `${nextEx.duration_seconds}″` : '';
-            }
-          }
-          steps.push({
-            type: 'rest',
-            duration: restSeconds,
-            nextName,
-            nextDetail
-          });
-        }
-      }
+      if (!ex) return;
+      flat.push({ ex, phaseLabel, isLastInPhase: exIdx === exercises.length - 1 });
     });
+  });
+
+  flat.forEach((item, flatIdx) => {
+    const ex = item.ex;
+    const sets = ex.sets || 1;
+    const hasDuration = !!ex.duration_seconds;
+
+    for (let s = 1; s <= sets; s++) {
+      // Exercise step
+      steps.push({
+        type: 'exercise',
+        id: ex.id || null,
+        name: ex.name,
+        phase: item.phaseLabel,
+        set: s,
+        totalSets: sets,
+        reps: ex.reps || null,
+        duration: hasDuration ? ex.duration_seconds : null,
+        notes: ex.notes || null,
+        isLastSet: s === sets,
+        isLastExercise: item.isLastInPhase
+      });
+
+      // Rest step (after each set except the last set of the whole workout)
+      const restSeconds = ex.rest_seconds || 0;
+      const isVeryLast = (s === sets) && (flatIdx === flat.length - 1);
+
+      if (!isVeryLast && restSeconds > 0) {
+        // Find next exercise for preview
+        let nextName = null, nextDetail = null;
+        if (s < sets) {
+          nextName = ex.name;
+          nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : '';
+        } else {
+          // next exercise, even when it opens the next phase
+          const nextEx = flat[flatIdx + 1].ex;
+          nextName = nextEx.name;
+          nextDetail = nextEx.reps ? `${nextEx.sets || 1}×${nextEx.reps}` : nextEx.duration_seconds ? `${nextEx.duration_seconds}″` : '';
+        }
+        steps.push({
+          type: 'rest',
+          duration: restSeconds,
+          nextName,
+          nextDetail
+        });
+      }
+    }
   });
 
   return steps;
