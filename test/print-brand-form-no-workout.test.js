@@ -32,8 +32,26 @@ TH.setCatalog({});
 
 const html = fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8');
 
+// Inline <script> blocks, located with indexOf rather than a tag regexp
+// (CodeQL js/bad-tag-filter flags regexps that only match lower-case tags).
+function inlineScripts(src) {
+  const open = '<script>';
+  const close = '</script>';
+  const out = [];
+  let from = 0;
+  for (;;) {
+    const start = src.indexOf(open, from);
+    if (start === -1) break;
+    const end = src.indexOf(close, start + open.length);
+    if (end === -1) break;
+    out.push(src.slice(start + open.length, end));
+    from = end + close.length;
+  }
+  return out;
+}
+
 function pageScript() {
-  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  const scripts = inlineScripts(html);
   const src = scripts.find((s) => s.indexOf('brandForm') !== -1);
   assert.ok(src, 'inline page script with brandForm found');
   return src;
