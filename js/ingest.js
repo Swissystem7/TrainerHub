@@ -141,7 +141,32 @@
     return defaults;
   }
 
-  function splitTokens(text) {
+  // Clip names that hold a «ו» join («כתפיים וגב», «שכיבות סמיכה ורגליים») are one
+  // exercise: their «ו» is masked so the «ו» split below does not cut them in two.
+  var VAV_MASK = '\uE000';
+
+  function vavNameRxs(list) {
+    var rxs = [];
+    (list || []).forEach(function (e) {
+      var he = e && Infer.fold(e.he);
+      if (!he || !/\sו\S/.test(he) || /\d/.test(he)) return;
+      var body = he.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[שס]מיכה/g, '[שס]מיכה').replace(/ /g, '\\s+');
+      rxs.push(new RegExp('(^|\\s)(ו?)(' + body + ')(?=\\s|$|\\d|[,.:;])', 'g'));
+    });
+    return rxs;
+  }
+
+  function maskVavNames(line, rxs) {
+    rxs.forEach(function (rx) {
+      line = line.replace(rx, function (m, pre, vav, name) {
+        return pre + vav + name.replace(/(\s)ו/g, '$1' + VAV_MASK);
+      });
+    });
+    return line;
+  }
+
+  function splitTokens(text, list) {
+    var vavRxs = vavNameRxs(list);
     var raw = String(text || '').trim();
     if (!raw) return [];
     var body = raw;
@@ -166,9 +191,9 @@
     var tokens = [];
     body.split(/\n+/).forEach(function (line) {
       var first = tokens.length;
-      line
+      maskVavNames(line, vavRxs)
         .split(/[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/)
-        .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
+        .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
           if (/^\d+\s*סבבים?$/.test(s)) return false;
@@ -500,13 +525,13 @@
   function ingestText(text, catalogOrList) {
     var raw = String(text || '').trim();
     var defaults = scanDefaults(raw);
-    var tokens = splitTokens(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
       : (catalogOrList && typeof catalogOrList === 'object'
         ? Object.keys(catalogOrList).filter(function (k) { return k.charAt(0) !== '_'; })
           .map(function (id) { return Object.assign({ id: id }, catalogOrList[id]); })
         : catalogEntries());
+    var tokens = splitTokens(raw, list);
 
     var exercises = [];
     var unmatched = [];
