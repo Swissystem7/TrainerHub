@@ -127,6 +127,18 @@
   // must start a word so «סלנג» or «בלנצ'ר» do not become leg work.
   var LUNGE_RX = /לאנ[גצץ]|(?:^|[^א-ת])[ובלה]{0,2}לנ[גצץ]/;
 
+  // Push-ups are «שכיבות» (the plural, as a word) or «שכיבת שמיכה/סמיכה». The
+  // singular «שכיבה» is a position - «הרמת רגליים בשכיבה», «הרמות גוף בשכיבה
+  // על הבטן», «אופניים בשכיבה» - and lying on the floor is not chest work.
+  var PUSH_UP_RX = /(?:^|[^א-ת])[ובלה]{0,2}שכיבות|שכיבת [שס]מיכה/;
+  // «הרמת/הרמות רגליים» is a leg raise (core); «הרמת/הרמות גוף» from the floor
+  // is a back extension (superman). Neither is a leg or a chest drill.
+  var LEG_RAISE_RX = /הרמ(?:ת|ות) רגליים/;
+  var BODY_RAISE_RX = /הרמ(?:ת|ות) ה?גוף/;
+  // Biceps curls in singular and plural: «כפיפת מרפק», «כפיפות מרפקים»,
+  // «כפיפות ידיים». A bare «כפיפת» («כפיפת בטן», «כפיפת ברך») is not a curl.
+  var CURL_RX = /כפיפ(?:ת|ות) ה?(?:מרפק|זרוע|ידיים|יד)/;
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
@@ -155,7 +167,10 @@
     var t = fold(text);
     var found = [];
 
-    if (/פלאנק|בטן|ליבה|קראנץ|כפיפ(ות|ת) בטן/.test(t)) found.push('core');
+    // Before the core check: «הרמות גוף בשכיבה על הבטן» is back work first,
+    // the «בטן» in it is the prone position, not the target muscle.
+    if (BODY_RAISE_RX.test(t)) found.push('back');
+    if (/פלאנק|בטן|ליבה|קראנץ|כפיפ(ות|ת) בטן/.test(t) || LEG_RAISE_RX.test(t)) found.push('core');
     if (/מטפס/.test(t)) found.push('core');
     if (/גב תחתון|סופרמן|ארקטור/.test(t)) found.push('back');
     if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
@@ -170,11 +185,11 @@
     if (LUNGE_RX.test(t) || /גשר|ישיבה על קיר|וול סיט|ניתור|קפיצ/.test(t)) found.push('legs');
     // «על הברכיים» is the knee variant of a push-up or plank, not a leg drill.
     if (/ברכי/.test(t) && !/פלאנק|שכיב/.test(t)) found.push('legs');
-    if (/רגל|רגלי|סולם|מדרג/.test(t)) found.push('legs');
-    if (/שכיב(ות|ה)|חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
-    if (/דו.?ראש|בייספס|כפיפת מרפק|פטיש/.test(t)) found.push('biceps');
+    if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
+    if (PUSH_UP_RX.test(t) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
+    if (/דו.?ראש|בייספס|פטיש/.test(t) || CURL_RX.test(t)) found.push('biceps');
     if (/תלת|טרייספס|דיפס|פשיטת/.test(t)) found.push('triceps');
-    if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t)) {
+    if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t)) {
       found.push('biceps');
       found.push('triceps');
     }
@@ -202,7 +217,7 @@
   function inferSecondary(text, primary, pattern) {
     var t = fold(text);
     var sec = [];
-    if (pattern === 'push' || /שכיב/.test(t)) {
+    if (pattern === 'push' || PUSH_UP_RX.test(t)) {
       if (primary.indexOf('shoulders') === -1) sec.push('shoulders');
       if (primary.indexOf('triceps') === -1) sec.push('triceps');
       if (primary.indexOf('core') === -1 && /פלאנק|בטן/.test(t) === false) sec.push('core');
@@ -229,11 +244,11 @@
   function inferPattern(text, muscles) {
     var t = fold(text);
     if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
-    if (/שכיב|לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
-    if (/חתיר|אוסטרל|כפיפת|פטיש/.test(t) || mentionsPullUp(t)) return 'pull';
+    if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
+    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
-    if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t)) return 'hinge';
-    if (/פלאנק|בטן|ליבה|קראנץ/.test(t)) return 'core';
+    if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
+    if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
     if (muscles && muscles.length === 1 && muscles[0] === 'core') return 'core';
     if (muscles && muscles.indexOf('legs') !== -1 && muscles.length === 1) return 'squat';
     if (muscles && (muscles.indexOf('chest') !== -1 || muscles.indexOf('triceps') !== -1)) return 'push';
