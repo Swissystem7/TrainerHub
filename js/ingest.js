@@ -293,6 +293,33 @@
     return list;
   }
 
+  function wishlistRemove(name) {
+    var api = th();
+    if (!api) return [];
+    var key = Infer.normalizeSynonym(name);
+    var list = wishlistList().filter(function (item) {
+      return !item || Infer.normalizeSynonym(item.he) !== key;
+    });
+    api.store.set(api.KEYS.wishlist, list);
+    return list;
+  }
+
+  // A wish is "film this exercise". Once a clip that matches the name exists
+  // (the trainer added it in manage.html, or it arrived in the catalog), the
+  // wish is done: drop it, using the same matcher that failed when the wish
+  // was written, so the list only shows names a paste would still miss.
+  function wishlistPrune(catalogOrList) {
+    var api = th();
+    if (!api) return [];
+    var list = Array.isArray(catalogOrList) ? catalogOrList : catalogEntries();
+    var before = wishlistList();
+    var kept = before.filter(function (item) {
+      return item && item.he && !matchName(item.he, list);
+    });
+    if (kept.length !== before.length) api.store.set(api.KEYS.wishlist, kept);
+    return kept;
+  }
+
   function learnFromWorkout(workout) {
     var api = th();
     if (!api || !workout) return;
@@ -455,6 +482,8 @@
     matchName: matchName,
     wishlistList: wishlistList,
     wishlistAdd: wishlistAdd,
+    wishlistRemove: wishlistRemove,
+    wishlistPrune: wishlistPrune,
     learnFromWorkout: learnFromWorkout,
     patternScore: patternScore,
     saveSegment: saveSegment,
