@@ -150,11 +150,27 @@
     return null;
   }
 
+  // A line that only says how many times to go through the list - «X3», «×3», «3 פעמים»,
+  // «לחזור 3 פעמים», «הכל x3», «פעמיים» - is the paste's rounds, as «3 סבבים» is, not an exercise.
+  var REPEAT_WORD = '(?:[לת]?(?:חזור|בצע|עשות)ו?|את|על|ה?כל|ה?סבב|ה?רשימה|ה?תרגילים|ה?אימון|זה|פעמים|סבבים?)';
+  var REPEAT_LINE_RX = new RegExp('^(?:' + REPEAT_WORD + '\\s+)*(?:[x×]\\s*(\\d+)|(\\d+)\\s*[x×]|(\\d+)\\s*(?:פעמים|סבבים?)|(פעמיים))(?:\\s+' + REPEAT_WORD + ')*$', 'i');
+
+  function repeatLineCount(line) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:!]+\s*$/, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(REPEAT_LINE_RX);
+    if (!m) return null;
+    return m[4] ? 2 : toInt(m[1] || m[2] || m[3]);
+  }
+
   function scanDefaults(text) {
     var raw = String(text || '');
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
+    raw.split('\n').forEach(function (line) {
+      var n = repeatLineCount(line);
+      if (n && defaults.sets == null) defaults.sets = n;
+    });
     // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
     // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
     var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
@@ -234,6 +250,7 @@
       var first = tokens.length;
       var held = pendingName;
       pendingName = null;
+      if (repeatLineCount(line) != null) return;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
