@@ -35,6 +35,13 @@
     ) && !/תחנה|תרגיל/.test(line);
   }
 
+  // "מנוחה", "מנוחה דקה", "חזור 3 פעמים" are instructions, not exercises.
+  // \b is ASCII-only in JS, so a Hebrew word followed by a space or the end
+  // of the line is never a "word boundary"; spell the boundary out instead.
+  function isRestOrRepeatLine(line) {
+    return /^(?:מנוחה|חזור|חזרו)(?:\s|$|[:.,\-–\d])/.test(String(line || ''));
+  }
+
   function parseDurationMinutes(text) {
     var m = String(text).match(/(\d+)\s*דק/);
     return m ? toInt(m[1]) : null;
@@ -56,7 +63,7 @@
   }
 
   function parseIntensity(text) {
-    if (/עצימות גבוהה|HIIT|אש\b|בורפי/.test(text)) return 'high';
+    if (/עצימות גבוהה|HIIT|(?:^|\s)אש(?=\s|$|[,.!])|בורפי/.test(text)) return 'high';
     if (/עצימות נמוכה|מתחילים/.test(text)) return 'low';
     return 'medium';
   }
@@ -99,7 +106,7 @@
       .replace(/^[•\-*]\s*/, '')
       .trim();
     if (!s || classifyPhase(s) || isSessionMeta(s)) return null;
-    if (/^חזור\b/.test(s) || /^מנוחה\b/.test(s)) return null;
+    if (isRestOrRepeatLine(s)) return null;
 
     var notes = [];
     var sets = defaults.sets != null ? defaults.sets : null;
@@ -133,6 +140,16 @@
       s = s.replace(m[0], ' ');
     }
 
+    // "ריצה 5 דקות" / "הליכה דקה" are timed work, not 10 reps.
+    m = s.match(/(\d+)\s*דק(?:ות|ה|[׳'])?(?=\s|$|[,.;:])/);
+    if (m && duration_seconds == null) {
+      duration_seconds = toInt(m[1]) * 60;
+      s = s.replace(m[0], ' ');
+    } else if (duration_seconds == null && /(?:^|\s)דקה(?=\s|$|[,.;:])/.test(s)) {
+      duration_seconds = 60;
+      s = s.replace(/(?:^|\s)דקה(?=\s|$|[,.;:])/, ' ');
+    }
+
     m = s.match(/(\d+)\s*מטר/);
     if (m) {
       notes.push(m[0]);
@@ -164,6 +181,11 @@
     var defaults = { sets: null, reps: null, rest: null, workSeconds: null };
     var rest = text.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ)/);
     if (rest) defaults.rest = toInt(rest[1]);
+    else {
+      var restMin = text.match(/מנוחה\s+(?:של\s+)?(\d+)\s*דק/);
+      if (restMin) defaults.rest = toInt(restMin[1]) * 60;
+      else if (/מנוחה\s+(?:של\s+)?דקה(?=\s|$|[,.;:])/.test(text)) defaults.rest = 60;
+    }
     var rounds = text.match(/(\d+)\s*סבבים/);
     if (rounds) defaults.sets = toInt(rounds[1]);
     var stations = text.match(/(\d+)\s*תחנות/);
