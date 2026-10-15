@@ -162,11 +162,16 @@ test('an explicit target muscle pins every day to that focus split', function ()
   const program = TH.generateWorkoutProgram(profile({
     targetMuscles: ['chest']
   }), 1, 3);
+  // Bodyweight chest in the built-in pool is push_up + wide_push_up; the other
+  // three slots of an intermediate day fill from the push split.
   program.dailyWorkouts.forEach(function (day) {
     assert.equal(day.split, 'focus');
-    for (const ex of day.exercises) {
+    assert.equal(day.exercises.length, 5);
+    day.exercises.forEach(function (ex, i) {
       const muscles = EXERCISE_MUSCLES[ex.name];
-      assert.ok(muscles && muscles.indexOf('chest') !== -1, ex.name);
-    }
+      const wanted = i < 2 ? ['chest'] : SPLIT_MUSCLES.push;
+      assert.ok(muscles && muscles.some(function (m) { return wanted.indexOf(m) !== -1; }),
+        ex.name + ' at slot ' + i);
+    });
   });
 });

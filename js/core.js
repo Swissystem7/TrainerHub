@@ -888,32 +888,54 @@
     return list;
   }
 
+  // Muscles that share a split with the requested ones: a «גב» day that runs out of
+  // back drills goes on with biceps (pull), a «חזה» day with shoulders and triceps (push),
+  // a «ליבה» day with legs (lower). Not upper/full, which would mean "anything".
+  var FILL_SPLITS = ['push', 'pull', 'lower'];
+  function relatedMuscles(muscles) {
+    var related = [];
+    FILL_SPLITS.forEach(function (split) {
+      var group = SPLIT_MUSCLES[split];
+      if (!group.some(function (m) { return muscles.indexOf(m) !== -1; })) return;
+      group.forEach(function (m) {
+        if (muscles.indexOf(m) === -1 && related.indexOf(m) === -1) related.push(m);
+      });
+    });
+    return related;
+  }
+
   function pickExercises(dayIndex, muscles, pool, count, rx, notes, opts) {
     opts = opts || {};
     var used = {};
     // The day's warm-up / cool-down drill is not also a Main exercise.
     (opts.exclude || []).forEach(function (id) { if (id) used[id] = true; });
     var exercises = [];
-    var slot = 0;
-    var guard = 0;
-    while (exercises.length < count && guard < 48) {
-      var muscle = muscles[slot % muscles.length];
-      var candidates = rankCandidates(pool.filter(function (ex) {
-        return !used[ex.id] && ex.muscles.indexOf(muscle) !== -1;
-      }), opts);
-      if (candidates.length) {
-        var pick = candidates[(dayIndex + slot) % candidates.length];
-        used[pick.id] = true;
-        exercises.push({ name: pick.id, sets: rx.sets, reps: rx.reps, restSeconds: rx.rest, rest_seconds: rx.rest, notes: notes });
-      }
-      slot++;
-      guard++;
-      if (slot > muscles.length && candidates.length === 0 && exercises.length === 0) {
-        var fallback = rankCandidates(pool.filter(function (ex) { return !used[ex.id]; }), opts);
-        if (!fallback.length) break;
-        var fb = fallback[dayIndex % fallback.length];
-        used[fb.id] = true;
-        exercises.push({ name: fb.id, sets: rx.sets, reps: rx.reps, restSeconds: rx.rest, rest_seconds: rx.rest, notes: notes });
+    // The requested muscles fill the day first. When they run dry (a bodyweight «גב»
+    // day has two back drills for four slots) the remaining slots take the muscles that
+    // share their split, so the day carries the number of exercises its level promises
+    // (weekly.html shows «N תרגילים באימון») instead of a two-drill program, and a «גב»
+    // program still never turns into squats. Before this the fallback added a single
+    // drill, and only to a day with no exercise at all.
+    var tiers = [muscles, relatedMuscles(muscles)];
+    for (var t = 0; t < tiers.length && exercises.length < count; t++) {
+      var tier = tiers[t];
+      if (tier && !tier.length) continue;
+      var slot = 0;
+      var misses = 0;
+      while (exercises.length < count && misses < (tier ? tier.length : 1)) {
+        var muscle = tier ? tier[slot % tier.length] : null;
+        var candidates = rankCandidates(pool.filter(function (ex) {
+          return !used[ex.id] && (!muscle || ex.muscles.indexOf(muscle) !== -1);
+        }), opts);
+        if (candidates.length) {
+          var pick = candidates[(dayIndex + slot) % candidates.length];
+          used[pick.id] = true;
+          exercises.push({ name: pick.id, sets: rx.sets, reps: rx.reps, restSeconds: rx.rest, rest_seconds: rx.rest, notes: notes });
+          misses = 0;
+        } else {
+          misses++;
+        }
+        slot++;
       }
     }
     return exercises;
