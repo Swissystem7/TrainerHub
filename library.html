@@ -139,6 +139,8 @@
 <script>
 (function () {
   var tag = '';
+  // id of the alternative the user jumped to; '' = the grid follows the filters.
+  var pinned = '';
   var $ = function (id) { return document.getElementById(id); };
 
   function currentFilters() {
@@ -166,10 +168,16 @@
   }
 
   function render() {
-    var list = TH.filterCatalog(currentFilters());
+    var list = pinned
+      ? TH.catalogList().filter(function (e) { return e.id === pinned; })
+      : TH.filterCatalog(currentFilters());
     var stats = TH.catalogStats();
     $('stats').textContent = list.length + ' מתוך ' + stats.total + ' תרגילים' +
-      (tag ? ' · סינון: ' + TH.tagLabel(tag) : '');
+      (tag ? ' · סינון: ' + TH.tagLabel(tag) : '') +
+      (pinned ? ' · חלופה שנבחרה' : '');
+    if (pinned) {
+      $('stats').insertAdjacentHTML('beforeend', ' <button type="button" class="chip" data-unpin="1">הצג את כל התוצאות</button>');
+    }
     var grid = $('grid');
     if (!list.length) {
       grid.innerHTML = '<p class="empty">אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>';
@@ -218,20 +226,36 @@
     document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
       el.setAttribute('aria-pressed', el === btn ? 'true' : 'false');
     });
+    pinned = '';
     render();
   }
 
-  $('filters').addEventListener('input', render);
-  $('filters').addEventListener('change', render);
+  function onFilter() {
+    pinned = '';
+    render();
+  }
+
+  $('filters').addEventListener('input', onFilter);
+  $('filters').addEventListener('change', onFilter);
+  $('stats').addEventListener('click', function (e) {
+    var unpin = e.target.closest && e.target.closest('[data-unpin]');
+    if (!unpin) return;
+    pinned = '';
+    render();
+  });
   document.querySelectorAll('.chip[data-tag]').forEach(function (btn) {
     btn.addEventListener('click', function () { onChip(btn); });
   });
 
-  // A «חלופות» button opens the named exercise. Every filter is cleared first,
-  // not only the tag chip: an alternative shares a muscle with the card but
-  // not necessarily its equipment or level, so with the card's own equipment
-  // or level filter still set the grid came up empty («אין תרגיל שמתאים»).
-  function jumpToAlternative(name) {
+  // A «חלופות» button opens the one exercise it names. The grid is pinned to
+  // the alternative's id (the button's data-jump), not searched by its name:
+  // the search box also matches the primary muscle label, so «בטן» listed
+  // 14 cards and the alternative was not necessarily the first of them, and
+  // two clips can share a Hebrew name (crunches / crunches_2). Every filter is
+  // cleared as well, so the next keystroke or filter change releases the pin
+  // into a normal search for that name.
+  function jumpToAlternative(id, name) {
+    pinned = id || '';
     $('q').value = name;
     tag = '';
     document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
@@ -245,7 +269,7 @@
   $('grid').addEventListener('click', function (e) {
     var jump = e.target.closest && e.target.closest('[data-jump]');
     if (jump) {
-      jumpToAlternative(jump.textContent.trim());
+      jumpToAlternative(jump.getAttribute('data-jump'), jump.textContent.trim());
       return;
     }
     var act = e.target.getAttribute && e.target.getAttribute('data-act');
