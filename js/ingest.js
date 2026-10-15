@@ -144,6 +144,9 @@
     if (m) return toInt(m[1]);
     m = t.match(/(?:מנוחה|הפסקה)\s*[:\-–]?\s*(\d+)/);
     if (m) return toInt(m[1]);
+    // «20 מנוחה», «45 הפסקה» with no unit is seconds, as «מנוחה 20» is (was the default 60).
+    m = t.match(/(?:^|\s)(\d+)\s*(?:מנוחה|הפסקה)/);
+    if (m) return toInt(m[1]);
     return null;
   }
 
