@@ -225,7 +225,8 @@
 
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
-    var s = String(token || '').trim();
+    // WhatsApp/markdown pastes: "4*10" is a multiplier, "*סופרמן*" is only bold.
+    var s = String(token || '').replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ').trim();
     if (!s) return null;
     if (isRestToken(s)) {
       return { restOnly: true, rest_seconds: parseRestSeconds(s) || defaults.rest || 60 };
