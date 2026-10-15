@@ -29,11 +29,30 @@
   // a rest line; an exercise line keeps its name and takes the clause as its rest.
   var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|דקות|דקה|דק[׳\'])';
   var TIMED = '(?:\\d{1,2}:[0-5]\\d|\\d+\\s*' + TIME_UNIT + '(?:\\s*וחצי)?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
-  var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))))*';
+  var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))|(?:ל|אחרי\\s+)כל\\s+ה?(?:סט|סבב|תרגיל)))*';
   var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
+  // «30 שניות לכל תרגיל», «כל תרגיל 45 שניות», «דקה על כל תרגיל»: the work time of every
+  // exercise in the paste. Not a rest: «מנוחה 30 שניות לכל תרגיל», «מנוחה בין כל תרגיל 30 שניות».
+  var PER_EXERCISE = '(?<![\\u0590-\\u05FF])(?<!בין\\s+)(?:[לב]|על\\s+)?כל\\s+ה?תרגיל(?![\\u0590-\\u05FF])';
+  var PER_EXERCISE_WORK_RX = new RegExp('(?<!(?:מנוחה|הפסקה)[\\s:\\-–]*)(?<![\\d:])(' + TIMED + ')\\s*' + PER_EXERCISE + '|' +
+    PER_EXERCISE + '\\s*[:\\-–]?\\s*(' + TIMED + ')(?!\\s*(?:מנוחה|הפסקה))');
+
+  function timedSeconds(s) {
+    var t = String(s || '');
+    var clock = t.match(/(\d{1,2}):([0-5]\d)/);
+    if (clock) return toInt(clock[1]) * 60 + toInt(clock[2]);
+    var half = /וחצי/.test(t) ? 30 : 0;
+    if (/חצי\s*דקה/.test(t)) return 30;
+    if (/שתי\s*דקות/.test(t)) return 120 + half;
+    var m = t.match(/(\d+)\s*(?:דקות|דקה|דק[׳'])/);
+    if (m) return toInt(m[1]) * 60 + half;
+    if (/דקה/.test(t)) return 60 + half;
+    m = t.match(/(\d+)/);
+    return m ? toInt(m[1]) + half : null;
+  }
 
   function splitRest(s) {
     var t = String(s || '');
@@ -172,6 +191,8 @@
       raw.match(/עבודה[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
       raw.match(/עבודה[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (work) defaults.workSeconds = toInt(work[1]);
+    var perExercise = !work && raw.match(PER_EXERCISE_WORK_RX);
+    if (perExercise) defaults.workSeconds = timedSeconds(perExercise[1] || perExercise[2]);
     return defaults;
   }
 
@@ -324,6 +345,9 @@
     // «עבודה 40 שניות מנוחה 20 שניות», «40 שניות עבודה / 20 שניות מנוחה»: the paste's interval
     // line (scanDefaults gives its times to every exercise), not an exercise called «עבודה».
     if (WORK_RX.test(s) && !/[\u0590-\u05FFa-zA-Z]/.test(s.replace(WORK_RX, ' '))) return null;
+    // \u00AB40 \u05E9\u05E0\u05D9\u05D5\u05EA \u05DB\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u00BB on its own line is that interval line too, not an exercise \u00AB\u05DB\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u00BB.
+    var perExerciseLeft = s.replace(PER_EXERCISE_WORK_RX, ' ');
+    if (perExerciseLeft !== s && (!/[֐-׿a-zA-Z]/.test(perExerciseLeft) || isIntervalPrefix(perExerciseLeft))) return null;
     // Coaching cues are notes, not part of the name: "לאנג׳ 10 חזרות לכל רגל",
     // "שכיבות סמיכה עד כשל", "ספרינט 20 מטר x5", "סקוואט 15 (לאט)".
     var cues = splitCues(s);
