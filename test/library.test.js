@@ -266,6 +266,30 @@ test('nudgeMessage stays honest and does not invent a last session', function ()
   assert.equal(TH.daysSinceLast({ logs: [] }), null);
 });
 
+test('daysSinceLast counts calendar days, so last night is one day ago this morning', function () {
+  const realNow = Date.now;
+  const morning = new Date();
+  morning.setHours(9, 0, 0, 0);
+  Date.now = function () { return morning.getTime(); };
+  try {
+    const lastNight = new Date(morning);
+    lastNight.setDate(lastNight.getDate() - 1);
+    lastNight.setHours(22, 0, 0, 0);
+    assert.equal(TH.daysSinceLast({ logs: [{ at: lastNight.toISOString() }] }), 1);
+    assert.match(TH.nudgeMessage({ name: 'דנה', logs: [{ at: lastNight.toISOString() }] }), /עברו 1 ימים/);
+    const fiveNightsAgo = new Date(morning);
+    fiveNightsAgo.setDate(fiveNightsAgo.getDate() - 5);
+    fiveNightsAgo.setHours(23, 30, 0, 0);
+    assert.equal(TH.daysSinceLast({ logs: [{ at: fiveNightsAgo.toISOString() }] }), 5);
+    const earlier = new Date(morning);
+    earlier.setHours(7, 0, 0, 0);
+    assert.equal(TH.daysSinceLast({ logs: [{ at: earlier.toISOString() }] }), 0);
+    assert.match(TH.nudgeMessage({ name: 'דנה', logs: [{ at: earlier.toISOString() }] }), /ראיתי ביצוע היום/);
+  } finally {
+    Date.now = realNow;
+  }
+});
+
 test('filterCatalog and clip payloads never leak a personal name from a filename', function () {
   TH.setCatalog(catalog);
   const PERSONAL = /aviran|swissa|אבירן|סוויסה|סויסה|avi[\s_-]?ran/i;

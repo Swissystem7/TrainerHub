@@ -85,6 +85,18 @@ test('encodeLink works without trainer entitlement; shareToClient does not', fun
   assert.equal(gated.gated, true);
 });
 
+test('suggestNextFromLog adds the next-week suffix once, even when fed its own output', function () {
+  const compact = TH.compactPlan(sampleWorkout());
+  const first = TH.suggestNextFromLog(compact, { rpe: 3, skipped: 0 }).compact;
+  const second = TH.suggestNextFromLog(first, { rpe: 3, skipped: 0 }).compact;
+  const third = TH.suggestNextFromLog(second, { rpe: 5, skipped: 0 }).compact;
+  assert.match(first.t, / · שבוע הבא$/);
+  assert.equal(second.t, first.t);
+  assert.equal(third.t, first.t);
+  assert.equal((third.t.match(/שבוע הבא/g) || []).length, 1);
+  assert.equal(TH.suggestNextFromLog({ t: '' }, {}).compact.t, 'אימון · שבוע הבא');
+});
+
 test('suggestNextFromLog drops a set after hard RPE and adds one after an easy clean log', function () {
   const compact = TH.compactPlan(sampleWorkout());
   const down = TH.suggestNextFromLog(compact, { rpe: 5, skipped: 0 });

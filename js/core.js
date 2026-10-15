@@ -1392,7 +1392,13 @@
     })[0];
     var t = new Date(last.at || last.doneAt).getTime();
     if (isNaN(t)) return null;
-    return Math.floor((Date.now() - t) / 86400000);
+    // Calendar days, like the 28-day grid: a workout done yesterday evening
+    // is "1 day ago" this morning, not "today".
+    var lastDay = new Date(t);
+    lastDay.setHours(0, 0, 0, 0);
+    var today = new Date(Date.now());
+    today.setHours(0, 0, 0, 0);
+    return Math.max(0, Math.round((today.getTime() - lastDay.getTime()) / 86400000));
   }
 
   function nudgeMessage(client) {
@@ -1643,7 +1649,9 @@
         else if (easy) ex.s = Math.min(5, Number(ex.s) + 1);
       });
     });
-    next.t = (next.t || 'אימון') + ' · שבוע הבא';
+    // The suggested plan comes back as the next week's lastPlan, so the suffix
+    // must not stack up week after week.
+    next.t = String(next.t || 'אימון').replace(/(\s*·\s*שבוע הבא)+\s*$/, '') + ' · שבוע הבא';
     return {
       compact: next,
       workout: expandPlan(next),
