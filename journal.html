@@ -296,7 +296,7 @@
     el.className = warn ? 'status warn' : 'status';
   }
 
-  function shareOrPreview(c, previewOnly) {
+  function shareOrPreview(c, previewOnly, sourceBtn) {
     var workout = assignedWorkout(c);
     if (!workout) {
       setStatus($('importStatus'), 'אין אימון פעיל לשיוך. בנו אימון קודם.', true);
@@ -311,13 +311,14 @@
     }
     var shared = TH.shareToClient(workout, { name: c.name || '', tid: c.id || '' });
     if (!shared.ok) {
-      var host = document.querySelector('[data-act="share"][data-i]')
-        ? document.querySelector('.th-gate-host')
-        : $('list');
+      var card = sourceBtn && sourceBtn.closest ? sourceBtn.closest('article.card') : null;
+      var host = (card && card.querySelector('.th-gate-host')) || $('list');
       if (host) {
-        var old = host.querySelector('.th-gate');
-        if (old) old.parentNode.removeChild(old);
+        var olds = $('list').querySelectorAll('.th-gate');
+        for (var g = 0; g < olds.length; g++) olds[g].parentNode.removeChild(olds[g]);
         host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+        var gate = host.querySelector('.th-gate');
+        if (gate && gate.scrollIntoView) gate.scrollIntoView({ block: 'nearest' });
       }
       return;
     }
@@ -441,7 +442,7 @@
     if (!c) return;
     var act = btn.getAttribute('data-act');
     if (act === 'preview') shareOrPreview(c, true);
-    else if (act === 'share') shareOrPreview(c, false);
+    else if (act === 'share') shareOrPreview(c, false, btn);
     else if (act === 'nudge') {
       window.open(TH.waShareUrl(c.phone, TH.nudgeMessage(c)), '_blank');
     } else if (act === 'assign') {
