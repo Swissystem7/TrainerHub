@@ -57,11 +57,23 @@
 (function () {
   var $ = function (id) { return document.getElementById(id); };
 
+  // A stored entry counts as a workout only when it has phases to print;
+  // {} (saved by «עדכן שם» before any workout existed) must not shadow
+  // the active workout or the «אין אימון» message.
+  function isWorkout(w) {
+    return !!(w && typeof w === 'object' && Array.isArray(w.phases) && w.phases.length);
+  }
+
+  function savedBrand() {
+    var packed = TH.store.get(TH.KEYS.print, null);
+    return packed && packed.brand ? String(packed.brand) : '';
+  }
+
   function currentWorkout() {
     var packed = TH.store.get(TH.KEYS.print, null);
-    if (packed && packed.workout) return packed;
+    if (packed && isWorkout(packed.workout)) return packed;
     var active = TH.store.get(TH.KEYS.active, null);
-    if (active) return { workout: active, brand: '' };
+    if (isWorkout(active)) return { workout: active, brand: savedBrand() };
     return null;
   }
 
@@ -88,13 +100,14 @@
     var packed = currentWorkout();
     if (ent.brand) $('brand').value = ent.brand;
     else if (packed && packed.brand) $('brand').value = packed.brand;
+    else $('brand').value = savedBrand();
     render();
   });
 
   $('brandForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var packed = currentWorkout() || { workout: {}, brand: '' };
-    TH.store.set(TH.KEYS.print, { workout: packed.workout, brand: $('brand').value.trim() });
+    var packed = currentWorkout();
+    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: $('brand').value.trim() });
     render();
   });
 
