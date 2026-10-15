@@ -381,6 +381,7 @@
       if (!setsExplicit) {
         sets = toInt(m[1]);
         setsExplicit = true;
+        loneX = sets;
       } else if (reps == null && duration_seconds == null) {
         reps = toInt(m[1]);
       }
@@ -450,7 +451,7 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    // «סופרמן x15» with no other count is 15 reps, not 15 sets of an invented 10
+    // «סופרמן x15» / «סופרמן 15x» with no other count is 15 reps, not 15 sets of an invented 10
     // (and under «3 סבבים:» the rounds stay 3).
     if (loneX != null && reps == null && duration_seconds == null && !cues.open) {
       reps = loneX;
