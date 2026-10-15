@@ -163,14 +163,35 @@
         }
       }
     }
-    return body
-      .split(/\n+|[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[\u0590-\u05FF])/)
-      .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
-      .filter(function (s) {
-        if (s.length <= 1) return false;
-        if (/^\d+\s*סבבים?$/.test(s)) return false;
-        return true;
-      });
+    var tokens = [];
+    body.split(/\n+/).forEach(function (line) {
+      var first = tokens.length;
+      line
+        .split(/[,،]|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/)
+        .map(function (s) { return s.replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
+        .filter(function (s) {
+          if (s.length <= 1) return false;
+          if (/^\d+\s*סבבים?$/.test(s)) return false;
+          return true;
+        })
+        .forEach(function (s) {
+          // «פלאנק 30 שניות, ירידה איטית»: the cue rides on the exercise before it as a
+          // parenthetical (splitCues makes it a note) instead of becoming an exercise.
+          if (tokens.length > first && isCuePiece(s)) tokens[tokens.length - 1] += ' (' + s.replace(/[()]/g, ' ').trim() + ')';
+          else tokens.push(s);
+        });
+    });
+    return tokens;
+  }
+
+  // A comma piece that is a coaching cue, not an exercise: tempo («לאט», «ירידה איטית»,
+  // «בשליטה»), form («גב ישר», «מרפקים צמודים»), an instruction («דגש על...», «בלי לנעול»).
+  // A body part counts only with its posture: «כתפיים וגב», «פלאנק ברכיים» are clips.
+  var CUE_PIECE_RX = /^(?:לאט|איטי(?:ת|ים|ות)?|מהיר(?:ה|ים|ות)?|בשליטה|מבוקר(?:ת|ים|ות)?|בקצב\s+\S+|ב?(?:ירידה|עלייה|עליה)\s+(?:איטית|מהירה|מבוקרת|מתפרצת|בשליטה)|עצירה|החזקה\s+(?:למעלה|למטה|בסוף|בתחתית)|(?:גב|מרפקים|ברכיים|כתפיים|בטן|ראש|מבט|ידיים|רגליים|עקבים|אגן|חזה|גוף)\s+(?:ישר(?:ה|ים|ות)?|צמוד(?:ה|ים|ות)?|כפופ(?:ה|ים|ות)|נעול(?:ה|ים|ות)|פתוח(?:ה|ים|ות)|אסופ(?:ה|ים)|מכווצ(?:ת|ים)|מתוח(?:ה|ים|ות)|פנימה|החוצה|קדימה|אחורה|למעלה|למטה|לפנים|ניטרלי(?:ת)?|בקו)|דגש|להקפיד|הקפדה|לשמור|בלי|ללא|לא\s+ל\S+|לנשום|נשימה|טווח\s+(?:מלא|חלקי|תנועה))(?=\s|$)/;
+
+  function isCuePiece(s) {
+    var t = String(s || '').trim();
+    return !/\d/.test(t) && !REST_RX.test(t) && CUE_PIECE_RX.test(t);
   }
 
   // Work time written in words: "שתי דקות ריצה במקום", "פלאנק שלוש דקות".
@@ -328,7 +349,10 @@
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       if (setsExplicit || (restClause.found && restClause.rest != null)) {
-        return { continuation: true, sets: setsExplicit ? sets : null, rest_seconds: restClause.found ? restClause.rest : null };
+        var cont = { continuation: true, sets: setsExplicit ? sets : null, rest_seconds: restClause.found ? restClause.rest : null };
+        // «מתח 5 חזרות, 4 סטים, לאט»: the cue joined the sets piece; it still belongs to the exercise.
+        if (cues.notes.length) cont.notes = cues.notes.join(' · ');
+        return cont;
       }
       return null;
     }
@@ -505,6 +529,7 @@
           lastRest = parsed.rest_seconds;
           if (prev) prev.rest_seconds = lastRest;
         }
+        if (parsed.notes && prev) prev.notes = [prev.notes, parsed.notes].filter(Boolean).join(' · ');
         continue;
       }
       if (lastRest != null && parsed.rest_seconds == null) parsed.rest_seconds = lastRest;
