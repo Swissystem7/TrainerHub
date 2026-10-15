@@ -182,6 +182,53 @@
     return { name: name, duration_minutes: minutes || null, exercises: [] };
   }
 
+  var catalogJsonCache = null;
+
+  function rawCatalogEntry(id) {
+    if (!id) return null;
+    if (typeof require === 'function') {
+      try {
+        if (!catalogJsonCache) catalogJsonCache = require('../js/catalog.json');
+        return catalogJsonCache[id] || null;
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  function parseExercise(ref) {
+    var entry = null;
+    var meta = null;
+    if (ref && typeof ref === 'object' && ref.id) {
+      entry = ref;
+      meta = ref;
+    } else if (typeof ref === 'string' && ref) {
+      meta = rawCatalogEntry(ref);
+      var api = (typeof globalThis !== 'undefined' && globalThis.TH) || root.TH;
+      if (api && typeof api.findExercise === 'function') entry = api.findExercise({ id: ref });
+      if (!entry && meta) entry = meta;
+    }
+    if (!entry) return null;
+    if (!meta) meta = rawCatalogEntry(entry.id) || entry;
+
+    var tags = meta.tags || [];
+    var warningTag = null;
+    if (tags.indexOf('dangerous') !== -1) {
+      warningTag = {
+        id: 'dangerous',
+        he: meta.warningHe || 'תרגיל שדורש זהירות — ודאו התאמה לרמתכם.'
+      };
+    }
+
+    return {
+      id: entry.id,
+      he: entry.he,
+      muscles: entry.muscles,
+      equipment: entry.equipment,
+      level: entry.level,
+      warningTag: warningTag
+    };
+  }
+
   function parseWorkoutClient(text) {
     var raw = String(text || '').trim();
     if (!raw) {
@@ -376,4 +423,5 @@
   }
 
   root.parseWorkoutClient = parseWorkoutClient;
+  root.parseExercise = parseExercise;
 })(typeof window !== 'undefined' ? window : this);

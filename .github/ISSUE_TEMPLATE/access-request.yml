@@ -1,0 +1,50 @@
+name: בקשת קוד גישה למסלול מאמן
+description: מאמן או מאמנת שרוצים לנסות את מסלול המאמן (₪59 לחודש, הצעה). הפנייה כאן ציבורית.
+title: "בקשת קוד גישה: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **שימו לב: הפנייה הזו ציבורית.** כל מי שנכנס לריפו יכול לקרוא אותה.
+        אל תכתבו טלפון, מייל, כתובת או פרטים של מתאמנים. נחזור אליכם כאן, בתגובה ל־issue.
+        אין סליקה באתר. אם מתאימים — מתאמים תשלום (ביט או העברה) ורק אחריו נשלח קוד גישה.
+  - type: dropdown
+    id: role
+    attributes:
+      label: מי אתם
+      options:
+        - מאמן/ת אישי/ת עצמאי/ת
+        - מדריך/ת קבוצות או אימוני פארק
+        - סטודיו או חדר כושר
+        - אחר
+    validations:
+      required: true
+  - type: dropdown
+    id: clients
+    attributes:
+      label: כמה מתאמנים פעילים יש לכם בערך
+      options:
+        - עד 5
+        - 6–20
+        - 21–40
+        - יותר מ־40
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: איך אתם שולחים אימונים היום
+      description: למשל וואטסאפ, אקסל, Coach, AutoFit, BaseCRM
+  - type: textarea
+    id: need
+    attributes:
+      label: מה חסר לכם, ומה היה גורם לכם לשלם
+      description: משפט או שניים מספיקים.
+  - type: checkboxes
+    id: public
+    attributes:
+      label: אישור
+      options:
+        - label: הבנתי שהפנייה ציבורית ולא כתבתי בה פרטי קשר
+          required: true

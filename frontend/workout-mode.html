@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
   <title>TrainerHub — מצב אימון</title>
   <link rel="stylesheet" href="../css/app.css">
   <style>
@@ -895,7 +896,7 @@ function finishWorkout() {
     const copyBtn = document.getElementById('btnCopyCode');
     if (copyBtn) {
       copyBtn.onclick = function () {
-        navigator.clipboard.writeText(refreshReport()).then(function () {
+        TH.copyOrShow(refreshReport(), copyBtn, function () {
           copyBtn.textContent = '✅ הועתק';
           setTimeout(function () { copyBtn.textContent = '📋 העתק קוד'; }, 1600);
         });

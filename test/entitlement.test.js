@@ -18,6 +18,8 @@ global.location = {
 };
 
 const TH = require('../js/core.js');
+const Code = require('./helpers/access-code.js');
+const THTest = Code.loadCoreWithTestCode();
 
 const workout = {
   title: 'אימון ליבה',
@@ -57,7 +59,14 @@ test('redeemAccessCode accepts only the real hash and is not a payment', functio
   assert.match(bad.error, /אין סליקה/);
   assert.equal(TH.entitlement().canShare, false);
 
-  const good = TH.redeemAccessCode('TH-MAAMEN-59', 'סטודיו בדיקה');
+  const revoked = TH.redeemAccessCode(Code.REVOKED_CODE, 'מותג');
+  assert.equal(revoked.ok, false);
+  assert.equal(TH.entitlement().canShare, false);
+  assert.equal(TH.redeemAccessCode(Code.TEST_ONLY_CODE, 'מותג').ok, false);
+  assert.equal(TH.entitlement().canShare, false);
+
+  // Success path on a core whose hash is the test-only code's (the real code is not in the repo).
+  const good = THTest.redeemAccessCode(Code.TEST_ONLY_CODE, 'סטודיו בדיקה');
   assert.equal(good.ok, true);
   assert.equal(TH.entitlement().tier, 'trainer');
   assert.equal(TH.entitlement().brand, 'סטודיו בדיקה');

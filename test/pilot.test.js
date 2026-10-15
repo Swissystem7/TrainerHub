@@ -110,3 +110,29 @@ test('index.html and booklet.html load the pilot script after core.js', function
     assert.ok(core !== -1 && pilot > core, page);
   }
 });
+
+test('in the pilot the builder prefers the clips the booklet teaches', function () {
+  const Booklet = require('../js/booklet.js');
+  const Engine = require('../js/session-builder.js');
+  const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', rel), 'utf8')); };
+  const catalog = read('js/catalog.json');
+  Booklet.setData(read(Booklet.MAIN_PATH), read(Booklet.TEAM_PATH));
+  reset();
+  assert.deepEqual(P.builderOpts(catalog), { prefer: [] }, 'no pilot, no preference');
+  P.init('?pilot=acharai', TH);
+  const opts = P.builderOpts(catalog);
+  assert.ok(opts.prefer.length > 0, 'the booklet links to catalog clips');
+  opts.prefer.forEach(function (id) { assert.ok(catalog[id], 'unknown catalog id ' + id); });
+  assert.equal(new Set(opts.prefer).size, opts.prefer.length, 'no duplicates');
+  const entry = { id: opts.prefer[0], he: catalog[opts.prefer[0]].he, muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'x.mp4' };
+  const req = { muscles: ['core'], equipment: [], level: 'beginner' };
+  assert.equal(Engine.scoreEntry(entry, req, opts.prefer) - Engine.scoreEntry(entry, req), 8);
+  const other = { id: 'not-in-booklet', he: 'x', muscles: ['core'], equipment: ['none'], file: 'x.mp4' };
+  assert.equal(Engine.scoreEntry(other, req, opts.prefer), Engine.scoreEntry(other, req));
+  const prompt = 'אימון בטן 20 דקות בלי ציוד';
+  const plain = Engine.buildSession(prompt, catalog);
+  assert.deepEqual(Engine.buildSession(prompt, catalog, {}).workout, plain.workout, 'empty opts change nothing');
+  assert.deepEqual(Engine.buildSession(prompt, catalog, { prefer: [] }).workout, plain.workout);
+  assert.equal(Engine.buildSession(prompt, catalog, opts).workout.phases.length, plain.workout.phases.length);
+  reset();
+});

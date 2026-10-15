@@ -6,8 +6,14 @@
 (function (root) {
   'use strict';
 
+  var SessionTracker = root.THSessionTracker;
+  if (!SessionTracker && typeof module === 'object' && module.exports) {
+    SessionTracker = require('./session-tracker.js');
+  }
+
   var KEYS = {
     active: 'trainerhub_active_workout',
+    activeSession: 'trainerhub_active_session',
     saved: 'trainerhub_workouts',
     clients: 'trainerhub_clients',
     user: 'trainerhub_user',
@@ -16,11 +22,15 @@
     wishlist: 'trainerhub_film_wishlist',
     patterns: 'trainerhub_ingest_patterns',
     access: 'trainerhub_content_access',
-    print: 'trainerhub_print_workout'
+    print: 'trainerhub_print_workout',
+    clientProfiles: 'trainerhub_client_profiles',
+    journal: 'trainerhub_journal_entries'
   };
 
-  // Hash of TH-MAAMEN-59 — product boundary on a static demo, not security.
-  var ACCESS_HASH = 3194953836;
+  // Hash of the trainer access code (sent after payment) — product boundary
+  // on a static demo, not security. The code itself is not written in any file of
+  // this repo (tests included). Replaced 28.9.2026: the earlier code leaked and is revoked.
+  var ACCESS_HASH = 2847391056;
 
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
@@ -333,8 +343,11 @@
     if (hashAccessCode(code) !== ACCESS_HASH) {
       return { ok: false, error: 'הקוד לא תואם. אין סליקה באתר — הקוד נשלח אחרי תשלום.' };
     }
-    setEntitlement({ tier: 'trainer', brand: brand });
-    return { ok: true, entitlement: entitlement() };
+    var ent = setEntitlement({ tier: 'trainer', brand: brand });
+    if (ent.tier !== 'trainer') {
+      return { ok: false, error: 'הקוד נכון, אבל הגישה לא נשמרה: הדפדפן חוסם שמירה (למשל גלישה פרטית). פתחו בדפדפן רגיל ונסו שוב.' };
+    }
+    return { ok: true, entitlement: ent };
   }
 
   function normalizeEntry(id, raw, defaultSource) {
@@ -660,6 +673,42 @@
       return { ok: false, error: 'אין אימון לשיתוף' };
     }
     return { ok: true, url: encodeLink(workout, meta || {}) };
+  }
+
+  // Copy text to the clipboard. Resolves {ok:true} only after a real copy.
+  function copyText(text) {
+    return new Promise(function (resolve) {
+      try {
+        var nav = typeof navigator !== 'undefined' ? navigator : root.navigator;
+        var clip = nav && nav.clipboard;
+        if (!clip || typeof clip.writeText !== 'function') { resolve({ ok: false }); return; }
+        clip.writeText(String(text)).then(function () { resolve({ ok: true }); }, function () { resolve({ ok: false }); });
+      } catch (e) { resolve({ ok: false }); }
+    });
+  }
+
+  function manualCopyMarkup(text) {
+    return '<div class="th-manual-copy" role="status">' +
+      '<p>הדפדפן חסם העתקה אוטומטית. סמנו את הטקסט והעתיקו ידנית:</p>' +
+      '<textarea readonly rows="3" style="width:100%;direction:ltr">' + esc(text) + '</textarea>' +
+      '</div>';
+  }
+
+  // Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
+  function copyOrShow(text, anchor, onOk, position) {
+    return copyText(text).then(function (r) {
+      if (r.ok) {
+        if (onOk) onOk();
+        return r;
+      }
+      if (anchor && anchor.insertAdjacentHTML) {
+        var host = anchor.parentNode;
+        var prev = host && host.querySelector && host.querySelector('.th-manual-copy');
+        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+        anchor.insertAdjacentHTML(position || 'afterend', manualCopyMarkup(text));
+      }
+      return r;
+    });
   }
 
   function gateMarkup(kind) {
@@ -1442,13 +1491,13 @@
           (entry.driveId && list[i].driveId === entry.driveId) ||
           (entry.youtubeId && list[i].youtubeId === entry.youtubeId))) {
         list[i] = entry;
-        storeSet(KEYS.userCatalog, list);
+        if (!storeSet(KEYS.userCatalog, list)) return null;
         catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
         return entry;
       }
     }
     list.push(entry);
-    storeSet(KEYS.userCatalog, list);
+    if (!storeSet(KEYS.userCatalog, list)) return null;
     catalog[entry.id] = normalizeEntry(entry.id, entry, entry.source || 'user');
     return entry;
   }
@@ -1586,6 +1635,20 @@
     return { model: workoutPrintModel(workout, opts), url: printUrl() };
   }
 
+  function createWorkoutSession(workoutPlan) {
+    if (!SessionTracker || typeof SessionTracker.createSession !== 'function') return null;
+    return SessionTracker.createSession(workoutPlan);
+  }
+
+  function saveWorkoutSession(sessionState) {
+    if (!sessionState || !Array.isArray(sessionState.exercises)) return false;
+    return storeSet(KEYS.activeSession, sessionState);
+  }
+
+  function loadWorkoutSession() {
+    return storeGet(KEYS.activeSession, null);
+  }
+
   function suggestNextFromLog(compact, lastLog) {
     lastLog = lastLog || {};
     var hard = (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
@@ -1616,6 +1679,29 @@
     };
   }
 
+  // The workout rules live in their own module. Resolved on call, not on load,
+  // because core.js is the first script on the page.
+  function rulesModule() {
+    if (root.THRules) return root.THRules;
+    if (typeof module === 'object' && module.exports) return require('./rules-with-sources.js');
+    return null;
+  }
+
+  function rulesWithSources(input) {
+    var mod = rulesModule();
+    return mod ? mod.rulesWithSources(input) : { description: '', request: null, rules: [], sources: [] };
+  }
+
+  function findRule(input, query) {
+    var mod = rulesModule();
+    return mod ? mod.findRule(input, query) : null;
+  }
+
+  function rulesMarkup(input, opts) {
+    var mod = rulesModule();
+    return mod ? mod.rulesMarkup(input, opts) : '';
+  }
+
   var api = {
     KEYS: KEYS,
     PHASE_LABELS: PHASE_LABELS,
@@ -1637,6 +1723,9 @@
     encodeLink: encodeLink,
     shareToClient: shareToClient,
     gateMarkup: gateMarkup,
+    copyText: copyText,
+    copyOrShow: copyOrShow,
+    manualCopyMarkup: manualCopyMarkup,
     offerUrl: offerUrl,
     printUrl: printUrl,
     hashAccessCode: hashAccessCode,
@@ -1648,7 +1737,14 @@
     workoutPrintModel: workoutPrintModel,
     workoutPrintHtml: workoutPrintHtml,
     preparePrint: preparePrint,
+    createWorkoutSession: createWorkoutSession,
+    saveWorkoutSession: saveWorkoutSession,
+    loadWorkoutSession: loadWorkoutSession,
+    SessionTracker: SessionTracker,
     suggestNextFromLog: suggestNextFromLog,
+    rulesWithSources: rulesWithSources,
+    findRule: findRule,
+    rulesMarkup: rulesMarkup,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
     decodeResult: decodeResult,
@@ -1715,7 +1811,21 @@
   };
   root.esc = esc;
 
+  function readyWorkouts() {
+    return root.THReadyWorkouts || null;
+  }
+  api.readyWorkouts = readyWorkouts;
+
   if (typeof module === 'object' && module.exports) {
+    try {
+      api.readyWorkouts = require('./ready-workouts.js');
+    } catch (e) {}
+    Object.defineProperty(api, 'journalStorage', {
+      enumerable: true,
+      get: function () {
+        return require('./journal-storage.js');
+      }
+    });
     module.exports = api;
   }
 

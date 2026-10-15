@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
   <meta name="description" content="תוכן חוברת קורס המאמנים של עמותת אחריי: חימום, משחקים, גמישות, מערכי אימון, בוחן כושר ותיק בטיחות קבוצה.">
   <title>TrainerHub | חוברת הקורס</title>
   <link rel="stylesheet" href="./css/app.css">
@@ -33,10 +34,13 @@
     table { width: 100%; border-collapse: collapse; font-size: .88rem; }
     th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; vertical-align: top; }
     th { background: #151a18; }
+    /* Wide tables (risk matrix, roster) scroll inside themselves on a phone instead of widening the page. */
+    @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
     .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
     .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
     @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
   </style>
+<script src="./js/sentry-init.js"></script>
 </head>
 <body>
 <nav class="th-nav" aria-label="ניווט ראשי">

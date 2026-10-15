@@ -100,6 +100,10 @@
       });
   }
 
+  // Work time written in words: "שתי דקות ריצה במקום", "פלאנק שלוש דקות".
+  var MINUTE_WORDS = { 'שתי': 2, 'שלוש': 3, 'ארבע': 4, 'חמש': 5, 'שש': 6, 'שבע': 7, 'שמונה': 8, 'תשע': 9, 'עשר': 10 };
+  var MINUTE_WORDS_RE = /(^|\s)(שתי|שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\s+דקות(?=\s|$)/;
+
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
     var s = String(token || '').trim();
@@ -112,7 +116,17 @@
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
-    var m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
+    // Clock time "1:30" / "3x0:40" and seconds marked with " or ״ ("30"", "45״").
+    var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d{1,2}):([0-5]\d)/i);
+    if (m) {
+      if (m[1]) sets = toInt(m[1]);
+      duration_seconds = toInt(m[2]) * 60 + toInt(m[3]);
+      s = s.replace(m[0], ' ');
+    } else if ((m = s.match(/(\d+)\s*["״]/))) {
+      duration_seconds = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+    m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
       if (m[2]) reps = toInt(m[2]);
@@ -146,6 +160,12 @@
     } else if ((m = s.match(/(\d+(?:\.\d+)?)\s*(?:דקות|דקה|דק[׳']|′)/))) {
       minSec = Math.round(parseFloat(m[1]) * 60);
       minMatch = m[0];
+    } else if ((m = s.match(/(^|\s)דקתיים(?=\s|$)/))) {
+      minSec = 120;
+      minMatch = m[0];
+    } else if ((m = s.match(MINUTE_WORDS_RE))) {
+      minSec = MINUTE_WORDS[m[2]] * 60;
+      minMatch = m[0];
     } else if ((m = s.match(/(?:^|[\s\-–—,.:])(דקה(?:\s*אחת)?)(?:[\s\-–—,.:]|$)/))) {
       minSec = 60;
       minMatch = m[0];
@@ -154,7 +174,7 @@
       duration_seconds = minSec;
       s = s.replace(minMatch, ' ');
     }
-    m = s.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF]))|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|″)/);
     if (m) {
       var sec = toInt(m[1]);
       duration_seconds = minSec != null ? minSec + sec : sec;
@@ -176,6 +196,12 @@
       }
     }
     m = s.match(/^(\d+)\s+/);
+    if (m && reps == null && duration_seconds == null) {
+      reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+    // A count after the name: "שכיבות סמיכה 15".
+    m = s.match(/\s(\d+)\s*$/);
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
@@ -403,7 +429,9 @@
       endSec: Math.floor(endSec),
       segmentOf: opts.segmentOf || driveId
     };
-    api.addUserEntry(entry);
+    if (!api.addUserEntry(entry)) {
+      return { error: 'storage', message: 'המקטע לא נשמר: הדפדפן חוסם שמירה מקומית (למשל גלישה פרטית).' };
+    }
     return { entry: entry };
   }
 

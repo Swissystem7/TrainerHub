@@ -19,7 +19,7 @@
   // Drills the site itself makes possible. catalogId only where the video catalog has one.
   var SITE_DRILLS = {
     stairs: [
-      { he: 'עליות מדרגות בריצה קלה', catalogId: null, seconds: 40, sets: 3, reason: 'בחרתי עליות מדרגות כי זוהו מדרגות' }
+      { he: 'עליות מדרגות בריצה קלה', catalogId: null, seconds: 40, sets: 3, run: true, reason: 'בחרתי עליות מדרגות כי זוהו מדרגות' }
     ],
     bench: [
       { he: 'עליות על ספסל', catalogId: 'step_up', reps: 12, sets: 3, reason: 'בחרתי עליות על ספסל כי זוהה ספסל' },
@@ -30,7 +30,7 @@
       { he: 'שכיבות סמיכה בשעינה על קיר', catalogId: null, reps: 15, sets: 2, reason: 'בחרתי שכיבות סמיכה על קיר כי זוהה קיר' }
     ],
     slope: [
-      { he: 'ריצות עלייה בשיפוע', catalogId: null, seconds: 20, sets: 4, reason: 'בחרתי ריצות עלייה כי זוהה שיפוע' }
+      { he: 'ריצות עלייה בשיפוע', catalogId: null, seconds: 20, sets: 4, run: true, reason: 'בחרתי ריצות עלייה כי זוהה שיפוע' }
     ]
   };
 
@@ -54,7 +54,14 @@
     return null;
   }
 
-  function siteExercise(d, slippery) {
+  // Slippery floor slows every site drill; uneven floor only the running ones (its warning says no sprints).
+  function floorNote(d, slippery, uneven) {
+    if (slippery) return 'משטח חלק: בקצב הליכה, בלי ריצה';
+    if (uneven && d.run) return 'משטח לא אחיד: בקצב הליכה, בלי ספרינט';
+    return null;
+  }
+
+  function siteExercise(d, note) {
     return {
       name: d.he,
       id: d.catalogId,
@@ -62,7 +69,7 @@
       reps: d.reps != null ? d.reps : null,
       duration_seconds: d.reps != null ? null : d.seconds,
       rest_seconds: 45,
-      notes: slippery ? 'משטח חלק: בקצב הליכה, בלי ריצה' : null
+      notes: note
     };
   }
 
@@ -98,7 +105,8 @@
     var reasons = [];
     var warnings = [];
     var slippery = p.hazards.indexOf('slippery') !== -1;
-    var unsafeFloor = slippery || p.hazards.indexOf('uneven') !== -1;
+    var uneven = p.hazards.indexOf('uneven') !== -1;
+    var unsafeFloor = slippery || uneven;
 
     var base = baseChoice(p, group);
     var bopts = { season: winter ? 'winter' : 'summer', activity: 'long' };
@@ -109,14 +117,15 @@
     Object.keys(SITE_DRILLS).forEach(function (feature) {
       if (p.features.indexOf(feature) === -1) return;
       SITE_DRILLS[feature].forEach(function (d) {
-        main.exercises.push(siteExercise(d, slippery));
+        main.exercises.push(siteExercise(d, floorNote(d, slippery, uneven)));
         reasons.push(d.reason);
       });
     });
     if (p.features.some(function (f) { return SITE_DRILLS[f]; })) workout.tags.push('site');
 
     var warm = workout.phases[0];
-    if (p.width === 'wide' && group >= 6 && !unsafeFloor && p.hazards.indexOf('cars') === -1) {
+    var cars = p.hazards.indexOf('cars') !== -1;
+    if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars) {
       var game = Booklet.games('tag')[0];
       if (game) {
         warm.exercises.unshift({ name: game.he, id: null, sets: 1, reps: null, duration_seconds: 300, rest_seconds: null, notes: game.description });
@@ -124,6 +133,8 @@
       }
     } else if (group >= 6 && p.width !== 'wide') {
       reasons.push('לא שילבתי משחקי תופסת או שליחים כי השטח לא רחב מספיק');
+    } else if (group >= 6) {
+      reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + (cars ? 'יש מכוניות ליד השטח' : 'המשטח לא בטוח לריצה'));
     }
 
     var lay = layoutFor(p, group);

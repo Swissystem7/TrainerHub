@@ -1,7 +1,17 @@
-const { test } = require('node:test');
-const assert = require('node:assert');
-const THPrompt = require('../js/prompt-parser.js');
+'use strict';
+// Ported from ext/feature-code-20260926-222014-8fee (factory bot), with the
+// "זוג משקולות" false positive pinned down.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const Prompt = require('../js/prompt-parser.js');
 
-test('parseParticipants returns 2 when the input text contains the word couple in Hebrew.', () => {
-  assert.strictEqual(THPrompt.parseParticipants('אימון לזוג'), 2);
+test('a couple workout is two participants', () => {
+  assert.equal(Prompt.parseParticipants('אימון לזוג'), 2);
+  assert.equal(Prompt.parseParticipants('אימון זוגי של חצי שעה'), 2);
+  assert.equal(Prompt.parseParticipants('בני זוג, אימון בבית'), 2);
+});
+
+test('"זוג" is not a head count when a number is given or it means a pair of weights', () => {
+  assert.equal(Prompt.parseParticipants('12 מתאמנים, עבודה בזוגות'), 12);
+  assert.equal(Prompt.parseParticipants('אימון עם זוג משקולות'), null);
 });

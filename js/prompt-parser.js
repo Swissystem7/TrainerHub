@@ -232,7 +232,8 @@
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
     }
-    if (n === null) return /זוג/.test(t) ? 2 : null;
+    // "זוג משקולות" is a pair of dumbbells, not a head count.
+    if (n === null) return /זוג/.test(t) && !/זוג\s+משקולות/.test(t) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
