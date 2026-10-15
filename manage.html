@@ -161,7 +161,19 @@
     return src || 'לא זוהה';
   }
 
-  function propose() {
+  // The proposal fills the three selects from the name. Once the trainer
+  // corrects one of them, the correction is kept: more typing in the name
+  // does not overwrite it, and «אשר ושמור» never re-applies the proposal
+  // (it used to, so every correction was replaced by the guess before it was
+  // read). «הצג הצעה» puts the whole proposal back on purpose.
+  var corrected = {};
+  ['muscles', 'equipment', 'level'].forEach(function (id) {
+    $(id).addEventListener('change', function () { corrected[id] = true; });
+  });
+
+  function propose(opts) {
+    opts = opts || {};
+    if (opts.reset) corrected = {};
     var raw = $('url').value.trim();
     var name = $('he').value.trim() || THInfer.extractHebrewName(raw);
     if (name && !$('he').value.trim()) $('he').value = name;
@@ -186,11 +198,14 @@
     } else {
       hint.textContent = 'לא זוהה מקור. אפשר לשמור שם בלבד, או להדביק קישור דרייב / יוטיוב / חיצוני.';
     }
-    if (proposed.muscles) setMuscles(proposed.muscles);
-    if (proposed.equipment && proposed.equipment[0]) $('equipment').value = proposed.equipment[0];
-    if (proposed.level) $('level').value = proposed.level;
+    if (opts.apply === false) return proposed;
+    if (proposed.muscles && !corrected.muscles) setMuscles(proposed.muscles);
+    if (proposed.equipment && proposed.equipment[0] && !corrected.equipment) $('equipment').value = proposed.equipment[0];
+    if (proposed.level && !corrected.level) $('level').value = proposed.level;
     return proposed;
   }
+
+  function proposeFromTyping() { propose({}); }
 
   function renderUser() {
     var list = TH.userCatalogList();
@@ -208,16 +223,16 @@
     }).join('');
   }
 
-  $('url').addEventListener('input', propose);
-  $('he').addEventListener('input', propose);
+  $('url').addEventListener('input', proposeFromTyping);
+  $('he').addEventListener('input', proposeFromTyping);
   $('previewBtn').addEventListener('click', function () {
-    var p = propose();
+    var p = propose({ reset: true });
     $('addStatus').textContent = p && p.error ? (p.message || 'צריך שם בעברית') : 'ההצעה עודכנה. אפשר לתקן ואז לאשר.';
   });
 
   $('addForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var proposed = propose();
+    var proposed = propose({ apply: false });
     if (!proposed || proposed.error) {
       $('addStatus').textContent = (proposed && proposed.message) || 'חסר שם או קישור.';
       return;
@@ -244,6 +259,7 @@
     $('url').value = '';
     $('he').value = '';
     $('folder').value = '';
+    corrected = {};
     renderUser();
   });
 
