@@ -28,7 +28,7 @@ test('a bare ×N multiplier is the sets, before or after the prescription', () =
   assert.deepStrictEqual(pick('בטן 20 חזרות x 4'), { name: 'בטן', sets: 4, reps: 20, duration_seconds: null, rest_seconds: null });
   assert.deepStrictEqual(pick('שכיבות סמיכה x3 12 חזרות'), { name: 'שכיבות סמיכה', sets: 3, reps: 12, duration_seconds: null, rest_seconds: null });
   assert.deepStrictEqual(pick('סקוואט 15 x 3 סטים'), { name: 'סקוואט', sets: 3, reps: 15, duration_seconds: null, rest_seconds: null });
-  assert.deepStrictEqual(pick('פלאנק צד 30 שניות לכל צד x3'), { name: 'פלאנק צד לכל צד', sets: 3, reps: null, duration_seconds: 30, rest_seconds: null });
+  assert.deepStrictEqual(pick('פלאנק צד 30 שניות לכל צד x3'), { name: 'פלאנק צד', sets: 3, reps: null, duration_seconds: 30, rest_seconds: null });
   // The old form keeps its meaning.
   assert.deepStrictEqual(pick('פלאנק - 3 סטים × 45 שניות'), { name: 'פלאנק', sets: 3, reps: null, duration_seconds: 45, rest_seconds: null });
 });
