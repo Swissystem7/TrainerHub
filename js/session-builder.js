@@ -181,26 +181,55 @@
     });
   }
 
+  // The muscle group a pick "spends" when the request names no muscle (a
+  // full-body or unfocused prompt), or null when it names one. The catalog is
+  // core-heavy (25 of its 78 clips) and without a muscle in the request every
+  // clip scores the same, so «אימון גוף מלא 45 דקות» came out 7 of 8 core
+  // (crunches variants) and the analyzer flagged its own result
+  // «88% ליבה, אין עבודת גב». With a group on each row pickDiverse takes the
+  // best clip of every group before the second clip of any group. A request
+  // that names muscles keeps the plain score order, where the muscle match
+  // already decides.
+  function spreadGroup(entry, req) {
+    if (req.muscles && req.muscles.length) return null;
+    var muscles = (entry && entry.muscles) || [];
+    return muscles.length ? muscles[0] : 'other';
+  }
+
   function pickDiverse(scored, count) {
     var picked = [];
     var usedName = {};
     var usedPattern = {};
+    var usedGroup = {};
     scored.sort(function (a, b) { return b.score - a.score; });
     function take(pred) {
-      for (var i = 0; i < scored.length && picked.length < count; i++) {
-        var e = scored[i].entry;
-        var name = foldName(e);
-        if (usedName[name]) continue;
-        if (pred && !pred(e, scored[i])) continue;
-        usedName[name] = true;
-        var inf = Infer.inferFromName(e.he, { folder: e.folder || '' });
-        usedPattern[inf.pattern] = (usedPattern[inf.pattern] || 0) + 1;
-        picked.push(e);
-        if (root.THIngest && typeof root.THIngest.patternScore === 'function') {
-          scored.forEach(function (row) {
-            row.score += root.THIngest.patternScore(e.id, row.entry.id);
-          });
+      // One round takes at most one clip per group (rows without a group are
+      // never held back). Rounds repeat until the count is reached or a round
+      // takes nothing.
+      var round = 0;
+      var took = true;
+      while (took && picked.length < count) {
+        took = false;
+        for (var i = 0; i < scored.length && picked.length < count; i++) {
+          var e = scored[i].entry;
+          var name = foldName(e);
+          if (usedName[name]) continue;
+          if (pred && !pred(e, scored[i])) continue;
+          var group = scored[i].group;
+          if (group != null && (usedGroup[group] || 0) > round) continue;
+          usedName[name] = true;
+          if (group != null) usedGroup[group] = round + 1;
+          var inf = Infer.inferFromName(e.he, { folder: e.folder || '' });
+          usedPattern[inf.pattern] = (usedPattern[inf.pattern] || 0) + 1;
+          picked.push(e);
+          took = true;
+          if (root.THIngest && typeof root.THIngest.patternScore === 'function') {
+            scored.forEach(function (row) {
+              row.score += root.THIngest.patternScore(e.id, row.entry.id);
+            });
+          }
         }
+        round++;
       }
     }
     take(function (e, row) { return row.score >= 10; });
@@ -319,7 +348,7 @@
       pool = filterPool(mainList, req, relax);
     }
     var scored = pool.map(function (e) {
-      return { entry: e, score: scoreEntry(e, req, prefer) };
+      return { entry: e, score: scoreEntry(e, req, prefer), group: spreadGroup(e, req) };
     });
     var picked = pickDiverse(scored, need);
     var satisfied = !relax.muscle && !relax.equipment && picked.length >= Math.min(3, need);
