@@ -139,7 +139,7 @@
         eq.indexOf('football') === -1 && eq.indexOf('tennis-ball') === -1) {
       eq.push('ball');
     }
-    if (/משקולת|משקולות|דאמבל/.test(t)) eq.push('dumbbells');
+    if (/משקולת|משקולות|דאמבל|דמבל/.test(t)) eq.push('dumbbells');
     if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
     if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
     if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
