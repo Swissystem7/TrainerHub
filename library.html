@@ -227,16 +227,25 @@
     btn.addEventListener('click', function () { onChip(btn); });
   });
 
+  // A «חלופות» button opens the named exercise. Every filter is cleared first,
+  // not only the tag chip: an alternative shares a muscle with the card but
+  // not necessarily its equipment or level, so with the card's own equipment
+  // or level filter still set the grid came up empty («אין תרגיל שמתאים»).
+  function jumpToAlternative(name) {
+    $('q').value = name;
+    tag = '';
+    document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
+      el.setAttribute('aria-pressed', el.getAttribute('data-tag') === '' ? 'true' : 'false');
+    });
+    ['muscle', 'equipment', 'level'].forEach(function (id) { $(id).value = ''; });
+    render();
+    $('q').focus();
+  }
+
   $('grid').addEventListener('click', function (e) {
     var jump = e.target.closest && e.target.closest('[data-jump]');
     if (jump) {
-      $('q').value = jump.textContent.trim();
-      tag = '';
-      document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
-        el.setAttribute('aria-pressed', el.getAttribute('data-tag') === '' ? 'true' : 'false');
-      });
-      render();
-      $('q').focus();
+      jumpToAlternative(jump.textContent.trim());
       return;
     }
     var act = e.target.getAttribute && e.target.getAttribute('data-act');
