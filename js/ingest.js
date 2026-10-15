@@ -361,11 +361,13 @@
     }
     // A bare multiplier is the sets: "פלאנק 45 שניות x3", "x3 12 חזרות",
     // "3 סטים x 12" (reps), "סקוואט 15 x 3 סטים" (the x dangles once the sets are taken).
+    var loneX = null;
     m = s.match(/(?:^|\s)[x×]\s*(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|חזרות|פעמים|["״′″]))/i);
     if (m) {
       if (!setsExplicit) {
         sets = toInt(m[1]);
         setsExplicit = true;
+        loneX = sets;
       } else if (reps == null) {
         reps = toInt(m[1]);
       }
@@ -445,8 +447,15 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
+    // «סופרמן x15» with no other count is 15 reps, not 15 sets of an invented 10
+    // (and under «3 סבבים:» the rounds stay 3).
+    if (loneX != null && reps == null && duration_seconds == null && !cues.open) {
+      reps = loneX;
+      sets = defaults.sets != null ? defaults.sets : null;
+      setsExplicit = false;
+    }
 
-    var name = s.replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var name =s.replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       if (setsExplicit || (restClause.found && restClause.rest != null)) {
