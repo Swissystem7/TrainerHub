@@ -49,6 +49,41 @@
     return { found: true, rest: secs, text: t.replace(m[0], ' ') };
   }
 
+  // Cues a trainer writes after the name. They go to the notes so the name
+  // still matches its clip («לאנג׳ לכל רגל» found nothing in the catalog).
+  // `open` marks a prescription that is not a rep count (to failure, distance).
+  // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side.
+  var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
+  var FAILURE_RX = /(?:^|\s)(?:עד\s+(?:ה)?כשל|מקס(?:ימום)?\s+חזרות|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
+  var DISTANCE_RX = /(?:^|\s|(?<=[x×]))(\d+)\s*(?:מטרים|מטר|מ[׳'])(?![\u0590-\u05FF])/;
+
+  function splitCues(s) {
+    var t = String(s || '');
+    var notes = [];
+    var open = false;
+    t = t.replace(/\(([^()]*)\)/g, function (all, inner) {
+      if (/\d/.test(inner)) return ' ' + inner + ' ';
+      if (inner.trim()) notes.push(inner.trim());
+      return ' ';
+    });
+    var m = t.match(PER_SIDE_RX);
+    if (m) {
+      notes.push('לכל ' + (m[1] || m[2]));
+      t = t.replace(m[0], ' ');
+    }
+    if ((m = t.match(FAILURE_RX))) {
+      notes.push('עד כשל');
+      open = true;
+      t = t.replace(m[0], ' ');
+    }
+    if ((m = t.match(DISTANCE_RX))) {
+      notes.push(m[1] + ' מטר');
+      open = true;
+      t = t.replace(m[0], ' ');
+    }
+    return { text: t, notes: notes, open: open };
+  }
+
   function isRestToken(s) {
     var t = Infer.fold(s);
     if (!t || !REST_RX.test(t)) return false;
@@ -151,6 +186,10 @@
       s = restClause.text;
       if (restClause.rest != null) rest_seconds = restClause.rest;
     }
+    // Coaching cues are notes, not part of the name: "לאנג׳ 10 חזרות לכל רגל",
+    // "שכיבות סמיכה עד כשל", "ספרינט 20 מטר x5", "סקוואט 15 (לאט)".
+    var cues = splitCues(s);
+    s = cues.text;
 
     // Clock time "1:30" / "3x0:40" and seconds marked with " or ״ ("30"", "45״").
     var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d{1,2}):([0-5]\d)/i);
@@ -284,7 +323,8 @@
     if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
     if (reps == null && duration_seconds == null) {
       duration_seconds = defaults.workSeconds || null;
-      if (duration_seconds == null) reps = 10;
+      // "עד כשל" / "20 מטר" is the prescription; an invented 10 reps would contradict it.
+      if (duration_seconds == null && !cues.open) reps = 10;
     }
     return {
       name: name,
@@ -292,7 +332,7 @@
       reps: reps,
       duration_seconds: duration_seconds,
       rest_seconds: rest_seconds,
-      notes: null,
+      notes: cues.notes.length ? cues.notes.join(' · ') : null,
       restOnly: undefined
     };
   }
@@ -487,7 +527,7 @@
             reps: ex.reps,
             duration_seconds: ex.duration_seconds,
             rest_seconds: ex.rest_seconds,
-            notes: ex.missing ? 'חסר סרטון' : null,
+            notes: [ex.notes, ex.missing ? 'חסר סרטון' : null].filter(Boolean).join(' · ') || null,
             missing: ex.missing || false
           };
         }) },
