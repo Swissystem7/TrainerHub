@@ -24,17 +24,42 @@
   // "הפסקה" (break) is used for rest as often as "מנוחה" in trainers' messages.
   var REST_RX = /מנוחה|הפסקה/;
 
+  // The rest clause of one line: «מנוחה 30 שניות», «עם 60 שניות מנוחה»,
+  // «מנוחה של דקה בין הסטים», «מנוחה 1:00». A line that holds nothing else is
+  // a rest line; an exercise line keeps its name and takes the clause as its rest.
+  var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|דקות|דקה|דק[׳\'])';
+  var TIMED = '(?:\\d{1,2}:[0-5]\\d|\\d+\\s*' + TIME_UNIT + '(?:\\s*וחצי)?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
+  var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))))*';
+  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:\\s+(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
+  var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
+
+  function splitRest(s) {
+    var t = String(s || '');
+    if (!REST_RX.test(t)) return { found: false, rest: null, text: t };
+    var m = t.match(REST_AFTER_RX);
+    var secs = m ? parseRestSeconds(m[0]) : null;
+    if (secs == null) {
+      var before = t.match(REST_BEFORE_RX);
+      if (before) {
+        m = before;
+        secs = parseRestSeconds(before[0]);
+      }
+    }
+    if (!m) return { found: false, rest: null, text: t };
+    return { found: true, rest: secs, text: t.replace(m[0], ' ') };
+  }
+
   function isRestToken(s) {
     var t = Infer.fold(s);
-    if (!t) return false;
-    if (/^(?:מנוחה|הפסקה)$/.test(t)) return true;
-    if (REST_RX.test(t) && !/פלאנק|שכיב|מטפס|סקוואט|מתח|בטן/.test(t)) return true;
-    return false;
+    if (!t || !REST_RX.test(t)) return false;
+    return !/[\u0590-\u05FFa-zA-Z]/.test(splitRest(t).text);
   }
 
   function parseRestSeconds(s) {
     var t = Infer.fold(s);
     if (!REST_RX.test(t)) return null;
+    var clock = t.match(/(\d{1,2}):([0-5]\d)/);
+    if (clock) return toInt(clock[1]) * 60 + toInt(clock[2]);
     if (/דקה\s*וחצי/.test(t)) return 90;
     if (/חצי\s*דקה/.test(t)) return 30;
     if (/שתי\s*דקות/.test(t)) return 120;
@@ -111,10 +136,21 @@
     if (isRestToken(s)) {
       return { restOnly: true, rest_seconds: parseRestSeconds(s) || defaults.rest || 60 };
     }
+    // List numbering: "1. סקוואט 15", "2) שכיבות", "תרגיל 3: פלאנק" (not "3.5 דקות", not "1:30").
+    s = s.replace(/^(?:תרגיל\s*\d{1,2}\s*[.)\]:\-–]?\s*|\d{1,2}\s*[.)\]](?:\s+|(?=[\u0590-\u05FFa-zA-Z]))|\d{1,2}\s*:\s*(?=[\u0590-\u05FFa-zA-Z]))/, '').trim();
+    if (!s) return null;
     var sets = defaults.sets != null ? defaults.sets : null;
+    var setsExplicit = false;
     var reps = null;
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
+
+    // "לאנג׳ 10 חזרות מנוחה 30 שניות": the rest belongs to this exercise, the line is not a rest line.
+    var restClause = splitRest(s);
+    if (restClause.found) {
+      s = restClause.text;
+      if (restClause.rest != null) rest_seconds = restClause.rest;
+    }
 
     // Clock time "1:30" / "3x0:40" and seconds marked with " or ״ ("30"", "45״").
     var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d{1,2}):([0-5]\d)/i);
@@ -126,21 +162,49 @@
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
+    // "3 סטים של 12 חזרות", "10 חזרות 3 סבבים"; the count after the sets is reps
+    // only when no time unit follows it ("3 סטים 15 שניות" is timed work).
+    m = s.match(/(\d+)\s*(?:סטים?|סבבים?)\s*(?:של\s*)?(?:(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|["״′″]))(?:\s*חזרות)?)?/);
     if (m) {
       sets = toInt(m[1]);
+      setsExplicit = true;
       if (m[2]) reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*[x×]\s*(\d+)/i);
+    // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds).
+    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d:])\s*(חזרות|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
     if (m) {
       sets = toInt(m[1]);
-      reps = toInt(m[2]);
+      setsExplicit = true;
+      if (m[3] && m[3] !== 'חזרות') duration_seconds = toInt(m[2]);
+      else reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
     m = s.match(/(\d+)\s*חזרות/);
     if (m) {
       reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+    // A bare multiplier is the sets: "פלאנק 45 שניות x3", "x3 12 חזרות",
+    // "3 סטים x 12" (reps), "סקוואט 15 x 3 סטים" (the x dangles once the sets are taken).
+    m = s.match(/(?:^|\s)[x×]\s*(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|חזרות|["״′″]))/i);
+    if (m) {
+      if (!setsExplicit) {
+        sets = toInt(m[1]);
+        setsExplicit = true;
+      } else if (reps == null) {
+        reps = toInt(m[1]);
+      }
+      s = s.replace(m[0], ' ');
+    }
+    m = s.match(/(\d+)\s*[x×](?=\s|$)/i);
+    if (m) {
+      if (!setsExplicit) {
+        sets = toInt(m[1]);
+        setsExplicit = true;
+      } else if (reps == null && duration_seconds == null) {
+        reps = toInt(m[1]);
+      }
       s = s.replace(m[0], ' ');
     }
     var minMatch = null;
@@ -195,6 +259,7 @@
         s = s.replace(m[0], ' ');
       }
     }
+    s = s.trim();
     m = s.match(/^(\d+)\s+/);
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
@@ -208,7 +273,13 @@
     }
 
     var name = s.replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
-    if (!name || name.length < 2) return null;
+    if (!name || name.length < 2) {
+      // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
+      if (setsExplicit || (restClause.found && restClause.rest != null)) {
+        return { continuation: true, sets: setsExplicit ? sets : null, rest_seconds: restClause.found ? restClause.rest : null };
+      }
+      return null;
+    }
     if (/^\d+$/.test(name)) return null;
     if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
     if (reps == null && duration_seconds == null) {
@@ -369,6 +440,18 @@
       if (parsed.restOnly) {
         lastRest = parsed.rest_seconds;
         if (exercises.length) exercises[exercises.length - 1].rest_seconds = lastRest;
+        continue;
+      }
+      if (parsed.continuation) {
+        var prev = exercises[exercises.length - 1];
+        if (parsed.sets != null) {
+          if (prev) prev.sets = parsed.sets;
+          else defaults.sets = parsed.sets;
+        }
+        if (parsed.rest_seconds != null) {
+          lastRest = parsed.rest_seconds;
+          if (prev) prev.rest_seconds = lastRest;
+        }
         continue;
       }
       if (lastRest != null && parsed.rest_seconds == null) parsed.rest_seconds = lastRest;
