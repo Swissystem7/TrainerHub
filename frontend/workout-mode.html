@@ -500,7 +500,7 @@ function renderExercise(step) {
     <div class="phase-label">${esc(step.phase)}</div>
     <div class="exercise-name">${esc(step.name)}</div>
     ${setInfo}
-    ${videoHtml}
+    <div class="ex-media-slot" id="exMediaSlot">${videoHtml}</div>
     ${repsOrTime}
     ${notes}
   `;
@@ -925,12 +925,22 @@ function exitWorkout() {
   }
 }
 
-window.addEventListener('offline', function () {
-  if (workout && steps.length) renderStep();
-});
-window.addEventListener('online', function () {
-  if (workout && steps.length) renderStep();
-});
+// Network flips only swap the player <-> exercise-name fallback of the current
+// exercise. They must not re-render the step: renderStep() restarts the running
+// countdown from the full duration, and once stepIdx has passed the last step it
+// would run finishWorkout() again (new doneAt, fresh TH1 code, RPE choice lost).
+function refreshStepMedia() {
+  if (!workout || !steps.length) return;
+  if (stepIdx >= steps.length) return;
+  const step = steps[stepIdx];
+  if (!step || step.type !== 'exercise') return;
+  const slot = document.getElementById('exMediaSlot');
+  if (!slot) return;
+  const clip = TH.findExercise(step);
+  slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+}
+window.addEventListener('offline', refreshStepMedia);
+window.addEventListener('online', refreshStepMedia);
 
 document.addEventListener('keydown', function (e) {
   const tag = (e.target && e.target.tagName) || '';
