@@ -97,7 +97,7 @@ test('engine rules quote the numbers the engine actually runs', function () {
 
   const count = byId(asked, 'exercise_count');
   assert.equal(count.source.id, 'engine');
-  assert.match(count.value, new RegExp('^' + THEngine.wantedCount(45) + ' תרגילים'));
+  assert.match(count.value, new RegExp('^' + THEngine.wantedCount(45, rx) + ' תרגילים'));
 
   // A core-only request has no explicit goal, so the engine derives the prescription from the focus.
   const core = THRules.rulesWithSources('אימון בטן');
