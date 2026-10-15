@@ -61,7 +61,10 @@
   // Only a digit-free tail that is not itself the prescription («פלאנק - דקה», «סקוואט - 15 חזרות»);
   // a hyphen inside a word («פשיטת-ברך») has no spaces around it.
   var DASH_CUE_RX = /\s[\-–—]\s+([^\d\-–—]*[\u0590-\u05FFa-zA-Z][^\d\-–—]*)$/;
-  var PRESCRIPTION_WORD_RX = /דק|שני|שנ[׳']|חזרות|סטים?|סבבים?|חצי|מנוחה|הפסקה/;
+  var PRESCRIPTION_WORD_RX = /דק|שני|שנ[׳']|חזרות|פעמים|סטים?|סבבים?|חצי|מנוחה|הפסקה/;
+  // «סקוואט 10-12», «פלאנק 30-45 שניות», «10 עד 12 חזרות»: a range, not a name part (not a clock «1:00-1:30»).
+  var RANGE_RX = /(?<![\d:.])(\d+)\s*(?:[\-–—]|עד)\s*(\d+)(?![\d:.])(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות|סטים|סבבים)(?![\u0590-\u05FF]))?/;
+  var CLOCK_RANGE_RX = /(?<!\d)(\d{1,2}:[0-5]\d)\s*(?:[\-–—]|עד)\s*(\d{1,2}:[0-5]\d)(?!\d)/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
   var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
 
@@ -74,7 +77,18 @@
       if (inner.trim()) notes.push(inner.trim());
       return ' ';
     });
-    var m = t.match(PER_SIDE_RX);
+    // The lower bound is the count, the range stays in the notes
+    // (was the name «סקוואט 10 12» with 10 invented reps).
+    var m = t.match(CLOCK_RANGE_RX);
+    if (m) {
+      notes.push(m[1] + '-' + m[2]);
+      t = t.replace(m[0], ' ' + m[1] + ' ');
+    } else if ((m = t.match(RANGE_RX)) && toInt(m[2]) > toInt(m[1])) {
+      var unit = m[3] ? ' ' + m[3] : '';
+      notes.push(m[1] + '-' + m[2] + unit);
+      t = t.replace(m[0], ' ' + m[1] + unit + ' ');
+    }
+    m = t.match(PER_SIDE_RX);
     if (m) {
       notes.push('לכל ' + (m[1] || m[2]));
       t = t.replace(m[0], ' ');
@@ -299,7 +313,7 @@
     }
     // "3 סטים של 12 חזרות", "10 חזרות 3 סבבים"; the count after the sets is reps
     // only when no time unit follows it ("3 סטים 15 שניות" is timed work).
-    m = s.match(/(\d+)\s*(?:סטים?|סבבים?)\s*(?:של\s*)?(?:(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|["״′″]))(?:\s*חזרות)?)?/);
+    m = s.match(/(\d+)\s*(?:סטים?|סבבים?)\s*(?:של\s*)?(?:(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|["״′″]))(?:\s*(?:חזרות|פעמים))?)?/);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
@@ -307,22 +321,22 @@
       s = s.replace(m[0], ' ');
     }
     // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds).
-    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d:])\s*(חזרות|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
+    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d:])\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
-      if (m[3] && m[3] !== 'חזרות') duration_seconds = toInt(m[2]);
+      if (m[3] && m[3] !== 'חזרות' && m[3] !== 'פעמים') duration_seconds = toInt(m[2]);
       else reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
-    m = s.match(/(\d+)\s*חזרות/);
+    m = s.match(/(\d+)\s*(?:חזרות|פעמים(?![\u0590-\u05FF]))/);
     if (m) {
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
     // A bare multiplier is the sets: "פלאנק 45 שניות x3", "x3 12 חזרות",
     // "3 סטים x 12" (reps), "סקוואט 15 x 3 סטים" (the x dangles once the sets are taken).
-    m = s.match(/(?:^|\s)[x×]\s*(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|חזרות|["״′″]))/i);
+    m = s.match(/(?:^|\s)[x×]\s*(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|חזרות|פעמים|["״′″]))/i);
     if (m) {
       if (!setsExplicit) {
         sets = toInt(m[1]);
