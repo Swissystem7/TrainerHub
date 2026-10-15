@@ -53,13 +53,35 @@
     return RX.hypertrophy;
   }
 
-  function wantedCount(duration) {
+  function repMid(reps) {
+    var m = String(reps == null ? '' : reps).match(/(\d+)(?:\s*-\s*(\d+))?/);
+    if (!m) return 0;
+    var lo = Number(m[1]);
+    var hi = m[2] ? Number(m[2]) : lo;
+    return (lo + hi) / 2;
+  }
+
+  // Seconds one exercise takes in workout mode: every set is followed by its
+  // rest, and a reps set is counted at ~3 s per rep.
+  function exerciseSeconds(rx) {
+    var sets = Number(rx && rx.sets) || 1;
+    var work = Number(rx && rx.duration) || repMid(rx && rx.reps) * 3 || 30;
+    var rest = Number(rx && rx.rest) || 0;
+    return sets * (work + rest);
+  }
+
+  // The duration steps were calibrated on the default prescription (3 sets of
+  // 8-12 with 60 s rest, about 4.5 min per exercise). A heavier prescription
+  // kept the same step: strength is 4 sets with 120 s rest, twice as long, so
+  // a «20 minute» strength session carried 5 exercises and 40 minutes of rest
+  // alone. The count shrinks by the ratio of the two, never below 2 and never
+  // above the step. Without a prescription the steps are returned as they are.
+  function wantedCount(duration, rx) {
     var d = Number(duration) || 20;
-    if (d <= 10) return 3;
-    if (d <= 20) return 5;
-    if (d <= 30) return 6;
-    if (d <= 45) return 8;
-    return 10;
+    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8 : 10;
+    if (!rx) return base;
+    var ratio = exerciseSeconds(RX.hypertrophy) / exerciseSeconds(rx);
+    return Math.max(2, Math.min(base, Math.floor(base * ratio)));
   }
 
   function groupPlan(participants, exerciseCount) {
@@ -296,7 +318,7 @@
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
     var list = catalogList(catalogOrList);
     var rx = prescription(req);
-    var need = wantedCount(req.duration);
+    var need = wantedCount(req.duration, rx);
     var relax = { muscle: false, equipment: false, level: false };
     // The designated warm-up clip belongs to the Warm-up phase only. Without
     // this it scored into the Main phase of full-body / unfocused prompts as
