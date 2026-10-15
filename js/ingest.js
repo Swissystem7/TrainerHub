@@ -30,7 +30,9 @@
   var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|דקות|דקה|דק[׳\'])';
   var TIMED = '(?:\\d{1,2}:[0-5]\\d|\\d+\\s*' + TIME_UNIT + '(?:\\s*וחצי)?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
   var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))))*';
-  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:\\s+(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
+  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
+  // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
+  var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
 
   function splitRest(s) {
@@ -47,6 +49,16 @@
     }
     if (!m) return { found: false, rest: null, text: t };
     return { found: true, rest: secs, text: t.replace(m[0], ' ') };
+  }
+
+  // «40 שניות עבודה, 20 מנוחה» / «30 שניות לכל תרגיל» before a colon: only the times, no exercise.
+  // «לאנג׳ 10 חזרות מנוחה 30 שניות» has a name left over, so it is the exercise itself.
+  function isIntervalPrefix(s) {
+    var t = String(s || '');
+    if (!WORK_RX.test(t) && !REST_RX.test(t) && !new RegExp(TIME_UNIT).test(t)) return false;
+    t = splitRest(t).text.replace(WORK_RX, ' ').replace(new RegExp(TIMED, 'g'), ' ')
+      .replace(/(?:^|\s)(?:ל?כל|בין|ה?תרגיל(?:ים)?|ה?סבבים?|ה?סטים?|עבודה|מנוחה|הפסקה|ו)(?=[\s,\/]|$)/g, ' ');
+    return !/[א-תa-zA-Z]/.test(t);
   }
 
   // Cues a trainer writes after the name. They go to the notes so the name
@@ -116,7 +128,7 @@
     if (/דקה/.test(t)) return 60;
     m = t.match(/(\d+)\s*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
     if (m) return toInt(m[1]);
-    m = t.match(/(?:מנוחה|הפסקה)\s+(\d+)/);
+    m = t.match(/(?:מנוחה|הפסקה)\s*[:\-–]?\s*(\d+)/);
     if (m) return toInt(m[1]);
     return null;
   }
@@ -128,15 +140,20 @@
     if (rounds) defaults.sets = toInt(rounds[1]);
     // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
     // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
-    var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
-      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*(?:מנוחה|הפסקה)/);
+    var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
+      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*(?:מנוחה|הפסקה)/) ||
+      // «מנוחה: 20» with no unit is seconds, as «מנוחה 20» is on an exercise line.
+      raw.match(/(?:מנוחה|הפסקה)[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (rest) defaults.rest = toInt(rest[1]);
-    if (/דקה (?:מנוחה|הפסקה)|(?:מנוחה|הפסקה) דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
-    if (/שתי דקות מנוחה|מנוחה שתי דקות|2 דקות מנוחה|מנוחה 2 דקות/.test(raw) && defaults.rest == null) {
+    var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
+    if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
+    if (/דקה[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*דקה/.test(raw) && defaults.rest == null) defaults.rest = 60;
+    if (/(?:שתי|2)[ \t]*דקות[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(?:שתי|2)[ \t]*דקות/.test(raw) && defaults.rest == null) {
       defaults.rest = 120;
     }
     var work = raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*עבודה/) ||
-      raw.match(/עבודה[ \t]+(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/);
+      raw.match(/עבודה[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
+      raw.match(/עבודה[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
   }
@@ -178,12 +195,13 @@
       if (after) {
         body = after[1];
       } else {
-        var colon = raw.indexOf(':');
+        // Only a colon on the first line: «דגש: גב ישר» on line 3 is not a title over the lines above it.
+        var colon = raw.split('\n')[0].indexOf(':');
         if (colon > 0 && colon < 80) {
           var left = raw.slice(0, colon).trim();
           var right = raw.slice(colon + 1).trim();
           // «אימון רגליים: סקוואט 15» is a title; «פלאנק: 30 שניות» is the exercise itself.
-          if (right && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || /עבודה|מנוחה|שניות|שנ/.test(left))) {
+          if (right && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || isIntervalPrefix(left))) {
             body = right;
           }
         }
@@ -282,6 +300,9 @@
       s = restClause.text;
       if (restClause.rest != null) rest_seconds = restClause.rest;
     }
+    // «עבודה 40 שניות מנוחה 20 שניות», «40 שניות עבודה / 20 שניות מנוחה»: the paste's interval
+    // line (scanDefaults gives its times to every exercise), not an exercise called «עבודה».
+    if (WORK_RX.test(s) && !/[\u0590-\u05FFa-zA-Z]/.test(s.replace(WORK_RX, ' '))) return null;
     // Coaching cues are notes, not part of the name: "לאנג׳ 10 חזרות לכל רגל",
     // "שכיבות סמיכה עד כשל", "ספרינט 20 מטר x5", "סקוואט 15 (לאט)".
     var cues = splitCues(s);
