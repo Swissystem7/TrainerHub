@@ -948,9 +948,14 @@
     var pool = PROGRAM_POOL.map(function (ex) {
       var copy = { id: ex.id, muscles: ex.muscles, equipment: ex.equipment };
       seenIds[ex.id] = true;
-      if (catalog[ex.id] && isPlayable(catalog[ex.id])) {
+      var clip = catalog[ex.id];
+      if (clip && isPlayable(clip)) {
         copy.hasClip = true;
-        copy.tags = catalogTags(catalog[ex.id]);
+        copy.tags = catalogTags(clip);
+        // The trainee gets the catalog clip, so its equipment decides what the exercise
+        // needs: bodyweight_row plays «מתח אוסטרלי» on a bar, not a bodyweight row, and
+        // must not land in a «משקל גוף» program just because the built-in list says 'none'.
+        if (Array.isArray(clip.equipment) && clip.equipment.length) copy.equipment = clip.equipment;
       }
       return copy;
     });
