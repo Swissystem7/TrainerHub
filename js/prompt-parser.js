@@ -405,6 +405,7 @@
     var excluded = negatedMuscles(folded);
     var t = withoutNegatedMuscles(folded);
     var muscles = [];
+    var named = [];
     var focus = null;
     if (/פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/.test(t)) {
       return { muscles: [], focus: 'full', excluded: excluded };
@@ -431,18 +432,28 @@
     hits.sort(function (a, b) { return a.at - b.at; });
     hits.forEach(function (hit) {
       if (hit.key === 'arms') {
-        muscles.push('biceps', 'triceps');
+        named.push('biceps', 'triceps');
         if (!focus) focus = 'arms';
       } else {
-        muscles.push(hit.key);
+        named.push(hit.key);
         if (!focus) focus = hit.key;
       }
     });
     if (Infer.mentionsPullUp(t)) {
-      muscles.push('back', 'biceps');
+      named.push('back', 'biceps');
       if (!focus) focus = 'back';
     }
-    muscles = Infer.uniq(muscles);
+    muscles = Infer.uniq(muscles.concat(named));
+    // «אימון רגליים בלי סקוואט» rules an exercise out, not the legs: a muscle
+    // the prompt still names is not excluded. Without this the leg session
+    // dropped every leg clip and came back all chest. The half-body groups
+    // don't count as naming, so «פלג גוף עליון בלי ידיים» still drops the arms.
+    // Nor may the exclusions rule out everything asked for: «פלג גוף תחתון
+    // בלי ישבן» is still a leg session, the glutes being part of the legs.
+    excluded = excluded.filter(function (m) { return named.indexOf(m) === -1; });
+    if (muscles.length && muscles.every(function (m) { return excluded.indexOf(m) !== -1; })) {
+      excluded = excluded.filter(function (m) { return muscles.indexOf(m) === -1; });
+    }
     return { muscles: muscles, focus: focus || (muscles.length ? muscles[0] : 'full'), excluded: excluded };
   }
 
