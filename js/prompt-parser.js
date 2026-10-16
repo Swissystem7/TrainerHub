@@ -365,12 +365,29 @@
     });
   }
 
+  // The muscle groups the negated phrases name. A prompt that only rules
+  // muscles out («אימון בלי רגליים») falls back to full body, and without this
+  // list the full-body session still filled with leg clips.
+  function negatedMuscles(t) {
+    var out = [];
+    (t.match(NEGATED_MUSCLE_RX) || []).forEach(function (phrase) {
+      Object.keys(MUSCLE_KEYS).forEach(function (key) {
+        if (!MUSCLE_KEYS[key].some(function (word) { return hasMuscleWord(phrase, word); })) return;
+        if (key === 'arms') out.push('biceps', 'triceps');
+        else out.push(key);
+      });
+    });
+    return Infer.uniq(out);
+  }
+
   function parseMuscles(text) {
-    var t = withoutNegatedMuscles(Infer.fold(text));
+    var folded = Infer.fold(text);
+    var excluded = negatedMuscles(folded);
+    var t = withoutNegatedMuscles(folded);
     var muscles = [];
     var focus = null;
     if (/פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/.test(t)) {
-      return { muscles: [], focus: 'full' };
+      return { muscles: [], focus: 'full', excluded: excluded };
     }
     if (UPPER_BODY_RX.test(t)) {
       muscles = muscles.concat(UPPER_MUSCLES);
@@ -398,7 +415,7 @@
       if (!focus) focus = 'back';
     }
     muscles = Infer.uniq(muscles);
-    return { muscles: muscles, focus: focus || (muscles.length ? muscles[0] : 'full') };
+    return { muscles: muscles, focus: focus || (muscles.length ? muscles[0] : 'full'), excluded: excluded };
   }
 
   function parsePrompt(text) {
@@ -414,6 +431,7 @@
       raw: raw,
       muscles: muscleInfo.muscles,
       focus: muscleInfo.focus || 'full',
+      excludedMuscles: muscleInfo.excluded,
       duration: duration || 20,
       durationSpecified: duration != null,
       participants: participants || 1,

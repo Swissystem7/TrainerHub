@@ -191,6 +191,11 @@
       if (!relax.equipment && req.equipment && req.equipment.length && !matchesEquipment(e, req.equipment)) {
         return false;
       }
+      // A clip whose main muscle the prompt ruled out («בלי רגליים») stays out.
+      if (!relax.muscle && req.excludedMuscles && req.excludedMuscles.length &&
+          e.muscles && req.excludedMuscles.indexOf(e.muscles[0]) !== -1) {
+        return false;
+      }
       if (!relax.muscle && req.muscles && req.muscles.length) {
         var overlap = muscleOverlap(e, req.muscles);
         var hinted = nameHints(e, req) >= 6;
