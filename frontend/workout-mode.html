@@ -431,9 +431,11 @@ let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
 ═══════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  TH.ready(function () {
-    if (workout && steps.length) renderStep();
-  });
+  // The catalog arrives over the network, often after the trainee already
+  // tapped start. It only adds the clip of the current exercise, so it must not
+  // re-render the step: renderStep() would restart a running plank from its full
+  // length and, after the last step, run finishWorkout() a second time.
+  TH.ready(refreshStepMedia);
 
   workout = loadWorkout();
 
