@@ -23,10 +23,11 @@
   }
 
   // «5 דקות», «1.5 דקות», «2 דקות וחצי», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
-  // `lead` is a pattern that must come right before the amount («מנוחה של »).
-  function minutesPhrase(text, lead) {
+  // `lead` is a pattern that must come right before the amount («מנוחה של »),
+  // `tail` one that must come right after it («דקה מנוחה»).
+  function minutesPhrase(text, lead, tail) {
     var s = String(text || '');
-    var end = '(?=\\s|$|[,.;:])';
+    var end = '(?=\\s|$|[,.;:])' + (tail || '');
     var word = lead || '(?:^|\\s)';
     var m = s.match(new RegExp((lead || '') + '(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
     if (m) {
@@ -42,15 +43,24 @@
     return null;
   }
 
-  // «מנוחה 60 שניות», «מנוחה של 2 דקות», «מנוחה 90», «מנוחה דקה», «מנוחה חצי דקה», «20 שניות מנוחה».
+  // «מנוחה 60 שניות», «מנוחה של 2 דקות», «מנוחה 90», «מנוחה דקה», «מנוחה חצי דקה», «20 שניות מנוחה»,
+  // «דקה מנוחה», «2 דקות מנוחה», «מנוחה 1.5» (minutes - nobody rests 1.5 seconds).
   function restPhrase(text) {
     var s = String(text || '');
     var minutes = minutesPhrase(s, 'מנוחה\\s*(?:של\\s*)?');
     if (minutes) return minutes;
-    var m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)\s*(?:שניות|שנ[׳']|″)?/);
+    var m = s.match(/מנוחה\s*(?:של\s*)?(\d+[.,]\d+)(?=\s|$|[,;:]|\.(?!\d))/);
+    if (m) return { match: m[0], seconds: Math.round(parseFloat(m[1].replace(',', '.')) * 60) };
+    m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)\s*(?:שניות|שנ[׳']|″)?/);
     if (m) return { match: m[0], seconds: toInt(m[1]) };
     m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
     if (m) return { match: m[0], seconds: toInt(m[1]) };
+    // «פלאנק דקה מנוחה» is still a minute of plank; the minutes are the rest only
+    // when nothing or another amount comes before them («סקוואט 3x12 2 דקות מנוחה»).
+    var before = minutesPhrase(s, '', '\\s*מנוחה');
+    if (!before) return null;
+    var lead = s.slice(0, s.indexOf(before.match)).trim();
+    if (!lead || /(?:\d|חזרות|סטים|סט|שניות|שנ[׳']|דקות|דקה|פעמים|,)\s*[,.;:\-–]?$/.test(lead)) return before;
     return null;
   }
 
