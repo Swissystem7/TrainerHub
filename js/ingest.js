@@ -43,6 +43,19 @@
   var PAIR_VALUE = '(' + TIMED + '|\\d+(?![\\d:.]))';
   var WORK_REST_RX = new RegExp('(?:עבודה\\s*[:\\-–]?\\s*' + PAIR_VALUE + '|' + PAIR_VALUE + '\\s*עבודה)\\s*[,\\/|]?\\s*' +
     '(?:ו?(?:מנוחה|הפסקה)\\s*[:\\-–]?\\s*' + PAIR_VALUE + '|(?:ו-?)?' + PAIR_VALUE + '\\s*ו?(?:מנוחה|הפסקה))');
+  // «40/20», «טבאטה 20/10», «ברפי 30/15 שניות»: work/rest seconds of an interval. Only round
+  // numbers from 20/10 up - «סקוואט 4/12» is sets/reps and «לאנג׳ 10/10» / «12/12» is per leg.
+  var SLASH_PAIR_RX = /(?<![\d:.\/])(\d{2,3})\s*\/\s*(\d{2,3})(?![\d:.\/])(?:\s*(?:שניות|שנ(?:[׳']|(?![א-ת]))))?/;
+  var INTERVAL_WORD_RX = /(?:^|\s)(?:טבאטה|tabata|hiit|אינטרוול(?:ים)?|interval(?:s)?|עבודה\s*\/\s*מנוחה)(?=[\s:,.\-–]|$)/gi;
+
+  function slashPair(s) {
+    var m = String(s || '').match(SLASH_PAIR_RX);
+    if (!m) return null;
+    var work = toInt(m[1]);
+    var rest = toInt(m[2]);
+    if (work < 20 || rest < 10 || work % 5 || rest % 5 || (work === rest && work < 30)) return null;
+    return { text: m[0], work: work, rest: rest };
+  }
   // «30 שניות לכל תרגיל», «כל תרגיל 45 שניות», «דקה על כל תרגיל»: the work time of every
   // exercise in the paste. Not a rest: «מנוחה 30 שניות לכל תרגיל», «מנוחה בין כל תרגיל 30 שניות».
   var PER_EXERCISE = '(?<![\\u0590-\\u05FF])(?<!בין\\s+)(?:[לב]|על\\s+)?כל\\s+ה?תרגיל(?![\\u0590-\\u05FF])';
@@ -239,7 +252,18 @@
     // «40 שניות עבודה 20 מנוחה» / «עבודה 40 מנוחה 20»: the bare numbers are seconds (were dropped).
     var pair = null;
     raw.split('\n').some(function (line) { return (pair = line.match(WORK_REST_RX)); });
+    // «40/20» / «טבאטה 20/10» on a line of its own is the interval of every exercise (was a phantom
+    // exercise «40/20»); «ברפי 40/20» keeps its times to itself.
+    var slash = null;
+    if (!pair) {
+      raw.split('\n').some(function (line) {
+        var p = slashPair(line);
+        var left = p && line.replace(p.text, ' ').replace(INTERVAL_WORD_RX, ' ').replace(/[x×]\s*\d+/gi, ' ');
+        return p && !/[א-תa-zA-Z]/.test(left) && (slash = p);
+      });
+    }
     if (pair && defaults.rest == null) defaults.rest = timedSeconds(pair[3] || pair[4]);
+    if (slash && defaults.rest == null) defaults.rest = slash.rest;
     var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
     if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
     // «מנוחה דקה וחצי» / «מנוחה 2 דקות וחצי» are not a whole minute or two (the rest line itself gives 90 / 150).
@@ -252,7 +276,8 @@
       raw.match(/עבודה[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (work) defaults.workSeconds = toInt(work[1]);
     else if (pair) defaults.workSeconds = timedSeconds(pair[1] || pair[2]);
-    var perExercise = !work && !pair &&raw.match(PER_EXERCISE_WORK_RX);
+    else if (slash) defaults.workSeconds = slash.work;
+    var perExercise = !work && !pair && !slash && raw.match(PER_EXERCISE_WORK_RX);
     if (perExercise) defaults.workSeconds = timedSeconds(perExercise[1] || perExercise[2]);
     return defaults;
   }
@@ -424,6 +449,11 @@
       rest_seconds = timedSeconds(pair[3] || pair[4]);
       s = s.replace(pair[0], ' ');
       if (!/[א-תa-zA-Z]/.test(s)) return null;
+    } else if ((pair = slashPair(s))) {
+      duration_seconds = pair.work;
+      rest_seconds = pair.rest;
+      s = s.replace(pair.text, ' ');
+      if (!/[א-תa-zA-Z]/.test(s.replace(INTERVAL_WORD_RX, ' '))) return null;
     }
     // "לאנג׳ 10 חזרות מנוחה 30 שניות": the rest belongs to this exercise, the line is not a rest line.
     var restClause = splitRest(s);
