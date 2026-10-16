@@ -400,7 +400,9 @@
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
     // WhatsApp/markdown pastes: "4*10" is a multiplier, "*סופרמן*" is only bold.
-    var s = String(token || '').replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ').trim();
+    // «סקוואט 3 על 12» is said for 3×12 (was a name «סקוואט 3 על» with one set).
+    var s = String(token || '').replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ')
+      .replace(/(^|\s)(\d+)\s+על\s+(?=\d)/g, '$1$2×').trim();
     if (!s) return null;
     if (isRestToken(s)) {
       return { restOnly: true, rest_seconds: parseRestSeconds(s) || defaults.rest || 60 };
