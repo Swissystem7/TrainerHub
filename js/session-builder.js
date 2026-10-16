@@ -128,8 +128,12 @@
     var score = 0;
     if (req.focus === 'core' && /בטן|פלאנק|ליבה|מטפס/.test(blob)) score += 6;
     if ((req.focus === 'legs' || req.focus === 'lower') && /רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)) score += 6;
-    if (req.focus === 'back' && /גב|מתח|אוסטרל/.test(blob)) score += 6;
-    if (req.focus === 'arms' && /יד|שכיב|כוח ידיים/.test(blob)) score += 6;
+    // «גב» and «יד» are matched as words (with a ו/ה/ב/ל prefix): as plain
+    // substrings «פלאנק גבוה» (a core clip) was hinted as back and «פלאנק
+    // צידי» as arms, and both were let into those sessions with the reason
+    // «השם והתיקייה מתאימים לבקשה».
+    if (req.focus === 'back' && /(^|[^א-ת])[והבל]?גב(?!וה)|מתח|אוסטרל/.test(blob)) score += 6;
+    if (req.focus === 'arms' && /(^|[^א-ת])[והבל]?יד|שכיב|כוח ידיים/.test(blob)) score += 6;
     if (req.focus === 'chest' && /חזה|שכיב/.test(blob)) score += 6;
     if (req.focus === 'shoulders' && /כתף|כתפי/.test(blob)) score += 6;
     if (req.audience === 'kids' && /ילד/.test(blob)) score += 4;
