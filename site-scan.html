@@ -31,7 +31,8 @@
     .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
     button, .shot { min-height: 44px; }
     button:focus-visible, input:focus-visible, select:focus-visible, .shot:focus-within { outline: 3px solid var(--lime); outline-offset: 2px; }
-    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .actions button { margin-top: 0; }
     .meters { max-width: 220px; }
     .chips button { margin: 0; padding: 7px 13px; border-radius: 999px; background: #111513; color: var(--muted); border: 1px solid var(--line); font-weight: 400; font-size: .9rem; }
     .chips button[aria-pressed="true"] { background: #26302b; color: var(--ink); border-color: var(--lime); }
@@ -90,7 +91,13 @@
       <button type="button" id="reset" class="ghost">נקה והתחל מחדש</button>
     </div>
     <div id="planOut" aria-live="polite"></div>
-    <button type="button" id="start" class="ghost" hidden>התחל במצב אימון</button>
+    <div class="actions" id="scanActions" hidden>
+      <button type="button" id="start">התחל במצב אימון</button>
+      <button type="button" id="previewTrainee" class="ghost">פתח כמתאמן</button>
+      <button type="button" id="share" class="ghost">שתף אימון ללקוח</button>
+      <button type="button" id="pdf" class="ghost">דף להדפסה / PDF</button>
+    </div>
+    <div id="scanGateHost"></div>
   </section>
 </main>
 <script src="./js/core.js"></script>
@@ -208,6 +215,7 @@
         return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
       }).join('');
     $('start').hidden = false;
+    if ($('scanActions')) $('scanActions').hidden = false;
     if ($('planOut').scrollIntoView) $('planOut').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -220,6 +228,8 @@
     $('meters').value = '';
     $('planOut').innerHTML = '';
     $('start').hidden = true;
+    if ($('scanActions')) $('scanActions').hidden = true;
+    if ($('scanGateHost')) $('scanGateHost').innerHTML = '';
     $('scanStatus').textContent = 'אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.';
     renderChips();
   });
@@ -227,6 +237,33 @@
     if (!current) return;
     TH.store.set(TH.KEYS.active, current);
     location.href = './frontend/workout-mode.html';
+  });
+  $('previewTrainee').addEventListener('click', function () {
+    if (!current) return;
+    location.href = TH.encodeLink(current, {});
+  });
+  $('share').addEventListener('click', function () {
+    if (!current) return;
+    var host = $('scanGateHost') || $('planOut');
+    if (host.innerHTML !== undefined) host.innerHTML = '';
+    var shared = TH.shareToClient(current, {});
+    if (!shared.ok) {
+      if (host.insertAdjacentHTML) host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+      return;
+    }
+    TH.copyOrShow(shared.url, host, function () {
+      var btn = $('share');
+      if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'הועתק';
+        setTimeout(function () { btn.textContent = orig; }, 1400);
+      }
+    });
+  });
+  $('pdf').addEventListener('click', function () {
+    if (!current) return;
+    TH.preparePrint(current, {});
+    location.href = TH.printUrl();
   });
 
   renderChips();
