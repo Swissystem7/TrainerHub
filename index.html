@@ -376,6 +376,18 @@
     }
   }
 
+  // run() reads the duration and head count from the fields, so a typed
+  // «אימון רגליים 45 דקות ל-12 חניכים» used to build 20 minutes for one
+  // trainee. When the text names a length or a head count, the field follows
+  // it; a field the text does not name keeps whatever the coach set.
+  function syncFieldsFromPrompt() {
+    var text = $('prompt').value.trim();
+    if (!text) return;
+    var parsed = THPrompt.parsePrompt(text);
+    if (parsed.durationSpecified) $('durationInput').value = Math.max(5, Math.min(180, parsed.duration));
+    if (parsed.participantsSpecified) $('participantsInput').value = Math.max(1, Math.min(500, parsed.participants));
+  }
+
   function run(e) {
     if (e) e.preventDefault();
     var text = $('prompt').value.trim();
@@ -444,6 +456,7 @@
     });
   });
 
+  $('prompt').addEventListener('input', syncFieldsFromPrompt);
   $('form').addEventListener('submit', run);
   document.querySelectorAll('[data-fill]').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -508,7 +521,10 @@
 
   TH.ready(function () {
     fillSegSelect();
-    if ($('prompt').value.trim()) run();
+    if ($('prompt').value.trim()) {
+      syncFieldsFromPrompt();
+      run();
+    }
   });
 })();
 </script>
