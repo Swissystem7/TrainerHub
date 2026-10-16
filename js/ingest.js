@@ -858,8 +858,16 @@
     });
   }
 
+  // «מנוחה 1,5 דקות», «פלאנק 1,5 דקות», «12,5 קג»: a comma decimal before a unit is the
+  // decimal point, not a separator (was a rest of 1 s plus an exercise «בין סטים», a name «לחיצת חזה 12»).
+  var DECIMAL_COMMA_RX = /(\d),(\d{1,2})(?=\s*(?:דק|שע|ק\s*["״׳']?\s*ג(?![֐-׿])|קילו(?!מ)|kg))/gi;
+
+  function normalizeDecimalComma(text) {
+    return text.replace(DECIMAL_COMMA_RX, '$1.$2');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(stripEmoji(text)).trim();
+    var raw = normalizeSetWords(normalizeDecimalComma(stripEmoji(text))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
