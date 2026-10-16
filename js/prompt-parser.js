@@ -66,7 +66,6 @@
   // "חמש עשרה דקות". Up to two words right before דק/דקות, like the
   // participant words. A non-number word ("כמה דקות") gives null.
   var MINUTE_WORDS = '((?:[א-ת]+ )?[א-ת]+) דק';
-  var MINUTE_WORDS_RX = new RegExp('(?:^|[^א-ת])' + MINUTE_WORDS);
   var HOUR_PLUS_MINUTE_WORDS_RX = new RegExp('שעה ו' + MINUTE_WORDS);
   var TWO_HOURS_PLUS_MINUTE_WORDS_RX = new RegExp('שעתיים ו' + MINUTE_WORDS);
 
@@ -92,25 +91,54 @@
   // "חימום 10 דקות ואז 30 דקות אימון" and "מנוחה 2 דקות, אימון 30 דקות" are
   // a 30-minute session: minutes tied to a warm-up, rest or stretch word on
   // either side are that part's length. The first untied amount wins; when
-  // every amount is tied ("חימום 10 דקות") the first one still counts.
+  // every amount is tied ("חימום 10 דקות") the first one still counts, but
+  // only after an hour phrase: "אימון חצי שעה עם 5 דקות מנוחה" is 30.
   var PART_WORD_RX = /^(?:ה|ו|ל|של)?(?:חימום|מנוח(?:ה|ות)|הפסק(?:ה|ות)|מתיח(?:ה|ות)|שחרור|קירור|התאוששות)$/;
 
-  function sessionMinutes(t) {
-    var rx = /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g;
+  // A comma between the word and the amount ends the tie:
+  // "5 דקות חימום, 40 דקות" is a 40-minute session.
+  function partTied(before, unit, after) {
+    after = /[,.:;]$/.test(unit) ? '' : (after || '').trim().replace(/[,.:;-]+$/, '');
+    return PART_WORD_RX.test((before || '').trim()) || PART_WORD_RX.test(after);
+  }
+
+  // Returns { n, tied } for the first untied amount, else the first amount.
+  function firstAmount(t, rx, read) {
     var first = null;
     var m;
     while ((m = rx.exec(t))) {
-      var n = toInt(m[2]);
-      if (first === null) first = n;
-      // A comma between the word and the amount ends the tie:
-      // "5 דקות חימום, 40 דקות" is a 40-minute session.
-      var before = (m[1] || '').trim();
-      var after = /[,.:;]$/.test(m[3]) ? '' : (m[4] || '').trim().replace(/[,.:;-]+$/, '');
-      if (!PART_WORD_RX.test(before) && !PART_WORD_RX.test(after)) return n;
+      var a = read(m);
+      if (a) {
+        if (!a.tied) return a;
+        if (first === null) first = a;
+      }
       // Let the next amount use this match's trailing word as its own lead.
-      if (m[4]) rx.lastIndex -= m[4].length;
+      if (m[m.length - 1]) rx.lastIndex -= m[m.length - 1].length;
     }
     return first;
+  }
+
+  function sessionMinutes(t) {
+    return firstAmount(t, /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g, function (m) {
+      return { n: toInt(m[2]), tied: partTied(m[1], m[3], m[4]) };
+    });
+  }
+
+  // The same for number words: "חימום עשר דקות, אימון עשרים דקות" is 20.
+  function sessionMinuteWords(t) {
+    return firstAmount(t, /(^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) (דק\S*)(\s+\S+)?/g, function (m) {
+      var parts = m[2].split(' ');
+      var n = hebrewNumber(m[2]);
+      var before = '';
+      if (parts.length === 2 && unitValue(parts[0]) === null && tensValue(parts[0]) === null) {
+        // "חימום עשר דקות": the first word is not a number, it is the lead.
+        before = parts[0];
+      } else if (!m[1].trim()) {
+        before = t.slice(0, m.index).split(/\s+/).pop();
+      }
+      if (n === null || n <= 0) return null;
+      return { n: n, tied: partTied(before, m[3], m[4]) };
+    });
   }
 
   // Hebrew hour phrases. Checked before the bare minute regex so that
@@ -161,15 +189,17 @@
     if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
     if (/שעה\s*ורבע/.test(t)) return 75;
-    n = sessionMinutes(t);
-    if (n !== null) return n;
-    n = minuteWords(t, MINUTE_WORDS_RX);
-    if (n !== null) return n;
+    var digits = sessionMinutes(t);
+    if (digits && !digits.tied) return digits.n;
+    var words = sessionMinuteWords(t);
+    if (words && !words.tied) return words.n;
     // "שלושת רבעי שעה" / "שלוש רבעי שעה" = 45 minutes.
     if (/שלושת?\s*רבעי\s*שעה/.test(t)) return 45;
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
+    if (digits) return digits.n;
+    if (words) return words.n;
     m = t.match(/(\d+)\s*min/i);
     if (m) return toInt(m[1]);
     return null;
