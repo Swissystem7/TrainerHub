@@ -5,18 +5,18 @@
 </style><script src="./js/sentry-init.js"></script>
 </head><body>
 <a class="skip-link" href="#form">דלג לטופס</a>
-<nav aria-label="ניווט ראשי" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:8px 12px;background:#0d100f;border-bottom:1px solid #303834;font:600 0.78rem system-ui,sans-serif;position:relative;z-index:9999">
-  <span style="color:#b9f24a">TrainerHub</span>
-  <a href="./" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">בנה אימון</a>
-  <span style="color:#f6f8f6;background:rgba(185,242,74,.15);border:1px solid rgba(185,242,74,.4);border-radius:14px;padding:3px 11px">בונה שבועי</span>
-  <a href="./library.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ספריית סרטונים</a>
-  <a href="./journal.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">יומן ביצוע</a>
-  <a href="./offer.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">הצעה למאמנים</a>
-  <a href="./manage.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">ניהול מאגר</a>
-  <a href="./frontend/" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">טקסט לכרטיסייה</a>
-  <a href="./frontend/workout-mode.html" style="color:#f6f8f6;border:1px solid #303834;border-radius:14px;padding:3px 11px;text-decoration:none">מצב אימון חי</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <span class="chip on">בונה שבועי</span>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./journal.html">יומן ביצוע</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
-<div style="background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:#f0b542;font:600 0.74rem system-ui,sans-serif;padding:7px 14px;text-align:center;direction:rtl">
+<div class="th-banner">
   התוכנית השבועית נבנית בדפדפן מהמאגר. אין שרת חי בדמו הזה.
 </div>
 <script src="./js/core.js"></script>
@@ -37,22 +37,31 @@ function previewDayWorkout(dayIndex){
   const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
   window.location.href = TH.encodeLink(workout, {});
 }
-function copyDayTraineeLink(dayIndex){
+function copyDayTraineeLink(dayIndex, sourceBtn){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
   const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
   const shared = TH.shareToClient(workout, {});
-  const old = $('result').querySelector('.th-gate');
-  if (old) old.parentNode.removeChild(old);
-  const note = $('copyStatus');
-  if (note) note.remove();
+  const day = sourceBtn && sourceBtn.closest ? sourceBtn.closest('.day') : null;
+  const host = (day && day.querySelector('.th-gate-host')) || day || $('result');
+  const olds = $('result').querySelectorAll('.th-gate');
+  for (let g = 0; g < olds.length; g++) olds[g].parentNode.removeChild(olds[g]);
+  const notes = $('result').querySelectorAll('.copy-status');
+  for (let n = 0; n < notes.length; n++) notes[n].parentNode.removeChild(notes[n]);
   if (!shared.ok) {
-    $('result').insertAdjacentHTML('afterbegin', TH.gateMarkup('share'));
+    host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+    const gate = host.querySelector('.th-gate');
+    if (gate && gate.scrollIntoView) gate.scrollIntoView({ block: 'nearest' });
     return;
   }
-  TH.copyOrShow(shared.url, $('result'), function(){
-    $('result').insertAdjacentHTML('afterbegin', '<p class="honest" id="copyStatus" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
-  }, 'afterbegin');
+  TH.copyOrShow(shared.url, host, function(){
+    host.insertAdjacentHTML('beforeend', '<p class="honest copy-status" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
+    if (sourceBtn) {
+      const orig = sourceBtn.textContent;
+      sourceBtn.textContent = 'הועתק';
+      setTimeout(() => { sourceBtn.textContent = orig; }, 1400);
+    }
+  });
 }
 function printDayWorkout(dayIndex){
   const raw = window.__lastProgram;
@@ -91,7 +100,7 @@ function renderProgram(p){
         return '<h3 style="margin:12px 0 4px;font-size:1rem">'+esc(label)+'</h3>'+exs;
       }).join('');
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+')">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button></section>';
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+'<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')">התחל אימון</button><button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')">פתח כמתאמן</button><button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+', this)">שתף אימון ללקוח</button><button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')">דף להדפסה / PDF</button><div class="th-gate-host"></div></section>';
     }).join('');
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {
