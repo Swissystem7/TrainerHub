@@ -22,11 +22,36 @@
     return null;
   }
 
+  // «מנוחה 60 שניות», «מנוחה של 2 דקות», «מנוחה 90», «מנוחה דקה», «20 שניות מנוחה».
+  function restPhrase(text) {
+    var s = String(text || '');
+    var m = s.match(/מנוחה\s*(?:של\s*)?(\d+)\s*(דקות|דקה|דק[׳']?|שניות|שנ[׳']|″)?/);
+    if (m) return { match: m[0], seconds: /^דק/.test(m[2] || '') ? toInt(m[1]) * 60 : toInt(m[1]) };
+    m = s.match(/מנוחה\s*(?:של\s*)?דקה(?=\s|$|[,.;:])/);
+    if (m) return { match: m[0], seconds: 60 };
+    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
+    if (m) return { match: m[0], seconds: toInt(m[1]) };
+    return null;
+  }
+
+  // A line that only states the rest («מנוחה 30 שניות בין תרגילים», «40 שניות עבודה
+  // 20 שניות מנוחה») sets the rest of the whole session. On an exercise line
+  // («סקוואט 3x12 מנוחה 60 שניות») the rest belongs to that exercise alone.
+  function isRestOnlyLine(line) {
+    var rest = restPhrase(line);
+    if (!rest) return false;
+    var left = String(line).replace(rest.match, ' ')
+      .replace(/\d+\s*(?:שניות|שנ[׳']|″)\s*עבודה/g, ' ')
+      .replace(/(?:^|\s)(?:בין|אחרי|לכל|כל|ה?תחנות|ה?סטים|ה?תרגילים|ה?סבבים|תחנה|תרגיל|סט|סבב)(?=\s|$|[,.;:])/g, ' ')
+      .replace(/[\s,.;:\-–()]+/g, '');
+    return !left;
+  }
+
   function isSessionMeta(line) {
+    if (isRestOnlyLine(line)) return true;
     // A timed activity may contain instructions about rests or stations.
     if (/\d+\s*(?:שניות|שנ[׳']|″)/.test(line) && !/^מנוחה|^\d+\s*סבבים/.test(line)) return false;
     return (
-      /מנוחה\s+\d+/.test(line) ||
       /^\d+\s*סבבים/.test(line) ||
       /חזור על הסבב/.test(line) ||
       /בין (תחנות|סטים|תרגילים)/.test(line) ||
@@ -114,6 +139,13 @@
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
+    // The rest after this exercise, not its work time: «סקוואט 3x12 מנוחה 60 שניות».
+    var rest = restPhrase(s);
+    if (rest) {
+      rest_seconds = rest.seconds;
+      s = s.replace(rest.match, ' ');
+    }
+
     var m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
@@ -179,12 +211,13 @@
 
   function scanSessionDefaults(text) {
     var defaults = { sets: null, reps: null, rest: null, workSeconds: null };
-    var rest = text.match(/מנוחה\s+(\d+)\s*(?:שניות|שנ)/);
-    if (rest) defaults.rest = toInt(rest[1]);
-    else {
-      var restMin = text.match(/מנוחה\s+(?:של\s+)?(\d+)\s*דק/);
-      if (restMin) defaults.rest = toInt(restMin[1]) * 60;
-      else if (/מנוחה\s+(?:של\s+)?דקה(?=\s|$|[,.;:])/.test(text)) defaults.rest = 60;
+    // Only the title or a rest line speaks for the whole session; an exercise's own rest stays on it.
+    var lines = String(text).split(/\r?\n/);
+    for (var i = 0; i < lines.length && defaults.rest == null; i++) {
+      var line = lines[i].trim();
+      if (i > 0 && !isSessionMeta(line)) continue;
+      var rest = restPhrase(line);
+      if (rest) defaults.rest = rest.seconds;
     }
     var rounds = text.match(/(\d+)\s*סבבים/);
     if (rounds) defaults.sets = toInt(rounds[1]);
@@ -195,8 +228,6 @@
     if (twice && !defaults.sets) defaults.sets = 2;
     var work = text.match(/(\d+)\s*שניות עבודה/);
     if (work) defaults.workSeconds = toInt(work[1]);
-    var restHiit = text.match(/(\d+)\s*שניות מנוחה/);
-    if (restHiit) defaults.rest = toInt(restHiit[1]);
     return defaults;
   }
 
