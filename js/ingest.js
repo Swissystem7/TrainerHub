@@ -111,6 +111,7 @@
   // «סקוואט 10-12», «פלאנק 30-45 שניות», «10 עד 12 חזרות»: a range, not a name part (not a clock «1:00-1:30»).
   var RANGE_RX = /(?<![\d:.])(\d+)\s*(?:[\-–—]|עד)\s*(\d+)(?![\d:.])(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות|סטים|סבבים)(?![\u0590-\u05FF]))?/;
   var CLOCK_RANGE_RX = /(?<!\d)(\d{1,2}:[0-5]\d)\s*(?:[\-–—]|עד)\s*(\d{1,2}:[0-5]\d)(?!\d)/;
+  var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
   var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
 
@@ -133,6 +134,14 @@
       var unit = m[3] ? ' ' + m[3] : '';
       notes.push(m[1] + '-' + m[2] + unit);
       t = t.replace(m[0], ' ' + m[1] + unit + ' ');
+    }
+    // «פלאנק צד 30+30 שניות», «לאנג׳ 10+10»: the same count on each side, not a name «פלאנק צד 30+».
+    // An uneven «20+10» keeps the first count and the split in the notes.
+    if ((m = t.match(PLUS_COUNT_RX))) {
+      var each = m[1] === m[3];
+      if (!each) notes.push(m[1] + '+' + m[3]);
+      t = t.replace(m[0], ' ' + m[1] + ' ');
+      if (each && !PER_SIDE_RX.test(t)) notes.push('לכל צד');
     }
     m = t.match(PER_SIDE_RX);
     if (m) {
