@@ -642,7 +642,7 @@
     "id": "אתגר_שכיבות_שמיכה",
     "he": "אתגר שכיבות שמיכה",
     "muscles": [
-      "biceps",
+      "chest",
       "triceps"
     ],
     "equipment": [
@@ -672,7 +672,7 @@
     "id": "חימום_שכיבות_שמיכה_קונוסים_על_הגב",
     "he": "חימום שכיבות שמיכה קונוסים על הגב",
     "muscles": [
-      "biceps",
+      "chest",
       "triceps"
     ],
     "equipment": [
@@ -717,7 +717,7 @@
     "id": "שכיבות_שמיכה_ובעיטות",
     "he": "שכיבות שמיכה ובעיטות",
     "muscles": [
-      "biceps",
+      "chest",
       "triceps"
     ],
     "equipment": [
@@ -1132,8 +1132,9 @@
     "id": "שכיבות_סמיכה_ורגליים",
     "he": "שכיבות סמיכה ורגליים",
     "muscles": [
-      "biceps",
-      "triceps"
+      "chest",
+      "triceps",
+      "legs"
     ],
     "equipment": [
       "none"
