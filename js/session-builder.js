@@ -358,6 +358,30 @@
       '. ' + got;
   }
 
+  // The analyzer's balance flags judge a session as if it were full-body. On
+  // a request that names its muscles they told the trainer off for exactly
+  // what was asked: «אימון ליבה 20 דקות» got «100% ליבה, אין עבודת גב» and
+  // «אימון רגליים» got «אין תרגילי משיכה». A balance flag stays only when the
+  // request names a muscle it complains about (asked for back, got all core);
+  // «חסר חימום» and unfocused prompts keep every flag.
+  var FLAG_MUSCLES = {
+    'core-heavy-no-back': ['back'],
+    'core-heavy': ['back', 'chest', 'shoulders', 'biceps', 'triceps', 'legs'],
+    'no-pull': ['back', 'biceps'],
+    'no-push': ['chest', 'shoulders', 'triceps'],
+    'no-posterior': ['back', 'legs']
+  };
+
+  function requestFlags(flags, req) {
+    var asked = (req && req.muscles) || [];
+    if (!asked.length) return flags || [];
+    return (flags || []).filter(function (f) {
+      var about = FLAG_MUSCLES[f.key];
+      if (!about) return true;
+      return about.some(function (m) { return asked.indexOf(m) !== -1; });
+    });
+  }
+
   function buildSession(text, catalogOrList, opts) {
     opts = opts || {};
     var prefer = preferMap(opts.prefer);
@@ -452,6 +476,7 @@
     workout.group_plan = groupPlan(workout.participants, mainEx.length);
 
     var analysis = Analyzer.analyzeSession(workout);
+    analysis.flags = requestFlags(analysis.flags, req);
     var reasons = picked.map(function (e) {
       return { id: e.id, he: e.he, why: whyChosen(e, req), source: e.source || 'local' };
     });
