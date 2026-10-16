@@ -491,6 +491,19 @@
       else reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
+    // «ברפי 10 חזרות 3 פעמים», «פלאנק 30 שניות פעמיים», «ברפי 10 פעמיים»: the times after a count
+    // are the sets (were reps 3 / a name «פלאנק פעמיים»); «סקוואט 15 פעמים» stays 15 reps.
+    if (!setsExplicit) {
+      var timesAll = s.match(/(?:^|\s)(?:\d+\s*פעמים|פעמיים)(?![א-ת])/g);
+      var times = timesAll && timesAll[timesAll.length - 1];
+      var timesLeft = times ? s.replace(times, ' ') : '';
+      if (times && ((duration_seconds != null && duration_seconds !== defaults.workSeconds) || /\d/.test(timesLeft) || new RegExp(TIMED).test(timesLeft))) {
+        var timesN = times.match(/\d+/);
+        sets = timesN ? toInt(timesN[0]) : 2;
+        setsExplicit = true;
+        s = timesLeft;
+      }
+    }
     m = s.match(/(\d+)\s*(?:חזרות|פעמים(?![\u0590-\u05FF]))/);
     if (m) {
       reps = toInt(m[1]);
