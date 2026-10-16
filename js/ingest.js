@@ -248,8 +248,32 @@
     return m[4] ? 2 : toInt(m[1] || m[2] || m[3]);
   }
 
+  // A count written in words - «סקוואט עשר חזרות», «פלאנק שלושים שניות», «3 סטים של עשר» - is
+  // that number (was a name «סקוואט עשר חזרות» with 10 invented reps). Only before a unit word or
+  // after «של»/x, so «סקוואט על רגל אחת» and «12 שני הצדדים» stay as written.
+  var NUMBER_WORDS = {
+    'אחד': 1, 'אחת': 1, 'שניים': 2, 'שתיים': 2, 'שנים': 2, 'שתים': 2, 'שני': 2, 'שתי': 2,
+    'שלוש': 3, 'שלושה': 3, 'ארבע': 4, 'ארבעה': 4, 'חמש': 5, 'חמישה': 5, 'שש': 6, 'שישה': 6,
+    'שבע': 7, 'שבעה': 7, 'שמונה': 8, 'תשע': 9, 'תשעה': 9
+  };
+  var TENS_WORDS = { 'עשרים': 20, 'שלושים': 30, 'ארבעים': 40, 'חמישים': 50, 'שישים': 60, 'שבעים': 70, 'שמונים': 80, 'תשעים': 90 };
+  var UNIT_NUM = '(' + Object.keys(NUMBER_WORDS).join('|') + ')';
+  var NUMBER_PHRASE = '(?:(' + Object.keys(TENS_WORDS).join('|') + ')(?:\\s+ו' + UNIT_NUM + ')?|' +
+    UNIT_NUM + '(?:\\s+(עשרה?))?|(עשרה?))';
+  var COUNT_UNIT = '(?:חזרות|שניות|שנ[׳\']|דקות|סטים|סדרות|סבבים|סיבובים|פעמים|קילו)';
+  var NUMBER_WORD_RX = new RegExp('(^|[^א-ת])(?:(של|[x×])\\s*)?' + NUMBER_PHRASE + '(?=(\\s+' + COUNT_UNIT + '(?![א-ת]))|(?![א-ת]))', 'g');
+
+  function numberWordsToDigits(text) {
+    return String(text || '').replace(NUMBER_WORD_RX, function (all, pre, lead, tens, tensUnit, unit, teen, ten, unitAfter) {
+      if (!lead && !unitAfter) return all;
+      var n = tens ? TENS_WORDS[tens] + (tensUnit ? NUMBER_WORDS[tensUnit] : 0)
+        : unit ? NUMBER_WORDS[unit] + (teen ? 10 : 0) : 10;
+      return pre + (lead === 'של' ? 'של ' : lead || '') + n;
+    });
+  }
+
   function scanDefaults(text) {
-    var raw = String(text || '');
+    var raw = numberWordsToDigits(text);
     var defaults = { sets: null, rest: null, workSeconds: null };
     var rounds = raw.match(/(\d+)\s*סבבים?/);
     if (rounds) defaults.sets = toInt(rounds[1]);
@@ -342,7 +366,7 @@
 
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
-    var raw = String(text || '').trim();
+    var raw = numberWordsToDigits(text).trim();
     if (!raw) return [];
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
@@ -441,7 +465,7 @@
     defaults = defaults || {};
     // WhatsApp/markdown pastes: "4*10" is a multiplier, "*סופרמן*" is only bold.
     // «סקוואט 3 על 12» is said for 3×12 (was a name «סקוואט 3 על» with one set).
-    var s = String(token || '').replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ')
+    var s = numberWordsToDigits(token).replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ')
       .replace(/(^|\s)(\d+)\s+על\s+(?=\d)/g, '$1$2×').trim();
     if (!s) return null;
     if (isRestToken(s)) {
