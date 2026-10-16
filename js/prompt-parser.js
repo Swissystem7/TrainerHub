@@ -294,15 +294,23 @@
     return null;
   }
 
+  // "בלי משקולות" / "ללא גומיות ומשקולות" rules the gear out. The negated words
+  // (and any joined to them with ו־) are cut before inferring, so «אימון רגליים
+  // בלי משקולות» is not a dumbbell request that matches no clip.
+  var NEGATED_GEAR_RX = /(?:^|\s)(?:בלי|ללא)\s+(?:שום\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
+
   function parseEquipment(text) {
     var t = Infer.fold(text);
     if (/בלי ציוד|ללא ציוד|בלי שום ציוד|משקל גוף|bodyweight/.test(t)) return ['none'];
+    var negated = t.match(NEGATED_GEAR_RX);
+    var ruledOut = negated && Infer.inferEquipment(negated.join(' '))[0] !== 'none';
+    if (negated) t = t.replace(NEGATED_GEAR_RX, ' ');
     var inferred = Infer.inferEquipment(t);
     if (inferred.length === 1 && inferred[0] === 'none') {
       if (/עם גומי|גומיות|גומייה/.test(t)) return ['band'];
       if (/עם קונוס|קונוסים/.test(t)) return ['cones'];
       if (/עם כדור/.test(t)) return ['ball'];
-      return [];
+      return ruledOut ? ['none'] : [];
     }
     return inferred;
   }
