@@ -139,6 +139,8 @@
   // «שכיבות סמיכה מקסימום» with 10 invented reps, «מתח 3xמקס» a name «מתח 3 מקס» with one set.
   var FAILURE_RX = /(?:^|\s|(?<=[x×]))(?:עד\s+(?:ה)?כשל|(?:מקס(?:ימום)?|[Mm][Aa][Xx])(?:\s+(?:חזרות|זמן))?|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
   var DISTANCE_RX = /(?:^|\s|(?<=[x×]))(\d+)\s*(?:מטרים|מטר|מ[׳'])(?![\u0590-\u05FF])/;
+  // «ריצה 3 קמ», «ריצה 2.5 ק"מ», «הליכה 5 קילומטר»: the distance too (was a name «ריצה 2 5 קמ» with 10 invented reps).
+  var KM_RX = /(?:^|\s|(?<=[x×]))(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*מ|קילומטר(?:ים)?|km)(?![\u0590-\u05FFa-zA-Z])/i;
   // The load: «לחיצת חזה 4x8 80 קג», «סקוואט 3x10 עם 20 קילו», «דדליפט 5x5 100kg» (not «קילומטר»).
   var WEIGHT_RX = /(?:^|\s)(?:עם\s+)?(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)(?![֐-׿a-zA-Z])/i;
 
@@ -200,6 +202,11 @@
     }
     if ((m = t.match(FAILURE_RX))) {
       notes.push('עד כשל');
+      open = true;
+      t = t.replace(m[0], ' ');
+    }
+    if ((m = t.match(KM_RX))) {
+      notes.push(m[1] + ' ק"מ');
       open = true;
       t = t.replace(m[0], ' ');
     }
@@ -859,8 +866,9 @@
   }
 
   // «מנוחה 1,5 דקות», «פלאנק 1,5 דקות», «12,5 קג»: a comma decimal before a unit is the
-  // decimal point, not a separator (was a rest of 1 s plus an exercise «בין סטים», a name «לחיצת חזה 12»).
-  var DECIMAL_COMMA_RX = /(\d),(\d{1,2})(?=\s*(?:דק|שע|ק\s*["״׳']?\s*ג(?![֐-׿])|קילו(?!מ)|kg))/gi;
+  // decimal point, not a separator (was a rest of 1 s plus an exercise «בין סטים», a name «לחיצת חזה 12»;
+  // «ריצה 2,5 קמ» was two exercises «ריצה» and «קמ»).
+  var DECIMAL_COMMA_RX = /(\d),(\d{1,2})(?=\s*(?:דק|שע|ק\s*["״׳']?\s*[גמ](?![֐-׿])|קילו|kg|km))/gi;
 
   function normalizeDecimalComma(text) {
     return text.replace(DECIMAL_COMMA_RX, '$1.$2');

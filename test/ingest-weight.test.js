@@ -24,5 +24,5 @@ test('a load alone is not the rep count', () => {
 
 test('«עם משקולת» stays in the name and «קילומטר» is not a load', () => {
   assert.deepStrictEqual(rows('חתירה עם משקולת 12 ק"ג 3x12'), [['חתירה עם משקולת', 3, 12, '12 ק"ג']]);
-  assert.equal(rows('ריצה 2 קילומטר')[0][3], null);
+  assert.doesNotMatch(rows('ריצה 2 קילומטר')[0][3] || '', /ק"ג/);
 });
