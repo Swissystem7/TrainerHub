@@ -132,6 +132,9 @@
   // `open` marks a prescription that is not a rep count (to failure, distance).
   // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side.
   var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
+  // «לאנג׳ 12 שני הצדדים» / «לשני הצדדים» / «משני הצדדים» is the count on each side too
+  // (was a clip-less name «לאנג׳ 12 שני הצדדים» with 10 invented reps).
+  var BOTH_SIDES_RX = /(?:^|\s)[לבמ]?(?:שני|2)\s+(?:ה)?צדדים(?=[\s,.]|$)/;
   // A bare «מקסימום» / «מקס» / «max» is to failure too: «שכיבות סמיכה 3 סטים מקסימום» was a name
   // «שכיבות סמיכה מקסימום» with 10 invented reps, «מתח 3xמקס» a name «מתח 3 מקס» with one set.
   var FAILURE_RX = /(?:^|\s|(?<=[x×]))(?:עד\s+(?:ה)?כשל|(?:מקס(?:ימום)?|[Mm][Aa][Xx])(?:\s+(?:חזרות|זמן))?|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
@@ -187,6 +190,12 @@
     m = t.match(PER_SIDE_RX);
     if (m) {
       notes.push('לכל ' + (m[1] || m[2]));
+      t = t.replace(m[0], ' ');
+    }
+    // Only next to a name: a bare «3 סטים 12 שני הצדדים» keeps it as the name.
+    if ((m = t.match(BOTH_SIDES_RX)) && /[א-תa-zA-Z]/.test(t.replace(m[0], ' ').replace(/\d+/g, ' ')
+      .replace(/(?:^|\s)(?:[x×]|סטים?|סבבים?|חזרות|פעמים|של)(?=\s|$)/g, ' '))) {
+      if (notes.indexOf('לכל צד') === -1) notes.push('לכל צד');
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(FAILURE_RX))) {

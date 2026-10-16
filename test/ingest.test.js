@@ -133,7 +133,9 @@ test('"12 שני הצדדים" is 12 reps per side, not a 12-second exercise', f
   assert.equal(alone.name, 'שני הצדדים');
   const named = Ingest.parseExerciseToken('מכרעים 12 שני הצדדים', { sets: null });
   assert.equal(named.duration_seconds, null);
-  assert.ok(/שני הצדדים/.test(named.name));
+  assert.equal(named.name, 'מכרעים');
+  assert.equal(named.reps, 12);
+  assert.ok(/לכל צד/.test(named.notes));
   // The short seconds spellings still read as seconds.
   assert.equal(Ingest.parseExerciseToken('30 שנ פלאנק', { sets: null }).duration_seconds, 30);
   assert.equal(Ingest.parseExerciseToken('פלאנק 30 שנ׳', { sets: null }).duration_seconds, 30);
