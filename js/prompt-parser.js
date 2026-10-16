@@ -49,6 +49,14 @@
     return t.indexOf(Infer.fold(word)) !== -1;
   }
 
+  // Where the word first appears in the text, or -1.
+  function muscleWordIndex(t, word) {
+    var rx = WHOLE_WORD_RX[word];
+    if (!rx) return t.indexOf(Infer.fold(word));
+    var m = rx.exec(t);
+    return m ? m.index : -1;
+  }
+
   function toInt(v) {
     var n = parseInt(v, 10);
     return isNaN(n) ? null : n;
@@ -304,8 +312,20 @@
     return null;
   }
 
+  // "לא כוח" / "בלי קרדיו" / "not strength" rules the goal out. A negated
+  // phrase (and words joined to it with ו־) is cut only when it names a goal,
+  // so «אימון סיבולת, לא כוח» is an endurance session, not a strength one.
+  var NEGATED_GOAL_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*|\b(?:not|no)\s+[a-z]+(?:\s+(?:and|or)\s+[a-z]+)*/g;
+  var GOAL_WORD_RX = /כוח|strength|היפרטרופ|מסת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/;
+
+  function withoutNegatedGoals(t) {
+    return t.replace(NEGATED_GOAL_RX, function (phrase) {
+      return GOAL_WORD_RX.test(phrase) ? ' ' : phrase;
+    });
+  }
+
   function parseGoal(text) {
-    var t = Infer.fold(text);
+    var t = withoutNegatedGoals(Infer.fold(text));
     if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
     if (/חיזוק כוח/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
@@ -398,18 +418,26 @@
       muscles = muscles.concat(LOWER_MUSCLES);
       if (!focus) focus = 'lower';
     }
+    // The muscle named first leads: «אימון רגליים ובטן» is a leg session with
+    // core added, not «אימון ליבה» because core comes first in MUSCLE_KEYS.
+    var hits = [];
     Object.keys(MUSCLE_KEYS).forEach(function (key) {
+      var at = -1;
       MUSCLE_KEYS[key].forEach(function (word) {
-        if (hasMuscleWord(t, word)) {
-          if (key === 'arms') {
-            named.push('biceps', 'triceps');
-            if (!focus) focus = 'arms';
-          } else {
-            named.push(key);
-            if (!focus) focus = key;
-          }
-        }
+        var i = muscleWordIndex(t, word);
+        if (i !== -1 && (at === -1 || i < at)) at = i;
       });
+      if (at !== -1) hits.push({ key: key, at: at });
+    });
+    hits.sort(function (a, b) { return a.at - b.at; });
+    hits.forEach(function (hit) {
+      if (hit.key === 'arms') {
+        named.push('biceps', 'triceps');
+        if (!focus) focus = 'arms';
+      } else {
+        named.push(hit.key);
+        if (!focus) focus = hit.key;
+      }
     });
     if (Infer.mentionsPullUp(t)) {
       named.push('back', 'biceps');
