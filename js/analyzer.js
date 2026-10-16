@@ -253,8 +253,21 @@
     return flags;
   }
 
+  /**
+   * The exercises that make up the training itself: the warm-up and
+   * cool-down phases and a «חימום» line are left out, so the warm-up clip
+   * (tagged core) does not show up as a primary muscle of a legs session.
+   * A workout that is nothing but warm-up keeps everything.
+   */
+  function isWorkingExercise(ex) {
+    if (ex._phase === 'Warm-up' || ex._phase === 'Cool-down') return false;
+    return !isWarmupExercise(ex);
+  }
+
   function analyzeSession(workout) {
-    var exercises = flattenWorkout(workout);
+    var all = flattenWorkout(workout);
+    var exercises = all.filter(isWorkingExercise);
+    if (!exercises.length) exercises = all;
     var analyses = exercises.map(analyzeExercise);
     var volume = {};
     analyses.forEach(function (a, i) {
@@ -275,10 +288,10 @@
       if (a.pattern === 'push') push++;
       if (a.pattern === 'pull') pull++;
     });
-    var durationMinutes = estimateDuration(workout, exercises);
+    var durationMinutes = estimateDuration(workout, all);
     var intensity = estimateIntensity(workout, analyses);
     var stimulus = estimateStimulus(workout, analyses, exercises);
-    var flags = qualityFlags(workout, analyses, volumePct, push, pull, exercises);
+    var flags = qualityFlags(workout, analyses, volumePct, push, pull, all);
 
     var primarySet = Infer.uniq(analyses.map(function (a) { return a.primary; }));
     var secondarySet = Infer.uniq(analyses.reduce(function (acc, a) {
