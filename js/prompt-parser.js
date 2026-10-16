@@ -139,13 +139,18 @@
 
   // "איש" (20 איש), "בנים"/"בנות" and "נערים"/"נערות" must end at a word
   // boundary: "אימון אישי", "אישור" and "אישה" are not head counts.
-  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות))(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  // Soldiers, pupils, students, athletes, fighters, men and women are trainees
+  // too: "אימון ל-15 חיילים" is fifteen people, not one.
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות)|חייל(?:ים|ות)|תלמיד(?:ים|ות|י)|סטודנט(?:ים|יות)|ספורטא(?:ים|יות)|לוחמ(?:ים|ות)|נשים|גברים)(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
   var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
   // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
   // "עשרים וחמישה מתאמנים"). Only a space may separate them.
   var WORDS_BEFORE_TERM = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + PARTICIPANT_TERM, 'i');
   var GROUP_OF_DIGITS = /(?:קבוצה|כיתה)\s*(?:של|עם)?\s*(\d+)/;
   var GROUP_OF_WORDS = /(?:קבוצה|כיתה) (?:של |עם )?((?:[א-ת]+ )?[א-ת]+)(?=$|[^א-ת])/;
+  // "3 קבוצות של 5" / "שלוש קבוצות של חמישה" is 15 trainees, not the 5 of one
+  // group. Each side is digits or one Hebrew number word.
+  var GROUPS_OF_RX = /(?:^|[^א-ת])(\d+|[א-ת]+)\s*קבוצות\s*(?:של|עם)\s*(\d+|[א-ת]+)(?!\s*(?:דק|שנ|סיבוב|סבב|תרגיל|חזר))(?=$|[^א-ת\d])/;
   // "5 זוגות" / "חמישה זוגות" is 10 trainees, "3 שלשות" is 9. Only a bare
   // unit word counts: "בזוגות" (working in pairs) has no space before זוגות,
   // so it never matches here and stays the plain "זוג" fallback.
@@ -236,8 +241,22 @@
     return t.replace(PAIR_OF_GEAR_RX, ' ');
   }
 
+  // Trainees in "N קבוצות של M", or null.
+  function groupsOfCount(t) {
+    var m = t.match(GROUPS_OF_RX);
+    if (!m) return null;
+    var groups = /^\d+$/.test(m[1]) ? toInt(m[1]) : hebrewNumber(m[1]);
+    var size = /^\d+$/.test(m[2]) ? toInt(m[2]) : hebrewNumber(m[2]);
+    if (!groups || !size || groups <= 0 || size <= 0) return null;
+    return groups * size;
+  }
+
   function parseParticipants(text) {
     var t = withoutGearPairs(Infer.fold(String(text || '')));
+    // "3 קבוצות של 5 חניכים" counts every group, so it runs before the
+    // per-term count that would read just the 5.
+    var groups = groupsOfCount(t);
+    if (groups !== null) return Math.min(groups, 500);
     // An explicit count wins over "זוג": "20 חניכים בזוגות" is a group of 20
     // working in pairs, not a couple. "זוג" alone (no number) still means 2.
     var n = null;
