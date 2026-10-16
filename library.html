@@ -69,15 +69,15 @@
     <p>חיפוש במאגר המאוחד — סרטוני OneDrive שאומתו ותרגילים שנשמרו בקטלוג. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות קבצים ושמות אנשים לא מוצגים.</p>
   </header>
 
-  <section class="draft" id="draftBox" hidden>
+  <section class="draft" id="draftBox" role="region" aria-label="אימון שנבנה מהספרייה" hidden>
     <h2>אימון שנבנה מהספרייה</h2>
     <div id="draftList"></div>
     <div class="draft-actions">
-      <button type="button" class="th-btn" id="draftStart">התחל אימון</button>
-      <button type="button" class="th-btn ghost" id="draftPreview">פתח כמתאמן</button>
-      <button type="button" class="th-btn ghost" id="draftCopy">שתף אימון ללקוח</button>
-      <button type="button" class="th-btn ghost" id="draftPdf">דף להדפסה / PDF</button>
-      <button type="button" class="th-btn ghost" id="draftClear">נקה</button>
+      <button type="button" class="th-btn" id="draftStart" aria-label="התחל אימון מהספרייה במצב אימון חי">התחל אימון</button>
+      <button type="button" class="th-btn ghost" id="draftPreview" aria-label="פתח אימון מהספרייה כמתאמן">פתח כמתאמן</button>
+      <button type="button" class="th-btn ghost" id="draftCopy" aria-label="שתף אימון מהספרייה ללקוח">שתף אימון ללקוח</button>
+      <button type="button" class="th-btn ghost" id="draftPdf" aria-label="דף להדפסה או שמירת PDF של האימון">דף להדפסה / PDF</button>
+      <button type="button" class="th-btn ghost" id="draftClear" aria-label="נקה את כל התרגילים מהאימון">נקה</button>
     </div>
   </section>
 
@@ -176,11 +176,11 @@
       (tag ? ' · סינון: ' + TH.tagLabel(tag) : '') +
       (pinned ? ' · חלופה שנבחרה' : '');
     if (pinned) {
-      $('stats').insertAdjacentHTML('beforeend', ' <button type="button" class="chip" data-unpin="1">הצג את כל התוצאות</button>');
+      $('stats').insertAdjacentHTML('beforeend', ' <button type="button" class="chip" data-unpin="1" aria-label="בטל בחירת חלופה והצג את כל התוצאות">הצג את כל התוצאות</button>');
     }
     var grid = $('grid');
     if (!list.length) {
-      grid.innerHTML = '<p class="empty">אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>';
+      grid.innerHTML = '<p class="empty" role="status">אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>';
       return;
     }
     grid.innerHTML = list.map(function (e) {
@@ -206,17 +206,18 @@
       var alts = TH.substitutesFor({ id: e.id }, { limit: 3 });
       var altHtml = alts.length
         ? '<div class="alts">חלופות: ' + alts.map(function (a) {
-            return '<button type="button" data-jump="' + TH.esc(a.id) + '">' + TH.esc(a.he) + '</button>';
+            return '<button type="button" data-jump="' + TH.esc(a.id) + '" aria-label="עבור לתרגיל חלופי: ' + TH.esc(a.he) + '">' + TH.esc(a.he) + '</button>';
           }).join(' · ') + '</div>'
         : '';
+      var exName = TH.esc(e.he);
       return '<article class="card" data-id="' + TH.esc(e.id) + '">' +
-        '<h2>' + TH.esc(e.he) + '</h2>' +
+        '<h2>' + exName + '</h2>' +
         '<div class="meta">' + muscles + eq + tags + sourcePill + '</div>' +
         video + altHtml +
         '<div class="actions">' +
-          '<button type="button" data-act="copy">העתק לינק</button>' +
-          '<button type="button" class="ghost" data-act="wa">וואטסאפ</button>' +
-          '<button type="button" class="ghost" data-act="add">הוסף לאימון</button>' +
+          '<button type="button" data-act="copy" aria-label="העתק לינק עבור ' + exName + '">העתק לינק</button>' +
+          '<button type="button" class="ghost" data-act="wa" aria-label="שתף בוואטסאפ: ' + exName + '">וואטסאפ</button>' +
+          '<button type="button" class="ghost" data-act="add" aria-label="הוסף ' + exName + ' לאימון">הוסף לאימון</button>' +
         '</div></article>';
     }).join('');
   }
@@ -318,7 +319,7 @@
   });
   $('draftPdf').addEventListener('click', function () {
     TH.preparePrint(TH.draftGet(), {});
-    location.href = TH.printUrl();
+    location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
   });
   $('draftClear').addEventListener('click', function () {
     TH.draftClear();
