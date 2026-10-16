@@ -109,9 +109,20 @@
     return { index: m.index, minutes: Math.round(hours * 60) };
   }
 
+  // «3 סבבים של 5 דקות» / «4 סבבים x 3 דקות» are minutes per round, not the session.
+  var PER_ROUND_LEAD = '\\d+\\s*(?:סבבים|סבב|סיבובים|סטים)\\s*(?:של\\s*|[x×*]\\s*)';
+
   // «חימום 2.5 דקות» is 2.5 minutes and «אימון של שעה» 60, not 5 and 30.
+  // «אימון 3 סבבים של 5 דקות» is 15, and «4 סבבים של 3 דקות, 40 דקות» 40.
   function parseDurationMinutes(text) {
     var s = String(text || '');
+    var per = minutesPhrase(s, PER_ROUND_LEAD);
+    if (per) {
+      var rest = s.replace(per.match, ' ');
+      var other = parseDurationMinutes(rest);
+      if (other) return other;
+      return toInt(per.match.match(/\d+/)[0]) * per.seconds / 60;
+    }
     var min = minutesPhrase(s);
     var hour = hoursPhrase(s);
     if (hour && (!min || hour.index < s.indexOf(min.match))) return hour.minutes;
@@ -153,6 +164,7 @@
   function cleanTitle(firstLine, fallback) {
     var t = String(firstLine || '')
       .replace(/,?\s*\d+(?:[.,]\d+)?\s*דקות?.*/i, '')
+      .replace(/\s+(?:של|[x×*])$/, '')
       .replace(/(?:^|,?\s+)(?:של\s*)?(?:\d+(?:[.,]\d+)?\s*שעות?|(?:שלושת\s*רבעי|רבע|חצי)\s*שעה|שעתיים|שעה)(?=\s|$|[,.;:]).*/, '')
       .replace(/,?\s*ציוד:.*/i, '')
       .replace(/,?\s*ללא ציוד.*/i, '')
