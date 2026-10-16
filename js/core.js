@@ -1734,9 +1734,14 @@
       '</article>';
   }
 
+  // The name typed in «עדכן שם» on the print page is kept: every «דף להדפסה»
+  // button calls this without a brand, and writing '' over it sent a trainer
+  // whose access code carries no brand back to a watermarked sheet each time.
   function preparePrint(workout, opts) {
     opts = opts || {};
-    storeSet(KEYS.print, { workout: workout || {}, brand: sanitizeBrand(opts.brand || '') });
+    var prev = storeGet(KEYS.print, null);
+    var brand = opts.brand != null ? opts.brand : (prev && prev.brand) || '';
+    storeSet(KEYS.print, { workout: workout || {}, brand: sanitizeBrand(brand) });
     return { model: workoutPrintModel(workout, opts), url: printUrl() };
   }
 
