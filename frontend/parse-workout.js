@@ -220,12 +220,13 @@
       s = s.replace(m[0], ' ');
     }
 
-    // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'».
+    // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'»,
+    // and «ספרינט 50 מטר x 6» is 6 sets too (but «x 30 שניות» after it is left to the time parsing).
     var distance = null;
-    m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))/i);
+    m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))(?:\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים|סטים|סבבים)(?=\s|$|[,.;:]))?)?/i);
     if (m) {
       distance = m[2].trim();
-      if (m[1]) sets = toInt(m[1]);
+      if (m[1] || m[3]) sets = toInt(m[1] || m[3]);
       notes.push(distance);
       s = s.replace(m[0], ' ');
     }
