@@ -31,4 +31,5 @@ test('«NxM» without a time unit stays sets × reps', () => {
   assert.deepEqual(brief(rested), { name: 'סקוואט', sets: 3, reps: 12, seconds: null });
   assert.equal(rested.rest_seconds, 60);
   assert.equal(main('סקוואט 3x12 2 דקות מנוחה')[0].rest_seconds, 120);
+  assert.deepEqual(brief(main('סקוואט 3x12, מנוחה 2 דקות')[0]), { name: 'סקוואט', sets: 3, reps: 12, seconds: null });
 });
