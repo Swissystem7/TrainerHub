@@ -35,7 +35,9 @@
   var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
-  var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
+  // «סקוואט 3x12 דקה מנוחה» is 3×12 with a minute's rest (was 1×3 with 720 s): the time does not start
+  // inside the count, and «12 דקה» is 12 then a minute (twelve minutes is «12 דקות»).
+  var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/]|[x×X*]\\s*)(?!(?:[2-9]|\\d{2,})\\s*דקה(?!ות))' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
   // «ברפי 40 שניות 20 מנוחה»: a bare number before the rest word is its seconds, as «20 מנוחה» alone is.
   var BARE_REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/])\\d+\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
   // «40 שניות עבודה 20 מנוחה», «עבודה 40 מנוחה 20», «30 שניות עבודה / 15 שניות מנוחה»: the work
