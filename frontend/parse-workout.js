@@ -210,6 +210,16 @@
     // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
     s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
 
+    // «מתח מקסימום», «שכיבות סמיכה 3 סטים עד כשל», «מתח 3xמקס» are to failure, not 10 invented reps.
+    var failure = false;
+    var m = s.match(/(?:(\d+)\s*[x×]\s*|(?:^|\s))(?:עד\s+(?:ה)?כשל|(?:מקס(?:ימום)?|max)(?:\s+(?:חזרות|זמן))?|כמה\s+שיותר\s+חזרות)(?=\s|$|[,.;:])/i);
+    if (m) {
+      failure = true;
+      if (m[1]) sets = toInt(m[1]);
+      notes.push('עד כשל');
+      s = s.replace(m[0], ' ');
+    }
+
     // «לאנג׳ 3x10 לכל רגל» / «פלאנק צד 30 שניות לכל צד» / «3x10/10» is per side - a note, not the name.
     var side = null;
     m = s.match(/(?:^|\s)(?:ל?כל\s+(רגל|צד|יד|זרוע)|ל(רגל))(?=\s|$|[,.;:])/);
@@ -227,11 +237,18 @@
     // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'»,
     // and «ספרינט 50 מטר x 6» is 6 sets too (but «x 30 שניות» after it is left to the time parsing).
     var distance = null;
-    var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))(?:\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים|סטים|סבבים)(?=\s|$|[,.;:]))?)?/i);
+    m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))(?:\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים|סטים|סבבים)(?=\s|$|[,.;:]))?)?/i);
     if (m) {
       distance = m[2].trim();
       if (m[1] || m[3]) sets = toInt(m[1] || m[3]);
       notes.push(distance);
+      s = s.replace(m[0], ' ');
+    }
+
+    // A load is a note, not part of the name: «לחיצת חזה 4x8 80 קג», «סקוואט עם 100 ק"ג», «120kg».
+    m = s.match(/(?:\s(?:עם|ב[-־]?)\s*(?:משקל\s*(?:של\s*)?)?|\s*@\s*)?(\d+(?:[.,]\d+)?)\s*(?:ק["״׳']?ג|קילוגרם|קילו|kg)(?=\s|$|[,.;:])/i);
+    if (m) {
+      notes.push(m[1] + ' ק״ג');
       s = s.replace(m[0], ' ');
     }
 
@@ -283,7 +300,7 @@
     // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets.
     m = s.match(/(\d+)\s*(?:פעמים|פעם)(?=\s|$|[,.;:])/);
     if (m) {
-      if (distance || duration_seconds != null) sets = toInt(m[1]);
+      if (distance || failure || duration_seconds != null) sets = toInt(m[1]);
       else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
@@ -291,7 +308,7 @@
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) return null;
 
-    if (reps == null && duration_seconds == null && distance) {
+    if (reps == null && duration_seconds == null && (distance || (failure && !defaults.workSeconds))) {
       if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
     } else if (reps == null && duration_seconds == null) {
       if (defaults.workSeconds) duration_seconds = defaults.workSeconds;
