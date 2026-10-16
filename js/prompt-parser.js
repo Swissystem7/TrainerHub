@@ -270,8 +270,13 @@
   var LEVEL_HIGH_RX = /רמה גבוהה|ברמה הגבוהה|רמה מאוד גבוהה|רמה גבוהה מאוד/;
   var LEVEL_LOW_RX = /רמה נמוכה|ברמה הנמוכה|רמה בסיסית|רמה התחלתית|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
 
+  // "לא מתקדמים" / "לא למתקדמים" / "בלי מתחילים" / "לא ברמה גבוהה" rules that
+  // level out. The negated phrase is cut before the checks below, so «אימון
+  // למתחילים לא מתקדמים» is a beginner session, not an advanced one.
+  var NEGATED_LEVEL_RX = /(?:^|\s)(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
+
   function parseLevel(text) {
-    var t = Infer.fold(text);
+    var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
     if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
