@@ -194,7 +194,17 @@
       s = s.replace(rest.match, ' ');
     }
 
-    var m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
+    // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'».
+    var distance = null;
+    var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))/i);
+    if (m) {
+      distance = m[2].trim();
+      if (m[1]) sets = toInt(m[1]);
+      notes.push(distance);
+      s = s.replace(m[0], ' ');
+    }
+
+    m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
       if (m[2]) reps = toInt(m[2]);
@@ -234,16 +244,12 @@
       s = s.replace(minutes.match, ' ');
     }
 
-    m = s.match(/(\d+)\s*מטר/);
-    if (m) {
-      notes.push(m[0]);
-      s = s.replace(m[0], ' ');
-    }
-
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) return null;
 
-    if (reps == null && duration_seconds == null) {
+    if (reps == null && duration_seconds == null && distance) {
+      if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
+    } else if (reps == null && duration_seconds == null) {
       if (defaults.workSeconds) duration_seconds = defaults.workSeconds;
       else reps = 10;
     }
