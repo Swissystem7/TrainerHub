@@ -183,7 +183,8 @@
     var notes = [];
     var sets = defaults.sets != null ? defaults.sets : null;
     var reps = defaults.reps != null ? defaults.reps : null;
-    var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
+    // A session-wide «40 שניות עבודה» is only the fallback below; the line's own time wins.
+    var duration_seconds = null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
     // The rest after this exercise, not its work time: «סקוואט 3x12 מנוחה 60 שניות».
@@ -213,7 +214,7 @@
       s = s.replace(m[0], ' ');
     }
 
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)/);
+    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)(?:\s*עבודה(?=\s|$|[,.;:]))?/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
