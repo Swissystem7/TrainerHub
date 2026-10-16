@@ -328,8 +328,26 @@
     return '';
   }
 
+  // "לא לרגליים" / "בלי בטן" / "ללא רגליים ובטן" rules the muscle out. A
+  // negated phrase (and words joined to it with ו־) is cut only when it names
+  // a muscle, so «אימון לא לרגליים, רק ידיים» is an arm session, not a leg
+  // one, while «לא יותר מ 20 דקות» and «בלי משקולות» stay as they are.
+  var NEGATED_MUSCLE_RX = /(?:^|\s)(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*/g;
+
+  function namesMuscle(t) {
+    return Object.keys(MUSCLE_KEYS).some(function (key) {
+      return MUSCLE_KEYS[key].some(function (word) { return hasMuscleWord(t, word); });
+    }) || Infer.mentionsPullUp(t);
+  }
+
+  function withoutNegatedMuscles(t) {
+    return t.replace(NEGATED_MUSCLE_RX, function (phrase) {
+      return namesMuscle(phrase) ? ' ' : phrase;
+    });
+  }
+
   function parseMuscles(text) {
-    var t = Infer.fold(text);
+    var t = withoutNegatedMuscles(Infer.fold(text));
     var muscles = [];
     var focus = null;
     if (/פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/.test(t)) {
