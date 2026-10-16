@@ -89,6 +89,30 @@
     return t.replace(CLOCK_TIME_RX, ' ');
   }
 
+  // "חימום 10 דקות ואז 30 דקות אימון" and "מנוחה 2 דקות, אימון 30 דקות" are
+  // a 30-minute session: minutes tied to a warm-up, rest or stretch word on
+  // either side are that part's length. The first untied amount wins; when
+  // every amount is tied ("חימום 10 דקות") the first one still counts.
+  var PART_WORD_RX = /^(?:ה|ו|ל|של)?(?:חימום|מנוח(?:ה|ות)|הפסק(?:ה|ות)|מתיח(?:ה|ות)|שחרור|קירור|התאוששות)$/;
+
+  function sessionMinutes(t) {
+    var rx = /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g;
+    var first = null;
+    var m;
+    while ((m = rx.exec(t))) {
+      var n = toInt(m[2]);
+      if (first === null) first = n;
+      // A comma between the word and the amount ends the tie:
+      // "5 דקות חימום, 40 דקות" is a 40-minute session.
+      var before = (m[1] || '').trim();
+      var after = /[,.:;]$/.test(m[3]) ? '' : (m[4] || '').trim().replace(/[,.:;-]+$/, '');
+      if (!PART_WORD_RX.test(before) && !PART_WORD_RX.test(after)) return n;
+      // Let the next amount use this match's trailing word as its own lead.
+      if (m[4]) rx.lastIndex -= m[4].length;
+    }
+    return first;
+  }
+
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
@@ -137,8 +161,8 @@
     if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
     if (/שעה\s*ורבע/.test(t)) return 75;
-    m = t.match(/(\d+)\s*דק/);
-    if (m) return toInt(m[1]);
+    n = sessionMinutes(t);
+    if (n !== null) return n;
     n = minuteWords(t, MINUTE_WORDS_RX);
     if (n !== null) return n;
     // "שלושת רבעי שעה" / "שלוש רבעי שעה" = 45 minutes.
