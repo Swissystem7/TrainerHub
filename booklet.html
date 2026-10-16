@@ -26,6 +26,8 @@
     .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
     button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--lime); color: #101312; font-weight: 700; cursor: pointer; font: inherit; margin-top: 10px; }
     button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .actions button { margin-top: 0; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
     .card { background: #151a18; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
     .card h4 { margin: 0 0 6px; font-size: .95rem; }
@@ -80,8 +82,14 @@
       <div><label for="season">עונה</label><select id="season"><option value="summer">קיץ</option><option value="winter">חורף</option></select></div>
       <div><label for="activity">אופי הפעילות</label><select id="activity"><option value="long">ממושכת ורציפה</option><option value="short">קצרה ועצימה</option></select></div>
     </div>
-    <button type="button" id="preview">הצג אימון</button>
-    <button type="button" id="start" class="ghost">התחל במצב אימון</button>
+    <div class="actions">
+      <button type="button" id="start">התחל במצב אימון</button>
+      <button type="button" id="previewTrainee" class="ghost">פתח כמתאמן</button>
+      <button type="button" id="share" class="ghost">שתף אימון ללקוח</button>
+      <button type="button" id="pdf" class="ghost">דף להדפסה / PDF</button>
+      <button type="button" id="preview" class="ghost">הצג אימון</button>
+    </div>
+    <div id="buildGateHost"></div>
     <p class="muted no-print">מתאמנים בשטח מוגבל? <a href="./site-scan.html" style="color:var(--lime)">📷 סרקו את השטח</a> ותקבלו מערך שמתאים לו.</p>
     <div id="planOut" aria-live="polite"></div>
   </section>
@@ -281,6 +289,36 @@
     if (!current) return;
     TH.store.set(TH.KEYS.active, current);
     location.href = './frontend/workout-mode.html';
+  });
+  $('previewTrainee').addEventListener('click', function () {
+    buildPlan();
+    if (!current) return;
+    location.href = TH.encodeLink(current, {});
+  });
+  $('share').addEventListener('click', function () {
+    buildPlan();
+    if (!current) return;
+    var host = $('buildGateHost') || $('build');
+    if (host.innerHTML !== undefined) host.innerHTML = '';
+    var shared = TH.shareToClient(current, {});
+    if (!shared.ok) {
+      if (host.insertAdjacentHTML) host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
+      return;
+    }
+    TH.copyOrShow(shared.url, host, function () {
+      var btn = $('share');
+      if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'הועתק';
+        setTimeout(function () { btn.textContent = orig; }, 1400);
+      }
+    });
+  });
+  $('pdf').addEventListener('click', function () {
+    buildPlan();
+    if (!current) return;
+    TH.preparePrint(current, {});
+    location.href = TH.printUrl();
   });
   $('cat').addEventListener('change', renderDrills);
   $('dq').addEventListener('input', renderDrills);
