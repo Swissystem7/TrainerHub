@@ -388,12 +388,14 @@ function buildSteps(workout) {
         let nextName = null, nextDetail = null;
         if (s < sets) {
           nextName = ex.name;
-          nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : '';
+          // A distance or to-failure set («400 מטר», «עד כשל») has no reps or time; its note is what to do.
+          nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : (ex.notes || '');
         } else {
           // next exercise, even when it opens the next phase
           const nextEx = flat[flatIdx + 1].ex;
           nextName = nextEx.name;
-          nextDetail = nextEx.reps ? `${nextEx.sets || 1}×${nextEx.reps}` : nextEx.duration_seconds ? `${nextEx.duration_seconds}″` : '';
+          nextDetail = nextEx.reps ? `${nextEx.sets || 1}×${nextEx.reps}` : nextEx.duration_seconds ? `${nextEx.duration_seconds}″`
+            : nextEx.notes ? ((nextEx.sets || 1) > 1 ? `${nextEx.sets}× ${nextEx.notes}` : nextEx.notes) : '';
         }
         steps.push({
           type: 'rest',
