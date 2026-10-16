@@ -800,8 +800,18 @@
     return String(text || '').replace(KEYCAP_RX, ' ').replace(EMOJI_RX, ' ');
   }
 
+  // «סדרות» is the other Hebrew word for sets: «סקוואט 3 סדרות של 12» was a name
+  // «סקוואט 3 סדרות של» with one set. Read it as «סטים» / «סט» everywhere.
+  var SERIES_RX = /(^|[^֐-׿])([בלהו]{0,2})סדר(ות|ה)(?![֐-׿])/g;
+
+  function normalizeSetWords(text) {
+    return text.replace(SERIES_RX, function (all, pre, prefix, end) {
+      return pre + prefix + (end === 'ות' ? 'סטים' : 'סט');
+    });
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = stripEmoji(text).trim();
+    var raw = normalizeSetWords(stripEmoji(text)).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
