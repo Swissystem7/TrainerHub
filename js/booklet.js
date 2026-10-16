@@ -188,12 +188,14 @@
     }
     // Text drills (relay, stretcher, rope pull, flag game, crawling) stay as one card:
     // the drill itself, timed by the part's minutes or by its work seconds x rounds.
-    // Exercises the text only names (the waiting group's static holds) ride along in the notes.
+    // Exercises the text only names (the waiting group's static holds) ride along in the notes,
+    // and so do the drill's own steps (the cone-to-cone course), sample questions and variations.
     var notes = part.text || null;
-    if (exercises.length) {
-      var names = exercises.map(function (x) { return x.he; }).join(' / ');
-      notes = notes ? notes + '\n' + names : names;
-    }
+    function add(line) { notes = notes ? notes + '\n' + line : line; }
+    if (exercises.length) add(exercises.map(function (x) { return x.he; }).join(' / '));
+    if (Array.isArray(part.steps)) part.steps.forEach(function (s, i) { add((i + 1) + '. ' + s); });
+    if (Array.isArray(part.examples) && part.examples.length) add('דוגמאות: ' + part.examples.join(' / '));
+    if (Array.isArray(part.variations) && part.variations.length) add('וריאציות: ' + part.variations.join(' / '));
     var timed = part.workSeconds != null;
     return [{
       name: part.he,
