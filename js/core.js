@@ -35,10 +35,18 @@
   var PHASE_LABELS = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' };
   var BODY_PARTS = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core'];
   var GOAL_RX = {
-    strength: { sets: 4, reps: '4-6', rest: 120 },
-    hypertrophy: { sets: 3, reps: '8-12', rest: 60 },
-    endurance: { sets: 3, reps: '12-15', rest: 45 }
+    strength: { sets: 4, reps: '4-6', rest: 120, hold: 30 },
+    hypertrophy: { sets: 3, reps: '8-12', rest: 60, hold: 40 },
+    endurance: { sets: 3, reps: '12-15', rest: 45, hold: 45 }
   };
+  // Static holds are prescribed in seconds, not reps: «פלאנק · 12-15 חזרות» means nothing
+  // to the trainee, and workout-mode counts a timed step down instead of waiting for reps.
+  // «מטפס הרים עם פלאנק» moves, so only a name that starts with the hold counts.
+  var HOLD_IDS = { plank: true, wall_sit: true };
+  function isHoldExercise(id) {
+    var key = String(id || '');
+    return !!HOLD_IDS[key] || /^פלאנק/.test(key);
+  }
   var SPLIT_MUSCLES = {
     push: ['chest', 'shoulders', 'triceps'],
     pull: ['back', 'biceps'],
@@ -821,8 +829,8 @@
 
   function prescriptionFor(goal, isSenior) {
     var base = GOAL_RX[goal] || GOAL_RX.hypertrophy;
-    if (isSenior) return { sets: Math.min(base.sets, 3), reps: base.reps, rest: Math.max(base.rest, 90) };
-    return { sets: base.sets, reps: base.reps, rest: base.rest };
+    if (isSenior) return { sets: Math.min(base.sets, 3), reps: base.reps, rest: Math.max(base.rest, 90), hold: base.hold };
+    return { sets: base.sets, reps: base.reps, rest: base.rest, hold: base.hold };
   }
 
   function userCanDo(ex, userEquipment) {
@@ -930,7 +938,12 @@
         if (candidates.length) {
           var pick = candidates[(dayIndex + slot) % candidates.length];
           used[pick.id] = true;
-          exercises.push({ name: pick.id, sets: rx.sets, reps: rx.reps, restSeconds: rx.rest, rest_seconds: rx.rest, notes: notes });
+          var hold = isHoldExercise(pick.id);
+          exercises.push({
+            name: pick.id, sets: rx.sets, reps: hold ? null : rx.reps,
+            duration_seconds: hold ? rx.hold : null,
+            restSeconds: rx.rest, rest_seconds: rx.rest, notes: notes
+          });
           misses = 0;
         } else {
           misses++;
