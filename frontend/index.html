@@ -236,6 +236,9 @@
     else if (ex.reps) bits.push(ex.reps + ' חזרות');
     if (ex.duration_seconds) {
       bits.push((ex.sets > 1 && !ex.reps ? ex.sets + '×' : '') + ex.duration_seconds + '″');
+    } else if (ex.sets > 1 && !ex.reps) {
+      // A distance row («ספרינט 6x50 מ'») has sets but no reps or seconds.
+      bits.push(ex.sets + ' סטים');
     }
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + '″');
     return bits;
@@ -401,7 +404,9 @@
       text += (TH.phaseLabel(ph.name) || ph.name) + '\n';
       (ph.exercises || []).forEach(function (ex) {
         var bits = exerciseDetailBits(ex);
-        text += '- ' + ex.name + (bits.length ? ' ' + bits.join(' · ') : '') + '\n';
+        // The card shows the notes line too (a distance like «20 מטר» lives there).
+        text += '- ' + ex.name + (bits.length ? ' ' + bits.join(' · ') : '') +
+          (ex.notes ? ' (' + ex.notes + ')' : '') + '\n';
       });
       text += '\n';
     });
