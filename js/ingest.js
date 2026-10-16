@@ -380,10 +380,24 @@
     return out;
   }
 
+  // «EMOM 10 דקות», «AMRAP 12 דק׳», «EMOM 10»: the block's format and length, not an exercise
+  // (was a phantom «EMOM» of 600 s, or a name «EMOM 10 סקוואט» before a colon). The exercises
+  // under it carry it as a note. A token that starts with BLOCK_MARK is such a header.
+  var BLOCK_HEADER_RX = new RegExp('^(?:(\\d+)\\s*' + MINUTE_UNIT + '\\s+)?(E\\d?MOM|AMRAP)(?:\\s+(?:של\\s+|במשך\\s+)?(\\d+)(?:\\s*(?:' + MINUTE_UNIT + '|min(?:utes)?|[\'′]))?)?$', 'i');
+  var BLOCK_MARK = '\u0001';
+
+  function blockHeader(s) {
+    var m = String(s || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:\s]+$/, '').replace(/\s+/g, ' ').trim().match(BLOCK_HEADER_RX);
+    if (!m) return null;
+    var mins = m[1] || m[3];
+    return m[2].toUpperCase() + (mins ? ' ' + toInt(mins) + ' דקות' : '');
+  }
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = numberWordsToDigits(text).trim();
     if (!raw) return [];
+    var tokens = [];
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) {
@@ -405,13 +419,20 @@
         }
       }
     }
-    var tokens = [];
     var pendingName = null;
     body.split(/\n+/).forEach(function (line) {
-      var first = tokens.length;
       var held = pendingName;
       pendingName = null;
       if (repeatLineCount(line) != null) return;
+      // «EMOM 10 דקות» alone, or before a colon with the exercise after it.
+      var lineColon = line.indexOf(':');
+      var header = blockHeader(line) || (lineColon > 0 && blockHeader(line.slice(0, lineColon)));
+      if (header) {
+        tokens.push(BLOCK_MARK + header);
+        line = blockHeader(line) ? '' : line.slice(lineColon + 1);
+        if (!line.trim()) return;
+      }
+      var first = tokens.length;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -888,7 +909,12 @@
     var exercises = [];
     var unmatched = [];
     var lastRest = defaults.rest;
+    var blockNote = null;
     for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].charAt(0) === BLOCK_MARK) {
+        blockNote = tokens[i].slice(1);
+        continue;
+      }
       var parsed = parseExerciseToken(tokens[i], defaults);
       if (!parsed) continue;
       if (parsed.restOnly) {
@@ -910,6 +936,7 @@
         continue;
       }
       if (lastRest != null && parsed.rest_seconds == null) parsed.rest_seconds = lastRest;
+      if (blockNote) parsed.notes = [blockNote, parsed.notes].filter(Boolean).join(' · ');
       var hit = matchName(parsed.name, list);
       if (hit) {
         parsed.id = hit.id;
