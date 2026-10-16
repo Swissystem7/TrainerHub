@@ -139,6 +139,7 @@
       margin-bottom: 8px; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
     }
+    .history-item:focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; }
     .history-name { font-size: 0.88rem; font-weight: 600; }
     .history-meta { font-size: 0.75rem; color: #9ca3af; margin-top: 2px; }
     .history-del { color: #9ca3af; font-size: 0.8rem; cursor: pointer; padding: 2px 8px; border: 0; background: none; font-family: inherit; }
@@ -180,39 +181,39 @@
 </header>
 <div id="saveToast" role="status">האימון נשמר בדפדפן.</div>
 <div class="container">
-  <div class="panel">
+  <section class="panel" aria-labelledby="workoutInputLabel">
     <h2 id="workoutInputLabel">תיאור אימון</h2>
     <textarea id="workoutInput" aria-labelledby="workoutInputLabel" placeholder="כתבו או הדביקו תיאור אימון בעברית."></textarea>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-      <button type="button" class="example-btn" data-ex="1">דוגמה: פונקציונלי</button>
-      <button type="button" class="example-btn" data-ex="2">דוגמה: כוח</button>
-      <button type="button" class="example-btn" data-ex="3">דוגמה: HIIT</button>
+    <div role="group" aria-label="דוגמאות אימון למילוי מהיר" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button type="button" class="example-btn" data-ex="1" aria-label="טען דוגמה: אימון פונקציונלי">דוגמה: פונקציונלי</button>
+      <button type="button" class="example-btn" data-ex="2" aria-label="טען דוגמה: אימון כוח">דוגמה: כוח</button>
+      <button type="button" class="example-btn" data-ex="3" aria-label="טען דוגמה: אימון HIIT">דוגמה: HIIT</button>
     </div>
-    <button type="button" class="parse-btn" id="parseBtn">המר לכרטיסייה</button>
+    <button type="button" class="parse-btn" id="parseBtn" aria-label="המר תיאור אימון לכרטיסייה">המר לכרטיסייה</button>
     <p class="honest">אין כאן בינה מלאכותית בדמו הציבורי. התוצאה היא פירוק טקסט + התאמה למאגר.</p>
-    <button type="button" class="parse-btn" id="netanyaBtn">הוסף את חמשת אימוני הפתיחה — שלולית החורף נתניה</button>
+    <button type="button" class="parse-btn" id="netanyaBtn" aria-label="הוסף את חמשת אימוני הפתיחה של שלולית החורף נתניה למאגר השמור">הוסף את חמשת אימוני הפתיחה — שלולית החורף נתניה</button>
     <p class="honest">התאמות מוצעות למדריך. כולל חלופות לקרקע רטובה; תנאי השטח טעונים בדיקה. נשמר בדפדפן זה בלבד.</p>
     <div id="libraryStatus" role="status" aria-live="polite"></div>
     <div id="historyPanel">
-      <div class="history-title">אימונים שמורים בדפדפן</div>
-      <div id="historyList"></div>
+      <div class="history-title" id="historyTitle">אימונים שמורים בדפדפן</div>
+      <div id="historyList" role="region" aria-labelledby="historyTitle"></div>
     </div>
-  </div>
-  <div class="panel" id="cardPanel">
-    <h2>כרטיסיית אימון</h2>
-    <div class="card-empty" id="cardEmpty">הזינו תיאור ולחצו «המר לכרטיסייה».</div>
+  </section>
+  <section class="panel" id="cardPanel" aria-labelledby="cardPanelHeading">
+    <h2 id="cardPanelHeading">כרטיסיית אימון</h2>
+    <div class="card-empty" id="cardEmpty" role="status" aria-live="polite">הזינו תיאור ולחצו «המר לכרטיסייה».</div>
     <div id="cardContent" hidden></div>
-    <div class="action-bar" id="actionBar" hidden>
-      <button type="button" class="action-btn primary" id="startBtn">התחל אימון</button>
-      <button type="button" class="action-btn" id="previewBtn">פתח כמתאמן</button>
-      <button type="button" class="action-btn" id="shareBtn">שתף אימון ללקוח</button>
-      <button type="button" class="action-btn" id="pdfBtn">דף להדפסה / PDF</button>
-      <button type="button" class="action-btn" id="saveBtn">שמור</button>
-      <button type="button" class="action-btn" id="jsonBtn">ייצא JSON</button>
-      <button type="button" class="action-btn" id="copyBtn">העתק</button>
+    <div class="action-bar" id="actionBar" hidden role="toolbar" aria-label="פעולות כרטיסיית אימון">
+      <button type="button" class="action-btn primary" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>
+      <button type="button" class="action-btn" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>
+      <button type="button" class="action-btn" id="shareBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>
+      <button type="button" class="action-btn" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>
+      <button type="button" class="action-btn" id="saveBtn" aria-label="שמור אימון במאגר המקומי בדפדפן">שמור</button>
+      <button type="button" class="action-btn" id="jsonBtn" aria-label="ייצא מבנה אימון כ־JSON">ייצא JSON</button>
+      <button type="button" class="action-btn" id="copyBtn" aria-label="העתק טקסט אימון ללוח">העתק</button>
     </div>
     <div id="gateHost"></div>
-  </div>
+  </section>
 </div>
 <script src="../js/core.js?v=netanya-3"></script>
 <script src="parse-workout.js?v=netanya-2"></script>
@@ -319,14 +320,16 @@
   function renderHistory() {
     var saved = TH.store.get(TH.KEYS.saved, []);
     if (!Array.isArray(saved) || !saved.length) {
-      $('historyList').innerHTML = '<p class="honest">עדיין אין אימונים שמורים.</p>';
+      $('historyList').innerHTML = '<p class="honest" role="status">עדיין אין אימונים שמורים.</p>';
       return;
     }
     $('historyList').innerHTML = saved.map(function (w, i) {
-      return '<div class="history-item" data-load="' + i + '"><div><div class="history-name">' +
-        TH.esc(w.title || 'אימון') + '</div><div class="history-meta">' +
-        TH.esc(w.savedAt || '') + '</div></div>' +
-        '<button type="button" class="history-del" data-del="' + i + '" aria-label="מחק">מחק</button></div>';
+      var title = TH.esc(w.title || 'אימון');
+      return '<div class="history-item" data-load="' + i + '" role="button" tabindex="0" aria-label="טען אימון: ' + title + '">' +
+        '<div><div class="history-name">' + title + '</div>' +
+        '<div class="history-meta">' + TH.esc(w.savedAt || '') + '</div></div>' +
+        '<button type="button" class="history-del" data-del="' + i + '" aria-label="מחק את ' + title + ' מהאימונים השמורים">מחק</button>' +
+        '</div>';
     }).join('');
   }
 
@@ -415,6 +418,16 @@
       setTimeout(function () { $('copyBtn').textContent = 'העתק'; }, 1400);
     });
   });
+  function loadWorkoutByIndex(idx) {
+    var saved = TH.store.get(TH.KEYS.saved, []);
+    if (!Array.isArray(saved)) return;
+    currentWorkout = saved[idx];
+    if (currentWorkout) {
+      $('workoutInput').value = currentWorkout.source_text || '';
+      showCard(currentWorkout, false);
+    }
+  }
+
   $('historyList').addEventListener('click', function (e) {
     var del = e.target.closest && e.target.closest('[data-del]');
     var load = e.target.closest && e.target.closest('[data-load]');
@@ -427,9 +440,18 @@
       return;
     }
     if (load) {
-      currentWorkout = saved[Number(load.getAttribute('data-load'))];
-      if (currentWorkout) { $('workoutInput').value = currentWorkout.source_text || ''; showCard(currentWorkout, false); }
+      loadWorkoutByIndex(Number(load.getAttribute('data-load')));
     }
+  });
+
+  $('historyList').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var del = e.target.closest && e.target.closest('[data-del]');
+    if (del) return;
+    var load = e.target.closest && e.target.closest('[data-load]');
+    if (!load) return;
+    e.preventDefault();
+    loadWorkoutByIndex(Number(load.getAttribute('data-load')));
   });
 
   renderHistory();
