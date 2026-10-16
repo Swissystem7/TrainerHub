@@ -36,6 +36,8 @@
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
+  // «ברפי 40 שניות 20 מנוחה»: a bare number before the rest word is its seconds, as «20 מנוחה» alone is.
+  var BARE_REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/])\\d+\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
   // «40 שניות עבודה 20 מנוחה», «עבודה 40 מנוחה 20», «30 שניות עבודה / 15 שניות מנוחה»: the work
   // and the rest of one interval; a bare number on either side is seconds.
   var PAIR_VALUE = '(' + TIMED + '|\\d+(?![\\d:.]))';
@@ -84,6 +86,16 @@
       if (before) {
         m = before;
         secs = parseRestSeconds(before[0]);
+      }
+    }
+    // Only when the exercise keeps a count of its own («סקוואט 15 מנוחה» stays 15 reps)
+    // - was the name «ברפי 20» with no rest.
+    var bare = secs == null && t.match(BARE_REST_BEFORE_RX);
+    if (bare) {
+      var left = t.replace(bare[0], ' ');
+      if (/\d/.test(left) || new RegExp(TIMED).test(left) || !/[א-תa-zA-Z]/.test(left)) {
+        m = bare;
+        secs = parseRestSeconds(bare[0]);
       }
     }
     if (!m) return { found: false, rest: null, text: t };
