@@ -210,6 +210,20 @@
     // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
     s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
 
+    // «לאנג׳ 3x10 לכל רגל» / «פלאנק צד 30 שניות לכל צד» / «3x10/10» is per side - a note, not the name.
+    var side = null;
+    m = s.match(/(?:^|\s)(?:ל?כל\s+(רגל|צד|יד|זרוע)|ל(רגל))(?=\s|$|[,.;:])/);
+    if (m) {
+      side = 'לכל ' + (m[1] || m[2]);
+      s = s.replace(m[0], ' ');
+    }
+    m = s.match(/(\d+\s*[x×]\s*|^|\s)(\d+)\s*\/\s*(\d+)(?![\d.,\/])/i);
+    if (m && m[2] === m[3]) {
+      if (!side) side = 'לכל צד';
+      s = s.replace(m[0], m[1] + m[2]);
+    }
+    if (side) notes.push(side);
+
     // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'»,
     // and «ספרינט 50 מטר x 6» is 6 sets too (but «x 30 שניות» after it is left to the time parsing).
     var distance = null;
