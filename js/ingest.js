@@ -161,7 +161,16 @@
     var t = String(s || '');
     var notes = [];
     var open = false;
+    // «סיבובים רוסים 3x20 (10 לכל צד)»: with a count outside, the per-side count in brackets is
+    // the split of that count, a note (was a name «סיבובים רוסים 10»). «לאנג׳ (10 לכל רגל)» or
+    // «לאנג׳ 3 סטים (12 לכל רגל)» has no count outside, so the bracket is the count.
+    var counted = /\d/.test(t.replace(/\([^()]*\)/g, ' ').replace(/\d+\s*(?:סטים?|סבבים?)/g, ' '));
     t = t.replace(/\(([^()]*)\)/g, function (all, inner) {
+      var side = inner.match(PER_SIDE_RX);
+      if (counted && side && /^\s*\d+\s*(?:חזרות|פעמים)?\s*$/.test(inner.replace(side[0], ' '))) {
+        notes.push(inner.trim().replace(/\s+/g, ' '));
+        return ' ';
+      }
       if (/\d/.test(inner)) return ' ' + inner + ' ';
       if (inner.trim()) notes.push(inner.trim());
       return ' ';
