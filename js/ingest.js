@@ -439,6 +439,8 @@
           // «פלאנק 30 שניות, ירידה איטית»: the cue rides on the exercise before it as a
           // parenthetical (splitCues makes it a note) instead of becoming an exercise.
           if (tokens.length > first && isCuePiece(s)) tokens[tokens.length - 1] += ' (' + s.replace(/[()]/g, ' ').trim() + ')';
+          // «סקוואט 3x10, 20 קג»: the load rides on the exercise too (splitCues makes it a note).
+          else if (tokens.length > first && isLoadPiece(s)) tokens[tokens.length - 1] += ' ' + s;
           else tokens.push(s);
         });
     });
@@ -467,6 +469,14 @@
   // «בשליטה»), form («גב ישר», «מרפקים צמודים»), an instruction («דגש על...», «בלי לנעול»).
   // A body part counts only with its posture: «כתפיים וגב», «פלאנק ברכיים» are clips.
   var CUE_PIECE_RX = /^(?:לאט|איטי(?:ת|ים|ות)?|מהיר(?:ה|ים|ות)?|בשליטה|מבוקר(?:ת|ים|ות)?|בקצב\s+\S+|ב?(?:ירידה|עלייה|עליה)\s+(?:איטית|מהירה|מבוקרת|מתפרצת|בשליטה)|עצירה|החזקה\s+(?:למעלה|למטה|בסוף|בתחתית)|(?:גב|מרפקים|ברכיים|כתפיים|בטן|ראש|מבט|ידיים|רגליים|עקבים|אגן|חזה|גוף)\s+(?:ישר(?:ה|ים|ות)?|צמוד(?:ה|ים|ות)?|כפופ(?:ה|ים|ות)|נעול(?:ה|ים|ות)|פתוח(?:ה|ים|ות)|אסופ(?:ה|ים)|מכווצ(?:ת|ים)|מתוח(?:ה|ים|ות)|פנימה|החוצה|קדימה|אחורה|למעלה|למטה|לפנים|ניטרלי(?:ת)?|בקו)|דגש|להקפיד|הקפדה|לשמור|בלי|ללא|לא\s+ל\S+|לנשום|נשימה|טווח\s+(?:מלא|חלקי|תנועה))(?=\s|$)/;
+
+  // A comma piece that is only a load: «20 קג», «עם 20 קילו», «100kg». It was dropped as an
+  // exercise with no name, so «סקוואט 3x10, 20 קג» lost its weight.
+  function isLoadPiece(s) {
+    var t = String(s || '').trim();
+    var m = (' ' + t).match(WEIGHT_RX);
+    return !!m && m[0].trim() === t;
+  }
 
   function isCuePiece(s) {
     var t = String(s || '').trim();
