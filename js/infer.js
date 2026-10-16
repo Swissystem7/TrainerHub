@@ -124,6 +124,13 @@
   // A ball the same way: «שליטה בכדור», «עם הכדור», «כדורים». The whole-word
   // ending keeps «כדורסל» / «כדורגל» / «כדורעף» out.
   var BALL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}כדור(?:ים)?(?=$|[^א-ת])/;
+  // Gym machines by name: «פולי עליון», «חתירה בכבל», «סקוואט בסמית׳», «לחיצת
+  // חזה במכשיר». Each word whole, with a ו/ב/ל/ה prefix, so «פוליטיקה» and
+  // «מכשירים לבית» stay out. Without this «פולי עליון» was «משקל גוף».
+  var MACHINE_RX = /(?:^|[^א-ת])[ובלה]{0,2}(?:פולי|כבל(?:ים)?|סמית|מכשיר)(?=$|[^א-ת])|smith machine|cable/;
+  // Leg press and leg extension are machine work even when the name says no
+  // more («לחיצת רגליים», «פשיטת ברכיים»), unless other gear is named.
+  var LEG_MACHINE_RX = /לחיצ(?:ת|ות) ה?רגליים|פשיט(?:ת|ות) ה?ברכיים/;
 
   // Lunges in every spelling coaches use: «לאנץ׳», «לאנג'», «לאנצים», «לנג׳»,
   // «לנצ'ים» (fold() already dropped the geresh). The short «לנג/לנץ» form
@@ -163,6 +170,8 @@
     if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
     if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
     if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
+    if (MACHINE_RX.test(t)) eq.push('machine');
+    if (!eq.length && LEG_MACHINE_RX.test(t)) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
   }
 
