@@ -232,10 +232,14 @@
       s = s.replace(m[0], ' ');
     }
 
-    m = s.match(/(\d+)\s*[x×]\s*(\d+)/i);
+    // «3x12» is 12 reps, but «3x30 שניות» / «3x1 דקה» is 30 s / 1 min per set.
+    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))/i);
     if (m) {
       sets = toInt(m[1]);
       reps = toInt(m[2]);
+      s = s.replace(m[0], ' ');
+    } else if ((m = s.match(/(\d+)\s*[x×]\s*(?=\d+(?:[.,]\d+)?\s*(?:שניות|שנ[׳']|″|דק))/i))) {
+      sets = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
 
