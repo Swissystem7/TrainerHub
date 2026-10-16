@@ -399,6 +399,14 @@
     }
     var c = clients.filter(function (x) { return parsed.tid && x.id === parsed.tid; })[0];
     if (!c && parsed.name) c = clients.filter(function (x) { return x.name === parsed.name; })[0];
+    // A code with no tid and no name (the trainee opened a plain link) matches
+    // nobody, so pasting it again must find the card that already logged it
+    // instead of opening another «מתאמן» with the same session.
+    if (!c && !parsed.tid && !parsed.name) {
+      c = clients.filter(function (x) {
+        return logsOf(x).some(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; });
+      })[0];
+    }
     if (!c) {
       c = { id: parsed.tid || ('t_' + Date.now().toString(36)), name: parsed.name || 'מתאמן', phone: '', plan: parsed.title, logs: [] };
       clients.unshift(c);
