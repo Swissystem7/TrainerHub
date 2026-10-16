@@ -132,6 +132,8 @@
   var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
   var FAILURE_RX = /(?:^|\s)(?:עד\s+(?:ה)?כשל|מקס(?:ימום)?\s+חזרות|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
   var DISTANCE_RX = /(?:^|\s|(?<=[x×]))(\d+)\s*(?:מטרים|מטר|מ[׳'])(?![\u0590-\u05FF])/;
+  // The load: «לחיצת חזה 4x8 80 קג», «סקוואט 3x10 עם 20 קילו», «דדליפט 5x5 100kg» (not «קילומטר»).
+  var WEIGHT_RX = /(?:^|\s)(?:עם\s+)?(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)(?![֐-׿a-zA-Z])/i;
 
   // A cue after a spaced dash: «סקוואט 15 - ירידה איטית», «שכיבות סמיכה 3x12 – מרפקים צמודים».
   // Only a digit-free tail that is not itself the prescription («פלאנק - דקה», «סקוואט - 15 חזרות»);
@@ -186,6 +188,10 @@
     if ((m = t.match(DISTANCE_RX))) {
       notes.push(m[1] + ' מטר');
       open = true;
+      t = t.replace(m[0], ' ');
+    }
+    if ((m = t.match(WEIGHT_RX))) {
+      notes.push(m[1] + ' ק"ג');
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(DASH_CUE_RX)) && /[\u0590-\u05FFa-zA-Z]/.test(t.slice(0, m.index)) && !PRESCRIPTION_WORD_RX.test(m[1])) {
