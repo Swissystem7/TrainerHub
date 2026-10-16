@@ -130,7 +130,9 @@
   // `open` marks a prescription that is not a rep count (to failure, distance).
   // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side.
   var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
-  var FAILURE_RX = /(?:^|\s)(?:עד\s+(?:ה)?כשל|מקס(?:ימום)?\s+חזרות|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
+  // A bare «מקסימום» / «מקס» / «max» is to failure too: «שכיבות סמיכה 3 סטים מקסימום» was a name
+  // «שכיבות סמיכה מקסימום» with 10 invented reps, «מתח 3xמקס» a name «מתח 3 מקס» with one set.
+  var FAILURE_RX = /(?:^|\s|(?<=[x×]))(?:עד\s+(?:ה)?כשל|(?:מקס(?:ימום)?|[Mm][Aa][Xx])(?:\s+(?:חזרות|זמן))?|כמה\s+שיותר\s+חזרות)(?=[\s,.]|$)/;
   var DISTANCE_RX = /(?:^|\s|(?<=[x×]))(\d+)\s*(?:מטרים|מטר|מ[׳'])(?![\u0590-\u05FF])/;
 
   // A cue after a spaced dash: «סקוואט 15 - ירידה איטית», «שכיבות סמיכה 3x12 – מרפקים צמודים».
