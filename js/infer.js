@@ -121,6 +121,9 @@
   // "מקיר לקיר", "עם מוט") and an optional plural ("קירות", "מוטות").
   var WALL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}קיר(?:ות)?(?=$|[^א-ת])/;
   var BARBELL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}מוט(?:ות)?(?=$|[^א-ת])/;
+  // A ball the same way: «שליטה בכדור», «עם הכדור», «כדורים». The whole-word
+  // ending keeps «כדורסל» / «כדורגל» / «כדורעף» out.
+  var BALL_RX = /(?:^|[^א-ת])[ובלהמ]{0,2}כדור(?:ים)?(?=$|[^א-ת])/;
 
   // Lunges in every spelling coaches use: «לאנץ׳», «לאנג'», «לאנצים», «לנג׳»,
   // «לנצ'ים» (fold() already dropped the geresh). The short «לנג/לנץ» form
@@ -152,7 +155,7 @@
     if (/סולם/.test(t)) eq.push('ladder');
     if (/מדרג/.test(t)) eq.push('stairs');
     if (/אוסטרל/.test(t) || mentionsPullUp(t)) eq.push('bar');
-    if (/(?:^| )כדור(?: |$)/.test(t) && eq.indexOf('basketball') === -1 &&
+    if (BALL_RX.test(t) && eq.indexOf('basketball') === -1 &&
         eq.indexOf('football') === -1 && eq.indexOf('tennis-ball') === -1) {
       eq.push('ball');
     }
