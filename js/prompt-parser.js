@@ -304,8 +304,20 @@
     return null;
   }
 
+  // "לא כוח" / "בלי קרדיו" / "not strength" rules the goal out. A negated
+  // phrase (and words joined to it with ו־) is cut only when it names a goal,
+  // so «אימון סיבולת, לא כוח» is an endurance session, not a strength one.
+  var NEGATED_GOAL_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*|\b(?:not|no)\s+[a-z]+(?:\s+(?:and|or)\s+[a-z]+)*/g;
+  var GOAL_WORD_RX = /כוח|strength|היפרטרופ|מסת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/;
+
+  function withoutNegatedGoals(t) {
+    return t.replace(NEGATED_GOAL_RX, function (phrase) {
+      return GOAL_WORD_RX.test(phrase) ? ' ' : phrase;
+    });
+  }
+
   function parseGoal(text) {
-    var t = Infer.fold(text);
+    var t = withoutNegatedGoals(Infer.fold(text));
     if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
     if (/חיזוק כוח/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
