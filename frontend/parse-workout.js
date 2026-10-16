@@ -210,10 +210,20 @@
     // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
     s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
 
+    // «מתח מקסימום», «שכיבות סמיכה 3 סטים עד כשל», «מתח 3xמקס» are to failure, not 10 invented reps.
+    var failure = false;
+    var m = s.match(/(?:(\d+)\s*[x×]\s*|(?:^|\s))(?:עד\s+(?:ה)?כשל|(?:מקס(?:ימום)?|max)(?:\s+(?:חזרות|זמן))?|כמה\s+שיותר\s+חזרות)(?=\s|$|[,.;:])/i);
+    if (m) {
+      failure = true;
+      if (m[1]) sets = toInt(m[1]);
+      notes.push('עד כשל');
+      s = s.replace(m[0], ' ');
+    }
+
     // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'»,
     // and «ספרינט 50 מטר x 6» is 6 sets too (but «x 30 שניות» after it is left to the time parsing).
     var distance = null;
-    var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))(?:\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים|סטים|סבבים)(?=\s|$|[,.;:]))?)?/i);
+    m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))(?:\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים|סטים|סבבים)(?=\s|$|[,.;:]))?)?/i);
     if (m) {
       distance = m[2].trim();
       if (m[1] || m[3]) sets = toInt(m[1] || m[3]);
@@ -269,7 +279,7 @@
     // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets.
     m = s.match(/(\d+)\s*(?:פעמים|פעם)(?=\s|$|[,.;:])/);
     if (m) {
-      if (distance || duration_seconds != null) sets = toInt(m[1]);
+      if (distance || failure || duration_seconds != null) sets = toInt(m[1]);
       else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
@@ -277,7 +287,7 @@
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) return null;
 
-    if (reps == null && duration_seconds == null && distance) {
+    if (reps == null && duration_seconds == null && (distance || (failure && !defaults.workSeconds))) {
       if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
     } else if (reps == null && duration_seconds == null) {
       if (defaults.workSeconds) duration_seconds = defaults.workSeconds;
