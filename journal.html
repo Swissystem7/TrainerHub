@@ -405,8 +405,9 @@
     }
     c.logs = logsOf(c);
     var dup = c.logs.some(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; });
+    var latest = false;
     if (!dup) {
-      c.logs.push({
+      var log = {
         at: parsed.doneAt,
         title: parsed.title,
         minutes: parsed.minutes,
@@ -414,7 +415,13 @@
         sets: parsed.sets,
         skipped: parsed.skipped,
         rpe: parsed.rpe
-      });
+      };
+      c.logs.push(log);
+      // A report that arrives late (Monday's code pasted after Wednesday's) is
+      // logged, but the client's current plan stays the one from the newest report.
+      latest = lastLog(c) === log;
+    }
+    if (latest) {
       c.plan = parsed.title || c.plan;
       if (parsed.plan) {
         // The report carries the plan the trainee actually ran. «פתח כמתאמן» and
