@@ -18,7 +18,7 @@
     // Do not use \b after Hebrew — JS word boundaries are ASCII-only.
     if (/^חימום(?:\s|:|$)/i.test(t) || /^warm[-\s]?up\b/i.test(t)) return PHASE_NAMES.warmup;
     if (/^שחרור(?:\s|:|$|\.)/i.test(t) || /^cool[-\s]?down\b/i.test(t)) return PHASE_NAMES.cooldown;
-    if (/^עיקר(?:\s|:|$)/i.test(t) || /^main\b/i.test(t)) return PHASE_NAMES.main;
+    if (/^(?:חלק\s+)?עיקר(?:י|ית)?(?:\s|:|$|[\-–])/i.test(t) || /^main\b/i.test(t)) return PHASE_NAMES.main;
     return null;
   }
 
@@ -82,7 +82,7 @@
     // A timed activity may contain instructions about rests or stations.
     if (/\d+\s*(?:שניות|שנ[׳']|″)/.test(line) && !/^מנוחה|^\d+\s*סבבים/.test(line)) return false;
     return (
-      /^\d+\s*סבבים/.test(line) ||
+      /^(?:(?:בצעו|לבצע|חזרו|לחזור|הכל|הכול)\s+)?\d+\s*סבבים/.test(line) ||
       /^(?:סך הכול|סה״כ|סה"כ)/.test(line) ||
       /חזור על הסבב/.test(line) ||
       /בין (תחנות|סטים|תרגילים)/.test(line) ||
@@ -201,6 +201,13 @@
       s = s.replace(m[0], ' ');
     }
 
+    // «בורפי 30 שניות, 3 סבבים» - the line's own rounds are its sets.
+    m = s.match(/(\d+)\s*סבבים(?=\s|$|[,.;:])(?:\s*של(?=\s))?/);
+    if (m) {
+      sets = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
+
     m = s.match(/(\d+)\s*[x×]\s*(\d+)/i);
     if (m) {
       sets = toInt(m[1]);
@@ -254,6 +261,16 @@
     };
   }
 
+  // The part of a line that may set the whole session: the title, a phase header
+  // (before its colon), «בצעו 3 סבבים», or a line that is not an exercise
+  // («40 שניות עבודה», «3 סבבים:»). «בורפי 30 שניות עבודה, 3 סבבים» is only בורפי's.
+  function sessionPart(line, index) {
+    if (index === 0) return line;
+    if (classifyPhase(line)) return line.indexOf(':') === -1 ? line : line.slice(0, line.indexOf(':'));
+    if (/^(?:בצעו|לבצע|חזרו|לחזור|הכל|הכול|סה״כ|סה"כ|סך הכול)(?:\s|$|[:,])/.test(line)) return line;
+    return parseExerciseLine(line, {}) ? '' : line;
+  }
+
   function scanSessionDefaults(text) {
     var defaults = { sets: null, reps: null, rest: null, workSeconds: null };
     // Only the title or a rest line speaks for the whole session; an exercise's own rest stays on it.
@@ -264,14 +281,12 @@
       var rest = restPhrase(line);
       if (rest) defaults.rest = rest.seconds;
     }
-    var rounds = text.match(/(\d+)\s*סבבים/);
+    var session = lines.map(function (l, idx) { return sessionPart(l.trim(), idx); }).join('\n');
+    var rounds = session.match(/(\d+)\s*סבבים/);
     if (rounds) defaults.sets = toInt(rounds[1]);
-    var stations = text.match(/(\d+)\s*תחנות/);
-    var cycles = text.match(/(\d+)\s*סבבים/);
-    if (stations && cycles) defaults.sets = toInt(cycles[1]);
     var twice = text.match(/חזור על הסבב\s+פעמיים/);
     if (twice && !defaults.sets) defaults.sets = 2;
-    var work = text.match(/(\d+)\s*שניות עבודה/);
+    var work = session.match(/(\d+)\s*שניות עבודה/);
     if (work) defaults.workSeconds = toInt(work[1]);
     return defaults;
   }
