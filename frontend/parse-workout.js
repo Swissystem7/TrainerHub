@@ -73,6 +73,7 @@
     if (/\d+\s*(?:שניות|שנ[׳']|″)/.test(line) && !/^מנוחה|^\d+\s*סבבים/.test(line)) return false;
     return (
       /^\d+\s*סבבים/.test(line) ||
+      /^(?:סך הכול|סה״כ|סה"כ)/.test(line) ||
       /חזור על הסבב/.test(line) ||
       /בין (תחנות|סטים|תרגילים)/.test(line) ||
       /ללא ציוד/.test(line) ||
@@ -87,9 +88,24 @@
     return /^(?:מנוחה|חזור|חזרו)(?:\s|$|[:.,\-–\d])/.test(String(line || ''));
   }
 
+  // «שעה», «שעה וחצי», «שעתיים», «1.5 שעות», «חצי שעה», «רבע שעה» -> minutes.
+  function hoursPhrase(text) {
+    var m = String(text || '').match(/(?:^|\s)(?:(\d+(?:[.,]\d+)?)\s*שעות?|(שלושת\s*רבעי|רבע|חצי)\s*שעה|(שעתיים|שעה)(\s*ו(?:חצי|רבע))?)(?=\s|$|[,.;:])/);
+    if (!m) return null;
+    var hours;
+    if (m[1]) hours = parseFloat(m[1].replace(',', '.'));
+    else if (m[2]) hours = /רבע/.test(m[2]) ? (/שלושת/.test(m[2]) ? 0.75 : 0.25) : 0.5;
+    else hours = (m[3] === 'שעתיים' ? 2 : 1) + (m[4] ? (/חצי/.test(m[4]) ? 0.5 : 0.25) : 0);
+    return { index: m.index, minutes: Math.round(hours * 60) };
+  }
+
+  // «חימום 2.5 דקות» is 2.5 minutes and «אימון של שעה» 60, not 5 and 30.
   function parseDurationMinutes(text) {
-    var m = String(text).match(/(\d+)\s*דק/);
-    return m ? toInt(m[1]) : null;
+    var s = String(text || '');
+    var min = minutesPhrase(s);
+    var hour = hoursPhrase(s);
+    if (hour && (!min || hour.index < s.indexOf(min.match))) return hour.minutes;
+    return min ? min.seconds / 60 : null;
   }
 
   function parseParticipants(text) {
@@ -126,7 +142,8 @@
 
   function cleanTitle(firstLine, fallback) {
     var t = String(firstLine || '')
-      .replace(/,?\s*\d+\s*דקות?.*/i, '')
+      .replace(/,?\s*\d+(?:[.,]\d+)?\s*דקות?.*/i, '')
+      .replace(/(?:^|,?\s+)(?:של\s*)?(?:\d+(?:[.,]\d+)?\s*שעות?|(?:שלושת\s*רבעי|רבע|חצי)\s*שעה|שעתיים|שעה)(?=\s|$|[,.;:]).*/, '')
       .replace(/,?\s*ציוד:.*/i, '')
       .replace(/,?\s*ללא ציוד.*/i, '')
       .replace(/,?\s*עצימות.*/i, '')
@@ -315,8 +332,8 @@
 
     var lines = raw.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
     var defaults = scanSessionDefaults(raw);
-    var total = raw.match(/(?:סך הכול|סה״כ|סה"כ)\s*(\d+)\s*דק/);
-    var duration_minutes = (total ? toInt(total[1]) : parseDurationMinutes(lines[0])) || 30;
+    var total = raw.match(/(?:סך הכול|סה״כ|סה"כ)\s*:?\s*(\S+(?:[ \t]+\S+){0,2})/);
+    var duration_minutes = (total && parseDurationMinutes(total[1])) || parseDurationMinutes(lines[0]) || 30;
     var participants = parseParticipants(raw);
     var equipment = parseEquipment(raw);
     var intensity = parseIntensity(raw);
@@ -392,6 +409,11 @@
       return null;
     }
 
+    // «חימום 2 דקות» with no exercise gets 2 minutes of warm-up, not 3.
+    function fillerSeconds(phase) {
+      return phase.duration_minutes ? Math.min(180, Math.round(phase.duration_minutes * 60)) : 180;
+    }
+
     if (!hasPhase(PHASE_NAMES.warmup)) {
       phases.unshift({
         name: PHASE_NAMES.warmup,
@@ -410,7 +432,7 @@
         name: 'חימום כללי',
         sets: 1,
         reps: null,
-        duration_seconds: 180,
+        duration_seconds: fillerSeconds(hasPhase(PHASE_NAMES.warmup)),
         rest_seconds: null,
         notes: null
       });
@@ -448,7 +470,7 @@
         name: 'מתיחות',
         sets: 1,
         reps: null,
-        duration_seconds: 180,
+        duration_seconds: fillerSeconds(hasPhase(PHASE_NAMES.cooldown)),
         rest_seconds: null,
         notes: null
       });
