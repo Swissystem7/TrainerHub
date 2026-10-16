@@ -17,7 +17,7 @@ test('«מנוחה 2 דק׳» is two minutes of rest, not 2 s', () => {
 test('a half minute on top is kept: «מנוחה 2 דקות וחצי» is 150 s (was 120), «2 דק׳ וחצי» too', () => {
   assert.deepEqual(rests('סקוואט 15\nמנוחה 2 דקות וחצי\nסופרמן 12'), [150, 150]);
   assert.deepEqual(rests('סקוואט 15\nמנוחה 2 דק׳ וחצי\nסופרמן 12'), [150, 150]);
-  assert.deepEqual(rests('סקוואט 3x15 מנוחה דקה וחצי\nסופרמן 12'), [90, null]);
+  assert.deepEqual(rests('סקוואט 3x15 מנוחה דקה וחצי\nסופרמן 12'), [90, 90]);
 });
 
 test('half a minute of rest is 30 s: «מנוחה 1/2 דקה» was 1 s, «מנוחה חצי דק׳» was a phantom exercise', () => {
