@@ -49,6 +49,14 @@
     return t.indexOf(Infer.fold(word)) !== -1;
   }
 
+  // Where the word first appears in the text, or -1.
+  function muscleWordIndex(t, word) {
+    var rx = WHOLE_WORD_RX[word];
+    if (!rx) return t.indexOf(Infer.fold(word));
+    var m = rx.exec(t);
+    return m ? m.index : -1;
+  }
+
   function toInt(v) {
     var n = parseInt(v, 10);
     return isNaN(n) ? null : n;
@@ -397,18 +405,26 @@
       muscles = muscles.concat(LOWER_MUSCLES);
       if (!focus) focus = 'lower';
     }
+    // The muscle named first leads: «אימון רגליים ובטן» is a leg session with
+    // core added, not «אימון ליבה» because core comes first in MUSCLE_KEYS.
+    var hits = [];
     Object.keys(MUSCLE_KEYS).forEach(function (key) {
+      var at = -1;
       MUSCLE_KEYS[key].forEach(function (word) {
-        if (hasMuscleWord(t, word)) {
-          if (key === 'arms') {
-            muscles.push('biceps', 'triceps');
-            if (!focus) focus = 'arms';
-          } else {
-            muscles.push(key);
-            if (!focus) focus = key;
-          }
-        }
+        var i = muscleWordIndex(t, word);
+        if (i !== -1 && (at === -1 || i < at)) at = i;
       });
+      if (at !== -1) hits.push({ key: key, at: at });
+    });
+    hits.sort(function (a, b) { return a.at - b.at; });
+    hits.forEach(function (hit) {
+      if (hit.key === 'arms') {
+        muscles.push('biceps', 'triceps');
+        if (!focus) focus = 'arms';
+      } else {
+        muscles.push(hit.key);
+        if (!focus) focus = hit.key;
+      }
     });
     if (Infer.mentionsPullUp(t)) {
       muscles.push('back', 'biceps');
