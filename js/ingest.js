@@ -36,6 +36,11 @@
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?' + TIMED + '\\s+(?:מנוחה|הפסקה)' + REST_FILLER);
+  // «40 שניות עבודה 20 מנוחה», «עבודה 40 מנוחה 20», «30 שניות עבודה / 15 שניות מנוחה»: the work
+  // and the rest of one interval; a bare number on either side is seconds.
+  var PAIR_VALUE = '(' + TIMED + '|\\d+(?![\\d:.]))';
+  var WORK_REST_RX = new RegExp('(?:עבודה\\s*[:\\-–]?\\s*' + PAIR_VALUE + '|' + PAIR_VALUE + '\\s*עבודה)\\s*[,\\/|]?\\s*' +
+    '(?:ו?(?:מנוחה|הפסקה)\\s*[:\\-–]?\\s*' + PAIR_VALUE + '|(?:ו-?)?' + PAIR_VALUE + '\\s*ו?(?:מנוחה|הפסקה))');
   // «30 שניות לכל תרגיל», «כל תרגיל 45 שניות», «דקה על כל תרגיל»: the work time of every
   // exercise in the paste. Not a rest: «מנוחה 30 שניות לכל תרגיל», «מנוחה בין כל תרגיל 30 שניות».
   var PER_EXERCISE = '(?<![\\u0590-\\u05FF])(?<!בין\\s+)(?:[לב]|על\\s+)?כל\\s+ה?תרגיל(?![\\u0590-\\u05FF])';
@@ -210,6 +215,10 @@
       // «מנוחה: 20» with no unit is seconds, as «מנוחה 20» is on an exercise line.
       raw.match(/(?:מנוחה|הפסקה)[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (rest) defaults.rest = toInt(rest[1]);
+    // «40 שניות עבודה 20 מנוחה» / «עבודה 40 מנוחה 20»: the bare numbers are seconds (were dropped).
+    var pair = null;
+    raw.split('\n').some(function (line) { return (pair = line.match(WORK_REST_RX)); });
+    if (pair && defaults.rest == null) defaults.rest = timedSeconds(pair[3] || pair[4]);
     var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
     if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
     // «מנוחה דקה וחצי» / «מנוחה 2 דקות וחצי» are not a whole minute or two (the rest line itself gives 90 / 150).
@@ -221,7 +230,8 @@
       raw.match(/עבודה[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
       raw.match(/עבודה[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
     if (work) defaults.workSeconds = toInt(work[1]);
-    var perExercise = !work && raw.match(PER_EXERCISE_WORK_RX);
+    else if (pair) defaults.workSeconds = timedSeconds(pair[1] || pair[2]);
+    var perExercise = !work && !pair &&raw.match(PER_EXERCISE_WORK_RX);
     if (perExercise) defaults.workSeconds = timedSeconds(perExercise[1] || perExercise[2]);
     return defaults;
   }
@@ -383,6 +393,15 @@
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
+    // «ג׳אמפינג ג׳קס 40 שניות עבודה 20 מנוחה» is 40 s with 20 s rest (was a name «ג׳אמפינג ג׳קס עבודה 20»
+    // and no rest); alone on its line it is the paste's interval line.
+    var pair = s.match(WORK_REST_RX);
+    if (pair) {
+      duration_seconds = timedSeconds(pair[1] || pair[2]);
+      rest_seconds = timedSeconds(pair[3] || pair[4]);
+      s = s.replace(pair[0], ' ');
+      if (!/[א-תa-zA-Z]/.test(s)) return null;
+    }
     // "לאנג׳ 10 חזרות מנוחה 30 שניות": the rest belongs to this exercise, the line is not a rest line.
     var restClause = splitRest(s);
     if (restClause.found) {
@@ -392,6 +411,12 @@
     // «עבודה 40 שניות מנוחה 20 שניות», «40 שניות עבודה / 20 שניות מנוחה»: the paste's interval
     // line (scanDefaults gives its times to every exercise), not an exercise called «עבודה».
     if (WORK_RX.test(s) && !/[\u0590-\u05FFa-zA-Z]/.test(s.replace(WORK_RX, ' '))) return null;
+    // \u00AB\u05D1\u05E8\u05E4\u05D9 30 \u05E9\u05E0\u05D9\u05D5\u05EA \u05E2\u05D1\u05D5\u05D3\u05D4\u00BB: the work time is the exercise's time, \u00AB\u05E2\u05D1\u05D5\u05D3\u05D4\u00BB is not part of its name.
+    var work = s.match(WORK_RX);
+    if (work) {
+      duration_seconds = timedSeconds(work[0]);
+      s = s.replace(work[0], ' ');
+    }
     // \u00AB40 \u05E9\u05E0\u05D9\u05D5\u05EA \u05DB\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u00BB on its own line is that interval line too, not an exercise \u00AB\u05DB\u05DC \u05EA\u05E8\u05D2\u05D9\u05DC\u00BB.
     var perExerciseLeft = s.replace(PER_EXERCISE_WORK_RX, ' ');
     if (perExerciseLeft !== s && (!/[֐-׿a-zA-Z]/.test(perExerciseLeft) || isIntervalPrefix(perExerciseLeft))) return null;
