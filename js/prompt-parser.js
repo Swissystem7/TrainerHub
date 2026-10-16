@@ -98,14 +98,22 @@
     }
     // Digit hours: "2 שעות", "3 שעות ו-20 דקות", "1.5 שעות", "2 שעות וחצי".
     // Checked before "שעה ו" so the hours are not lost to the trailing minutes.
-    m = t.match(/(\d+(?:[.,]\d+)?)\s*שעות/);
+    // The singular is common with a fraction: "1.5 שעה" is 90 and "3/4 שעה"
+    // is 45, not the bare-"שעה" 60.
+    m = t.match(/(\d+)\s*\/\s*(\d+)\s*(?:שעות|שעה)/);
+    if (m && toInt(m[2]) > 0) {
+      n = Math.round(toInt(m[1]) / toInt(m[2]) * 60);
+      if (n > 0) return n;
+    }
+    if (/½\s*(?:שעות|שעה)/.test(t)) return 30;
+    m = t.match(/(\d+(?:[.,]\d+)?)\s*(?:שעות|שעה)/);
     if (m) {
       n = Math.round(parseFloat(m[1].replace(',', '.')) * 60);
       if (n > 0) {
-        var extra = t.match(/שעות\s*ו[\s-]*(\d+)\s*דק/);
+        var extra = t.match(/(?:שעות|שעה)\s*ו[\s-]*(\d+)\s*דק/);
         if (extra) return n + toInt(extra[1]);
-        if (/שעות\s*וחצי/.test(t)) return n + 30;
-        if (/שעות\s*ורבע/.test(t)) return n + 15;
+        if (/(?:שעות|שעה)\s*וחצי/.test(t)) return n + 30;
+        if (/(?:שעות|שעה)\s*ורבע/.test(t)) return n + 15;
         return n;
       }
     }
