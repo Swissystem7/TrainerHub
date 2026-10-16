@@ -22,13 +22,33 @@
     return null;
   }
 
-  // «מנוחה 60 שניות», «מנוחה של 2 דקות», «מנוחה 90», «מנוחה דקה», «20 שניות מנוחה».
+  // «5 דקות», «1.5 דקות», «2 דקות וחצי», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
+  // `lead` is a pattern that must come right before the amount («מנוחה של »).
+  function minutesPhrase(text, lead) {
+    var s = String(text || '');
+    var end = '(?=\\s|$|[,.;:])';
+    var word = lead || '(?:^|\\s)';
+    var m = s.match(new RegExp((lead || '') + '(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
+    if (m) {
+      var minutes = parseFloat(m[1].replace(',', '.')) + (m[2] ? 0.5 : 0);
+      return { match: m[0], seconds: Math.round(minutes * 60) };
+    }
+    m = s.match(new RegExp(word + 'דקה\\s*וחצי' + end));
+    if (m) return { match: m[0], seconds: 90 };
+    m = s.match(new RegExp(word + 'חצי\\s*דקה' + end));
+    if (m) return { match: m[0], seconds: 30 };
+    m = s.match(new RegExp(word + 'דקה' + end));
+    if (m) return { match: m[0], seconds: 60 };
+    return null;
+  }
+
+  // «מנוחה 60 שניות», «מנוחה של 2 דקות», «מנוחה 90», «מנוחה דקה», «מנוחה חצי דקה», «20 שניות מנוחה».
   function restPhrase(text) {
     var s = String(text || '');
-    var m = s.match(/מנוחה\s*(?:של\s*)?(\d+)\s*(דקות|דקה|דק[׳']?|שניות|שנ[׳']|″)?/);
-    if (m) return { match: m[0], seconds: /^דק/.test(m[2] || '') ? toInt(m[1]) * 60 : toInt(m[1]) };
-    m = s.match(/מנוחה\s*(?:של\s*)?דקה(?=\s|$|[,.;:])/);
-    if (m) return { match: m[0], seconds: 60 };
+    var minutes = minutesPhrase(s, 'מנוחה\\s*(?:של\\s*)?');
+    if (minutes) return minutes;
+    var m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)\s*(?:שניות|שנ[׳']|″)?/);
+    if (m) return { match: m[0], seconds: toInt(m[1]) };
     m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
     if (m) return { match: m[0], seconds: toInt(m[1]) };
     return null;
@@ -146,7 +166,7 @@
       s = s.replace(rest.match, ' ');
     }
 
-    var m = s.match(/(\d+)\s*סטים?\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
+    var m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(\d+)?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
       if (m[2]) reps = toInt(m[2]);
@@ -172,14 +192,11 @@
       s = s.replace(m[0], ' ');
     }
 
-    // "ריצה 5 דקות" / "הליכה דקה" are timed work, not 10 reps.
-    m = s.match(/(\d+)\s*דק(?:ות|ה|[׳'])?(?=\s|$|[,.;:])/);
-    if (m && duration_seconds == null) {
-      duration_seconds = toInt(m[1]) * 60;
-      s = s.replace(m[0], ' ');
-    } else if (duration_seconds == null && /(?:^|\s)דקה(?=\s|$|[,.;:])/.test(s)) {
-      duration_seconds = 60;
-      s = s.replace(/(?:^|\s)דקה(?=\s|$|[,.;:])/, ' ');
+    // "ריצה 5 דקות" / "הליכה דקה" / "פלאנק 1.5 דקות" are timed work, not 10 reps.
+    var minutes = duration_seconds == null ? minutesPhrase(s) : null;
+    if (minutes) {
+      duration_seconds = minutes.seconds;
+      s = s.replace(minutes.match, ' ');
     }
 
     m = s.match(/(\d+)\s*מטר/);
