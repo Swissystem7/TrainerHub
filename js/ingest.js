@@ -142,6 +142,7 @@
   var RANGE_RX = /(?<![\d:.])(\d+)\s*(?:[\-–—]|עד)\s*(\d+)(?![\d:.])(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות|סטים|סבבים)(?![\u0590-\u05FF]))?/;
   var CLOCK_RANGE_RX = /(?<!\d)(\d{1,2}:[0-5]\d)\s*(?:[\-–—]|עד)\s*(\d{1,2}:[0-5]\d)(?!\d)/;
   var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])/;
+  var SLASH_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\/\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
   var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
 
@@ -167,9 +168,13 @@
     }
     // «פלאנק צד 30+30 שניות», «לאנג׳ 10+10»: the same count on each side, not a name «פלאנק צד 30+».
     // An uneven «20+10» keeps the first count and the split in the notes.
-    if ((m = t.match(PLUS_COUNT_RX))) {
+    // «לאנג׳ 10/10», «הרמת רגל 8/8» are written the same way (were a name «לאנג׳ 10/10» / 8 sets of 8);
+    // only an even pair or two counts from 10 up - «סקוואט 4/12» is sets/reps and «1/2 דקה» half a minute.
+    m = t.match(PLUS_COUNT_RX) || t.match(SLASH_COUNT_RX);
+    if (m && m[0].indexOf('/') !== -1 && m[1] !== m[3] && (toInt(m[1]) < 10 || toInt(m[3]) < 10)) m = null;
+    if (m) {
       var each = m[1] === m[3];
-      if (!each) notes.push(m[1] + '+' + m[3]);
+      if (!each) notes.push(m[1] + (m[0].indexOf('/') !== -1 ? '/' : '+') + m[3]);
       t = t.replace(m[0], ' ' + m[1] + ' ');
       if (each && !PER_SIDE_RX.test(t)) notes.push('לכל צד');
     }
