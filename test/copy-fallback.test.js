@@ -87,3 +87,23 @@ test('no page calls the clipboard API directly', function () {
     assert.doesNotMatch(html, /navigator\.clipboard/, p + ' still calls navigator.clipboard directly');
   });
 });
+
+test('copyOrShow removes the manual-copy box of an earlier refused copy once a copy succeeds', async function () {
+  // booklet.html: the clipboard refuses the first «שתף אימון ללקוח», the
+  // trainer changes the plan and shares again - the box must not keep showing
+  // the first plan's link next to «הועתק».
+  const original = globalThis.navigator;
+  let removed = null;
+  const stale = { parentNode: { removeChild: function (n) { removed = n; } } };
+  const anchor = fakeAnchor();
+  anchor.parentNode = { querySelector: function (sel) { return sel === '.th-manual-copy' ? stale : null; } };
+  setNavigator({ clipboard: { writeText: function () { return Promise.resolve(); } } });
+  try {
+    const r = await TH.copyOrShow('link-2', anchor, function () {});
+    assert.equal(r.ok, true);
+    assert.equal(removed, stale);
+    assert.equal(anchor.inserted.length, 0);
+  } finally {
+    setNavigator(original);
+  }
+});
