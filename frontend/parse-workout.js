@@ -207,6 +207,9 @@
       s = s.replace(rest.match, ' ');
     }
 
+    // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
+    s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
+
     // A distance is the prescription, not reps: «ריצה 400 מטר», «ריצה 2 ק"מ», «ספרינט 6x50 מ'».
     var distance = null;
     var m = s.match(/(?:(\d+)\s*[x×]\s*)?(\d+(?:[.,]\d+)?\s*(?:מטרים|מטר|קילומטרים|קילומטר|ק["״]מ|קמ(?=\s|$|[,.;:])|מ['׳]|מ(?=\s|$|[,.;:])))/i);
@@ -256,6 +259,14 @@
     if (minutes) {
       duration_seconds = minutes.seconds;
       s = s.replace(minutes.match, ' ');
+    }
+
+    // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets.
+    m = s.match(/(\d+)\s*(?:פעמים|פעם)(?=\s|$|[,.;:])/);
+    if (m) {
+      if (distance || duration_seconds != null) sets = toInt(m[1]);
+      else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
     }
 
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
