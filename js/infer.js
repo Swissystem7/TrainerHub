@@ -141,6 +141,14 @@
   // Biceps curls in singular and plural: «כפיפת מרפק», «כפיפות מרפקים»,
   // «כפיפות ידיים». A bare «כפיפת» («כפיפת בטן», «כפיפת ברך») is not a curl.
   var CURL_RX = /כפיפ(?:ת|ות) ה?(?:מרפק|זרוע|ידיים|יד)/;
+  // Hip hinges and leg-machine work named after the lift, not the muscle:
+  // «דדליפט», «גוד מורנינג», «היפ תראסט», «לחיצת רגליים», «פשיטת ברכיים».
+  // Without these a trainer's own «דדליפט רומני» clip was proposed as «ליבה»,
+  // «פשיטת ברכיים» as «תלת־ראשי» and «לחיצת רגליים» as a chest press.
+  var DEADLIFT_RX = /דדליפט|גוד מורנינג/;
+  var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
+  var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
+  var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
 
   function inferEquipment(text) {
     var t = fold(text);
@@ -176,6 +184,11 @@
     if (/פלאנק|בטן|ליבה|קראנץ|כפיפ(ות|ת) בטן/.test(t) || LEG_RAISE_RX.test(t)) found.push('core');
     if (/מטפס/.test(t)) found.push('core');
     if (/גב תחתון|סופרמן|ארקטור/.test(t)) found.push('back');
+    if (DEADLIFT_RX.test(t)) {
+      found.push('legs');
+      found.push('back');
+    }
+    if (HIP_THRUST_RX.test(t) || LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) found.push('legs');
     if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
       found.push('back');
       found.push('biceps');
@@ -191,7 +204,7 @@
     if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
     if (PUSH_UP_RX.test(t) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
     if (/דו.?ראש|בייספס|פטיש/.test(t) || CURL_RX.test(t)) found.push('biceps');
-    if (/תלת|טרייספס|דיפס|פשיטת/.test(t)) found.push('triceps');
+    if (/תלת|טרייספס|דיפס/.test(t) || (/פשיטת/.test(t) && !KNEE_EXT_RX.test(t))) found.push('triceps');
     if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t)) {
       found.push('biceps');
       found.push('triceps');
@@ -247,10 +260,11 @@
   function inferPattern(text, muscles) {
     var t = fold(text);
     if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
+    if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
-    if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
+    if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
     if (muscles && muscles.length === 1 && muscles[0] === 'core') return 'core';
     if (muscles && muscles.indexOf('legs') !== -1 && muscles.length === 1) return 'squat';
