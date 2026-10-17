@@ -40,6 +40,8 @@
     @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
     .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
     .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
+    .empty { text-align: center; color: var(--muted); padding: 18px 12px; }
+    .status { color: var(--lime); font-size: .88rem; min-height: 1.2em; }
     @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
   </style>
 <script src="./js/sentry-init.js"></script>
@@ -143,7 +145,33 @@
 
   <section id="zohar" aria-labelledby="zohar-h">
     <h2 id="zohar-h">חוקת כדור זוהר</h2>
-    <ol id="zoharOut"></ol>
+    <p class="muted">המשחק הקבוצתי המסורתי של אחריי. 25 כללים רשמיים למשחק הוגן, קצבי ובטוח.</p>
+    <div class="row no-print" style="margin-bottom:10px;">
+      <div>
+        <label for="zq">חיפוש בחוקה</label>
+        <input id="zq" type="search" placeholder="למשל: שוער, שער, עבירה, חילוף, מסירה" autocomplete="off" aria-controls="zoharOut">
+      </div>
+      <div>
+        <label for="zcat">נושא</label>
+        <select id="zcat">
+          <option value="">כל הכללים</option>
+          <option value="goals">הבקעה ושערים</option>
+          <option value="keeper">חוקי שוער</option>
+          <option value="fouls">עבירות, משמעת ובטיחות</option>
+          <option value="movement">תנועה ומסירה</option>
+          <option value="match">ניהול משחק, זמנים וחוקים</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions no-print" style="margin-bottom:12px;">
+      <button type="button" id="zoharReset" class="ghost">נקה סינון</button>
+      <button type="button" id="zoharCopy" class="ghost">העתק חוקה</button>
+      <button type="button" id="zoharPrint" class="ghost">הדפס חוקה</button>
+    </div>
+    <div class="status" id="zoharStatus" role="status" aria-live="polite"></div>
+    <p class="muted" id="zoharStats" aria-live="polite"></p>
+    <div id="zoharEmpty" class="card empty" role="region" aria-live="polite" hidden>לא נמצאו כללים התואמים לחיפוש. נסו מילת חיפוש אחרת או לחצו על «נקה סינון».</div>
+    <ol id="zoharOut" aria-label="רשימת כללי כדור זוהר"></ol>
   </section>
 </main>
 <script src="./js/core.js"></script>
@@ -269,9 +297,61 @@
     $('safetyOut').innerHTML = h;
   }
 
+  function fold(s) {
+    return String(s || '').toLowerCase()
+      .replace(/[\u0591-\u05C7]/g, '')
+      .replace(/[״"׳'`]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  var ZOHAR_TOPICS = {
+    goals: [2, 3, 4, 17, 18, 19, 24],
+    keeper: [9, 10, 18],
+    fouls: [6, 7, 11, 12, 13, 16, 20],
+    movement: [1, 5, 6, 8, 9, 13, 14, 22],
+    match: [15, 16, 21, 23, 24, 25]
+  };
+
   function renderZohar() {
+    if (!B.data || !B.data.rules || !B.data.rules.zoharBall) return;
     var z = B.data.rules.zoharBall;
-    $('zoharOut').innerHTML = z.rules.map(function (r) { return '<li>' + esc(r.text) + '</li>'; }).join('') + '<li style="list-style:none" class="credit">' + esc(z.moreInfo + ' · ' + B.credit('zohar')) + '</li>';
+    var q = $('zq') ? fold($('zq').value) : '';
+    var cat = $('zcat') ? $('zcat').value : '';
+    var allowedNumbers = cat && ZOHAR_TOPICS[cat] ? ZOHAR_TOPICS[cat] : null;
+
+    var filtered = z.rules.filter(function (r) {
+      if (allowedNumbers && allowedNumbers.indexOf(r.n) === -1) return false;
+      if (q && fold(r.text).indexOf(q) === -1) return false;
+      return true;
+    });
+
+    var statsEl = $('zoharStats');
+    var emptyEl = $('zoharEmpty');
+    var outEl = $('zoharOut');
+
+    if (statsEl) {
+      var catOpt = cat && $('zcat') && $('zcat').options && $('zcat').options[$('zcat').selectedIndex];
+      var catLabel = catOpt ? catOpt.text : '';
+      statsEl.textContent = 'מוצגים ' + filtered.length + ' מתוך ' + z.rules.length + ' כללים' + (catLabel ? ' · ' + catLabel : '');
+    }
+
+    if (!filtered.length) {
+      if (emptyEl) emptyEl.hidden = false;
+      if (outEl) {
+        outEl.innerHTML = '';
+        outEl.hidden = true;
+      }
+      return;
+    }
+
+    if (emptyEl) emptyEl.hidden = true;
+    if (outEl) {
+      outEl.hidden = false;
+      outEl.innerHTML = filtered.map(function (r) {
+        return '<li value="' + r.n + '">' + esc(r.text) + '</li>';
+      }).join('') + '<li style="list-style:none" class="credit">' + esc(z.moreInfo + ' · ' + B.credit('zohar')) + '</li>';
+    }
   }
 
   Promise.all([new Promise(function (r) { TH.ready(r); }), B.load()]).then(function () {
@@ -323,6 +403,58 @@
   $('cat').addEventListener('change', renderDrills);
   $('dq').addEventListener('input', renderDrills);
   $('score').addEventListener('click', scoreNow);
+  if ($('zq')) $('zq').addEventListener('input', renderZohar);
+  if ($('zcat')) $('zcat').addEventListener('change', renderZohar);
+  if ($('zoharReset')) {
+    $('zoharReset').addEventListener('click', function () {
+      if ($('zq')) $('zq').value = '';
+      if ($('zcat')) $('zcat').value = '';
+      if ($('zoharStatus')) $('zoharStatus').textContent = '';
+      renderZohar();
+      if ($('zq')) $('zq').focus();
+    });
+  }
+  if ($('zoharCopy')) {
+    $('zoharCopy').addEventListener('click', function () {
+      if (!B.data || !B.data.rules || !B.data.rules.zoharBall) return;
+      var z = B.data.rules.zoharBall;
+      var q = $('zq') ? fold($('zq').value) : '';
+      var cat = $('zcat') ? $('zcat').value : '';
+      var allowedNumbers = cat && ZOHAR_TOPICS[cat] ? ZOHAR_TOPICS[cat] : null;
+
+      var filtered = z.rules.filter(function (r) {
+        if (allowedNumbers && allowedNumbers.indexOf(r.n) === -1) return false;
+        if (q && fold(r.text).indexOf(q) === -1) return false;
+        return true;
+      });
+
+      var lines = ['חוקת כדור זוהר – ' + (filtered.length === z.rules.length ? 'כל 25 הכללים' : (filtered.length + ' כללים נבחרים')) + ':'];
+      filtered.forEach(function (r) {
+        lines.push(r.n + '. ' + r.text);
+      });
+      lines.push('\n' + z.moreInfo + ' · ' + B.credit('zohar'));
+      var text = lines.join('\n');
+
+      var btn = $('zoharCopy');
+      var orig = btn.textContent;
+      var copyPromise = TH.copyText ? TH.copyText(text) : Promise.resolve({ ok: false });
+      copyPromise.then(function (res) {
+        if (res && res.ok) {
+          btn.textContent = 'הועתק ללוח';
+          if ($('zoharStatus')) $('zoharStatus').textContent = 'החוקה הועתקה ללוח בהצלחה.';
+        } else {
+          btn.textContent = 'הועתק';
+          if ($('zoharStatus')) $('zoharStatus').textContent = 'החוקה הועתקה.';
+        }
+        setTimeout(function () { btn.textContent = orig; }, 1400);
+      });
+    });
+  }
+  if ($('zoharPrint')) {
+    $('zoharPrint').addEventListener('click', function () {
+      window.print();
+    });
+  }
 })();
 </script>
 </body>
