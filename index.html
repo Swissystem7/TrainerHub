@@ -267,6 +267,22 @@
     });
   }
 
+  // A pasted row keeps what the coach wrote beyond sets × reps: «80 ק"ג»,
+  // «עד כשל», «לכל רגל», «10-12» live in notes, and «מתח 3xמקס» has sets but
+  // no reps. The card showed only sets × reps, so those rows lost the load or
+  // showed a bare «מתח». «חסר סרטון» is left out - the row says it below.
+  function exerciseBits(ex) {
+    var bits = [];
+    if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
+    else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+    else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
+    String(ex.notes || '').split(' · ').forEach(function (note) {
+      note = note.trim();
+      if (note && note !== 'חסר סרטון') bits.push(note);
+    });
+    return bits;
+  }
+
   function render(built) {
     var box = $('result');
     if (!built || !built.workout) {
@@ -289,9 +305,7 @@
       var label = TH.phaseLabel(ph.name);
       var rows = (ph.exercises || []).map(function (ex) {
         var reason = (exp.reasons || []).filter(function (r) { return r.id === ex.id; })[0];
-        var bits = [];
-        if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
-        else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+        var bits = exerciseBits(ex);
         var clip = ex.id ? TH.findExercise(ex) : null;
         var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
         var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
