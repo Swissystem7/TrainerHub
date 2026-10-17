@@ -703,16 +703,19 @@
   }
 
   // Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
+  // A box left by an earlier refused copy is removed either way: after a later
+  // successful copy it would still show the old link (e.g. the plan before the
+  // dropdown changed) as if it were the one to send.
   function copyOrShow(text, anchor, onOk, position) {
     return copyText(text).then(function (r) {
+      var host = anchor && anchor.parentNode;
+      var prev = host && host.querySelector && host.querySelector('.th-manual-copy');
+      if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
       if (r.ok) {
         if (onOk) onOk();
         return r;
       }
       if (anchor && anchor.insertAdjacentHTML) {
-        var host = anchor.parentNode;
-        var prev = host && host.querySelector && host.querySelector('.th-manual-copy');
-        if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
         anchor.insertAdjacentHTML(position || 'afterend', manualCopyMarkup(text));
       }
       return r;
