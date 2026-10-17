@@ -890,8 +890,15 @@
       if (equipped.length) list = equipped;
     }
     if (opts.preferClips) {
+      // A clip outranks the program's own exercise only when one of them has a clip.
+      // The catalog has no squat, lunge or glute-bridge clip, so for legs the clipped
+      // candidates were all catalog drills tagged legs («מסירות דיוק», «תרגיל תגובה»,
+      // «פסים»): a bodyweight «רגליים» program had no squat at all. When none of the
+      // slot's built-in exercises has a clip, they come first and the drills fill in.
+      var builtins = list.filter(function (ex) { return ex.builtin; });
       var clipped = list.filter(function (ex) { return ex.hasClip; });
-      if (clipped.length) list = clipped;
+      if (builtins.length && !builtins.some(function (ex) { return ex.hasClip; })) list = builtins;
+      else if (clipped.length) list = clipped;
     }
     return list;
   }
@@ -981,7 +988,7 @@
     var preferClips = clientProfile.preferCatalog !== false && fromCatalog.length > 0;
     var seenIds = {};
     var pool = PROGRAM_POOL.map(function (ex) {
-      var copy = { id: ex.id, muscles: ex.muscles, equipment: ex.equipment };
+      var copy = { id: ex.id, muscles: ex.muscles, equipment: ex.equipment, builtin: true };
       seenIds[ex.id] = true;
       var clip = catalog[ex.id];
       if (clip && isPlayable(clip)) {
