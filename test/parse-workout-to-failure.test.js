@@ -50,3 +50,10 @@ test('a name that only starts like «מקס» is untouched', () => {
     { name: 'מקסי פד', sets: 1, reps: 10, seconds: null, notes: null }
   ]);
 });
+
+test('a load still becomes a note next to «עד כשל»', () => {
+  const ex = main('לחיצת חזה 3 סטים 60 קג עד כשל');
+  assert.deepEqual(ex.map(brief), [
+    { name: 'לחיצת חזה', sets: 3, reps: null, seconds: null, notes: 'עד כשל, 60 ק״ג' }
+  ]);
+});
