@@ -13,6 +13,14 @@
     return isNaN(n) ? null : n;
   }
 
+  var PEOPLE = '(?:אנשים|איש|משתתפים|משתתפות|חניכים|חניכות|מתאמנים|מתאמנות|ילדים|ילדות|נערים|נערות|בני\\s*נוער|לקוחות|ספורטאים|ספורטאיות)';
+  var PEOPLE_END = '(?=\\s|$|[,.;:)])';
+  var PARTICIPANTS_RX = new RegExp('(\\d+)\\s*' + PEOPLE + PEOPLE_END);
+  var PARTICIPANTS_LABEL_RX = new RegExp('^(?:מספר\\s+)?' + PEOPLE + '\\s*:?\\s*(\\d+)');
+  var PARTICIPANTS_LINE_RX = new RegExp('^(?:(?:מספר\\s+)?' + PEOPLE + '\\s*:?\\s*\\d+|(?:ל-?\\s*|(?:ל)?קבוצה של\\s*)?\\d+\\s*' + PEOPLE + ')[.]?$');
+  // «ל-12 חניכים», «לקבוצה של 8 מתאמנים», «עבור 10 משתתפים» in a title.
+  var PARTICIPANTS_TITLE_RX = new RegExp('(?:^|,?\\s+)(?:ל-?\\s*|(?:עבור|של)\\s+|(?:ל)?קבוצה של\\s*)?\\d+\\s*' + PEOPLE + PEOPLE_END);
+
   function classifyPhase(line) {
     var t = String(line || '').trim();
     // Do not use \b after Hebrew — JS word boundaries are ASCII-only.
@@ -85,6 +93,7 @@
 
   function isSessionMeta(line) {
     if (isRestOnlyLine(line)) return true;
+    if (PARTICIPANTS_LINE_RX.test(line)) return true;
     // A timed activity may contain instructions about rests or stations.
     if (/\d+\s*(?:שניות|שנ[׳']|″)/.test(line) && !/^מנוחה|^\d+\s*סבבים/.test(line)) return false;
     return (
@@ -135,8 +144,18 @@
     return min ? min.seconds / 60 : null;
   }
 
+  // The header says «ל-12 חניכים» / «15 משתתפים» / «8 מתאמנים», or a line of
+  // its own says «משתתפים: 12». An exercise line («מסירות בין 3 חניכים») is not
+  // the group size, so these words count only on the first line and on
+  // participant-only lines; «N אנשים» / «קבוצה של N» are read anywhere, as before.
   function parseParticipants(text) {
-    var m = String(text).match(/(\d+)\s*אנשים/) || String(text).match(/קבוצה של\s*(\d+)/);
+    var lines = String(text).split(/\r?\n/).map(function (l) { return l.trim(); });
+    for (var i = 0; i < lines.length; i++) {
+      if (i > 0 && !PARTICIPANTS_LINE_RX.test(lines[i])) continue;
+      var m = lines[i].match(PARTICIPANTS_RX) || lines[i].match(PARTICIPANTS_LABEL_RX);
+      if (m) return toInt(m[1]);
+    }
+    m = String(text).match(/(\d+)\s*אנשים/) || String(text).match(/קבוצה של\s*(\d+)/);
     return m ? toInt(m[1]) : null;
   }
 
@@ -161,7 +180,7 @@
     if (/HIIT|אינטרוול/.test(text)) tags.push('cardio');
     if (/כוח|סטים של/.test(text)) tags.push('strength');
     if (/פונקציונל/.test(text)) tags.push('functional');
-    if (/קבוצה|אנשים/.test(text)) tags.push('group');
+    if (/קבוצה|אנשים/.test(text) || parseParticipants(text)) tags.push('group');
     if (/ללא ציוד|ביתי/.test(text)) tags.push('bodyweight');
     if (/ריצה/.test(text)) tags.push('cardio');
     return tags.length ? tags : ['general'];
@@ -177,6 +196,8 @@
       .replace(/,?\s*ללא ציוד.*/i, '')
       .replace(/,?\s*עצימות.*/i, '')
       .replace(/לקבוצה של\s*\d+\s*אנשים/i, '')
+      .replace(PARTICIPANTS_TITLE_RX, '')
+      .replace(/,?\s*לקבוצה של\s*\d+(?=\s|$|[,.;:])/, '')
       .replace(/[.,;]+$/, '')
       .trim();
     return t || fallback || 'אימון';
