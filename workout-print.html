@@ -20,6 +20,8 @@
       background: #111513; color: var(--ink); font: inherit;
     }
     .empty { color: var(--muted); padding: 24px 0; }
+    button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+    .th-btn[disabled], .th-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; pointer-events: none; }
     @media print {
       body { background: #fff; color: #111; }
       .print-sheet { color: #111; }
@@ -35,22 +37,25 @@
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./journal.html">יומן ביצוע</a>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./offer.html">הצעה למאמנים</a>
+  <span class="chip on">דף להדפסה</span>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
 </nav>
 <main class="wrap">
-  <form class="toolbar no-print" id="brandForm">
+  <form class="toolbar no-print" id="brandForm" role="toolbar" aria-label="הגדרות הדפסה ומיתוג אימון">
     <div class="field">
       <label for="brand">שם המאמן / הסטודיו על הדף (רק במסלול מאמן)</label>
-      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="יופיע רק אחרי קוד גישה">
+      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="יופיע רק אחרי קוד גישה" aria-label="שם המאמן או הסטודיו בדף ההדפסה">
     </div>
-    <button type="submit" class="th-btn ghost">עדכן שם</button>
-    <button type="button" class="th-btn" id="printBtn">הדפס / שמור כ־PDF</button>
-    <a class="th-btn ghost" href="./offer.html">מסלול מאמן</a>
+    <button type="submit" class="th-btn ghost" id="updateBrandBtn" aria-label="עדכן שם מאמן או סטודיו">עדכן שם</button>
+    <button type="button" class="th-btn" id="printBtn" aria-label="הדפס את דף האימון או שמור כ־PDF">הדפס / שמור כ־PDF</button>
+    <a class="th-btn ghost" id="backBtn" href="./" aria-label="חזרה לבונה האימון">חזרה לבונה</a>
+    <a class="th-btn ghost" href="./offer.html" aria-label="מעבר למידע על מסלול מאמן">מסלול מאמן</a>
   </form>
-  <p class="honest no-print" id="hint" style="color:#a7b1ab;font-size:.88rem;line-height:1.5"></p>
-  <div id="sheet"></div>
+  <p class="honest no-print" id="hint" role="status" aria-live="polite" style="color:#a7b1ab;font-size:.88rem;line-height:1.5"></p>
+  <div id="sheet" role="region" aria-label="תצוגת דף אימון להדפסה"></div>
 </main>
 <script src="./js/core.js"></script>
 <script>
@@ -77,14 +82,31 @@
     return null;
   }
 
+  function updatePrintBtn(enabled) {
+    var btn = $('printBtn');
+    if (!btn) return;
+    btn.disabled = !enabled;
+    if (typeof btn.setAttribute === 'function') {
+      if (!enabled) {
+        btn.setAttribute('aria-disabled', 'true');
+        btn.setAttribute('title', 'אין אימון להדפסה');
+      } else {
+        btn.removeAttribute('aria-disabled');
+        btn.removeAttribute('title');
+      }
+    }
+  }
+
   function render() {
     var packed = currentWorkout();
     var box = $('sheet');
     if (!packed) {
-      box.innerHTML = '<p class="empty">אין אימון בדפדפן. בנו אימון ואז לחצו «דף להדפסה».</p>';
+      box.innerHTML = '<div class="empty" role="status"><p>אין אימון בדפדפן. בנו אימון ואז לחצו «דף להדפסה».</p><a class="th-btn ghost" href="./" style="display:inline-block;margin-top:10px;">בנה אימון עכשיו</a></div>';
       $('hint').textContent = '';
+      updatePrintBtn(false);
       return;
     }
+    updatePrintBtn(true);
     var brand = $('brand').value.trim();
     var model = TH.workoutPrintModel(packed.workout, { brand: brand });
     box.innerHTML = TH.workoutPrintHtml(model);
@@ -111,7 +133,10 @@
     render();
   });
 
-  $('printBtn').addEventListener('click', function () { window.print(); });
+  $('printBtn').addEventListener('click', function () {
+    if (this.disabled || (this.getAttribute && this.getAttribute('aria-disabled') === 'true')) return;
+    window.print();
+  });
 })();
 </script>
 </body>
