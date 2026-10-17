@@ -599,10 +599,13 @@ function updateProgress() {
    TIMER / COUNTDOWN
 ═══════════════════════════════════════════ */
 
-function startCountdown(seconds, onDone) {
+// `max` is the full length of the step. A resume after a pause passes it so
+// the ring keeps the part already done instead of refilling to the remaining
+// seconds (paused at 20 of 60, it must resume a third full, not full).
+function startCountdown(seconds, onDone, max) {
   clearCountdown();
   countdown = seconds;
-  countdownMax = seconds;
+  countdownMax = max || seconds;
   updateClockDisplay(countdown, countdownMax);
 
   countdownInterval = setInterval(() => {
@@ -704,9 +707,9 @@ function resumeCurrentStep() {
   const step = steps[stepIdx];
   if (!step) return;
   if (step.type === 'exercise' && step.duration) {
-    startCountdown(countdown || step.duration, () => markSetDone());
+    startCountdown(countdown || step.duration, () => markSetDone(), step.duration);
   } else if (step.type === 'rest') {
-    startCountdown(countdown || step.duration, () => advance());
+    startCountdown(countdown || step.duration, () => advance(), step.duration);
   }
 }
 
