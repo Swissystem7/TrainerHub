@@ -1694,6 +1694,10 @@
     if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
     else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
     else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
+    else if (ex.reps) bits.push(ex.reps + ' חזרות');
+    // A distance or «עד כשל» row («ספרינט 6x50 מטר», «מתח 3xמקס») has sets
+    // but no reps or seconds; the studio card shows «6 סטים», so must the sheet.
+    else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
     var name = ex.name || heName(ex.id) || 'תרגיל';
     var row = {
