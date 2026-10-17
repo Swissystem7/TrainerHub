@@ -737,8 +737,12 @@
     var name =s.replace(/^[\s\/]+|[\s\/]+$/g, '').replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
-      if (setsExplicit || (restClause.found && restClause.rest != null)) {
+      // «סקוואט 3 סטים, 12 חזרות» / «, 30 שניות»: the count was split off the same way.
+      var ownTime = duration_seconds != null && duration_seconds !== (defaults.workSeconds != null ? defaults.workSeconds : null);
+      if (setsExplicit || reps != null || ownTime || (restClause.found && restClause.rest != null)) {
         var cont = { continuation: true, sets: setsExplicit ? sets : null, rest_seconds: restClause.found ? restClause.rest : null };
+        if (reps != null) cont.reps = reps;
+        if (ownTime) cont.duration_seconds = duration_seconds;
         // «מתח 5 חזרות, 4 סטים, לאט»: the cue joined the sets piece; it still belongs to the exercise.
         if (cues.notes.length) cont.notes = cues.notes.join(' · ');
         return cont;
@@ -747,12 +751,16 @@
     }
     if (/^\d+$/.test(name)) return null;
     if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
+    var countInvented = false;
     if (reps == null && duration_seconds == null) {
       duration_seconds = defaults.workSeconds || null;
       // "עד כשל" / "20 מטר" is the prescription; an invented 10 reps would contradict it.
-      if (duration_seconds == null && !cues.open) reps = 10;
+      if (duration_seconds == null && !cues.open) {
+        reps = 10;
+        countInvented = true;
+      }
     }
-    return {
+    var out = {
       name: name,
       sets: sets,
       reps: reps,
@@ -761,6 +769,9 @@
       notes: cues.notes.length ? cues.notes.join(' · ') : null,
       restOnly: undefined
     };
+    // Not saved with the workout: only tells a later «, 12 חזרות» piece it may replace the 10.
+    Object.defineProperty(out, 'countInvented', { value: countInvented });
+    return out;
   }
 
   function tokenOverlap(a, b) {
@@ -929,6 +940,7 @@
     var unmatched = [];
     var lastRest = defaults.rest;
     var blockNote = null;
+    var prevInvented = false;
     for (var i = 0; i < tokens.length; i++) {
       if (tokens[i].charAt(0) === BLOCK_MARK) {
         blockNote = tokens[i].slice(1);
@@ -952,8 +964,15 @@
           if (prev) prev.rest_seconds = lastRest;
         }
         if (parsed.notes && prev) prev.notes = [prev.notes, parsed.notes].filter(Boolean).join(' · ');
+        // Only an invented 10 gives way: «סקוואט 15, 20» keeps its own 15.
+        if (prevInvented && (parsed.reps != null || parsed.duration_seconds != null)) {
+          prev.reps = parsed.reps != null ? parsed.reps : null;
+          prev.duration_seconds = parsed.duration_seconds != null ? parsed.duration_seconds : null;
+          prevInvented = false;
+        }
         continue;
       }
+      prevInvented = parsed.countInvented;
       if (lastRest != null && parsed.rest_seconds == null) parsed.rest_seconds = lastRest;
       if (blockNote) parsed.notes = [blockNote, parsed.notes].filter(Boolean).join(' · ');
       var hit = matchName(parsed.name, list);
