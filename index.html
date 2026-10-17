@@ -75,6 +75,7 @@
     .rule-source { display: inline-block; margin-top: 6px; }
     .rule-detail { display: block; color: var(--muted); font-size: .8rem; line-height: 1.45; margin-top: 4px; }
     @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
@@ -110,9 +111,9 @@
   </ol>
 
   <div class="modes" role="tablist" aria-label="מצב בנייה">
-    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true" tabindex="0">מה אתה רוצה</button>
-    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false" tabindex="-1">הדבק אימון</button>
-    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false" tabindex="-1">פרק סרטון</button>
+    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true" tabindex="0" aria-label="בנייה לפי בקשה">מה אתה רוצה</button>
+    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false" tabindex="-1" aria-label="הדבקת אימון קיים">הדבק אימון</button>
+    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false" tabindex="-1" aria-label="פירוק סרטון דרייב למקטעים">פרק סרטון</button>
   </div>
 
   <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
@@ -145,13 +146,13 @@
         </div>
       </div>
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
-      <button type="submit" class="go">בנה אימון</button>
+      <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
     </form>
-    <div class="examples" role="group" aria-label="דוגמאות">
-      <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
-      <button type="button" data-fill="פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
-      <button type="button" data-fill="כוח גב 30 דקות">כוח גב 30 דקות</button>
-      <button type="button" data-fill="ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
+    <div class="examples" role="group" aria-label="דוגמאות אימון למילוי מהיר">
+      <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד" aria-label="מלא דוגמה: אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
+      <button type="button" data-fill="פול בודי עם גומיות, מתחיל" aria-label="מלא דוגמה: פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
+      <button type="button" data-fill="כוח גב 30 דקות" aria-label="מלא דוגמה: כוח גב 30 דקות">כוח גב 30 דקות</button>
+      <button type="button" data-fill="ידיים בלי ציוד, ביניים" aria-label="מלא דוגמה: ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
     </div>
   </div>
 
@@ -159,7 +160,7 @@
     <form class="prompt" id="ingestForm">
       <label for="ingestText">הדביקו אימון בעברית</label>
       <textarea id="ingestText" name="ingestText" rows="5" placeholder="3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה, 20 מטפס הרים, דקה מנוחה" autocomplete="off"></textarea>
-      <button type="submit" class="go">פרק לתרגילים</button>
+      <button type="submit" class="go" aria-label="פרק את הטקסט המודבק לתרגילים">פרק לתרגילים</button>
     </form>
     <p class="honest">הפרסר מפרק לסטים וחזרות ומתאים כל תרגיל לסרטון במאגר, כולל שגיאות כתיב נפוצות. תרגיל בלי סרטון מוצג כטקסט ונכנס לרשימת «סרטונים שכדאי לצלם».</p>
   </div>
@@ -174,11 +175,11 @@
       <input id="segUrl" name="segUrl" type="text" autocomplete="off" placeholder="https://drive.google.com/file/d/…/view">
       <div id="segPlayer" class="card" hidden></div>
       <p class="honest">נגן הדרייב לא מוסר זמן מדויק. מתחילים מעקב כשלוחצים «התחל מעקב», או מזינים שניות ידנית. אין זיהוי תרגיל אוטומטי מהווידאו.</p>
-      <div class="actions">
-        <button type="button" class="th-btn ghost" id="segWatch">הצג סרטון</button>
-        <button type="button" class="th-btn ghost" id="segTrack">התחל מעקב</button>
-        <button type="button" class="th-btn ghost" id="segMarkStart">סמן התחלה</button>
-        <button type="button" class="th-btn ghost" id="segMarkEnd">סמן סוף</button>
+      <div class="actions" role="toolbar" aria-label="פעולות מעקב סרטון">
+        <button type="button" class="th-btn ghost" id="segWatch" aria-label="הצג סרטון בנגן">הצג סרטון</button>
+        <button type="button" class="th-btn ghost" id="segTrack" aria-label="התחל מעקב זמן סרטון">התחל מעקב</button>
+        <button type="button" class="th-btn ghost" id="segMarkStart" aria-label="סמן זמן התחלה של המקטע">סמן התחלה</button>
+        <button type="button" class="th-btn ghost" id="segMarkEnd" aria-label="סמן זמן סיום של המקטע">סמן סוף</button>
       </div>
       <div class="seg-grid">
         <div>
@@ -192,12 +193,12 @@
       </div>
       <label for="segName">שם התרגיל במקטע</label>
       <input id="segName" name="segName" type="text" autocomplete="off" placeholder="פלאנק צידי">
-      <button type="submit" class="go">שמור מקטע במאגר</button>
+      <button type="submit" class="go" aria-label="שמור מקטע תרגיל במאגר המקומי">שמור מקטע במאגר</button>
       <p class="status" id="segStatus" role="status"></p>
     </form>
   </div>
 
-  <div id="result" aria-live="polite"></div>
+  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
 </main>
 <script src="./js/core.js"></script>
 <script src="./js/pilot.js"></script>
@@ -286,7 +287,7 @@
   function render(built) {
     var box = $('result');
     if (!built || !built.workout) {
-      box.innerHTML = '<div class="card notice"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
+      box.innerHTML = '<div class="card notice" role="status"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
       return;
     }
     var w = built.workout;
@@ -344,11 +345,11 @@
         groupPlan +
         phases +
         rules +
-        '<div class="actions">' +
-          '<button type="button" class="th-btn" id="startBtn">התחל אימון</button>' +
-          '<button type="button" class="th-btn ghost" id="previewBtn">פתח כמתאמן</button>' +
-          '<button type="button" class="th-btn ghost" id="copyBtn">שתף אימון ללקוח</button>' +
-          '<button type="button" class="th-btn ghost" id="pdfBtn">דף להדפסה / PDF</button>' +
+        '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
+          '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
+          '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
+          '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
         '</div>' +
       '</article>';
 
@@ -494,7 +495,7 @@
     e.preventDefault();
     var text = $('ingestText').value.trim();
     if (!text) {
-      $('result').innerHTML = '<p class="empty">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
+      $('result').innerHTML = '<p class="empty" role="status">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
       return;
     }
     renderIngest(THIngest.ingestText(text));
