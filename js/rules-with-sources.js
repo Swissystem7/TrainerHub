@@ -123,9 +123,21 @@
     return rx.sets + ' סטים × ' + work + ' · ' + rx.rest + ' שנ׳ מנוחה בין סטים';
   }
 
-  function stationsText(req) {
+  // The Main exercises of a built session, or null when the panel only has a request.
+  function mainExercises(workout) {
+    var main = workout && (workout.phases || []).filter(function (ph) { return ph && ph.name === 'Main'; })[0];
+    return main && Array.isArray(main.exercises) ? main.exercises : null;
+  }
+
+  // Stations come from the exercises the session really holds: when the catalog
+  // had fewer clips than wantedCount, the card's «סידור קבוצה» was built on the
+  // smaller number and the panel used to promise a different split.
+  function stationsText(req, workout) {
     if (req.participants <= 1) return '1 חניך — בלי חלוקה לתחנות';
-    var plan = Engine.groupPlan(req.participants, Engine.wantedCount(req.duration, prescription(req)));
+    if (workout && workout.group_plan && workout.group_plan.he) return workout.group_plan.he;
+    var main = mainExercises(workout);
+    var count = main ? main.length : Engine.wantedCount(req.duration, prescription(req));
+    var plan = Engine.groupPlan(req.participants, count);
     return plan && plan.he ? plan.he : req.participants + ' חניכים';
   }
 
@@ -147,9 +159,12 @@
       id: 'exercise_count',
       he: 'מספר התרגילים',
       detail: 'נגזר ממשך האימון לפי מדרגות קבועות, לא לפי כמה סרטונים יש; מרשם כבד (כוח: 4 סטים ו-120 שנ׳ מנוחה) מצמצם אותו כדי שהאימון ייכנס בזמן.',
-      evaluate: function (req) {
+      evaluate: function (req, workout) {
+        var want = Engine.wantedCount(req.duration, prescription(req));
+        var main = mainExercises(workout);
+        var short = main && main.length < want ? ' — במאגר נמצאו רק ' + main.length : '';
         return {
-          value: Engine.wantedCount(req.duration, prescription(req)) + ' תרגילים לאימון של ' + req.duration + ' דקות',
+          value: want + ' תרגילים לאימון של ' + req.duration + ' דקות' + short,
           source: 'engine'
         };
       }
@@ -216,9 +231,9 @@
       id: 'participants',
       he: 'כמות חניכים וסידור תחנות',
       detail: 'מחשב תחנות של עד 4 חניכים ומחליף בסיום סט.',
-      evaluate: function (req) {
+      evaluate: function (req, workout) {
         return {
-          value: stationsText(req),
+          value: stationsText(req, workout),
           source: req.participantsSpecified ? 'prompt' : 'default'
         };
       }
@@ -241,8 +256,8 @@
 
   var RULE_IDS = RULE_DEFS.map(function (def) { return def.id; });
 
-  function evaluateRule(def, req) {
-    var out = def.evaluate(req);
+  function evaluateRule(def, req, workout) {
+    var out = def.evaluate(req, workout);
     return {
       id: def.id,
       he: def.he,
@@ -258,7 +273,9 @@
    */
   function rulesWithSources(input) {
     var req = toRequest(input);
-    var rules = RULE_DEFS.map(function (def) { return evaluateRule(def, req); });
+    var workout = input && typeof input === 'object' && input.workout && typeof input.workout === 'object'
+      ? input.workout : null;
+    var rules = RULE_DEFS.map(function (def) { return evaluateRule(def, req, workout); });
     var seen = {};
     var sources = [];
     rules.forEach(function (rule) {
