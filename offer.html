@@ -33,6 +33,14 @@
     .honest { color: var(--muted); font-size: .88rem; }
     table { width: 100%; border-collapse: collapse; font-size: .92rem; }
     th, td { text-align: start; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    button:focus-visible, input:focus-visible, a:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
+    .th-btn[disabled], .th-btn[aria-disabled="true"] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -43,11 +51,13 @@
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./manage.html">ניהול מאגר</a>
   <span class="chip on">הצעה למאמנים</span>
   <a href="./pitch.html">דף אחד להדפסה</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
   אין סליקה באתר. אין מנויים רשומים. המחיר למטה הוא הצעה, לא ספירת לקוחות.
@@ -59,9 +69,9 @@
     <p>מאמן שרוצה לשלוח ללקוח אימון עם סרטון עברי ודף להדפסה — בלי סליקה ובלי אפליקציה ממותגת ב־₪300. זה מה שנמכר. היומן בדמו הוא כלי מקומי, לא מערכת ניהול.</p>
   </header>
 
-  <section class="card" aria-labelledby="have">
-    <h2 id="have">מה יש בפועל</h2>
-    <p id="haveStats">המספר המדויק נטען מהמאגר המקומי.</p>
+  <section class="card" aria-labelledby="have-heading">
+    <h2 id="have-heading">מה יש בפועל</h2>
+    <p id="haveStats" role="status" aria-live="polite">המספר המדויק נטען מהמאגר המקומי.</p>
     <ul>
       <li>68 קליפים בעברית שמתנגנים ומחוברים לבונה (70 רשומות, כי שתי רשומות חוזרות על אותו קליפ). בקטלוג יש עוד 8 רשומות בלי סרטון — הן מסומנות כלא זמינות ולא נכנסות לאימון.</li>
       <li>בונה אימון משדה אחד, בונה שבועי, ומצב אימון בדפדפן.</li>
@@ -70,9 +80,9 @@
     <p class="honest">אין שרת ענן בדמו הציבורי. קובצי הווידאו מתפרסמים כנכסים ב־GitHub Releases ולא נשמרים בריפו; בלי רשת מוצגים פרטי התרגיל במקום נגן.</p>
   </section>
 
-  <section class="grid" id="plans">
-    <article class="card">
-      <h2>תרגול</h2>
+  <section class="grid" id="plans" role="region" aria-label="מסלולים ומחירים">
+    <article class="card" id="plan-practice" aria-labelledby="practice-heading">
+      <h2 id="practice-heading">תרגול</h2>
       <p class="price">₪0 <small>לנצח, בדפדפן</small></p>
       <ul>
         <li>בנייה והרצה למאמן עצמו</li>
@@ -81,8 +91,8 @@
       </ul>
       <p class="honest">לא נספרים כאן משתמשים. אין חשבון.</p>
     </article>
-    <article class="card" id="share">
-      <h2>מאמן</h2>
+    <article class="card" id="share" aria-labelledby="trainer-heading">
+      <h2 id="trainer-heading">מאמן</h2>
       <p class="price">₪59 <small>לחודש, למושב מאמן אחד</small></p>
       <ul>
         <li>שתף אימון ללקוח (לינק)</li>
@@ -93,8 +103,8 @@
     </article>
   </section>
 
-  <section class="card">
-    <h2>מה במכוון אין</h2>
+  <section class="card" aria-labelledby="not-have-heading">
+    <h2 id="not-have-heading">מה במכוון אין</h2>
     <ul>
       <li>אין CRM: כרטיסיות, חשבוניות או וואטסאפ־שרת. יש יומן מקומי לייבוא קוד TH1 — לא מוצר ניהול לקוחות.</li>
       <li>אין אפליקציה בחנויות ואין רישוי לחדר כושר — 68 קליפים קטנים מדי לזה.</li>
@@ -102,28 +112,28 @@
     </ul>
   </section>
 
-  <section class="card">
-    <h2>הפעלת מסלול מאמן (אחרי תשלום מחוץ לאתר)</h2>
-    <p class="honest" id="entStatus">הדפדפן הזה במסלול תרגול.</p>
-    <form id="redeemForm">
+  <section class="card" aria-labelledby="redeem-heading">
+    <h2 id="redeem-heading">הפעלת מסלול מאמן (אחרי תשלום מחוץ לאתר)</h2>
+    <p class="honest" id="entStatus" role="status" aria-live="polite">הדפדפן הזה במסלול תרגול.</p>
+    <form id="redeemForm" aria-label="טופס הפעלת קוד גישה למאמן">
       <label for="brand">שם שיופיע על דף האימון (לא חובה)</label>
-      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="הסטודיו של…">
+      <input id="brand" name="brand" type="text" maxlength="60" autocomplete="organization" placeholder="הסטודיו של…" aria-label="שם שיופיע על דף האימון (לא חובה)">
       <label for="code">קוד גישה</label>
-      <input id="code" name="code" type="text" autocomplete="one-time-code" placeholder="הקוד שנשלח אחרי התשלום">
-      <div class="actions">
-        <button type="submit" class="th-btn">הפעל במכשיר הזה</button>
-        <button type="button" class="th-btn ghost" id="clearBtn">בטל גישה במכשיר</button>
-        <a class="th-btn ghost" id="contactDirect" href="#" hidden>פנייה ישירה לקוד גישה</a>
-        <a class="th-btn ghost" id="contactForm" href="https://github.com/Swissystem7/TrainerHub/issues/new?template=access-request.yml">בקשת קוד גישה (טופס בעברית)</a>
+      <input id="code" name="code" type="text" autocomplete="one-time-code" placeholder="הקוד שנשלח אחרי התשלום" aria-label="קוד גישה" required>
+      <div class="actions" role="group" aria-label="פעולות הפעלת מסלול">
+        <button type="submit" class="th-btn" id="redeemSubmitBtn" aria-label="הפעל מסלול מאמן במכשיר הזה">הפעל במכשיר הזה</button>
+        <button type="button" class="th-btn ghost" id="clearBtn" aria-label="בטל גישת מאמן במכשיר הזה">בטל גישה במכשיר</button>
+        <a class="th-btn ghost" id="contactDirect" href="#" hidden aria-label="פנייה ישירה לקבלת קוד גישה">פנייה ישירה לקוד גישה</a>
+        <a class="th-btn ghost" id="contactForm" href="https://github.com/Swissystem7/TrainerHub/issues/new?template=access-request.yml" aria-label="בקשת קוד גישה באמצעות טופס בעברית בגיטהאב">בקשת קוד גישה (טופס בעברית)</a>
       </div>
       <p class="honest" id="contactNote">הטופס נפתח בגיטהאב והוא ציבורי: לא כותבים בו טלפון או מייל, ועונים לכם בתגובה שם.</p>
-      <p class="status" id="redeemStatus" role="status"></p>
+      <p class="status" id="redeemStatus" role="status" aria-live="polite"></p>
     </form>
   </section>
 
-  <section class="card">
-    <h2>איך זה מתיישב מול מה שמשלמים היום</h2>
-    <table>
+  <section class="card" aria-labelledby="compare-heading">
+    <h2 id="compare-heading">איך זה מתיישב מול מה שמשלמים היום</h2>
+    <table aria-label="השוואת מחירים מול מערכות קיימות בשוק">
       <thead>
         <tr><th>כלי</th><th>מה קונים</th><th>רצפה לחודש</th></tr>
       </thead>
@@ -168,7 +178,13 @@
 
   $('redeemForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var result = TH.redeemAccessCode($('code').value, $('brand').value);
+    var codeVal = ($('code').value || '').trim();
+    if (!codeVal) {
+      $('redeemStatus').textContent = 'נא להזין קוד גישה.';
+      $('redeemStatus').className = 'status warn';
+      return;
+    }
+    var result = TH.redeemAccessCode(codeVal, $('brand').value);
     if (!result.ok) {
       $('redeemStatus').textContent = result.error;
       $('redeemStatus').className = 'status warn';
@@ -182,7 +198,10 @@
 
   $('clearBtn').addEventListener('click', function () {
     TH.clearEntitlement();
+    $('code').value = '';
+    $('brand').value = '';
     $('redeemStatus').textContent = 'הגישה בוטלה במכשיר הזה.';
+    $('redeemStatus').className = 'status';
     paintEnt();
   });
 })();
