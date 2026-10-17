@@ -88,7 +88,7 @@ function renderProgram(p){
           const bits = [];
           if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
           else if (x.reps) bits.push(x.reps + ' חזרות');
-          if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
+          if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + x.duration_seconds + ' שנ׳');
           if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
           const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
           const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
