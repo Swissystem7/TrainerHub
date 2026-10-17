@@ -288,11 +288,12 @@
               ' · ' + adh + '% מ־28 יום</p>' +
           '</div>' +
           '<div class="actions">' +
-            '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '">פתח כמתאמן</button>' +
-            '<button type="button" class="th-btn ghost" data-act="share" data-i="' + i + '">שתף אימון ללקוח</button>' +
-            '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '">תזכורת</button>' +
-            '<button type="button" class="th-btn ghost" data-act="next" data-i="' + i + '">הצע שבוע הבא</button>' +
-            '<button type="button" class="th-btn ghost" data-act="assign" data-i="' + i + '">שייך אימון פעיל</button>' +
+            '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '" aria-label="פתח כמתאמן עבור ' + TH.esc(c.name || 'מתאמן') + '">פתח כמתאמן</button>' +
+            '<button type="button" class="th-btn ghost" data-act="share" data-i="' + i + '" aria-label="שתף אימון עבור ' + TH.esc(c.name || 'מתאמן') + '">שתף אימון ללקוח</button>' +
+            '<button type="button" class="th-btn ghost" data-act="pdf" data-i="' + i + '" aria-label="דף להדפסה / PDF עבור ' + TH.esc(c.name || 'מתאמן') + '">דף להדפסה / PDF</button>' +
+            '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '" aria-label="תזכורת עבור ' + TH.esc(c.name || 'מתאמן') + '">תזכורת</button>' +
+            '<button type="button" class="th-btn ghost" data-act="next" data-i="' + i + '" aria-label="הצע שבוע הבא עבור ' + TH.esc(c.name || 'מתאמן') + '">הצע שבוע הבא</button>' +
+            '<button type="button" class="th-btn ghost" data-act="assign" data-i="' + i + '" aria-label="שייך אימון פעיל ל' + TH.esc(c.name || 'מתאמן') + '">שייך אימון פעיל</button>' +
           '</div>' +
         '</div>' +
         '<div class="dots" aria-hidden="true">' + dots + '</div>' +
@@ -478,7 +479,18 @@
     var act = btn.getAttribute('data-act');
     if (act === 'preview') shareOrPreview(c, true);
     else if (act === 'share') shareOrPreview(c, false, btn);
-    else if (act === 'nudge') {
+    else if (act === 'pdf') {
+      var workout = assignedWorkout(c);
+      if (!workout) {
+        setStatus($('importStatus'), 'אין אימון פעיל או משויך להדפסה. בנו אימון או שייכו אימון פעיל קודם.', true);
+        return;
+      }
+      if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
+      c.lastWorkout = workout;
+      save();
+      TH.preparePrint(workout, { name: c.name || '' });
+      location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
+    } else if (act === 'nudge') {
       window.open(TH.waShareUrl(c.phone, TH.nudgeMessage(c)), '_blank');
     } else if (act === 'assign') {
       var w = activeWorkout();
