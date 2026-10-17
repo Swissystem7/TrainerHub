@@ -129,6 +129,13 @@
   // «לנצ'ים» (fold() already dropped the geresh). The short «לנג/לנץ» form
   // must start a word so «סלנג» or «בלנצ'ר» do not become leg work.
   var LUNGE_RX = /לאנ[גצץ]|(?:^|[^א-ת])[ובלה]{0,2}לנ[גצץ]/;
+  // Calf raises, step-ups and the whole-body jumps are leg work too: «הרמת
+  // עקבים», «עליות קרסול», «עליות על בהונות», «תאומים», «סטפ אפ», «עליות על
+  // ספסל / קופסה», «בורפי», «ג׳אמפינג ג׳קס». They named no muscle, so each one
+  // fell through to the «ליבה» default. A bare «עליות» («עליות מתח») is not.
+  var CALF_RX = /הרמ(?:ת|ות) ה?עקב|על(?:יות|ייה|יה) (?:על )?(?:ה?קרסול|ה?בהונות|קצות)|תאומים/;
+  var STEP_UP_RX = /סטפ[\s-]?אפ|step[\s-]?ups?|על(?:יות|ייה|יה) על (?:ה?ספסל|ה?קופס|ה?ארגז|ה?תיבה)/;
+  var JUMP_DRILL_RX = /בורפי|גאמפינג|jumping jack|burpee/;
 
   // Push-ups are «שכיבות» (the plural, as a word) or «שכיבת שמיכה/סמיכה». The
   // singular «שכיבה» is a position - «הרמת רגליים בשכיבה», «הרמות גוף בשכיבה
@@ -199,6 +206,11 @@
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
     if (LUNGE_RX.test(t) || /גשר|ישיבה על קיר|וול סיט|ניתור|קפיצ/.test(t)) found.push('legs');
+    if (CALF_RX.test(t) || STEP_UP_RX.test(t)) found.push('legs');
+    if (JUMP_DRILL_RX.test(t)) {
+      found.push('legs');
+      if (/בורפי|burpee/.test(t)) found.push('core');
+    }
     // «על הברכיים» is the knee variant of a push-up or plank, not a leg drill.
     if (/ברכי/.test(t) && !/פלאנק|שכיב/.test(t)) found.push('legs');
     if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
