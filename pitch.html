@@ -31,6 +31,9 @@
     .fine { color: var(--muted); font-size: 0.82rem; }
     footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 8px; }
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 10px; }
+    .status-msg { text-align: center; font-size: 0.88rem; min-height: 1.4em; margin-bottom: 8px; color: var(--lime); font-weight: bold; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+    .th-btn[disabled], .th-btn[aria-disabled="true"] { opacity: 0.6; cursor: not-allowed; }
     @media (max-width: 700px) {
       .sheet { min-height: 0; padding: 20px; }
       .cols { grid-template-columns: 1fr; }
@@ -48,19 +51,25 @@
   <span class="brand">TrainerHub</span>
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <span class="chip on">דף אחד להדפסה</span>
   <a href="./manage.html">ניהול מאגר</a>
-  <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
-<div class="toolbar no-print">
-  <button type="button" class="th-btn" id="printBtn">הדפס / שמור כ־PDF</button>
-  <a class="th-btn ghost" href="./offer.html">חזרה להצעה</a>
+<div class="th-banner no-print">
+  דף תמצית מותאם להדפסה בעמוד אחד (A4) או לשמירה כ־PDF עבור מאמנים ולקוחות.
 </div>
+<div class="toolbar no-print" role="toolbar" aria-label="פעולות דף אחד להדפסה">
+  <button type="button" class="th-btn" id="printBtn" aria-label="הדפס או שמור כ־PDF">הדפס / שמור כ־PDF</button>
+  <button type="button" class="th-btn ghost" id="copyPitchBtn" aria-label="העתק טקסט ההצעה ללוח">העתק טקסט ההצעה</button>
+  <a class="th-btn ghost" href="./offer.html" aria-label="חזרה לדף ההצעה למאמנים">חזרה להצעה</a>
+</div>
+<div id="copyStatus" class="status-msg no-print" role="status" aria-live="polite"></div>
 <main class="wrap">
-  <article class="sheet" id="sheet">
+  <article class="sheet" id="sheet" tabindex="-1">
     <header>
       <small>TRAINERHUB · ספריית תרגילים בעברית</small>
       <h1>שלחו ללקוח אימון עם סרטון בעברית. בלי עוד מערכת ניהול.</h1>
@@ -68,19 +77,19 @@
     </header>
 
     <div class="cols">
-      <section>
-        <h2>למי זה</h2>
+      <section aria-labelledby="who-heading">
+        <h2 id="who-heading">למי זה</h2>
         <p>מאמן או מאמנת עצמאיים בישראל שכבר מסתדרים בוואטסאפ, וחסר להם רק סרטון עברי + דף שהלקוח מבין.</p>
-        <h2>מה הלקוח מקבל</h2>
-        <ul>
+        <h2 id="what-get-heading">מה הלקוח מקבל</h2>
+        <ul aria-labelledby="what-get-heading">
           <li>לינק לאימון בלי הרשמה</li>
           <li>דף ממותג להדפסה או לשמירה כ־PDF</li>
           <li>הדגמה בעברית מהספרייה, כשיש קליפ</li>
         </ul>
       </section>
-      <section>
-        <h2>מה במכוון אין</h2>
-        <ul>
+      <section aria-labelledby="what-not-heading">
+        <h2 id="what-not-heading">מה במכוון אין</h2>
+        <ul aria-labelledby="what-not-heading">
           <li>אין CRM, כרטיסיות או חשבוניות</li>
           <li>אין וואטסאפ אוטומטי משרת</li>
           <li>אין 2,000 תרגילים כמו אצל Coach, ואין 10,000 כמו אצל AutoFit</li>
@@ -92,8 +101,8 @@
       </section>
     </div>
 
-    <section>
-      <h2>למה לא עוד AutoFit</h2>
+    <section aria-labelledby="why-heading">
+      <h2 id="why-heading">למה לא עוד AutoFit</h2>
       <p>AutoFit מתחיל ב־₪300, Coach ב־₪200, Boostapp ב־₪179. הם מוכרים ניהול עסק. יש גם אפשרויות חינמיות או זולות: BaseCRM במסלול חינמי, Tazman חינם עד 20 לקוחות, NutriCal ב־₪75. כאן משלמים על ספרייה בעברית ובונה בלבד. 68 קליפים זה קטן — נאמר במפורש.</p>
     </section>
 
@@ -103,7 +112,60 @@
   </article>
 </main>
 <script>
-  document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+(function () {
+  var printBtn = document.getElementById('printBtn');
+  if (printBtn) {
+    printBtn.addEventListener('click', function () {
+      window.print();
+    });
+  }
+
+  var copyBtn = document.getElementById('copyPitchBtn');
+  var copyStatus = document.getElementById('copyStatus');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var sheet = document.getElementById('sheet');
+      var text = sheet ? (sheet.innerText || sheet.textContent || '').trim() : '';
+      if (!text) {
+        if (copyStatus) copyStatus.textContent = 'לא נמצא תוכן להעתקה.';
+        return;
+      }
+      function onCopied() {
+        if (copyStatus) {
+          copyStatus.textContent = 'טקסט ההצעה הועתק ללוח!';
+          setTimeout(function () {
+            if (copyStatus && copyStatus.textContent === 'טקסט ההצעה הועתק ללוח!') {
+              copyStatus.textContent = '';
+            }
+          }, 3000);
+        }
+      }
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(onCopied).catch(function () {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+      function fallbackCopy(val) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = val;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'absolute';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          onCopied();
+        } catch (e) {
+          if (copyStatus) copyStatus.textContent = 'שגיאה בהעתקה ללוח.';
+        }
+      }
+    });
+  }
+})();
 </script>
 </body>
 </html>
