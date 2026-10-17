@@ -36,8 +36,7 @@ test('unstated rests do not dilute the average: one stated 3-minute rest keeps 3
 test('a pasted 3x5 workout with the rest written once at the end is a strength stimulus', function () {
   const out = Ingest.ingestText('סקוואט 3x5\nדדליפט 3x5\nלחיצת חזה 3x5\nמתח 3x5\nמנוחה 3 דקות');
   const rests = out.workout.phases[1].exercises.map(function (e) { return e.rest_seconds; });
-  assert.ok(rests.some(function (r) { return r == null; }), 'the fixture must leave some rests unstated');
-  assert.ok(rests.some(function (r) { return r === 180; }), 'the fixture must state one 3-minute rest');
+  assert.deepEqual(rests, [180, 180, 180, 180], 'the 3-minute rest line rests every exercise');
   assert.equal(Analyzer.analyzeSession(out.workout).stimulus.key, 'strength');
 });
 

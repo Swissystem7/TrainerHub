@@ -70,6 +70,13 @@
   var HALF_MINUTE_RX = new RegExp('(?:1\\/2|½|(?<!ו)חצי)\\s*' + MINUTE_UNIT);
   var MINUTES_RX = new RegExp('(\\d+(?:\\.\\d+)?)\\s*' + MINUTE_UNIT);
 
+  // A rest given in minutes, on one line: «מנוחה 3 דקות», «מנוחה: דקה וחצי», «2.5 דקות מנוחה».
+  // «סקוואט 3x12 דקה מנוחה» is a minute, not 12 (the count before «דקה» belongs to the x).
+  var MINUTE_TIME = '(?:(?:1\\/2|½|חצי)[ \\t]*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?[ \\t]*' + MINUTE_UNIT +
+    '(?:[ \\t]*(?:וחצי|ו-?(?:1\\/2|½)))?|(?:שתי[ \\t]*דקות|דקה)[ \\t]*וחצי|שתי[ \\t]*דקות|דקה)';
+  var REST_MINUTES_RX = new RegExp('(?:מנוחה|הפסקה)[ \\t]*[:\\-–]?[ \\t]*(' + MINUTE_TIME + ')|' +
+    '(?<![\\d:.\\/]|[x×X*][ \\t]*)(' + MINUTE_TIME + ')[ \\t]*(?:מנוחה|הפסקה)');
+
   function minuteSeconds(s) {
     var t = String(s || '');
     var half = HALF_RX.test(t) ? 30 : 0;
@@ -321,11 +328,10 @@
     if (slash && defaults.rest == null) defaults.rest = slash.rest;
     var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
     if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
-    // «מנוחה דקה וחצי» / «מנוחה 2 דקות וחצי» are not a whole minute or two (the rest line itself gives 90 / 150).
-    if (/דקה[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*דקה(?![ \t]*(?:וחצי|ו-?(?:1\/2|½)))/.test(raw) && defaults.rest == null) defaults.rest = 60;
-    if (/(?:שתי|2)[ \t]*דקות[ \t]*(?:מנוחה|הפסקה)|(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(?:שתי|2)[ \t]*דקות(?![ \t]*(?:וחצי|ו-?(?:1\/2|½)))/.test(raw) && defaults.rest == null) {
-      defaults.rest = 120;
-    }
+    // «מנוחה 3 דקות», «מנוחה דקה וחצי», «2.5 דקות מנוחה» are every exercise's rest, as «מנוחה 2 דקות»
+    // and «מנוחה 90 שניות» are (only «דקה» and «2 דקות» were read, so «מנוחה 3 דקות» rested only the last one).
+    var restMinutes = defaults.rest == null && raw.match(REST_MINUTES_RX);
+    if (restMinutes) defaults.rest = minuteSeconds(restMinutes[1] || restMinutes[2]);
     var work = raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*עבודה/) ||
       raw.match(/עבודה[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
       raw.match(/עבודה[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
