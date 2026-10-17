@@ -96,13 +96,21 @@
     workout.duration_minutes = workout.phases.reduce(function (a, ph) { return a + (Number(ph.duration_minutes) || 0); }, 0);
   }
 
-  /** Which base workout fits the width. Narrow space → a limited-space method from the booklet. */
-  function baseChoice(p, group) {
+  /**
+   * Which base workout fits the width. Narrow space → a limited-space method from the booklet.
+   * A wide site only gets the opening session when it is safe to run on: that session opens its
+   * Main phase with a relay race, which the plan itself rules out on a slippery / uneven floor
+   * ("בלי ספרינטים") and next to cars ("לא שילבתי ... שליחים").
+   */
+  function baseChoice(p, group, unsafeFloor, cars) {
     if (p.width === 'narrow') {
       if (group >= 2) return { kind: 'method', id: 'igo-ugo', reason: 'בחרתי שיטת IGO-UGO בזוגות כי השטח צר: חצי עובד וחצי נח באותו מקום' };
       return { kind: 'method', id: 'tabata', reason: 'בחרתי טבטה כי השטח צר ואפשר לעבוד במקום' };
     }
     if (p.width === 'medium') return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) כי השטח בינוני' };
+    if (unsafeFloor || cars) {
+      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + (unsafeFloor ? 'המשטח לא בטוח לריצה' : 'יש מכוניות ליד השטח') };
+    }
     return { kind: 'session', id: 'opening-1', reason: 'בחרתי אימון פתיחה מהחוברת כי השטח רחב ומאפשר ריצות' };
   }
 
@@ -130,8 +138,9 @@
     var slippery = p.hazards.indexOf('slippery') !== -1;
     var uneven = p.hazards.indexOf('uneven') !== -1;
     var unsafeFloor = slippery || uneven;
+    var cars = p.hazards.indexOf('cars') !== -1;
 
-    var base = baseChoice(p, group);
+    var base = baseChoice(p, group, unsafeFloor, cars);
     var bopts = { season: winter ? 'winter' : 'summer', activity: 'long' };
     var workout = base.kind === 'method' ? Booklet.methodWorkout(base.id, 0, bopts) : Booklet.sessionWorkout(base.id, bopts);
     reasons.push(base.reason);
@@ -147,7 +156,6 @@
     if (p.features.some(function (f) { return SITE_DRILLS[f]; })) workout.tags.push('site');
 
     var warm = workout.phases[0];
-    var cars = p.hazards.indexOf('cars') !== -1;
     if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars) {
       var game = Booklet.games('tag')[0];
       if (game) {
