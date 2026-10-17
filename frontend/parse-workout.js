@@ -22,6 +22,12 @@
     return null;
   }
 
+  // «פלאנק 30"», «בורפי 3x40״», «45''»: a double prime after a number is seconds, the way
+  // trainers type it, so it reads as «30 שניות» everywhere below. A lone «'» is left alone.
+  function quoteSeconds(text) {
+    return String(text || '').replace(/(\d)\s?(?:''|["״])(?![֐-׿A-Za-z\d])/g, '$1 שניות');
+  }
+
   // «5 דקות», «1.5 דקות», «2 דקות וחצי», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
   // `lead` is a pattern that must come right before the amount («מנוחה של »),
   // `tail` one that must come right after it («דקה מנוחה»).
@@ -186,7 +192,7 @@
 
   function parseExerciseLine(line, defaults) {
     defaults = defaults || {};
-    var s = String(line || '')
+    var s = quoteSeconds(line)
       .replace(/^(תחנה|תרגיל|עמדה)\s*\d+\s*[:.\-–]\s*/i, '')
       .replace(/^[•\-*]\s*/, '')
       .trim();
@@ -423,8 +429,9 @@
       };
     }
 
-    var lines = raw.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
-    var defaults = scanSessionDefaults(raw);
+    var normalized = quoteSeconds(raw);
+    var lines = normalized.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    var defaults = scanSessionDefaults(normalized);
     var total = raw.match(/(?:סך הכול|סה״כ|סה"כ)\s*:?\s*(\S+(?:[ \t]+\S+){0,2})/);
     var duration_minutes = (total && parseDurationMinutes(total[1])) || parseDurationMinutes(lines[0]) || 30;
     var participants = parseParticipants(raw);
