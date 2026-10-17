@@ -359,8 +359,9 @@
 
   // "לא מתקדמים" / "לא למתקדמים" / "בלי מתחילים" / "לא ברמה גבוהה" rules that
   // level out. The negated phrase is cut before the checks below, so «אימון
-  // למתחילים לא מתקדמים» is a beginner session, not an advanced one.
-  var NEGATED_LEVEL_RX = /(?:^|\s)(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
+  // למתחילים לא מתקדמים» is a beginner session, not an advanced one. The
+  // negation may carry ו־ («למתחילים ולא למתקדמים»).
+  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
 
   function parseLevel(text) {
     var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
@@ -400,8 +401,9 @@
 
   // "בלי משקולות" / "ללא גומיות ומשקולות" rules the gear out. The negated words
   // (and any joined to them with ו־) are cut before inferring, so «אימון רגליים
-  // בלי משקולות» is not a dumbbell request that matches no clip.
-  var NEGATED_GEAR_RX = /(?:^|\s)(?:בלי|ללא)\s+(?:שום\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
+  // בלי משקולות» is not a dumbbell request that matches no clip. The negation
+  // may carry ו־ («עם גומיות וללא משקולות»).
+  var NEGATED_GEAR_RX = /(?:^|\s)ו?(?:בלי|ללא)\s+(?:שום\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
 
   function parseEquipment(text) {
     var t = Infer.fold(text);
@@ -430,8 +432,9 @@
   // "לא לרגליים" / "בלי בטן" / "ללא רגליים ובטן" rules the muscle out. A
   // negated phrase (and words joined to it with ו־) is cut only when it names
   // a muscle, so «אימון לא לרגליים, רק ידיים» is an arm session, not a leg
-  // one, while «לא יותר מ 20 דקות» and «בלי משקולות» stay as they are.
-  var NEGATED_MUSCLE_RX = /(?:^|\s)(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*/g;
+  // one, while «לא יותר מ 20 דקות» and «בלי משקולות» stay as they are. The
+  // negation may carry ו־ («אימון לרגליים ולא לבטן»).
+  var NEGATED_MUSCLE_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*/g;
 
   function namesMuscle(t) {
     return Object.keys(MUSCLE_KEYS).some(function (key) {
