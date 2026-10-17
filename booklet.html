@@ -120,7 +120,19 @@
 
   <section id="games" aria-labelledby="games-h">
     <h2 id="games-h">משחקי הכנה</h2>
-    <div id="gamesOut"></div>
+    <div class="row no-print" role="search" aria-label="חיפוש וסינון משחקי הכנה">
+      <div><label for="gcat">סוג משחק</label><select id="gcat">
+        <option value="">כל משחקי ההכנה</option>
+        <option value="tag">משחקי תופסת</option>
+        <option value="ball">משחקי כדור</option>
+      </select></div>
+      <div><label for="gq">חיפוש משחק</label><input id="gq" type="search" placeholder="למשל: עכברים, זוגות, קו, כדור" autocomplete="off"></div>
+    </div>
+    <div class="actions no-print" style="margin: 8px 0 12px">
+      <button type="button" id="greset" class="ghost" aria-label="אפס חיפוש וסינון משחקים">נקה סינון</button>
+    </div>
+    <p class="muted" id="gameStats" aria-live="polite"></p>
+    <div id="gamesOut" aria-live="polite"></div>
   </section>
 
   <section id="fitness" aria-labelledby="fitness-h">
@@ -225,14 +237,57 @@
     }).join('');
   }
 
+  function foldText(s) {
+    return String(s || '').toLowerCase().replace(/[\u0591-\u05C7]/g, '').replace(/[״"׳'`]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
   function renderGames() {
     var r = B.data.gameRules;
-    function table(kind) {
-      return '<table><thead><tr><th>שם</th><th>תיאור המשחק</th><th>הערות</th></tr></thead><tbody>' + B.games(kind).map(function (g) {
+    var cat = $('gcat') ? $('gcat').value : '';
+    var q = $('gq') ? foldText($('gq').value) : '';
+
+    var allGames = B.games();
+    var filtered = allGames.filter(function (g) {
+      if (cat && g.kind !== cat) return false;
+      if (q) {
+        var hay = foldText(g.he + ' ' + (g.description || '') + ' ' + (g.notes || ''));
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    if ($('gameStats')) {
+      $('gameStats').textContent = filtered.length + ' מתוך ' + allGames.length + ' משחקים';
+    }
+
+    if (!filtered.length) {
+      $('gamesOut').innerHTML = '<p class="muted" style="text-align:center;padding:24px 8px">לא נמצאו משחקי הכנה שמתאימים לחיפוש. נסו מילת חיפוש אחרת או נקו את המסננים.</p>';
+      return;
+    }
+
+    function table(items) {
+      if (!items.length) return '';
+      return '<table><thead><tr><th>שם</th><th>תיאור המשחק</th><th>הערות</th></tr></thead><tbody>' + items.map(function (g) {
         return '<tr><td>' + esc(g.he) + '</td><td>' + esc(g.description) + '</td><td>' + esc(g.notes) + '</td></tr>';
       }).join('') + '</tbody></table>';
     }
-    $('gamesOut').innerHTML = '<p>' + esc(B.data.principles.warmup.eliminationRule) + '</p><h3>משחקי תופסת</h3>' + list(r.tag) + table('tag') + '<h3>משחקי כדור</h3>' + list(r.ball) + table('ball') + credit('prep');
+
+    var tagGames = filtered.filter(function (g) { return g.kind === 'tag'; });
+    var ballGames = filtered.filter(function (g) { return g.kind === 'ball'; });
+    var otherGames = filtered.filter(function (g) { return g.kind !== 'tag' && g.kind !== 'ball'; });
+
+    var html = '<p>' + esc(B.data.principles.warmup.eliminationRule) + '</p>';
+    if (tagGames.length) {
+      html += '<h3>משחקי תופסת (' + tagGames.length + ')</h3>' + (q ? '' : list(r.tag)) + table(tagGames);
+    }
+    if (ballGames.length) {
+      html += '<h3>משחקי כדור (' + ballGames.length + ')</h3>' + (q ? '' : list(r.ball)) + table(ballGames);
+    }
+    if (otherGames.length) {
+      html += '<h3>משחקים נוספים (' + otherGames.length + ')</h3>' + table(otherGames);
+    }
+    html += credit('prep');
+    $('gamesOut').innerHTML = html;
   }
 
   function renderFitnessInfo() {
@@ -330,6 +385,24 @@
   });
   $('cat').addEventListener('change', renderDrills);
   $('dq').addEventListener('input', renderDrills);
+  if ($('gcat')) $('gcat').addEventListener('change', renderGames);
+  if ($('gq')) {
+    $('gq').addEventListener('input', renderGames);
+    $('gq').addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        $('gq').value = '';
+        renderGames();
+      }
+    });
+  }
+  if ($('greset')) {
+    $('greset').addEventListener('click', function () {
+      if ($('gcat')) $('gcat').value = '';
+      if ($('gq')) $('gq').value = '';
+      renderGames();
+      if ($('gq')) $('gq').focus();
+    });
+  }
   $('score').addEventListener('click', scoreNow);
 })();
 </script>
