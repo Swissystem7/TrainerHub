@@ -40,6 +40,10 @@
     @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
     .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
     .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
     @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
   </style>
 <script src="./js/sentry-init.js"></script>
@@ -82,7 +86,7 @@
       <div><label for="season">עונה</label><select id="season"><option value="summer">קיץ</option><option value="winter">חורף</option></select></div>
       <div><label for="activity">אופי הפעילות</label><select id="activity"><option value="long">ממושכת ורציפה</option><option value="short">קצרה ועצימה</option></select></div>
     </div>
-    <div class="actions">
+    <div class="actions" role="toolbar" aria-label="פעולות מערך אימון מהחוברת">
       <button type="button" id="start">התחל במצב אימון</button>
       <button type="button" id="previewTrainee" class="ghost">פתח כמתאמן</button>
       <button type="button" id="share" class="ghost">שתף אימון ללקוח</button>
@@ -108,10 +112,10 @@
         <option value="flexibility">אוצר תרגילי גמישות</option>
         <option value="partner_stretch">מתיחות בזוגות</option>
       </select></div>
-      <div><label for="dq">חיפוש</label><input id="dq" type="search" placeholder="למשל: ירך, כתף, מדרגה"></div>
+      <div><label for="dq">חיפוש</label><input id="dq" type="search" placeholder="למשל: ירך, כתף, מדרגה" aria-label="חיפוש בבנק התרגילים" aria-controls="drillOut"></div>
     </div>
-    <p class="muted" id="drillStats"></p>
-    <div class="grid" id="drillOut"></div>
+    <p class="muted" id="drillStats" role="status" aria-live="polite"></p>
+    <div class="grid" id="drillOut" role="region" aria-label="תוצאות בנק תרגילים"></div>
   </section>
 
   <section id="games" aria-labelledby="games-h">
@@ -130,14 +134,14 @@
       <div><label for="f-run300">2X150 מ׳ (מ:שש)</label><input id="f-run300" placeholder="0:55"></div>
       <div><label for="f-run3k">3 ק״מ (מ:שש)</label><input id="f-run3k" placeholder="13:30"></div>
     </div>
-    <button type="button" id="score">חשב ציון</button>
+    <button type="button" id="score" aria-label="חשב ציון בבוחן כושר">חשב ציון</button>
     <div id="fitnessOut" aria-live="polite"></div>
     <div id="fitnessInfo"></div>
   </section>
 
   <section id="safety" aria-labelledby="safety-h">
     <h2 id="safety-h">בטיחות ותיק קבוצה</h2>
-    <button type="button" class="ghost no-print" onclick="window.print()">הדפס את התיק</button>
+    <button type="button" class="ghost no-print" onclick="window.print()" aria-label="הדפס את תיק הבטיחות">הדפס את התיק</button>
     <div id="safetyOut"></div>
   </section>
 
@@ -174,7 +178,7 @@
     var v = $('plan').value.split(':');
     var opts = { season: $('season').value, activity: $('activity').value };
     current = v[0] === 'session' ? B.sessionWorkout(v[1], opts) : B.methodWorkout(v[1], Number(v[2] || 0), opts);
-    if (!current) { $('planOut').innerHTML = '<p class="muted">לא נמצא מערך.</p>'; return; }
+    if (!current) { $('planOut').innerHTML = '<p class="muted" role="status">לא נמצא מערך.</p>'; return; }
     $('planOut').innerHTML = '<h3>' + esc(current.title) + ' · ' + current.duration_minutes + ' דק׳</h3>' + current.phases.map(function (p) {
       return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
     }).join('');
@@ -210,6 +214,10 @@
   function renderDrills() {
     var items = B.drills({ category: $('cat').value, q: $('dq').value });
     $('drillStats').textContent = items.length + ' תרגילים';
+    if (!items.length) {
+      $('drillOut').innerHTML = '<p class="muted" role="status">לא נמצאו תרגילים התואמים את החיפוש.</p>';
+      return;
+    }
     $('drillOut').innerHTML = items.map(function (d) {
       var clip = d.catalogId && TH.catalog && TH.catalog[d.catalogId] ? '<span class="pill clip">יש סרטון בספרייה</span>' : '';
       var meta = (d.timing ? '<span class="pill">' + esc(d.timing) + '</span>' : '') + (d.position ? '<span class="pill">' + esc(d.position) + '</span>' : '') + (d.prepFriendly ? '<span class="pill">מתאים גם לחלק המכין</span>' : '') + clip;
@@ -241,7 +249,7 @@
     }, $('f-sex').value);
     $('fitnessOut').innerHTML = '<table><thead><tr><th>רכיב</th><th>ציון</th><th>משקל</th><th>תרומה</th></tr></thead><tbody>' + res.components.map(function (c) {
       return '<tr><td>' + esc(c.he) + '</td><td>' + (c.score == null ? '—' : c.score) + '</td><td>' + c.weight + '%</td><td>' + c.weighted + '</td></tr>';
-    }).join('') + '</tbody></table><p class="total">ציון משוקלל: ' + res.total + (res.complete ? '' : ' (חסרים רכיבים)') + '</p>';
+    }).join('') + '</tbody></table><p class="total" role="status">ציון משוקלל: ' + res.total + (res.complete ? '' : ' (חסרים רכיבים)') + '</p>';
   }
 
   function renderSafety() {
