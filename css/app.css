@@ -138,6 +138,7 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
   text-align: start;
   padding: 8px 6px;
   border-bottom: 1px solid #303834;
+  white-space: pre-line;
 }
 .print-watermark {
   margin: 20px 0 0;

@@ -166,7 +166,7 @@
     if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
     if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
     var clip = x.id && TH.catalog && TH.catalog[x.id] ? ' <span class="pill clip">יש סרטון</span>' : '';
-    return '<li><strong>' + esc(x.name) + '</strong>' + clip + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') + (x.notes ? '<div class="muted">' + esc(x.notes) + '</div>' : '') + '</li>';
+    return '<li><strong>' + esc(x.name) + '</strong>' + clip + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') + (x.notes ? '<div class="muted" style="white-space:pre-line">' + esc(x.notes) + '</div>' : '') + '</li>';
   }
 
   var current = null;
