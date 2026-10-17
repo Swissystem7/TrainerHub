@@ -283,7 +283,7 @@
   var UNIT_NUM = '(' + Object.keys(NUMBER_WORDS).join('|') + ')';
   var NUMBER_PHRASE = '(?:(' + Object.keys(TENS_WORDS).join('|') + ')(?:\\s+ו' + UNIT_NUM + ')?|' +
     UNIT_NUM + '(?:\\s+(עשרה?))?|(עשרה?))';
-  var COUNT_UNIT = '(?:חזרות|שניות|שנ[׳\']|דקות|סטים|סדרות|סבבים|סיבובים|פעמים|קילו)';
+  var COUNT_UNIT = '(?:חזרות|שניות|שנ[׳\']|דקות|סטים|סדרות|סבבים|סיבובים|פעמים|צעדים|קילו)';
   var NUMBER_WORD_RX = new RegExp('(^|[^א-ת])(?:(של|[x×])\\s*)?' + NUMBER_PHRASE + '(?=(\\s+' + COUNT_UNIT + '(?![א-ת]))|(?![א-ת]))', 'g');
 
   function numberWordsToDigits(text) {
@@ -522,7 +522,9 @@
     // WhatsApp/markdown pastes: "4*10" is a multiplier, "*סופרמן*" is only bold.
     // «סקוואט 3 על 12» is said for 3×12 (was a name «סקוואט 3 על» with one set).
     var s = numberWordsToDigits(token).replace(/(\d)\s*\*\s*(?=\d)/g, '$1×').replace(/\*+/g, ' ')
-      .replace(/(^|\s)(\d+)\s+על\s+(?=\d)/g, '$1$2×').trim();
+      .replace(/(^|\s)(\d+)\s+על\s+(?=\d)/g, '$1$2×')
+      // «לאנג׳ים הליכה 20 צעדים» is 20 reps (was a name «לאנג׳ים הליכה 20 צעדים» with 10 invented reps).
+      .replace(/(\d)\s*צעד(?:ים)?(?![א-ת])/g, '$1 חזרות').trim();
     if (!s) return null;
     if (isRestToken(s)) {
       return { restOnly: true, rest_seconds: parseRestSeconds(s) || defaults.rest || 60 };
