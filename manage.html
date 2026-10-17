@@ -61,8 +61,8 @@
     <p>מדביקים קישור דרייב או מזהה קובץ, או קישור יוטיוב. האפליקציה מציעה שריר, ציוד ורמה לפי השם — מאשרים או מתקנים. קישור לאינסטגרם נשמר כקישור שנפתח בחוץ, בלי להציג את זה כאינטגרציה.</p>
   </header>
 
-  <form class="card" id="addForm">
-    <h2>הוספת פריט</h2>
+  <form class="card" id="addForm" aria-labelledby="addFormHeading">
+    <h2 id="addFormHeading">הוספת פריט</h2>
     <label for="url">קישור או מזהה</label>
     <input id="url" name="url" type="text" inputmode="url" placeholder="https://drive.google.com/file/d/…/view או מזהה קובץ" autocomplete="off">
     <p class="hint" id="sourceHint">דרייב / יוטיוב / קישור חיצוני — מזוהה אוטומטית.</p>
@@ -111,24 +111,24 @@
     </div>
 
     <div class="actions">
-      <button type="submit" class="th-btn">אשר ושמור במאגר המקומי</button>
-      <button type="button" class="th-btn ghost" id="previewBtn">הצג הצעה</button>
+      <button type="submit" class="th-btn" aria-label="אשר ושמור פריט במאגר המקומי">אשר ושמור במאגר המקומי</button>
+      <button type="button" class="th-btn ghost" id="previewBtn" aria-label="הצג הצעת סיווג לפי שם התרגיל">הצג הצעה</button>
     </div>
     <p class="status" id="addStatus" role="status"></p>
   </form>
 
-  <section class="card">
-    <h2>פריטים שנוספו בדפדפן הזה</h2>
+  <section class="card" role="region" aria-labelledby="userCatalogHeading">
+    <h2 id="userCatalogHeading">פריטים שנוספו בדפדפן הזה</h2>
     <div class="list" id="userList"></div>
     <div class="actions">
-      <button type="button" class="th-btn ghost" id="exportBtn">ייצוא JSON להדבקה בקטלוג</button>
+      <button type="button" class="th-btn ghost" id="exportBtn" aria-label="ייצוא פריטי המאגר המקומי כ־JSON להדבקה בקטלוג">ייצוא JSON להדבקה בקטלוג</button>
     </div>
     <label for="exportBox">JSON לייצוא</label>
-    <textarea id="exportBox" readonly placeholder="אחרי ייצוא אפשר להעתיק מכאן."></textarea>
+    <textarea id="exportBox" readonly placeholder="אחרי ייצוא אפשר להעתיק מכאן." aria-label="קוד JSON מיוצא להדבקה בקטלוג"></textarea>
   </section>
 
-  <section class="card">
-    <h2>סרטונים שכדאי לצלם</h2>
+  <section class="card" role="region" aria-labelledby="wishlistHeading">
+    <h2 id="wishlistHeading">סרטונים שכדאי לצלם</h2>
     <p class="hint">תרגילים שנקלטו מאימון מודבק ולא נמצא להם סרטון במאגר. ברגע שנשמר סרטון עם השם הזה, התרגיל יורד מהרשימה.</p>
     <div class="list" id="wishList"></div>
   </section>
@@ -211,15 +211,16 @@
     var list = TH.userCatalogList();
     var box = $('userList');
     if (!list.length) {
-      box.innerHTML = '<p class="hint">עדיין לא הוספתם פריט בדפדפן הזה.</p>';
+      box.innerHTML = '<p class="hint" role="status">עדיין לא הוספתם פריט בדפדפן הזה.</p>';
       return;
     }
     box.innerHTML = list.map(function (e) {
       var pills = (e.muscles || []).map(function (m) {
         return '<span class="pill">' + TH.esc(TH.muscleLabel(m)) + '</span>';
       }).join('') + '<span class="pill">' + TH.esc(sourceLabel(e.source)) + '</span>';
-      return '<div class="item"><div><b>' + TH.esc(e.he) + '</b><span>' + pills + '</span></div>' +
-        '<button type="button" class="th-btn ghost" data-del="' + TH.esc(e.id) + '">מחק</button></div>';
+      var name = TH.esc(e.he);
+      return '<div class="item"><div><b>' + name + '</b><span>' + pills + '</span></div>' +
+        '<button type="button" class="th-btn ghost" data-del="' + TH.esc(e.id) + '" aria-label="מחק את ' + name + ' מהמאגר המקומי">מחק</button></div>';
     }).join('');
   }
 
@@ -288,16 +289,17 @@
     }
     var list = THIngest.wishlistPrune ? THIngest.wishlistPrune() : THIngest.wishlistList();
     if (!list.length) {
-      box.innerHTML = '<p class="hint">אין כרגע תרגילים שחסר להם סרטון. כשמדביקים אימון בדף הבית ותרגיל לא נמצא במאגר, הוא יופיע כאן.</p>';
+      box.innerHTML = '<p class="hint" role="status">אין כרגע תרגילים שחסר להם סרטון. כשמדביקים אימון בדף הבית ותרגיל לא נמצא במאגר, הוא יופיע כאן.</p>';
       return;
     }
     box.innerHTML = list.map(function (item) {
       var when = wishDate(item.at);
       var meta = TH.esc(item.reason || 'חסר סרטון במאגר') + (when ? ' · ' + TH.esc(when) : '');
-      return '<div class="item"><div><b>' + TH.esc(item.he) + '</b><span>' + meta + '</span></div>' +
+      var name = TH.esc(item.he);
+      return '<div class="item"><div><b>' + name + '</b><span>' + meta + '</span></div>' +
         '<div class="pills">' +
-        '<button type="button" class="th-btn ghost" data-wish-fill="' + TH.esc(item.he) + '">הוסף סרטון</button>' +
-        '<button type="button" class="th-btn ghost" data-wish-del="' + TH.esc(item.he) + '">מחק</button>' +
+        '<button type="button" class="th-btn ghost" data-wish-fill="' + name + '" aria-label="הוסף סרטון עבור ' + name + '">הוסף סרטון</button>' +
+        '<button type="button" class="th-btn ghost" data-wish-del="' + name + '" aria-label="מחק את ' + name + ' מרשימת התרגילים לצילום">מחק</button>' +
         '</div></div>';
     }).join('');
   }
