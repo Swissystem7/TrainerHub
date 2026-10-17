@@ -124,13 +124,16 @@
     <p class="muted">החישוב נעשה בדפדפן בלבד ולא נשמר. זמנים בפורמט דקות:שניות.</p>
     <div class="row">
       <div><label for="f-sex">טבלת ריצה</label><select id="f-sex"><option value="male">בנים</option><option value="female">בנות</option></select></div>
-      <div><label for="f-pullups">עליות מתח (חזרות)</label><input id="f-pullups" inputmode="numeric"></div>
-      <div><label for="f-pushups">שכיבות שמיכה (חזרות)</label><input id="f-pushups" inputmode="numeric"></div>
+      <div><label for="f-pullups">עליות מתח (חזרות)</label><input id="f-pullups" inputmode="numeric" placeholder="למשל: 10"></div>
+      <div><label for="f-pushups">שכיבות שמיכה (חזרות)</label><input id="f-pushups" inputmode="numeric" placeholder="למשל: 25"></div>
       <div><label for="f-plank">פלאנק (מ:שש)</label><input id="f-plank" placeholder="2:00"></div>
       <div><label for="f-run300">2X150 מ׳ (מ:שש)</label><input id="f-run300" placeholder="0:55"></div>
       <div><label for="f-run3k">3 ק״מ (מ:שש)</label><input id="f-run3k" placeholder="13:30"></div>
     </div>
-    <button type="button" id="score">חשב ציון</button>
+    <div class="actions" role="toolbar" aria-label="פעולות מחשבון בוחן כושר">
+      <button type="button" id="score" aria-label="חשב ציון בבוחן כושר">חשב ציון</button>
+      <button type="button" class="ghost" id="fitnessReset" aria-label="נקה נתוני בוחן כושר">נקה טופס</button>
+    </div>
     <div id="fitnessOut" aria-live="polite"></div>
     <div id="fitnessInfo"></div>
   </section>
@@ -234,7 +237,30 @@
     }).join('') + '</tbody></table>' + credit('fitness_test');
   }
 
+  var FITNESS_FIELDS = ['f-pullups', 'f-pushups', 'f-plank', 'f-run300', 'f-run3k'];
+
+  function hasFitnessInputs() {
+    return FITNESS_FIELDS.some(function (id) {
+      var el = $(id);
+      return el && typeof el.value === 'string' && el.value.trim().length > 0;
+    });
+  }
+
+  function resetFitness() {
+    FITNESS_FIELDS.forEach(function (id) {
+      var el = $(id);
+      if (el) el.value = '';
+    });
+    $('fitnessOut').innerHTML = '';
+    var first = $('f-pullups');
+    if (first && first.focus) first.focus();
+  }
+
   function scoreNow() {
+    if (!hasFitnessInputs()) {
+      $('fitnessOut').innerHTML = '<p class="muted" role="status">הזינו לפחות תוצאה אחת (מתח, שכיבות שמיכה, פלאנק או ריצה) כדי לחשב ציון.</p>';
+      return;
+    }
     var res = B.scoreFitnessTest({
       pullups: $('f-pullups').value, pushups: $('f-pushups').value, plank: $('f-plank').value,
       run300: $('f-run300').value, run3k: $('f-run3k').value
@@ -323,6 +349,18 @@
   $('cat').addEventListener('change', renderDrills);
   $('dq').addEventListener('input', renderDrills);
   $('score').addEventListener('click', scoreNow);
+  $('fitnessReset').addEventListener('click', resetFitness);
+  FITNESS_FIELDS.forEach(function (id) {
+    var el = $(id);
+    if (el) {
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          scoreNow();
+        }
+      });
+    }
+  });
 })();
 </script>
 </body>
