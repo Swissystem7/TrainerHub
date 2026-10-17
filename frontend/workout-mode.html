@@ -163,7 +163,15 @@
     .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .ctrl-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; }
     .ctrl-btn.primary:hover { opacity: 0.9; }
-    .ctrl-btn:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
+    .ctrl-btn:focus-visible,
+    .exit-btn:focus-visible,
+    .go-back:focus-visible,
+    .done-btn:focus-visible,
+    a:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid #c4b5fd;
+      outline-offset: 3px;
+    }
     .ctrl-btn, .exit-btn, .go-back, .done-btn { user-select: none; }
     textarea, input { user-select: text; }
 
@@ -232,7 +240,7 @@
 </header>
 
 <!-- Progress bar -->
-<div class="progress-wrap" id="progressWrap" style="display:none">
+<div class="progress-wrap" id="progressWrap" style="display:none" role="region" aria-label="התקדמות באימון">
   <div class="progress-info">
     <span id="progressLabel" aria-live="polite" aria-atomic="true">תרגיל 0 מתוך 0</span>
     <span id="totalTimeLabel">⏱ 0:00</span>
@@ -243,24 +251,24 @@
 </div>
 
 <!-- Elapsed total time -->
-<div class="elapsed-bar" id="elapsedBar" style="display:none">
+<div class="elapsed-bar" id="elapsedBar" style="display:none" role="status" aria-label="זמן כולל">
   <span class="elapsed-label" id="elapsedLabel">זמן אימון:</span>
   <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
 </div>
 
 <!-- Stage (main exercise display) -->
 <main class="stage" id="stage">
-  <div class="empty-state" id="emptyState">
-    <div class="big">🏋️</div>
+  <div class="empty-state" id="emptyState" role="status" aria-live="polite">
+    <div class="big" aria-hidden="true">🏋️</div>
     <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור למסך בניית האימון.</p>
-    <button type="button" class="go-back" onclick="window.location.href='../'">→ בנה אימון</button>
-    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../library.html'">ספריית סרטונים</button>
-    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'">יומן ביצוע</button>
+    <button type="button" class="go-back" onclick="window.location.href='../'" aria-label="מעבר למסך בניית אימון">→ בנה אימון</button>
+    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../library.html'" aria-label="מעבר לספריית סרטונים">ספריית סרטונים</button>
+    <button type="button" class="go-back" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'" aria-label="מעבר ליומן ביצוע">יומן ביצוע</button>
   </div>
 </main>
 
 <!-- Controls -->
-<div class="controls" id="controlsWrap" style="display:none" role="group" aria-label="פקדי אימון">
+<div class="controls" id="controlsWrap" style="display:none" role="toolbar" aria-label="פקדי אימון">
   <button type="button" class="ctrl-btn" id="btnBack" onclick="goBack()" title="חזור" aria-label="חזור לתרגיל הקודם">
     <span class="icon" aria-hidden="true">⏮</span><span class="label">חזור</span>
   </button>
@@ -278,18 +286,18 @@
     <span class="icon" aria-hidden="true">🔁</span><span class="label">החלף</span>
   </button>
 </div>
-<div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%"></div>
+<div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
-<div id="completionScreen">
-  <div class="confetti-row">🎉🏆🎉</div>
+<div id="completionScreen" role="region" aria-label="סיכום סיום אימון">
+  <div class="confetti-row" aria-hidden="true">🎉🏆🎉</div>
   <div class="complete-title">כל הכבוד!</div>
   <div class="complete-subtitle">סיימת את האימון בהצלחה</div>
-  <div class="stats-grid">
-    <div class="stat-card"><div class="val" id="statTime">—</div><div class="lbl">זמן כולל</div></div>
-    <div class="stat-card"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
-    <div class="stat-card"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
+  <div class="stats-grid" role="group" aria-label="נתוני אימון שהושלם">
+    <div class="stat-card" role="group" aria-label="זמן כולל"><div class="val" id="statTime">—</div><div class="lbl">זמן כולל</div></div>
+    <div class="stat-card" role="group" aria-label="תרגילים שהושלמו"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
+    <div class="stat-card" role="group" aria-label="סטים שהושלמו"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
@@ -298,13 +306,13 @@
       <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
       <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
-    <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0" aria-label="שלח סיכום למאמן בוואטסאפ">💬 שלח סיכום למאמן בוואטסאפ</button>
     <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0f0f13;color:#c4b5fd;border:1px solid #2a2a4a;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
-    <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#1a1a2e;border:1px solid #3a3a5a">📋 העתק קוד</button>
+    <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#1a1a2e;border:1px solid #3a3a5a" aria-label="העתק קוד סיכום לייבוא ביומן המאמן">📋 העתק קוד</button>
   </div>
-  <button type="button" class="done-btn" onclick="window.location.href='../'">→ בנה אימון</button>
-  <button type="button" class="done-btn" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'">לייבוא ביומן</button>
+  <button type="button" class="done-btn" onclick="window.location.href='../'" aria-label="מעבר למסך בניית אימון">→ בנה אימון</button>
+  <button type="button" class="done-btn" style="background:#1a1a2e;border:1px solid #3a3a5a" onclick="window.location.href='../journal.html'" aria-label="מעבר ליומן ביצוע לייבוא נתונים">לייבוא ביומן</button>
 </div>
 
 <script src="../js/core.js"></script>
@@ -497,7 +505,7 @@ function renderExercise(step) {
     : step.reps
       ? `<div class="reps-display" aria-live="polite">${esc(step.reps)} חזרות</div>` : '';
 
-  const notes = step.notes ? `<div class="ex-notes">💡 ${esc(step.notes)}</div>` : '';
+  const notes = step.notes ? `<div class="ex-notes" role="note" aria-label="דגשי ביצוע">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
   const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
 
@@ -519,6 +527,9 @@ function renderExercise(step) {
   // right next to it with that label, and a skip is what the trainer sees in
   // the completion code.
   btnDone.querySelector('.label').textContent = step.duration ? 'סיימתי' : 'סיימתי סט';
+  if (typeof btnDone.setAttribute === 'function') {
+    btnDone.setAttribute('aria-label', step.duration ? 'סיימתי' : 'סיימתי סט');
+  }
   const btnSwapEx = document.getElementById('btnSwap');
   if (btnSwapEx) btnSwapEx.style.display = '';
 
@@ -538,7 +549,7 @@ function renderRest(step) {
   stage.className = 'stage rest-mode';
 
   const nextHtml = step.nextName ? `
-    <div class="next-preview">
+    <div class="next-preview" role="region" aria-label="התרגיל הבא">
       <div class="label">הבא:</div>
       <div class="name">${esc(step.nextName)}</div>
       ${step.nextDetail ? `<div class="detail">${esc(step.nextDetail)}</div>` : ''}
@@ -780,14 +791,14 @@ function toggleSwap() {
   if (!alts.length) {
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
-    panel.innerHTML = '<p style="color:#9ca3af;font-size:0.85rem;text-align:center">אין חלופה עם סרטון באותה קבוצת שרירים</p>';
+    panel.innerHTML = '<p role="status" style="color:#9ca3af;font-size:0.85rem;text-align:center">אין חלופה עם סרטון באותה קבוצת שרירים</p>';
     return;
   }
   panel.hidden = false;
   btn.setAttribute('aria-expanded', 'true');
   panel.innerHTML = '<p style="color:#9ca3af;font-size:0.8rem;margin-bottom:8px;text-align:center">לא יכול/ה את התרגיל? בחרו חלופה מאותה ספרייה</p>' +
     alts.map(function (a) {
-      return '<button type="button" class="ctrl-btn" data-swap="' + esc(a.id) + '" style="width:100%;margin-bottom:6px;flex-direction:row;justify-content:space-between">' +
+      return '<button type="button" class="ctrl-btn" data-swap="' + esc(a.id) + '" aria-label="החלף לתרגיל ' + esc(a.he) + '" style="width:100%;margin-bottom:6px;flex-direction:row;justify-content:space-between">' +
         '<span>' + esc(a.he) + '</span><span class="label">' + esc((a.muscles || []).map(TH.muscleLabel).join(' · ')) + '</span></button>';
     }).join('');
   panel.querySelectorAll('[data-swap]').forEach(function (b) {
