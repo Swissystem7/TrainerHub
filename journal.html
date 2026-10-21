@@ -37,6 +37,10 @@
     .person { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; justify-content: space-between; }
     .risk { color: #f0b542; font-size: .78rem; }
     .empty { color: var(--muted); text-align: center; padding: 24px 8px; line-height: 1.7; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
     @media (max-width: 640px) { .row, .stats { grid-template-columns: 1fr; } }
   </style>
 <script src="./js/sentry-init.js"></script>
@@ -64,18 +68,18 @@
     <p>מדביקים את קוד <code>TH1</code> שהמתאמן מעתיק ממסך הסיום. הרשת היא 28 יום אחרונים. «הצע שבוע הבא» משנה סטים לפי קושי ודילוגים.</p>
   </header>
 
-  <form class="card" id="importForm">
-    <h2>ייבוא קוד מהוואטסאפ</h2>
+  <form class="card" id="importForm" role="region" aria-labelledby="importHeading">
+    <h2 id="importHeading">ייבוא קוד מהוואטסאפ</h2>
     <label for="importCode">קוד TH1 או JSON</label>
     <textarea id="importCode" name="importCode" dir="ltr" placeholder="TH1.eyJ2IjoxLC..." autocomplete="off"></textarea>
-    <div class="actions">
-      <button type="submit" class="th-btn">ייבא ליומן</button>
+    <div class="actions" role="toolbar" aria-label="פעולות ייבוא קוד">
+      <button type="submit" class="th-btn" aria-label="ייבא קוד ליומן">ייבא ליומן</button>
     </div>
-    <p class="status" id="importStatus" role="status"></p>
+    <p class="status" id="importStatus" role="status" aria-live="polite"></p>
   </form>
 
-  <form class="card" id="addForm">
-    <h2>מתאמן חדש (נשמר כאן בלבד)</h2>
+  <form class="card" id="addForm" role="region" aria-labelledby="addHeading">
+    <h2 id="addHeading">מתאמן חדש (נשמר כאן בלבד)</h2>
     <div class="row">
       <div>
         <label for="newName">שם</label>
@@ -86,14 +90,14 @@
         <input id="newPhone" name="newPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X…">
       </div>
     </div>
-    <div class="actions">
-      <button type="submit" class="th-btn ghost">הוסף מתאמן</button>
+    <div class="actions" role="toolbar" aria-label="פעולות הוספת מתאמן">
+      <button type="submit" class="th-btn ghost" aria-label="הוסף מתאמן חדש">הוסף מתאמן</button>
     </div>
     <p class="honest">השם והטלפון לא נשלחים לשום שרת. תזכורת פותחת wa.me במכשיר.</p>
   </form>
 
-  <form class="card" id="coachBuildForm">
-    <h2>בנה ושייך אימון למתאמן</h2>
+  <form class="card" id="coachBuildForm" role="region" aria-labelledby="coachBuildHeading">
+    <h2 id="coachBuildHeading">בנה ושייך אימון למתאמן</h2>
     <p class="honest">בוחרים מתאמן שכבר הוספתם. האימון נבנה מהמאגר ונשמר בדפדפן הזה בלבד.</p>
     <label for="coachClient">מתאמן</label>
     <select id="coachClient" name="coachClient" required></select>
@@ -146,19 +150,19 @@
         </select>
       </div>
     </div>
-    <div class="actions">
-      <button type="submit" class="th-btn">בנה ושייך אימון</button>
+    <div class="actions" role="toolbar" aria-label="פעולות בניית אימון ושיוך למתאמן">
+      <button type="submit" class="th-btn" aria-label="בנה ושייך אימון למתאמן">בנה ושייך אימון</button>
     </div>
     <p class="status" id="coachStatus" role="status" aria-live="polite"></p>
   </form>
 
-  <div class="stats" aria-live="polite">
+  <section class="stats" aria-label="סטטיסטיקת יומן ביצוע" aria-live="polite">
     <div class="stat"><b id="clActive">0</b> פעילים ב־7 ימים</div>
     <div class="stat"><b id="clAdherence">0%</b> ימים עם ביצוע (28)</div>
     <div class="stat"><b id="clRisk">0</b> בלי ביצוע שבוע+</div>
-  </div>
+  </section>
 
-  <div id="list"></div>
+  <section id="list" role="region" aria-label="רשימת מתאמנים וביצועים"></section>
 </main>
 <script src="./js/core.js"></script>
 <script>
@@ -253,7 +257,7 @@
     refreshCoachClients(selectedClientId);
     var list = $('list');
     if (!clients.length) {
-      list.innerHTML = '<p class="empty">עדיין אין מתאמנים אמיתיים. הוסיפו שם או ייבאו קוד TH1 ממסך הסיום.</p>';
+      list.innerHTML = '<p class="empty" role="status" aria-live="polite">עדיין אין מתאמנים אמיתיים. הוסיפו שם או ייבאו קוד TH1 ממסך הסיום.</p>';
       $('clActive').textContent = '0';
       $('clAdherence').textContent = '0%';
       $('clRisk').textContent = '0';
@@ -277,21 +281,21 @@
         return '<span class="dot' + (set[k] ? ' on' : '') + '" title="' + TH.esc(k) + '"></span>';
       }).join('');
       return '<article class="card">' +
-        '<div class="person">' +
+        '<div class="person" role="region" aria-label="כרטיס מתאמן ' + TH.esc(c.name || 'מתאמן') + '">' +
           '<div>' +
             '<h2>' + TH.esc(c.name || 'מתאמן') +
-              (weekEmpty ? ' <span class="risk">בלי ביצוע שבוע</span>' : '') +
+              (weekEmpty ? ' <span class="risk" role="note">בלי ביצוע שבוע</span>' : '') +
             '</h2>' +
             '<p class="honest">' + TH.esc(c.plan || 'בלי תוכנית משויכת') + ' · ' +
               TH.esc(lastTxt) +
               (last && last.rpe ? ' · קושי ' + last.rpe + '/5' : '') +
               ' · ' + adh + '% מ־28 יום</p>' +
           '</div>' +
-          '<div class="actions">' +
+          '<div class="actions" role="toolbar" aria-label="פעולות עבור ' + TH.esc(c.name || 'מתאמן') + '">' +
             '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '" aria-label="פתח כמתאמן עבור ' + TH.esc(c.name || 'מתאמן') + '">פתח כמתאמן</button>' +
             '<button type="button" class="th-btn ghost" data-act="share" data-i="' + i + '" aria-label="שתף אימון עבור ' + TH.esc(c.name || 'מתאמן') + '">שתף אימון ללקוח</button>' +
             '<button type="button" class="th-btn ghost" data-act="pdf" data-i="' + i + '" aria-label="דף להדפסה / PDF עבור ' + TH.esc(c.name || 'מתאמן') + '">דף להדפסה / PDF</button>' +
-            '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '" aria-label="תזכורת עבור ' + TH.esc(c.name || 'מתאמן') + '">תזכורת</button>' +
+            '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '" aria-label="תזכורת בוואטסאפ עבור ' + TH.esc(c.name || 'מתאמן') + '">תזכורת</button>' +
             '<button type="button" class="th-btn ghost" data-act="next" data-i="' + i + '" aria-label="הצע שבוע הבא עבור ' + TH.esc(c.name || 'מתאמן') + '">הצע שבוע הבא</button>' +
             '<button type="button" class="th-btn ghost" data-act="assign" data-i="' + i + '" aria-label="שייך אימון פעיל ל' + TH.esc(c.name || 'מתאמן') + '">שייך אימון פעיל</button>' +
           '</div>' +
