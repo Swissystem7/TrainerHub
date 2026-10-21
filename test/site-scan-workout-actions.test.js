@@ -85,7 +85,7 @@ async function mount() {
 }
 
 test('site-scan.html declares action buttons in #build for all builder paths', function () {
-  assert.match(html, /<button type="button" id="start">התחל במצב אימון<\/button>/);
+  assert.match(html, /<button type="button" id="start"[^>]*>התחל במצב אימון<\/button>/);
   assert.match(html, /<button type="button" id="previewTrainee" class="ghost">פתח כמתאמן<\/button>/);
   assert.match(html, /<button type="button" id="share" class="ghost">שתף אימון ללקוח<\/button>/);
   assert.match(html, /<button type="button" id="pdf" class="ghost">דף להדפסה \/ PDF<\/button>/);
