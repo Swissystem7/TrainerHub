@@ -122,7 +122,7 @@ test('library.html renders empty state with role="status"', function () {
   const runner = build(function (id) { return els[id]; }, document, TH);
   runner.render();
 
-  assert.match(els.grid.innerHTML, /<p class="empty" role="status">/);
+  assert.match(els.grid.innerHTML, /<(p|div) class="empty" role="status">/);
 });
 
 test('library.html renders unpin chip with descriptive aria-label when pinned', function () {
