@@ -34,7 +34,14 @@
     .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .actions button { flex: 1; min-width: 96px; margin-top: 0; padding: 8px 10px; font-size: .78rem; font-weight: 700; border: 0; border-radius: 8px; background: var(--lime); color: #101312; cursor: pointer; font-family: inherit; }
     .actions button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    .chip.reset-chip { background: #111513; border-color: #3a3a5a; color: #c4b5fd; margin-inline-start: auto; }
+    .chip.reset-chip:hover { border-color: var(--lime); color: var(--ink); }
     .empty { color: var(--muted); text-align: center; padding: 40px 12px; }
+    .empty button { margin-top: 12px; }
+    button:focus-visible, input:focus-visible, select:focus-visible, .chip:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
     .alts { font-size: .8rem; color: var(--muted); }
     .alts button { background: none; border: 0; color: var(--lime); cursor: pointer; font: inherit; padding: 0 4px; }
     .draft { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 18px; }
@@ -81,14 +88,14 @@
     </div>
   </section>
 
-  <form class="filters" id="filters" role="search">
+  <form class="filters" id="filters" role="search" aria-label="סינון תרגילים בספרייה">
     <div>
       <label for="q">חיפוש תרגיל</label>
-      <input id="q" type="search" placeholder="פלאנק, גומיות, קונוסים…" autocomplete="off">
+      <input id="q" type="search" placeholder="פלאנק, גומיות, קונוסים…" autocomplete="off" aria-label="חיפוש תרגיל לפי שם או מילת מפתח">
     </div>
     <div>
       <label for="muscle">שריר</label>
-      <select id="muscle">
+      <select id="muscle" aria-label="סינון לפי קבוצת שרירים">
         <option value="">הכל</option>
         <option value="core">ליבה</option>
         <option value="legs">רגליים</option>
@@ -101,7 +108,7 @@
     </div>
     <div>
       <label for="equipment">ציוד</label>
-      <select id="equipment">
+      <select id="equipment" aria-label="סינון לפי ציוד">
         <option value="">הכל</option>
         <option value="none">משקל גוף</option>
         <option value="band">גומיות</option>
@@ -116,7 +123,7 @@
     </div>
     <div>
       <label for="level">רמה</label>
-      <select id="level">
+      <select id="level" aria-label="סינון לפי רמת קושי">
         <option value="">הכל</option>
         <option value="beginner">מתחילים</option>
         <option value="intermediate">ביניים</option>
@@ -131,9 +138,10 @@
     <button type="button" class="chip" data-tag="sport" aria-pressed="false">ספורט</button>
     <button type="button" class="chip" data-tag="band" aria-pressed="false">גומיות</button>
     <button type="button" class="chip" data-tag="cones" aria-pressed="false">קונוסים</button>
+    <button type="button" class="chip reset-chip" id="resetFiltersBtn" aria-label="איפוס כל המסננים והצגת כל התרגילים">נקה סינון</button>
   </div>
   <p class="stats" id="stats" aria-live="polite"></p>
-  <div class="grid" id="grid"></div>
+  <div class="grid" id="grid" role="region" aria-label="ספריית תרגילים"></div>
 </main>
 <script src="./js/core.js"></script>
 <script>
@@ -180,7 +188,10 @@
     }
     var grid = $('grid');
     if (!list.length) {
-      grid.innerHTML = '<p class="empty" role="status">אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>';
+      grid.innerHTML = '<div class="empty" role="status">' +
+        '<p>אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>' +
+        '<button type="button" class="th-btn ghost" id="emptyResetBtn" aria-label="נקה את כל המסננים והצג את כל התרגילים">נקה סינון והצג הכל</button>' +
+        '</div>';
       return;
     }
     grid.innerHTML = list.map(function (e) {
@@ -267,7 +278,33 @@
     $('q').focus();
   }
 
+  function resetFilters() {
+    pinned = '';
+    $('q').value = '';
+    tag = '';
+    document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
+      el.setAttribute('aria-pressed', el.getAttribute('data-tag') === '' ? 'true' : 'false');
+    });
+    ['muscle', 'equipment', 'level'].forEach(function (id) { $(id).value = ''; });
+    render();
+    if ($('q') && typeof $('q').focus === 'function') $('q').focus();
+  }
+
+  var resetFiltersBtn = $('resetFiltersBtn');
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener('click', resetFilters);
+  }
+  $('filters').addEventListener('reset', function (e) {
+    e.preventDefault();
+    resetFilters();
+  });
+
   $('grid').addEventListener('click', function (e) {
+    var reset = e.target.closest && e.target.closest('#emptyResetBtn');
+    if (reset) {
+      resetFilters();
+      return;
+    }
     var jump = e.target.closest && e.target.closest('[data-jump]');
     if (jump) {
       jumpToAlternative(jump.getAttribute('data-jump'), jump.textContent.trim());
