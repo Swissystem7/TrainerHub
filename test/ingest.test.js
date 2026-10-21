@@ -157,3 +157,17 @@ test('a rest or work line does not borrow the seconds of the line next to it', f
   assert.equal(Ingest.scanDefaults('40 שניות עבודה').workSeconds, 40);
   assert.equal(Ingest.scanDefaults('עבודה 40 שנ').workSeconds, 40);
 });
+
+test('toWorkout returns default empty workout object for null input', function () {
+  const readyWorkouts = require('../js/ready-workouts.js');
+  const result = readyWorkouts.toWorkout(null);
+  assert.deepEqual(result, {
+    "title": "",
+    "duration_minutes": 0,
+    "participants": 0,
+    "equipment": [],
+    "phases": [],
+    "intensity": "",
+    "tags": []
+  });
+});
