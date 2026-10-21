@@ -30,7 +30,8 @@
     .thumbs img { width: 31%; max-width: 160px; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
     .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
     button, .shot { min-height: 44px; }
-    button:focus-visible, input:focus-visible, select:focus-visible, .shot:focus-within { outline: 3px solid var(--lime); outline-offset: 2px; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .shot:focus-within { outline: 3px solid var(--lime); outline-offset: 2px; }
+    .empty-plan { text-align: center; padding: 20px 12px; margin: 12px 0 0; background: #111513; border: 1px dashed var(--line); border-radius: 12px; line-height: 1.6; }
     .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
     .actions button { margin-top: 0; }
     .meters { max-width: 220px; }
@@ -66,18 +67,18 @@
   <section aria-labelledby="photos-h">
     <h2 id="photos-h">1. צילום השטח</h2>
     <label class="shot" for="photos">📷 צלמו או בחרו עד 3 תמונות
-      <input id="photos" type="file" accept="image/*" capture="environment" multiple>
+      <input id="photos" type="file" accept="image/*" capture="environment" multiple aria-label="צילום או בחירת עד 3 תמונות של השטח" aria-describedby="scanStatus">
     </label>
-    <div class="thumbs" id="thumbs"></div>
-    <p class="muted" id="scanStatus" aria-live="polite">אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.</p>
+    <div class="thumbs" id="thumbs" role="region" aria-label="תמונות שטח שנבחרו"></div>
+    <p class="muted" id="scanStatus" role="status" aria-live="polite">אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.</p>
   </section>
 
   <section aria-labelledby="chips-h">
     <h2 id="chips-h">2. מה יש בשטח?</h2>
     <p class="muted">לחיצה מסמנת או מבטלת. סימן ? = זיהוי לא בטוח, כדאי לבדוק.</p>
-    <div class="meters"><label for="meters">רוחב משוער במטרים (לא חובה)</label><input id="meters" type="number" min="1" max="500" inputmode="numeric" placeholder="למשל 4"></div>
+    <div class="meters"><label for="meters">רוחב משוער במטרים (לא חובה)</label><input id="meters" type="number" min="1" max="500" inputmode="numeric" placeholder="למשל 4" aria-label="רוחב משוער במטרים"></div>
     <div id="chipsOut"></div>
-    <p id="summary" class="muted"></p>
+    <p id="summary" class="muted" role="status" aria-live="polite"></p>
   </section>
 
   <section aria-labelledby="build-h">
@@ -86,13 +87,15 @@
       <div><label for="group">כמות חניכים</label><input id="group" type="number" min="1" max="200" value="12" inputmode="numeric"></div>
       <div><label for="season">עונה</label><select id="season"><option value="summer">קיץ</option><option value="winter">חורף</option></select></div>
     </div>
-    <div class="actions">
-      <button type="button" id="build">בנה אימון לשטח</button>
-      <button type="button" id="reset" class="ghost">נקה והתחל מחדש</button>
+    <div class="actions" role="toolbar" aria-label="פעולות בניית אימון לשטח">
+      <button type="button" id="build" aria-label="בנה אימון לשטח לפי המאפיינים שסומנו">בנה אימון לשטח</button>
+      <button type="button" id="reset" class="ghost" aria-label="נקה נתונים והתחל סריקה מחדש">נקה והתחל מחדש</button>
     </div>
-    <div id="planOut" aria-live="polite"></div>
+    <div id="planOut" aria-live="polite">
+      <p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי.</p>
+    </div>
     <div class="actions" id="scanActions" hidden>
-      <button type="button" id="start">התחל במצב אימון</button>
+      <button type="button" id="start" aria-label="התחל אימון שטח במצב אימון חי">התחל במצב אימון</button>
       <button type="button" id="previewTrainee" class="ghost">פתח כמתאמן</button>
       <button type="button" id="share" class="ghost">שתף אימון ללקוח</button>
       <button type="button" id="pdf" class="ghost">דף להדפסה / PDF</button>
@@ -133,6 +136,7 @@
       var mine = all.filter(function (c) { return c.kind === g.kind; });
       return '<h3>' + esc(g.he) + '</h3><div class="chips" role="group" aria-label="' + esc(g.he) + '">' + mine.map(function (c) {
         return '<button type="button" data-kind="' + esc(c.kind) + '" data-id="' + esc(c.id) + '" aria-pressed="' + c.on + '"' +
+          ' aria-label="' + esc(c.he) + '"' +
           (unsure(c) ? ' class="unsure" title="זיהוי לא בטוח"' : '') + '>' + esc(c.he.replace(/^(רוחב|משטח|סכנה): /, '') +
           (c.kind === 'width' && c.on && profile.approxMeters ? ' ~' + profile.approxMeters + ' מ׳' : '')) + '</button>';
       }).join('') + '</div>';
@@ -159,9 +163,9 @@
 
   function showThumbs(files) {
     $('thumbs').innerHTML = '';
-    files.forEach(function (f) {
+    files.forEach(function (f, idx) {
       var img = document.createElement('img');
-      img.alt = 'תמונת השטח';
+      img.alt = 'תמונת שטח ' + (idx + 1);
       img.src = URL.createObjectURL(f);
       img.onload = function () { URL.revokeObjectURL(img.src); };
       $('thumbs').appendChild(img);
@@ -203,12 +207,12 @@
   }
 
   function buildNow() {
-    if (!THBooklet.data) { $('planOut').innerHTML = '<p class="muted">תוכן החוברת עוד לא נטען.</p>'; return; }
+    if (!THBooklet.data) { $('planOut').innerHTML = '<p class="muted empty-plan" role="status">תוכן החוברת עוד לא נטען.</p>'; return; }
     var res = THSitePlan.build(profile, { group: $('group').value, season: $('season').value });
     current = res.workout;
     var layout = { waves: 'בגלים', stations: 'בתחנות' }[res.layout];
     $('planOut').innerHTML =
-      res.warnings.map(function (w) { return '<div class="warn">⚠️ ' + esc(w) + '</div>'; }).join('') +
+      res.warnings.map(function (w) { return '<div class="warn" role="alert">⚠️ ' + esc(w) + '</div>'; }).join('') +
       '<h3>' + esc(current.title) + ' · ' + current.duration_minutes + ' דק׳' + (layout ? '<span class="pill">' + layout + '</span>' : '') + '</h3>' +
       '<ul class="why">' + res.reasons.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
       current.phases.map(function (p) {
@@ -226,7 +230,7 @@
     $('photos').value = '';
     $('thumbs').innerHTML = '';
     $('meters').value = '';
-    $('planOut').innerHTML = '';
+    $('planOut').innerHTML = '<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי.</p>';
     $('start').hidden = true;
     if ($('scanActions')) $('scanActions').hidden = true;
     if ($('scanGateHost')) $('scanGateHost').innerHTML = '';
