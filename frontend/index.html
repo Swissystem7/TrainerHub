@@ -155,20 +155,41 @@
     }
     #saveToast.visible { display: block; }
     .equipment-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    button:focus-visible, a:focus-visible, textarea:focus-visible, .history-item:focus-visible {
+      outline: 2px solid #a78bfa;
+      outline-offset: 2px;
+    }
+    .action-btn:focus-visible, .example-btn:focus-visible, .parse-btn:focus-visible {
+      outline: 2px solid #c4b5fd;
+      outline-offset: 2px;
+    }
+    .example-btn.ghost {
+      border-color: #4b5563;
+      color: #9ca3af;
+    }
+    .example-btn.ghost:hover {
+      border-color: #9ca3af;
+      color: #f0f0f0;
+    }
+    .history-item:focus {
+      border-color: #7c3aed;
+    }
   </style>
 <script src="../js/sentry-init.js"></script>
 </head>
 <body>
-<a class="skip-link" href="#workoutInput">דלג לתוכן</a>
+<a class="skip-link" href="#workoutInput">דלג לעורך האימון</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
   <a href="../">בנה אימון</a>
   <a href="../weekly.html">בונה שבועי</a>
+  <a href="../booklet.html">חוברת הקורס</a>
+  <a href="../site-scan.html">סריקת שטח</a>
   <a href="../library.html">ספריית סרטונים</a>
   <a href="../journal.html">יומן ביצוע</a>
   <a href="../offer.html">הצעה למאמנים</a>
   <a href="../manage.html">ניהול מאגר</a>
-  <span class="chip on">טקסט לכרטיסייה</span>
+  <span class="chip on" aria-current="page">טקסט לכרטיסייה</span>
   <a href="./workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
@@ -179,8 +200,8 @@
   <h1>הדביקו אימון בעברית, קבלו כרטיסייה.</h1>
   <p>בלי הרשמה ובלי קהילת מאמנים. אם אין שרת מקומי — אותו מנוע כללים שרץ כאן.</p>
 </header>
-<div id="saveToast" role="status">האימון נשמר בדפדפן.</div>
-<div class="container">
+<div id="saveToast" role="status" aria-live="polite">האימון נשמר בדפדפן.</div>
+<main class="container" id="main-content">
   <section class="panel" aria-labelledby="workoutInputLabel">
     <h2 id="workoutInputLabel">תיאור אימון</h2>
     <textarea id="workoutInput" aria-labelledby="workoutInputLabel" placeholder="כתבו או הדביקו תיאור אימון בעברית."></textarea>
@@ -188,6 +209,7 @@
       <button type="button" class="example-btn" data-ex="1" aria-label="טען דוגמה: אימון פונקציונלי">דוגמה: פונקציונלי</button>
       <button type="button" class="example-btn" data-ex="2" aria-label="טען דוגמה: אימון כוח">דוגמה: כוח</button>
       <button type="button" class="example-btn" data-ex="3" aria-label="טען דוגמה: אימון HIIT">דוגמה: HIIT</button>
+      <button type="button" class="example-btn ghost" id="clearBtn" aria-label="נקה עורך טקסט">נקה עורך</button>
     </div>
     <button type="button" class="parse-btn" id="parseBtn" aria-label="המר תיאור אימון לכרטיסייה">המר לכרטיסייה</button>
     <p class="honest">אין כאן בינה מלאכותית בדמו הציבורי. התוצאה היא פירוק טקסט + התאמה למאגר.</p>
@@ -203,7 +225,7 @@
     <h2 id="cardPanelHeading">כרטיסיית אימון</h2>
     <div class="card-empty" id="cardEmpty" role="status" aria-live="polite">הזינו תיאור ולחצו «המר לכרטיסייה».</div>
     <div id="cardContent" hidden></div>
-    <div class="action-bar" id="actionBar" hidden role="toolbar" aria-label="פעולות כרטיסיית אימון">
+    <div class="action-bar" id="actionBar" role="toolbar" aria-label="פעולות כרטיסיית אימון" hidden>
       <button type="button" class="action-btn primary" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>
       <button type="button" class="action-btn" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>
       <button type="button" class="action-btn" id="shareBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>
@@ -214,7 +236,7 @@
     </div>
     <div id="gateHost"></div>
   </section>
-</div>
+</main>
 <script src="../js/core.js?v=netanya-3"></script>
 <script src="parse-workout.js?v=netanya-2"></script>
 <script src="saved-workouts.js?v=netanya-2"></script>
@@ -298,6 +320,8 @@
   function parseWorkout() {
     var text = $('workoutInput').value.trim();
     if (!text) {
+      $('cardContent').hidden = true;
+      $('actionBar').hidden = true;
       $('cardEmpty').hidden = false;
       $('cardEmpty').textContent = 'כתבו תיאור אימון קודם.';
       return;
@@ -313,6 +337,9 @@
     } catch (error) {
       currentWorkout = null;
       $('actionBar').hidden = true;
+      $('cardEmpty').hidden = true;
+      $('cardContent').hidden = false;
+      $('cardContent').innerHTML = '<div class="error-card" role="alert"><strong>ההמרה נכשלה</strong><p class="honest" style="color:#fca5a5;margin-top:6px">לא הצלחנו לפענח את מבנה האימון. בדקו שכל תרגיל מופיע בשורה נפרדת עם חזרות או זמנים ונסו שוב.</p></div>';
       $('libraryStatus').textContent = 'ההמרה נכשלה. הטקסט נשאר בעורך.';
     }
   }
@@ -339,6 +366,18 @@
       $('workoutInput').focus();
     });
   });
+  if ($('clearBtn')) {
+    $('clearBtn').addEventListener('click', function () {
+      $('workoutInput').value = '';
+      currentWorkout = null;
+      $('actionBar').hidden = true;
+      $('cardContent').hidden = true;
+      $('cardEmpty').hidden = false;
+      $('cardEmpty').textContent = 'העורך נוקה. הזינו תיאור חדש ולחצו «המר לכרטיסייה».';
+      $('libraryStatus').textContent = 'העורך נוקה.';
+      $('workoutInput').focus();
+    });
+  }
   $('parseBtn').addEventListener('click', parseWorkout);
   $('startBtn').addEventListener('click', function () {
     if (!currentWorkout) return;
@@ -425,6 +464,7 @@
     if (currentWorkout) {
       $('workoutInput').value = currentWorkout.source_text || '';
       showCard(currentWorkout, false);
+      $('libraryStatus').textContent = 'האימון נטען מהדפדפן.';
     }
   }
 
