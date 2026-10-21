@@ -32,13 +32,25 @@
       });
     }
 
+    function emptyWorkout() {
+      return {
+        title: '',
+        duration_minutes: 0,
+        participants: 0,
+        equipment: [],
+        phases: [],
+        intensity: '',
+        tags: []
+      };
+    }
+
     function toWorkout(entry) {
       if (!entry) {
-        return null;
+        return emptyWorkout();
       }
       var text = typeof entry === 'string' ? entry : entry.text;
       if (!text || !THIngest || typeof THIngest.ingestText !== 'function') {
-        return null;
+        return emptyWorkout();
       }
       return THIngest.ingestText(text);
     }
