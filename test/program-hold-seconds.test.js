@@ -53,7 +53,10 @@ test('catalog planks are holds, «מטפס הרים עם פלאנק» keeps reps
   const clip = function (he) {
     return { he: he, muscles: ['core'], equipment: ['none'], file: 'https://example.com/' + encodeURIComponent(he) + '.mp4', available: true };
   };
+  // As in js/catalog.json, the built-in plank has a clip: a core slot whose built-ins
+  // have no clip puts them first (#251) and the catalog planks would never be picked.
   TH.setCatalog({
+    'plank': clip('פלאנק'),
     'פלאנק_צידי': clip('פלאנק צידי'),
     'פלאנק_ברכיים': clip('פלאנק ברכיים'),
     'מטפס_הרים_עם_פלאנק': clip('מטפס הרים עם פלאנק'),
