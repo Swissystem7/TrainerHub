@@ -81,9 +81,9 @@ test('booklet.html static: actions toolbar and action buttons have accessible ro
 });
 
 test('booklet.html static: drill search input, live stats, and results container have accessible attributes', function () {
-  assert.match(html, /<input id="dq" type="search"[^>]+aria-label="חיפוש בבנק התרגילים"[^>]+aria-controls="drillOut"/);
+  assert.match(html, /<input id="dq" type="search"[^>]+aria-label="חיפוש תרגיל לפי שם או אזור גוף"[^>]+aria-controls="drillOut"/);
   assert.match(html, /<p class="muted" id="drillStats"[^>]+role="status"[^>]+aria-live="polite"/);
-  assert.match(html, /<div class="grid" id="drillOut"[^>]+role="region"[^>]+aria-label="תוצאות בנק תרגילים"/);
+  assert.match(html, /<div class="grid" id="drillOut"[^>]+role="region"[^>]+aria-label="רשימת תרגילים מהחוברת"/);
 });
 
 test('booklet.html static: fitness calculator and safety print buttons have accessible labels', function () {
@@ -100,7 +100,7 @@ test('booklet.html dynamic: drill search with no matching results renders empty 
   page.$('dq').value = 'חיפוש שאין לו שום תוצאות במאגר';
   page.$('dq').fire('input');
   assert.match(page.$('drillStats').textContent, /0 תרגילים/);
-  assert.match(page.$('drillOut').innerHTML, /<p class="muted" role="status">לא נמצאו תרגילים התואמים את החיפוש\.<\/p>/);
+  assert.match(page.$('drillOut').innerHTML, /<div class="card empty-drills" role="status"><p>לא נמצאו תרגילים התואמים את החיפוש/);
 });
 
 test('booklet.html dynamic: fitness scoring renders weighted score with role=status', async function () {
