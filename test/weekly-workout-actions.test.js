@@ -106,7 +106,7 @@ function loadPage(opts) {
 }
 
 test('weekly.html defines action buttons with accessible aria-labels for each day', function () {
-  assert.match(html, /aria-label="התחל '\s*\+\s*esc\(dayName\)\s*\+\s*'"/);
+  assert.match(html, /aria-label="התחל '\s*\+\s*esc\(dayName\)\s*\+\s*' במצב אימון חי"/);
   assert.match(html, /aria-label="פתח כמתאמן עבור '\s*\+\s*esc\(dayName\)\s*\+\s*'"/);
   assert.match(html, /aria-label="שתף אימון ללקוח עבור '\s*\+\s*esc\(dayName\)\s*\+\s*'"/);
   assert.match(html, /aria-label="דף להדפסה \/ PDF עבור '\s*\+\s*esc\(dayName\)\s*\+\s*'"/);
