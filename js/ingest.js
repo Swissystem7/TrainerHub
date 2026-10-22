@@ -170,6 +170,9 @@
   // «סקוואט 10-12», «פלאנק 30-45 שניות», «10 עד 12 חזרות»: a range, not a name part (not a clock «1:00-1:30»).
   var RANGE_RX = /(?<![\d:.])(\d+)\s*(?:[\-–—]|עד)\s*(\d+)(?![\d:.])(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות|סטים|סבבים)(?![\u0590-\u05FF]))?/;
   var CLOCK_RANGE_RX = /(?<!\d)(\d{1,2}:[0-5]\d)\s*(?:[\-–—]|עד)\s*(\d{1,2}:[0-5]\d)(?!\d)/;
+  // «לחיצת חזה 10-8-6», «סקוואט 5-5-5-5-5», «דדליפט 8/6/4», «מתח 12-10-8-6 חזרות»: a rep ladder,
+  // three counts or more joined tight. Not a range («10-12»), not a load/distance («60-70-80 ק"ג»).
+  var LADDER_RX = /(?<![\d:.\/\-–—])(\d{1,3})((?:[\-–—\/]\d{1,3}){2,})(?![\d:.\/\-–—]|\s*(?:ק\s*["״׳']?\s*[גמ]|קילו|kg|km|מטר|מ[׳']))(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות)(?![א-ת]))?/i;
   var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])/;
   var SLASH_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\/\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
@@ -561,6 +564,23 @@
     var duration_seconds = defaults.workSeconds != null ? defaults.workSeconds : null;
     var rest_seconds = defaults.rest != null ? defaults.rest : null;
 
+    // «לחיצת חזה 10-8-6», «סקוואט 5-5-5-5-5», «דדליפט 3 סטים: 8/6/4»: a rep ladder is one set per count,
+    // the first count is the reps and the ladder stays in the notes (was a name «לחיצת חזה 10 8 6» with
+    // one set of 10 invented reps, «דדליפט 8/6/4», or «דדליפט /6/4» with 8 reps). Taken before the
+    // range/slash cues so «2-4-6-8» is not a «2-4» range and «8/6/4» not a per-side pair.
+    var ladder = null;
+    var lm = s.match(LADDER_RX);
+    if (lm) {
+      var ladderUnit = lm[3] || '';
+      ladder = {
+        counts: (lm[1] + lm[2]).match(/\d+/g).map(toInt),
+        note: (lm[1] + lm[2]).replace(/[\-–—]/g, '-') + (ladderUnit ? ' ' + ladderUnit : ''),
+        timed: /^(?:שניות|שנ|דקות)/.test(ladderUnit),
+        minutes: /^דקות/.test(ladderUnit)
+      };
+      s = s.replace(lm[0], ' ');
+    }
+
     // «ג׳אמפינג ג׳קס 40 שניות עבודה 20 מנוחה» is 40 s with 20 s rest (was a name «ג׳אמפינג ג׳קס עבודה 20»
     // and no rest); alone on its line it is the paste's interval line.
     var pair = s.match(WORK_REST_RX);
@@ -749,6 +769,17 @@
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
+    }
+    // The ladder: its length is the sets unless the paste said them («3 סטים: 8/6/4» keeps 3),
+    // its first count the reps (or the time, «פלאנק 30-45-60 שניות»).
+    if (ladder) {
+      if (!setsExplicit) {
+        sets = ladder.counts.length;
+        setsExplicit = true;
+      }
+      if (ladder.timed) duration_seconds = ladder.counts[0] * (ladder.minutes ? 60 : 1);
+      else reps = ladder.counts[0];
+      cues.notes.unshift(ladder.note);
     }
     // «סופרמן x15» / «סופרמן 15x» with no other count is 15 reps, not 15 sets of an invented 10
     // (and under «3 סבבים:» the rounds stay 3).
