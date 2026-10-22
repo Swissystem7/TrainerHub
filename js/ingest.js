@@ -502,9 +502,13 @@
 
   // Section headers inside a paste: «עיקרי:», «קירור», «סבב 2», «חלק ב׳» are not exercises.
   // A digit-free line ending in a colon is a header too («תרגילי בטן:»). A header word as a
-  // label («עיקרי: סופרמן 3x10») is dropped and the exercise after it is kept.
-  var SECTION_RX = /^(?:(?:ה?חלק|סבב|סט|שלב|תחנה|בלוק|מחזור)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון|עיקרי)))?|(?:ה?חלק\s+)?ה?(?:עיקרי|סיום|שחרור|קירור|פתיחה|הכנה)|גוף\s+האימון)$/;
-  var LABEL_RX = /^([^\d:]{2,30}?)\s*:\s*(?=[^\d\s])/;
+  // label («עיקרי: סופרמן 3x10») is dropped and the exercise after it is kept. A numbered
+  // header («סבב 1: סקוואט 12», «תחנה 2: מתח 8») and a day («יום ב: מתח 3x8», «יום 1:»)
+  // are labels too: the label used to need a digit-free text before the colon, so «סבב 1»
+  // stayed in the name («סבב 1 סקוואט»), and «יום ב» was never a header while a first-line
+  // «יום א:» was dropped as the title.
+  var SECTION_RX = /^(?:(?:ה?חלק|סבב|סט|שלב|תחנה|בלוק|מחזור|שבוע)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון|עיקרי)))?|יום\s+(?:\d+|[א-ז][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת))|(?:ה?חלק\s+)?ה?(?:עיקרי|סיום|שחרור|קירור|פתיחה|הכנה)|גוף\s+האימון)$/;
+  var LABEL_RX = /^([^:]{2,30}?)\s*:\s*(?=\S)/;
   var TITLE_RX = /^(?:ה?(?:אימון|תוכנית|תכנית|שיעור)\s|ה?(?:חימום|מתיחות)$|תרגילי\s)/;
 
   function stripSectionLabel(line) {
@@ -512,8 +516,14 @@
     if (!/\d/.test(t) && /:$/.test(t)) return '';
     if (SECTION_RX.test(t.replace(/[.:]+$/, '').trim())) return '';
     var m = t.match(LABEL_RX);
-    if (m && (SECTION_RX.test(m[1].trim()) || /^(?:ה?חימום|מתיחות|תרגילי\s|אימון\s)/.test(m[1].trim()))) {
-      return line.slice(line.indexOf(':') + 1);
+    if (m) {
+      var label = m[1].trim();
+      var rest = t.slice(m[0].length);
+      // A section header may introduce a count («סבב 1: 10 ברפי»); a title word may not,
+      // so «חימום: 5 דקות ריצה» and a clock «מנוחה 1:30» stay whole.
+      if (SECTION_RX.test(label) || (!/^\d/.test(rest) && /^(?:ה?חימום|מתיחות|תרגילי\s|אימון\s)/.test(label))) {
+        return line.slice(line.indexOf(':') + 1);
+      }
     }
     return line;
   }
