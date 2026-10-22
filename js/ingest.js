@@ -31,8 +31,19 @@
   var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|' + MINUTE_UNIT + ')';
   var HALF = '\\s*(?:וחצי|ו-?(?:1\\/2|½))';
   var TIMED = '(?:\\d{1,2}:[0-5]\\d|(?:1\\/2|½|חצי)\\s*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?\\s*' + TIME_UNIT + '(?:' + HALF + ')?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
-  var REST_FILLER = '(?:\\s+(?:של|פעילה|קצרה|ארוכה|בין\\s+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל\\s+(?:סט|סבב|תרגיל))|(?:ל|אחרי\\s+)כל\\s+ה?(?:סט|סבב|תרגיל)))*';
-  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
+  // «בין הסטים», «בין סט לסט», «בין כל סבב»: where the rest goes. ws is the whitespace class -
+  // scanDefaults reads the whole paste and must not let a filler reach the next line.
+  function restBetween(ws) {
+    return '(?:בין' + ws + '+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל' + ws + '+(?:סט|סבב|תרגיל)|(?:סט|סבב|תרגיל)' + ws + '+ל(?:סט|סבב|תרגיל)))';
+  }
+  function restFiller(ws) {
+    return '(?:' + ws + '+(?:של|פעילה|קצרה|ארוכה|' + restBetween(ws) + '|(?:ל|אחרי' + ws + '+)כל' + ws + '+ה?(?:סט|סבב|תרגיל)))*';
+  }
+  var REST_FILLER = restFiller('\\s');
+  var REST_FILLER_LINE = restFiller('[ \\t]');
+  // «מנוחה בין הסטים 45 שניות» / «בין הסטים מנוחה 45 שניות»: the place of the rest may come before
+  // its time, or before the rest word itself (was a phantom exercise «בין הסטים» / «בין סט»).
+  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)' + restBetween('\\s') + '\\s+)?(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   // «סקוואט 3x12 דקה מנוחה» is 3×12 with a minute's rest (was 1×3 with 720 s): the time does not start
@@ -74,7 +85,7 @@
   // «סקוואט 3x12 דקה מנוחה» is a minute, not 12 (the count before «דקה» belongs to the x).
   var MINUTE_TIME = '(?:(?:1\\/2|½|חצי)[ \\t]*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?[ \\t]*' + MINUTE_UNIT +
     '(?:[ \\t]*(?:וחצי|ו-?(?:1\\/2|½)))?|(?:שתי[ \\t]*דקות|דקה)[ \\t]*וחצי|שתי[ \\t]*דקות|דקה)';
-  var REST_MINUTES_RX = new RegExp('(?:מנוחה|הפסקה)[ \\t]*[:\\-–]?[ \\t]*(' + MINUTE_TIME + ')|' +
+  var REST_MINUTES_RX = new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*[:\\-–]?[ \\t]*(' + MINUTE_TIME + ')|' +
     '(?<![\\d:.\\/]|[x×X*][ \\t]*)(' + MINUTE_TIME + ')[ \\t]*(?:מנוחה|הפסקה)');
 
   function minuteSeconds(s) {
@@ -315,10 +326,13 @@
     });
     // "שנ" alone is seconds, but not the start of a word like "שני" (e.g. "12 שני הצדדים").
     // [ \t] keeps a rest/work keyword on its own line from borrowing the next line's number.
-    var rest = raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))/) ||
-      raw.match(/(\d+)[ \t]*(?:שניות|שנ(?:[׳']|(?![\u0590-\u05FF])))[ \t]*(?:מנוחה|הפסקה)/) ||
+    // «מנוחה בין הסטים 45 שניות» rests every exercise, as «מנוחה 45 שניות בין הסטים» does
+    // (the place of the rest between the word and its time hid it, so only the last exercise rested).
+    var SECONDS = '(\\d+)[ \\t]*(?:שניות|שנ(?:[׳\']|(?![\\u0590-\\u05FF])))';
+    var rest = raw.match(new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*[:\\-–]?[ \\t]*' + SECONDS)) ||
+      raw.match(new RegExp(SECONDS + '[ \\t]*(?:מנוחה|הפסקה)')) ||
       // «מנוחה: 20» with no unit is seconds, as «מנוחה 20» is on an exercise line.
-      raw.match(/(?:מנוחה|הפסקה)[ \t]*:[ \t]*(\d+)(?![\d:.]|[ \t]*(?:דק|ד[׳']))/);
+      raw.match(new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*:[ \\t]*(\\d+)(?![\\d:.]|[ \\t]*(?:דק|ד[׳\']))'));
     if (rest) defaults.rest = toInt(rest[1]);
     // «40 שניות עבודה 20 מנוחה» / «עבודה 40 מנוחה 20»: the bare numbers are seconds (were dropped).
     var pair = null;
@@ -335,7 +349,7 @@
     }
     if (pair && defaults.rest == null) defaults.rest = timedSeconds(pair[3] || pair[4]);
     if (slash && defaults.rest == null) defaults.rest = slash.rest;
-    var restClock = !rest && raw.match(/(?:מנוחה|הפסקה)[ \t]*[:\-–]?[ \t]*(\d{1,2}):([0-5]\d)/);
+    var restClock = !rest && raw.match(new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*[:\\-–]?[ \\t]*(\\d{1,2}):([0-5]\\d)'));
     if (restClock) defaults.rest = toInt(restClock[1]) * 60 + toInt(restClock[2]);
     // «מנוחה 3 דקות», «מנוחה דקה וחצי», «2.5 דקות מנוחה» are every exercise's rest, as «מנוחה 2 דקות»
     // and «מנוחה 90 שניות» are (only «דקה» and «2 דקות» were read, so «מנוחה 3 דקות» rested only the last one).
