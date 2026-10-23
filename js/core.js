@@ -1350,12 +1350,26 @@
     return score;
   }
 
+  function poolEntry(step) {
+    var id = step.id || step.name;
+    var name = step.name;
+    for (var i = 0; i < PROGRAM_POOL.length; i++) {
+      var p = PROGRAM_POOL[i];
+      if (p.id === id || (name && HE_NAMES[p.id] === name)) return p;
+    }
+    return null;
+  }
+
   function substitutesFor(step, opts) {
     opts = opts || {};
     var current = findExercise(step);
     if (!current && step && (step.id || step.name) && catalog[step.id || step.name]) {
       current = catalog[step.id || step.name];
     }
+    // Built program steps (push_up, dumbbell_bench...) come from PROGRAM_POOL,
+    // not the catalog. Without their muscles every «החלף…» in weekly.html and
+    // workout-mode offered the same three core clips, whatever the exercise.
+    if (!current && step) current = poolEntry(step);
     var muscles = (current && current.muscles) || opts.muscles || [];
     var excludeId = (current && current.id) || (step && (step.id || step.name)) || '';
     var have = opts.equipment;
