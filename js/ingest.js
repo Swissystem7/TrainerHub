@@ -1278,7 +1278,24 @@
     var name =s.replace(/^[\s\/]+|[\s\/]+$/g, '').replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
     // «ריצה של 30 דקות», «פלאנק למשך 30 שניות», «ריצה כ-20 דקות»: the word that led into the time
     // is not part of the name (was a clip-less «ריצה של» / «פלאנק למשך» / «ריצה כ»).
-    if (reps != null || duration_seconds != null) name = name.replace(/(?:\s+(?:של|למשך|במשך|בערך|כ))+$/, '');
+    // «ריצה במשך 5 ק"מ»: a distance (kept in the notes) led into the same way.
+    var counted = reps != null || duration_seconds != null || cues.notes.some(function (n) { return /\d/.test(n); });
+    // «שכיבות סמיכה לפחות 15», «ריצה עד 20 דקות», «פלאנק 30 שניות לפחות»: the bound on the count is a
+    // note, not part of the name (was a clip-less «שכיבות סמיכה לפחות» / «ריצה עד» / «פלאנק לפחות»).
+    if (counted) {
+      // Only the bound on this count: «סקוואט 3x12 לפחות שעה אחרי אוכל» keeps its words.
+      var bound = null, boundNote = null;
+      name = name.replace(/(^|\s)(לכל הפחות|לפחות|מינימום|עד)(?=(\s|$))/g, function (all, lead, word, after, at, whole) {
+        var bm = token.match(new RegExp('(?:^|\\s)' + word + '\\s*(?:של\\s*)?(\\d+(?:[.,]\\d+)?\\s*(?:שניות|שנ[׳\']|דקות|דקה|דק[׳\']|חזרות|ק"מ|קמ|מטר)?)'));
+        var last = at + all.length === whole.length;
+        if (bound || (!bm && !last) || (word === 'עד' && !last)) return all;
+        bound = word;
+        boundNote = bm ? word + ' ' + bm[1].trim() : word;
+        return lead;
+      }).replace(/\s+/g, ' ').trim();
+      if (boundNote) cues.notes.unshift(boundNote);
+    }
+    if (counted) name = name.replace(/(?:\s+(?:של|למשך|במשך|בערך|כ))+$/, '');
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       // «סקוואט 3 סטים, 12 חזרות» / «, 30 שניות»: the count was split off the same way.
