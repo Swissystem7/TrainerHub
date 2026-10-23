@@ -163,6 +163,15 @@
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
+  // Flys and raises, named the way core.js names them («פרפר משקולות», «פרפר
+  // הפוך», «הרחקה צידית», «הרמה קדמית») and the way coaches paste them («הרמות
+  // צד»). They named no muscle, so each fell through to «ליבה». A fly is chest,
+  // a reverse fly is rear shoulder and upper back, a side or front raise is
+  // shoulders. The butterfly stretch and butterfly sit-up are not a fly.
+  var FLY_RX = /(?:^|[^א-ת])[ובלה]{0,2}פרפר(?:ים)?(?=$|[^א-ת])/;
+  var FLY_NOT_RX = /בטן|מתיח|ישיב/;
+  var REVERSE_FLY_RX = /פרפר (?:הפוך|אחורי)/;
+  var DELT_RAISE_RX = /(?:הרמ|הרחק)(?:ת|ות|ה) (?:ה?ידיים |ה?יד )?(?:צידי|צדדי|ל?צד|קדמי|לפנים)/;
 
   function inferEquipment(text) {
     var t = fold(text);
@@ -210,7 +219,15 @@
       found.push('biceps');
     }
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
-    if (/כתף|כתפי/.test(t)) found.push('shoulders');
+    if (/כתף|כתפי/.test(t) || DELT_RAISE_RX.test(t)) found.push('shoulders');
+    if (FLY_RX.test(t) && !FLY_NOT_RX.test(t)) {
+      if (REVERSE_FLY_RX.test(t)) {
+        found.push('shoulders');
+        found.push('back');
+      } else {
+        found.push('chest');
+      }
+    }
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
