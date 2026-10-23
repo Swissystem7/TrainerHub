@@ -1249,6 +1249,9 @@
 
     // «סופרמן 3 סטים / 12 חזרות»: the slash only divided the counts, it is not part of the name.
     var name =s.replace(/^[\s\/]+|[\s\/]+$/g, '').replace(/[\-–—,.:×xX]+/g, ' ').replace(/\s+/g, ' ').trim();
+    // «ריצה של 30 דקות», «פלאנק למשך 30 שניות», «ריצה כ-20 דקות»: the word that led into the time
+    // is not part of the name (was a clip-less «ריצה של» / «פלאנק למשך» / «ריצה כ»).
+    if (reps != null || duration_seconds != null) name = name.replace(/(?:\s+(?:של|למשך|במשך|בערך|כ))+$/, '');
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       // «סקוואט 3 סטים, 12 חזרות» / «, 30 שניות»: the count was split off the same way.
