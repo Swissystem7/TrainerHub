@@ -159,7 +159,7 @@
     var m = Number(this.value);
     var next = Object.assign({}, profile, { approxMeters: m > 0 ? m : null, width: m > 0 ? '' : profile.width });
     profile = SP.normalize(next, 'manual');
-    profile.confidence = {};
+    delete profile.confidence.width;
     renderChips();
   });
 
