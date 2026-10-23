@@ -1249,8 +1249,10 @@
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
-    // A count after the name: "שכיבות סמיכה 15".
-    m = s.match(/\s(\d+)\s*$/);
+    // A count after the name: "שכיבות סמיכה 15". «סקוואט 15 - 3 סטים» leaves «סקוואט 15 -» once the
+    // sets are taken: the dash before them is not part of the count (was a clip-less name «סקוואט 15»
+    // with 10 invented reps).
+    m = s.match(/\s(\d+)\s*[\-–—,.:]*$/);
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
