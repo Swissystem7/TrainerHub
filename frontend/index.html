@@ -411,7 +411,9 @@
     try {
       WorkoutLibrary.save(TH.store, TH.KEYS.saved, entries);
       renderHistory();
-      $('libraryStatus').textContent = 'נשמרו ' + entries.length + ' אימונים בדפדפן זה.';
+      $('libraryStatus').textContent = entries.length === 1
+        ? 'נשמר אימון אחד בדפדפן זה.'
+        : 'נשמרו ' + entries.length + ' אימונים בדפדפן זה.';
       return true;
     } catch (error) {
       $('libraryStatus').textContent = error.message;
