@@ -397,7 +397,7 @@
   // phrase (and words joined to it with ו־) is cut only when it names a goal,
   // so «אימון סיבולת, לא כוח» is an endurance session, not a strength one.
   var NEGATED_GOAL_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*|\b(?:not|no)\s+[a-z]+(?:\s+(?:and|or)\s+[a-z]+)*/g;
-  var GOAL_WORD_RX = /כוח|strength|היפרטרופ|hypertroph|מסת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/;
+  var GOAL_WORD_RX = /כוח|strength|היפרטרופ|hypertroph|מסת|מסה|שריר|בני?ית|הגדלת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/;
 
   function withoutNegatedGoals(t) {
     return t.replace(NEGATED_GOAL_RX, function (phrase) {
@@ -417,6 +417,9 @@
     // "muscular endurance" names a muscle but is an endurance goal.
     if (/muscular endurance/.test(t)) return 'endurance';
     if (/היפרטרופ|hypertroph|מסת שריר|muscle/.test(t)) return 'hypertrophy';
+    // «אימון לבניית שריר» / «הגדלת שרירים» / «אימון למסה» ask for size too.
+    // «מסה» only as a whole word (opt. ו/ה/ל prefix), so «מסלול» stays out.
+    if (/בני?ית שריר|הגדלת שריר|(?:^|[^א-ת])[והל]?מסה(?![א-ת])/.test(t)) return 'hypertrophy';
     // Both spellings, "סיבולת" and the app's own "סבולת" (analyzer, README).
     // "אירובי" / "קרדיו" ask for the same stimulus: high reps, short rests.
     if (/סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/.test(t)) return 'endurance';
