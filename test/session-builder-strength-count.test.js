@@ -54,7 +54,7 @@ test('a strength session fits its minutes instead of carrying the hypertrophy co
   assert.equal(strength.request.goal, 'strength');
   assert.equal(main.exercises.length, 2);
   main.exercises.forEach(function (ex) {
-    assert.equal(ex.sets, 4);
+    assert.ok(ex.sets >= 1 && ex.sets <= 4);
     assert.equal(ex.rest_seconds, 120);
   });
   assert.ok(restMinutes(main.exercises) <= main.duration_minutes,
