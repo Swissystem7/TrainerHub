@@ -262,7 +262,13 @@
   // a load and a per-side count are not tempo cues and keep their meaning.
   var TEMPO_TIME_RX = /\d+(?:\.\d+)?\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![א-ת]))|דקות|דקה|דק(?:[׳']|(?![א-ת])))/;
   var TEMPO_WORD_RX = /(?:^|\s)טמפו(?=\s|$)/;
-  var TEMPO_NOT_RX = /עבודה|ק\s*["״׳']?\s*[גמ](?![א-ת])|קילו|kg|km|מטר|RPE|%|אחוז/i;
+  var TEMPO_NOT_RX = /עבודה|ק\s*["״׳']?\s*[גמ](?![א-ת])|קילו|kg|km|מטר|RPE|RIR|%|אחוז/i;
+  // The effort / the load as a share of the max, written without the at sign: «דדליפט 5x5 RPE 8»,
+  // «RPE 7-8», «8 RPE», «RIR 2», «70%», «ב-70%», «85% 1RM», «70% מהמקסימום», «70 אחוז». Each rode
+  // into the name («דדליפט RPE 8», «סקוואט RPE 8 5» for 8.5, «דדליפט 70% מהמקסימום»), so the clip
+  // was never matched; «RPE 7-8» also left a stray range note «7-8». Taken before the range so the
+  // effort range is one note, and never after an at sign (AT_LOAD_RX reads those).
+  var INTENSITY_RX = /(?<!@\s*)(?:^|\s)(?:(RPE|RIR)\s*[:\-]?\s*(\d+(?:\.\d+)?)(?:\s*[\-–—]\s*(\d+(?:\.\d+)?))?|(\d+(?:\.\d+)?)\s*(RPE|RIR)|(?:ב\s*-?\s*)?(\d+(?:\.\d+)?)\s*(?:%|אחוז(?:ים)?)(\s*(?:מ?ה?מקס(?:ימום)?|מ?\s*-?\s*1\s*RM|RM|דופק|מאמץ))?)(?![֐-׿a-zA-Z\d%])/i;
 
   function isTempoCue(s) {
     var t = String(s || '').trim();
@@ -312,9 +318,16 @@
       });
       return kept.length ? ' ' + kept.join(' ') + ' ' : ' ';
     });
+    // «דדליפט 5x5 RPE 8» / «RPE 7-8» / «70%» / «85% 1RM»: the effort or the share of the max is a note.
+    var m = t.match(INTENSITY_RX);
+    if (m) {
+      if (m[1] || m[5]) notes.push((m[1] || m[5]).toUpperCase() + ' ' + (m[2] || m[4]) + (m[3] ? '-' + m[3] : ''));
+      else notes.push(m[6] + '%' + (m[7] ? ' ' + m[7].trim().replace(/\s+/g, ' ') : ''));
+      t = t.replace(m[0], ' ');
+    }
     // The lower bound is the count, the range stays in the notes
     // (was the name «סקוואט 10 12» with 10 invented reps).
-    var m = t.match(CLOCK_RANGE_RX);
+    m = t.match(CLOCK_RANGE_RX);
     if (m) {
       notes.push(m[1] + '-' + m[2]);
       t = t.replace(m[0], ' ' + m[1] + ' ');
@@ -775,6 +788,9 @@
     if (m && m[0].trim() === t) return true;
     // «סקוואט 3x10, @60 ק"ג» / «, @ 70%»: the at-sign load is a piece of its exercise too.
     m = (' ' + t).match(AT_LOAD_RX);
+    if (m && m[0].trim() === t) return true;
+    // «סקוואט 3x12, RPE 8» / «, 70%»: the effort is a piece of its exercise too.
+    m = (' ' + t).match(INTENSITY_RX);
     if (m && m[0].trim() === t) return true;
     m = t.match(KM_RX);
     return !!m && m[0].trim() === t;
