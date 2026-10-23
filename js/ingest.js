@@ -443,8 +443,15 @@
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(FAILURE_RX))) {
-      notes.push('עד כשל');
-      open = true;
+      // «שכיבות סמיכה מקסימום 20» / «מתח מקס 8» caps the count, it is not to failure
+      // (the note said «עד כשל» next to 20 reps). After the count only with its unit: «סקוואט 20 חזרות
+      // מקסימום»; «מתח 3 מקס» is 3 sets to failure.
+      var capUnit = '(\\s*(?:חזרות|שניות|שנ[׳\']|דקות|דקה|דק[׳\']))';
+      var maxWord = /^\s*(?:מקס|[Mm])/.test(m[0]) && !/(?:חזרות|זמן)$/.test(m[0]);
+      var cap = maxWord && (t.slice(t.indexOf(m[0]) + m[0].length).match(new RegExp('^\\s*(\\d+(?:\\.\\d+)?)' + capUnit + '?(?![\\d.])')) ||
+        t.slice(0, t.indexOf(m[0])).match(new RegExp('(?:^|\\s)(\\d+(?:\\.\\d+)?)' + capUnit + '\\s*$')));
+      notes.push(cap ? 'עד ' + cap[1] + (cap[2] || '').replace(/\s+/g, ' ') : 'עד כשל');
+      if (!cap) open = true;
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(KM_RX))) {
