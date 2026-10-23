@@ -367,8 +367,9 @@
       if (n === null) n = groupUnitCount(t);
       if (n === null) n = bareForCount(t);
     }
-    // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple.
-    if (n === null) return /זוג/.test(t) ? 2 : null;
+    // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple,
+    // unless it is negated: "לא בזוגות" / "בלי זוגות" is not a couple.
+    if (n === null) return /זוג/.test(t.replace(NEGATED_AUDIENCE_RX, ' ')) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
