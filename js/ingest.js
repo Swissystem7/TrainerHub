@@ -69,6 +69,29 @@
     if (work < 20 || rest < 10 || work % 5 || rest % 5 || (work === rest && work < 30)) return null;
     return { text: m[0], work: work, rest: rest };
   }
+  // «טבאטה 8 סבבים 20/10», «HIIT 40/20 x6», «8 סבבים של 20/10»: the header of an interval paste
+  // holds its format word, its rounds and its times, and nothing else. Once they are taken off,
+  // a header has no letters left while «ברפי 40/20 x3» keeps its name. The rounds («8 סבבים»,
+  // «x8», «8x», «8 פעמים») were letters too - «x» is one - so the header stayed an exercise.
+  var INTERVAL_ROUNDS_RX = /(?:^|\s)(?:\d+\s*(?:סבבים?|פעמים|סטים?)|[x×]\s*\d+|\d+\s*[x×]|של|פעמיים)(?=[\s:,.\-–]|$)/gi;
+  var INTERVAL_X_RX = /(?:^|\s)(?:[x×]\s*(\d+)|(\d+)\s*[x×]|(\d+)\s*פעמים|(פעמיים))(?=[\s:,.\-–]|$)/i;
+
+  function intervalHeaderLeft(s) {
+    return String(s || '').replace(INTERVAL_WORD_RX, ' ').replace(INTERVAL_ROUNDS_RX, ' ');
+  }
+
+  // s is the line with its work/rest pair already taken out.
+  function isIntervalHeader(s) {
+    return !/[א-תa-zA-Z]/.test(intervalHeaderLeft(s));
+  }
+
+  // The rounds an interval header states beside its times: «x8» / «8x» / «8 פעמים» (a «8 סבבים»
+  // is read for the whole paste already).
+  function intervalHeaderRounds(s) {
+    var m = String(s || '').match(INTERVAL_X_RX);
+    if (!m) return null;
+    return m[4] ? 2 : toInt(m[1] || m[2] || m[3]);
+  }
   // «30 שניות לכל תרגיל», «כל תרגיל 45 שניות», «דקה על כל תרגיל»: the work time of every
   // exercise in the paste. Not a rest: «מנוחה 30 שניות לכל תרגיל», «מנוחה בין כל תרגיל 30 שניות».
   var PER_EXERCISE = '(?<![\\u0590-\\u05FF])(?<!בין\\s+)(?:[לב]|על\\s+)?כל\\s+ה?תרגיל(?![\\u0590-\\u05FF])';
@@ -139,6 +162,9 @@
   // «לאנג׳ 10 חזרות מנוחה 30 שניות» has a name left over, so it is the exercise itself.
   function isIntervalPrefix(s) {
     var t = String(s || '');
+    // «טבאטה 8 סבבים 20/10: סקוואט, ברפי»: the slash header before the colon is a prefix too.
+    var p = slashPair(t);
+    if (p) return isIntervalHeader(t.replace(p.text, ' '));
     if (!WORK_RX.test(t) && !REST_RX.test(t) && !new RegExp(TIME_UNIT).test(t)) return false;
     t = splitRest(t).text.replace(WORK_RX, ' ').replace(new RegExp(TIMED, 'g'), ' ')
       .replace(/(?:^|\s)(?:ל?כל|בין|ה?תרגיל(?:ים)?|ה?סבבים?|ה?סטים?|עבודה|מנוחה|הפסקה|ו)(?=[\s,\/]|$)/g, ' ');
@@ -354,15 +380,26 @@
     var pair = null;
     raw.split('\n').some(function (line) { return (pair = line.match(WORK_REST_RX)); });
     // «40/20» / «טבאטה 20/10» on a line of its own is the interval of every exercise (was a phantom
-    // exercise «40/20»); «ברפי 40/20» keeps its times to itself.
+    // exercise «40/20»); «ברפי 40/20» keeps its times to itself. «טבאטה 8 סבבים 20/10:» and
+    // «טבאטה 20/10 x8» are that line too (their rounds kept them from being read, so the rows
+    // under them got 8 sets of 10 invented reps, or the interval with no rounds at all), also
+    // before a colon with the exercises after it («טבאטה 20/10 x8: סקוואט, ברפי»).
     var slash = null;
+    var slashHeader = '';
     if (!pair) {
       raw.split('\n').some(function (line) {
-        var p = slashPair(line);
-        var left = p && line.replace(p.text, ' ').replace(INTERVAL_WORD_RX, ' ').replace(/[x×]\s*\d+/gi, ' ');
-        return p && !/[א-תa-zA-Z]/.test(left) && (slash = p);
+        var colon = line.indexOf(':');
+        return [line].concat(colon > 0 ? [line.slice(0, colon)] : []).some(function (part) {
+          var p = slashPair(part);
+          var left = p && part.replace(p.text, ' ');
+          if (!p || !isIntervalHeader(left)) return false;
+          slash = p;
+          slashHeader = left;
+          return true;
+        });
       });
     }
+    if (slash && defaults.sets == null) defaults.sets = intervalHeaderRounds(slashHeader);
     if (pair && defaults.rest == null) defaults.rest = timedSeconds(pair[3] || pair[4]);
     if (slash && defaults.rest == null) defaults.rest = slash.rest;
     var restClock = !rest && raw.match(new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*[:\\-–]?[ \\t]*(\\d{1,2}):([0-5]\\d)'));
@@ -537,8 +574,9 @@
       var label = m[1].trim();
       var rest = t.slice(m[0].length);
       // A section header may introduce a count («סבב 1: 10 ברפי»); a title word may not,
-      // so «חימום: 5 דקות ריצה» and a clock «מנוחה 1:30» stay whole.
-      if (SECTION_RX.test(label) || (!/^\d/.test(rest) && /^(?:ה?חימום|מתיחות|תרגילי\s|אימון\s)/.test(label))) {
+      // so «חימום: 5 דקות ריצה» and a clock «מנוחה 1:30» stay whole. An interval header
+      // («טבאטה 8 סבבים 20/10: סקוואט קפיצה») is a label too - scanDefaults read its times.
+      if (SECTION_RX.test(label) || isIntervalPrefix(label) || (!/^\d/.test(rest) && /^(?:ה?חימום|מתיחות|תרגילי\s|אימון\s)/.test(label))) {
         return line.slice(line.indexOf(':') + 1);
       }
     }
@@ -657,7 +695,10 @@
       duration_seconds = pair.work;
       rest_seconds = pair.rest;
       s = s.replace(pair.text, ' ');
-      if (!/[א-תa-zA-Z]/.test(s.replace(INTERVAL_WORD_RX, ' '))) return null;
+      // «טבאטה 8 סבבים 20/10:» / «טבאטה 20/10 x8» / «HIIT 6 סבבים 40/20» is the paste's interval
+      // header (scanDefaults hands its times and rounds to every exercise), not an exercise «טבאטה»
+      // of 8 sets (the rounds left letters behind - «x» is one - so the header passed as a name).
+      if (isIntervalHeader(s)) return null;
     }
     // "לאנג׳ 10 חזרות מנוחה 30 שניות": the rest belongs to this exercise, the line is not a rest line.
     var restClause = splitRest(s);
