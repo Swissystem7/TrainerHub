@@ -121,9 +121,30 @@
     return first;
   }
 
+  // "3 סבבים של 5 דקות" / "4 סיבובים ל-8 דקות" is 15 / 32 minutes, not the 5 or 8
+  // of one round. Returns the round count when the text before the minutes ends
+  // with it, else null.
+  var ROUNDS_BEFORE_RX = /(?:^|[^א-ת\d])(\d+|[א-ת]+)\s*(?:סבבים|סיבובים|סטים|מקצים)\s*(?:של|ל|x|×)?[\s-]*$/i;
+
+  function roundsBefore(prefix) {
+    var m = ROUNDS_BEFORE_RX.exec(prefix);
+    if (!m) return null;
+    var n = /^\d+$/.test(m[1]) ? toInt(m[1]) : hebrewNumber(m[1]);
+    return n && n > 1 ? n : null;
+  }
+
+  // A per-round length is tied like a warm-up length: a stated session length
+  // ("אימון 30 דקות, 3 סבבים של 5 דקות") still wins, and without one the
+  // rounds times the round length is the session.
+  function perRound(n, prefix, amount) {
+    var rounds = roundsBefore(prefix);
+    return rounds ? { n: rounds * n, tied: true } : amount;
+  }
+
   function sessionMinutes(t) {
     return firstAmount(t, /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g, function (m) {
-      return { n: toInt(m[2]), tied: partTied(m[1], m[3], m[4]) };
+      var n = toInt(m[2]);
+      return perRound(n, t.slice(0, m.index) + (m[1] || ''), { n: n, tied: partTied(m[1], m[3], m[4]) });
     });
   }
 
@@ -133,14 +154,16 @@
       var parts = m[2].split(' ');
       var n = hebrewNumber(m[2]);
       var before = '';
+      var prefix = t.slice(0, m.index + m[1].length);
       if (parts.length === 2 && unitValue(parts[0]) === null && tensValue(parts[0]) === null) {
         // "חימום עשר דקות": the first word is not a number, it is the lead.
         before = parts[0];
+        prefix += parts[0] + ' ';
       } else if (!m[1].trim()) {
         before = t.slice(0, m.index).split(/\s+/).pop();
       }
       if (n === null || n <= 0) return null;
-      return { n: n, tied: partTied(before, m[3], m[4]) };
+      return perRound(n, prefix, { n: n, tied: partTied(before, m[3], m[4]) });
     });
   }
 
