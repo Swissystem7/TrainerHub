@@ -163,6 +163,13 @@
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
+  // Shoulder drills named after the move: «שכיבות פאייק» (pike push-ups - the
+  // hips are up, the load is on the shoulders, not the chest), «מעגלי ידיים»
+  // (arm circles - not biceps/triceps work) and «חתירה אנכית» (upright row -
+  // a shoulder pull, not a back row).
+  var PIKE_RX = /פאייק|פייק|pike/;
+  var ARM_CIRCLES_RX = /מעגל(?:י|ים) (?:ה?ידיים|ה?זרועות|ה?כתפיים|עם ה?ידיים)/;
+  var UPRIGHT_ROW_RX = /חתיר(?:ה|ת|ות) ה?אנכי/;
 
   function inferEquipment(text) {
     var t = fold(text);
@@ -205,12 +212,13 @@
       found.push('back');
     }
     if (HIP_THRUST_RX.test(t) || LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) found.push('legs');
-    if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
+    if (UPRIGHT_ROW_RX.test(t)) found.push('shoulders');
+    else if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
       found.push('back');
       found.push('biceps');
     }
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
-    if (/כתף|כתפי/.test(t)) found.push('shoulders');
+    if (/כתף|כתפי/.test(t) || PIKE_RX.test(t) || ARM_CIRCLES_RX.test(t)) found.push('shoulders');
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
@@ -223,10 +231,10 @@
     // «על הברכיים» is the knee variant of a push-up or plank, not a leg drill.
     if (/ברכי/.test(t) && !/פלאנק|שכיב/.test(t)) found.push('legs');
     if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
-    if (PUSH_UP_RX.test(t) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
+    if ((PUSH_UP_RX.test(t) && !PIKE_RX.test(t)) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
     if (/דו.?ראש|בייספס|פטיש/.test(t) || CURL_RX.test(t)) found.push('biceps');
     if (/תלת|טרייספס|דיפס/.test(t) || (/פשיטת/.test(t) && !KNEE_EXT_RX.test(t))) found.push('triceps');
-    if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t)) {
+    if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t) && !ARM_CIRCLES_RX.test(t)) {
       found.push('biceps');
       found.push('triceps');
     }
