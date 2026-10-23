@@ -154,7 +154,15 @@
   var BODY_RAISE_RX = /הרמ(?:ת|ות) ה?גוף/;
   // Biceps curls in singular and plural: «כפיפת מרפק», «כפיפות מרפקים»,
   // «כפיפות ידיים». A bare «כפיפת» («כפיפת בטן», «כפיפת ברך») is not a curl.
-  var CURL_RX = /כפיפ(?:ת|ות) ה?(?:מרפק|זרוע|ידיים|יד)/;
+  // core.js also names three curls without the joint: «כפיפה מרוכזת»,
+  // «כפיפה במשקוף», «כפיפת משקל גוף». Each one was «ליבה».
+  var CURL_RX = /כפיפ(?:ת|ות) ה?(?:מרפק|זרוע|ידיים|יד)|כפיפ(?:ה|ות) (?:מרוכזת|מרוכזות|במשקוף)|כפיפ(?:ת|ות) משקל גוף/;
+  // Triceps work named after the move: «מקבילים» (parallel-bar dips),
+  // «פשיטה מעל הראש» (overhead extension) and «בעיטת טרייספס» (a kickback, an
+  // arm movement - not a kick, not leg work, not plyometric).
+  var DIPS_RX = /דיפס|(?:^|[^א-ת])[ובלה]{0,2}מקבילים(?=$|[^א-ת])/;
+  var OVERHEAD_EXT_RX = /פשיט(?:ה|ת|ות) (?:ה?ידיים |ה?מרפקים )?מעל ה?ראש/;
+  var KICKBACK_RX = /בעיט(?:ת|ות) (?:ה?טרייספס|ה?תלת)/;
   // Hip hinges and leg-machine work named after the lift, not the muscle:
   // «דדליפט», «גוד מורנינג», «היפ תראסט», «לחיצת רגליים», «פשיטת ברכיים».
   // Without these a trainer's own «דדליפט רומני» clip was proposed as «ליבה»,
@@ -225,7 +233,9 @@
     if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
     if (PUSH_UP_RX.test(t) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
     if (/דו.?ראש|בייספס|פטיש/.test(t) || CURL_RX.test(t)) found.push('biceps');
-    if (/תלת|טרייספס|דיפס/.test(t) || (/פשיטת/.test(t) && !KNEE_EXT_RX.test(t))) found.push('triceps');
+    if (/תלת|טרייספס/.test(t) || DIPS_RX.test(t) || OVERHEAD_EXT_RX.test(t) ||
+        (/פשיטת/.test(t) && !KNEE_EXT_RX.test(t))) found.push('triceps');
+    if (/מקבילים/.test(t) && DIPS_RX.test(t)) found.push('chest');
     if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t)) {
       found.push('biceps');
       found.push('triceps');
@@ -239,7 +249,7 @@
       found.push('shoulders');
       found.push('triceps');
     }
-    if (/בעיט/.test(t)) found.push('legs');
+    if (/בעיט/.test(t) && !KICKBACK_RX.test(t)) found.push('legs');
 
     if (!found.length && folder && FOLDER_MUSCLE[folder]) {
       found = FOLDER_MUSCLE[folder].slice();
@@ -280,9 +290,10 @@
 
   function inferPattern(text, muscles) {
     var t = fold(text);
-    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
+    if (/מטפס|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t) || (/בעיט/.test(t) && !KICKBACK_RX.test(t))) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
-    if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
+    if (PUSH_UP_RX.test(t) || DIPS_RX.test(t) || KICKBACK_RX.test(t) || OVERHEAD_EXT_RX.test(t) ||
+        /לחיצ|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
