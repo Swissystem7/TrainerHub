@@ -1026,6 +1026,26 @@
   var MINUTE_WORDS = { 'שתי': 2, 'שלוש': 3, 'ארבע': 4, 'חמש': 5, 'שש': 6, 'שבע': 7, 'שמונה': 8, 'תשע': 9, 'עשר': 10 };
   var MINUTE_WORDS_RE = /(^|\s)(שתי|שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)\s+דקות(?=\s|$)/;
 
+  // «קפיצות חבל 100 קפיצות», «סקוואט 15 סקוואטים», «שכיבות סמיכה 3x20 שכיבות»: a count followed by
+  // a noun that repeats the exercise name is the reps (was a clip-less name «קפיצות חבל 100 קפיצות»
+  // with 10 invented reps, or «קפיצות חבל קפיצות» 3x50). Only when the noun ends the token.
+  function echoStem(w) {
+    return w.replace(/[׳'"״]/g, '').replace(/(?:ים|ות|ה)$/, '');
+  }
+  function echoCountNoun(s) {
+    return s.replace(/(\d)\s+([֐-׿][֐-׿׳']{2,})(?=\s*(?:$|[,.;)]))/g, function (all, d, word, at) {
+      var noun = echoStem(word);
+      // A unit or rest word is not an echo of the name: «ברפי 40 שניות מנוחה 20 שניות», «20 מנוחה».
+      if (noun.length < 3 || /^(?:דק|שני|שנ[׳']|חזר|פעמ|סט|סב|סיבוב|סדר|מנוח|הפסק|עבוד|קילו|מטר)/.test(noun)) return all;
+      var echoed = s.slice(0, at).split(/\s+/).some(function (w) {
+        if (/\d/.test(w)) return false;
+        var stem = echoStem(w);
+        return stem.length >= 3 && (stem.indexOf(noun) === 0 || noun.indexOf(stem) === 0);
+      });
+      return echoed ? d + ' חזרות' : all;
+    });
+  }
+
   function parseExerciseToken(token, defaults) {
     defaults = defaults || {};
     // WhatsApp/markdown pastes: "4*10" is a multiplier, "*סופרמן*" is only bold.
@@ -1034,6 +1054,7 @@
       .replace(/(^|\s)(\d+)\s+על\s+(?=\d)/g, '$1$2×')
       // «לאנג׳ים הליכה 20 צעדים» is 20 reps (was a name «לאנג׳ים הליכה 20 צעדים» with 10 invented reps).
       .replace(/(\d)\s*צעד(?:ים)?(?![א-ת])/g, '$1 חזרות').trim();
+    s = echoCountNoun(s);
     if (!s) return null;
     if (isRestToken(s)) {
       // «בלי מנוחה» / «מנוחה 0» is 0 s - only a missing time falls back (was 60: 0 read as none).
