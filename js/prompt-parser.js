@@ -217,8 +217,9 @@
   // "איש" (20 איש), "בנים"/"בנות" and "נערים"/"נערות" must end at a word
   // boundary: "אימון אישי", "אישור" and "אישה" are not head counts.
   // Soldiers, pupils, students, athletes, fighters, men and women are trainees
-  // too: "אימון ל-15 חיילים" is fifteen people, not one.
-  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות)|חייל(?:ים|ות)|תלמיד(?:ים|ות|י)|סטודנט(?:ים|יות)|ספורטא(?:ים|יות)|לוחמ(?:ים|ות)|נשים|גברים)(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  // too: "אימון ל-15 חיילים" is fifteen people, not one. So are friends,
+  // gymnasts, runners and clients: "אימון ל-4 חברים" is four, not one.
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות)|חייל(?:ים|ות)|תלמיד(?:ים|ות|י)|סטודנט(?:ים|יות)|ספורטא(?:ים|יות)|לוחמ(?:ים|ות)|חבר(?:ים|ות)|מתעמל(?:ים|ות)|רצ(?:ים|ות)|לקוחות|נשים|גברים)(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
   var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
   // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
   // "עשרים וחמישה מתאמנים"). Only a space may separate them.
