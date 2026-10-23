@@ -572,6 +572,9 @@
       var first = tokens.length;
       // «סה"כ 25 דקות» / «בהצלחה!» at the end of a paste are not exercises.
       if (isTotalLine(line) || isSignOff(line, list)) return;
+      // «אימון 12.10.26», «תאריך: 12/10/2026», «יום שני 12.10»: the date is not a count.
+      line = stripDate(line);
+      if (!line.trim()) return;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -619,6 +622,34 @@
   var SECTION_RX = /^(?:(?:ה?חלק|סבב|סט|שלב|תחנה|בלוק|מחזור|שבוע)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון|עיקרי)))?|יום\s+(?:\d+|[א-ז][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת))|(?:ה?חלק\s+)?ה?(?:עיקרי|סיום|שחרור|קירור|פתיחה|הכנה)|גוף\s+האימון)$/;
   var LABEL_RX = /^([^:]{2,30}?)\s*:\s*(?=\S)/;
   var TITLE_RX = /^(?:ה?(?:אימון|תוכנית|תכנית|שיעור)\s|ה?(?:חימום|מתיחות)$|תרגילי\s)/;
+
+  // A date on a title line: «אימון 12.10.26», «אימון רגליים 12/10/2026», «תאריך: 12/10/2026»,
+  // «יום שני 12.10», «12.10.26 אימון פלג גוף עליון», a bare «12/10/2026». The date was read as
+  // a prescription: «אימון 12/10/26» was an exercise «אימון» of 3 sets (a rep ladder 12/10/26),
+  // «אימון 12.10.26» a clip-less «אימון 12 10 26» with 10 invented reps, «תאריך: 12/10/2026» a
+  // phantom «תאריך 12/10/2026». Only after a title word / «תאריך» / «יום», or first on the line
+  // with a year or a title word after it; a ladder «12/10/8», a Tabata «20/10», a distance
+  // «1.5 ק"מ» and a count-first «10 ברפי» are untouched. A title that is only the date (or the
+  // title word, «אימון 3», «תאריך») is dropped; what else is on the line goes on as before.
+  var DATE_RX = /(?<![\d:.\/])(\d{1,2})[.\/](\d{1,2})(?:[.\/](\d{4}|[2-3]\d))?(?![\d.\/]|:\d)/g;
+  var DATE_LEAD_RX = /^(?:ה?(?:אימון|תוכנית|תכנית|שיעור|תאריך)|יום)(?=[\s:\-–]|$)/;
+  var DATE_ONLY_RX = /^(?:ה?(?:אימון|תוכנית|תכנית|שיעור)(?:\s+(?:מס(?:פר|[׳'.])?\s*)?\d{1,2})?|תאריך)?$/;
+
+  function stripDate(line) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
+    if (t.search(DATE_RX) < 0) return line;
+    var lead = DATE_LEAD_RX.test(t);
+    var found = false;
+    var rest = t.replace(DATE_RX, function (all, d, mo, y, offset) {
+      var day = toInt(d), month = toInt(mo);
+      if (!(day >= 1 && day <= 31 && month >= 1 && month <= 12)) return all;
+      if (!lead && !(offset === 0 && (y || DATE_LEAD_RX.test(t.slice(all.length).trim())))) return all;
+      found = true;
+      return ' ';
+    }).replace(/\s+/g, ' ').replace(/^[\s:\-–,]+|[\s:\-–,]+$/g, '').trim();
+    if (!found) return line;
+    return DATE_ONLY_RX.test(rest) ? '' : rest;
+  }
 
   function stripSectionLabel(line) {
     var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
