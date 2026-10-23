@@ -559,8 +559,11 @@
     // «בלי ציוד»; they used to fall through to no filter at all, and «אימון
     // רגליים ללא שום ציוד» came out as band and football drills.
     if (/(?:בלי|ללא)\s+(?:שום\s+)?(?:ציוד|אביזר)|משקל\s+ה?גוף|bodyweight/.test(t)) return ['none'];
+    var noPullUps = t.replace(NEGATED_PULL_UP_RX, ' ');
+    var pullUpsOut = noPullUps !== t;
+    t = noPullUps;
     var negated = t.match(NEGATED_GEAR_RX);
-    var ruledOut = negated && Infer.inferEquipment(negated.join(' '))[0] !== 'none';
+    var ruledOut = pullUpsOut || (negated && Infer.inferEquipment(negated.join(' '))[0] !== 'none');
     if (negated) t = t.replace(NEGATED_GEAR_RX, ' ');
     var inferred = Infer.inferEquipment(t);
     if (inferred.length === 1 && inferred[0] === 'none') {
@@ -587,6 +590,11 @@
     if (/ספורט|כדורגל|כדורסל/.test(t)) return 'sport';
     return '';
   }
+
+  // «בלי מוט מתח» / «בלי עליות מתח» rules the pull-up bar out. The negations
+  // take one word, so «מתח» was left behind and asked for the very bar (and a
+  // back session) the prompt ruled out. The whole phrase is cut first.
+  var NEGATED_PULL_UP_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+(?:שום\s+)?(?:[הל]?(?:מוט|מוטות|עליות|עליית|עלייה|עליה)\s+)?[הל]?מתח(?:ים|י)?(?=$|[^א-ת])/g;
 
   // "לא לרגליים" / "בלי בטן" / "ללא רגליים ובטן" rules the muscle out. A
   // negated phrase (and words joined to it with ו־) is cut only when it names
@@ -623,7 +631,7 @@
   }
 
   function parseMuscles(text) {
-    var folded = Infer.fold(text);
+    var folded = Infer.fold(text).replace(NEGATED_PULL_UP_RX, ' ');
     var excluded = negatedMuscles(folded);
     var t = withoutNegatedMuscles(folded);
     var muscles = [];
