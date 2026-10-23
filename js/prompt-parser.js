@@ -449,8 +449,16 @@
     return inferred;
   }
 
+  // "בלי פרטנר" / "לא לילדים" / "ללא זוגות" rules the audience out, and
+  // "ציוד ספורט" / "נעלי ספורט" is gear, not athletes. Both are blanked out
+  // before the audience checks so a solo session does not get partner drills.
+  var NEGATED_AUDIENCE_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*/g;
+  var SPORT_GEAR_RX = /(?:ציוד|בגדי|נעלי|אולם|מכון)\s+ה?ספורט/g;
+
   function parseAudience(text) {
-    var t = withoutGearPairs(Infer.fold(text));
+    var t = withoutGearPairs(Infer.fold(text))
+      .replace(SPORT_GEAR_RX, ' ')
+      .replace(NEGATED_AUDIENCE_RX, ' ');
     if (/ילד/.test(t)) return 'kids';
     if (/זוג|פרטנר/.test(t)) return 'partner';
     if (/ספורט|כדורגל|כדורסל/.test(t)) return 'sport';
