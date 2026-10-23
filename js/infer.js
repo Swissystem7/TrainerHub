@@ -164,10 +164,14 @@
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
 
+  // «רצועות התנגדות» is the other common name for resistance bands. Only with
+  // «התנגדות», so a TRX strap («רצועות TRX») stays out.
+  var RESISTANCE_BAND_RX = /רצוע(?:ה|ת|ות) ה?התנגדות|resistance bands?/;
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
-    if (/גומי/.test(t)) eq.push('band');
+    if (/גומי/.test(t) || RESISTANCE_BAND_RX.test(t)) eq.push('band');
     if (/קונוס/.test(t)) eq.push('cones');
     if (/כדורסל/.test(t)) eq.push('basketball');
     if (/כדורגל|פוטבול/.test(t)) eq.push('football');
