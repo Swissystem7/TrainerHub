@@ -252,7 +252,11 @@
   var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])/;
   var SLASH_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\/\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
-  var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
+  var PER_SET_RX = /(?:^|\s)(?:ל?ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
+  // «שכיבות סמיכה 15 כל אחד», «סקוואט, לאנג׳, גשר 3x12 כל אחד», «פלאנק 30 שניות כל פעם»: the
+  // count is for each exercise, the words are filler after a count. They rode into the name, so
+  // no clip matched, and «15 כל אחד» was not read as the reps at all (10 invented reps).
+  var EACH_RX = /(?:^|\s)(?:ל|ב)?כל\s+(?:אחד|אחת|פעם)(?=[\s,.)]|$)/g;
   // A tempo cue: a time with a word that says where it is held - «3 שניות למעלה», «2 שניות למטה»,
   // «החזקה של 3 שניות», «עצירה של 2 שניות למטה», «5 שניות הרפיה בין», «טמפו 3-1-1». Next to a
   // counted exercise («גשר 2x12 (3 שניות למעלה)») it is a note, not the work time: the bracket
@@ -467,6 +471,7 @@
       t = t.slice(0, m.index) + ' ';
     }
     // «סקוואט @ 3x12»: a sign with no load after it is not part of the name either.
+    if (/\d/.test(t)) t = t.replace(EACH_RX, ' ');
     t = t.replace(PER_SET_RX, ' ').replace(/(?:^|\s)@(?=\s|$)/g, ' ').replace(/\s[\-–—,]+\s*$/, ' ');
     return { text: t, notes: notes, open: open };
   }
@@ -773,7 +778,7 @@
       line = splitSlash(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
-      splitPieces(maskVavNames(line, vavRxs))
+      var pieces = splitPieces(maskVavNames(line, vavRxs))
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
@@ -781,8 +786,8 @@
           // «כל הכבוד, מחר ממשיכים» / «סקוואט 3x12, סה"כ 10 דקות»: a sign-off or a total piece.
           if (isTotalLine(s) || isSignOff(s, list)) return false;
           return true;
-        })
-        .forEach(function (s) {
+        });
+      eachPrescription(pieces).forEach(function (s) {
           // «פלאנק 30 שניות, ירידה איטית»: the cue rides on the exercise before it as a
           // parenthetical (splitCues makes it a note) instead of becoming an exercise.
           if (tokens.length > first && isCuePiece(s)) tokens[tokens.length - 1] += ' (' + s.replace(/[()]/g, ' ').trim() + ')';
@@ -792,6 +797,26 @@
         });
     });
     return tokens;
+  }
+
+  // «סקוואט, לאנג׳, גשר 3x12 כל אחד» / «סקוואט ולאנג׳ 3x12 כל אחד»: the count after the last name is
+  // for every name before it too. Only when the last piece says «כל אחד» and the names before it
+  // carry no count of their own; «סקוואט, לאנג׳ 3x12» (no «כל אחד») is untouched.
+  function eachPrescription(pieces) {
+    var n = pieces.length;
+    if (n < 2) return pieces;
+    var last = pieces[n - 1];
+    EACH_RX.lastIndex = 0;
+    var at = last.search(/\d/);
+    if (at < 0 || !EACH_RX.test(last)) return pieces;
+    EACH_RX.lastIndex = 0;
+    var head = last.slice(0, at).replace(/[\s\-–—:]+$/, '');
+    if (!/[א-תa-zA-Z]/.test(head)) return pieces;
+    for (var i = 0; i < n - 1; i++) {
+      if (/\d/.test(pieces[i]) || isCuePiece(pieces[i]) || isRestToken(pieces[i])) return pieces;
+    }
+    var rx = last.slice(at);
+    return pieces.map(function (p, i) { return i < n - 1 ? p + ' ' + rx : p; });
   }
 
   // Section headers inside a paste: «עיקרי:», «קירור», «סבב 2», «חלק ב׳» are not exercises.
