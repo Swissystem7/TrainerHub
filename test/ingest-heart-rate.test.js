@@ -61,8 +61,10 @@ test('the pulse rides on its exercise as a comma piece, on its own line, and acr
 });
 
 test('a heart-rate workout, a distance, a bare «דופק», the effort and a ladder are as they were', () => {
-  // «דופק 30 דקות» is a time, not a pulse of 30.
-  assert.deepStrictEqual(rows('אימון דופק 30 דקות'), [['אימון דופק', 1, null, 1800, '']]);
+  // «דופק 30 דקות» is a time, not a pulse of 30: «אימון דופק 30 דקות» is the title with the
+  // workout's length (no exercise, no heart-rate note), «הליכה דופק 30 דקות» a 30-minute walk.
+  assert.deepStrictEqual(rows('אימון דופק 30 דקות'), []);
+  assert.deepStrictEqual(rows('הליכה דופק 30 דקות'), [['הליכה דופק', 1, null, 1800, '']]);
   assert.deepStrictEqual(rows('ריצה 20 דקות 150 מטר')[0][0], 'ריצה');
   assert.equal(rows('ריצה 20 דקות 150 מטר')[0][4].indexOf('דופק'), -1);
   assert.deepStrictEqual(rows('ריצה 20 דקות דופק'), [['ריצה דופק', 1, null, 1200, '']]);
