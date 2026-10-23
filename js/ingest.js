@@ -315,7 +315,9 @@
   var HOLD_VERB = '(?:החזקה|החזק|להחזיק|תחזיקו?|עצירה|לעצור|תעצרו?|שהייה|הרפיה|ירידה|עלי[יה]ה)';
   var HOLD_PLACE = '(?:למעלה|למטה|בשיא|בסוף|בתחתית|בעלי[יה]ה|בירידה|באמצע|בשליטה|בכל\\s+חזרה)';
   var HOLD_SECONDS = '(\\d+(?:\\.\\d+)?)\\s*(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![א-ת])))';
-  var HOLD_CUE_RX = new RegExp('(?:^|\\s)(?:' +
+  // «גשר 3x15 +החזקה 10 שניות»: a «+» glued to the hold word goes with the hold (the name was
+  // «גשר +החזקה» and only the bare «10 שניות» reached the notes).
+  var HOLD_CUE_RX = new RegExp('(?:^|\\s)[+&]?(?:' +
     '(?:עם\\s+)?' + HOLD_VERB + '(?:\\s+(?:איטית|מבוקרת|קצרה|קטנה))?(?:\\s+של)?\\s+' + HOLD_SECONDS + '(?:\\s+(?:' + HOLD_VERB + '|' + HOLD_PLACE + ')(?![א-ת]))*' +
     '|(?<![x×]\\s*)' + HOLD_SECONDS + '(?:\\s+(?:' + HOLD_VERB + '|' + HOLD_PLACE + '|איטית|מבוקרת)(?![א-ת]))+' +
     '|(?<![x×]\\s*)' + HOLD_SECONDS +
@@ -332,7 +334,7 @@
     var left = t.replace(m[0], ' ');
     var counted = /\d/.test(left.replace(new RegExp(TIMED, 'g'), ' ').replace(/\d+\s*(?:סטים?|סבבים?|פעמים)|פעמיים/g, ' '));
     if (!counted && (bare || /[א-תa-zA-Z]/.test(left))) return null;
-    return { text: left, note: m[0].trim().replace(/^עם\s+/, '').replace(/\s+/g, ' ') };
+    return { text: left, note: m[0].trim().replace(/^[+&]\s*/, '').replace(/^עם\s+/, '').replace(/\s+/g, ' ') };
   }
 
   function isTempoCue(s) {
