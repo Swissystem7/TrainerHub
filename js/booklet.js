@@ -173,16 +173,32 @@
     });
   }
 
+  /** «3 דק׳» for whole minutes, else «90 שנ׳». */
+  function restLabel(seconds) {
+    return seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+  }
+
+  /** The part's own line plus what a set/rest card can't hold: a rounds range and the rest between rounds. */
+  function partNote(part) {
+    var extra = [];
+    if (Array.isArray(part.rounds) && part.rounds.length > 1) extra.push(part.rounds[0] + '–' + part.rounds[part.rounds.length - 1] + ' סבבים');
+    if (part.restBetweenSetsSeconds > 0) extra.push('מנוחה ' + restLabel(part.restBetweenSetsSeconds) + ' בין סבב לסבב');
+    return extra.length ? part.he + ' · ' + extra.join(', ') : part.he;
+  }
+
   function partExercises(part) {
     var rounds = Array.isArray(part.rounds) ? part.rounds[0] : (part.rounds || 1);
     var exercises = Array.isArray(part.exercises) ? part.exercises : [];
     if (exercises.length && prescribes(part)) {
+      // The booklet's text (with «מנוחה של 3 דק' בין הסטים») only rides along on text drills,
+      // so a prescribed part keeps those numbers in the note.
+      var note = partNote(part);
       return exercises.map(function (x) {
         return exerciseFrom(x, {
           sets: rounds,
           seconds: part.workSeconds != null ? part.workSeconds : null,
           rest: part.restSeconds != null ? part.restSeconds : null,
-          notes: part.he
+          notes: note
         });
       });
     }
