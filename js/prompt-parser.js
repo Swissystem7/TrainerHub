@@ -388,8 +388,13 @@
     });
   }
 
+  // «כח» is the common defective spelling of «כוח» («אימון כח לרגליים»,
+  // «לא כח»). Only the whole word, with a ו/ה/ב/ל prefix, so «נוכחות» and
+  // «שוכח» stay as they are.
+  var DEFECTIVE_STRENGTH_RX = /(^|[^א-ת])([והבל]?)כח(?![א-ת])/g;
+
   function parseGoal(text) {
-    var t = withoutNegatedGoals(Infer.fold(text));
+    var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח'));
     if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
     if (/חיזוק כוח/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
