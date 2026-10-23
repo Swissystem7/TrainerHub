@@ -148,6 +148,18 @@
   // trailing "שלושת רבעי שעה" read as 45, and with no "שעה" after it the prompt fell to 20.
   var THREE_QUARTERS_AFTER_RX = /(?:שעה|שעתיים)\s*ו[\s-]*(?:3|שלושת?)\s*רבעי/;
 
+  // "שעה ועשרים" / "שעה ו-40" / "שעתיים ועשרים וחמש": the minutes after an hour
+  // often come with no "דקות". Without it these fell to the 20-minute default
+  // ("שעתיים ועשרים" to 120). Only when the end, punctuation or a ל/ב/עם/של word
+  // follows, so "שעה ו-5 תרגילים" stays an hour.
+  function bareMinutesAfter(t, hourRx) {
+    var m = t.match(new RegExp(hourRx + '\\s*ו[\\s-]*(\\d{1,2}|[א-ת]+(?: ו[א-ת]+)?)' +
+      '(?=\\s*(?:$|[^א-ת\\s])|\\s+(?:[לב]|עם|של)[א-ת]*(?:$|[^א-ת]))'));
+    if (!m) return null;
+    var n = /^\d/.test(m[1]) ? toInt(m[1]) : hebrewNumber(m[1]);
+    return n !== null && n > 0 && n < 60 ? n : null;
+  }
+
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
@@ -160,6 +172,8 @@
       n = minuteWords(t, TWO_HOURS_PLUS_MINUTE_WORDS_RX);
       if (n !== null) return 120 + n;
       if (THREE_QUARTERS_AFTER_RX.test(t)) return 165;
+      n = bareMinutesAfter(t, 'שעתיים');
+      if (n !== null) return 120 + n;
       if (/שעתיים\s*וחצי/.test(t)) return 150;
       if (/שעתיים\s*ורבע/.test(t)) return 135;
       return 120;
@@ -188,6 +202,8 @@
         if (extra) return n + toInt(extra[1]);
         if (/(?:שעות|שעה)\s*וחצי/.test(t)) return n + 30;
         if (/(?:שעות|שעה)\s*ורבע/.test(t)) return n + 15;
+        extra = bareMinutesAfter(t, '(?:שעות|שעה)');
+        if (extra !== null) return n + extra;
         return n;
       }
     }
@@ -198,6 +214,8 @@
     if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
     if (/שעה\s*ורבע/.test(t)) return 75;
+    n = bareMinutesAfter(t, 'שעה');
+    if (n !== null) return 60 + n;
     var digits = sessionMinutes(t);
     if (digits && !digits.tied) return digits.n;
     var words = sessionMinuteWords(t);
