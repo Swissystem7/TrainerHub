@@ -666,6 +666,30 @@
     return out;
   }
 
+  // «סקוואט 3x12/לאנג׳ 3x10/פלאנק 3x30 שניות», «סקוואט 3x12 / לאנג׳ 3x10»: a slash between two counted
+  // exercises is a separator like a comma (was one garbled exercise «סקוואט /לאנג׳ 3 10/פלאנק 3» with
+  // the plank's clip, 3x12 and a 30-second timer). Only when each side is an exercise with its own
+  // count and the right side opens with a name of two letters or more: «לאנג׳ 10/רגל», «3x10/צד»,
+  // «10/10», «40/20», «3/30"», «1/2 דקה», «12 קמ/ש 20 דקות», «5:30/ק"מ» and «עבודה 40 / מנוחה 20» stay one piece.
+  function splitSlash(line) {
+    var parts = line.split(/(\s*\/\s*)/);
+    var out = parts[0];
+    for (var i = 2; i < parts.length; i += 2) {
+      var left = splitPieces(out).pop();
+      var rightPiece = splitPieces(parts[i])[0];
+      var split = false;
+      if (/\d/.test(left) && /\d/.test(rightPiece) && /^[֐-׿a-zA-Z]/.test(rightPiece.trim())) {
+        var leftTok = parseExerciseToken(left, {});
+        var rightTok = parseExerciseToken(rightPiece, {});
+        split = !!(leftTok && leftTok.name && !leftTok.continuation && !leftTok.restOnly &&
+          rightTok && rightTok.name && !rightTok.continuation && !rightTok.restOnly &&
+          (rightTok.name.match(/[֐-׿a-zA-Z]/g) || []).length >= 2);
+      }
+      out += (split ? ', ' : parts[i - 1]) + parts[i];
+    }
+    return out;
+  }
+
   // «EMOM 10 דקות», «AMRAP 12 דק׳», «EMOM 10»: the block's format and length, not an exercise
   // (was a phantom «EMOM» of 600 s, or a name «EMOM 10 סקוואט» before a colon). The exercises
   // under it carry it as a note. A token that starts with BLOCK_MARK is such a header.
@@ -737,6 +761,7 @@
         if (!head || head.continuation) line = held + ' ' + line;
       }
       line = splitPlus(line);
+      line = splitSlash(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
       splitPieces(maskVavNames(line, vavRxs))
