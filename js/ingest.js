@@ -198,6 +198,12 @@
   // a hyphen inside a word («פשיטת-ברך») has no spaces around it.
   var DASH_CUE_RX = /\s[\-–—]\s+([^\d\-–—]*[\u0590-\u05FFa-zA-Z][^\d\-–—]*)$/;
   var PRESCRIPTION_WORD_RX = /דק|שני|שנ[׳']|חזרות|פעמים|סטים?|סבבים?|חצי|מנוחה|הפסקה/;
+  // A cue after a colon that follows the prescription: «פלאנק 3x30: גב ישר», «סקוואט 3x12: לרדת עמוק»,
+  // «פלאנק 3x30 שניות: מרפקים צמודים». The colon blocked the «3x30» pair (its lookahead guards a
+  // clock «3x1:30»), so the line was a clip-less name «פלאנק 3 30 גב ישר» with one set of 10 invented
+  // reps, and with a unit the cue rode into the name («פלאנק גב ישר»). Only a digit-free tail after a
+  // part that holds a count; a clock «מנוחה 1:30» and a label «סבב 1: סקוואט 12» are not touched.
+  var COLON_CUE_RX = /\s*:\s*((?=[א-תa-zA-Z])[^\d:()]*?)\s*(?=\(|$)/;
   // «סקוואט 10-12», «פלאנק 30-45 שניות», «10 עד 12 חזרות»: a range, not a name part (not a clock «1:00-1:30»).
   var RANGE_RX = /(?<![\d:.])(\d+)\s*(?:[\-–—]|עד)\s*(\d+)(?![\d:.])(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות|סטים|סבבים)(?![\u0590-\u05FF]))?/;
   var CLOCK_RANGE_RX = /(?<!\d)(\d{1,2}:[0-5]\d)\s*(?:[\-–—]|עד)\s*(\d{1,2}:[0-5]\d)(?!\d)/;
@@ -213,6 +219,12 @@
     var t = String(s || '');
     var notes = [];
     var open = false;
+    // «פלאנק 3x30: גב ישר»: the digit-free text after the colon is the cue, the count stays whole.
+    var colonCue = t.match(COLON_CUE_RX);
+    if (colonCue && /\d/.test(t.slice(0, colonCue.index)) && /[א-תa-zA-Z]/.test(t.slice(0, colonCue.index)) && !PRESCRIPTION_WORD_RX.test(colonCue[1])) {
+      notes.push(colonCue[1].trim().replace(/\s+/g, ' '));
+      t = t.slice(0, colonCue.index) + ' ' + t.slice(colonCue.index + colonCue[0].length);
+    }
     // «סיבובים רוסים 3x20 (10 לכל צד)»: with a count outside, the per-side count in brackets is
     // the split of that count, a note (was a name «סיבובים רוסים 10»). «לאנג׳ (10 לכל רגל)» or
     // «לאנג׳ 3 סטים (12 לכל רגל)» has no count outside, so the bracket is the count.
@@ -740,7 +752,7 @@
     }
     // "3 סטים של 12 חזרות", "10 חזרות 3 סבבים"; the count after the sets is reps
     // only when no time unit follows it ("3 סטים 15 שניות" is timed work).
-    m = s.match(/(\d+)\s*(?:סטים?|סבבים?)\s*(?:של\s*)?(?:(\d+)(?![\d:]|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|["״′″]))(?:\s*(?:חזרות|פעמים))?)?/);
+    m = s.match(/(\d+)\s*(?:סטים?|סבבים?)\s*(?:של\s*)?(?:(\d+)(?!\d|:\d|\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דק|["״′″]))(?:\s*(?:חזרות|פעמים))?)?/);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
@@ -748,7 +760,7 @@
       s = s.replace(m[0], ' ');
     }
     // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds).
-    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?![\d:])\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
+    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?!\d|:\d)\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
