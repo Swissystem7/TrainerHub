@@ -262,6 +262,11 @@
   // a load and a per-side count are not tempo cues and keep their meaning.
   var TEMPO_TIME_RX = /\d+(?:\.\d+)?\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![א-ת]))|דקות|דקה|דק(?:[׳']|(?![א-ת])))/;
   var TEMPO_WORD_RX = /(?:^|\s)טמפו(?=\s|$)/;
+  // The tempo written plain after the prescription - «סקוואט 3x12 טמפו 3-1-1», «בטמפו 3-1-1»,
+  // «tempo 3-1-1», «טמפו 3:1:1», «טמפו 3010» / «31X0», «טמפו איטי»: a note like the bracketed
+  // «(טמפו 3-1-1)» (#329). The bare code was a 3-rep ladder and the word rode into the name
+  // («סקוואט טמפו» 3x3 with a note «3-1-1»), so no clip was matched.
+  var TEMPO_CLAUSE_RX = /(?:^|\s)(?:ב-?)?(?:טמפו|tempo)\s*:?\s*([0-9xX](?:\s*[\-–—:]\s*[0-9xX]){2,3}|\d\d[0-9xX]\d?(?!\s*(?:מטר|מ[׳']|ק\s*["״׳']?\s*[גמ]|קמ|קילו|km|kg|שנ|דק|חזרות|פעמים|[x×]\s*\d))|איטי|מהיר|מבוקר|בינוני|מתפרץ)(?![א-תa-zA-Z\d])/i;
   var TEMPO_NOT_RX = /עבודה|ק\s*["״׳']?\s*[גמ](?![א-ת])|קילו|kg|km|מטר|RPE|RIR|%|אחוז/i;
   // The effort / the load as a share of the max, written without the at sign: «דדליפט 5x5 RPE 8»,
   // «RPE 7-8», «8 RPE», «RIR 2», «70%», «ב-70%», «85% 1RM», «70% מהמקסימום», «70 אחוז». Each rode
@@ -318,8 +323,15 @@
       });
       return kept.length ? ' ' + kept.join(' ') + ' ' : ' ';
     });
+    // «סקוואט 3x12 טמפו 3-1-1»: the plain tempo is a note (the code was a 3-rep ladder before the
+    // ladder match learned to skip it, and «טמפו» rode into the name). Taken before the range.
+    var m = t.match(TEMPO_CLAUSE_RX);
+    if (m) {
+      notes.push('טמפו ' + m[1].replace(/\s+/g, '').replace(/[–—]/g, '-').toUpperCase());
+      t = t.replace(m[0], ' ');
+    }
     // «דדליפט 5x5 RPE 8» / «RPE 7-8» / «70%» / «85% 1RM»: the effort or the share of the max is a note.
-    var m = t.match(INTENSITY_RX);
+    m = t.match(INTENSITY_RX);
     if (m) {
       if (m[1] || m[5]) notes.push((m[1] || m[5]).toUpperCase() + ' ' + (m[2] || m[4]) + (m[3] ? '-' + m[3] : ''));
       else notes.push(m[6] + '%' + (m[7] ? ' ' + m[7].trim().replace(/\s+/g, ' ') : ''));
@@ -798,6 +810,9 @@
 
   function isCuePiece(s) {
     var t = String(s || '').trim();
+    // «סקוואט 3x12, טמפו 3-1-1»: the tempo is a cue with digits (was a second exercise «טמפו» 3x3).
+    var m = (' ' + t).match(TEMPO_CLAUSE_RX);
+    if (m && m[0].trim() === t) return true;
     return !/\d/.test(t) && !REST_RX.test(t) && CUE_PIECE_RX.test(t);
   }
 
@@ -835,9 +850,10 @@
     var ladder = null;
     // «לחיצת חזה 4x8 (טמפו 3-1-1)»: the tempo in brackets next to a counted exercise is a note
     // (splitCues takes it), not a 3-rep ladder - the bracket is blanked for the ladder match only.
+    // «סקוואט 3x12 טמפו 3-1-1» without brackets is the same note (was a name «סקוואט טמפו» of 3x3).
     var lm = s.replace(/\(([^()]*)\)/g, function (all, inner) {
       return isTempoCue(inner) && /\d/.test(s.replace(/\([^()]*\)/g, ' ')) ? ' '.repeat(all.length) : all;
-    }).match(LADDER_RX);
+    }).replace(TEMPO_CLAUSE_RX, function (all) { return ' '.repeat(all.length); }).match(LADDER_RX);
     if (lm) {
       var ladderUnit = lm[3] || '';
       ladder = {
