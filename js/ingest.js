@@ -161,6 +161,11 @@
   var KM_RX = /(?:^|\s|(?<=[x×]))(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*מ|קילומטר(?:ים)?|km)(?![\u0590-\u05FFa-zA-Z])/i;
   // The load: «לחיצת חזה 4x8 80 קג», «סקוואט 3x10 עם 20 קילו», «דדליפט 5x5 100kg» (not «קילומטר»).
   var WEIGHT_RX = /(?:^|\s)(?:עם\s+)?(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)(?![֐-׿a-zA-Z])/i;
+  // The load after an at sign, as trainers write it: «סקוואט 3x12 @ 60 ק"ג», «דדליפט 5x5 @100» (kilos
+  // even without the unit), «@ 70%» of the max, «@RPE 8» / «@8 RPE» the effort, «ריצה 2 ק"מ @ 5:30»
+  // the pace. Each left «@» in the name («סקוואט @», «דדליפט @100», «סקוואט @ 70%») and the pace was
+  // read as a 5:30 duration. A mention «@ירון» has no number after the sign and is untouched.
+  var AT_LOAD_RX = /(?:^|\s)@\s*(?:(?:RPE|rpe)\s*(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*(?:RPE|rpe)|(\d+(?:\.\d+)?)\s*(?:%|אחוז(?:ים)?)|(\d{1,2}:[0-5]\d)|(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)?)(?![֐-׿a-zA-Z\d])/;
 
   // A cue after a spaced dash: «סקוואט 15 - ירידה איטית», «שכיבות סמיכה 3x12 – מרפקים צמודים».
   // Only a digit-free tail that is not itself the prescription («פלאנק - דקה», «סקוואט - 15 חזרות»);
@@ -245,6 +250,13 @@
       open = true;
       t = t.replace(m[0], ' ');
     }
+    if ((m = t.match(AT_LOAD_RX))) {
+      if (m[1] || m[2]) notes.push('RPE ' + (m[1] || m[2]));
+      else if (m[3]) notes.push(m[3] + '%');
+      else if (m[4]) notes.push('קצב ' + m[4]);
+      else notes.push(m[5] + ' ק"ג');
+      t = t.replace(m[0], ' ');
+    }
     if ((m = t.match(WEIGHT_RX))) {
       notes.push(m[1] + ' ק"ג');
       t = t.replace(m[0], ' ');
@@ -253,7 +265,8 @@
       notes.push(m[1].trim());
       t = t.slice(0, m.index) + ' ';
     }
-    t = t.replace(PER_SET_RX, ' ').replace(/\s[\-–—,]+\s*$/, ' ');
+    // «סקוואט @ 3x12»: a sign with no load after it is not part of the name either.
+    t = t.replace(PER_SET_RX, ' ').replace(/(?:^|\s)@(?=\s|$)/g, ' ').replace(/\s[\-–—,]+\s*$/, ' ');
     return { text: t, notes: notes, open: open };
   }
 
@@ -577,6 +590,9 @@
   function isLoadPiece(s) {
     var t = String(s || '').trim();
     var m = (' ' + t).match(WEIGHT_RX);
+    if (m && m[0].trim() === t) return true;
+    // «סקוואט 3x10, @60 ק"ג» / «, @ 70%»: the at-sign load is a piece of its exercise too.
+    m = (' ' + t).match(AT_LOAD_RX);
     if (m && m[0].trim() === t) return true;
     m = t.match(KM_RX);
     return !!m && m[0].trim() === t;
