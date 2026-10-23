@@ -290,19 +290,27 @@
     // «לאנג׳ 3 סטים (12 לכל רגל)» has no count outside, so the bracket is the count.
     var counted = /\d/.test(t.replace(/\([^()]*\)/g, ' ').replace(/\d+\s*(?:סטים?|סבבים?)/g, ' '));
     t = t.replace(/\(([^()]*)\)/g, function (all, inner) {
-      var side = inner.match(PER_SIDE_RX);
-      if (counted && side && /^\s*\d+\s*(?:חזרות|פעמים)?\s*$/.test(inner.replace(side[0], ' '))) {
-        notes.push(inner.trim().replace(/\s+/g, ' '));
-        return ' ';
-      }
-      // «גשר 2x12 (3 שניות למעלה)»: with a count outside, a tempo cue in brackets is a note.
-      if (counted && isTempoCue(inner)) {
-        notes.push(inner.trim().replace(/\s+/g, ' '));
-        return ' ';
-      }
-      if (/\d/.test(inner)) return ' ' + inner + ' ';
-      if (inner.trim()) notes.push(inner.trim());
-      return ' ';
+      // «(3 שניות ירידה, 1 שנייה עלייה)», «(12 לכל רגל, לאט)», «(3 סטים, 12 חזרות)»: a bracket with a
+      // digit and a comma is read piece by piece - each piece a note or an unwrapped count on its own.
+      // A digit-free bracket («(גב ישר, ברכיים החוצה)») stays one note, as the trainer wrote it.
+      var pieces = /\d/.test(inner) ? inner.split(PIECE_SEP_RX) : [inner];
+      var kept = [];
+      pieces.forEach(function (piece) {
+        var side = piece.match(PER_SIDE_RX);
+        if (counted && side && /^\s*\d+\s*(?:חזרות|פעמים)?\s*$/.test(piece.replace(side[0], ' '))) {
+          notes.push(piece.trim().replace(/\s+/g, ' '));
+          return;
+        }
+        // «גשר 2x12 (3 שניות למעלה)»: with a count outside, a tempo cue in brackets is a note.
+        if (counted && isTempoCue(piece)) {
+          notes.push(piece.trim().replace(/\s+/g, ' '));
+          return;
+        }
+        if (/\d/.test(piece)) kept.push(piece.trim());
+        // «(מנוחה 30 שניות, לאט)» after the rest clause was taken is «(, לאט)»: the stray comma is not part of the cue.
+        else if (/[א-תa-zA-Z]/.test(piece)) notes.push(piece.replace(/^[\s,،;|•·]+|[\s,،;|•·]+$/g, ''));
+      });
+      return kept.length ? ' ' + kept.join(' ') + ' ' : ' ';
     });
     // The lower bound is the count, the range stays in the notes
     // (was the name «סקוואט 10 12» with 10 invented reps).
@@ -527,6 +535,31 @@
   // Pieces on one line: a comma, a «ו» before the next exercise, and the inline separators a
   // pasted list uses instead of a comma - «סופרמן 3x10 | פלאנק 30 שניות», «;», « • », «←», «->».
   var PIECE_SEP_RX = /[,،;|•·←→]|\s-+>\s|\s<-+\s|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/;
+  var PIECE_SEP_G_RX = new RegExp(PIECE_SEP_RX.source, 'g');
+
+  // The pieces of a line, a separator inside brackets left alone: «סקוואט 3x10 (3 שניות ירידה, 1 שנייה
+  // עלייה)» is one exercise with a two-part tempo cue, not «סקוואט ( ירידה» and a second exercise
+  // «עלייה)» (the plain split cut the line at every comma, so the bracket was torn in two and its halves
+  // rode into two names). An unclosed bracket splits as before.
+  function splitPieces(line) {
+    var s = String(line || '');
+    if (s.indexOf('(') === -1) return s.split(PIECE_SEP_RX);
+    var out = [];
+    var start = 0;
+    var m;
+    PIECE_SEP_G_RX.lastIndex = 0;
+    while ((m = PIECE_SEP_G_RX.exec(s))) {
+      var before = s.slice(0, m.index);
+      var depth = (before.match(/\(/g) || []).length - (before.match(/\)/g) || []).length;
+      if (depth <= 0 || s.indexOf(')', m.index) === -1) {
+        out.push(s.slice(start, m.index));
+        start = m.index + m[0].length;
+      }
+      if (!m[0].length) PIECE_SEP_G_RX.lastIndex++;
+    }
+    out.push(s.slice(start));
+    return out;
+  }
 
   // «שכיבות סמיכה 20 + פלאנק 30 שניות» is two exercises: a «+» after a counted exercise and
   // before a named one splits like a comma. «סקוואט + קפיצה 10» (one combo move) and
@@ -535,8 +568,8 @@
     var parts = line.split(/(\s*\+\s*)/);
     var out = parts[0];
     for (var i = 2; i < parts.length; i += 2) {
-      var left = out.split(PIECE_SEP_RX).pop();
-      var right = parseExerciseToken(parts[i].split(PIECE_SEP_RX)[0], {});
+      var left = splitPieces(out).pop();
+      var right = parseExerciseToken(splitPieces(parts[i])[0], {});
       var split = /\d/.test(left) && /[א-תa-zA-Z]/.test(left) && right && !right.continuation && right.name;
       out += (split ? ', ' : parts[i - 1]) + parts[i];
     }
@@ -610,14 +643,13 @@
       }
       line = stripped;
       if (held) {
-        var head = parseExerciseToken(line.split(PIECE_SEP_RX)[0], {});
+        var head = parseExerciseToken(splitPieces(line)[0], {});
         if (!head || head.continuation) line = held + ' ' + line;
       }
       line = splitPlus(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
-      maskVavNames(line, vavRxs)
-        .split(PIECE_SEP_RX)
+      splitPieces(maskVavNames(line, vavRxs))
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
