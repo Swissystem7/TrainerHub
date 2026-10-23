@@ -100,18 +100,22 @@
    * Which base workout fits the width. Narrow space → a limited-space method from the booklet.
    * A wide site only gets the opening session when it is safe to run on: that session opens its
    * Main phase with a relay race, which the plan itself rules out on a slippery / uneven floor
-   * ("בלי ספרינטים") and next to cars ("לא שילבתי ... שליחים").
+   * ("בלי ספרינטים"), next to cars ("לא שילבתי ... שליחים") and in dim light ("להקטין את המרחקים").
    */
-  function baseChoice(p, group, unsafeFloor, cars) {
+  function baseChoice(p, group, unsafeFloor, cars, dark) {
     if (p.width === 'narrow') {
       if (group >= 2) return { kind: 'method', id: 'igo-ugo', reason: 'בחרתי שיטת IGO-UGO בזוגות כי השטח צר: חצי עובד וחצי נח באותו מקום' };
       return { kind: 'method', id: 'tabata', reason: 'בחרתי טבטה כי השטח צר ואפשר לעבוד במקום' };
     }
     if (p.width === 'medium') return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) כי השטח בינוני' };
-    if (unsafeFloor || cars) {
-      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + (unsafeFloor ? 'המשטח לא בטוח לריצה' : 'יש מכוניות ליד השטח') };
+    if (unsafeFloor || cars || dark) {
+      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + noRunWhy(unsafeFloor, cars) };
     }
     return { kind: 'session', id: 'opening-1', reason: 'בחרתי אימון פתיחה מהחוברת כי השטח רחב ומאפשר ריצות' };
+  }
+
+  function noRunWhy(unsafeFloor, cars) {
+    return unsafeFloor ? 'המשטח לא בטוח לריצה' : cars ? 'יש מכוניות ליד השטח' : 'התאורה חלשה';
   }
 
   function layoutFor(p, group) {
@@ -139,8 +143,9 @@
     var uneven = p.hazards.indexOf('uneven') !== -1;
     var unsafeFloor = slippery || uneven;
     var cars = p.hazards.indexOf('cars') !== -1;
+    var dark = p.hazards.indexOf('dark') !== -1;
 
-    var base = baseChoice(p, group, unsafeFloor, cars);
+    var base = baseChoice(p, group, unsafeFloor, cars, dark);
     var bopts = { season: winter ? 'winter' : 'summer', activity: 'long' };
     var workout = base.kind === 'method' ? Booklet.methodWorkout(base.id, 0, bopts) : Booklet.sessionWorkout(base.id, bopts);
     reasons.push(base.reason);
@@ -156,7 +161,7 @@
     if (p.features.some(function (f) { return SITE_DRILLS[f]; })) workout.tags.push('site');
 
     var warm = workout.phases[0];
-    if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars) {
+    if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars && !dark) {
       var game = Booklet.games('tag')[0];
       if (game) {
         addExercise(warm, { name: game.he, id: null, sets: 1, reps: null, duration_seconds: 300, rest_seconds: null, notes: game.description }, true);
@@ -165,7 +170,7 @@
     } else if (group >= 6 && p.width !== 'wide') {
       reasons.push('לא שילבתי משחקי תופסת או שליחים כי השטח לא רחב מספיק');
     } else if (group >= 6) {
-      reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + (cars ? 'יש מכוניות ליד השטח' : 'המשטח לא בטוח לריצה'));
+      reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + noRunWhy(unsafeFloor, cars));
     }
 
     settleMinutes(workout);
