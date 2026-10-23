@@ -1034,6 +1034,7 @@
   function echoStem(w) {
     return w.replace(/[׳'"״]/g, '').replace(/(?:ים|ות|ה)$/, '');
   }
+  var ECHO_ALIASES = { 'קפיצ': /^(?:ג[׳']?אמפ|jump)/i };
   function echoCountNoun(s) {
     return s.replace(/(\d)\s+([֐-׿][֐-׿׳']{2,})(?=\s*(?:$|[,.;)]))/g, function (all, d, word, at) {
       var noun = echoStem(word);
@@ -1042,7 +1043,11 @@
       var echoed = s.slice(0, at).split(/\s+/).some(function (w) {
         if (/\d/.test(w)) return false;
         var stem = echoStem(w);
-        return stem.length >= 3 && (stem.indexOf(noun) === 0 || noun.indexOf(stem) === 0);
+        if (stem.length >= 3 && (stem.indexOf(noun) === 0 || noun.indexOf(stem) === 0)) return true;
+        // «ג'אמפינג ג'קס 30 קפיצות»: a transliterated name echoed by its Hebrew noun (was a clip-less
+        // name «ג'אמפינג ג'קס 30 קפיצות» with 10 invented reps).
+        var alias = ECHO_ALIASES[noun];
+        return !!alias && alias.test(w);
       });
       return echoed ? d + ' חזרות' : all;
     });
