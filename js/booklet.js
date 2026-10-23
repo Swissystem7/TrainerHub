@@ -121,9 +121,16 @@
     return out;
   }
 
+  /** A drill the place can host: with opts.gear (what is there) given, drills that need anything else are left out. */
+  function hostable(d, gear) {
+    if (!gear) return true;
+    return (d.equipment || []).every(function (e) { return e === 'none' || gear.indexOf(e) !== -1; });
+  }
+
   function warmupPhase(opts) {
+    opts = opts || {};
     var minutes = warmupMinutes(opts);
-    var bank = drills({ category: 'warmup' });
+    var bank = drills({ category: 'warmup' }).filter(function (d) { return hostable(d, opts.gear); });
     var n = Math.max(3, Math.min(bank.length, minutes));
     var chosen = pick(bank, n);
     var each = Math.round((minutes * 60) / chosen.length);
