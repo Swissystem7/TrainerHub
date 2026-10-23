@@ -1368,8 +1368,22 @@
     return text.replace(DECIMAL_COMMA_RX, '$1.$2');
   }
 
+  // «סקוואט 3 x 12 reps», «plank 3 x 30 sec», «פלאנק 30 sec», «squat 3 sets x 12 reps», «plank 30s»,
+  // «run 5 min»: the English unit after a count is the Hebrew one (was a name «סקוואט reps» / «plank sec»
+  // with 30 reps / «פלאנק 30 sec» of 10 invented reps / «squat 3 sets reps»). Only right after a digit,
+  // and only a whole word: «3 sets» is not «3 s», «5 minimum» is not «5 min», «kg» / «km» stay.
+  var ENGLISH_UNIT_RX = /(\d)\s*(?:(rep(?:etition)?s?)|(sec(?:ond)?s?)|(min(?:ute)?s?)|(sets?)|(rounds?))(?![a-zA-Z])|(\d)(s)(?![a-zA-Z])/gi;
+  var ENGLISH_OF_RX = /(סטים|סבבים)\s+of\s+(?=\d)/gi;
+
+  function normalizeEnglishUnits(text) {
+    return String(text || '').replace(ENGLISH_UNIT_RX, function (m, d, rep, sec, min, sets, rounds, d2, s2) {
+      if (s2) return d2 + ' שניות';
+      return d + ' ' + (rep ? 'חזרות' : sec ? 'שניות' : min ? 'דקות' : sets ? 'סטים' : 'סבבים');
+    }).replace(ENGLISH_OF_RX, '$1 של ');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))).trim();
+    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeDecimalComma(normalizeTicks(stripEmoji(text))))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
