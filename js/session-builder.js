@@ -416,6 +416,11 @@
     var mainList = warmup ? list.filter(function (e) {
       return foldName(e) !== foldName(warmup);
     }) : list;
+    // The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
+    // חימום») stay out of Main too: «אימון חזה» prescribed the cone warm-up as
+    // 3 x 8-12 next to the push-ups. Only a catalog with nothing else keeps them.
+    var notWarmups = mainList.filter(function (e) { return !/חימום/.test(foldName(e)); });
+    if (notWarmups.length) mainList = notWarmups;
     var pool = filterPool(mainList, req, relax);
     if (pool.length < 2 && req.level) {
       relax.level = true;
