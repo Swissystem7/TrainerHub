@@ -241,7 +241,7 @@
   // estimate marked as such, and never an empty "זמן:  דקות".
   function durationLabel(minutes, estimate) {
     var m = Number(minutes);
-    if (m > 0) return m + ' דקות';
+    if (m > 0) return m === 1 ? 'דקה' : m + ' דקות';
     var e = Number(estimate);
     if (e > 0) return Math.round(e) <= 1 ? 'כדקה (הערכה)' : 'כ־' + Math.round(e) + ' דקות (הערכה)';
     return 'לא צוין';
