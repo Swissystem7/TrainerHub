@@ -372,11 +372,25 @@
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
       if (n === null) n = bareForCount(t);
+      if (n === null) n = selfAndCompanionCount(t);
     }
     // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple,
     // unless it is negated: "לא בזוגות" / "בלי זוגות" is not a couple.
     if (n === null) return /זוג/.test(t.replace(NEGATED_AUDIENCE_RX, ' ')) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
+  }
+
+  // "אימון לשנינו" / "לשלושתנו" counts the speaker and the others, and
+  // "אימון לי ולחבר" / "אני ואשתי" is the speaker plus one person. Without
+  // this both fell back to a single trainee.
+  var ALL_OF_US_RX = /(?:^|[^א-ת])[לב]?(שנינו|שתינו|שלושתנו|ארבעתנו|חמשתנו)(?=$|[^א-ת])/;
+  var ALL_OF_US = { 'שנינו': 2, 'שתינו': 2, 'שלושתנו': 3, 'ארבעתנו': 4, 'חמשתנו': 5 };
+  var SELF_AND_ONE_RX = /(?:^|[^א-ת])(?:לי|אני|אותי|בשבילי)\s+ו(?:ל|עם\s+|את\s+)?ה?(?:חבר|חברה|בן\s+ה?זוג|בת\s+ה?זוג|אשתי|בעלי|אחי|אחותי|אבא|אמא|אבי|אמי|שותף|שותפה|שכן|שכנה|בני|בתי|בן|בת)(?:\s+של?י)?(?=$|[^א-ת])/;
+
+  function selfAndCompanionCount(t) {
+    var m = ALL_OF_US_RX.exec(t);
+    if (m) return ALL_OF_US[m[1]];
+    return SELF_AND_ONE_RX.test(t) ? 2 : null;
   }
 
   // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
