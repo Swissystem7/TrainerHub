@@ -1,5 +1,11 @@
 (function (root) {
   'use strict';
+  function contentKey(workout) {
+    if (!workout || typeof workout !== 'object') return JSON.stringify(workout);
+    var copy = Object.assign({}, workout);
+    delete copy.savedAt;
+    return JSON.stringify(copy);
+  }
   function saveWorkouts(store, key, workouts) {
     var existing = store.get(key, []);
     if (!Array.isArray(existing)) throw new Error('רשימת האימונים השמורים אינה תקינה. יש לייצא גיבוי לפני המשך.');
@@ -26,13 +32,15 @@
     var ids = entries.map(function (w) { return w.saved_id; }).filter(Boolean);
     var next = entries.concat(existing.filter(function (w) { return !w.saved_id || ids.indexOf(w.saved_id) === -1; }));
     
-    // Check for duplicate workout objects (not just title)
+    // Check for duplicate workout objects (not just title). savedAt is left out:
+    // it changes on every save, so with it a second «שמור» on the same workout
+    // (or saving one loaded from the history) kept both copies. The newest wins.
     var uniqueNext = [];
     for (var i = 0; i < next.length; i++) {
       var isDuplicate = false;
-      var currentWorkout = JSON.stringify(next[i]);
+      var currentWorkout = contentKey(next[i]);
       for (var j = 0; j < uniqueNext.length; j++) {
-        if (JSON.stringify(uniqueNext[j]) === currentWorkout) {
+        if (contentKey(uniqueNext[j]) === currentWorkout) {
           isDuplicate = true;
           break;
         }
