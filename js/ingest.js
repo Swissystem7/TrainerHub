@@ -352,6 +352,7 @@
     var t = String(s || '');
     var notes = [];
     var open = false;
+    var failure = false;
     // «פלאנק 3x30: גב ישר»: the digit-free text after the colon is the cue, the count stays whole.
     var colonCue = t.match(COLON_CUE_RX);
     if (colonCue && /\d/.test(t.slice(0, colonCue.index)) && /[א-תa-zA-Z]/.test(t.slice(0, colonCue.index)) && !PRESCRIPTION_WORD_RX.test(colonCue[1])) {
@@ -456,7 +457,7 @@
       var cap = maxWord && (t.slice(t.indexOf(m[0]) + m[0].length).match(new RegExp('^\\s*(\\d+(?:\\.\\d+)?)' + capUnit + '?(?![\\d.])')) ||
         t.slice(0, t.indexOf(m[0])).match(new RegExp('(?:^|\\s)(\\d+(?:\\.\\d+)?)' + capUnit + '\\s*$')));
       notes.push(cap ? 'עד ' + cap[1] + (cap[2] || '').replace(/\s+/g, ' ') : 'עד כשל');
-      if (!cap) open = true;
+      if (!cap) open = failure = true;
       t = t.replace(m[0], ' ');
     }
     if ((m = t.match(KM_RX))) {
@@ -487,7 +488,7 @@
     // «סקוואט @ 3x12»: a sign with no load after it is not part of the name either.
     if (/\d/.test(t)) t = t.replace(EACH_RX, ' ');
     t = t.replace(PER_SET_RX, ' ').replace(/(?:^|\s)@(?=\s|$)/g, ' ').replace(/\s[\-–—,]+\s*$/, ' ');
-    return { text: t, notes: notes, open: open };
+    return { text: t, notes: notes, open: open, failure: failure };
   }
 
   function isRestToken(s) {
@@ -1282,6 +1283,16 @@
       }
     }
     s = s.trim();
+    // «מתח 3 מקס», «שכיבות סמיכה 4 עד כשל»: a lone small count next to «to failure» is the sets,
+    // not 3 reps to failure (a rep count and failure contradict). «שכיבות סמיכה 20 עד כשל» stays reps.
+    if (cues.failure && !setsExplicit && reps == null && duration_seconds == null) {
+      m = s.match(/(?:^|\s)([2-6])\s*[\-–—,.:]*$/) || s.match(/^([2-6])\s+/);
+      if (m) {
+        sets = toInt(m[1]);
+        setsExplicit = true;
+        s = s.replace(m[0], ' ').trim();
+      }
+    }
     m = s.match(/^(\d+)\s+/);
     if (m && reps == null && duration_seconds == null) {
       reps = toInt(m[1]);
