@@ -159,6 +159,10 @@
   // «דדליפט», «גוד מורנינג», «היפ תראסט», «לחיצת רגליים», «פשיטת ברכיים».
   // Without these a trainer's own «דדליפט רומני» clip was proposed as «ליבה»,
   // «פשיטת ברכיים» as «תלת־ראשי» and «לחיצת רגליים» as a chest press.
+  // A wall sit with or without the article: «ישיבה על קיר», «ישיבה על הקיר»
+  // (the site plan's own drill), «ישיבת קיר», «וול סיט». Without the «ה» form
+  // the site plan's wall sit read as a «ליבה» drill counted in reps.
+  var WALL_SIT_RX = /ישיבה על ה?קיר|ישיבת קיר|וול סיט/;
   var DEADLIFT_RX = /דדליפט|גוד מורנינג/;
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
@@ -173,7 +177,7 @@
     if (/כדורגל|פוטבול/.test(t)) eq.push('football');
     if (/טניס/.test(t)) eq.push('tennis-ball');
     if (/חישוק/.test(t)) eq.push('hoop');
-    if (WALL_RX.test(t)) eq.push('wall');
+    if (WALL_RX.test(t) || WALL_SIT_RX.test(t)) eq.push('wall');
     if (/סולם/.test(t)) eq.push('ladder');
     if (/מדרג/.test(t)) eq.push('stairs');
     if (/אוסטרל/.test(t) || mentionsPullUp(t)) eq.push('bar');
@@ -214,7 +218,7 @@
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
-    if (LUNGE_RX.test(t) || /גשר|ישיבה על קיר|וול סיט|ניתור|קפיצ/.test(t)) found.push('legs');
+    if (LUNGE_RX.test(t) || /גשר|ניתור|קפיצ/.test(t) || WALL_SIT_RX.test(t)) found.push('legs');
     if (CALF_RX.test(t) || STEP_UP_RX.test(t)) found.push('legs');
     if (JUMP_DRILL_RX.test(t)) {
       found.push('legs');
@@ -284,7 +288,7 @@
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
-    if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
+    if (/סקוואט|מדרג|מכרע|ארבע ראשי/.test(t) || WALL_SIT_RX.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
     if (muscles && muscles.length === 1 && muscles[0] === 'core') return 'core';
@@ -296,7 +300,7 @@
 
   function inferLoad(text, pattern) {
     var t = fold(text);
-    if (/פלאנק|החזק|ישיבה על קיר|וול סיט|שניות|זמן/.test(t)) return 'time';
+    if (/פלאנק|החזק|שניות|זמן/.test(t) || WALL_SIT_RX.test(t)) return 'time';
     if (pattern === 'core' && /סט|חזרות/.test(t) === false && /פלאנק/.test(t)) return 'time';
     if (/פלאנק/.test(t)) return 'time';
     return 'reps';
