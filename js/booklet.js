@@ -274,8 +274,11 @@
       main = ex.exercises.map(function (x) { return exerciseFrom(x, { sets: 1, seconds: m.workSeconds, rest: m.restSeconds }); });
       minutes = Math.round((ex.exercises.length * (m.workSeconds + m.restSeconds)) / 60);
     } else if (m.id === 'igo-ugo' && ex) {
+      // «לאחר שהזוגות סיימו את 5 הסטים ... מנוחה של מינימום 3 דקות ... סבב נוסף»: the cards
+      // have no rounds field, so the break between rounds rides in the note.
+      var roundRest = m.restBetweenRoundsSeconds > 0 ? ', מנוחה ' + restLabel(m.restBetweenRoundsSeconds) + ' בין סבב לסבב' : '';
       ex.blocks.forEach(function (b) {
-        b.exercises.forEach(function (x) { main.push(exerciseFrom(x, { sets: 1, notes: b.he + ' · IGO-UGO בזוגות' })); });
+        b.exercises.forEach(function (x) { main.push(exerciseFrom(x, { sets: 1, notes: b.he + ' · IGO-UGO בזוגות' + roundRest })); });
       });
       minutes = 25;
     } else if (m.id === 'pyramid' && ex) {
