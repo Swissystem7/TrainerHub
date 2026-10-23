@@ -274,6 +274,25 @@
   // was never matched; «RPE 7-8» also left a stray range note «7-8». Taken before the range so the
   // effort range is one note, and never after an at sign (AT_LOAD_RX reads those).
   var INTENSITY_RX = /(?<!@\s*)(?:^|\s)(?:(RPE|RIR)\s*[:\-]?\s*(\d+(?:\.\d+)?)(?:\s*[\-–—]\s*(\d+(?:\.\d+)?))?|(\d+(?:\.\d+)?)\s*(RPE|RIR)|(?:ב\s*-?\s*)?(\d+(?:\.\d+)?)\s*(?:%|אחוז(?:ים)?)(\s*(?:מ?ה?מקס(?:ימום)?|מ?\s*-?\s*1\s*RM|RM|דופק|מאמץ))?)(?![֐-׿a-zA-Z\d%])/i;
+  // The heart rate on a cardio line: «ריצה 20 דקות דופק 150», «בדופק 140-150», «דופק: 150», «דופק עד 130»,
+  // «150 bpm», «HR 150», «דופק 70%», «דופק אזור 2» / «zone 2», «דופק נמוך». It rode into the name
+  // («ריצה דופק 150», «ריצה בדופק 140» with a stray range note «140-150»), «ריצה 5 ק"מ דופק 150» read
+  // 150 reps, and the comma piece «, דופק 150» was a second exercise «דופק» of 150 reps. A number
+  // followed by a time, a distance, a load or a multiplier is not the pulse («אימון דופק 30 דקות»).
+  var HR_NUMBER = '\\d{2,3}(?:\\s*[\\-–—]\\s*\\d{2,3})?\\s*(?:%|אחוז(?:ים)?)?(?!\\s*(?:דק|שנ|ק\\s*["״׳\']?\\s*[גמ]|קמ|קילו|km|kg|מטר|חזרות|פעמים|סטים|סבבים|[x×]\\s*\\d))';
+  var HR_UNIT = '(?:bpm|פעימות(?:\\s+[בל]דקה)?)';
+  var HEART_RATE_RX = new RegExp('(?:^|\\s)(?:' +
+    '(?:ב-?\\s*)?(?:דופק|HR|BPM)(?:\\s+(יעד|מטרה|ממוצע|מקסימלי|מקסימום|מקס[׳\']?))?\\s*:?\\s*(?:(עד|מעל|מתחת\\s*ל|של|ב)\\s*-?\\s*)?' +
+    '(' + HR_NUMBER + '|נמוך|גבוה|בינוני|נוח|מתון|(?:אזור|זון|zone)\\s*\\d)(?:\\s*' + HR_UNIT + ')?' +
+    '|(' + HR_NUMBER + ')\\s*(?:' + HR_UNIT + '|דופק)' +
+    '|(?:זון|zone)\\s*(\\d)' +
+    ')(?![\\u0590-\\u05FFa-zA-Z\\d%])', 'i');
+
+  function hrNote(m) {
+    var value = m[5] ? 'אזור ' + m[5] : (m[3] || m[4]);
+    value = value.replace(/\s*[\-–—]\s*/g, '-').replace(/\s*אחוז(?:ים)?/, '%').replace(/(זון|zone)\s*/i, 'אזור ').replace(/\s+/g, ' ').trim();
+    return 'דופק ' + (m[1] ? m[1] + ' ' : '') + (m[2] ? m[2].replace(/\s+/g, ' ') + ' ' : '') + value;
+  }
 
   function isTempoCue(s) {
     var t = String(s || '').trim();
@@ -328,6 +347,13 @@
     var m = t.match(TEMPO_CLAUSE_RX);
     if (m) {
       notes.push('טמפו ' + m[1].replace(/\s+/g, '').replace(/[–—]/g, '-').toUpperCase());
+      t = t.replace(m[0], ' ');
+    }
+    // «ריצה 20 דקות דופק 150» / «בדופק 140-150» / «150 bpm» / «דופק 70%»: the pulse is a note (was in the
+    // name, or 150 reps after a distance). Taken before the effort so «דופק 70%» is not a bare «70%».
+    m = t.match(HEART_RATE_RX);
+    if (m) {
+      notes.push(hrNote(m));
       t = t.replace(m[0], ' ');
     }
     // «דדליפט 5x5 RPE 8» / «RPE 7-8» / «70%» / «85% 1RM»: the effort or the share of the max is a note.
@@ -804,6 +830,9 @@
     // «סקוואט 3x12, RPE 8» / «, 70%»: the effort is a piece of its exercise too.
     m = (' ' + t).match(INTENSITY_RX);
     if (m && m[0].trim() === t) return true;
+    // «ריצה 20 דקות, דופק 150»: the pulse is a piece of its exercise too (was an exercise «דופק» of 150 reps).
+    m = (' ' + t).match(HEART_RATE_RX);
+    if (m && m[0].trim() === t) return true;
     m = t.match(KM_RX);
     return !!m && m[0].trim() === t;
   }
@@ -1092,6 +1121,10 @@
         if (cues.notes.length) cont.notes = cues.notes.join(' · ');
         return cont;
       }
+      // «ריצה 20 דקות» with «דופק 150» on the next line (or «RPE 8», «טמפו 3-1-1»): a line that is
+      // only a cue with a number is that exercise's note (was a phantom «דופק» of 150 reps).
+      // A digit-free line («עד כשל», «לאט») is left as it was.
+      if (cues.notes.length && /\d/.test(token)) return { continuation: true, sets: null, rest_seconds: null, notes: cues.notes.join(' · ') };
       return null;
     }
     if (/^\d+$/.test(name)) return null;
