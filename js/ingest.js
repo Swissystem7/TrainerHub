@@ -253,6 +253,27 @@
   var SLASH_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\/\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
   var PER_SET_RX = /(?:^|\s)(?:ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
+  // A tempo cue: a time with a word that says where it is held - «3 שניות למעלה», «2 שניות למטה»,
+  // «החזקה של 3 שניות», «עצירה של 2 שניות למטה», «5 שניות הרפיה בין», «טמפו 3-1-1». Next to a
+  // counted exercise («גשר 2x12 (3 שניות למעלה)») it is a note, not the work time: the bracket
+  // used to be unwrapped into the line because it held a digit, so the line became a clip-less
+  // name «גשר למעלה» with a 3-second duration (and «לחיצת חזה 4x8 (טמפו 3-1-1)» read the tempo
+  // as a 3-rep ladder). A bare time («פלאנק 3 סטים (30 שניות)»), a rest («(מנוחה 30 שניות)»),
+  // a load and a per-side count are not tempo cues and keep their meaning.
+  var TEMPO_TIME_RX = /\d+(?:\.\d+)?\s*(?:שניות|שנייה|שניה|שנ(?:[׳']|(?![א-ת]))|דקות|דקה|דק(?:[׳']|(?![א-ת])))/;
+  var TEMPO_WORD_RX = /(?:^|\s)טמפו(?=\s|$)/;
+  var TEMPO_NOT_RX = /עבודה|ק\s*["״׳']?\s*[גמ](?![א-ת])|קילו|kg|km|מטר|RPE|%|אחוז/i;
+
+  function isTempoCue(s) {
+    var t = String(s || '').trim();
+    if (!t || !/\d/.test(t)) return false;
+    if (REST_RX.test(t) || TEMPO_NOT_RX.test(t)) return false;
+    if (TEMPO_WORD_RX.test(t)) return true;
+    var time = t.match(TEMPO_TIME_RX);
+    if (!time) return false;
+    var left = t.replace(time[0], ' ');
+    return /[א-תa-zA-Z]/.test(left) && !/\d/.test(left) && !PRESCRIPTION_WORD_RX.test(left);
+  }
 
   function splitCues(s) {
     var t = String(s || '');
@@ -271,6 +292,11 @@
     t = t.replace(/\(([^()]*)\)/g, function (all, inner) {
       var side = inner.match(PER_SIDE_RX);
       if (counted && side && /^\s*\d+\s*(?:חזרות|פעמים)?\s*$/.test(inner.replace(side[0], ' '))) {
+        notes.push(inner.trim().replace(/\s+/g, ' '));
+        return ' ';
+      }
+      // «גשר 2x12 (3 שניות למעלה)»: with a count outside, a tempo cue in brackets is a note.
+      if (counted && isTempoCue(inner)) {
         notes.push(inner.trim().replace(/\s+/g, ' '));
         return ' ';
       }
@@ -728,7 +754,11 @@
     // one set of 10 invented reps, «דדליפט 8/6/4», or «דדליפט /6/4» with 8 reps). Taken before the
     // range/slash cues so «2-4-6-8» is not a «2-4» range and «8/6/4» not a per-side pair.
     var ladder = null;
-    var lm = s.match(LADDER_RX);
+    // «לחיצת חזה 4x8 (טמפו 3-1-1)»: the tempo in brackets next to a counted exercise is a note
+    // (splitCues takes it), not a 3-rep ladder - the bracket is blanked for the ladder match only.
+    var lm = s.replace(/\(([^()]*)\)/g, function (all, inner) {
+      return isTempoCue(inner) && /\d/.test(s.replace(/\([^()]*\)/g, ' ')) ? ' '.repeat(all.length) : all;
+    }).match(LADDER_RX);
     if (lm) {
       var ladderUnit = lm[3] || '';
       ladder = {
