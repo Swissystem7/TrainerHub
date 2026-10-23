@@ -294,6 +294,38 @@
     return 'דופק ' + (m[1] ? m[1] + ' ' : '') + (m[2] ? m[2].replace(/\s+/g, ' ') + ' ' : '') + value;
   }
 
+  // A hold written plain after the count: «גשר 2x12 3 שניות למעלה», «סקוואט 3x10 2 שניות למטה»,
+  // «החזקה של 3 שניות», «עצירה של 2 שניות למעלה», «ירידה של 3 שניות», «ירידה איטית 3 שניות»,
+  // «3 שניות למטה 1 שנייה למעלה» - the same note the bracketed «(3 שניות למעלה)» is. It was read
+  // as the work time and the word rode into the name («גשר למעלה» 2x12 held 3 s - workout mode ran
+  // a 3-second timer instead of counting 12 reps), so no clip matched. A bare time of up to 10 s
+  // next to a count («גשר 2x12 (3 שניות)», «מתח 5 חזרות 3 שניות») is a hold too: no set and no
+  // rest is that short. Only with a count left on the line - «פלאנק 30 שניות», «פלאנק 3 סטים
+  // 30 שניות», «ספרינט 3x10 שניות», «ריצה 8 פעמים 10 שניות» keep their time - or, with a hold
+  // word, alone as a comma piece or a line of its own under the exercise.
+  var HOLD_VERB = '(?:החזקה|החזק|להחזיק|תחזיקו?|עצירה|לעצור|תעצרו?|שהייה|הרפיה|ירידה|עלי[יה]ה)';
+  var HOLD_PLACE = '(?:למעלה|למטה|בשיא|בסוף|בתחתית|בעלי[יה]ה|בירידה|באמצע|בשליטה|בכל\\s+חזרה)';
+  var HOLD_SECONDS = '(\\d+(?:\\.\\d+)?)\\s*(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![א-ת])))';
+  var HOLD_CUE_RX = new RegExp('(?:^|\\s)(?:' +
+    '(?:עם\\s+)?' + HOLD_VERB + '(?:\\s+(?:איטית|מבוקרת|קצרה|קטנה))?(?:\\s+של)?\\s+' + HOLD_SECONDS + '(?:\\s+(?:' + HOLD_VERB + '|' + HOLD_PLACE + ')(?![א-ת]))*' +
+    '|(?<![x×]\\s*)' + HOLD_SECONDS + '(?:\\s+(?:' + HOLD_VERB + '|' + HOLD_PLACE + '|איטית|מבוקרת)(?![א-ת]))+' +
+    '|(?<![x×]\\s*)' + HOLD_SECONDS +
+    ')(?![א-ת\\d])');
+  var HOLD_MAX_BARE_SECONDS = 10;
+
+  // The hold cue found on `t`, or null: a bare time only up to 10 s and only next to a count;
+  // a time with a hold word next to a count or alone («3 שניות למעלה» as a piece or a line).
+  function matchHold(t) {
+    var m = t.match(HOLD_CUE_RX);
+    if (!m) return null;
+    var bare = m[3] != null;
+    if (bare && parseFloat(m[3]) > HOLD_MAX_BARE_SECONDS) return null;
+    var left = t.replace(m[0], ' ');
+    var counted = /\d/.test(left.replace(new RegExp(TIMED, 'g'), ' ').replace(/\d+\s*(?:סטים?|סבבים?|פעמים)|פעמיים/g, ' '));
+    if (!counted && (bare || /[א-תa-zA-Z]/.test(left))) return null;
+    return { text: left, note: m[0].trim().replace(/^עם\s+/, '').replace(/\s+/g, ' ') };
+  }
+
   function isTempoCue(s) {
     var t = String(s || '').trim();
     if (!t || !/\d/.test(t)) return false;
@@ -342,6 +374,13 @@
       });
       return kept.length ? ' ' + kept.join(' ') + ' ' : ' ';
     });
+    // «גשר 2x12 3 שניות למעלה» / «החזקה של 3 שניות» / «(3 שניות)»: the hold is a note, not the
+    // work time (was a name «גשר למעלה» held 3 s). «3 שניות למטה 1 שנייה למעלה» is two notes.
+    var hold;
+    while ((hold = matchHold(t))) {
+      notes.push(hold.note);
+      t = hold.text;
+    }
     // «סקוואט 3x12 טמפו 3-1-1»: the plain tempo is a note (the code was a 3-rep ladder before the
     // ladder match learned to skip it, and «טמפו» rode into the name). Taken before the range.
     var m = t.match(TEMPO_CLAUSE_RX);
@@ -842,6 +881,10 @@
     // «סקוואט 3x12, טמפו 3-1-1»: the tempo is a cue with digits (was a second exercise «טמפו» 3x3).
     var m = (' ' + t).match(TEMPO_CLAUSE_RX);
     if (m && m[0].trim() === t) return true;
+    // «גשר 2x12, 3 שניות למעלה»: the hold is a cue with digits too (was a second exercise «למעלה» of 3 s).
+    // A bare «, 30 שניות» stays the count of the exercise before it.
+    m = (' ' + t).match(HOLD_CUE_RX);
+    if (m && m[0].trim() === t && m[3] == null) return true;
     return !/\d/.test(t) && !REST_RX.test(t) && CUE_PIECE_RX.test(t);
   }
 
