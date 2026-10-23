@@ -465,6 +465,8 @@
         if (!line.trim()) return;
       }
       var first = tokens.length;
+      // «סה"כ 25 דקות» / «בהצלחה!» at the end of a paste are not exercises.
+      if (isTotalLine(line) || isSignOff(line, list)) return;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -486,6 +488,8 @@
         .filter(function (s) {
           if (s.length <= 1) return false;
           if (/^\d+\s*סבבים?$/.test(s)) return false;
+          // «כל הכבוד, מחר ממשיכים» / «סקוואט 3x12, סה"כ 10 דקות»: a sign-off or a total piece.
+          if (isTotalLine(s) || isSignOff(s, list)) return false;
           return true;
         })
         .forEach(function (s) {
@@ -526,6 +530,40 @@
       }
     }
     return line;
+  }
+
+  // A total at the end of a paste: «סה"כ 25 דקות», «סה״כ זמן: 25 דקות», «זמן כולל 30 דקות»,
+  // «משך האימון: 40 דק׳», «סה"כ 3 סבבים». It was an exercise named «סה"כ» (or «זמן כולל»)
+  // of 1500 seconds; the stated minutes are now the workout's duration_minutes instead.
+  var TOTAL_HEAD = 'סה[״"\']?כ|סך\\s+ה?כל|זמן\\s+(?:כולל|ה?אימון|משוער)|משך(?:\\s+ה?אימון)?|אורך\\s+ה?אימון';
+  var TOTAL_RX = new RegExp('^(?:' + TOTAL_HEAD + ')(?=[\\s:\\-–]|$)');
+  var TOTAL_MINUTES_RX = new RegExp('^(?:' + TOTAL_HEAD + ')(?:\\s+(?:זמן|משך|אימון))?\\s*[:\\-–]?\\s*(?:כ-?\\s*)?(\\d+)\\s*' + MINUTE_UNIT);
+
+  function cleanLine(line) {
+    return String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[!?.…:)(]+$/, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function isTotalLine(line) {
+    return TOTAL_RX.test(cleanLine(line));
+  }
+
+  function totalMinutes(text) {
+    var m = null;
+    numberWordsToDigits(String(text || '')).split(/\n|[,،;]/).some(function (line) {
+      var t = cleanLine(line);
+      return TOTAL_RX.test(t) && (m = t.match(TOTAL_MINUTES_RX));
+    });
+    return m ? toInt(m[1]) : null;
+  }
+
+  // A sign-off line: «בהצלחה!», «כל הכבוד», «מחר ממשיכים», «תהנו», «נתראה מחר», «לשתות מים!»,
+  // «שבת שלום». Each was an exercise of 10 invented reps («בהצלחה!» with the mark in its name).
+  var SIGNOFF_RX = /^(?:(?:שיהיה\s+|ש?תהיה\s+)?בהצלחה(?:\s.*)?|כל\s+הכבוד(?:\s.*)?|ת(?:ה|יה)נו(?:\s.*)?|נתראה(?:\s.*)?|(?:מחר|בשבוע\s+הבא|בפעם\s+הבאה)\s+ממשיכים|ממשיכים\s+(?:מחר|בשבוע\s+הבא|בפעם\s+הבאה)|יאללה(?:\s.*)?|תודה(?:\s.*)?|(?:אל\s+תשכחו\s+)?לשתות\s+(?:הרבה\s+)?מים|אימון\s+(?:טוב|נעים|מהנה|מוצלח|פורה)(?:\s.*)?|שבוע\s+טוב|שבת\s+שלום|(?:בוקר|ערב|לילה)\s+טוב|זהו|סיימנו|זה\s+הכל|סוף(?:\s+ה?אימון)?|חג\s+שמח)$/;
+
+  function isSignOff(line, list) {
+    var t = cleanLine(line);
+    if (!t || /\d/.test(t) || !SIGNOFF_RX.test(t)) return false;
+    return !matchName(t, list || []);
   }
 
   // A comma piece that is a coaching cue, not an exercise: tempo («לאט», «ירידה איטית»,
@@ -1058,7 +1096,8 @@
 
     var workout = {
       title: 'אימון שנקלט',
-      duration_minutes: null,
+      // «סה"כ 25 דקות» at the end of the paste is the workout's stated length, not an exercise.
+      duration_minutes: totalMinutes(raw),
       participants: 1,
       equipment: [],
       intensity: 'medium',
