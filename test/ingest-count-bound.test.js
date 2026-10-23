@@ -44,5 +44,5 @@ test('to failure and plain counts are untouched', () => {
   assert.deepStrictEqual(rows('שכיבות סמיכה 15'), [['שכיבות סמיכה', 'אתגר_שכיבות_שמיכה', 1, 15, null, '']]);
   assert.deepStrictEqual(rows('סקוואט 3x12 עד כשל'), [['סקוואט', null, 3, 12, null, 'עד כשל']]);
   assert.deepStrictEqual(rows('ריצה עד כשל'), [['ריצה', null, 1, null, null, 'עד כשל']]);
-  assert.deepStrictEqual(rows('שכיבות סמיכה מקסימום 20'), [['שכיבות סמיכה', 'אתגר_שכיבות_שמיכה', 1, 20, null, 'עד כשל']]);
+  assert.deepStrictEqual(rows('שכיבות סמיכה מקסימום 20'), [['שכיבות סמיכה', 'אתגר_שכיבות_שמיכה', 1, 20, null, 'עד 20']]);
 });
