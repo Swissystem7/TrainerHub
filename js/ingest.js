@@ -28,7 +28,13 @@
   // «מנוחה של דקה בין הסטים», «מנוחה 1:00». A line that holds nothing else is
   // a rest line; an exercise line keeps its name and takes the clause as its rest.
   var MINUTE_UNIT = '(?:דקות|דקה|דק(?:[׳\'′]|(?![\\u0590-\\u05FF])))';
-  var TIME_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF]))|' + MINUTE_UNIT + ')';
+  var SECOND_UNIT = '(?:שניות|שנייה|שניה|שנ(?:[׳\']|(?![\\u0590-\\u05FF])))';
+  var TIME_UNIT = '(?:' + SECOND_UNIT + '|' + MINUTE_UNIT + ')';
+  // «דקה ו-30 שניות», «1 דקות 30 שניות» (a tick «1' 30"» written out): the seconds after the
+  // minutes belong to them. ws is the whitespace class, as in restFiller below.
+  function minSecTail(ws) {
+    return '(?:' + ws + '*(?:ו-?' + ws + '*)?\\d+' + ws + '*' + SECOND_UNIT + ')?';
+  }
   var HALF = '\\s*(?:וחצי|ו-?(?:1\\/2|½))';
   var TIMED = '(?:\\d{1,2}:[0-5]\\d|(?:1\\/2|½|חצי)\\s*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?\\s*' + TIME_UNIT + '(?:' + HALF + ')?|(?:שתי\\s*דקות|דקה)\\s*וחצי|חצי\\s*דקה|שתי\\s*דקות|דקה(?:\\s+אחת)?)';
   // «בין הסטים», «בין סט לסט», «בין כל סבב»: where the rest goes. ws is the whitespace class -
@@ -43,7 +49,7 @@
   var REST_FILLER_LINE = restFiller('[ \\t]');
   // «מנוחה בין הסטים 45 שניות» / «בין הסטים מנוחה 45 שניות»: the place of the rest may come before
   // its time, or before the rest word itself (was a phantom exercise «בין הסטים» / «בין סט»).
-  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)' + restBetween('\\s') + '\\s+)?(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + '|\\d+(?![\\d:])))?' + REST_FILLER);
+  var REST_AFTER_RX = new RegExp('(?:(?:^|\\s)' + restBetween('\\s') + '\\s+)?(?:(?:^|\\s)עם\\s+)?(?:מנוחה|הפסקה)' + REST_FILLER + '(?:(?:\\s*[:\\-–]\\s*|\\s+)(?:' + TIMED + minSecTail('\\s') + '|\\d+(?![\\d:])))?' + REST_FILLER);
   // «עבודה 40 שניות», «עבודה: 40», «40 שניות עבודה»: the work time of an interval paste.
   var WORK_RX = new RegExp('עבודה\\s*[:\\-–]?\\s*(?:' + TIMED + '|\\d+(?![\\d:]))|' + TIMED + '\\s*עבודה');
   // «סקוואט 3x12 דקה מנוחה» is 3×12 with a minute's rest (was 1×3 with 720 s): the time does not start
@@ -107,9 +113,18 @@
   // A rest given in minutes, on one line: «מנוחה 3 דקות», «מנוחה: דקה וחצי», «2.5 דקות מנוחה».
   // «סקוואט 3x12 דקה מנוחה» is a minute, not 12 (the count before «דקה» belongs to the x).
   var MINUTE_TIME = '(?:(?:1\\/2|½|חצי)[ \\t]*' + MINUTE_UNIT + '|\\d+(?:\\.\\d+)?[ \\t]*' + MINUTE_UNIT +
-    '(?:[ \\t]*(?:וחצי|ו-?(?:1\\/2|½)))?|(?:שתי[ \\t]*דקות|דקה)[ \\t]*וחצי|שתי[ \\t]*דקות|דקה)';
+    '(?:[ \\t]*(?:וחצי|ו-?(?:1\\/2|½))|' + minSecTail('[ \\t]') + ')|(?:שתי[ \\t]*דקות|דקה)[ \\t]*וחצי|שתי[ \\t]*דקות|דקה' + minSecTail('[ \\t]') + ')';
   var REST_MINUTES_RX = new RegExp('(?:מנוחה|הפסקה)' + REST_FILLER_LINE + '[ \\t]*[:\\-–]?[ \\t]*(' + MINUTE_TIME + ')|' +
     '(?<![\\d:.\\/]|[x×X*][ \\t]*)(' + MINUTE_TIME + ')[ \\t]*(?:מנוחה|הפסקה)');
+
+  var MIN_SEC_TAIL_RX = new RegExp('^' + minSecTail('\\s'));
+
+  // «1 דקות 30 שניות» / «דקה ו-30 שניות» is 90 s: the seconds right after the minutes (was 60 s).
+  function tailSeconds(t, m) {
+    var tail = t.slice(m.index + m[0].length).match(MIN_SEC_TAIL_RX);
+    var secs = tail && tail[0] && tail[0].match(/\d+/);
+    return secs ? toInt(secs[0]) : 0;
+  }
 
   function minuteSeconds(s) {
     var t = String(s || '');
@@ -117,8 +132,9 @@
     if (HALF_MINUTE_RX.test(t)) return 30;
     if (/שתי\s*דקות/.test(t)) return 120 + half;
     var m = t.match(MINUTES_RX);
-    if (m) return Math.round(parseFloat(m[1]) * 60) + half;
-    if (/דקה/.test(t)) return 60 + half;
+    if (m) return Math.round(parseFloat(m[1]) * 60) + half + tailSeconds(t, m);
+    m = t.match(/דקה/);
+    if (m) return 60 + half + tailSeconds(t, m);
     return null;
   }
 
@@ -759,12 +775,14 @@
       if (m[2]) reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
-    // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds).
-    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?!\d|:\d)\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
+    // "3x12", "3 x 15 חזרות", "3x45 שניות" (sets × seconds), «3x2 דקות» / «3x1'» (sets × minutes -
+    // was a name «פלאנק דקות» with 3 sets of 2 reps).
+    m = s.match(/(\d+)\s*[x×]\s*(\d+)(?!\d|:\d)\s*(חזרות|פעמים|שניות|שנייה|שניה|שנ(?:[׳']|(?![\u0590-\u05FF]))|דקות|דקה|דק(?:[׳']|(?![\u0590-\u05FF]))|["״′″])?/i);
     if (m) {
       sets = toInt(m[1]);
       setsExplicit = true;
-      if (m[3] && m[3] !== 'חזרות' && m[3] !== 'פעמים') duration_seconds = toInt(m[2]);
+      if (m[3] && /^דק/.test(m[3])) duration_seconds = toInt(m[2]) * 60;
+      else if (m[3] && m[3] !== 'חזרות' && m[3] !== 'פעמים') duration_seconds = toInt(m[2]);
       else reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
@@ -1089,6 +1107,28 @@
     });
   }
 
+  // «מנוחה 1'», «פלאנק 2׳», «ריצה 10′»: one tick after a number is minutes; «30"», «45״», «20″»,
+  // «30''» are seconds, and «1' 30"» / «1'30"» a minute and a half. Only the primes ′ ″ and the
+  // seconds mark were read, and only on an exercise line, so «מנוחה 1'» was a 1-second rest,
+  // «פלאנק 1'» a clip-less name with 10 invented reps, «פלאנק 1' 30"» 30 s and «פלאנק 3x1′» 3 × 1 s.
+  // Written out as «1 דקות» / «30 שניות» before anything reads the paste, the rest line, the
+  // paste's defaults and the pairs all see them. «30"-45"» drops its first mark so the range keeps
+  // its unit («30-45 שניות»). A tick after a letter («לאנג׳», «ק"ג», «5 מ'») is not a time.
+  var TICK_RANGE_RX = /(\d+)\s*(["״″]|''|['׳′])\s*([\-–—])\s*(?=\d+(?:\.\d+)?\s*\2)/g;
+  var SECOND_TICK_RX = /(\d+(?:\.\d+)?)\s*(?:["״″]|'')/g;
+  var MINUTE_TICK_RX = /(\d+(?:\.\d+)?)\s*['׳′]/g;
+
+  function tickWord(word) {
+    return function (all, num, offset, str) {
+      var next = str.charAt(offset + all.length);
+      return num + ' ' + word + (next && !/[\s,.;:)\]|\/]/.test(next) ? ' ' : '');
+    };
+  }
+
+  function normalizeTicks(text) {
+    return text.replace(TICK_RANGE_RX, '$1$3').replace(SECOND_TICK_RX, tickWord('שניות')).replace(MINUTE_TICK_RX, tickWord('דקות'));
+  }
+
   // «מנוחה 1,5 דקות», «פלאנק 1,5 דקות», «12,5 קג»: a comma decimal before a unit is the
   // decimal point, not a separator (was a rest of 1 s plus an exercise «בין סטים», a name «לחיצת חזה 12»;
   // «ריצה 2,5 קמ» was two exercises «ריצה» and «קמ»).
@@ -1099,7 +1139,7 @@
   }
 
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeDecimalComma(stripEmoji(text))).trim();
+    var raw = normalizeSetWords(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
