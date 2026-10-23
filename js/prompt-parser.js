@@ -121,8 +121,12 @@
     return first;
   }
 
+  // «40 ד׳» / «40 ד'» is the short form of «40 דקות». fold() drops the
+  // geresh, so after a digit a lone ד (no Hebrew letter after it) is minutes.
+  var MIN_UNIT = '(?:דק|ד(?![א-ת]))';
+
   function sessionMinutes(t) {
-    return firstAmount(t, /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g, function (m) {
+    return firstAmount(t, new RegExp('(\\S+\\s+)?(\\d+)\\s*(' + MIN_UNIT + '\\S*)(\\s+\\S+)?', 'g'), function (m) {
       return { n: toInt(m[2]), tied: partTied(m[1], m[3], m[4]) };
     });
   }
@@ -155,7 +159,7 @@
     var m;
     var n;
     if (/שעתיים/.test(t)) {
-      m = t.match(/שעתיים\s*ו[\s-]*(\d+)\s*דק/);
+      m = t.match(new RegExp('שעתיים\\s*ו[\\s-]*(\\d+)\\s*' + MIN_UNIT));
       if (m) return 120 + toInt(m[1]);
       n = minuteWords(t, TWO_HOURS_PLUS_MINUTE_WORDS_RX);
       if (n !== null) return 120 + n;
@@ -184,14 +188,14 @@
     if (m) {
       n = Math.round(parseFloat(m[1].replace(',', '.')) * 60);
       if (n > 0) {
-        var extra = t.match(/(?:שעות|שעה)\s*ו[\s-]*(\d+)\s*דק/);
+        var extra = t.match(new RegExp('(?:שעות|שעה)\\s*ו[\\s-]*(\\d+)\\s*' + MIN_UNIT));
         if (extra) return n + toInt(extra[1]);
         if (/(?:שעות|שעה)\s*וחצי/.test(t)) return n + 30;
         if (/(?:שעות|שעה)\s*ורבע/.test(t)) return n + 15;
         return n;
       }
     }
-    m = t.match(/שעה\s*ו[\s-]*(\d+)\s*דק/);
+    m = t.match(new RegExp('שעה\\s*ו[\\s-]*(\\d+)\\s*' + MIN_UNIT));
     if (m) return 60 + toInt(m[1]);
     if (THREE_QUARTERS_AFTER_RX.test(t)) return 105;
     n = minuteWords(t, HOUR_PLUS_MINUTE_WORDS_RX);
