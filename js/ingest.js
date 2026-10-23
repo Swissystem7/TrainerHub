@@ -699,7 +699,8 @@
           var left = raw.slice(0, colon).trim();
           var right = raw.slice(colon + 1).trim();
           // «אימון רגליים: סקוואט 15» is a title; «פלאנק: 30 שניות» is the exercise itself.
-          if (right && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || isIntervalPrefix(left))) {
+          // «יום שני: רגליים» is a day header with its title: stripSectionLabel reads it line by line.
+          if (right && !DAY_HEADER_RX.test(left.replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').trim()) && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || isIntervalPrefix(left))) {
             body = right;
           }
         }
@@ -728,6 +729,8 @@
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
         var label = line.replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:\s]+$/, '').replace(/\s+/g, ' ').trim();
+        // «יום שני - אימון רגליים:» names the day, not the exercise below it.
+        if (stripDayHeader(label) != null) label = '';
         if (/:\s*$/.test(line.replace(/[*#_~]/g, '')) && label.length > 1 && !SECTION_RX.test(label) && !TITLE_RX.test(label)) pendingName = label;
         return;
       }
@@ -799,10 +802,31 @@
     return DATE_ONLY_RX.test(rest) ? '' : rest;
   }
 
+  // A day or week header with the day's title after it: «יום שני אימון רגליים», «יום שני - רגליים»,
+  // «יום ב׳ - אימון רגליים», «יום 1 - רגליים», «יום ראשון: חזה», «שבוע 1 - אימון רגליים»,
+  // «שבוע 1 יום 2 - רגליים». SECTION_RX knew «יום שני» only as the whole line (or as a label
+  // before a colon with the exercise after it), so the title rode on: «יום שני אימון רגליים»
+  // was an exercise of that name with 10 invented reps, «יום שני - רגליים» an exercise «יום שני»
+  // with the note «רגליים», «יום 1 - רגליים» a «יום» of 1 rep, «שבוע 1 - אימון רגליים» a «שבוע»
+  // of 1 rep, «יום ראשון: חזה» an exercise «חזה», «יום א - חזה וגב» two exercises «יום א» and
+  // «גב», «יום שני - סקוואט 3x12» a clip-less «יום שני סקוואט». The header is stripped; a
+  // digit-free title after it (or a bare «אימון 1») is dropped with it, an exercise is kept.
+  var DAY_HEADER_RX = /^(?:(?:יום|שבוע)\s+(?:\d{1,2}|[א-ז][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת|אחרון))(?:\s*[:\-–,]\s*|\s+|$))+/;
+
+  function stripDayHeader(t) {
+    var m = String(t || '').match(DAY_HEADER_RX);
+    if (!m) return null;
+    var rest = t.slice(m[0].length).replace(/^[\s:\-–,]+|[\s:\-–,.]+$/g, '').trim();
+    if (!rest || !/\d/.test(rest) || DATE_ONLY_RX.test(rest)) return '';
+    return rest;
+  }
+
   function stripSectionLabel(line) {
     var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
     if (!/\d/.test(t) && /:$/.test(t)) return '';
     if (SECTION_RX.test(t.replace(/[.:]+$/, '').trim())) return '';
+    var day = stripDayHeader(t);
+    if (day != null) return day ? stripSectionLabel(day) : '';
     var m = t.match(LABEL_RX);
     if (m) {
       var label = m[1].trim();
