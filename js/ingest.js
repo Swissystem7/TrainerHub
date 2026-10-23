@@ -43,8 +43,19 @@
   function restBetween(ws) {
     return '(?:בין' + ws + '+(?:ה?סטים|ה?סבבים|ה?תרגילים|כל' + ws + '+(?:סט|סבב|תרגיל)|(?:סט|סבב|תרגיל)' + ws + '+ל(?:סט|סבב|תרגיל)))';
   }
+  // «מנוחה מינימלית», «מנוחה מלאה», «מנוחה לפי הצורך», «מנוחה כמה שצריך», «מנוחה קצרה ככל האפשר»,
+  // «מנוחה עד התאוששות», «מנוחה של מינימום 3 דקות»: the words trainers hang on the rest word when
+  // they do not give a time, or before the time they give (were a clip-less phantom exercise
+  // «מינימלית» / «לפי הצורך» of 10 invented reps, as «מנוחה קצרה» was once). The multi-word
+  // phrases come first so «עד התאוששות» is not «עד» and a leftover «התאוששות».
+  function restQualifier(ws) {
+    return '(?:ככל' + ws + '+(?:האפשר|הנדרש|הצורך)|כמה' + ws + '+ש(?:פחות|צריך|צריכים|נדרש|רוצים|בא)|' +
+      'לפי' + ws + '+ה?(?:צורך|הרגשה|תחושה)|במידת' + ws + '+הצורך|בהתאם' + ws + '+לצורך|אם' + ws + '+צריך|' +
+      'עד' + ws + '+ל?התאוששות|מינימלית?|מינימום|מקסימום|לפחות|עד|בערך|כנדרש|מלא(?:ה|ות)?|מוחלטת?|' +
+      'בינוני(?:ת|ות)?|חופשי(?:ת|ות)?|רגיל(?:ה|ות)?|סביר(?:ה|ות)?|מספק(?:ת|ות)?|קל(?:ה|ות)?)';
+  }
   function restFiller(ws) {
-    return '(?:' + ws + '+(?:של|פעיל(?:ה|ות)|קצר(?:ה|ות)|ארוכ(?:ה|ות)|' + restBetween(ws) + '|(?:ל|אחרי' + ws + '+)כל' + ws + '+ה?(?:סט|סבב|תרגיל)))*';
+    return '(?:' + ws + '+(?:של|פעיל(?:ה|ות)|קצר(?:ה|ות)|ארוכ(?:ה|ות)|' + restQualifier(ws) + '|' + restBetween(ws) + '|(?:ל|אחרי' + ws + '+)כל' + ws + '+ה?(?:סט|סבב|תרגיל))(?![\\u0590-\\u05FFa-zA-Z]))*';
   }
   var REST_FILLER = restFiller('\\s');
   var REST_FILLER_LINE = restFiller('[ \\t]');
@@ -57,7 +68,8 @@
   // inside the count, and «12 דקה» is 12 then a minute (twelve minutes is «12 דקות»).
   var REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/]|[x×X*]\\s*)(?!(?:[2-9]|\\d{2,})\\s*דקה(?!ות))' + TIMED + '\\s+(?:מנוח(?:ה|ות)|הפסק(?:ה|ות))' + REST_FILLER);
   // «ברפי 40 שניות 20 מנוחה»: a bare number before the rest word is its seconds, as «20 מנוחה» alone is.
-  var BARE_REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/])\\d+\\s+(?:מנוח(?:ה|ות)|הפסק(?:ה|ות))' + REST_FILLER);
+  // Not the reps of a pair: «סקוואט 3x12 מנוחה» is 3×12 with the default rest (was 1×3 with 12 s).
+  var BARE_REST_BEFORE_RX = new RegExp('(?:(?:^|\\s)עם\\s+)?(?<![\\d:.\\/]|[x×X*]\\s*)\\d+\\s+(?:מנוח(?:ה|ות)|הפסק(?:ה|ות))' + REST_FILLER);
   // «בלי מנוחה», «ללא הפסקות בין התרגילים», «אין מנוחה בכלל»: no rest at all - 0 seconds, not the
   // default 60 (was a phantom exercise «בלי» / «ללא» of 10 invented reps, and inline «סקוואט 3x12
   // בלי מנוחה» a name «סקוואט בלי»). ws as in restFiller - scanDefaults reads the whole paste.
