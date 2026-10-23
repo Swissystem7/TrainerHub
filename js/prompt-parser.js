@@ -419,8 +419,9 @@
 
   function parseGoal(text) {
     var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח'));
-    if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
-    if (/חיזוק כוח/.test(t)) return 'strength';
+    // «חיזוק» elsewhere in the prompt does not cancel it: «אימון כוח וחיזוק
+    // ליבה» is still a strength session.
+    if (/כוח|strength/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
     if (/muscular endurance/.test(t)) return 'endurance';
     if (/היפרטרופ|hypertroph|מסת שריר|muscle/.test(t)) return 'hypertrophy';
