@@ -1417,6 +1417,45 @@
     return text.replace(DECIMAL_COMMA_RX, '$1.$2');
   }
 
+  // «ריצה חצי שעה», «הליכה שעה», «רכיבה על אופניים שעה וחצי», «ריצה רבע שעה», «רכיבה שעתיים»,
+  // «ריצה 1.5 שעות», «ריצה שעה ו-20 דקות»: the hour words trainers write on a cardio line were never
+  // read, so the whole line was a clip-less exercise «ריצה חצי שעה» with 10 invented reps (and
+  // «ריצה 3/4 שעה» 3 sets of 4). Written out in minutes before anything reads the paste, the exercise
+  // line, the rest line («מנוחה חצי שעה») and the pairs all see them. Not a clock time («בשעה 18:00»,
+  // «שעה 18:00», «השעה»), not «24 שעות לפני», not a relation («אחרי שעה», «תוך שעה», «כל שעה», «שעה
+  // לפני האימון»), and never the digit-free title of a paste («אימון רגליים - שעה», «אימון של שעה»),
+  // which drops as a title today and would turn into a phantom 60-minute exercise «אימון רגליים».
+  var HOURS_RX = new RegExp(
+    '(?<![\\u0590-\\u05FF\\d.:\\/])(?<!(?:אחרי|לפני|תוך|כל|בעוד|מדי)\\s+)(?:' +
+    '(שלושת\\s*רבעי|רבע|חצי|3\\/4|1\\/4|1\\/2|½|¼|¾)\\s*שעה' +
+    '|(\\d{1,2}):([0-5]\\d)\\s*שע(?:ות|ה)' +
+    '|(\\d(?:\\.\\d+)?)\\s*שע(?:ות|ה)' +
+    '|(שעתיים|שעה(?:\\s+אחת)?)(?:\\s*(וחצי|ורבע)|\\s*ו?-?\\s*(\\d{1,2})\\s*' + MINUTE_UNIT + ')?' +
+    ')(?![\\u0590-\\u05FF\\d]|\\s*\\d|\\s+(?:אחרי|לפני|קודם))', 'g');
+  var TITLE_LINE_RX = /^[^\u0590-\u05FFa-zA-Z\d]*(?:אימון|תוכנית|תכנית|תרגול)(?![\u0590-\u05FF])/;
+
+  function hoursToMinutes(m, frac, h, mm, num, word, part, plus) {
+    var min;
+    if (frac) min = /רבעי|3\/4|¾/.test(frac) ? 45 : /רבע|1\/4|¼/.test(frac) ? 15 : 30;
+    else if (h) min = toInt(h) * 60 + toInt(mm);
+    else if (num) min = Math.round(parseFloat(num) * 60);
+    else {
+      min = /שעתיים/.test(word) ? 120 : 60;
+      if (part) min += part === 'וחצי' ? 30 : 15;
+      else if (plus) min += toInt(plus);
+    }
+    return min + ' דקות';
+  }
+
+  function normalizeHours(text) {
+    return String(text || '').split('\n').map(function (line) {
+      if (!/שע(?:ה|ות|תיים)/.test(line)) return line;
+      // A title line whose only digits are the hour phrase stays digit-free, so it stays a title.
+      if (TITLE_LINE_RX.test(line) && !/\d/.test(line.replace(HOURS_RX, ''))) return line;
+      return line.replace(HOURS_RX, hoursToMinutes);
+    }).join('\n');
+  }
+
   // «סקוואט 3 x 12 reps», «plank 3 x 30 sec», «פלאנק 30 sec», «squat 3 sets x 12 reps», «plank 30s»,
   // «run 5 min»: the English unit after a count is the Hebrew one (was a name «סקוואט reps» / «plank sec»
   // with 30 reps / «פלאנק 30 sec» of 10 invented reps / «squat 3 sets reps»). Only right after a digit,
@@ -1432,7 +1471,7 @@
   }
 
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeDecimalComma(normalizeTicks(stripEmoji(text))))).trim();
+    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
