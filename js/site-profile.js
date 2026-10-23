@@ -89,11 +89,18 @@
     return ids(list).filter(function (id) { return found.indexOf(id) !== -1; });
   }
 
-  /** A confidence key → width / surface / shade or a feature/hazard id, else null. */
-  function confidenceKey(k) {
+  /**
+   * A confidence key → width / surface / shade or a feature/hazard id, else null.
+   * A surface value ("sand", or "grass" when grass is a surface here but not a feature)
+   * is the surface's confidence, so its chip gets the «לא בטוח» mark.
+   */
+  function confidenceKey(k, p) {
     var f = String(k).trim().toLowerCase();
     if (f === 'width' || f === 'surface' || f === 'shade') return f;
-    return canonId(FEATURES, k) || canonId(HAZARDS, k);
+    var feature = canonId(FEATURES, k);
+    var surface = canonId(SURFACES, k);
+    if (surface && p.surface.indexOf(surface) !== -1 && p.features.indexOf(feature) === -1) return 'surface';
+    return feature || canonId(HAZARDS, k);
   }
 
   function widthFromMeters(m) {
@@ -123,9 +130,9 @@
     else if (out.approxMeters) out.width = widthFromMeters(out.approxMeters);
     var conf = raw.confidence && typeof raw.confidence === 'object' ? raw.confidence : {};
     Object.keys(conf).forEach(function (k) {
-      var key = confidenceKey(k);
+      var key = confidenceKey(k, out);
       var c = clamp01(conf[k]);
-      if (key && c != null) out.confidence[key] = c;
+      if (key && c != null) out.confidence[key] = key in out.confidence ? Math.min(out.confidence[key], c) : c;
     });
     return out;
   }
