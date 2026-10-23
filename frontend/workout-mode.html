@@ -366,12 +366,29 @@ function buildSteps(workout) {
     });
   });
 
+  // A pasted ladder («שכיבות סמיכה 5-10-15-10-5», «פלאנק 30-45-60 שניות») arrives from the ingest as
+  // one set per count with the first count as reps/seconds and the ladder in the notes; every set
+  // showed the first count («5 חזרות» on the 15-rep top of the pyramid, a 30-second timer each time).
+  // Only a ladder that opens the notes, has one count per set and starts at the given reps/time counts.
+  function ladderCounts(ex, sets) {
+    const m = /^(\d{1,3}(?:[-\/]\d{1,3}){2,})(?:\s+(חזרות|פעמים|שניות|שנ[׳']|דקות))?(?![\d\-\/])/.exec(ex.notes || '');
+    if (!m) return null;
+    const counts = m[1].split(/[-\/]/).map(Number);
+    if (counts.length !== sets) return null;
+    const timed = /^(?:שנ|דקות)/.test(m[2] || '');
+    const scale = m[2] === 'דקות' ? 60 : 1;
+    if (timed ? ex.duration_seconds !== counts[0] * scale : ex.reps !== counts[0]) return null;
+    return counts.map(c => timed ? { reps: null, duration: c * scale } : { reps: c, duration: null });
+  }
+
   flat.forEach((item, flatIdx) => {
     const ex = item.ex;
     const sets = ex.sets || 1;
     const hasDuration = !!ex.duration_seconds;
+    const ladder = ladderCounts(ex, sets);
 
     for (let s = 1; s <= sets; s++) {
+      const rung = ladder ? ladder[s - 1] : null;
       // Exercise step
       steps.push({
         type: 'exercise',
@@ -380,8 +397,8 @@ function buildSteps(workout) {
         phase: item.phaseLabel,
         set: s,
         totalSets: sets,
-        reps: ex.reps || null,
-        duration: hasDuration ? ex.duration_seconds : null,
+        reps: rung ? rung.reps : ex.reps || null,
+        duration: rung ? rung.duration : hasDuration ? ex.duration_seconds : null,
         notes: ex.notes || null,
         isLastSet: s === sets,
         isLastExercise: item.isLastInPhase
@@ -397,7 +414,9 @@ function buildSteps(workout) {
         if (s < sets) {
           nextName = ex.name;
           // A distance or to-failure set («400 מטר», «עד כשל») has no reps or time; its note is what to do.
-          nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : (ex.notes || '');
+          const nextRung = ladder ? ladder[s] : null;
+          nextDetail = nextRung ? (nextRung.reps ? `${nextRung.reps} חזרות` : `${nextRung.duration} שניות`)
+            : ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : (ex.notes || '');
         } else {
           // next exercise, even when it opens the next phase
           const nextEx = flat[flatIdx + 1].ex;
