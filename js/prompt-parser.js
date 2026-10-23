@@ -144,6 +144,10 @@
     });
   }
 
+  // "שעה ושלושת רבעי" / "שעה ו-3 רבעי שעה" is an hour and 45 minutes. Without it the
+  // trailing "שלושת רבעי שעה" read as 45, and with no "שעה" after it the prompt fell to 20.
+  var THREE_QUARTERS_AFTER_RX = /(?:שעה|שעתיים)\s*ו[\s-]*(?:3|שלושת?)\s*רבעי/;
+
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
   function parseDuration(text) {
@@ -155,6 +159,7 @@
       if (m) return 120 + toInt(m[1]);
       n = minuteWords(t, TWO_HOURS_PLUS_MINUTE_WORDS_RX);
       if (n !== null) return 120 + n;
+      if (THREE_QUARTERS_AFTER_RX.test(t)) return 165;
       if (/שעתיים\s*וחצי/.test(t)) return 150;
       if (/שעתיים\s*ורבע/.test(t)) return 135;
       return 120;
@@ -188,6 +193,7 @@
     }
     m = t.match(/שעה\s*ו[\s-]*(\d+)\s*דק/);
     if (m) return 60 + toInt(m[1]);
+    if (THREE_QUARTERS_AFTER_RX.test(t)) return 105;
     n = minuteWords(t, HOUR_PLUS_MINUTE_WORDS_RX);
     if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
@@ -196,8 +202,8 @@
     if (digits && !digits.tied) return digits.n;
     var words = sessionMinuteWords(t);
     if (words && !words.tied) return words.n;
-    // "שלושת רבעי שעה" / "שלוש רבעי שעה" = 45 minutes.
-    if (/שלושת?\s*רבעי\s*שעה/.test(t)) return 45;
+    // "שלושת רבעי שעה" / "שלוש רבעי שעה" / "3 רבעי שעה" = 45 minutes.
+    if (/(?:^|[^\d.,/])3\s*רבעי\s*שעה|שלושת?\s*רבעי\s*שעה/.test(t)) return 45;
     if (/חצי\s*שעה/.test(t)) return 30;
     if (/רבע\s*שעה/.test(t)) return 15;
     if (/שעה(?!\s*ו)/.test(t) && !/חצי|רבע/.test(t)) return 60;
