@@ -118,9 +118,17 @@
     return Engine.prescription({ goal: req.goal, focus: req.focus });
   }
 
+  // «אימון 1 דקה» read «1 דקות» in two rows of the panel.
+  function minutesText(n) {
+    return Number(n) === 1 ? 'דקה' : n + ' דקות';
+  }
+
+  // A single set has no «בין סטים»: its rest comes after the set, before the next exercise.
   function rxText(rx) {
     var work = rx.reps ? rx.reps + ' חזרות' : (rx.duration || 40) + ' שנ׳ עבודה';
-    return (Number(rx.sets) === 1 ? 'סט אחד' : rx.sets + ' סטים') + ' × ' + work + ' · ' + rx.rest + ' שנ׳ מנוחה בין סטים';
+    var one = Number(rx.sets) === 1;
+    return (one ? 'סט אחד' : rx.sets + ' סטים') + ' × ' + work + ' · ' + rx.rest +
+      (one ? ' שנ׳ מנוחה אחרי הסט' : ' שנ׳ מנוחה בין סטים');
   }
 
   // The Main exercises of a built session, or null when the panel only has a request.
@@ -150,7 +158,7 @@
       detail: 'קובע כמה תרגילים נכנסים לתוכנית.',
       evaluate: function (req) {
         return {
-          value: req.duration + ' דקות',
+          value: minutesText(req.duration),
           source: req.durationSpecified ? 'prompt' : 'default'
         };
       }
@@ -164,7 +172,7 @@
         var main = mainExercises(workout);
         var short = main && main.length < want ? ' — במאגר נמצאו רק ' + main.length : '';
         return {
-          value: want + ' תרגילים לאימון של ' + req.duration + ' דקות' + short,
+          value: want + ' תרגילים לאימון של ' + minutesText(req.duration) + short,
           source: 'engine'
         };
       }
