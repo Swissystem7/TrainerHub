@@ -265,9 +265,15 @@
     var main = [];
     var minutes = 20;
     if (m.id === 'tabata') {
+      // «ניתן לבצע 4 סטים טאבטה עם מנוחה של 2-3 דקות»: the 10 s card rest can't hold
+      // the break between sets, so it rides in the note.
+      var setRest = [].concat(m.restBetweenSetsSeconds || []);
+      var lo = setRest[0], hi = setRest[setRest.length - 1];
+      var setNote = lo > 0 ? ' · ' + (hi > lo && lo % 60 === 0 && hi % 60 === 0 ? lo / 60 + '–' + restLabel(hi) : restLabel(lo))
+        + ' מנוחה בין סט לסט' : '';
       var combined = findMethod('combined').examples[0].exercises;
       main = combined.slice(0, m.exercisesPerSet).map(function (x) {
-        return exerciseFrom(x, { sets: m.sets, seconds: m.workSeconds, rest: m.restSeconds, notes: 'טבטה: 20 שנ׳ עבודה / 10 שנ׳ מנוחה' });
+        return exerciseFrom(x, { sets: m.sets, seconds: m.workSeconds, rest: m.restSeconds, notes: 'טבטה: 20 שנ׳ עבודה / 10 שנ׳ מנוחה' + setNote });
       });
       minutes = m.sets * 4 + (m.sets - 1) * 2;
     } else if (m.id === 'combined' && ex) {
