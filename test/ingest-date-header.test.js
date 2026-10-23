@@ -69,6 +69,7 @@ test('a ladder, a Tabata pair, a decimal and a count-first line are not dates', 
   assert.deepStrictEqual(rows('לחיצת חזה 10.5 ק"ג 3x8'), [['לחיצת חזה', 3, 8, null]]);
   // A day out of range is not a date, so the line is read as before.
   assert.strictEqual(rows('אימון 40/10/26\nסקוואט 3x12').length, 2);
-  // A title with minutes keeps its minutes.
-  assert.deepStrictEqual(rows('אימון 12 דקות\nסקוואט 3x12').map((r) => r[3]), [720, null]);
+  // A title with minutes is not a date: the minutes are the workout's length, not an exercise.
+  assert.deepStrictEqual(rows('אימון 12 דקות\nסקוואט 3x12'), [SQUAT]);
+  assert.strictEqual(Ingest.ingestText('אימון 12 דקות\nסקוואט 3x12', TH.catalog).workout.duration_minutes, 12);
 });

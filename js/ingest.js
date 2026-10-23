@@ -749,6 +749,12 @@
       // «אימון 12.10.26», «תאריך: 12/10/2026», «יום שני 12.10»: the date is not a count.
       line = stripDate(line);
       if (!line.trim()) return;
+      // «אימון 45 דקות» / «אימון רגליים - 60 דקות»: the title and its length, not a 45-minute exercise.
+      var titled = titleTime(line, list);
+      if (titled) {
+        line = titled.rest;
+        if (!line.trim()) return;
+      }
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -825,6 +831,48 @@
     }).replace(/\s+/g, ' ').replace(/^[\s:\-–,]+|[\s:\-–,]+$/g, '').trim();
     if (!found) return line;
     return DATE_ONLY_RX.test(rest) ? '' : rest;
+  }
+
+  // A title line with the workout's length: «אימון 45 דקות», «אימון של 60 דקות», «אימון ל-45 דקות»,
+  // «אימון רגליים - 60 דקות», «אימון כוח (45 דקות)», «תוכנית 30 דקות», «אימון 45 דק׳». The digit-free
+  // title drops (TITLE_RX), but the minutes made the line an exercise: «אימון 45 דקות» was an
+  // exercise «אימון» of 2700 seconds matched to the clip «אימון קונוסים תגובה וכוח» (the bare word is
+  // a prefix of it), «אימון רגליים - 60 דקות» a clip-less «אימון רגליים» of 3600 seconds marked
+  // «חסר סרטון», and workout mode opened a 45-minute timer before the first real exercise. The title
+  // and its minutes are stripped; a digit-free tail («אימון 45 דקות בבית») is part of the title, a
+  // tail with a count («אימון 45 דקות - סקוואט 3x12») is the exercise; the minutes become the
+  // workout's duration_minutes when no «סה"כ» line states one. A title whose words are a clip
+  // («אימון קונוסים 10 דקות», «אימון בטן 10 דקות») is that clip's exercise, as before.
+  var TITLE_TIME_RX = new RegExp('^(ה?(?:אימון|תוכנית|תכנית|שיעור)(?:\\s+[^\\d:\\-–(,]*?)?)\\s*[:\\-–(]?\\s*(?:ל-?\\s*|של\\s+|כ-?\\s*)?(\\d{1,3})\\s*' + MINUTE_UNIT + '\\)?(?![\\u0590-\\u05FF\\d])');
+  var TITLE_WORD_RX = /^ה?(?:אימון|תוכנית|תכנית|שיעור)$/;
+
+  // «אימון קונוסים» fuzzy-matches the clip; «אימון קונוסים תגובה וכוח» is the clip's own name
+  // («אימון קונוסים -תגובה וכוח») once the punctuation is ignored.
+  function isClipName(title, list) {
+    if (matchName(title, list || [])) return true;
+    var plain = function (s) { return String(s || '').replace(/[^\u0590-\u05FFa-zA-Z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim(); };
+    var want = plain(title);
+    return (list || []).some(function (e) { return e && e.he && plain(e.he) === want; });
+  }
+
+  function titleTime(line, list) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(TITLE_TIME_RX);
+    if (!m) return null;
+    var title = m[1].trim().replace(/\s+(?:של|ל)$/, '');
+    if (!TITLE_WORD_RX.test(title) && (!TITLE_RX.test(title + ' ') || isClipName(title, list))) return null;
+    var rest = t.slice(m[0].length).replace(/^[\s:\-–,)]+|[\s:\-–,.]+$/g, '').trim();
+    return { minutes: toInt(m[2]), rest: /\d/.test(rest) ? rest : '' };
+  }
+
+  function titleMinutes(text, list) {
+    var found = null;
+    numberWordsToDigits(String(text || '')).split('\n').some(function (line) {
+      var tt = titleTime(stripDate(line), list);
+      if (tt) found = tt.minutes;
+      return !!tt;
+    });
+    return found;
   }
 
   // A day or week header with the day's title after it: «יום שני אימון רגליים», «יום שני - רגליים»,
@@ -1537,8 +1585,9 @@
 
     var workout = {
       title: 'אימון שנקלט',
-      // «סה"כ 25 דקות» at the end of the paste is the workout's stated length, not an exercise.
-      duration_minutes: totalMinutes(raw),
+      // «סה"כ 25 דקות» at the end of the paste is the workout's stated length, not an exercise;
+      // so is «אימון 45 דקות» as the title when no total line states one.
+      duration_minutes: totalMinutes(raw) != null ? totalMinutes(raw) : titleMinutes(raw, list),
       participants: 1,
       equipment: [],
       intensity: 'medium',
