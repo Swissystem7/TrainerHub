@@ -1298,6 +1298,9 @@
       if (boundNote) cues.notes.unshift(boundNote);
     }
     if (counted) name = name.replace(/(?:\s+(?:של|למשך|במשך|בערך|כ))+$/, '');
+    // «גשר 3x15 + החזקה 10 שניות»: the hold after the «+» went to the notes and left the «+» hanging
+    // on the name (was a clip-less «גשר +»). «סקוואט + קפיצה» keeps the «+» between its two words.
+    name = name.replace(/^(?:[+&]\s*)+|(?:\s*[+&])+$/g, '');
     if (!name || name.length < 2) {
       // "מתח 5 חזרות, 4 סטים": the comma split the sets off; hand them to the exercise before.
       // «סקוואט 3 סטים, 12 חזרות» / «, 30 שניות»: the count was split off the same way.
