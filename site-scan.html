@@ -122,6 +122,8 @@
   ];
   var profile = SP.emptyProfile();
   var current = null;
+  // Bumped by every new scan and by «נקה», so a reply that arrives late is dropped.
+  var scanSeq = 0;
   function $(id) { return document.getElementById(id); }
 
   function unsure(c) {
@@ -182,9 +184,11 @@
       return;
     }
     $('scanStatus').textContent = 'מזהה את השטח…';
+    var seq = ++scanSeq;
     Promise.all(files.map(function (f) { return Scan.resizeImage(f); })).then(function (imgs) {
       return Scan.analyzeSitePhotos(imgs);
     }).then(function (res) {
+      if (seq !== scanSeq) return;
       if (res.ok) {
         profile = res.profile;
         $('scanStatus').textContent = 'זה מה שזיהיתי. בדקו ותקנו לפני הבנייה.';
@@ -193,6 +197,7 @@
       }
       renderChips();
     }).catch(function () {
+      if (seq !== scanSeq) return;
       $('scanStatus').textContent = 'לא הצלחתי לקרוא את התמונות. סמנו למטה מה יש בשטח.';
     });
   });
@@ -227,6 +232,7 @@
   $('reset').addEventListener('click', function () {
     profile = SP.emptyProfile();
     current = null;
+    scanSeq++;
     $('photos').value = '';
     $('thumbs').innerHTML = '';
     $('meters').value = '';
