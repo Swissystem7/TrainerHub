@@ -727,6 +727,9 @@
     var vavRxs = vavNameRxs(list);
     var raw = numberWordsToDigits(text).trim();
     if (!raw) return [];
+    // «3 סטים: סקוואט 12, שכיבות סמיכה 10» / «3 סטים של: ...»: the sets head every exercise after the
+    // colon, as they do on a line of their own (only the first exercise got them, the rest one set).
+    raw = raw.replace(/^(\s*\d+\s*סטים(?:\s+של)?)\s*:[ \t]*(?=\S)/, '$1\n');
     var tokens = [];
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
