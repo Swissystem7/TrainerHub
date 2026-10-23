@@ -84,6 +84,21 @@
     return Math.max(2, Math.min(base, Math.floor(base * ratio)));
   }
 
+  // The count never drops below 2, so a short Main phase could not hold even
+  // one round of the prescription: «אימון כוח לגב 10 דקות» left 5 minutes for
+  // 2 exercises of 4 sets with 120 s rest (about 18 minutes), and «אימון 5
+  // דקות» put 3 x 3 sets (about 13 minutes) into 5. When the exercises do not
+  // fit, each one gets as many sets as the minutes allow, at least 1; a phase
+  // with room keeps the prescription as it is.
+  function fitSets(rx, count, minutes) {
+    var n = Math.max(1, Number(count) || 1);
+    var budget = Math.max(0, Number(minutes) || 0) * 60;
+    var perSet = exerciseSeconds(Object.assign({}, rx, { sets: 1 }));
+    var sets = Number(rx.sets) || 1;
+    if (!budget || n * sets * perSet <= budget) return rx;
+    return Object.assign({}, rx, { sets: Math.max(1, Math.floor(budget / (n * perSet))) });
+  }
+
   function groupPlan(participants, exerciseCount) {
     var people = Math.max(1, Math.floor(Number(participants) || 1));
     var available = Math.max(1, Math.floor(Number(exerciseCount) || 1));
@@ -436,8 +451,6 @@
       };
     }
 
-    var mainEx = picked.map(function (e) { return toExercise(e, rx); });
-
     // Phase minutes add up to the requested duration: the warm-up block gets
     // up to 5 minutes (at most half the session, and only when the 3-minute
     // warm-up clip fits), the Main phase gets the rest. Before this the plan
@@ -462,6 +475,10 @@
     if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
     if (!warmEx.length) warmMinutes = 0;
 
+    var mainMinutes = totalMinutes - warmMinutes;
+    var setsRx = fitSets(rx, picked.length, mainMinutes);
+    var mainEx = picked.map(function (e) { return toExercise(e, setsRx); });
+
     var workout = {
       title: title,
       duration_minutes: req.duration,
@@ -472,7 +489,7 @@
       goal: req.goal || null,
       phases: [
         { name: 'Warm-up', duration_minutes: warmMinutes, exercises: warmEx },
-        { name: 'Main', duration_minutes: totalMinutes - warmMinutes, exercises: mainEx },
+        { name: 'Main', duration_minutes: mainMinutes, exercises: mainEx },
         { name: 'Cool-down', duration_minutes: 0, exercises: [] }
       ],
       source: 'prompt-engine'

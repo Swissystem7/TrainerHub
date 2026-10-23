@@ -120,7 +120,7 @@
 
   function rxText(rx) {
     var work = rx.reps ? rx.reps + ' חזרות' : (rx.duration || 40) + ' שנ׳ עבודה';
-    return rx.sets + ' סטים × ' + work + ' · ' + rx.rest + ' שנ׳ מנוחה בין סטים';
+    return (Number(rx.sets) === 1 ? 'סט אחד' : rx.sets + ' סטים') + ' × ' + work + ' · ' + rx.rest + ' שנ׳ מנוחה בין סטים';
   }
 
   // The Main exercises of a built session, or null when the panel only has a request.
@@ -201,8 +201,19 @@
       id: 'prescription',
       he: 'סטים, חזרות ומנוחה',
       detail: 'אותה טבלה שהמנוע מריץ בפועל על כל תרגיל בעיקר האימון.',
-      evaluate: function (req) {
-        return { value: rxText(prescription(req)), source: 'engine' };
+      // A short Main phase gets fewer sets than the table (see fitSets in the
+      // engine); the panel quotes the sets the session really holds.
+      evaluate: function (req, workout) {
+        var rx = prescription(req);
+        var main = mainExercises(workout);
+        var sets = main && main.length ? Number(main[0].sets) : 0;
+        if (sets && sets < rx.sets) {
+          return {
+            value: rxText(Object.assign({}, rx, { sets: sets })) + ' — קוצר מ-' + rx.sets + ' סטים כדי שייכנס בזמן',
+            source: 'engine'
+          };
+        }
+        return { value: rxText(rx), source: 'engine' };
       }
     },
     {
