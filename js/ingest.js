@@ -227,7 +227,8 @@
   // «ריצה 3 קמ», «ריצה 2.5 ק"מ», «הליכה 5 קילומטר»: the distance too (was a name «ריצה 2 5 קמ» with 10 invented reps).
   var KM_RX = /(?:^|\s|(?<=[x×]))(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*מ|קילומטר(?:ים)?|km)(?![\u0590-\u05FFa-zA-Z])/i;
   // The load: «לחיצת חזה 4x8 80 קג», «סקוואט 3x10 עם 20 קילו», «דדליפט 5x5 100kg» (not «קילומטר»).
-  var WEIGHT_RX = /(?:^|\s)(?:עם\s+)?(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)(?![֐-׿a-zA-Z])/i;
+  // «4x8 +60kg», «4x8+60 ק"ג»: a «+» glued to the load is the same «with».
+  var WEIGHT_RX = /(?:^|\s|\+)(?:עם\s+)?(\d+(?:\.\d+)?)\s*(?:ק\s*["״׳']?\s*ג|קילו(?:גרם)?|kg)(?![֐-׿a-zA-Z])/i;
   // The load after an at sign, as trainers write it: «סקוואט 3x12 @ 60 ק"ג», «דדליפט 5x5 @100» (kilos
   // even without the unit), «@ 70%» of the max, «@RPE 8» / «@8 RPE» the effort, «ריצה 2 ק"מ @ 5:30»
   // the pace. Each left «@» in the name («סקוואט @», «דדליפט @100», «סקוואט @ 70%») and the pace was
@@ -251,7 +252,9 @@
   // «לחיצת חזה 10-8-6», «סקוואט 5-5-5-5-5», «דדליפט 8/6/4», «מתח 12-10-8-6 חזרות»: a rep ladder,
   // three counts or more joined tight. Not a range («10-12»), not a load/distance («60-70-80 ק"ג»).
   var LADDER_RX = /(?<![\d:.\/\-–—])(\d{1,3})((?:[\-–—\/]\d{1,3}){2,})(?![\d:.\/\-–—]|\s*(?:ק\s*["״׳']?\s*[גמ]|קילו|kg|km|מטר|מ[׳']))(?:\s*(חזרות|פעמים|שניות|שנ[׳']|דקות)(?![א-ת]))?/i;
-  var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])/;
+  // «לחיצת חזה 4x8 + 60 ק"ג»: a count after a «+» that is a load is the weight, not a second side
+  // (was 1x4 with a note «8+60» and a weight of 8 ק"ג).
+  var PLUS_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\+\s*(\d+)(?![\d:.\/])(?!\s*(?:ק\s*["״׳']?\s*ג|קילו|kg|%))/i;
   var SLASH_COUNT_RX = /(?<![\d:.\/])(\d+)(\s*(?:שניות|שנ[׳']|חזרות|["״]))?\s*\/\s*(\d+)(?![\d:.\/])/;
   // «15 בכל סט», «12 לסט»: the count is per set anyway, the words are filler.
   var PER_SET_RX = /(?:^|\s)(?:ל?ב?כל|ל)\s*(?:סט|סבב)(?=[\s,.]|$)/g;
