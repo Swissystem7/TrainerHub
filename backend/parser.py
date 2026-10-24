@@ -27,15 +27,22 @@ DURATION_TOLERANCE_MINUTES = 5
 def strip_code_fence(raw):
     """Return the payload inside a markdown code fence, if there is one.
 
-    Handles ```json, ```JSON and a bare ```. Text that is not fenced is
-    returned unchanged apart from surrounding whitespace.
+    Handles ```json, ```JSON and a bare ```, also when a line of prose comes
+    before the fence. Text that is not fenced is returned unchanged apart
+    from surrounding whitespace.
     """
     if not isinstance(raw, str):
         raise TypeError("expected a string")
 
     text = raw.strip()
     if not text.startswith("```"):
-        return text
+        # Models often lead with a sentence ("Here is the workout:") before
+        # the fence. Bare JSON is left alone even if a string inside it
+        # happens to contain backticks.
+        start = text.find("```")
+        if start == -1 or text[:1] in ("{", "["):
+            return text
+        text = text[start:]
 
     # Drop the opening fence and its optional language tag.
     without_open = text[3:]
