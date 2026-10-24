@@ -480,6 +480,14 @@
       return current;
     }
 
+    // «חימום:» then its drills, then «עיקרי:» - the lines before the main header are the warm-up,
+    // and they, like the lines under «שחרור:», are one set each, not the session's «3 סבבים».
+    var mainHeaderAt = -1;
+    for (var h = lines.length - 1; h > 0 && mainHeaderAt === -1; h--) {
+      if (classifyPhase(lines[h]) === PHASE_NAMES.main) mainHeaderAt = h;
+    }
+    var phaseDefaults = null;
+
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       var phaseKind = classifyPhase(line);
@@ -488,12 +496,14 @@
         current = ensure(phaseKind);
         var mins = parseDurationMinutes(line);
         if (mins) current.duration_minutes = mins;
+        var inlineDefaults = phaseKind === PHASE_NAMES.main ? defaults : {
+          sets: 1, reps: null, rest: null,
+          workSeconds: Math.max(30, Math.round(((mins || 5) * 60) / 3))
+        };
+        phaseDefaults = phaseKind === PHASE_NAMES.cooldown || (phaseKind === PHASE_NAMES.warmup && i < mainHeaderAt)
+          ? inlineDefaults : null;
         var colon = line.indexOf(':');
         if (colon !== -1) {
-          var inlineDefaults = phaseKind === PHASE_NAMES.main ? defaults : {
-            sets: 1, reps: null, rest: null,
-            workSeconds: Math.max(30, Math.round(((mins || 5) * 60) / 3))
-          };
           var inline = splitInlineExercises(line.slice(colon + 1));
           for (var j = 0; j < inline.length; j++) {
             var ex = parseExerciseLine(inline[j], inlineDefaults);
@@ -506,9 +516,14 @@
       if (i === 0) continue;
       if (isSessionMeta(line)) continue;
 
+      if (phaseDefaults) {
+        var own = parseExerciseLine(line, phaseDefaults);
+        if (own) current.exercises.push(own);
+        continue;
+      }
       var parsed = parseExerciseLine(line, defaults);
       if (!parsed) continue;
-      // Warm-up is usually a single header line; following work belongs to Main.
+      // Without a later main header, warm-up is a single header line; following work belongs to Main.
       // Cool-down at the end keeps the lines that follow it.
       if (!current || current.name === PHASE_NAMES.warmup) {
         current = ensure(PHASE_NAMES.main);
