@@ -1379,14 +1379,22 @@
     return list.slice(0, opts.limit || 5);
   }
 
+  // Swapping a rep exercise for a plank turns its reps into a hold: «פלאנק · 8-12 חזרות»
+  // means nothing. The hold follows the goal the reps came from (4-6 → 30 s), else 40 s.
+  function holdForReps(reps) {
+    var goal = Object.keys(GOAL_RX).filter(function (g) { return GOAL_RX[g].reps === String(reps); })[0];
+    return GOAL_RX[goal || 'hypertrophy'].hold;
+  }
+
   function applySwap(ex, entry) {
     if (!ex || !entry) return ex;
+    var toHold = isHoldExercise(entry.id) && ex.reps != null && ex.duration_seconds == null;
     return {
       name: entry.he,
       id: entry.id,
       sets: ex.sets != null ? ex.sets : null,
-      reps: ex.reps != null ? ex.reps : null,
-      duration_seconds: ex.duration_seconds != null ? ex.duration_seconds : null,
+      reps: ex.reps != null && !toHold ? ex.reps : null,
+      duration_seconds: toHold ? holdForReps(ex.reps) : (ex.duration_seconds != null ? ex.duration_seconds : null),
       rest_seconds: ex.rest_seconds != null ? ex.rest_seconds : (ex.restSeconds != null ? ex.restSeconds : null),
       notes: ex.notes || null
     };
