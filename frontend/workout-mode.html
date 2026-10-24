@@ -501,7 +501,7 @@ function renderExercise(step) {
     ? `<div class="set-indicator" aria-live="polite" aria-atomic="true">סט ${step.set} מתוך ${step.totalSets}</div>` : '';
 
   const repsOrTime = step.duration
-    ? `<div class="clock-ring" id="clockRing" role="timer" aria-label="שעון תרגיל">${buildClockSVG()}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true">${step.duration}</div></div>`
+    ? `<div class="clock-ring" id="clockRing" role="timer" aria-label="שעון תרגיל">${buildClockSVG()}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true">${clockLabel(step.duration, step.duration)}</div></div>`
     : step.reps
       ? `<div class="reps-display" aria-live="polite">${esc(step.reps)} חזרות</div>` : '';
 
@@ -557,7 +557,7 @@ function renderRest(step) {
 
   stage.innerHTML = `
     <div class="rest-label">מנוחה</div>
-    <div class="clock-ring" id="clockRing" role="timer" aria-label="שעון מנוחה">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true" style="color:#10b981">${step.duration}</div></div>
+    <div class="clock-ring" id="clockRing" role="timer" aria-label="שעון מנוחה">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true" style="color:#10b981">${clockLabel(step.duration, step.duration)}</div></div>
     ${nextHtml}
   `;
   announceStatus('מנוחה, ' + step.duration + ' שניות');
@@ -640,7 +640,7 @@ function updateClockDisplay(val, max) {
   const arcEl  = document.getElementById('clockArc');
   if (!textEl) return;
 
-  textEl.textContent = Math.max(0, val);
+  textEl.textContent = clockLabel(Math.max(0, val), max);
   announceTimer(Math.max(0, val), max);
 
   if (arcEl) {
@@ -661,6 +661,13 @@ function startElapsedTimer() {
 
 function pauseElapsedTimer() {
   if (elapsedInterval) { clearInterval(elapsedInterval); elapsedInterval = null; }
+}
+
+// The ring shows bare seconds for a short hold or rest. From a minute up it
+// reads m:ss for the whole step: a 20-minute run counting down «1200» is not
+// readable at a glance, and switching formats mid-step would make the digits jump.
+function clockLabel(val, max) {
+  return max >= 60 ? formatTime(val) : String(val);
 }
 
 function formatTime(s) {
