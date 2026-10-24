@@ -305,9 +305,11 @@
       s = s.replace(m[0], ' ');
     }
 
+    var lineReps = reps !== (defaults.reps != null ? defaults.reps : null);
     m = s.match(/(\d+)\s*חזרות/);
     if (m) {
       reps = toInt(m[1]);
+      lineReps = true;
       s = s.replace(m[0], ' ');
     }
 
@@ -324,10 +326,11 @@
       s = s.replace(minutes.match, ' ');
     }
 
-    // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets.
+    // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets,
+    // and so is «שכיבות סמיכה 15 חזרות 3 פעמים» once the line has its own reps.
     m = s.match(/(\d+)\s*(?:פעמים|פעם)(?=\s|$|[,.;:])/);
     if (m) {
-      if (distance || failure || duration_seconds != null) sets = toInt(m[1]);
+      if (distance || failure || duration_seconds != null || lineReps) sets = toInt(m[1]);
       else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
