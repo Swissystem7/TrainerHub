@@ -103,7 +103,8 @@
     } while (s !== prev);
     s = s
       .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[מייל הוסר]')
-      .replace(/\+?\d[\d\s-]{6,}\d/g, '[מספר הוסר]')
+      // A phone has 9+ digits (03-1234567, 050-1234567); «10 12 15» reps or a date stay.
+      .replace(/\+?\d[\d\s-]{6,}\d/g, function (m) { return m.replace(/\D/g, '').length >= 9 ? '[מספר הוסר]' : m; })
       .replace(/\s+/g, ' ')
       .trim();
     return s.length > max ? s.slice(0, max) : s;

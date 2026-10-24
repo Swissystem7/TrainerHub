@@ -136,3 +136,16 @@ test('in the pilot the builder prefers the clips the booklet teaches', function 
   assert.equal(Engine.buildSession(prompt, catalog, opts).workout.phases.length, plain.workout.phases.length);
   reset();
 });
+
+test('feedback keeps rep counts and dates, redacts only phone-length numbers', function () {
+  reset();
+  const rec = P.buildFeedback({
+    rating: 4,
+    worked: 'סבבים של 10 12 15 חזרות עבדו מעולה',
+    improve: 'להתקשר 03 1234567 או +972-50-1234567',
+    session: 'אימון 2026-10-24'
+  });
+  assert.equal(rec.worked, 'סבבים של 10 12 15 חזרות עבדו מעולה');
+  assert.equal(rec.improve, 'להתקשר [מספר הוסר] או [מספר הוסר]');
+  assert.equal(rec.session, 'אימון 2026-10-24');
+});
