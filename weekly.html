@@ -86,6 +86,7 @@ function renderProgram(p){
   $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
     p.dailyWorkouts.map((d, i) => {
       const w = TH.toPhasesWorkout(d, window.__lastMeta);
+      const dayExercises = (w.phases || []).flatMap(phase => phase.exercises || []);
       const phasesHtml = (w.phases || []).map((phase, pi) => {
         const label = TH.phaseLabel(phase.name);
         const exs = (phase.exercises || []).map((x, xi) => {
@@ -95,7 +96,7 @@ function renderProgram(p){
           if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + x.duration_seconds + ' שנ׳');
           if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
           const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
-          const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
+          const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3, exclude: dayExercises });
           const swap = alts.length
             ? '<label class="sr-only" for="swap-'+i+'-'+pi+'-'+xi+'">החלף '+esc(x.name)+'</label><select id="swap-'+i+'-'+pi+'-'+xi+'" data-day="'+i+'" data-phase="'+pi+'" data-ex="'+xi+'" class="swap-sel" aria-label="החלף '+esc(x.name)+'"><option value="">החלף…</option>'+alts.map(a => '<option value="'+esc(a.id)+'">'+esc(a.he)+'</option>').join('')+'</select>'
             : '';
