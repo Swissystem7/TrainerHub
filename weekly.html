@@ -77,6 +77,8 @@ function renderProgram(p){
     return;
   }
   const eq = $('equipment').value;
+  // Warm-up and cool-down read «180 שנ׳», rest «מנוחה 120 שנ׳»: whole minutes read «3 דק׳», «45 שנ׳» stays.
+  const secs = s => s >= 60 && s % 60 === 0 ? (s / 60) + ' דק׳' : s + ' שנ׳';
   const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
     reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
   })));
@@ -92,8 +94,8 @@ function renderProgram(p){
           const bits = [];
           if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
           else if (x.reps) bits.push(x.reps + ' חזרות');
-          if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + x.duration_seconds + ' שנ׳');
-          if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
+          if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + secs(x.duration_seconds));
+          if (x.rest_seconds) bits.push('מנוחה ' + secs(x.rest_seconds));
           const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
           const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
           const swap = alts.length
