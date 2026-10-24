@@ -324,6 +324,10 @@
 const PHASE_LABELS = TH.PHASE_LABELS;
 
 let linkMeta = { wa: '', name: '', tid: '' };
+// True only when the workout came from TH.KEYS.active. A workout opened from a
+// #TH./CLIP. link (journal «פתח כמתאמן», a shared clip) must not clear the
+// coach's own active workout on finish or exit.
+let loadedFromActive = false;
 let skippedSets = 0;
 let skippedStepIds = new Set();
 
@@ -342,6 +346,7 @@ function loadWorkout() {
       return fromHash.workout;
     }
   }
+  loadedFromActive = true;
   return TH.store.get(TH.KEYS.active, null);
 }
 
@@ -950,14 +955,14 @@ function finishWorkout() {
     }
   }
 
-  TH.store.remove(TH.KEYS.active);
+  if (loadedFromActive) TH.store.remove(TH.KEYS.active);
 }
 
 function exitWorkout() {
   if (confirm('לצאת מהאימון?')) {
     clearCountdown();
     pauseElapsedTimer();
-    TH.store.remove(TH.KEYS.active);
+    if (loadedFromActive) TH.store.remove(TH.KEYS.active);
     window.location.href = '../';
   }
 }
