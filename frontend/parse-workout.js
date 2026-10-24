@@ -216,6 +216,11 @@
     var s = quoteSeconds(line)
       .replace(/^(תחנה|תרגיל|עמדה)\s*\d+\s*[:.\-–]\s*/i, '')
       .replace(/^[•\-*]\s*/, '')
+      // A list number «1. סקוואט» / «2) פלאנק» is not part of the name («1.5 דקות» keeps its decimal).
+      .replace(/^\d{1,2}\s*[.)]\s+/, '')
+      // «סקוואט 3*15» / «מתח 3*מקס» is 3×15, and WhatsApp bold «*סקוואט*» is just the name.
+      .replace(/(\d)\s*\*\s*(?=\d|מקס|max)/gi, '$1x')
+      .replace(/\*/g, ' ')
       .trim();
     if (!s || classifyPhase(s) || isSessionMeta(s)) return null;
     if (isRestOrRepeatLine(s)) return null;
