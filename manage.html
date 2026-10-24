@@ -35,6 +35,7 @@
     .item button { width: auto; margin: 0; padding: 6px 10px; font-size: .78rem; }
     .pills { display: flex; flex-wrap: wrap; gap: 6px; }
     .pill { background: #26302b; border-radius: 999px; padding: 3px 8px; font-size: .72rem; color: var(--muted); }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
     @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -45,8 +46,9 @@
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
-  <span class="chip on">ניהול מאגר</span>
+  <span class="chip on" aria-current="page">ניהול מאגר</span>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>

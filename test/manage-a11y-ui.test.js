@@ -85,6 +85,21 @@ function harness(opts) {
   return { el: elements, fire: fire };
 }
 
+test('manage.html has skip-link and valid Hebrew RTL language headers', function () {
+  assert.match(html, /<html\s+lang="he"\s+dir="rtl">/);
+  assert.match(html, /<a\s+class="skip-link"\s+href="#url">דלג לטופס ההוספה<\/a>/);
+});
+
+test('manage.html static markup: nav has accessible label, active page indicator and links to booklet', function () {
+  assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
+  assert.match(html, /<span class="chip on" aria-current="page">ניהול מאגר<\/span>/);
+  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+});
+
+test('manage.html CSS: defines focus-visible outline for interactive controls', function () {
+  assert.match(html, /button:focus-visible,\s*input:focus-visible,\s*select:focus-visible,\s*textarea:focus-visible,\s*a:focus-visible\s*\{\s*outline:\s*2px solid var\(--lime\)/);
+});
+
 test('manage.html static markup: addForm and landmarks have accessible labels and roles', function () {
   assert.match(html, /<form[^>]+id="addForm"[^>]+aria-labelledby="addFormHeading"/);
   assert.match(html, /<h2[^>]+id="addFormHeading">הוספת פריט<\/h2>/);
