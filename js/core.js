@@ -945,6 +945,15 @@
         var candidates = rankCandidates(pool.filter(function (ex) {
           return !used[ex.id] && (!muscle || ex.muscles.indexOf(muscle) !== -1);
         }), opts);
+        // A clip built for the slot's muscle (listed first) goes before a full-body
+        // clip that merely includes it: the band clips «גומיות התנגדות» and «עבודה עם
+        // גומייה» are tagged chest, back, legs, core, so a band «רגליים» day got four of
+        // them and none of «גומיות ארבע ראשי» / «גומיות ירכיים», and a band «ליבה» day
+        // never got «גומיות בטן». The full-body clips still fill in when those run out.
+        if (muscle) {
+          var primary = candidates.filter(function (ex) { return ex.muscles[0] === muscle; });
+          if (primary.length) candidates = primary;
+        }
         if (candidates.length) {
           var pick = candidates[(dayIndex + slot) % candidates.length];
           used[pick.id] = true;
