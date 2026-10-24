@@ -79,6 +79,8 @@
     t = t.replace(/mountain climbers?/g, 'מטפס הרים');
     t = t.replace(/פוש[\s\-]?אפס?/g, 'שכיבות שמיכה');
     t = t.replace(/push[\s\-]?ups?/g, 'שכיבות שמיכה');
+    t = t.replace(/side[\s\-]?planks?/g, 'פלאנק צידי');
+    t = t.replace(/planks?/g, 'פלאנק');
     t = t.replace(/סייד פלאנק/g, 'פלאנק צידי');
     t = t.replace(/פלאנק צד(?:י)?/g, 'פלאנק צידי');
     t = t.replace(/כפיפות בטן/g, 'בטן');
