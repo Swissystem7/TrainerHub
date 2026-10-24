@@ -318,19 +318,20 @@
     return t.replace(PAIR_OF_GEAR_RX, ' ');
   }
 
-  // "אימון לשניים" / "אימון לשלושה, 30 דקות": a bare ל + number word (2-10)
-  // with no trainee noun is the head count. It must end the phrase (end,
+  // "אימון לשניים" / "אימון לשלושה, 30 דקות": a bare ל + number word (2-10,
+  // a tens word "לעשרים", or "לעשרים וחמישה") with no trainee noun is the
+  // head count. It must end the phrase (end,
   // punctuation or a digit next) or be followed by עם / בלי / ללא / a ב- word,
   // so "לשלושה סבבים" stays a round count, and a split verb before it
   // ("מחולק לשניים", "לחלק לשלושה") is not people.
-  var BARE_FOR_N_RX = /(?:^|[^א-ת])ל(שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
+  var BARE_FOR_N_RX = /(?:^|[^א-ת])ל((?:עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים)(?: ו(?:אחד|אחת|שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע))?|שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
   var SPLIT_WORD_RX = /(?:^|[^א-ת])(?:מחולק|מחולקת|מחולקים|לחלק|חלוקה|מתחלק|מתחלקים|נחלק|מפוצל|לפצל)\s*$/;
 
   function bareForCount(t) {
     var m = BARE_FOR_N_RX.exec(t);
     if (!m) return null;
     if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
-    var n = HEB_UNITS[m[1]];
+    var n = hebrewNumber(m[1]);
     return n >= 2 ? n : null;
   }
 
