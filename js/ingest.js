@@ -723,6 +723,26 @@
     return m[2].toUpperCase() + (mins ? ' ' + toInt(mins) + ' דקות' : '');
   }
 
+  // The paste's rounds header: «3 סבבים:», «אימון רגליים 3 סבבים - סקוואט 15». A rest line
+  // («מנוחה בין סבבים: 60 שניות») is not one, nor a dash that only leads into a count
+  // («סקוואט 3 סבבים - 15 חזרות»): either dropped every line above it, the whole paste when it
+  // came last. pre is the whole lines above the header line; their tokens come before ROUNDS_MARK
+  // and the rounds are not theirs.
+  var ROUNDS_MARK = '\u0002';
+  function roundsHeader(raw) {
+    var rx = /סבבים?\s*[:\-–]\s*(?=\S)/g;
+    var m;
+    while ((m = rx.exec(raw))) {
+      var start = raw.lastIndexOf('\n', m.index) + 1;
+      var end = raw.indexOf('\n', m.index);
+      var rest = raw.slice(m.index + m[0].length, end < 0 ? raw.length : end);
+      if (REST_RX.test(raw.slice(start, m.index))) continue;
+      if (/^\d+\s*(?:חזרות|פעמים|שניות|שנ[׳']|דקות|דק[׳'])?\s*$/.test(rest)) continue;
+      return { pre: raw.slice(0, start), body: raw.slice(m.index + m[0].length) };
+    }
+    return null;
+  }
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = numberWordsToDigits(text).trim();
@@ -732,12 +752,17 @@
     raw = raw.replace(/^(\s*\d+\s*סטים(?:\s+של)?)\s*:[ \t]*(?=\S)/, '$1\n');
     var tokens = [];
     var body = raw;
-    var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
+    // The lines above a «3 סבבים:» header are read too («ריצה קלה 5 דקות» before the rounds was
+    // dropped with the title on the header line).
+    var pre = '';
+    var after = roundsHeader(raw);
     if (after) {
-      body = after[1];
+      pre = after.pre;
+      body = after.body;
     } else {
       after = raw.match(/(?:^|\n)\s*\d+\s*סבבים?\s*(?:\n+|[,،]\s*)([\s\S]+)/);
       if (after) {
+        pre = raw.slice(0, after.index);
         body = after[1];
       } else {
         // Only a colon on the first line: «דגש: גב ישר» on line 3 is not a title over the lines above it.
@@ -754,7 +779,14 @@
       }
     }
     var pendingName = null;
-    body.split(/\n+/).forEach(function (line) {
+    var lines = body.split(/\n+/);
+    if (pre.trim()) lines = pre.split(/\n+/).concat([ROUNDS_MARK], lines);
+    lines.forEach(function (line) {
+      if (line === ROUNDS_MARK) {
+        tokens.push(ROUNDS_MARK);
+        pendingName = null;
+        return;
+      }
       var held = pendingName;
       pendingName = null;
       if (repeatLineCount(line) != null) return;
@@ -1639,7 +1671,15 @@
     var lastRest = defaults.rest;
     var blockNote = null;
     var prevInvented = false;
+    // «ריצה קלה 5 דקות» above «3 סבבים:» is done once, not for every round.
+    var roundsAt = tokens.indexOf(ROUNDS_MARK);
+    var roundDefaults = defaults;
+    if (roundsAt >= 0) defaults = Object.assign({}, defaults, { sets: null });
     for (var i = 0; i < tokens.length; i++) {
+      if (i === roundsAt) {
+        defaults = roundDefaults;
+        continue;
+      }
       if (tokens[i].charAt(0) === BLOCK_MARK) {
         blockNote = tokens[i].slice(1);
         continue;
