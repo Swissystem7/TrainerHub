@@ -202,11 +202,16 @@
     });
   });
 
+  // «מרוץ שליחים» (20 minutes) showed «1200 שנ׳»: whole minutes read «20 דק׳», «40 שנ׳» stays.
+  function secs(seconds) {
+    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+  }
   function fmtEx(x) {
     var bits = [];
     if (x.sets && x.sets > 1) bits.push(x.sets + ' סבבים');
     if (x.reps != null) bits.push(x.reps + ' חזרות');
-    if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
+    if (x.duration_seconds) bits.push(secs(x.duration_seconds));
+    if (x.rest_seconds) bits.push('מנוחה ' + secs(x.rest_seconds));
     return '<li><strong>' + esc(x.name) + '</strong>' + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') +
       (x.notes ? '<div class="muted">' + esc(x.notes) + '</div>' : '') + '</li>';
   }
