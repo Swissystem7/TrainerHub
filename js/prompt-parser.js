@@ -379,16 +379,17 @@
     return n && n > 0 ? Math.min(n, 500) : null;
   }
 
-  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
-  // A bare "גבוהה" does not: "עצימות גבוהה" and "ברכיים גבוהות" are drills.
-  var LEVEL_HIGH_RX = /רמה גבוהה|ברמה הגבוהה|רמה מאוד גבוהה|רמה גבוהה מאוד/;
-  var LEVEL_LOW_RX = /רמה נמוכה|ברמה הנמוכה|רמה בסיסית|רמה התחלתית|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
+  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level, and
+  // so do "רמת קושי גבוהה" / "דרגת קושי נמוכה". A bare "גבוהה" does not:
+  // "עצימות גבוהה" and "ברכיים גבוהות" are drills.
+  var LEVEL_HIGH_RX = /(?:רמה|(?:רמת|דרגת) ה?קושי) (?:מאוד )?ה?גבוהה/;
+  var LEVEL_LOW_RX = /(?:רמה|(?:רמת|דרגת) ה?קושי) (?:מאוד )?ה?(?:נמוכה|בסיסית|התחלתית)|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
 
   // "לא מתקדמים" / "לא למתקדמים" / "בלי מתחילים" / "לא ברמה גבוהה" rules that
   // level out. The negated phrase is cut before the checks below, so «אימון
   // למתחילים לא מתקדמים» is a beginner session, not an advanced one. The
   // negation may carry ו־ («למתחילים ולא למתקדמים»).
-  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
+  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?(?:רמה|(?:רמת|דרגת) ה?קושי)\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
 
   function parseLevel(text) {
     var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
