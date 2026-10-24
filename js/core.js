@@ -1138,8 +1138,9 @@
 
   // The catalog spells push-ups both ways («שכיבות סמיכה ורגליים», «אתגר שכיבות שמיכה»),
   // so each spelling found only its own clips. Fold both to one.
+  // A band is «גומייה», «גומיה» or «גומיות»: the singular found 1 clip of 11 (or none).
   function searchFold(s) {
-    return foldHe(s).replace(/סמיכה/g, 'שמיכה');
+    return foldHe(s).replace(/סמיכה/g, 'שמיכה').replace(/גומיי?(ה|ות)/g, 'גומי');
   }
 
   function filterCatalog(opts) {
