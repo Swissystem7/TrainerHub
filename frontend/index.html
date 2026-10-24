@@ -360,9 +360,21 @@
     }).join('');
   }
 
+  // The card on screen belongs to the text it was converted from. Once the text
+  // changes - typed, or replaced by an example button, which fires no «input»
+  // event - «התחל» / «שמור» would act on the old workout, so the card goes away.
+  function textChanged() {
+    currentWorkout = null;
+    $('actionBar').hidden = true;
+    $('cardContent').hidden = true;
+    $('cardEmpty').hidden = false;
+    $('cardEmpty').textContent = 'הטקסט השתנה. לחצו על המרה כדי לעדכן את הכרטיסייה.';
+  }
+
   document.querySelectorAll('[data-ex]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       $('workoutInput').value = EXAMPLES[btn.getAttribute('data-ex')] || '';
+      textChanged();
       $('workoutInput').focus();
     });
   });
@@ -426,13 +438,7 @@
   $('netanyaBtn').addEventListener('click', function () {
     if (saveEntries(NetanyaOpeningWorkouts)) showCard(NetanyaOpeningWorkouts[0], false);
   });
-  $('workoutInput').addEventListener('input', function () {
-    currentWorkout = null;
-    $('actionBar').hidden = true;
-    $('cardContent').hidden = true;
-    $('cardEmpty').hidden = false;
-    $('cardEmpty').textContent = 'הטקסט השתנה. לחצו על המרה כדי לעדכן את הכרטיסייה.';
-  });
+  $('workoutInput').addEventListener('input', textChanged);
   $('jsonBtn').addEventListener('click', function () {
     if (!currentWorkout) return;
     var blob = new Blob([JSON.stringify(currentWorkout, null, 2)], { type: 'application/json' });
