@@ -417,8 +417,13 @@
   // «שוכח» stay as they are.
   var DEFECTIVE_STRENGTH_RX = /(^|[^א-ת])([והבל]?)כח(?![א-ת])/g;
 
+  // «כדור כוח» / «כדורי כוח» is a medicine ball, gear and not a goal, so
+  // «אימון סיבולת עם כדור כוח» stays an endurance session.
+  var MEDICINE_BALL_RX = /כדורי? ה?כוח(?![א-ת])/g;
+
   function parseGoal(text) {
-    var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח'));
+    var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח')
+      .replace(MEDICINE_BALL_RX, 'כדור'));
     if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
     if (/חיזוק כוח/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
