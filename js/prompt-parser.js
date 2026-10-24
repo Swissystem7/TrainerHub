@@ -390,6 +390,12 @@
   // negation may carry ו־ («למתחילים ולא למתקדמים»).
   var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
 
+  // "אימון קל" / "אימון רגליים קשה" / "אימון קצר וקליל" ask for an easy or a
+  // hard session. Only the session itself counts, so "ריצה קלה" (a drill) and
+  // "אימון עם משקל קל" (the load) do not, and "אימון לא קשה" is not hard.
+  // Explicit level words win: «אימון קשה למתחילים» stays a beginner session.
+  var EASY_HARD_RX = /(?:^|\s)אימון(?:\s+(?!(?:לא|ללא|בלי|עם|משקל|עומס|קצב)(?:\s|$))[^\s,]+)?\s+ו?(קל|קליל|קשה)(?=$|[\s,.!?])/;
+
   function parseLevel(text) {
     var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
     if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
@@ -397,6 +403,8 @@
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
     if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
     if (/מתחיל|beginner/.test(t) || LEVEL_LOW_RX.test(t)) return 'beginner';
+    var easyHard = EASY_HARD_RX.exec(t);
+    if (easyHard) return easyHard[1] === 'קשה' ? 'advanced' : 'beginner';
     return null;
   }
 
