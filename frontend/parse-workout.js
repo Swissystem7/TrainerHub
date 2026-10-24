@@ -236,6 +236,9 @@
 
     // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
     s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
+    // «בורפי 10 חזרות x 3 סבבים» / «מתח 4 סטים × 6»: an x next to sets or rounds is not part of the name.
+    s = s.replace(/[x×]\s*(?=\d+\s*(?:סט|סבב))/gi, ' ')
+      .replace(/(\d+\s*סט(?:ים)?)\s*[x×]\s*(?=\d)/i, '$1 של ');
 
     // «מתח מקסימום», «שכיבות סמיכה 3 סטים עד כשל», «מתח 3xמקס» are to failure, not 10 invented reps.
     var failure = false;
