@@ -337,6 +337,8 @@
     var c = component(id);
     if (!c) return null;
     var floor = need().fitnessTest.floorScore;
+    // A field left with only a space is empty, not zero reps (Number(' ') is 0).
+    if (typeof value === 'string' && !value.trim()) return null;
     var v = c.unit === 'seconds' ? parseClock(value) : Number(value);
     if (!isFinite(v) || v < 0) return null;
     var i;
