@@ -807,8 +807,11 @@
 
   function waShareUrl(phone, message) {
     var digits = String(phone || '').replace(/\D/g, '');
-    var intl = digits;
+    // «00972…» is the dialled international prefix, and «+972-050-…» keeps the
+    // trunk 0 after the country code; wa.me wants neither.
+    var intl = digits.replace(/^00/, '');
     if (intl.charAt(0) === '0') intl = '972' + intl.slice(1);
+    if (intl.indexOf('9720') === 0) intl = '972' + intl.slice(4);
     else if (intl.length === 9 && intl.charAt(0) === '5') intl = '972' + intl;
     if (intl && !/^\d{8,15}$/.test(intl)) intl = '';
     var base = intl ? ('https://wa.me/' + intl) : 'https://wa.me/';
