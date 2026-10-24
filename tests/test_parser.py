@@ -64,6 +64,13 @@ class StripCodeFence(unittest.TestCase):
         raw = 'Sure!\n\n```\n{"a":1}\n```\nLet me know if you need changes.'
         self.assertEqual(parse_workout_json(raw), {"a": 1})
 
+    # With the tag on the same line as the payload, "json" stayed glued to
+    # the object and the API answered 500.
+    def test_tag_on_the_same_line_as_the_payload(self):
+        self.assertEqual(strip_code_fence('```json {"a":1}```'), '{"a":1}')
+        self.assertEqual(parse_workout_json('```JSON [1, 2]```'), [1, 2])
+        self.assertEqual(parse_workout_json('Here it is: ```json {"a":1}```'), {"a": 1})
+
     def test_backticks_inside_bare_json_are_left_alone(self):
         raw = '{"notes": "see ```"}'
         self.assertEqual(strip_code_fence(raw), raw)
