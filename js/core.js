@@ -1145,7 +1145,10 @@
       if (opts.level && e.level !== opts.level) return false;
       if (opts.tag && catalogTags(e).indexOf(opts.tag) === -1) return false;
       if (q) {
-        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || ''));
+        // The gear words count too, as the «גומיות» chip does: two band clips are
+        // not named «גומיות» («עבודה עם גומייה»), so typing the word missed them.
+        var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
+        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || '') + ' ' + gear);
         if (blob.indexOf(q) === -1) return false;
       }
       return true;
