@@ -36,18 +36,21 @@
     return String(text || '').replace(/(\d)\s?(?:''|["״])(?![֐-׿A-Za-z\d])/g, '$1 שניות');
   }
 
-  // «5 דקות», «1.5 דקות», «2 דקות וחצי», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
+  // «5 דקות», «1.5 דקות», «2 דקות וחצי», «2-3 דקות», «דקתיים», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
   // `lead` is a pattern that must come right before the amount («מנוחה של »),
   // `tail` one that must come right after it («דקה מנוחה»).
   function minutesPhrase(text, lead, tail) {
     var s = String(text || '');
     var end = '(?=\\s|$|[,.;:])' + (tail || '');
     var word = lead || '(?:^|\\s)';
-    var m = s.match(new RegExp((lead || '') + '(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
+    // «2-3 דקות» is a range: the lower bound, the way the rest of the parser reads ranges.
+    var m = s.match(new RegExp((lead || '') + '(?:(\\d+)\\s*[-–]\\s*)?(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
     if (m) {
-      var minutes = parseFloat(m[1].replace(',', '.')) + (m[2] ? 0.5 : 0);
+      var minutes = parseFloat((m[1] || m[2]).replace(',', '.')) + (m[3] ? 0.5 : 0);
       return { match: m[0], seconds: Math.round(minutes * 60) };
     }
+    m = s.match(new RegExp(word + 'דקתיים(\\s*וחצי)?' + end));
+    if (m) return { match: m[0], seconds: m[1] ? 150 : 120 };
     m = s.match(new RegExp(word + 'דקה\\s*וחצי' + end));
     if (m) return { match: m[0], seconds: 90 };
     m = s.match(new RegExp(word + 'חצי\\s*דקה' + end));
@@ -65,10 +68,11 @@
     if (minutes) return minutes;
     var m = s.match(/מנוחה\s*(?:של\s*)?(\d+[.,]\d+)(?=\s|$|[,;:]|\.(?!\d))/);
     if (m) return { match: m[0], seconds: Math.round(parseFloat(m[1].replace(',', '.')) * 60) };
-    m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)\s*(?:שניות|שנ[׳']|″)?/);
+    // «מנוחה 30-45 שניות» / «30-45 שניות מנוחה» rest the lower bound; the upper one is not left in the name.
+    m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)(?:\s*[-–]\s*\d+)?\s*(?:שניות|שנ[׳']|″)?/);
     if (m) return { match: m[0], seconds: toInt(m[1]) };
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
-    if (m) return { match: m[0], seconds: toInt(m[1]) };
+    m = s.match(/(?:(\d+)\s*[-–]\s*)?(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
+    if (m) return { match: m[0], seconds: toInt(m[1] || m[2]) };
     // «פלאנק דקה מנוחה» is still a minute of plank; the minutes are the rest only
     // when nothing or another amount comes before them («סקוואט 3x12 2 דקות מנוחה»).
     var before = minutesPhrase(s, '', '\\s*מנוחה');
