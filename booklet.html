@@ -243,7 +243,8 @@
     var qVal = ($('dq').value || '').trim();
     var catVal = $('cat').value;
     var items = B.drills({ category: catVal, q: qVal });
-    $('drillStats').textContent = items.length + ' תרגילים';
+    // A search with one hit read «1 תרגילים».
+    $('drillStats').textContent = items.length === 1 ? 'תרגיל אחד' : items.length + ' תרגילים';
     var out = $('drillOut');
     if (!items.length) {
       out.innerHTML = '<div class="card empty-drills" role="status">' +
