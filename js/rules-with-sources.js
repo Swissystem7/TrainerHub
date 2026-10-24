@@ -202,11 +202,21 @@
       he: 'סטים, חזרות ומנוחה',
       detail: 'אותה טבלה שהמנוע מריץ בפועל על כל תרגיל בעיקר האימון.',
       // A short Main phase gets fewer sets than the table (see fitSets in the
-      // engine); the panel quotes the sets the session really holds.
+      // engine); the panel quotes the sets the session really holds. When only
+      // the last exercises lost a set (fitSetsEach), it says how many.
       evaluate: function (req, workout) {
         var rx = prescription(req);
         var main = mainExercises(workout);
-        var sets = main && main.length ? Number(main[0].sets) : 0;
+        var counts = (main || []).map(function (ex) { return Number(ex.sets) || 0; });
+        var sets = counts.length ? Math.max.apply(null, counts) : 0;
+        var fewer = counts.filter(function (s) { return s < sets; }).length;
+        if (sets && fewer) {
+          return {
+            value: rxText(Object.assign({}, rx, { sets: sets })) + ' — ב-' + fewer + ' מתוך ' + counts.length +
+              ' התרגילים ' + (sets - 1 === 1 ? 'סט אחד' : (sets - 1) + ' סטים') + ', כדי שייכנס בזמן',
+            source: 'engine'
+          };
+        }
         if (sets && sets < rx.sets) {
           return {
             value: rxText(Object.assign({}, rx, { sets: sets })) + ' — קוצר מ-' + rx.sets + ' סטים כדי שייכנס בזמן',
