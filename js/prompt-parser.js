@@ -231,8 +231,13 @@
   // "5 זוגות" / "חמישה זוגות" is 10 trainees, "3 שלשות" is 9. Only a bare
   // unit word counts: "בזוגות" (working in pairs) has no space before זוגות,
   // so it never matches here and stays the plain "זוג" fallback.
-  var GROUP_UNIT_SIZE = { 'זוגות': 2, 'שלשות': 3, 'רביעיות': 4 };
-  var GROUP_UNIT = '(זוגות|שלשות|רביעיות)(?=$|[^א-ת])';
+  var GROUP_UNIT_SIZE = { 'זוגות': 2, 'שלשות': 3, 'שלישיות': 3, 'רביעיות': 4, 'חמישיות': 5 };
+  var GROUP_UNIT = '(זוגות|שלשות|שלישיות|רביעיות|חמישיות)(?=$|[^א-ת])';
+  // "אימון לשלישייה" / "לרביעייה" / "לחמישייה": one trio (quartet, quintet)
+  // is 3 (4, 5) trainees. Singular only, so "בשלישיות" (working in trios)
+  // stays uncounted like "בזוגות".
+  var SMALL_GROUP_SIZE = { 'שלישי': 3, 'רביעי': 4, 'חמישי': 5 };
+  var SMALL_GROUP_RX = /(?:^|[^א-ת])(?:ל|ב|ה|לה|בה)?(שלישי|רביעי|חמישי)י?ה(?=$|[^א-ת])/;
   var DIGITS_BEFORE_UNIT = new RegExp('(\\d+)\\s*' + GROUP_UNIT);
   var WORDS_BEFORE_UNIT = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + GROUP_UNIT);
 
@@ -372,6 +377,10 @@
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
       if (n === null) n = bareForCount(t);
+      if (n === null) {
+        m = t.replace(NEGATED_AUDIENCE_RX, ' ').match(SMALL_GROUP_RX);
+        if (m) n = SMALL_GROUP_SIZE[m[1]];
+      }
     }
     // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple,
     // unless it is negated: "לא בזוגות" / "בלי זוגות" is not a couple.
