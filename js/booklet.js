@@ -332,12 +332,37 @@
     return null;
   }
 
+  // Every time threshold of a component, over both sexes.
+  function thresholds(c) {
+    var rows = c.table || [];
+    if (c.tables) rows = rows.concat(c.tables.male || [], c.tables.female || []);
+    return rows.map(function (r) { return r.minSeconds != null ? r.minSeconds : r.maxSeconds; })
+      .filter(function (n) { return isFinite(n); });
+  }
+
+  // «13.30» or «13,30» typed for 13:30. The decimal reading (13.3 seconds) used
+  // to score a 3 km run 100; it is taken as m:ss when the decimal reading is
+  // far outside the component's table and the clock reading falls inside it,
+  // so a stopwatch «55.40» on the 2x150 m stays 55.4 seconds.
+  function readSeconds(c, value) {
+    var s = typeof value === 'number' ? '' : String(value == null ? '' : value).trim();
+    var m = /^(\d+)[.,](\d{2})$/.exec(s);
+    if (!m || Number(m[2]) >= 60) return parseClock(value);
+    var t = thresholds(c);
+    var lo = Math.min.apply(null, t) / 2;
+    var hi = Math.max.apply(null, t) * 2;
+    var decimal = Number(m[1] + '.' + m[2]);
+    var clock = Number(m[1]) * 60 + Number(m[2]);
+    var inside = function (n) { return n >= lo && n <= hi; };
+    return !inside(decimal) && inside(clock) ? clock : decimal;
+  }
+
   /** Score one component. Reps/hold tables: highest row reached. Run tables: first row whose maxSeconds ≥ time. */
   function scoreComponent(id, value, sex) {
     var c = component(id);
     if (!c) return null;
     var floor = need().fitnessTest.floorScore;
-    var v = c.unit === 'seconds' ? parseClock(value) : Number(value);
+    var v = c.unit === 'seconds' ? readSeconds(c, value) : Number(value);
     if (!isFinite(v) || v < 0) return null;
     var i;
     if (c.higherIsBetter) {
