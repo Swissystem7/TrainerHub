@@ -80,10 +80,11 @@ function renderProgram(p){
   const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
     reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
   })));
+  const countPill = (n, one, many) => n === 1 ? '<b>'+one+'</b>' : '<b>'+n+'</b> '+many;
   const clipCount = p.dailyWorkouts.reduce((n, d) => {
     return n + (d.exercises || []).filter(x => TH.hasClip({ id: x.name, name: x.name })).length;
   }, 0);
-  $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
+  $('result').innerHTML = '<div class="summary"><div class="pill">'+countPill(p.dailyWorkouts.length,'אימון אחד','אימונים')+'</div><div class="pill">'+countPill(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0,'תרגיל אחד','תרגילים')+' באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
     p.dailyWorkouts.map((d, i) => {
       const w = TH.toPhasesWorkout(d, window.__lastMeta);
       const phasesHtml = (w.phases || []).map((phase, pi) => {
