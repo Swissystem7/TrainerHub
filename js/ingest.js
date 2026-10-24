@@ -1623,8 +1623,18 @@
     }).replace(ENGLISH_OF_RX, '$1 של ');
   }
 
+  // «סקוואט 3x10 מנוחה דקתיים», «דקתיים מנוחה», «פלאנק דקתיים וחצי»: «דקתיים» is two minutes,
+  // but only the exercise line knew the word, so the rest was read as 120 s of work with no rest,
+  // a rest line «מנוחה דקתיים» merged into the exercise above it, and «וחצי» stayed in the name.
+  // Written out as «2 דקות» before anything reads the paste, the rest line and the defaults see it.
+  var TWO_MINUTES_RX = /(^|[^֐-׿])דקתיים(?![֐-׿])/g;
+
+  function normalizeTwoMinutes(text) {
+    return text.replace(TWO_MINUTES_RX, '$12 דקות');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))))).trim();
+    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeTwoMinutes(normalizeDecimalComma(normalizeTicks(stripEmoji(text))))))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
