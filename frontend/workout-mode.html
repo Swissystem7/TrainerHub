@@ -384,7 +384,9 @@ function buildSteps(workout) {
         duration: hasDuration ? ex.duration_seconds : null,
         notes: ex.notes || null,
         isLastSet: s === sets,
-        isLastExercise: item.isLastInPhase
+        isLastExercise: item.isLastInPhase,
+        exNo: flatIdx + 1,
+        exTotal: flat.length
       });
 
       // Rest step (after each set except the last set of the whole workout)
@@ -435,7 +437,6 @@ let elapsedInterval = null;
 let completedSets = 0;
 let completedExercises = 0;
 let completedStepIds = new Set();
-let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
@@ -455,7 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   steps = buildSteps(workout);
-  exerciseStepIndices = steps.map((s, i) => s.type === 'exercise' ? i : -1).filter(i => i >= 0);
 
   if (steps.length === 0) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -594,15 +594,27 @@ function buildClockSVG(color = '#7c3aed') {
    PROGRESS
 ═══════════════════════════════════════════ */
 
+// The label counts exercises, not sets: a plan of 6 exercises with 3 sets
+// each read «תרגיל 0 מתוך 18» on its first exercise. The bar still fills by
+// the sets already behind the trainee.
+function exerciseProgress(steps, stepIdx) {
+  let current = 0, total = 0, setsDone = 0, setsTotal = 0;
+  steps.forEach((s, i) => {
+    if (s.type !== 'exercise') return;
+    total = s.exTotal;
+    setsTotal++;
+    if (i < stepIdx) setsDone++;
+    if (i <= stepIdx) current = s.exNo;
+  });
+  return { current, total, pct: setsTotal > 0 ? (setsDone / setsTotal) * 100 : 0 };
+}
+
 function updateProgress() {
-  // Count how many exercise steps we've passed
-  const exStepsSoFar = exerciseStepIndices.filter(i => i < stepIdx).length;
-  const totalExSteps = exerciseStepIndices.length;
+  const { current, total, pct } = exerciseProgress(steps, stepIdx);
 
   document.getElementById('progressLabel').textContent =
-    `תרגיל ${exStepsSoFar} מתוך ${totalExSteps}`;
+    `תרגיל ${current} מתוך ${total}`;
 
-  const pct = totalExSteps > 0 ? (exStepsSoFar / totalExSteps) * 100 : 0;
   document.getElementById('progressFill').style.width = pct + '%';
   const bar = document.getElementById('progressBar');
   if (bar) bar.setAttribute('aria-valuenow', String(Math.round(pct)));
