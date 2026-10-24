@@ -163,6 +163,9 @@
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
+  // Shrugs work the upper traps (back), pulling the shoulders up: «שראגס»,
+  // «שרגס», «shrugs», «הרמת כתפיים». A bare «שראגס» was proposed as «ליבה».
+  var SHRUG_RX = /שרא?ג|shrug|הרמ(?:ת|ות) ה?כתפיים/;
 
   function inferEquipment(text) {
     var t = fold(text);
@@ -197,6 +200,7 @@
     // Before the core check: «הרמות גוף בשכיבה על הבטן» is back work first,
     // the «בטן» in it is the prone position, not the target muscle.
     if (BODY_RAISE_RX.test(t)) found.push('back');
+    if (SHRUG_RX.test(t)) found.push('back');
     if (/פלאנק|בטן|ליבה|קראנץ|כפיפ(ות|ת) בטן/.test(t) || LEG_RAISE_RX.test(t)) found.push('core');
     if (/מטפס/.test(t)) found.push('core');
     if (/גב תחתון|סופרמן|ארקטור/.test(t)) found.push('back');
@@ -260,9 +264,10 @@
       if (primary.indexOf('core') === -1 && /פלאנק|בטן/.test(t) === false) sec.push('core');
     }
     if (pattern === 'pull' || /אוסטרל|חתיר/.test(t) || mentionsPullUp(t)) {
-      if (primary.indexOf('biceps') === -1) sec.push('biceps');
+      // Shrugs keep the arms straight, so the biceps don't work.
+      if (primary.indexOf('biceps') === -1 && !SHRUG_RX.test(t)) sec.push('biceps');
     }
-    if (/פלאנק/.test(t) && primary.indexOf('shoulders') === -1) sec.push('shoulders');
+    if ((/פלאנק/.test(t) || SHRUG_RX.test(t)) && primary.indexOf('shoulders') === -1) sec.push('shoulders');
     if (/מטפס/.test(t) && primary.indexOf('legs') === -1) sec.push('legs');
     if (/הליכת חיות/.test(t) && primary.indexOf('chest') === -1) sec.push('chest');
     return uniq(sec.filter(function (m) { return primary.indexOf(m) === -1; }));
@@ -283,7 +288,7 @@
     if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
-    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
+    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t) || SHRUG_RX.test(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
