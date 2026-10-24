@@ -325,12 +325,20 @@
   // ("מחולק לשניים", "לחלק לשלושה") is not people.
   var BARE_FOR_N_RX = /(?:^|[^א-ת])ל(שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
   var SPLIT_WORD_RX = /(?:^|[^א-ת])(?:מחולק|מחולקת|מחולקים|לחלק|חלוקה|מתחלק|מתחלקים|נחלק|מפוצל|לפצל)\s*$/;
+  // "אימון 30 דקות ל-3" / "ל3" / "ל 8 עם גומיות": the same bare count in
+  // digits. Only a comma-like mark may follow, not ":" or "." («ל-18:00» is a
+  // time), and «ל-8 בבוקר» / «ל-7 בערב» is an hour, not eight people.
+  var BARE_FOR_DIGITS_RX = /(?:^|[^א-ת\d])ל[-־\s]?(\d{1,3})(?=\s*(?:$|[,;!?)])|\s+(?:עם|בלי|ללא|ב(?!בוקר|ערב|צהריים|צהרים|לילה)[א-ת]+)(?=$|[^א-ת]))/;
 
   function bareForCount(t) {
     var m = BARE_FOR_N_RX.exec(t);
+    var n = m ? HEB_UNITS[m[1]] : null;
+    if (!m) {
+      m = BARE_FOR_DIGITS_RX.exec(t);
+      if (m) n = toInt(m[1]);
+    }
     if (!m) return null;
     if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
-    var n = HEB_UNITS[m[1]];
     return n >= 2 ? n : null;
   }
 
