@@ -171,7 +171,7 @@ test('a duplicate report changes nothing', function () {
     active: legs,
     clients: [{
       id: 't_dana', name: 'דנה', phone: '', plan: 'אימון רגליים',
-      logs: [{ at: '2026-10-14T18:00:00.000Z', title: 'אימון ליבה' }],
+      logs: [{ at: '2026-10-14T18:00:00.000Z', title: 'אימון ליבה', rpe: 3 }],
       lastWorkout: legs, lastPlan: TH.compactPlan(legs)
     }]
   });
