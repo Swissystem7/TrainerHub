@@ -57,9 +57,11 @@ function copyDayTraineeLink(dayIndex, sourceBtn){
   TH.copyOrShow(shared.url, host, function(){
     host.insertAdjacentHTML('beforeend', '<p class="honest copy-status" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
     if (sourceBtn) {
-      const orig = sourceBtn.textContent;
+      // A second click within the 1.4 s must not save «הועתק» as the label to restore.
+      if (!sourceBtn.thLabel) sourceBtn.thLabel = sourceBtn.textContent;
       sourceBtn.textContent = 'הועתק';
-      setTimeout(() => { sourceBtn.textContent = orig; }, 1400);
+      clearTimeout(sourceBtn.thLabelTimer);
+      sourceBtn.thLabelTimer = setTimeout(() => { sourceBtn.textContent = sourceBtn.thLabel; }, 1400);
     }
   });
 }
