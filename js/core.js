@@ -519,7 +519,7 @@
     if (d && Array.isArray(d.phases) && d.phases.length) {
       return {
         title: d.title || ('אימון ' + (d.day || '')),
-        duration_minutes: d.duration_minutes || 45,
+        duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
         participants: 1,
         equipment: meta.equipment || [],
         intensity: meta.intensity || 'medium',
@@ -546,19 +546,29 @@
       name: heName(d.coolDown), id: d.coolDown, sets: 1, reps: null,
       duration_seconds: 180, rest_seconds: null, notes: null
     }] : [];
+    // The Main phase lasts as long as its sets and rests: a beginner's four
+    // 3×8-12 exercises take about 14 minutes and an advanced strength day's
+    // six 4×4-6 with 2-minute rests about 42, so the trainee page and the
+    // print sheet do not promise «45 דקות» for either.
+    var mainSeconds = mainEx.reduce(function (a, ex) { return a + draftExerciseSeconds(ex); }, 0);
+    var phases = [
+      { name: 'Warm-up', duration_minutes: 5, exercises: warm },
+      { name: 'Main', duration_minutes: Math.round(mainSeconds / 60), exercises: mainEx },
+      { name: 'Cool-down', duration_minutes: 5, exercises: cool }
+    ];
     return {
       title: d.title || ('אימון ' + (d.day || '')),
-      duration_minutes: 45,
+      duration_minutes: phasesMinutes(phases),
       participants: 1,
       equipment: meta.equipment || [],
       intensity: meta.intensity || 'medium',
       tags: meta.tags || ['program'],
-      phases: [
-        { name: 'Warm-up', duration_minutes: 5, exercises: warm },
-        { name: 'Main', duration_minutes: 35, exercises: mainEx },
-        { name: 'Cool-down', duration_minutes: 5, exercises: cool }
-      ]
+      phases: phases
     };
+  }
+
+  function phasesMinutes(phases) {
+    return (phases || []).reduce(function (a, ph) { return a + (Number(ph && ph.duration_minutes) || 0); }, 0);
   }
 
   function workoutVolume(sets) {
