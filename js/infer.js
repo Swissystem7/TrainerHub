@@ -143,6 +143,10 @@
   var CALF_RX = /הרמ(?:ת|ות) ה?עקב|על(?:יות|ייה|יה) (?:על )?(?:ה?קרסול|ה?בהונות|קצות)|תאומים/;
   var STEP_UP_RX = /סטפ[\s-]?אפ|step[\s-]?ups?|על(?:יות|ייה|יה) על (?:ה?ספסל|ה?קופס|ה?ארגז|ה?תיבה)/;
   var JUMP_DRILL_RX = /בורפי|גאמפינג|jumping jack|burpee/;
+  // A row or pulldown «to the chest»: «משיכת גומייה לחזה», «משיכה לחזה»,
+  // «משיכת פולי עליון לחזה». The chest is where the hands end, not the muscle
+  // worked; without this the «חזה» in it made it a chest push.
+  var ROW_TO_CHEST_RX = /משיכ(?:ת|ות|ה)(?: [^ ]+){0,2} (?:ל|אל ה?|עד ה?)חזה/;
 
   // Push-ups are «שכיבות» (the plural, as a word) or «שכיבת שמיכה/סמיכה». The
   // singular «שכיבה» is a position - «הרמת רגליים בשכיבה», «הרמות גוף בשכיבה
@@ -205,7 +209,7 @@
       found.push('back');
     }
     if (HIP_THRUST_RX.test(t) || LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) found.push('legs');
-    if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t)) {
+    if (/חתיר|אוסטרל/.test(t) || mentionsPullUp(t) || ROW_TO_CHEST_RX.test(t)) {
       found.push('back');
       found.push('biceps');
     }
@@ -223,7 +227,7 @@
     // «על הברכיים» is the knee variant of a push-up or plank, not a leg drill.
     if (/ברכי/.test(t) && !/פלאנק|שכיב/.test(t)) found.push('legs');
     if (/רגל|רגלי|סולם|מדרג/.test(t) && !LEG_RAISE_RX.test(t)) found.push('legs');
-    if (PUSH_UP_RX.test(t) || /חזה|לחיצ(ת|ה) חזה/.test(t)) found.push('chest');
+    if (PUSH_UP_RX.test(t) || (/חזה/.test(t) && !ROW_TO_CHEST_RX.test(t))) found.push('chest');
     if (/דו.?ראש|בייספס|פטיש/.test(t) || CURL_RX.test(t)) found.push('biceps');
     if (/תלת|טרייספס|דיפס/.test(t) || (/פשיטת/.test(t) && !KNEE_EXT_RX.test(t))) found.push('triceps');
     if (/ידיים|לחיזוק יד/.test(t) && !/שכיב/.test(t) && !CURL_RX.test(t)) {
