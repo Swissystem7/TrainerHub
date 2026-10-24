@@ -772,6 +772,27 @@ function skipCurrent() {
   }
 }
 
+// The gear this workout already uses, read off its catalog exercises. The swap
+// panel offered the whole catalog: on a bodyweight day 13 of the 33 bodyweight
+// clips got band, cone or tennis-ball alternatives the trainee doesn't have.
+// An exercise that can be done with no gear adds nothing. null when no step is
+// a catalog clip (a pasted workout), so nothing is filtered.
+function workoutEquipment() {
+  const gear = [];
+  let known = false;
+  steps.forEach(function (s) {
+    if (s.type !== 'exercise') return;
+    const entry = TH.findExercise(s);
+    if (!entry) return;
+    known = true;
+    const options = entry.equipment && entry.equipment.length ? entry.equipment : ['none'];
+    if (options.indexOf('none') !== -1) return;
+    options.forEach(function (eq) { if (gear.indexOf(eq) === -1) gear.push(eq); });
+  });
+  if (!known) return null;
+  return gear.length ? gear : ['none'];
+}
+
 function toggleSwap() {
   const panel = document.getElementById('swapPanel');
   const btn = document.getElementById('btnSwap');
@@ -787,7 +808,7 @@ function toggleSwap() {
     panel.hidden = true;
     return;
   }
-  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5 });
+  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5, equipment: workoutEquipment() });
   if (!alts.length) {
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
