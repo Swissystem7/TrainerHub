@@ -331,6 +331,12 @@
       else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
+    // «10 שכיבות סמיכה» / «20 סקוואטים»: a bare count before the name is the reps.
+    m = reps == null && duration_seconds == null && !distance && !failure && s.match(/^\s*(\d{1,3})\s+(?=[א-תa-z])/i);
+    if (m) {
+      reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
 
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
     if (!name || name.length < 2) return null;
