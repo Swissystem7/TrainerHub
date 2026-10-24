@@ -1094,9 +1094,17 @@
     return !!e && (e.id === 'warmup' || foldHe(e.he) === 'חימום');
   }
 
+  // The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
+  // חימום») stay out of Main too: with «קונוסים» the weekly builder opened
+  // day 1 with the cone warm-up as 4 x 4-6 strength work. Same rule as the
+  // Main pool in session-builder.js.
+  function isWarmupDrill(e) {
+    return isWarmupClip(e) || (!!e && /חימום/.test(foldHe(e.he)));
+  }
+
   function catalogAsPool() {
     return catalogList().filter(function (e) {
-      return isPlayable(e) && e.muscles && e.muscles.length && !isWarmupClip(e);
+      return isPlayable(e) && e.muscles && e.muscles.length && !isWarmupDrill(e);
     }).map(function (e) {
       return {
         id: e.id,
@@ -1368,7 +1376,7 @@
     var list = catalogList().filter(function (e) {
       if (!isPlayable(e)) return false;
       if (e.id === excludeId) return false;
-      if (!keepWarmup && isWarmupClip(e)) return false;
+      if (!keepWarmup && isWarmupDrill(e)) return false;
       if (muscles.length && !e.muscles.some(function (m) { return muscles.indexOf(m) !== -1; })) return false;
       if (Array.isArray(have) && have.length && !userCanDo(e, have)) return false;
       return true;
