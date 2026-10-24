@@ -339,9 +339,21 @@
     lower: 'פלג גוף תחתון'
   };
 
+  // A request that names several muscles is labelled with all of them, in the
+  // order named: «אימון רגליים וגב» was titled «אימון רגליים» (the focus is
+  // only the first muscle). Biceps and triceps together read «ידיים».
   function focusLabel(req) {
     if (!req || !req.focus) return '';
-    return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+    if (FOCUS_LABELS[req.focus] && req.focus !== 'arms') return FOCUS_LABELS[req.focus];
+    var muscles = req.muscles || [];
+    var arms = muscles.indexOf('biceps') !== -1 && muscles.indexOf('triceps') !== -1;
+    var labels = [];
+    muscles.forEach(function (m) {
+      var label = (arms && (m === 'biceps' || m === 'triceps')) ? FOCUS_LABELS.arms : Infer.MUSCLE_LABELS[m];
+      if (label && labels.indexOf(label) === -1) labels.push(label);
+    });
+    if (labels.length < 2) return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+    return labels.slice(0, -1).join(', ') + ' ו' + labels[labels.length - 1];
   }
 
   function typeLabel(req, analysis) {
