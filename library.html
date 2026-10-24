@@ -172,7 +172,7 @@
     box.hidden = false;
     $('draftList').innerHTML = main.map(function (ex) {
       return '<div class="pill">' + TH.esc(ex.name) + (ex.sets ? ' · ' + ex.sets + '×' + (ex.reps || '') : '') + '</div>';
-    }).join(' ') + '<div class="pill">' + main.length + ' תרגילים · כ־' + TH.esc(w.duration_minutes) + ' דקות</div>';
+    }).join(' ') + '<div class="pill">' + (main.length === 1 ? 'תרגיל אחד' : main.length + ' תרגילים') + ' · כ־' + TH.esc(w.duration_minutes) + ' דקות</div>';
   }
 
   function render() {
