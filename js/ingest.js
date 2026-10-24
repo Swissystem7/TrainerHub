@@ -778,6 +778,7 @@
         line = titled.rest;
         if (!line.trim()) return;
       }
+      if (isTitleRounds(line, list)) return;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -906,6 +907,19 @@
     if (!TITLE_WORD_RX.test(title) && (!TITLE_RX.test(title + ' ') || isClipName(title, list))) return null;
     var rest = t.slice(m[0].length).replace(/^[\s:\-–,)]+|[\s:\-–,.]+$/g, '').trim();
     return { minutes: toInt(m[2]), rest: /\d/.test(rest) ? rest : '' };
+  }
+
+  // «אימון רגליים - 3 סבבים» / «אימון 3 סבבים:» on a line of its own: the title and the paste's
+  // rounds (scanDefaults reads the «3 סבבים»), not an exercise. The title rode on as an exercise
+  // «אימון רגליים» of 3x10 invented reps. A clip title («אימון קונוסים 3 סבבים») stays the clip.
+  var TITLE_ROUNDS_RX = /^(ה?(?:אימון|תוכנית|תכנית|שיעור)(?:\s+[^\d:\-–(,]*?)?)\s*[:\-–(,]?\s*(?:של\s+)?\d{1,2}\s*סבבים?\)?[\s:.!]*$/;
+
+  function isTitleRounds(line, list) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(TITLE_ROUNDS_RX);
+    if (!m) return false;
+    var title = m[1].trim().replace(/\s+(?:של|ב)$/, '');
+    return TITLE_WORD_RX.test(title) || (TITLE_RX.test(title + ' ') && !isClipName(title, list));
   }
 
   function titleMinutes(text, list) {
