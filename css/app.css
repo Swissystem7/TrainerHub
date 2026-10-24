@@ -131,6 +131,7 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
 .print-sheet { max-width: 720px; margin: 0 auto; }
 .print-sheet h1 { font-size: 1.8rem; margin: 0 0 8px; }
 .print-brand { font-weight: 800; font-size: 1.05rem; margin: 0 0 4px; }
+.print-client { font-weight: 600; margin: 0 0 8px; }
 .print-phase { margin: 18px 0; }
 .print-phase h2 { font-size: 1.1rem; margin: 0 0 8px; }
 .print-sheet table { width: 100%; border-collapse: collapse; }

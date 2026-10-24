@@ -78,7 +78,7 @@
     var packed = TH.store.get(TH.KEYS.print, null);
     if (packed && isWorkout(packed.workout)) return packed;
     var active = TH.store.get(TH.KEYS.active, null);
-    if (isWorkout(active)) return { workout: active, brand: savedBrand() };
+    if (isWorkout(active)) return { workout: active, brand: savedBrand(), client: '' };
     return null;
   }
 
@@ -108,7 +108,7 @@
     }
     updatePrintBtn(true);
     var brand = $('brand').value.trim();
-    var model = TH.workoutPrintModel(packed.workout, { brand: brand });
+    var model = TH.workoutPrintModel(packed.workout, { brand: brand, client: packed.client });
     box.innerHTML = TH.workoutPrintHtml(model);
     if (model.branded) {
       $('hint').textContent = 'מסלול מאמן פעיל. השם יופיע בראש הדף. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
@@ -129,7 +129,7 @@
   $('brandForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var packed = currentWorkout();
-    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: $('brand').value.trim() });
+    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: $('brand').value.trim(), client: (packed && packed.client) || '' });
     render();
   });
 
