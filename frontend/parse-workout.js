@@ -30,6 +30,15 @@
     return null;
   }
 
+  // WhatsApp pastes: «סקוואט 3x10 💪», «🔥 חימום:», «1️⃣ מתח 3x8». The emoji is decoration;
+  // left in, it stayed in the exercise name and «🔥 חימום:» was an exercise, not the warm-up.
+  var KEYCAP_RX = /[0-9#*]\uFE0F?\u20E3/g;
+  var EMOJI_RX = /\p{Extended_Pictographic}|\p{Emoji_Modifier}|\p{Regional_Indicator}|[\uFE0F\u200D]/gu;
+
+  function stripEmoji(text) {
+    return String(text || '').replace(KEYCAP_RX, ' ').replace(EMOJI_RX, ' ');
+  }
+
   // «פלאנק 30"», «בורפי 3x40״», «45''»: a double prime after a number is seconds, the way
   // trainers type it, so it reads as «30 שניות» everywhere below. A lone «'» is left alone.
   function quoteSeconds(text) {
@@ -437,7 +446,7 @@
   }
 
   function parseWorkoutClient(text) {
-    var raw = String(text || '').trim();
+    var raw = stripEmoji(text).trim();
     if (!raw) {
       return {
         title: 'אימון',
