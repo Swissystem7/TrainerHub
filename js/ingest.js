@@ -1533,10 +1533,22 @@
   // «סקוואט 3 סדרות של» with one set. Read it as «סטים» / «סט» everywhere.
   var SERIES_RX = /(^|[^֐-׿])([בלהו]{0,2})סדר(ות|ה)(?![֐-׿])/g;
 
+  // «סיבובים» is the other word for rounds: «בורפי 3 סיבובים של 10» was a name «בורפי 3 סיבובים»
+  // with one set. Only after a count («3 סיבובים», «שלושה סיבובים», «סיבוב אחד»), and not on a line
+  // whose exercise turns («סיבובי ידיים 10 סיבובים» is ten arm circles, not ten rounds).
+  var ROUNDS_RX = new RegExp('(^|[^א-ת])((?:\\d+|' + NUMBER_PHRASE + ')\\s*)סיבובים(?![א-ת])|(^|[^א-ת])סיבוב(\\s+(?:אחד|אחת)(?![א-ת]))', 'g');
+
+  function normalizeRoundWords(line) {
+    if ((line.match(/סיבוב/g) || []).length > 1) return line;
+    return line.replace(ROUNDS_RX, function (all) {
+      return all.replace(/סיבובים$/, 'סבבים').replace(/סיבוב(?=\s)/, 'סבב');
+    });
+  }
+
   function normalizeSetWords(text) {
     return text.replace(SERIES_RX, function (all, pre, prefix, end) {
       return pre + prefix + (end === 'ות' ? 'סטים' : 'סט');
-    });
+    }).split('\n').map(normalizeRoundWords).join('\n');
   }
 
   // «מנוחה 1'», «פלאנק 2׳», «ריצה 10′»: one tick after a number is minutes; «30"», «45״», «20″»,
