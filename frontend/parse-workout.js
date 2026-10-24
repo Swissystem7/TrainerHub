@@ -287,10 +287,11 @@
       s = s.replace(m[0], ' ');
     }
 
-    // «בורפי 30 שניות, 3 סבבים» - the line's own rounds are its sets.
-    m = s.match(/(\d+)\s*סבבים(?=\s|$|[,.;:])(?:\s*של(?=\s))?/);
+    // «בורפי 30 שניות, 3 סבבים» - the line's own rounds are its sets; «5 סבבים של 10» is 10 reps too.
+    m = s.match(/(\d+)\s*סבבים(?=\s|$|[,.;:])(?:\s*של(?:\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*חזרות)?|(?=\s)))?/);
     if (m) {
       sets = toInt(m[1]);
+      if (m[2]) reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
 
