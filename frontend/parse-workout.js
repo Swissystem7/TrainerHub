@@ -219,6 +219,8 @@
       .trim();
     if (!s || classifyPhase(s) || isSessionMeta(s)) return null;
     if (isRestOrRepeatLine(s)) return null;
+    // «ריצה (5 דקות)», «סקוואט 3x10 (מנוחה דקה)»: a bracket is not part of the amount next to it.
+    s = s.replace(/\s*([()])\s*/g, ' $1 ');
 
     var notes = [];
     var sets = defaults.sets != null ? defaults.sets : null;
@@ -332,7 +334,8 @@
       s = s.replace(m[0], ' ');
     }
 
-    var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\(\s*\)/g, ' ').replace(/\s+/g, ' ')
+      .replace(/\(\s/g, '(').replace(/\s\)/g, ')').trim();
     if (!name || name.length < 2) return null;
 
     if (reps == null && duration_seconds == null && (distance || (failure && !defaults.workSeconds))) {
