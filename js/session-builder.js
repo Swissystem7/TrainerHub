@@ -76,9 +76,14 @@
   // a «20 minute» strength session carried 5 exercises and 40 minutes of rest
   // alone. The count shrinks by the ratio of the two, never below 2 and never
   // above the step. Without a prescription the steps are returned as they are.
+  // Past 45 minutes the step used to stop at 10, so «אימון שעה וחצי» put 10
+  // exercises (about 45 minutes) into an 85-minute Main phase and «אימון כוח
+  // 90 דקות» ran 48 minutes. A longer session gets one more exercise for every
+  // 4.5 minutes of Main phase (the duration less the 5-minute warm-up).
   function wantedCount(duration, rx) {
     var d = Number(duration) || 20;
-    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8 : 10;
+    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8
+      : Math.max(10, Math.floor((d - 5) * 60 / exerciseSeconds(RX.hypertrophy)));
     if (!rx) return base;
     var ratio = exerciseSeconds(RX.hypertrophy) / exerciseSeconds(rx);
     return Math.max(2, Math.min(base, Math.floor(base * ratio)));
