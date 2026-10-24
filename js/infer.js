@@ -163,6 +163,10 @@
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
+  // A face pull («משיכת פנים», «פייס פול») is rear-delt and upper-back pulling.
+  // It names no muscle, so «משיכת פנים בגומייה» fell to the band fallback
+  // (chest, back, legs, core as a push) and a bare one to «ליבה».
+  var FACE_PULL_RX = /משיכ(?:ת|ות) (?:ל)?ה?פנים|פייס ?פול|face ?pulls?/;
 
   function inferEquipment(text) {
     var t = fold(text);
@@ -211,6 +215,10 @@
     }
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
     if (/כתף|כתפי/.test(t)) found.push('shoulders');
+    if (FACE_PULL_RX.test(t)) {
+      found.push('shoulders');
+      found.push('back');
+    }
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
@@ -283,7 +291,7 @@
     if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
-    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
+    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || FACE_PULL_RX.test(t) || mentionsPullUp(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
