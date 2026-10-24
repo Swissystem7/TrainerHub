@@ -1142,8 +1142,13 @@
   // «push up», «פוש אפ», «mountain climbers», «פלנק» fold to the catalog's Hebrew names
   // through THInfer's synonyms, as the editor already does: each found 0 clips.
   // English «plank» / «side plank» fold to «פלאנק» / «פלאנק צידי»: «plank» found only the clip whose id is plank.
+  // «pull up», «chin up», «עליות מתח», «australian pull up», «inverted row» found 0 clips:
+  // the bar clip is «מתח אוסטרלי». Search only - the editor keeps «pull up» apart from it.
   function searchFold(s) {
-    return normalizeName(s).replace(/סמיכה/g, 'שמיכה').replace(/גומיי?(ה|ות)/g, 'גומי');
+    return normalizeName(s).replace(/סמיכה/g, 'שמיכה').replace(/גומיי?(ה|ות)/g, 'גומי')
+      .replace(/inverted[\s\-]?rows?/g, 'מתח אוסטרלי')
+      .replace(/(?:pull|chin)[\s\-]?ups?|עליות מתח/g, 'מתח')
+      .replace(/australian/g, 'אוסטרלי');
   }
 
   function filterCatalog(opts) {
