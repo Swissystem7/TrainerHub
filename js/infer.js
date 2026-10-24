@@ -115,6 +115,11 @@
     return PULL_UP_RX.test(fold(text));
   }
 
+  // A chest-to-bar pull-up: «מתח לחזה», «מתח עד החזה», «עליות מתח לחזה». The
+  // chest is how high it pulls, not a muscle it works; without this the «חזה»
+  // in the name made it a back + chest exercise.
+  var CHEST_TO_BAR_RX = /מתח(?:ים|י)?(?: [^ ]+)? (?:ל|אל ה?|עד ה?)חזה/;
+
   // "קיר" (wall) and "מוט" (bar) are substrings of common unrelated words:
   // "קירור" (the cool-down in "חימום וקירור") and "מוטיבציה" (motivation).
   // Match them as whole words, optionally with a ו/ב/ל/ה/מ prefix ("על הקיר",
@@ -240,6 +245,12 @@
       found.push('triceps');
     }
     if (/בעיט/.test(t)) found.push('legs');
+    if (CHEST_TO_BAR_RX.test(t)) {
+      var rest = t.replace(CHEST_TO_BAR_RX, ' ');
+      if (!PUSH_UP_RX.test(rest) && !/חזה/.test(rest)) {
+        found = found.filter(function (m) { return m !== 'chest'; });
+      }
+    }
 
     if (!found.length && folder && FOLDER_MUSCLE[folder]) {
       found = FOLDER_MUSCLE[folder].slice();
