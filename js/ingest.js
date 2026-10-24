@@ -723,6 +723,31 @@
     return m[2].toUpperCase() + (mins ? ' ' + toInt(mins) + ' דקות' : '');
   }
 
+  // «חימום:» / «שחרור:» / «עיקרי:» over the lines below it: the section those exercises belong to.
+  // The header was dropped as a title and its exercises went to Main, so a pasted warm-up ran as
+  // the first exercises of the workout and the analysis said «חסר חימום». A token that starts
+  // with PHASE_MARK switches the phase of the exercises after it.
+  var PHASE_MARK = '\u0002';
+  var WARMUP_LABEL_RX = /^ה?(?:חימום|הכנה)$/;
+  var COOLDOWN_LABEL_RX = /^(?:ה?חלק\s+)?ה?(?:שחרור|קירור|מתיחות|התאוששות)(?:\s+(?:ו?מתיחות|סיום))?$/;
+  var MAIN_LABEL_RX = /^(?:(?:ה?חלק|ה?אימון)\s+)?ה?(?:עיקרי|גוף\s+האימון)$|^(?:סבב|תחנה|בלוק|מחזור)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון)))?$/;
+
+  function sectionPhase(label) {
+    var t = String(label || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:\s]+$/, '').replace(/\s+/g, ' ').trim();
+    if (WARMUP_LABEL_RX.test(t)) return 'Warm-up';
+    if (COOLDOWN_LABEL_RX.test(t)) return 'Cool-down';
+    if (MAIN_LABEL_RX.test(t)) return 'Main';
+    return null;
+  }
+
+  // The phase a line opens: the whole line is the header («חימום:»), or its label («חימום: ריצה קלה»).
+  function linePhase(line) {
+    var whole = sectionPhase(line);
+    if (whole) return whole;
+    var m = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').trim().match(LABEL_RX);
+    return m ? sectionPhase(m[1]) : null;
+  }
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = numberWordsToDigits(text).trim();
@@ -731,6 +756,7 @@
     // colon, as they do on a line of their own (only the first exercise got them, the rest one set).
     raw = raw.replace(/^(\s*\d+\s*סטים(?:\s+של)?)\s*:[ \t]*(?=\S)/, '$1\n');
     var tokens = [];
+    var section = 'Main';
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) {
@@ -749,18 +775,28 @@
           // «יום שני: רגליים» is a day header with its title: stripSectionLabel reads it line by line.
           if (right && !DAY_HEADER_RX.test(left.replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').trim()) && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || isIntervalPrefix(left))) {
             body = right;
+            // «חימום: ריצה קלה 5 דקות» on the first line is the warm-up's label, not the title.
+            section = sectionPhase(left) || section;
+            if (section !== 'Main') tokens.push(PHASE_MARK + section);
           }
         }
       }
     }
     var pendingName = null;
-    body.split(/\n+/).forEach(function (line) {
+    body.split('\n').forEach(function (line) {
+      // A blank line closes a warm-up that no «עיקרי:» header closes.
+      if (!line.trim()) {
+        if (section === 'Warm-up') tokens.push(PHASE_MARK + (section = 'Main'));
+        return;
+      }
       var held = pendingName;
       pendingName = null;
       if (repeatLineCount(line) != null) return;
       // «EMOM 10 דקות» alone, or before a colon with the exercise after it.
       var lineColon = line.indexOf(':');
       var header = blockHeader(line) || (lineColon > 0 && blockHeader(line.slice(0, lineColon)));
+      var phase = header ? 'Main' : linePhase(line);
+      if (phase) tokens.push(PHASE_MARK + (section = phase));
       if (header) {
         tokens.push(BLOCK_MARK + header);
         line = blockHeader(line) ? '' : line.slice(lineColon + 1);
@@ -1639,7 +1675,13 @@
     var lastRest = defaults.rest;
     var blockNote = null;
     var prevInvented = false;
+    var phase = 'Main';
     for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].charAt(0) === PHASE_MARK) {
+        phase = tokens[i].slice(1);
+        blockNote = null;
+        continue;
+      }
       if (tokens[i].charAt(0) === BLOCK_MARK) {
         blockNote = tokens[i].slice(1);
         continue;
@@ -1685,7 +1727,32 @@
         unmatched.push(parsed.name);
         wishlistAdd(parsed.name, 'נקלט מאימון מודבק בלי סרטון במאגר');
       }
+      parsed.phase = phase;
       exercises.push(parsed);
+    }
+    // «חימום:» with nothing that closes it would leave Main empty: the warm-up ends at its first
+    // exercise of several sets («3x10 סקוואט»). Without one, the paste is all Main as before.
+    if (!exercises.some(function (ex) { return ex.phase === 'Main'; })) {
+      var warm = exercises.filter(function (ex) { return ex.phase === 'Warm-up'; });
+      var cut = -1;
+      warm.some(function (ex, k) { return ex.sets > 1 && (cut = k) >= 0; });
+      warm.forEach(function (ex, k) { if (cut < 0 || k >= cut) ex.phase = 'Main'; });
+      if (cut < 0) exercises.forEach(function (ex) { ex.phase = 'Main'; });
+    }
+
+    function phaseExercises(name) {
+      return exercises.filter(function (ex) { return ex.phase === name; }).map(function (ex) {
+        return {
+          name: ex.name,
+          id: ex.id,
+          sets: ex.sets,
+          reps: ex.reps,
+          duration_seconds: ex.duration_seconds,
+          rest_seconds: ex.rest_seconds,
+          notes: [ex.notes, ex.missing ? 'חסר סרטון' : null].filter(Boolean).join(' · ') || null,
+          missing: ex.missing || false
+        };
+      });
     }
 
     var workout = {
@@ -1698,20 +1765,9 @@
       intensity: 'medium',
       tags: ['ingest'],
       phases: [
-        { name: 'Warm-up', duration_minutes: 0, exercises: [] },
-        { name: 'Main', duration_minutes: null, exercises: exercises.map(function (ex) {
-          return {
-            name: ex.name,
-            id: ex.id,
-            sets: ex.sets,
-            reps: ex.reps,
-            duration_seconds: ex.duration_seconds,
-            rest_seconds: ex.rest_seconds,
-            notes: [ex.notes, ex.missing ? 'חסר סרטון' : null].filter(Boolean).join(' · ') || null,
-            missing: ex.missing || false
-          };
-        }) },
-        { name: 'Cool-down', duration_minutes: 0, exercises: [] }
+        { name: 'Warm-up', duration_minutes: 0, exercises: phaseExercises('Warm-up') },
+        { name: 'Main', duration_minutes: null, exercises: phaseExercises('Main') },
+        { name: 'Cool-down', duration_minutes: 0, exercises: phaseExercises('Cool-down') }
       ],
       source: 'ingest'
     };
