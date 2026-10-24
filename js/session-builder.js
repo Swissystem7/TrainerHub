@@ -344,10 +344,28 @@
     return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
   }
 
-  function typeLabel(req, analysis) {
+  // The equipment the picked clips actually use. When the equipment filter
+  // had to be relaxed («אימון רגליים עם משקולות» on a catalog with no
+  // dumbbells) the card's «ציוד» pill, the type line and the client share
+  // link all said «משקולות» over a plan of band and ball drills.
+  function usedEquipment(picked) {
+    var ids = [];
+    picked.forEach(function (e) {
+      var have = e.equipment && e.equipment.length ? e.equipment : ['none'];
+      have.forEach(function (id) {
+        if (ids.indexOf(id) === -1) ids.push(id);
+      });
+    });
+    if (ids.length > 1) ids = ids.filter(function (id) { return id !== 'none'; });
+    return ids;
+  }
+
+  function typeLabel(req, analysis, relax) {
     var parts = [];
     parts.push(focusLabel(req) || 'אימון מהמאגר');
-    if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
+    if (relax && relax.equipment) {
+      // the asked-for equipment is not in the plan; the notice says so
+    } else if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
     else if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
@@ -483,7 +501,8 @@
       title: title,
       duration_minutes: req.duration,
       participants: Math.max(1, Math.floor(Number(req.participants) || 1)),
-      equipment: (req.equipment || []).map(function (e) { return Infer.EQ_LABELS[e] || e; }),
+      equipment: (relax.equipment ? usedEquipment(picked) : (req.equipment || []))
+        .map(function (e) { return Infer.EQ_LABELS[e] || e; }),
       intensity: req.goal === 'strength' ? 'high' : (req.level === 'beginner' ? 'low' : 'medium'),
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
       goal: req.goal || null,
@@ -502,7 +521,7 @@
       return { id: e.id, he: e.he, why: whyChosen(e, req), source: e.source || 'local' };
     });
     var explanation = {
-      type: typeLabel(req, analysis),
+      type: typeLabel(req, analysis, relax),
       primary: analysis.primary,
       secondary: analysis.secondary,
       stimulus: analysis.stimulus,
