@@ -787,7 +787,10 @@ function toggleSwap() {
     panel.hidden = true;
     return;
   }
-  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5 });
+  const alts = TH.substitutesFor({ id: step.id, name: step.name }, {
+    limit: 5,
+    exclude: steps.filter(function (s) { return s.type === 'exercise'; })
+  });
   if (!alts.length) {
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
