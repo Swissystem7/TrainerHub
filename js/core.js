@@ -925,8 +925,21 @@
   function pickExercises(dayIndex, muscles, pool, count, rx, notes, opts) {
     opts = opts || {};
     var used = {};
+    // Two catalog entries can play the same video (the «ילדים קונוסים אחד על אחד» clip
+    // is filed under two ids), so a day marks the clip as used too and the trainee
+    // never watches the same drill twice under two names.
+    var usedClips = {};
+    function clipOf(id) {
+      var clip = catalog[id];
+      return clip && isPlayable(clip) && clip.file ? clip.file : '';
+    }
+    function markUsed(id) {
+      used[id] = true;
+      var file = clipOf(id);
+      if (file) usedClips[file] = true;
+    }
     // The day's warm-up / cool-down drill is not also a Main exercise.
-    (opts.exclude || []).forEach(function (id) { if (id) used[id] = true; });
+    (opts.exclude || []).forEach(function (id) { if (id) markUsed(id); });
     var exercises = [];
     // The requested muscles fill the day first. When they run dry (a bodyweight «גב»
     // day has two back drills for four slots) the remaining slots take the muscles that
@@ -943,11 +956,12 @@
       while (exercises.length < count && misses < (tier ? tier.length : 1)) {
         var muscle = tier ? tier[slot % tier.length] : null;
         var candidates = rankCandidates(pool.filter(function (ex) {
-          return !used[ex.id] && (!muscle || ex.muscles.indexOf(muscle) !== -1);
+          return !used[ex.id] && !usedClips[clipOf(ex.id)] &&
+            (!muscle || ex.muscles.indexOf(muscle) !== -1);
         }), opts);
         if (candidates.length) {
           var pick = candidates[(dayIndex + slot) % candidates.length];
-          used[pick.id] = true;
+          markUsed(pick.id);
           var hold = isHoldExercise(pick.id);
           exercises.push({
             name: pick.id, sets: rx.sets, reps: hold ? null : rx.reps,
