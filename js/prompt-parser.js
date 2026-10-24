@@ -390,8 +390,13 @@
   // negation may carry ו־ («למתחילים ולא למתקדמים»).
   var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
 
+  // «שמתחיל בחימום» / «שמתחילה בריצה» / «שמתקדמת בהדרגה» say how the session
+  // runs, not who it is for: the verb after ש־ is cut before the checks, so
+  // «אימון רגליים שמתחיל בחימום» is not a beginner session.
+  var LEVEL_VERB_RX = /(?:^|[^א-ת])ש(?:מתחיל|מתקדמ)[א-ת]*/g;
+
   function parseLevel(text) {
-    var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
+    var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ').replace(LEVEL_VERB_RX, ' ');
     if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
