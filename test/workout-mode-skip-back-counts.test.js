@@ -28,11 +28,11 @@ function extract(name) {
 // Same shape buildSteps produces: exercise A ×2 with rest between sets, then B ×1.
 function fixtureSteps() {
   return [
-    { type: 'exercise', id: 'pushup', name: 'שכיבות שמיכה', set: 1, totalSets: 2, reps: 10 },
+    { type: 'exercise', exercise: 0, id: 'pushup', name: 'שכיבות שמיכה', set: 1, totalSets: 2, reps: 10 },
     { type: 'rest', duration: 30, nextName: 'שכיבות שמיכה', nextDetail: '10 חזרות' },
-    { type: 'exercise', id: 'pushup', name: 'שכיבות שמיכה', set: 2, totalSets: 2, reps: 10 },
+    { type: 'exercise', exercise: 0, id: 'pushup', name: 'שכיבות שמיכה', set: 2, totalSets: 2, reps: 10 },
     { type: 'rest', duration: 30, nextName: 'סקוואט', nextDetail: '1×12' },
-    { type: 'exercise', id: 'squat', name: 'סקוואט', set: 1, totalSets: 1, reps: 12 }
+    { type: 'exercise', exercise: 1, id: 'squat', name: 'סקוואט', set: 1, totalSets: 1, reps: 12 }
   ];
 }
 
@@ -46,6 +46,7 @@ function play(taps) {
     'function clearCountdown() {}',
     'function renderStep() {}',
     'function finishWorkout() { finished = true; }',
+    extract('hasDoneSet'),
     extract('markSetDone'),
     extract('advance'),
     extract('skipCurrent'),
@@ -79,7 +80,7 @@ test('a set that stays skipped is still reported as skipped', function () {
   const r = play(['done', 'rest', 'skip', 'done']);
   assert.equal(r.finished, true);
   assert.equal(r.sets, 2);
-  assert.equal(r.exercises, 1);
+  assert.equal(r.exercises, 2);
   assert.equal(r.skipped, 1);
 });
 
@@ -95,4 +96,29 @@ test('back after done still undoes the done count', function () {
   assert.equal(r.stepIdx, 0);
   assert.equal(r.sets, 0);
   assert.equal(r.skipped, 0);
+});
+
+// completedExercises only counted an exercise when its LAST set was done, so
+// doing set 1 and skipping set 2 reported «תרגילים 1» for two exercises done.
+test('an exercise with its last set skipped still counts as done', function () {
+  const r = play(['done', 'rest', 'skip', 'done']);
+  assert.equal(r.exercises, 2);
+});
+
+test('an exercise counts once however many of its sets are done', function () {
+  const r = play(['done', 'rest', 'done', 'rest', 'done']);
+  assert.equal(r.sets, 3);
+  assert.equal(r.exercises, 2);
+});
+
+test('back over the only done set of an exercise uncounts it, back over one of two does not', function () {
+  assert.equal(play(['done', 'back']).exercises, 0);
+  assert.equal(play(['done', 'rest', 'done', 'back']).exercises, 1);
+});
+
+test('an exercise with every set skipped is not counted', function () {
+  const r = play(['skip', 'skip', 'done']);
+  assert.equal(r.finished, true);
+  assert.equal(r.exercises, 1);
+  assert.equal(r.skipped, 2);
 });
