@@ -305,6 +305,9 @@
   function inferFromName(he, extras) {
     extras = extras || {};
     var blob = String(he || '') + ' ' + String(extras.folder || '') + ' ' + String(extras.hint || '');
+    // «ברפי» / «ברפיז» is how coaches (and the booklet) spell the burpee; the
+    // rules below know it as «בורפי», so «ברפי» fell through to «ליבה».
+    blob = blob.replace(/ברפי/g, 'בורפי');
     var muscles = inferMuscles(blob, extras.folder);
     var equipment = inferEquipment(blob);
     if (extras.folder === 'גומיות' && equipment.indexOf('band') === -1) {
