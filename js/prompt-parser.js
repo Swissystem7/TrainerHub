@@ -417,8 +417,14 @@
     return a + b;
   }
 
+  // «12 בני נוער» / «שמונה בנות נוער» is the everyday way to count teens, but
+  // PARTICIPANT_TERM only knows «בנים» / «בנות» / «נערים», so «בני» left the
+  // count unread (1 trainee). The phrase is read as «נערים» before counting.
+  var TEENS_RX = /(^|[^א-ת])בנ(?:י|ות)\s+ה?נוער(?=$|[^א-ת])/g;
+
   function parseParticipants(text) {
-    var t = withoutGearPairs(Infer.fold(String(text || '')));
+    var t = withoutGearPairs(Infer.fold(String(text || '')))
+      .replace(TEENS_RX, '$1נערים');
     // "3 קבוצות של 5 חניכים" counts every group, so it runs before the
     // per-term count that would read just the 5.
     var groups = groupsOfCount(t);
