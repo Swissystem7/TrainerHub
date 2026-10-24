@@ -1427,9 +1427,21 @@
     // swap a Main exercise for it. It stays a Warm-up clip only - unless the
     // step being replaced is the warm-up clip itself. Same rule as catalogAsPool.
     var keepWarmup = isWarmupClip(current);
+    // opts.exclude: the other steps already in the same workout. weekly.html
+    // offered «החלף…» alternatives that were already in the day, so picking
+    // one played the same exercise twice.
+    var taken = {};
+    (opts.exclude || []).forEach(function (other) {
+      if (!other) return;
+      var hit = findExercise(other);
+      if (hit) taken[hit.id] = true;
+      if (other.id) taken[other.id] = true;
+      if (other.name) taken[other.name] = true;
+    });
     var list = catalogList().filter(function (e) {
       if (!isPlayable(e)) return false;
       if (e.id === excludeId) return false;
+      if (taken[e.id] || taken[e.he]) return false;
       if (!keepWarmup && isWarmupDrill(e)) return false;
       if (muscles.length && !e.muscles.some(function (m) { return muscles.indexOf(m) !== -1; })) return false;
       if (Array.isArray(have) && have.length && !userCanDo(e, have)) return false;
