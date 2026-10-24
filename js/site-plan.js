@@ -37,6 +37,9 @@
   // How many trainees each width holds working together before splitting into waves/stations.
   var CAPACITY = { narrow: 8, medium: 16, wide: 40 };
 
+  // The opening session's relay race splits the group into equal teams; it takes two teams of two.
+  var MIN_RELAY_GROUP = 4;
+
   var HAZARD_LINES = {
     cars: 'זוהו מכוניות: לסמן גבול אימון הרחק מהכביש, בלי ריצות לכיוון הכביש ובלי משחקי רדיפה ליד החניה.',
     uneven: 'משטח לא אחיד: בלי ספרינטים ושינויי כיוון חדים, לבדוק את השטח לפני האימון.',
@@ -100,7 +103,9 @@
    * Which base workout fits the width. Narrow space → a limited-space method from the booklet.
    * A wide site only gets the opening session when it is safe to run on: that session opens its
    * Main phase with a relay race, which the plan itself rules out on a slippery / uneven floor
-   * ("בלי ספרינטים") and next to cars ("לא שילבתי ... שליחים").
+   * ("בלי ספרינטים") and next to cars ("לא שילבתי ... שליחים"), and only for a group big
+   * enough to split into relay teams: one to three trainees got 20 minutes of «מחלקים את
+   * הצוות לקבוצות שוות».
    */
   function baseChoice(p, group, unsafeFloor, cars) {
     if (p.width === 'narrow') {
@@ -108,8 +113,11 @@
       return { kind: 'method', id: 'tabata', reason: 'בחרתי טבטה כי השטח צר ואפשר לעבוד במקום' };
     }
     if (p.width === 'medium') return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) כי השטח בינוני' };
-    if (unsafeFloor || cars) {
-      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + (unsafeFloor ? 'המשטח לא בטוח לריצה' : 'יש מכוניות ליד השטח') };
+    if (unsafeFloor || cars || group < MIN_RELAY_GROUP) {
+      var why = unsafeFloor ? 'המשטח לא בטוח לריצה'
+        : cars ? 'יש מכוניות ליד השטח'
+        : 'אין מספיק מתאמנים לשתי קבוצות שליחים';
+      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + why };
     }
     return { kind: 'session', id: 'opening-1', reason: 'בחרתי אימון פתיחה מהחוברת כי השטח רחב ומאפשר ריצות' };
   }

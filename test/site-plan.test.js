@@ -25,7 +25,7 @@ test('narrow strip → limited-space method from the booklet', function () {
   const solo = Plan.build({ width: 'narrow' }, { group: 1 });
   assert.equal(solo.method, 'tabata');
   assert.equal(Plan.build({ width: 'medium' }).method, 'combined');
-  assert.equal(Plan.build({ width: 'wide' }).method, 'opening-1');
+  assert.equal(Plan.build({ width: 'wide' }, { group: 12 }).method, 'opening-1');
 });
 
 test('stairs, bench and wall turn into site drills with a reason each', function () {
