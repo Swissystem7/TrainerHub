@@ -1828,6 +1828,7 @@
       title: String(workout.title || 'אימון').replace(/\.mp4/ig, '').trim(),
       branded: branded,
       brand: branded ? requestedBrand : '',
+      client: sanitizeBrand(opts.client || ''),
       phases: phases,
       footer: branded
         ? 'הוכן על ידי ' + requestedBrand + ' בספריית התרגילים של TrainerHub.'
@@ -1853,6 +1854,7 @@
     return '<article class="print-sheet" dir="rtl" lang="he">' +
       brandLine +
       '<h1>' + esc(model.title) + '</h1>' +
+      (model.client ? '<p class="print-client">עבור: ' + esc(model.client) + '</p>' : '') +
       phases +
       mark +
       '<footer class="print-footer"><p>' + esc(model.footer) + '</p><p>' + esc(model.note) + '</p></footer>' +
@@ -1862,11 +1864,13 @@
   // The name typed in «עדכן שם» on the print page is kept: every «דף להדפסה»
   // button calls this without a brand, and writing '' over it sent a trainer
   // whose access code carries no brand back to a watermarked sheet each time.
+  // The client name (journal's «דף להדפסה / PDF עבור …») belongs to this one
+  // workout, so unlike the brand it is not carried over to the next print.
   function preparePrint(workout, opts) {
     opts = opts || {};
     var prev = storeGet(KEYS.print, null);
     var brand = opts.brand != null ? opts.brand : (prev && prev.brand) || '';
-    storeSet(KEYS.print, { workout: workout || {}, brand: sanitizeBrand(brand) });
+    storeSet(KEYS.print, { workout: workout || {}, brand: sanitizeBrand(brand), client: sanitizeBrand(opts.name || '') });
     return { model: workoutPrintModel(workout, opts), url: printUrl() };
   }
 
