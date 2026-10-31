@@ -143,6 +143,12 @@
   var CALF_RX = /הרמ(?:ת|ות) ה?עקב|על(?:יות|ייה|יה) (?:על )?(?:ה?קרסול|ה?בהונות|קצות)|תאומים/;
   var STEP_UP_RX = /סטפ[\s-]?אפ|step[\s-]?ups?|על(?:יות|ייה|יה) על (?:ה?ספסל|ה?קופס|ה?ארגז|ה?תיבה)/;
   var JUMP_DRILL_RX = /בורפי|גאמפינג|jumping jack|burpee/;
+  // Running is leg work: «ריצה», «ריצת מקום», «בריצה», «ריצות», «ספרינט»,
+  // «ספרינטים», «ג׳וגינג». They named no muscle, so a pasted «ריצה 20 דקות» or
+  // «ספרינט 6x50 מטר» fell through to the «ליבה» default. A sprint is an
+  // explosive effort (plyo); «פריצה» is not a run.
+  var RUN_RX = /(?:^|[^א-ת])[ובלה]{0,2}ריצ(?:ה|ת|ות)(?=$|[^א-ת])|גוגינג|jogging|running/;
+  var SPRINT_RX = /ספרינט|sprint/;
 
   // Push-ups are «שכיבות» (the plural, as a word) or «שכיבת שמיכה/סמיכה». The
   // singular «שכיבה» is a position - «הרמת רגליים בשכיבה», «הרמות גוף בשכיבה
@@ -220,6 +226,7 @@
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
     if (LUNGE_RX.test(t) || /גשר|ניתור|קפיצ/.test(t) || WALL_SIT_RX.test(t)) found.push('legs');
     if (CALF_RX.test(t) || STEP_UP_RX.test(t)) found.push('legs');
+    if (RUN_RX.test(t) || SPRINT_RX.test(t)) found.push('legs');
     if (JUMP_DRILL_RX.test(t)) {
       found.push('legs');
       if (/בורפי|burpee/.test(t)) found.push('core');
@@ -284,7 +291,7 @@
 
   function inferPattern(text, muscles) {
     var t = fold(text);
-    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
+    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t) || SPRINT_RX.test(t)) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
