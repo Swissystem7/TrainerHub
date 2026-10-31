@@ -115,6 +115,11 @@
     return PULL_UP_RX.test(fold(text));
   }
 
+  // A chest-to-bar pull-up: «מתח לחזה», «מתח עד החזה», «עליות מתח לחזה». The
+  // chest is how high it pulls, not a muscle it works; without this the «חזה»
+  // in the name made it a back + chest exercise.
+  var CHEST_TO_BAR_RX = /מתח(?:ים|י)?(?: [^ ]+)? (?:ל|אל ה?|עד ה?)חזה/;
+
   // "קיר" (wall) and "מוט" (bar) are substrings of common unrelated words:
   // "קירור" (the cool-down in "חימום וקירור") and "מוטיבציה" (motivation).
   // Match them as whole words, optionally with a ו/ב/ל/ה/מ prefix ("על הקיר",
@@ -143,6 +148,12 @@
   var CALF_RX = /הרמ(?:ת|ות) ה?עקב|על(?:יות|ייה|יה) (?:על )?(?:ה?קרסול|ה?בהונות|קצות)|תאומים/;
   var STEP_UP_RX = /סטפ[\s-]?אפ|step[\s-]?ups?|על(?:יות|ייה|יה) על (?:ה?ספסל|ה?קופס|ה?ארגז|ה?תיבה)/;
   var JUMP_DRILL_RX = /בורפי|גאמפינג|jumping jack|burpee/;
+  // Running is leg work: «ריצה», «ריצת מקום», «בריצה», «ריצות», «ספרינט»,
+  // «ספרינטים», «ג׳וגינג». They named no muscle, so a pasted «ריצה 20 דקות» or
+  // «ספרינט 6x50 מטר» fell through to the «ליבה» default. A sprint is an
+  // explosive effort (plyo); «פריצה» is not a run.
+  var RUN_RX = /(?:^|[^א-ת])[ובלה]{0,2}ריצ(?:ה|ת|ות)(?=$|[^א-ת])|גוגינג|jogging|running/;
+  var SPRINT_RX = /ספרינט|sprint/;
 
   // Push-ups are «שכיבות» (the plural, as a word) or «שכיבת שמיכה/סמיכה». The
   // singular «שכיבה» is a position - «הרמת רגליים בשכיבה», «הרמות גוף בשכיבה
@@ -159,21 +170,38 @@
   // «דדליפט», «גוד מורנינג», «היפ תראסט», «לחיצת רגליים», «פשיטת ברכיים».
   // Without these a trainer's own «דדליפט רומני» clip was proposed as «ליבה»,
   // «פשיטת ברכיים» as «תלת־ראשי» and «לחיצת רגליים» as a chest press.
+  // A wall sit with or without the article: «ישיבה על קיר», «ישיבה על הקיר»
+  // (the site plan's own drill), «ישיבת קיר», «וול סיט». Without the «ה» form
+  // the site plan's wall sit read as a «ליבה» drill counted in reps.
+  var WALL_SIT_RX = /ישיבה על ה?קיר|ישיבת קיר|וול סיט/;
   var DEADLIFT_RX = /דדליפט|גוד מורנינג/;
   var HIP_THRUST_RX = /היפ תראסט|דחיקת אגן/;
   var LEG_PRESS_RX = /לחיצ(?:ת|ות) ה?רגל/;
   var KNEE_EXT_RX = /פשיט(?:ת|ות) ה?(?:ברכ|רגל)/;
+  // Flys and raises, named the way core.js names them («פרפר משקולות», «פרפר
+  // הפוך», «הרחקה צידית», «הרמה קדמית») and the way coaches paste them («הרמות
+  // צד»). They named no muscle, so each fell through to «ליבה». A fly is chest,
+  // a reverse fly is rear shoulder and upper back, a side or front raise is
+  // shoulders. The butterfly stretch and butterfly sit-up are not a fly.
+  var FLY_RX = /(?:^|[^א-ת])[ובלה]{0,2}פרפר(?:ים)?(?=$|[^א-ת])/;
+  var FLY_NOT_RX = /בטן|מתיח|ישיב/;
+  var REVERSE_FLY_RX = /פרפר (?:הפוך|אחורי)/;
+  var DELT_RAISE_RX = /(?:הרמ|הרחק)(?:ת|ות|ה) (?:ה?ידיים |ה?יד )?(?:צידי|צדדי|ל?צד|קדמי|לפנים)/;
+
+  // «רצועות התנגדות» is the other common name for resistance bands. Only with
+  // «התנגדות», so a TRX strap («רצועות TRX») stays out.
+  var RESISTANCE_BAND_RX = /רצוע(?:ה|ת|ות) ה?התנגדות|resistance bands?/;
 
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
-    if (/גומי/.test(t)) eq.push('band');
+    if (/גומי/.test(t) || RESISTANCE_BAND_RX.test(t)) eq.push('band');
     if (/קונוס/.test(t)) eq.push('cones');
     if (/כדורסל/.test(t)) eq.push('basketball');
     if (/כדורגל|פוטבול/.test(t)) eq.push('football');
     if (/טניס/.test(t)) eq.push('tennis-ball');
     if (/חישוק/.test(t)) eq.push('hoop');
-    if (WALL_RX.test(t)) eq.push('wall');
+    if (WALL_RX.test(t) || WALL_SIT_RX.test(t)) eq.push('wall');
     if (/סולם/.test(t)) eq.push('ladder');
     if (/מדרג/.test(t)) eq.push('stairs');
     if (/אוסטרל/.test(t) || mentionsPullUp(t)) eq.push('bar');
@@ -184,7 +212,10 @@
     if (/משקולת|משקולות|דאמבל|דמבל/.test(t)) eq.push('dumbbells');
     if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
     if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
-    if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
+    // «מכונה», «מכונות», «מכונת חתירה» and «מכון». The bare «מכון» has a final
+    // nun, so the plural and construct forms need their own spelling; «מכונית»
+    // stays out.
+    if (/מכונ[הות]|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
     if (MACHINE_RX.test(t)) eq.push('machine');
     if (!eq.length && LEG_MACHINE_RX.test(t)) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
@@ -210,12 +241,21 @@
       found.push('biceps');
     }
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
-    if (/כתף|כתפי/.test(t)) found.push('shoulders');
+    if (/כתף|כתפי/.test(t) || DELT_RAISE_RX.test(t)) found.push('shoulders');
+    if (FLY_RX.test(t) && !FLY_NOT_RX.test(t)) {
+      if (REVERSE_FLY_RX.test(t)) {
+        found.push('shoulders');
+        found.push('back');
+      } else {
+        found.push('chest');
+      }
+    }
     if (/ארבע ראשי|ירכי|סקוואט|מכרע|שוק/.test(t)) found.push('legs');
     // Lunges, glute bridges, wall sits and jumps are leg work. Without this a
     // ready «רגליים» session of lunges and jumps analysed as «80% ליבה».
-    if (LUNGE_RX.test(t) || /גשר|ישיבה על קיר|וול סיט|ניתור|קפיצ/.test(t)) found.push('legs');
+    if (LUNGE_RX.test(t) || /גשר|ניתור|קפיצ/.test(t) || WALL_SIT_RX.test(t)) found.push('legs');
     if (CALF_RX.test(t) || STEP_UP_RX.test(t)) found.push('legs');
+    if (RUN_RX.test(t) || SPRINT_RX.test(t)) found.push('legs');
     if (JUMP_DRILL_RX.test(t)) {
       found.push('legs');
       if (/בורפי|burpee/.test(t)) found.push('core');
@@ -240,6 +280,12 @@
       found.push('triceps');
     }
     if (/בעיט/.test(t)) found.push('legs');
+    if (CHEST_TO_BAR_RX.test(t)) {
+      var rest = t.replace(CHEST_TO_BAR_RX, ' ');
+      if (!PUSH_UP_RX.test(rest) && !/חזה/.test(rest)) {
+        found = found.filter(function (m) { return m !== 'chest'; });
+      }
+    }
 
     if (!found.length && folder && FOLDER_MUSCLE[folder]) {
       found = FOLDER_MUSCLE[folder].slice();
@@ -280,11 +326,11 @@
 
   function inferPattern(text, muscles) {
     var t = fold(text);
-    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t)) return 'plyo';
+    if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t) || SPRINT_RX.test(t)) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
     if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t)) return 'pull';
-    if (/סקוואט|מדרג|מכרע|ארבע ראשי|ישיבה על קיר|וול סיט/.test(t) || LUNGE_RX.test(t)) return 'squat';
+    if (/סקוואט|מדרג|מכרע|ארבע ראשי/.test(t) || WALL_SIT_RX.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
     if (muscles && muscles.length === 1 && muscles[0] === 'core') return 'core';
@@ -296,7 +342,7 @@
 
   function inferLoad(text, pattern) {
     var t = fold(text);
-    if (/פלאנק|החזק|ישיבה על קיר|וול סיט|שניות|זמן/.test(t)) return 'time';
+    if (/פלאנק|החזק|שניות|זמן/.test(t) || WALL_SIT_RX.test(t)) return 'time';
     if (pattern === 'core' && /סט|חזרות/.test(t) === false && /פלאנק/.test(t)) return 'time';
     if (/פלאנק/.test(t)) return 'time';
     return 'reps';
@@ -305,6 +351,9 @@
   function inferFromName(he, extras) {
     extras = extras || {};
     var blob = String(he || '') + ' ' + String(extras.folder || '') + ' ' + String(extras.hint || '');
+    // «ברפי» / «ברפיז» is how coaches (and the booklet) spell the burpee; the
+    // rules below know it as «בורפי», so «ברפי» fell through to «ליבה».
+    blob = blob.replace(/ברפי/g, 'בורפי');
     var muscles = inferMuscles(blob, extras.folder);
     var equipment = inferEquipment(blob);
     if (extras.folder === 'גומיות' && equipment.indexOf('band') === -1) {

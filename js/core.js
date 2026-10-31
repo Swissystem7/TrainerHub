@@ -176,6 +176,7 @@
   var EQ_LABELS = {
     none: 'משקל גוף',
     dumbbells: 'משקולות',
+    kettlebell: 'קטלבל',
     barbell: 'מוט',
     machine: 'מכונה',
     bar: 'מתח',
@@ -241,7 +242,7 @@
   // estimate marked as such, and never an empty "זמן:  דקות".
   function durationLabel(minutes, estimate) {
     var m = Number(minutes);
-    if (m > 0) return m + ' דקות';
+    if (m > 0) return m === 1 ? 'דקה' : m + ' דקות';
     var e = Number(estimate);
     if (e > 0) return Math.round(e) <= 1 ? 'כדקה (הערכה)' : 'כ־' + Math.round(e) + ' דקות (הערכה)';
     return 'לא צוין';
@@ -519,7 +520,7 @@
     if (d && Array.isArray(d.phases) && d.phases.length) {
       return {
         title: d.title || ('אימון ' + (d.day || '')),
-        duration_minutes: d.duration_minutes || 45,
+        duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
         participants: 1,
         equipment: meta.equipment || [],
         intensity: meta.intensity || 'medium',
@@ -546,19 +547,29 @@
       name: heName(d.coolDown), id: d.coolDown, sets: 1, reps: null,
       duration_seconds: 180, rest_seconds: null, notes: null
     }] : [];
+    // The Main phase lasts as long as its sets and rests: a beginner's four
+    // 3×8-12 exercises take about 14 minutes and an advanced strength day's
+    // six 4×4-6 with 2-minute rests about 42, so the trainee page and the
+    // print sheet do not promise «45 דקות» for either.
+    var mainSeconds = mainEx.reduce(function (a, ex) { return a + draftExerciseSeconds(ex); }, 0);
+    var phases = [
+      { name: 'Warm-up', duration_minutes: 5, exercises: warm },
+      { name: 'Main', duration_minutes: Math.round(mainSeconds / 60), exercises: mainEx },
+      { name: 'Cool-down', duration_minutes: 5, exercises: cool }
+    ];
     return {
       title: d.title || ('אימון ' + (d.day || '')),
-      duration_minutes: 45,
+      duration_minutes: phasesMinutes(phases),
       participants: 1,
       equipment: meta.equipment || [],
       intensity: meta.intensity || 'medium',
       tags: meta.tags || ['program'],
-      phases: [
-        { name: 'Warm-up', duration_minutes: 5, exercises: warm },
-        { name: 'Main', duration_minutes: 35, exercises: mainEx },
-        { name: 'Cool-down', duration_minutes: 5, exercises: cool }
-      ]
+      phases: phases
     };
+  }
+
+  function phasesMinutes(phases) {
+    return (phases || []).reduce(function (a, ph) { return a + (Number(ph && ph.duration_minutes) || 0); }, 0);
   }
 
   function workoutVolume(sets) {
@@ -807,8 +818,11 @@
 
   function waShareUrl(phone, message) {
     var digits = String(phone || '').replace(/\D/g, '');
-    var intl = digits;
+    // «00972…» is the dialled international prefix, and «+972-050-…» keeps the
+    // trunk 0 after the country code; wa.me wants neither.
+    var intl = digits.replace(/^00/, '');
     if (intl.charAt(0) === '0') intl = '972' + intl.slice(1);
+    if (intl.indexOf('9720') === 0) intl = '972' + intl.slice(4);
     else if (intl.length === 9 && intl.charAt(0) === '5') intl = '972' + intl;
     if (intl && !/^\d{8,15}$/.test(intl)) intl = '';
     var base = intl ? ('https://wa.me/' + intl) : 'https://wa.me/';
@@ -925,8 +939,21 @@
   function pickExercises(dayIndex, muscles, pool, count, rx, notes, opts) {
     opts = opts || {};
     var used = {};
+    // Two catalog entries can play the same video (the «ילדים קונוסים אחד על אחד» clip
+    // is filed under two ids), so a day marks the clip as used too and the trainee
+    // never watches the same drill twice under two names.
+    var usedClips = {};
+    function clipOf(id) {
+      var clip = catalog[id];
+      return clip && isPlayable(clip) && clip.file ? clip.file : '';
+    }
+    function markUsed(id) {
+      used[id] = true;
+      var file = clipOf(id);
+      if (file) usedClips[file] = true;
+    }
     // The day's warm-up / cool-down drill is not also a Main exercise.
-    (opts.exclude || []).forEach(function (id) { if (id) used[id] = true; });
+    (opts.exclude || []).forEach(function (id) { if (id) markUsed(id); });
     var exercises = [];
     // The requested muscles fill the day first. When they run dry (a bodyweight «גב»
     // day has two back drills for four slots) the remaining slots take the muscles that
@@ -943,11 +970,21 @@
       while (exercises.length < count && misses < (tier ? tier.length : 1)) {
         var muscle = tier ? tier[slot % tier.length] : null;
         var candidates = rankCandidates(pool.filter(function (ex) {
-          return !used[ex.id] && (!muscle || ex.muscles.indexOf(muscle) !== -1);
+          return !used[ex.id] && !usedClips[clipOf(ex.id)] &&
+            (!muscle || ex.muscles.indexOf(muscle) !== -1);
         }), opts);
+        // A clip built for the slot's muscle (listed first) goes before a full-body
+        // clip that merely includes it: the band clips «גומיות התנגדות» and «עבודה עם
+        // גומייה» are tagged chest, back, legs, core, so a band «רגליים» day got four of
+        // them and none of «גומיות ארבע ראשי» / «גומיות ירכיים», and a band «ליבה» day
+        // never got «גומיות בטן». The full-body clips still fill in when those run out.
+        if (muscle) {
+          var primary = candidates.filter(function (ex) { return ex.muscles[0] === muscle; });
+          if (primary.length) candidates = primary;
+        }
         if (candidates.length) {
           var pick = candidates[(dayIndex + slot) % candidates.length];
-          used[pick.id] = true;
+          markUsed(pick.id);
           var hold = isHoldExercise(pick.id);
           exercises.push({
             name: pick.id, sets: rx.sets, reps: hold ? null : rx.reps,
@@ -1094,9 +1131,17 @@
     return !!e && (e.id === 'warmup' || foldHe(e.he) === 'חימום');
   }
 
+  // The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
+  // חימום») stay out of Main too: with «קונוסים» the weekly builder opened
+  // day 1 with the cone warm-up as 4 x 4-6 strength work. Same rule as the
+  // Main pool in session-builder.js.
+  function isWarmupDrill(e) {
+    return isWarmupClip(e) || (!!e && /חימום/.test(foldHe(e.he)));
+  }
+
   function catalogAsPool() {
     return catalogList().filter(function (e) {
-      return isPlayable(e) && e.muscles && e.muscles.length && !isWarmupClip(e);
+      return isPlayable(e) && e.muscles && e.muscles.length && !isWarmupDrill(e);
     }).map(function (e) {
       return {
         id: e.id,
@@ -1145,7 +1190,10 @@
       if (opts.level && e.level !== opts.level) return false;
       if (opts.tag && catalogTags(e).indexOf(opts.tag) === -1) return false;
       if (q) {
-        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || ''));
+        // The gear words count too, as the «גומיות» chip does: two band clips are
+        // not named «גומיות» («עבודה עם גומייה»), so typing the word missed them.
+        var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
+        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || '') + ' ' + gear);
         if (blob.indexOf(q) === -1) return false;
       }
       return true;
@@ -1350,12 +1398,26 @@
     return score;
   }
 
+  function poolEntry(step) {
+    var id = step.id || step.name;
+    var name = step.name;
+    for (var i = 0; i < PROGRAM_POOL.length; i++) {
+      var p = PROGRAM_POOL[i];
+      if (p.id === id || (name && HE_NAMES[p.id] === name)) return p;
+    }
+    return null;
+  }
+
   function substitutesFor(step, opts) {
     opts = opts || {};
     var current = findExercise(step);
     if (!current && step && (step.id || step.name) && catalog[step.id || step.name]) {
       current = catalog[step.id || step.name];
     }
+    // Built program steps (push_up, dumbbell_bench...) come from PROGRAM_POOL,
+    // not the catalog. Without their muscles every «החלף…» in weekly.html and
+    // workout-mode offered the same three core clips, whatever the exercise.
+    if (!current && step) current = poolEntry(step);
     var muscles = (current && current.muscles) || opts.muscles || [];
     var excludeId = (current && current.id) || (step && (step.id || step.name)) || '';
     var have = opts.equipment;
@@ -1368,7 +1430,7 @@
     var list = catalogList().filter(function (e) {
       if (!isPlayable(e)) return false;
       if (e.id === excludeId) return false;
-      if (!keepWarmup && isWarmupClip(e)) return false;
+      if (!keepWarmup && isWarmupDrill(e)) return false;
       if (muscles.length && !e.muscles.some(function (m) { return muscles.indexOf(m) !== -1; })) return false;
       if (Array.isArray(have) && have.length && !userCanDo(e, have)) return false;
       return true;
@@ -1379,14 +1441,22 @@
     return list.slice(0, opts.limit || 5);
   }
 
+  // Swapping a rep exercise for a plank turns its reps into a hold: «פלאנק · 8-12 חזרות»
+  // means nothing. The hold follows the goal the reps came from (4-6 → 30 s), else 40 s.
+  function holdForReps(reps) {
+    var goal = Object.keys(GOAL_RX).filter(function (g) { return GOAL_RX[g].reps === String(reps); })[0];
+    return GOAL_RX[goal || 'hypertrophy'].hold;
+  }
+
   function applySwap(ex, entry) {
     if (!ex || !entry) return ex;
+    var toHold = isHoldExercise(entry.id) && ex.reps != null && ex.duration_seconds == null;
     return {
       name: entry.he,
       id: entry.id,
       sets: ex.sets != null ? ex.sets : null,
-      reps: ex.reps != null ? ex.reps : null,
-      duration_seconds: ex.duration_seconds != null ? ex.duration_seconds : null,
+      reps: ex.reps != null && !toHold ? ex.reps : null,
+      duration_seconds: toHold ? holdForReps(ex.reps) : (ex.duration_seconds != null ? ex.duration_seconds : null),
       rest_seconds: ex.rest_seconds != null ? ex.rest_seconds : (ex.restSeconds != null ? ex.restSeconds : null),
       notes: ex.notes || null
     };
@@ -1441,6 +1511,7 @@
   function clipToWorkout(data) {
     data = data || {};
     var entry = catalog[data.id] || { id: data.id, he: data.he || data.id };
+    var hold = isHoldExercise(entry.id || data.id);
     return {
       title: entry.he || data.he || 'תרגיל',
       duration_minutes: 8,
@@ -1455,8 +1526,8 @@
             name: entry.he || data.he || data.id,
             id: entry.id || data.id,
             sets: 3,
-            reps: '8-12',
-            duration_seconds: null,
+            reps: hold ? null : '8-12',
+            duration_seconds: hold ? GOAL_RX.hypertrophy.hold : null,
             rest_seconds: 45,
             notes: null
           }]
@@ -1576,12 +1647,14 @@
     var main = w.phases[1] || w.phases[0];
     if (!main.exercises) main.exercises = [];
     if (main.exercises.some(function (ex) { return ex.id === entry.id; })) return w;
+    // A plank added from the library is held for seconds, like in the program builder.
+    var hold = isHoldExercise(entry.id);
     main.exercises.push({
       name: entry.he,
       id: entry.id,
       sets: 3,
-      reps: '8-12',
-      duration_seconds: null,
+      reps: hold ? null : '8-12',
+      duration_seconds: hold ? GOAL_RX.hypertrophy.hold : null,
       rest_seconds: 45,
       notes: null
     });
@@ -1693,17 +1766,23 @@
     loadCatalog();
   }
 
+  // «ריצה 20 דקות» printed as «1 × 1200 שנ׳»: whole minutes read as «20 דק׳»
+  // (like the booklet), «90 שנ׳» stays, and one set has no «1 ×».
+  function printSeconds(seconds) {
+    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+  }
+
   function exercisePrintRow(ex) {
     ex = ex || {};
     var bits = [];
     if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
-    else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
-    else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
+    else if (ex.sets > 1 && ex.duration_seconds) bits.push(ex.sets + ' × ' + printSeconds(ex.duration_seconds));
+    else if (ex.duration_seconds) bits.push(printSeconds(ex.duration_seconds));
     else if (ex.reps) bits.push(ex.reps + ' חזרות');
     // A distance or «עד כשל» row («ספרינט 6x50 מטר», «מתח 3xמקס») has sets
     // but no reps or seconds; the studio card shows «6 סטים», so must the sheet.
     else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
-    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
+    if (ex.rest_seconds) bits.push('מנוחה ' + printSeconds(ex.rest_seconds));
     var name = ex.name || heName(ex.id) || 'תרגיל';
     var row = {
       name: String(name).replace(/\.mp4/ig, '').trim(),
@@ -1728,6 +1807,11 @@
         exercises: (ph.exercises || []).map(exercisePrintRow)
       };
     });
+    // A prompt-built or single-clip workout carries an empty Cool-down (and
+    // sometimes Warm-up); printing it gave every sheet a «שחרור» heading over
+    // «אין תרגילים בשלב הזה.». Empty phases are left out unless all are empty.
+    var filled = phases.filter(function (ph) { return ph.exercises.length; });
+    if (filled.length) phases = filled;
     return {
       title: String(workout.title || 'אימון').replace(/\.mp4/ig, '').trim(),
       branded: branded,
@@ -1801,10 +1885,15 @@
     if (!Array.isArray(next.p)) next.p = [];
     next.p.forEach(function (ph) {
       if (!ph || ph.n !== 'Main') return;
+      // The floor of 2 and the cap of 5 only stop the step; they never move a
+      // set count the other way. A 1-set exercise (a short session's Main) went
+      // up to 2 after a hard log under «הורדתי סט», and 6 sets went down to 5
+      // after an easy one under «הוספתי סט».
       (ph.e || []).forEach(function (ex) {
         if (!ex || ex.s == null) return;
-        if (hard) ex.s = Math.max(2, Number(ex.s) - 1);
-        else if (easy) ex.s = Math.min(5, Number(ex.s) + 1);
+        var s = Number(ex.s);
+        if (hard) ex.s = Math.min(s, Math.max(2, s - 1));
+        else if (easy) ex.s = Math.max(s, Math.min(5, s + 1));
       });
     });
     // The suggested plan comes back as the next week's lastPlan, so the suffix

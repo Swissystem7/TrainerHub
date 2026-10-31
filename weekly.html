@@ -8,8 +8,9 @@
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
   <a href="./">בנה אימון</a>
-  <span class="chip on">בונה שבועי</span>
+  <span class="chip on" aria-current="page">בונה שבועי</span>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
@@ -57,9 +58,11 @@ function copyDayTraineeLink(dayIndex, sourceBtn){
   TH.copyOrShow(shared.url, host, function(){
     host.insertAdjacentHTML('beforeend', '<p class="honest copy-status" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
     if (sourceBtn) {
-      const orig = sourceBtn.textContent;
+      // A second click within the 1.4 s must not save «הועתק» as the label to restore.
+      if (!sourceBtn.thLabel) sourceBtn.thLabel = sourceBtn.textContent;
       sourceBtn.textContent = 'הועתק';
-      setTimeout(() => { sourceBtn.textContent = orig; }, 1400);
+      clearTimeout(sourceBtn.thLabelTimer);
+      sourceBtn.thLabelTimer = setTimeout(() => { sourceBtn.textContent = sourceBtn.thLabel; }, 1400);
     }
   });
 }
@@ -77,13 +80,16 @@ function renderProgram(p){
     return;
   }
   const eq = $('equipment').value;
+  // Warm-up and cool-down read «180 שנ׳», rest «מנוחה 120 שנ׳»: whole minutes read «3 דק׳», «45 שנ׳» stays.
+  const secs = s => s >= 60 && s % 60 === 0 ? (s / 60) + ' דק׳' : s + ' שנ׳';
   const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
     reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
   })));
+  const countPill = (n, one, many) => n === 1 ? '<b>'+one+'</b>' : '<b>'+n+'</b> '+many;
   const clipCount = p.dailyWorkouts.reduce((n, d) => {
     return n + (d.exercises || []).filter(x => TH.hasClip({ id: x.name, name: x.name })).length;
   }, 0);
-  $('result').innerHTML = '<div class="summary"><div class="pill"><b>'+p.dailyWorkouts.length+'</b> אימונים</div><div class="pill"><b>'+(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0)+'</b> תרגילים באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
+  $('result').innerHTML = '<div class="summary"><div class="pill">'+countPill(p.dailyWorkouts.length,'אימון אחד','אימונים')+'</div><div class="pill">'+countPill(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0,'תרגיל אחד','תרגילים')+' באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
     p.dailyWorkouts.map((d, i) => {
       const w = TH.toPhasesWorkout(d, window.__lastMeta);
       const phasesHtml = (w.phases || []).map((phase, pi) => {
@@ -92,8 +98,8 @@ function renderProgram(p){
           const bits = [];
           if (x.sets && x.reps) bits.push(x.sets + ' סטים · ' + x.reps + ' חזרות');
           else if (x.reps) bits.push(x.reps + ' חזרות');
-          if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + x.duration_seconds + ' שנ׳');
-          if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
+          if (x.duration_seconds) bits.push((x.sets > 1 && !x.reps ? x.sets + ' סטים · ' : '') + secs(x.duration_seconds));
+          if (x.rest_seconds) bits.push('מנוחה ' + secs(x.rest_seconds));
           const clip = TH.hasClip(x) ? '<span title="יש סרטון בספרייה">🎬</span> ' : '';
           const alts = TH.substitutesFor(x, { equipment: [eq], limit: 3 });
           const swap = alts.length
