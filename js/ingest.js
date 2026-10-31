@@ -549,8 +549,14 @@
   var COUNT_UNIT = '(?:חזרות|שניות|שנ[׳\']|דקות|סטים|סדרות|סבבים|סיבובים|פעמים|צעדים|קילו)';
   var NUMBER_WORD_RX = new RegExp('(^|[^א-ת])(?:(של|[x×])\\s*)?' + NUMBER_PHRASE + '(?=(\\s+' + COUNT_UNIT + '(?![א-ת]))|(?![א-ת]))', 'g');
 
+  // A count of one comes after a singular noun: «חזרה אחת», «סט אחד».
+  var SINGLE_UNIT = { 'חזרה': 'חזרות', 'סט': 'סטים', 'סבב': 'סבבים' };
+  var SINGLE_UNIT_RX = new RegExp('(^|[^א-ת])(?:(של)\\s+)?(' + Object.keys(SINGLE_UNIT).join('|') + ')\\s+(?:אחת|אחד)(?![א-ת])', 'g');
+
   function numberWordsToDigits(text) {
-    return String(text || '').replace(NUMBER_WORD_RX, function (all, pre, lead, tens, tensUnit, unit, teen, ten, unitAfter) {
+    return String(text || '').replace(SINGLE_UNIT_RX, function (all, pre, lead, noun) {
+      return pre + (lead ? lead + ' ' : '') + '1 ' + SINGLE_UNIT[noun];
+    }).replace(NUMBER_WORD_RX, function (all, pre, lead, tens, tensUnit, unit, teen, ten, unitAfter) {
       if (!lead && !unitAfter) return all;
       var n = tens ? TENS_WORDS[tens] + (tensUnit ? NUMBER_WORDS[tensUnit] : 0)
         : unit ? NUMBER_WORDS[unit] + (teen ? 10 : 0) : 10;
