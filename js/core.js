@@ -1139,8 +1139,10 @@
   // The catalog spells push-ups both ways («שכיבות סמיכה ורגליים», «אתגר שכיבות שמיכה»),
   // so each spelling found only its own clips. Fold both to one.
   // A band is «גומייה», «גומיה» or «גומיות»: the singular found 1 clip of 11 (or none).
+  // «push up», «פוש אפ», «mountain climbers», «פלנק» fold to the catalog's Hebrew names
+  // through THInfer's synonyms, as the editor already does: each found 0 clips.
   function searchFold(s) {
-    return foldHe(s).replace(/סמיכה/g, 'שמיכה').replace(/גומיי?(ה|ות)/g, 'גומי');
+    return normalizeName(s).replace(/סמיכה/g, 'שמיכה').replace(/גומיי?(ה|ות)/g, 'גומי');
   }
 
   function filterCatalog(opts) {
