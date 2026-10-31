@@ -429,7 +429,12 @@
       clients.unshift(c);
     }
     c.logs = logsOf(c);
-    var dup = c.logs.some(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; });
+    var known = c.logs.filter(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; })[0];
+    var dup = !!known;
+    // The finish screen rebuilds the same code once the trainee picks a difficulty,
+    // so a resent code may carry the rpe the first one lacked («הצע שבוע הבא» reads it).
+    var rpeAdded = !!known && parsed.rpe != null && known.rpe !== parsed.rpe;
+    if (rpeAdded) known.rpe = parsed.rpe;
     var latest = false;
     if (!dup) {
       var log = {
@@ -460,7 +465,8 @@
     }
     save();
     $('importCode').value = '';
-    setStatus($('importStatus'), dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.'));
+    setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.')
+      : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.')));
     render(c.id);
   });
 
