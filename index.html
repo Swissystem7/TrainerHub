@@ -272,11 +272,14 @@
   // «עד כשל», «לכל רגל», «10-12» live in notes, and «מתח 3xמקס» has sets but
   // no reps. The card showed only sets × reps, so those rows lost the load or
   // showed a bare «מתח». «חסר סרטון» is left out - the row says it below.
+  // The rest between sets is shown too, like the print sheet and weekly.html:
+  // a pasted «3x10 מנוחה 60 שניות» lost its rest on the card.
   function exerciseBits(ex) {
     var bits = [];
     if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
     else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
     else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
+    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
     String(ex.notes || '').split(' · ').forEach(function (note) {
       note = note.trim();
       if (note && note !== 'חסר סרטון') bits.push(note);
