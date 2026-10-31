@@ -344,12 +344,26 @@
   // ("מחולק לשניים", "לחלק לשלושה") is not people.
   var BARE_FOR_N_RX = /(?:^|[^א-ת])ל(שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
   var SPLIT_WORD_RX = /(?:^|[^א-ת])(?:מחולק|מחולקת|מחולקים|לחלק|חלוקה|מתחלק|מתחלקים|נחלק|מפוצל|לפצל)\s*$/;
+  // The same bare count in digits: "אימון ל-12" / "אימון 30 דקות ל-5". A unit
+  // after the number ("ל-20 דקות", "ל-12 חזרות", "ל-30 min") fails the
+  // lookahead, "ל-60+" is an age, and the far end of a range ("מ-8 ל-12") is
+  // not people.
+  var BARE_FOR_DIGITS_RX = /(?:^|[^א-ת\d])ל\s*-?\s*(\d{1,3})(?![\d+%])(?=\s*(?:$|[^א-תa-z\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/i;
+  var RANGE_FROM_RX = /(?:^|[^א-ת])מ\s*-?\s*\d+\s*$/;
 
   function bareForCount(t) {
     var m = BARE_FOR_N_RX.exec(t);
-    if (!m) return null;
-    if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
-    var n = HEB_UNITS[m[1]];
+    var n = null;
+    if (m) {
+      if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
+      n = HEB_UNITS[m[1]];
+    } else {
+      m = BARE_FOR_DIGITS_RX.exec(t);
+      if (!m) return null;
+      var before = t.slice(0, m.index + 1);
+      if (SPLIT_WORD_RX.test(before) || RANGE_FROM_RX.test(before)) return null;
+      n = toInt(m[1]);
+    }
     return n >= 2 ? n : null;
   }
 
