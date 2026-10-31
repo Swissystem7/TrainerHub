@@ -282,8 +282,13 @@
   // "5 זוגות" / "חמישה זוגות" is 10 trainees, "3 שלשות" is 9. Only a bare
   // unit word counts: "בזוגות" (working in pairs) has no space before זוגות,
   // so it never matches here and stays the plain "זוג" fallback.
-  var GROUP_UNIT_SIZE = { 'זוגות': 2, 'שלשות': 3, 'רביעיות': 4 };
-  var GROUP_UNIT = '(זוגות|שלשות|רביעיות)(?=$|[^א-ת])';
+  var GROUP_UNIT_SIZE = { 'זוגות': 2, 'שלשות': 3, 'שלישיות': 3, 'רביעיות': 4, 'חמישיות': 5 };
+  var GROUP_UNIT = '(זוגות|שלשות|שלישיות|רביעיות|חמישיות)(?=$|[^א-ת])';
+  // "אימון לשלישייה" / "לרביעייה" / "לחמישייה": one trio (quartet, quintet)
+  // is 3 (4, 5) trainees. Singular only, so "בשלישיות" (working in trios)
+  // stays uncounted like "בזוגות".
+  var SMALL_GROUP_SIZE = { 'שלישי': 3, 'רביעי': 4, 'חמישי': 5 };
+  var SMALL_GROUP_RX = /(?:^|[^א-ת])(?:ל|ב|ה|לה|בה)?(שלישי|רביעי|חמישי)י?ה(?=$|[^א-ת])/;
   var DIGITS_BEFORE_UNIT = new RegExp('(\\d+)\\s*' + GROUP_UNIT);
   var WORDS_BEFORE_UNIT = new RegExp('(?:^|[^א-ת])((?:[א-ת]+ )?[א-ת]+) ' + GROUP_UNIT);
 
@@ -374,7 +379,7 @@
   // punctuation or a digit next) or be followed by עם / בלי / ללא / a ב- word,
   // so "לשלושה סבבים" stays a round count, and a split verb before it
   // ("מחולק לשניים", "לחלק לשלושה") is not people.
-  var BARE_FOR_N_RX = /(?:^|[^א-ת])ל(שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
+  var BARE_FOR_N_RX = /(?:^|[^א-ת])ל((?:עשרים|שלושים|ארבעים|חמישים|שישים|שבעים|שמונים|תשעים)(?: ו(?:אחד|אחת|שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע))?|שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
   var SPLIT_WORD_RX = /(?:^|[^א-ת])(?:מחולק|מחולקת|מחולקים|לחלק|חלוקה|מתחלק|מתחלקים|נחלק|מפוצל|לפצל)\s*$/;
   // The same bare count in digits: "אימון ל-12" / "אימון 30 דקות ל-5". A unit
   // after the number ("ל-20 דקות", "ל-12 חזרות", "ל-30 min") fails the
@@ -388,7 +393,7 @@
     var n = null;
     if (m) {
       if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
-      n = HEB_UNITS[m[1]];
+      n = hebrewNumber(m[1]);
     } else {
       m = BARE_FOR_DIGITS_RX.exec(t);
       if (!m) return null;
@@ -460,6 +465,10 @@
       if (n === null) n = groupUnitCount(t);
       if (n === null) n = matchupCount(t);
       if (n === null) n = bareForCount(t);
+      if (n === null) {
+        m = t.replace(NEGATED_AUDIENCE_RX, ' ').match(SMALL_GROUP_RX);
+        if (m) n = SMALL_GROUP_SIZE[m[1]];
+      }
       if (n === null) n = selfAndCompanionCount(t);
     }
     // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple,
@@ -481,19 +490,30 @@
     return SELF_AND_ONE_RX.test(t) ? 2 : null;
   }
 
-  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
-  // A bare "גבוהה" does not: "עצימות גבוהה" and "ברכיים גבוהות" are drills.
-  var LEVEL_HIGH_RX = /רמה גבוהה|ברמה הגבוהה|רמה מאוד גבוהה|רמה גבוהה מאוד/;
-  var LEVEL_LOW_RX = /רמה נמוכה|ברמה הנמוכה|רמה בסיסית|רמה התחלתית|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
+  // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level, and
+  // so do "רמת קושי גבוהה" / "דרגת קושי נמוכה". A bare "גבוהה" does not:
+  // "עצימות גבוהה" and "ברכיים גבוהות" are drills.
+  var LEVEL_HIGH_RX = /(?:רמה|(?:רמת|דרגת) ה?קושי) (?:מאוד )?ה?גבוהה/;
+  var LEVEL_LOW_RX = /(?:רמה|(?:רמת|דרגת) ה?קושי) (?:מאוד )?ה?(?:נמוכה|בסיסית|התחלתית)|חניכ(?:ים|ות) חדש(?:ים|ות)|מתאמנ(?:ים|ות) חדש(?:ים|ות)/;
 
   // "לא מתקדמים" / "לא למתקדמים" / "בלי מתחילים" / "לא ברמה גבוהה" rules that
   // level out. The negated phrase is cut before the checks below, so «אימון
   // למתחילים לא מתקדמים» is a beginner session, not an advanced one. The
   // negation may carry ו־ («למתחילים ולא למתקדמים»).
-  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?רמה\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
+  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?(?:רמה|(?:רמת|דרגת) ה?קושי)\s+[^\s,]+(?:\s+מאוד)?)|not\s+(?:for\s+)?(?:advanced|beginners?|intermediate)/g;
 
+  // «שמתחיל בחימום» / «שמתחילה בריצה» / «שמתקדמת בהדרגה» say how the session
+  // runs, not who it is for: the verb after ש־ is cut before the checks, so
+  // «אימון רגליים שמתחיל בחימום» is not a beginner session.
+  var LEVEL_VERB_RX = /(?:^|[^א-ת])ש(?:מתחיל|מתקדמ)[א-ת]*/g;
+
+  // "אימון קל" / "אימון רגליים קשה" / "אימון קצר וקליל" ask for an easy or a
+  // hard session. Only the session itself counts, so "ריצה קלה" (a drill) and
+  // "אימון עם משקל קל" (the load) do not, and "אימון לא קשה" is not hard.
+  // Explicit level words win: «אימון קשה למתחילים» stays a beginner session.
+  var EASY_HARD_RX = /(?:^|\s)אימון(?:\s+(?!(?:לא|ללא|בלי|עם|משקל|עומס|קצב)(?:\s|$))[^\s,]+)?\s+ו?(קל|קליל|קשה)(?=$|[\s,.!?])/;
   function parseLevel(text) {
-    var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
+    var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ').replace(LEVEL_VERB_RX, ' ');
     var advanced = /מתקדמ|advanced/.test(t);
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
@@ -505,6 +525,8 @@
     if (advanced || LEVEL_HIGH_RX.test(t)) return 'advanced';
     if (mid) return 'intermediate';
     if (beginner || LEVEL_LOW_RX.test(t)) return 'beginner';
+    var easyHard = EASY_HARD_RX.exec(t);
+    if (easyHard) return easyHard[1] === 'קשה' ? 'advanced' : 'beginner';
     return null;
   }
 
@@ -528,8 +550,13 @@
   // «שוכח» stay as they are.
   var DEFECTIVE_STRENGTH_RX = /(^|[^א-ת])([והבל]?)כח(?![א-ת])/g;
 
+  // «כדור כוח» / «כדורי כוח» is a medicine ball, gear and not a goal, so
+  // «אימון סיבולת עם כדור כוח» stays an endurance session.
+  var MEDICINE_BALL_RX = /כדורי? ה?כוח(?![א-ת])/g;
+
   function parseGoal(text) {
-    var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח'));
+    var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח')
+      .replace(MEDICINE_BALL_RX, 'כדור'));
     // «חיזוק» elsewhere in the prompt does not cancel it: «אימון כוח וחיזוק
     // ליבה» is still a strength session.
     if (/כוח|strength/.test(t)) return 'strength';
