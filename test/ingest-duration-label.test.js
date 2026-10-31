@@ -8,6 +8,7 @@ const TH = require('../js/core.js');
 
 test('durationLabel shows the stated length, else a marked estimate, never an empty number', () => {
   assert.equal(TH.durationLabel(30, 12), '30 דקות');
+  assert.equal(TH.durationLabel(1, 12), 'דקה');
   assert.equal(TH.durationLabel(null, 12), 'כ־12 דקות (הערכה)');
   assert.equal(TH.durationLabel(null, 1), 'כדקה (הערכה)');
   assert.equal(TH.durationLabel(null, 0), 'לא צוין');
