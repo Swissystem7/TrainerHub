@@ -184,7 +184,15 @@
     var preferred = preferMap(prefer);
     if (preferred && entry && preferred[entry.id]) score += PREFER_BONUS;
     var overlap = muscleOverlap(entry, req.muscles);
-    if (req.muscles && req.muscles.length) {
+    if (req.muscles && req.muscles.length > 1) {
+      // Two or more muscles («אימון רגליים וגב»): a full-body clip that lists
+      // them all matched twice (24) and beat every clip built for one of them
+      // (12 + the name hint), so the session was 5 full-body clips with no
+      // legs or back exercise. A match counts once, and a clip whose main
+      // muscle is one of those asked gets the bonus instead.
+      score += overlap ? 12 : -8;
+      if (entry.muscles && req.muscles.indexOf(entry.muscles[0]) !== -1) score += 8;
+    } else if (req.muscles && req.muscles.length) {
       score += overlap * 12;
       if (overlap === 0) score -= 8;
     }
@@ -234,11 +242,21 @@
   // (crunches variants) and the analyzer flagged its own result
   // «88% ליבה, אין עבודת גב». With a group on each row pickDiverse takes the
   // best clip of every group before the second clip of any group. A request
-  // that names muscles keeps the plain score order, where the muscle match
-  // already decides.
+  // that names one muscle keeps the plain score order, where the muscle match
+  // already decides. A request that names several spreads over them: the
+  // group is the asked muscle the clip is built for (its main muscle, else
+  // the first asked one it lists), so «אימון רגליים וגב» takes back clips too
+  // and not only the legs clips the name hint ranks first.
   function spreadGroup(entry, req) {
-    if (req.muscles && req.muscles.length) return null;
     var muscles = (entry && entry.muscles) || [];
+    if (req.muscles && req.muscles.length > 1) {
+      if (muscles.length && req.muscles.indexOf(muscles[0]) !== -1) return muscles[0];
+      for (var i = 0; i < muscles.length; i++) {
+        if (req.muscles.indexOf(muscles[i]) !== -1) return muscles[i];
+      }
+      return 'other';
+    }
+    if (req.muscles && req.muscles.length) return null;
     return muscles.length ? muscles[0] : 'other';
   }
 
