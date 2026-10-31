@@ -141,7 +141,9 @@
     var cars = p.hazards.indexOf('cars') !== -1;
 
     var base = baseChoice(p, group, unsafeFloor, cars);
-    var bopts = { season: winter ? 'winter' : 'summer', activity: 'long' };
+    // The warm-up draws only on what the site has: «ריצה קלה במדרגות» needs stairs, the
+    // jump-rope run a rope the scan never sees.
+    var bopts = { season: winter ? 'winter' : 'summer', activity: 'long', gear: p.features };
     var workout = base.kind === 'method' ? Booklet.methodWorkout(base.id, 0, bopts) : Booklet.sessionWorkout(base.id, bopts);
     reasons.push(base.reason);
 
