@@ -1477,6 +1477,7 @@
   function clipToWorkout(data) {
     data = data || {};
     var entry = catalog[data.id] || { id: data.id, he: data.he || data.id };
+    var hold = isHoldExercise(entry.id || data.id);
     return {
       title: entry.he || data.he || 'תרגיל',
       duration_minutes: 8,
@@ -1491,8 +1492,8 @@
             name: entry.he || data.he || data.id,
             id: entry.id || data.id,
             sets: 3,
-            reps: '8-12',
-            duration_seconds: null,
+            reps: hold ? null : '8-12',
+            duration_seconds: hold ? GOAL_RX.hypertrophy.hold : null,
             rest_seconds: 45,
             notes: null
           }]
@@ -1612,12 +1613,14 @@
     var main = w.phases[1] || w.phases[0];
     if (!main.exercises) main.exercises = [];
     if (main.exercises.some(function (ex) { return ex.id === entry.id; })) return w;
+    // A plank added from the library is held for seconds, like in the program builder.
+    var hold = isHoldExercise(entry.id);
     main.exercises.push({
       name: entry.he,
       id: entry.id,
       sets: 3,
-      reps: '8-12',
-      duration_seconds: null,
+      reps: hold ? null : '8-12',
+      duration_seconds: hold ? GOAL_RX.hypertrophy.hold : null,
       rest_seconds: 45,
       notes: null
     });
