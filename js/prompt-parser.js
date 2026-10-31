@@ -510,8 +510,10 @@
   // "בלי משקולות" / "ללא גומיות ומשקולות" rules the gear out. The negated words
   // (and any joined to them with ו־) are cut before inferring, so «אימון רגליים
   // בלי משקולות» is not a dumbbell request that matches no clip. The negation
-  // may carry ו־ («עם גומיות וללא משקולות»).
-  var NEGATED_GEAR_RX = /(?:^|\s)ו?(?:בלי|ללא)\s+(?:שום\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
+  // may carry ו־ («עם גומיות וללא משקולות»). A two-word gear name («כדורי
+  // טניס», «כדור כדורסל», «מוט מתח», «מכונות כושר») is cut whole, so its
+  // second word is not left behind as a request for that gear.
+  var NEGATED_GEAR_RX = /(?:^|\s)ו?(?:בלי|ללא)\s+(?:שום\s+)?(?:(?:כדור|כדורי|מוט|מוטות|רצוע(?:ה|ת|ות)|מכונ(?:ה|ת|ות))\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
 
   function parseEquipment(text) {
     var t = Infer.fold(text);
