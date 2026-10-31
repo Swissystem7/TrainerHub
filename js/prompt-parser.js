@@ -500,7 +500,7 @@
   // level out. The negated phrase is cut before the checks below, so «אימון
   // למתחילים לא מתקדמים» is a beginner session, not an advanced one. The
   // negation may carry ו־ («למתחילים ולא למתקדמים»).
-  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?(?:רמה|(?:רמת|דרגת) ה?קושי)\s+[^\s,]+(?:\s+מאוד)?)|not\s+(?:for\s+)?(?:advanced|beginners?|intermediate)/g;
+  var NEGATED_LEVEL_RX = /(?:^|\s)ו?(?:לא|ללא|בלי)\s+(?:(?:ה|ל|ב|של)?(?:מתקדמ|מתחיל|ביניים|בינוני)[^\s,]*|(?:ב|ל)?(?:רמה|(?:רמת|דרגת) ה?קושי)\s+[^\s,]+(?:\s+מאוד)?)|\bnot\s+(?:for\s+)?(?:advanced|beginners?|intermediate)\b/g;
 
   // «שמתחיל בחימום» / «שמתחילה בריצה» / «שמתקדמת בהדרגה» say how the session
   // runs, not who it is for: the verb after ש־ is cut before the checks, so
