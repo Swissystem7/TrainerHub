@@ -159,6 +159,9 @@
 
   function paintEnt() {
     var ent = TH.entitlement();
+    // On the trainer tier the code was already redeemed (and cleared from the
+    // field), so «שמור שוב» with only a brand must not be blocked as a missing code.
+    $('code').required = ent.tier !== 'trainer';
     if (ent.tier === 'trainer') {
       $('entStatus').textContent = ent.brand
         ? 'המכשיר הזה במסלול מאמן. המותג על הדפים: ' + ent.brand + '.'
@@ -179,6 +182,15 @@
   $('redeemForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var codeVal = ($('code').value || '').trim();
+    var ent = TH.entitlement();
+    if (!codeVal && ent.tier === 'trainer') {
+      var saved = TH.setEntitlement({ tier: 'trainer', brand: $('brand').value, at: ent.at });
+      $('brand').value = saved.brand;
+      $('redeemStatus').textContent = saved.brand ? 'שם המותג נשמר: ' + saved.brand + '.' : 'שם המותג הוסר מהדפים.';
+      $('redeemStatus').className = 'status';
+      paintEnt();
+      return;
+    }
     if (!codeVal) {
       $('redeemStatus').textContent = 'נא להזין קוד גישה.';
       $('redeemStatus').className = 'status warn';
