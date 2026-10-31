@@ -370,6 +370,16 @@
       s = s.replace(m[0], ' ');
     }
 
+    // A bare time range «פלאנק 30-45 שניות» / «ריצה 20-30 דקות» is the lower bound, with the range
+    // as a note, not «30» in the name (a ladder «20-30-40 שניות» has a dash before the pair - skip it).
+    m = s.match(/(^|\s)(\d+)\s*[-–]\s*(\d+)\s*(שניות|שנ[׳']|″|דקות|דק['׳]?)(?=\s|$|[,.;:])/);
+    if (m && !/[-–]\s*$/.test(s.slice(0, m.index))) {
+      var perMinute = /^דק/.test(m[4]);
+      duration_seconds = toInt(m[2]) * (perMinute ? 60 : 1);
+      notes.push(m[2] + '-' + m[3] + (perMinute ? ' דקות' : ' שניות'));
+      s = s.replace(m[0], ' ');
+    }
+
     var lineReps = reps !== (defaults.reps != null ? defaults.reps : null);
     m = s.match(/(\d+)\s*חזרות/);
     if (m) {
