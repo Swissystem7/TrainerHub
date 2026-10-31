@@ -167,6 +167,22 @@
 
   <section id="zohar" aria-labelledby="zohar-h">
     <h2 id="zohar-h">חוקת כדור זוהר</h2>
+    <div class="row no-print" role="search" aria-label="חיפוש וסינון חוקת כדור זוהר">
+      <div><label for="zcat">נושא</label><select id="zcat">
+        <option value="">כל הכללים</option>
+        <option value="goals">שערים והבקעה</option>
+        <option value="fouls">עבירות ופנדלים</option>
+        <option value="keeper">שוער ורחבה</option>
+        <option value="movement">תנועה ומסירות</option>
+      </select></div>
+      <div><label for="zq">חיפוש בכללי המשחק</label><input id="zq" type="search" placeholder="למשל: שוער, שער, פנדל, מסירה" autocomplete="off"></div>
+    </div>
+    <div class="actions no-print" role="toolbar" aria-label="פעולות חוקת כדור זוהר" style="margin: 8px 0 12px">
+      <button type="button" id="zcopy" class="ghost" aria-label="העתק חוקה לשיתוף">העתק חוקה לשיתוף</button>
+      <button type="button" id="zreset" class="ghost" aria-label="אפס חיפוש וסינון חוקה">נקה סינון</button>
+      <span id="zcopyStatus" class="muted" role="status" aria-live="polite" style="margin-inline-start:8px"></span>
+    </div>
+    <p class="muted" id="zoharStats" aria-live="polite"></p>
     <ol id="zoharOut"></ol>
   </section>
 </main>
@@ -383,8 +399,35 @@
   }
 
   function renderZohar() {
-    var z = B.data.rules.zoharBall;
-    $('zoharOut').innerHTML = z.rules.map(function (r) { return '<li>' + esc(r.text) + '</li>'; }).join('') + '<li style="list-style:none" class="credit">' + esc(z.moreInfo + ' · ' + B.credit('zohar')) + '</li>';
+    var z = B.data && B.data.rules && B.data.rules.zoharBall;
+    if (!z || !z.rules) return;
+    var q = ($('zq') ? $('zq').value : '').trim().toLowerCase();
+    var cat = $('zcat') ? $('zcat').value : '';
+    var list = z.rules.filter(function (r) {
+      if (q && r.text.toLowerCase().indexOf(q) === -1) return false;
+      if (!cat) return true;
+      var t = r.text;
+      if (cat === 'goals') return /שער|הבקע|נקוד|משקוף|קורה/.test(t);
+      if (cat === 'fouls') return /פנדל|עביר|קלל|גדף|סכנ|איגרוף/.test(t);
+      if (cat === 'keeper') return /שוער|רחב/.test(t);
+      if (cat === 'movement') return /מסיר|כדור|ללכת|כדרר|התקפה|הגנה|חילוף/.test(t);
+      return true;
+    });
+
+    if ($('zoharStats')) {
+      $('zoharStats').textContent = (q || cat)
+        ? (list.length === 1 ? 'כלל אחד תואם לסינון' : list.length + ' כללים תואמים לסינון')
+        : z.rules.length + ' כללים בחוקת כדור זוהר';
+    }
+
+    if (!list.length) {
+      $('zoharOut').innerHTML = '<li style="list-style:none"><p class="muted" role="status" style="text-align:center;padding:24px 8px">לא נמצאו כללים התואמים את החיפוש. נסו מילת חיפוש אחרת או אפסו את הסינון.</p></li>';
+      return;
+    }
+
+    $('zoharOut').innerHTML = list.map(function (r) {
+      return '<li value="' + r.n + '">' + esc(r.text) + '</li>';
+    }).join('') + '<li style="list-style:none" class="credit">' + esc(z.moreInfo + ' · ' + B.credit('zohar')) + '</li>';
   }
 
   Promise.all([new Promise(function (r) { TH.ready(r); }), B.load()]).then(function () {
@@ -469,6 +512,58 @@
       if ($('gq')) $('gq').value = '';
       renderGames();
       if ($('gq')) $('gq').focus();
+    });
+  }
+  if ($('zcat')) $('zcat').addEventListener('change', renderZohar);
+  if ($('zq')) {
+    $('zq').addEventListener('input', renderZohar);
+    $('zq').addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        $('zq').value = '';
+        renderZohar();
+      }
+    });
+  }
+  if ($('zreset')) {
+    $('zreset').addEventListener('click', function () {
+      if ($('zcat')) $('zcat').value = '';
+      if ($('zq')) $('zq').value = '';
+      renderZohar();
+      if ($('zq')) $('zq').focus();
+    });
+  }
+  if ($('zcopy')) {
+    $('zcopy').addEventListener('click', function () {
+      var z = B.data && B.data.rules && B.data.rules.zoharBall;
+      if (!z || !z.rules) return;
+      var q = ($('zq') ? $('zq').value : '').trim().toLowerCase();
+      var cat = $('zcat') ? $('zcat').value : '';
+      var list = z.rules.filter(function (r) {
+        if (q && r.text.toLowerCase().indexOf(q) === -1) return false;
+        if (!cat) return true;
+        var t = r.text;
+        if (cat === 'goals') return /שער|הבקע|נקוד|משקוף|קורה/.test(t);
+        if (cat === 'fouls') return /פנדל|עביר|קלל|גדף|סכנ|איגרוף/.test(t);
+        if (cat === 'keeper') return /שוער|רחב/.test(t);
+        if (cat === 'movement') return /מסיר|כדור|ללכת|כדרר|התקפה|הגנה|חילוף/.test(t);
+        return true;
+      });
+      var textToCopy = 'חוקת כדור זוהר:\n\n' + list.map(function (r) {
+        return r.n + '. ' + r.text;
+      }).join('\n\n') + '\n\n' + z.moreInfo;
+
+      function onCopied() {
+        if ($('zcopyStatus')) $('zcopyStatus').textContent = 'הועתק ללוח!';
+        setTimeout(function () {
+          if ($('zcopyStatus')) $('zcopyStatus').textContent = '';
+        }, 2500);
+      }
+
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(onCopied).catch(onCopied);
+      } else {
+        onCopied();
+      }
     });
   }
   $('score').addEventListener('click', scoreNow);
