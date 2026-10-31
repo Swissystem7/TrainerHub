@@ -68,6 +68,12 @@ test('journal.html has skip-link and valid Hebrew RTL headers', function () {
   assert.match(html, /<a\s+class="skip-link"\s+href="#importCode">דלג לייבוא קוד<\/a>/);
 });
 
+test('journal.html static markup: nav has accessible label, active page indicator and links to booklet', function () {
+  assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
+  assert.match(html, /<span class="chip on" aria-current="page">יומן ביצוע<\/span>/);
+  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+});
+
 test('journal.html forms declare landmark regions and aria-labelledby headers', function () {
   assert.match(html, /<form\s+class="card"\s+id="importForm"\s+role="region"\s+aria-labelledby="importHeading">/);
   assert.match(html, /<h2\s+id="importHeading">ייבוא קוד מהוואטסאפ<\/h2>/);
