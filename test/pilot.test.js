@@ -68,7 +68,7 @@ test('feedback strips tags, phones and emails and clamps the rating', function (
     improve: 'לכתוב לי ל dana@example.com',
     session: 'אימון שטח',
     site: 'צר, מדרגות'
-  }, Date.UTC(2026, 9, 7));
+  }, new Date(2026, 9, 7, 12, 0).getTime());
   assert.equal(rec.rating, 5);
   assert.equal(rec.pilot, 'acharai');
   assert.equal(rec.day, '2026-10-07');
@@ -135,4 +135,12 @@ test('in the pilot the builder prefers the clips the booklet teaches', function 
   assert.deepEqual(Engine.buildSession(prompt, catalog, { prefer: [] }).workout, plain.workout);
   assert.equal(Engine.buildSession(prompt, catalog, opts).workout.phases.length, plain.workout.phases.length);
   reset();
+});
+
+test('feedback written after midnight carries the local day, not the UTC one', function () {
+  reset();
+  P.init('?pilot=acharai', TH);
+  const rec = P.buildFeedback({ rating: 4 }, new Date(2026, 9, 7, 1, 30).getTime());
+  assert.equal(rec.day, '2026-10-07');
+  assert.match(P.feedbackMessage(rec), /\(2026-10-07\)/);
 });
