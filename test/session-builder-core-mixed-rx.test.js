@@ -38,8 +38,12 @@ test('core and legs get the same prescription in either order', function () {
   assert.equal(coreFirst.reps, '8-12');
   assert.equal(coreFirst.duration_seconds, null);
   assert.deepEqual(
-    [coreFirst.sets, coreFirst.reps, coreFirst.rest_seconds],
-    [legsFirst.sets, legsFirst.reps, legsFirst.rest_seconds]
+    [coreFirst.reps, coreFirst.duration_seconds, coreFirst.rest_seconds],
+    [legsFirst.reps, legsFirst.duration_seconds, legsFirst.rest_seconds]
+  );
+  assert.deepEqual(
+    mainOf('אימון בטן ורגליים').map(function (ex) { return ex.sets; }),
+    mainOf('אימון רגליים ובטן').map(function (ex) { return ex.sets; })
   );
 });
 
