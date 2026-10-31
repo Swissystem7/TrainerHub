@@ -283,6 +283,19 @@
       s = s.replace(m[0], ' ');
     }
 
+    // «3x10-12», «3 סטים של 8-10», «10-12 חזרות» are a rep range and «3x30-45 שניות» a time range:
+    // the lower bound, the way the rest of the parser reads ranges, with the range kept as a note
+    // instead of «-12» in the name.
+    m = s.match(/((?:\d+\s*[x×]|\d+\s*סט(?:ים)?\s*(?:של)?)\s*)(\d+)\s*[-–]\s*(\d+)(?!\d|[.,]\d|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים)(?=\s|$|[,.;:]))?/i) ||
+      s.match(/()(\d+)\s*[-–]\s*(\d+)(?=\s*חזרות)/);
+    if (m) {
+      notes.push(m[2] + '-' + m[3] + ' חזרות');
+      s = s.replace(m[0], m[1] + m[2]);
+    } else if ((m = s.match(/((?:\d+\s*[x×]|\d+\s*סט(?:ים)?\s*(?:של)?)\s*)(\d+)\s*[-–]\s*(\d+)(?=\s*(?:שניות|שנ[׳']|″))/i))) {
+      notes.push(m[2] + '-' + m[3] + ' שניות');
+      s = s.replace(m[0], m[1] + m[2]);
+    }
+
     // «3 סטים של 12» is 12 reps, but «3 סטים של 30 שניות» / «של 2 דקות» is 30 s / 2 min per set.
     // A full stop or comma after the count («3 סטים של 12.») ends the line; only «1.5» is a decimal.
     m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(?:(\d+)(?!\d|[.,]\d|\s*(?:שניות|שנ[׳']|″|דק)))?(?:\s*חזרות)?/);
