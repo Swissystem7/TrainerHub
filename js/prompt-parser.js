@@ -481,10 +481,13 @@
   // so «אימון סיבולת, לא כוח» is an endurance session, not a strength one.
   var NEGATED_GOAL_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*|\b(?:not|no)\s+[a-z]+(?:\s+(?:and|or)\s+[a-z]+)*/g;
   var GOAL_WORD_RX = /כוח|strength|היפרטרופ|hypertroph|מסת|מסה|שריר|בני?ית|הגדלת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio|hiit|טבא?טה|tabata|אינטרוול|interval/;
+  // HIIT written in Hebrew: «היט» / «הייט», whole word (opt. ו/ב prefix), so
+  // «היטב» («לבצע היטב») stays out.
+  var HIIT_HEBREW_RX = /(?:^|[^א-ת])[וב]?היי?ט(?![א-ת])/;
 
   function withoutNegatedGoals(t) {
     return t.replace(NEGATED_GOAL_RX, function (phrase) {
-      return GOAL_WORD_RX.test(phrase) ? ' ' : phrase;
+      return GOAL_WORD_RX.test(phrase) || HIIT_HEBREW_RX.test(phrase) ? ' ' : phrase;
     });
   }
 
@@ -509,7 +512,7 @@
     if (/סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/.test(t)) return 'endurance';
     // HIIT, Tabata («טבטה» / «טבאטה») and intervals are short work bouts with
     // short rests: the same endurance stimulus, not a prompt with no goal.
-    if (/hiit|טבא?טה|tabata|אינטרוול|interval/.test(t)) return 'endurance';
+    if (/hiit|טבא?טה|tabata|אינטרוול|interval/.test(t) || HIIT_HEBREW_RX.test(t)) return 'endurance';
     if (/ליבה|ייצוב|core/.test(t) && /מטרה|גירוי/.test(t)) return 'core';
     return null;
   }
