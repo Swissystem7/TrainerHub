@@ -207,7 +207,10 @@
     if (/משקולת|משקולות|דאמבל|דמבל/.test(t)) eq.push('dumbbells');
     if ((BARBELL_RX.test(t) || /ברבל/.test(t)) && eq.indexOf('bar') === -1) eq.push('barbell');
     if (/קטל[\s\-]?בל|kettlebell/.test(t)) eq.push('kettlebell');
-    if (/מכונה|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
+    // «מכונה», «מכונות», «מכונת חתירה» and «מכון». The bare «מכון» has a final
+    // nun, so the plural and construct forms need their own spelling; «מכונית»
+    // stays out.
+    if (/מכונ[הות]|מכון/.test(t) && /במקום/.test(t) === false) eq.push('machine');
     if (MACHINE_RX.test(t)) eq.push('machine');
     if (!eq.length && LEG_MACHINE_RX.test(t)) eq.push('machine');
     return eq.length ? uniq(eq) : ['none'];
