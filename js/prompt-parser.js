@@ -462,11 +462,17 @@
 
   function parseLevel(text) {
     var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
-    if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
+    var advanced = /מתקדמ|advanced/.test(t);
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
-    if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
-    if (/מתחיל|beginner/.test(t) || LEVEL_LOW_RX.test(t)) return 'beginner';
+    var mid = /ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t);
+    var beginner = /מתחיל|beginner/.test(t);
+    // A mixed group («מתחילים ומתקדמים») is every level, like «לכל הרמות»:
+    // no level filter, or the beginners get advanced-only clips.
+    if (advanced + mid + beginner > 1) return null;
+    if (advanced || LEVEL_HIGH_RX.test(t)) return 'advanced';
+    if (mid) return 'intermediate';
+    if (beginner || LEVEL_LOW_RX.test(t)) return 'beginner';
     return null;
   }
 
