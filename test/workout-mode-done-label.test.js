@@ -44,7 +44,7 @@ function renderWith(step) {
   const run = new Function(
     'document', 'TH', 'esc', 'buildClockSVG', 'announceStatus', 'clearCountdown',
     'startCountdown', 'updateClockDisplay', 'paused', 'started', 'step',
-    'var countdown = 0, countdownMax = 0;\n' + extract('renderExercise') + '\nrenderExercise(step);'
+    'var countdown = 0, countdownMax = 0;\nfunction clockLabel(s){return String(s||0);}\n' + extract('renderExercise') + '\nrenderExercise(step);'
   );
   run(
     document,

@@ -52,7 +52,8 @@
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
-  <span class="chip on">יומן ביצוע</span>
+  <a href="./booklet.html">חוברת הקורס</a>
+  <span class="chip on" aria-current="page">יומן ביצוע</span>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
@@ -237,6 +238,18 @@
     return activeWorkout();
   }
 
+  // Share / preview / print keep the client's plan. A client with no plan of
+  // their own gets the active workout, so it becomes their plan: the card must
+  // name it instead of «טרם שויכה תוכנית».
+  function rememberWorkout(c, workout) {
+    if (c.lastWorkout === workout) {
+      if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
+      return;
+    }
+    c.plan = workout.title || 'אימון';
+    assignPlan(c, workout);
+  }
+
   function refreshCoachClients(selectedId) {
     var select = $('coachClient');
     if (!select) return;
@@ -320,8 +333,7 @@
       setStatus($('importStatus'), 'אין אימון פעיל לשיוך. בנו אימון קודם.', true);
       return;
     }
-    if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
-    c.lastWorkout = workout;
+    rememberWorkout(c, workout);
     save();
     if (previewOnly) {
       location.href = TH.encodeLink(workout, { name: c.name || '', tid: c.id || '' });
@@ -340,6 +352,7 @@
       }
       return;
     }
+    render(c.id);
     var msg = 'היי ' + (c.name || '') + ' 💪\nהאימון שלך (בלי הרשמה):\n' + shared.url +
       '\n\nכשתסיים — שלח לי את הקוד ממסך הסיום.';
     window.open(TH.waShareUrl(c.phone, msg), '_blank');
@@ -417,7 +430,12 @@
       clients.unshift(c);
     }
     c.logs = logsOf(c);
-    var dup = c.logs.some(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; });
+    var known = c.logs.filter(function (l) { return l.at === parsed.doneAt && l.title === parsed.title; })[0];
+    var dup = !!known;
+    // The finish screen rebuilds the same code once the trainee picks a difficulty,
+    // so a resent code may carry the rpe the first one lacked («הצע שבוע הבא» reads it).
+    var rpeAdded = !!known && parsed.rpe != null && known.rpe !== parsed.rpe;
+    if (rpeAdded) known.rpe = parsed.rpe;
     var latest = false;
     if (!dup) {
       var log = {
@@ -448,7 +466,8 @@
     }
     save();
     $('importCode').value = '';
-    setStatus($('importStatus'), dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.'));
+    setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.')
+      : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.')));
     render(c.id);
   });
 
@@ -489,8 +508,7 @@
         setStatus($('importStatus'), 'אין אימון פעיל או משויך להדפסה. בנו אימון או שייכו אימון פעיל קודם.', true);
         return;
       }
-      if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
-      c.lastWorkout = workout;
+      rememberWorkout(c, workout);
       save();
       TH.preparePrint(workout, { name: c.name || '' });
       location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';

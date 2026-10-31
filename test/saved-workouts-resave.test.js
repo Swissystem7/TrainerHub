@@ -37,3 +37,11 @@ test('two different workouts with the same title are both kept', () => {
   WorkoutLibrary.save(store, 'k', [other]);
   assert.equal(store.read().length, 2);
 });
+
+test('the same text converted twice (a new saved_id each «המר») saves as one copy', () => {
+  const store = memoryStore([]);
+  WorkoutLibrary.save(store, 'k', [Object.assign({}, workout, { saved_id: 'workout-1-a' })]);
+  WorkoutLibrary.save(store, 'k', [Object.assign({}, workout, { saved_id: 'workout-2-b' })]);
+  assert.equal(store.read().length, 1);
+  assert.equal(store.read()[0].saved_id, 'workout-2-b');
+});

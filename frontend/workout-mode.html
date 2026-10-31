@@ -324,6 +324,10 @@
 const PHASE_LABELS = TH.PHASE_LABELS;
 
 let linkMeta = { wa: '', name: '', tid: '' };
+// True only when the workout came from TH.KEYS.active. A workout opened from a
+// #TH./CLIP. link (journal «פתח כמתאמן», a shared clip) must not clear the
+// coach's own active workout on finish or exit.
+let loadedFromActive = false;
 let skippedSets = 0;
 let skippedStepIds = new Set();
 
@@ -342,6 +346,7 @@ function loadWorkout() {
       return fromHash.workout;
     }
   }
+  loadedFromActive = true;
   return TH.store.get(TH.KEYS.active, null);
 }
 
@@ -366,25 +371,45 @@ function buildSteps(workout) {
     });
   });
 
+  // A pasted ladder («שכיבות סמיכה 5-10-15-10-5», «פלאנק 30-45-60 שניות») arrives from the ingest as
+  // one set per count with the first count as reps/seconds and the ladder in the notes; every set
+  // showed the first count («5 חזרות» on the 15-rep top of the pyramid, a 30-second timer each time).
+  // Only a ladder that opens the notes, has one count per set and starts at the given reps/time counts.
+  function ladderCounts(ex, sets) {
+    const m = /^(\d{1,3}(?:[-\/]\d{1,3}){2,})(?:\s+(חזרות|פעמים|שניות|שנ[׳']|דקות))?(?![\d\-\/])/.exec(ex.notes || '');
+    if (!m) return null;
+    const counts = m[1].split(/[-\/]/).map(Number);
+    if (counts.length !== sets) return null;
+    const timed = /^(?:שנ|דקות)/.test(m[2] || '');
+    const scale = m[2] === 'דקות' ? 60 : 1;
+    if (timed ? ex.duration_seconds !== counts[0] * scale : ex.reps !== counts[0]) return null;
+    return counts.map(c => timed ? { reps: null, duration: c * scale } : { reps: c, duration: null });
+  }
+
   flat.forEach((item, flatIdx) => {
     const ex = item.ex;
     const sets = ex.sets || 1;
     const hasDuration = !!ex.duration_seconds;
+    const ladder = ladderCounts(ex, sets);
 
     for (let s = 1; s <= sets; s++) {
+      const rung = ladder ? ladder[s - 1] : null;
       // Exercise step
       steps.push({
         type: 'exercise',
+        exercise: flatIdx,
         id: ex.id || null,
         name: ex.name,
         phase: item.phaseLabel,
         set: s,
         totalSets: sets,
-        reps: ex.reps || null,
-        duration: hasDuration ? ex.duration_seconds : null,
+        reps: rung ? rung.reps : ex.reps || null,
+        duration: rung ? rung.duration : hasDuration ? ex.duration_seconds : null,
         notes: ex.notes || null,
         isLastSet: s === sets,
-        isLastExercise: item.isLastInPhase
+        isLastExercise: item.isLastInPhase,
+        exNo: flatIdx + 1,
+        exTotal: flat.length
       });
 
       // Rest step (after each set except the last set of the whole workout)
@@ -397,7 +422,9 @@ function buildSteps(workout) {
         if (s < sets) {
           nextName = ex.name;
           // A distance or to-failure set («400 מטר», «עד כשל») has no reps or time; its note is what to do.
-          nextDetail = ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : (ex.notes || '');
+          const nextRung = ladder ? ladder[s] : null;
+          nextDetail = nextRung ? (nextRung.reps ? `${nextRung.reps} חזרות` : `${nextRung.duration} שניות`)
+            : ex.reps ? `${ex.reps} חזרות` : ex.duration_seconds ? `${ex.duration_seconds} שניות` : (ex.notes || '');
         } else {
           // next exercise, even when it opens the next phase
           const nextEx = flat[flatIdx + 1].ex;
@@ -435,7 +462,6 @@ let elapsedInterval = null;
 let completedSets = 0;
 let completedExercises = 0;
 let completedStepIds = new Set();
-let exerciseStepIndices = []; // indices in steps[] that are 'exercise' type
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
@@ -455,7 +481,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   steps = buildSteps(workout);
-  exerciseStepIndices = steps.map((s, i) => s.type === 'exercise' ? i : -1).filter(i => i >= 0);
 
   if (steps.length === 0) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -501,7 +526,7 @@ function renderExercise(step) {
     ? `<div class="set-indicator" aria-live="polite" aria-atomic="true">סט ${step.set} מתוך ${step.totalSets}</div>` : '';
 
   const repsOrTime = step.duration
-    ? `<div class="clock-ring" id="clockRing" role="timer" aria-label="שעון תרגיל">${buildClockSVG()}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true">${step.duration}</div></div>`
+    ? `<div class="clock-ring" id="clockRing" role="timer" aria-label="שעון תרגיל">${buildClockSVG()}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true">${clockLabel(step.duration, step.duration)}</div></div>`
     : step.reps
       ? `<div class="reps-display" aria-live="polite">${esc(step.reps)} חזרות</div>` : '';
 
@@ -557,7 +582,7 @@ function renderRest(step) {
 
   stage.innerHTML = `
     <div class="rest-label">מנוחה</div>
-    <div class="clock-ring" id="clockRing" role="timer" aria-label="שעון מנוחה">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true" style="color:#10b981">${step.duration}</div></div>
+    <div class="clock-ring" id="clockRing" role="timer" aria-label="שעון מנוחה">${buildClockSVG('#10b981')}<div class="clock-text" id="clockText" aria-live="polite" aria-atomic="true" style="color:#10b981">${clockLabel(step.duration, step.duration)}</div></div>
     ${nextHtml}
   `;
   announceStatus('מנוחה, ' + step.duration + ' שניות');
@@ -594,15 +619,27 @@ function buildClockSVG(color = '#7c3aed') {
    PROGRESS
 ═══════════════════════════════════════════ */
 
+// The label counts exercises, not sets: a plan of 6 exercises with 3 sets
+// each read «תרגיל 0 מתוך 18» on its first exercise. The bar still fills by
+// the sets already behind the trainee.
+function exerciseProgress(steps, stepIdx) {
+  let current = 0, total = 0, setsDone = 0, setsTotal = 0;
+  steps.forEach((s, i) => {
+    if (s.type !== 'exercise') return;
+    total = s.exTotal;
+    setsTotal++;
+    if (i < stepIdx) setsDone++;
+    if (i <= stepIdx) current = s.exNo;
+  });
+  return { current, total, pct: setsTotal > 0 ? (setsDone / setsTotal) * 100 : 0 };
+}
+
 function updateProgress() {
-  // Count how many exercise steps we've passed
-  const exStepsSoFar = exerciseStepIndices.filter(i => i < stepIdx).length;
-  const totalExSteps = exerciseStepIndices.length;
+  const { current, total, pct } = exerciseProgress(steps, stepIdx);
 
   document.getElementById('progressLabel').textContent =
-    `תרגיל ${exStepsSoFar} מתוך ${totalExSteps}`;
+    `תרגיל ${current} מתוך ${total}`;
 
-  const pct = totalExSteps > 0 ? (exStepsSoFar / totalExSteps) * 100 : 0;
   document.getElementById('progressFill').style.width = pct + '%';
   const bar = document.getElementById('progressBar');
   if (bar) bar.setAttribute('aria-valuenow', String(Math.round(pct)));
@@ -640,7 +677,7 @@ function updateClockDisplay(val, max) {
   const arcEl  = document.getElementById('clockArc');
   if (!textEl) return;
 
-  textEl.textContent = Math.max(0, val);
+  textEl.textContent = clockLabel(Math.max(0, val), max);
   announceTimer(Math.max(0, val), max);
 
   if (arcEl) {
@@ -661,6 +698,13 @@ function startElapsedTimer() {
 
 function pauseElapsedTimer() {
   if (elapsedInterval) { clearInterval(elapsedInterval); elapsedInterval = null; }
+}
+
+// The ring shows bare seconds for a short hold or rest. From a minute up it
+// reads m:ss for the whole step: a 20-minute run counting down «1200» is not
+// readable at a glance, and switching formats mid-step would make the digits jump.
+function clockLabel(val, max) {
+  return max >= 60 ? formatTime(val) : String(val);
 }
 
 function formatTime(s) {
@@ -726,13 +770,22 @@ function resumeCurrentStep() {
   }
 }
 
+function hasDoneSet(exercise) {
+  for (const i of completedStepIds) {
+    if (steps[i] && steps[i].exercise === exercise) return true;
+  }
+  return false;
+}
+
 function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
   const step = steps[stepIdx];
   if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
+    // An exercise counts once any of its sets is done: 2 of 3 sets with the
+    // last one skipped is still an exercise the trainee did.
+    if (!hasDoneSet(step.exercise)) completedExercises++;
     completedStepIds.add(stepIdx);
     completedSets++;
-    if (step.set === step.totalSets) completedExercises++;
   }
   clearCountdown();
   advance();
@@ -772,6 +825,27 @@ function skipCurrent() {
   }
 }
 
+// The gear this workout already uses, read off its catalog exercises. The swap
+// panel offered the whole catalog: on a bodyweight day 13 of the 33 bodyweight
+// clips got band, cone or tennis-ball alternatives the trainee doesn't have.
+// An exercise that can be done with no gear adds nothing. null when no step is
+// a catalog clip (a pasted workout), so nothing is filtered.
+function workoutEquipment() {
+  const gear = [];
+  let known = false;
+  steps.forEach(function (s) {
+    if (s.type !== 'exercise') return;
+    const entry = TH.findExercise(s);
+    if (!entry) return;
+    known = true;
+    const options = entry.equipment && entry.equipment.length ? entry.equipment : ['none'];
+    if (options.indexOf('none') !== -1) return;
+    options.forEach(function (eq) { if (gear.indexOf(eq) === -1) gear.push(eq); });
+  });
+  if (!known) return null;
+  return gear.length ? gear : ['none'];
+}
+
 function toggleSwap() {
   const panel = document.getElementById('swapPanel');
   const btn = document.getElementById('btnSwap');
@@ -787,7 +861,7 @@ function toggleSwap() {
     panel.hidden = true;
     return;
   }
-  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5 });
+  const alts = TH.substitutesFor({ id: step.id, name: step.name }, { limit: 5, equipment: workoutEquipment() });
   if (!alts.length) {
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
@@ -845,7 +919,7 @@ function goBack() {
       completedStepIds.delete(stepIdx);
       if (step && step.type === 'exercise') {
         if (completedSets > 0) completedSets--;
-        if (step.set === step.totalSets && completedExercises > 0) completedExercises--;
+        if (!hasDoneSet(step.exercise) && completedExercises > 0) completedExercises--;
       }
     }
     if (skippedStepIds.has(stepIdx)) {
@@ -950,14 +1024,14 @@ function finishWorkout() {
     }
   }
 
-  TH.store.remove(TH.KEYS.active);
+  if (loadedFromActive) TH.store.remove(TH.KEYS.active);
 }
 
 function exitWorkout() {
   if (confirm('לצאת מהאימון?')) {
     clearCountdown();
     pauseElapsedTimer();
-    TH.store.remove(TH.KEYS.active);
+    if (loadedFromActive) TH.store.remove(TH.KEYS.active);
     window.location.href = '../';
   }
 }

@@ -69,6 +69,7 @@
 
   // Mirrors the full-body branch in THPrompt.parseMuscles — an empty muscle list
   // can mean "you asked for full body" or "we could not tell", and the source differs.
+  // Tested on Infer.fold(raw) like the parser, so «Full Body» and «גוף־מלא» match.
   var FULL_BODY_RX = /פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/;
 
   function esc(s) {
@@ -96,6 +97,7 @@
       return {
         raw: String(req.raw == null ? '' : req.raw),
         muscles: Array.isArray(req.muscles) ? req.muscles : [],
+        excludedMuscles: Array.isArray(req.excludedMuscles) ? req.excludedMuscles : [],
         focus: req.focus || 'full',
         duration: Number(req.duration) || 20,
         durationSpecified: !!req.durationSpecified,
@@ -111,16 +113,24 @@
 
   function effectiveGoal(req) {
     if (req.goal) return req.goal;
-    return req.focus === 'core' ? 'core' : 'hypertrophy';
+    return Engine.coreOnly(req) ? 'core' : 'hypertrophy';
   }
 
   function prescription(req) {
-    return Engine.prescription({ goal: req.goal, focus: req.focus });
+    return Engine.prescription({ goal: req.goal, focus: req.focus, muscles: req.muscles });
   }
 
+  // «אימון 1 דקה» read «1 דקות» in two rows of the panel.
+  function minutesText(n) {
+    return Number(n) === 1 ? 'דקה' : n + ' דקות';
+  }
+
+  // A single set has no «בין סטים»: its rest comes after the set, before the next exercise.
   function rxText(rx) {
     var work = rx.reps ? rx.reps + ' חזרות' : (rx.duration || 40) + ' שנ׳ עבודה';
-    return (Number(rx.sets) === 1 ? 'סט אחד' : rx.sets + ' סטים') + ' × ' + work + ' · ' + rx.rest + ' שנ׳ מנוחה בין סטים';
+    var one = Number(rx.sets) === 1;
+    return (one ? 'סט אחד' : rx.sets + ' סטים') + ' × ' + work + ' · ' + rx.rest +
+      (one ? ' שנ׳ מנוחה אחרי הסט' : ' שנ׳ מנוחה בין סטים');
   }
 
   // The Main exercises of a built session, or null when the panel only has a request.
@@ -150,7 +160,7 @@
       detail: 'קובע כמה תרגילים נכנסים לתוכנית.',
       evaluate: function (req) {
         return {
-          value: req.duration + ' דקות',
+          value: minutesText(req.duration),
           source: req.durationSpecified ? 'prompt' : 'default'
         };
       }
@@ -164,7 +174,7 @@
         var main = mainExercises(workout);
         var short = main && main.length < want ? ' — במאגר נמצאו רק ' + main.length : '';
         return {
-          value: want + ' תרגילים לאימון של ' + req.duration + ' דקות' + short,
+          value: want + ' תרגילים לאימון של ' + minutesText(req.duration) + short,
           source: 'engine'
         };
       }
@@ -177,7 +187,11 @@
         if (req.muscles.length) {
           return { value: muscleLabels(req.muscles), source: 'prompt' };
         }
-        if (FULL_BODY_RX.test(req.raw)) {
+        // «אימון בלי רגליים» is a request too: the engine drops those clips.
+        if (req.excludedMuscles.length) {
+          return { value: 'גוף מלא בלי ' + muscleLabels(req.excludedMuscles), source: 'prompt' };
+        }
+        if (FULL_BODY_RX.test(Infer.fold(req.raw))) {
           return { value: 'גוף מלא', source: 'prompt' };
         }
         return { value: 'גוף מלא — לא זוהתה קבוצת שריר בתיאור', source: 'default' };
@@ -202,11 +216,21 @@
       he: 'סטים, חזרות ומנוחה',
       detail: 'אותה טבלה שהמנוע מריץ בפועל על כל תרגיל בעיקר האימון.',
       // A short Main phase gets fewer sets than the table (see fitSets in the
-      // engine); the panel quotes the sets the session really holds.
+      // engine); the panel quotes the sets the session really holds. When only
+      // the last exercises lost a set (fitSetsEach), it says how many.
       evaluate: function (req, workout) {
         var rx = prescription(req);
         var main = mainExercises(workout);
-        var sets = main && main.length ? Number(main[0].sets) : 0;
+        var counts = (main || []).map(function (ex) { return Number(ex.sets) || 0; });
+        var sets = counts.length ? Math.max.apply(null, counts) : 0;
+        var fewer = counts.filter(function (s) { return s < sets; }).length;
+        if (sets && fewer) {
+          return {
+            value: rxText(Object.assign({}, rx, { sets: sets })) + ' — ב-' + fewer + ' מתוך ' + counts.length +
+              ' התרגילים ' + (sets - 1 === 1 ? 'סט אחד' : (sets - 1) + ' סטים') + ', כדי שייכנס בזמן',
+            source: 'engine'
+          };
+        }
         if (sets && sets < rx.sets) {
           return {
             value: rxText(Object.assign({}, rx, { sets: sets })) + ' — קוצר מ-' + rx.sets + ' סטים כדי שייכנס בזמן',

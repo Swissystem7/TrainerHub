@@ -42,6 +42,17 @@ function element(extra) {
   return el;
 }
 
+test('library.html has skip-link and valid Hebrew RTL headers', function () {
+  assert.match(html, /<html\s+lang="he"\s+dir="rtl">/);
+  assert.match(html, /<a\s+class="skip-link"\s+href="#q">דלג לחיפוש<\/a>/);
+});
+
+test('library.html static markup: nav has accessible label, active page indicator and links to booklet', function () {
+  assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
+  assert.match(html, /<span class="chip on" aria-current="page">ספריית סרטונים<\/span>/);
+  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+});
+
 test('library.html defines draft box with role="region" and accessible aria-label', function () {
   assert.match(html, /<section class="draft" id="draftBox" role="region" aria-label="אימון שנבנה מהספרייה"/);
 });
