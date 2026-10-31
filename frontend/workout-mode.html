@@ -397,6 +397,7 @@ function buildSteps(workout) {
       // Exercise step
       steps.push({
         type: 'exercise',
+        exercise: flatIdx,
         id: ex.id || null,
         name: ex.name,
         phase: item.phaseLabel,
@@ -762,13 +763,22 @@ function resumeCurrentStep() {
   }
 }
 
+function hasDoneSet(exercise) {
+  for (const i of completedStepIds) {
+    if (steps[i] && steps[i].exercise === exercise) return true;
+  }
+  return false;
+}
+
 function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
   const step = steps[stepIdx];
   if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
+    // An exercise counts once any of its sets is done: 2 of 3 sets with the
+    // last one skipped is still an exercise the trainee did.
+    if (!hasDoneSet(step.exercise)) completedExercises++;
     completedStepIds.add(stepIdx);
     completedSets++;
-    if (step.set === step.totalSets) completedExercises++;
   }
   clearCountdown();
   advance();
@@ -902,7 +912,7 @@ function goBack() {
       completedStepIds.delete(stepIdx);
       if (step && step.type === 'exercise') {
         if (completedSets > 0) completedSets--;
-        if (step.set === step.totalSets && completedExercises > 0) completedExercises--;
+        if (!hasDoneSet(step.exercise) && completedExercises > 0) completedExercises--;
       }
     }
     if (skippedStepIds.has(stepIdx)) {
