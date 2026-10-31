@@ -207,6 +207,25 @@
 
   function proposeFromTyping() { propose({}); }
 
+  // The proposed id is <source>_<name>, so a second clip under a name already
+  // saved («סקוואט» with another YouTube link) got the same id and
+  // addUserEntry replaced the first clip without a word. A different video
+  // gets the next free id (youtube_סקוואט_2), like a second «פרק סרטון» slice;
+  // re-saving the same video, or a name-only entry, keeps the id and updates.
+  function videoOf(e) {
+    return (e && (e.driveId || e.youtubeId || e.externalUrl)) || '';
+  }
+
+  function entryId(proposed) {
+    var users = TH.userCatalogList();
+    var holder = users.filter(function (e) { return e && e.id === proposed.id; })[0];
+    if (!holder || videoOf(holder) === videoOf(proposed)) return proposed.id;
+    var used = {};
+    Object.keys(TH.catalog || {}).forEach(function (k) { used[k] = true; });
+    users.forEach(function (e) { if (e && e.id) used[e.id] = true; });
+    return THInfer.makeId(proposed.source, proposed.he, used);
+  }
+
   function renderUser() {
     var list = TH.userCatalogList();
     var box = $('userList');
@@ -241,7 +260,7 @@
     var muscles = selectedMuscles();
     if (!muscles.length) muscles = proposed.muscles || ['core'];
     var entry = {
-      id: proposed.id,
+      id: entryId(proposed),
       he: $('he').value.trim(),
       muscles: muscles,
       equipment: [$('equipment').value || 'none'],
