@@ -415,6 +415,9 @@
     var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\(\s*\)/g, ' ').replace(/\s+/g, ' ')
       .replace(/\(\s/g, '(').replace(/\s\)/g, ')').trim();
     if (!name || name.length < 2) return null;
+    // «ריצה של 20 דקות», «פלאנק במשך 45 שניות», «ריצה למשך 10 דקות»: once the time,
+    // distance or count is taken out, the word that led into it is left dangling.
+    name = name.replace(/(?:\s+(?:של|במשך|למשך))+$/, '');
 
     if (reps == null && duration_seconds == null && (distance || (failure && !defaults.workSeconds))) {
       if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
