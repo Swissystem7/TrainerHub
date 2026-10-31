@@ -30,24 +30,36 @@
     return null;
   }
 
+  // WhatsApp pastes: «סקוואט 3x10 💪», «🔥 חימום:», «1️⃣ מתח 3x8». The emoji is decoration;
+  // left in, it stayed in the exercise name and «🔥 חימום:» was an exercise, not the warm-up.
+  var KEYCAP_RX = /[0-9#*]\uFE0F?\u20E3/g;
+  var EMOJI_RX = /\p{Extended_Pictographic}|\p{Emoji_Modifier}|\p{Regional_Indicator}|[\uFE0F\u200D]/gu;
+
+  function stripEmoji(text) {
+    return String(text || '').replace(KEYCAP_RX, ' ').replace(EMOJI_RX, ' ');
+  }
+
   // «פלאנק 30"», «בורפי 3x40״», «45''»: a double prime after a number is seconds, the way
   // trainers type it, so it reads as «30 שניות» everywhere below. A lone «'» is left alone.
   function quoteSeconds(text) {
     return String(text || '').replace(/(\d)\s?(?:''|["״])(?![֐-׿A-Za-z\d])/g, '$1 שניות');
   }
 
-  // «5 דקות», «1.5 דקות», «2 דקות וחצי», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
+  // «5 דקות», «1.5 דקות», «2 דקות וחצי», «2-3 דקות», «דקתיים», «דקה וחצי», «חצי דקה», «דקה» -> seconds.
   // `lead` is a pattern that must come right before the amount («מנוחה של »),
   // `tail` one that must come right after it («דקה מנוחה»).
   function minutesPhrase(text, lead, tail) {
     var s = String(text || '');
     var end = '(?=\\s|$|[,.;:])' + (tail || '');
     var word = lead || '(?:^|\\s)';
-    var m = s.match(new RegExp((lead || '') + '(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
+    // «2-3 דקות» is a range: the lower bound, the way the rest of the parser reads ranges.
+    var m = s.match(new RegExp((lead || '') + '(?:(\\d+)\\s*[-–]\\s*)?(\\d+(?:[.,]\\d+)?)\\s*דק(?:ות|ה|[׳\'])?(\\s*וחצי)?' + end));
     if (m) {
-      var minutes = parseFloat(m[1].replace(',', '.')) + (m[2] ? 0.5 : 0);
+      var minutes = parseFloat((m[1] || m[2]).replace(',', '.')) + (m[3] ? 0.5 : 0);
       return { match: m[0], seconds: Math.round(minutes * 60) };
     }
+    m = s.match(new RegExp(word + 'דקתיים(\\s*וחצי)?' + end));
+    if (m) return { match: m[0], seconds: m[1] ? 150 : 120 };
     m = s.match(new RegExp(word + 'דקה\\s*וחצי' + end));
     if (m) return { match: m[0], seconds: 90 };
     m = s.match(new RegExp(word + 'חצי\\s*דקה' + end));
@@ -65,10 +77,11 @@
     if (minutes) return minutes;
     var m = s.match(/מנוחה\s*(?:של\s*)?(\d+[.,]\d+)(?=\s|$|[,;:]|\.(?!\d))/);
     if (m) return { match: m[0], seconds: Math.round(parseFloat(m[1].replace(',', '.')) * 60) };
-    m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)\s*(?:שניות|שנ[׳']|″)?/);
+    // «מנוחה 30-45 שניות» / «30-45 שניות מנוחה» rest the lower bound; the upper one is not left in the name.
+    m = s.match(/מנוחה\s*(?:של\s*)?(\d+)(?![.,]\d)(?:\s*[-–]\s*\d+)?\s*(?:שניות|שנ[׳']|″)?/);
     if (m) return { match: m[0], seconds: toInt(m[1]) };
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
-    if (m) return { match: m[0], seconds: toInt(m[1]) };
+    m = s.match(/(?:(\d+)\s*[-–]\s*)?(\d+)\s*(?:שניות|שנ[׳']|″)\s*מנוחה/);
+    if (m) return { match: m[0], seconds: toInt(m[1] || m[2]) };
     // «פלאנק דקה מנוחה» is still a minute of plank; the minutes are the rest only
     // when nothing or another amount comes before them («סקוואט 3x12 2 דקות מנוחה»).
     var before = minutesPhrase(s, '', '\\s*מנוחה');
@@ -121,7 +134,7 @@
     if (m[1]) hours = parseFloat(m[1].replace(',', '.'));
     else if (m[2]) hours = /רבע/.test(m[2]) ? (/שלושת/.test(m[2]) ? 0.75 : 0.25) : 0.5;
     else hours = (m[3] === 'שעתיים' ? 2 : 1) + (m[4] ? (/חצי/.test(m[4]) ? 0.5 : 0.25) : 0);
-    return { index: m.index, minutes: Math.round(hours * 60) };
+    return { index: m.index, match: m[0], minutes: Math.round(hours * 60) };
   }
 
   // «3 סבבים של 5 דקות» / «4 סבבים x 3 דקות» are minutes per round, not the session.
@@ -186,12 +199,13 @@
     return tags.length ? tags : ['general'];
   }
 
+  // «אימון 1 שעה» is titled «אימון», not «אימון 1».
   function cleanTitle(firstLine, fallback) {
     var t = String(firstLine || '')
       .replace(/,?\s*\d+(?:[.,]\d+)?\s*דקות?.*/i, '')
       .replace(/(?:^|,?\s+)(?:דקה\s*וחצי|חצי\s*דקה|דקה)(?=\s|$|[,.;:]).*/, '')
       .replace(/\s+(?:של|[x×*])$/, '')
-      .replace(/(?:^|,?\s+)(?:של\s*)?(?:\d+(?:[.,]\d+)?\s*שעות?|(?:שלושת\s*רבעי|רבע|חצי)\s*שעה|שעתיים|שעה)(?=\s|$|[,.;:]).*/, '')
+      .replace(/(?:^|,?\s+)(?:של\s*)?(?:\d+(?:[.,]\d+)?\s*(?:שעות|שעה)|(?:שלושת\s*רבעי|רבע|חצי)\s*שעה|שעתיים|שעה)(?=\s|$|[,.;:]).*/, '')
       .replace(/,?\s*ציוד:.*/i, '')
       .replace(/,?\s*ללא ציוד.*/i, '')
       .replace(/,?\s*עצימות.*/i, '')
@@ -211,14 +225,29 @@
       .filter(function (s) { return s.length > 1 && !isSessionMeta(s); });
   }
 
+  // «פלאנק 1:30» / «מנוחה 0:45» / «3x0:40» is minutes:seconds, not two numbers in the name.
+  // Exercise lines only - a title «אימון 18:00» keeps its clock time.
+  function clockSeconds(text) {
+    return String(text || '').replace(/(^|[^\d:.,])(\d{1,2}):([0-5]\d)(?![\d:])(?:\s*(?:דקות|דקה|דק['׳]))?(?=\s|$|[,.;)])/g,
+      function (all, pre, min, sec) { return pre + (toInt(min) * 60 + toInt(sec)) + ' שניות'; });
+  }
+
   function parseExerciseLine(line, defaults) {
     defaults = defaults || {};
     var s = quoteSeconds(line)
       .replace(/^(תחנה|תרגיל|עמדה)\s*\d+\s*[:.\-–]\s*/i, '')
       .replace(/^[•\-*]\s*/, '')
+      // A list number «1. סקוואט» / «2) פלאנק» is not part of the name («1.5 דקות» keeps its decimal).
+      .replace(/^\d{1,2}\s*[.)]\s+/, '')
+      // «סקוואט 3*15» / «מתח 3*מקס» is 3×15, and WhatsApp bold «*סקוואט*» is just the name.
+      .replace(/(\d)\s*\*\s*(?=\d|מקס|max)/gi, '$1x')
+      .replace(/\*/g, ' ')
       .trim();
+    s = clockSeconds(s);
     if (!s || classifyPhase(s) || isSessionMeta(s)) return null;
     if (isRestOrRepeatLine(s)) return null;
+    // «ריצה (5 דקות)», «סקוואט 3x10 (מנוחה דקה)»: a bracket is not part of the amount next to it.
+    s = s.replace(/\s*([()])\s*/g, ' $1 ');
 
     var notes = [];
     var sets = defaults.sets != null ? defaults.sets : null;
@@ -234,8 +263,17 @@
       s = s.replace(rest.match, ' ');
     }
 
+    // The count after an x that follows a unit is the sets, not part of the name:
+    // «פלאנק 30 שניות x 3», «ריצה 2 דקות x 4», «מתח 5 חזרות × 4», and «סקוואט 12 x 3 סטים» is 12 reps.
+    s = s
+      .replace(/(\d+(?:[.,]\d+)?\s*(?:חזרות|פעמים|שניות|שנ[׳']|″|דקות|דקה|דק[׳'])(?:\s*עבודה)?)\s*[x×]\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק|חזרות|פעמים|מטר|מ['׳]|ק["״]מ))(?:\s*(?:סטים|סט|סבבים|סבב)(?=\s|$|[,.;:]))?/i, '$1 $2 סבבים')
+      .replace(/(^|\s)(\d+)\s*[x×]\s*(\d+)\s*(?:סטים|סט|סבבים|סבב)(?=\s|$|[,.;:])/i, '$1$2 חזרות $3 סבבים');
+
     // «3x12 חזרות» / «3x15 פעמים»: the unit after NxM is not part of the name.
     s = s.replace(/(\d+\s*[x×]\s*\d+)\s*(?:חזרות|פעמים)(?=\s|$|[,.;:])/i, '$1');
+    // «בורפי 10 חזרות x 3 סבבים» / «מתח 4 סטים × 6»: an x next to sets or rounds is not part of the name.
+    s = s.replace(/[x×]\s*(?=\d+\s*(?:סט|סבב))/gi, ' ')
+      .replace(/(\d+\s*סט(?:ים)?)\s*[x×]\s*(?=\d)/i, '$1 של ');
 
     // «מתח מקסימום», «שכיבות סמיכה 3 סטים עד כשל», «מתח 3xמקס» are to failure, not 10 invented reps.
     var failure = false;
@@ -272,6 +310,17 @@
       s = s.replace(m[0], ' ');
     }
 
+    // A ladder «שכיבות סמיכה 2-4-6-8-10» is one set per step, starting at the first step;
+    // the whole ladder goes in the notes, not the name.
+    m = s.match(/(?:^|\s)(\d+(?:\s*[-–]\s*\d+){2,})(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*חזרות)?(?=\s|$|[,.;:])/);
+    if (m) {
+      var steps = m[1].split(/\s*[-–]\s*/);
+      sets = steps.length;
+      reps = toInt(steps[0]);
+      notes.push('סולם ' + steps.join('-') + ' חזרות');
+      s = s.replace(m[0], ' ');
+    }
+
     // A load is a note, not part of the name: «לחיצת חזה 4x8 80 קג», «סקוואט עם 100 ק"ג», «120kg».
     m = s.match(/(?:\s(?:עם|ב[-־]?)\s*(?:משקל\s*(?:של\s*)?)?|\s*@\s*)?(\d+(?:[.,]\d+)?)\s*(?:ק["״׳']?ג|קילוגרם|קילו|kg)(?=\s|$|[,.;:])/i);
     if (m) {
@@ -279,18 +328,33 @@
       s = s.replace(m[0], ' ');
     }
 
+    // «3x10-12», «3 סטים של 8-10», «10-12 חזרות» are a rep range and «3x30-45 שניות» a time range:
+    // the lower bound, the way the rest of the parser reads ranges, with the range kept as a note
+    // instead of «-12» in the name.
+    m = s.match(/((?:\d+\s*[x×]|\d+\s*סט(?:ים)?\s*(?:של)?)\s*)(\d+)\s*[-–]\s*(\d+)(?!\d|[.,]\d|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*(?:חזרות|פעמים)(?=\s|$|[,.;:]))?/i) ||
+      s.match(/()(\d+)\s*[-–]\s*(\d+)(?=\s*חזרות)/);
+    if (m) {
+      notes.push(m[2] + '-' + m[3] + ' חזרות');
+      s = s.replace(m[0], m[1] + m[2]);
+    } else if ((m = s.match(/((?:\d+\s*[x×]|\d+\s*סט(?:ים)?\s*(?:של)?)\s*)(\d+)\s*[-–]\s*(\d+)(?=\s*(?:שניות|שנ[׳']|″))/i))) {
+      notes.push(m[2] + '-' + m[3] + ' שניות');
+      s = s.replace(m[0], m[1] + m[2]);
+    }
+
     // «3 סטים של 12» is 12 reps, but «3 סטים של 30 שניות» / «של 2 דקות» is 30 s / 2 min per set.
-    m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(?:(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק)))?(?:\s*חזרות)?/);
+    // A full stop or comma after the count («3 סטים של 12.») ends the line; only «1.5» is a decimal.
+    m = s.match(/(\d+)\s*סט(?:ים)?(?=\s|$|[,.;:])\s*(?:של\s*)?(?:(\d+)(?!\d|[.,]\d|\s*(?:שניות|שנ[׳']|″|דק)))?(?:\s*חזרות)?/);
     if (m) {
       sets = toInt(m[1]);
       if (m[2]) reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
 
-    // «בורפי 30 שניות, 3 סבבים» - the line's own rounds are its sets.
-    m = s.match(/(\d+)\s*סבבים(?=\s|$|[,.;:])(?:\s*של(?=\s))?/);
+    // «בורפי 30 שניות, 3 סבבים» - the line's own rounds are its sets; «5 סבבים של 10» is 10 reps too.
+    m = s.match(/(\d+)\s*סבבים(?=\s|$|[,.;:])(?:\s*של(?:\s*(\d+)(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*חזרות)?|(?=\s)))?/);
     if (m) {
       sets = toInt(m[1]);
+      if (m[2]) reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
     }
 
@@ -300,21 +364,43 @@
       sets = toInt(m[1]);
       reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
-    } else if ((m = s.match(/(\d+)\s*[x×]\s*(?=\d+(?:[.,]\d+)?\s*(?:שניות|שנ[׳']|″|דק))/i))) {
+    } else if ((m = s.match(/(\d+)\s*[x×]\s*(?=\d+(?:[.,]\d+)?\s*(?:שניות|שנ[׳']|″|דק)|(?:חצי\s*)?דקה(?=\s|$|[,.;:]))/i))) {
+      // «פלאנק 3x חצי דקה» / «3 x דקה» / «3x דקה וחצי» are 3 sets too; minutesPhrase reads the time.
       sets = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
 
+    var lineReps = reps !== (defaults.reps != null ? defaults.reps : null);
     m = s.match(/(\d+)\s*חזרות/);
     if (m) {
       reps = toInt(m[1]);
+      lineReps = true;
       s = s.replace(m[0], ' ');
     }
 
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)(?:\s*עבודה(?=\s|$|[,.;:]))?/);
+    // A time ladder «פלאנק 20-30-40 שניות» / «ריצה 1-2-3 דקות» is one set per step, starting at
+    // the first step; the whole ladder goes in the notes, not «20 30» in the name.
+    m = s.match(/(?:^|\s)(\d+(?:\s*[-–]\s*\d+){2,})\s*(שניות|שנ[׳']|″|דקות|דק['׳]?)(?=\s|$|[,.;:])/);
+    if (m) {
+      var steps = m[1].split(/\s*[-–]\s*/);
+      var perMinute = /^דק/.test(m[2]);
+      sets = steps.length;
+      duration_seconds = toInt(steps[0]) * (perMinute ? 60 : 1);
+      notes.push('סולם ' + steps.join('-') + (perMinute ? ' דקות' : ' שניות'));
+      s = s.replace(m[0], ' ');
+    }
+
+    m = duration_seconds == null && s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)(?:\s*עבודה(?=\s|$|[,.;:]))?/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
+    }
+
+    // «ריצה רבע שעה» / «הליכה שעה» / «אופניים שעה וחצי» are timed work too, when the line has no minutes.
+    var hours = duration_seconds == null && !minutesPhrase(s) ? hoursPhrase(s) : null;
+    if (hours) {
+      duration_seconds = hours.minutes * 60;
+      s = s.replace(hours.match, ' ');
     }
 
     // "ריצה 5 דקות" / "הליכה דקה" / "פלאנק 1.5 דקות" are timed work, not 10 reps.
@@ -324,16 +410,27 @@
       s = s.replace(minutes.match, ' ');
     }
 
-    // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets.
+    // «שכיבות סמיכה 15 פעמים» is 15 reps; «ספרינט 10 מטר 5 פעמים» / «בורפי 3 פעמים 30 שניות» is 5 / 3 sets,
+    // and so is «שכיבות סמיכה 15 חזרות 3 פעמים» once the line has its own reps.
     m = s.match(/(\d+)\s*(?:פעמים|פעם)(?=\s|$|[,.;:])/);
     if (m) {
-      if (distance || failure || duration_seconds != null) sets = toInt(m[1]);
+      if (distance || failure || duration_seconds != null || lineReps) sets = toInt(m[1]);
       else if (reps == null || reps === defaults.reps) reps = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
+    // «10 שכיבות סמיכה» / «20 סקוואטים»: a bare count before the name is the reps.
+    m = reps == null && duration_seconds == null && !distance && !failure && s.match(/^\s*(\d{1,3})\s+(?=[א-תa-z])/i);
+    if (m) {
+      reps = toInt(m[1]);
+      s = s.replace(m[0], ' ');
+    }
 
-    var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var name = s.replace(/[\-–—,.:]+/g, ' ').replace(/\(\s*\)/g, ' ').replace(/\s+/g, ' ')
+      .replace(/\(\s/g, '(').replace(/\s\)/g, ')').trim();
     if (!name || name.length < 2) return null;
+    // «ריצה של 20 דקות», «פלאנק במשך 45 שניות», «ריצה למשך 10 דקות»: once the time,
+    // distance or count is taken out, the word that led into it is left dangling.
+    name = name.replace(/(?:\s+(?:של|במשך|למשך))+$/, '');
 
     if (reps == null && duration_seconds == null && (distance || (failure && !defaults.workSeconds))) {
       if (sets == null) sets = defaults.sets != null ? defaults.sets : 1;
@@ -437,7 +534,7 @@
   }
 
   function parseWorkoutClient(text) {
-    var raw = String(text || '').trim();
+    var raw = stripEmoji(text).trim();
     if (!raw) {
       return {
         title: 'אימון',
@@ -480,6 +577,14 @@
       return current;
     }
 
+    // «חימום:» then its drills, then «עיקרי:» - the lines before the main header are the warm-up,
+    // and they, like the lines under «שחרור:», are one set each, not the session's «3 סבבים».
+    var mainHeaderAt = -1;
+    for (var h = lines.length - 1; h > 0 && mainHeaderAt === -1; h--) {
+      if (classifyPhase(lines[h]) === PHASE_NAMES.main) mainHeaderAt = h;
+    }
+    var phaseDefaults = null;
+
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       var phaseKind = classifyPhase(line);
@@ -488,12 +593,14 @@
         current = ensure(phaseKind);
         var mins = parseDurationMinutes(line);
         if (mins) current.duration_minutes = mins;
+        var inlineDefaults = phaseKind === PHASE_NAMES.main ? defaults : {
+          sets: 1, reps: null, rest: null,
+          workSeconds: Math.max(30, Math.round(((mins || 5) * 60) / 3))
+        };
+        phaseDefaults = phaseKind === PHASE_NAMES.cooldown || (phaseKind === PHASE_NAMES.warmup && i < mainHeaderAt)
+          ? inlineDefaults : null;
         var colon = line.indexOf(':');
         if (colon !== -1) {
-          var inlineDefaults = phaseKind === PHASE_NAMES.main ? defaults : {
-            sets: 1, reps: null, rest: null,
-            workSeconds: Math.max(30, Math.round(((mins || 5) * 60) / 3))
-          };
           var inline = splitInlineExercises(line.slice(colon + 1));
           for (var j = 0; j < inline.length; j++) {
             var ex = parseExerciseLine(inline[j], inlineDefaults);
@@ -506,9 +613,14 @@
       if (i === 0) continue;
       if (isSessionMeta(line)) continue;
 
+      if (phaseDefaults) {
+        var own = parseExerciseLine(line, phaseDefaults);
+        if (own) current.exercises.push(own);
+        continue;
+      }
       var parsed = parseExerciseLine(line, defaults);
       if (!parsed) continue;
-      // Warm-up is usually a single header line; following work belongs to Main.
+      // Without a later main header, warm-up is a single header line; following work belongs to Main.
       // Cool-down at the end keeps the lines that follow it.
       if (!current || current.name === PHASE_NAMES.warmup) {
         current = ensure(PHASE_NAMES.main);

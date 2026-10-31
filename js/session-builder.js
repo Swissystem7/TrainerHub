@@ -47,9 +47,18 @@
     return Infer.fold((e && (e.he || e.id)) || '');
   }
 
+  // The timed-hold table is for a core-only session. focus is just the first
+  // muscle named, so «בטן ורגליים» gave squats and lunges 3 × 40 s holds while
+  // «רגליים ובטן» gave the same exercises reps.
+  function coreOnly(req) {
+    if (req.focus !== 'core') return false;
+    var muscles = Array.isArray(req.muscles) ? req.muscles : [];
+    return muscles.every(function (m) { return m === 'core'; });
+  }
+
   function prescription(req) {
     if (req.goal && RX[req.goal]) return RX[req.goal];
-    if (req.focus === 'core') return RX.core;
+    if (coreOnly(req)) return RX.core;
     return RX.hypertrophy;
   }
 
@@ -76,9 +85,14 @@
   // a «20 minute» strength session carried 5 exercises and 40 minutes of rest
   // alone. The count shrinks by the ratio of the two, never below 2 and never
   // above the step. Without a prescription the steps are returned as they are.
+  // Past 45 minutes the step used to stop at 10, so «אימון שעה וחצי» put 10
+  // exercises (about 45 minutes) into an 85-minute Main phase and «אימון כוח
+  // 90 דקות» ran 48 minutes. A longer session gets one more exercise for every
+  // 4.5 minutes of Main phase (the duration less the 5-minute warm-up).
   function wantedCount(duration, rx) {
     var d = Number(duration) || 20;
-    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8 : 10;
+    var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8
+      : Math.max(10, Math.floor((d - 5) * 60 / exerciseSeconds(RX.hypertrophy)));
     if (!rx) return base;
     var ratio = exerciseSeconds(RX.hypertrophy) / exerciseSeconds(rx);
     return Math.max(2, Math.min(base, Math.floor(base * ratio)));
@@ -97,6 +111,31 @@
     var sets = Number(rx.sets) || 1;
     if (!budget || n * sets * perSet <= budget) return rx;
     return Object.assign({}, rx, { sets: Math.max(1, Math.floor(budget / (n * perSet))) });
+  }
+
+  // fitSets gives every exercise the same count, so a phase a little short
+  // for the full prescription lost a whole set on all of them: «אימון 30
+  // דקות» had 6 exercises in a 25-minute Main phase, 3 sets of each needed 27
+  // minutes, all 6 fell to 2 sets and the session ran 18 minutes («אימון 40
+  // דקות»: 24 of 35). The sets that fit are handed out one by one instead, so
+  // the first exercises keep the prescription and only the last ones get one
+  // set less. Returns the sets of each exercise, in order.
+  function fitSetsEach(rx, count, minutes) {
+    var n = Math.max(1, Number(count) || 1);
+    var sets = Number(rx.sets) || 1;
+    var even = fitSets(rx, n, minutes);
+    var out = [];
+    var i;
+    if (even === rx) {
+      for (i = 0; i < n; i++) out.push(sets);
+      return out;
+    }
+    var perSet = exerciseSeconds(Object.assign({}, rx, { sets: 1 }));
+    var total = Math.floor(Math.max(0, Number(minutes) || 0) * 60 / perSet);
+    var base = Number(even.sets);
+    var extra = Math.max(0, Math.min(n * (sets - base), total - n * base));
+    for (i = 0; i < n; i++) out.push(i < extra ? base + 1 : base);
+    return out;
   }
 
   function groupPlan(participants, exerciseCount) {
@@ -184,7 +223,15 @@
     var preferred = preferMap(prefer);
     if (preferred && entry && preferred[entry.id]) score += PREFER_BONUS;
     var overlap = muscleOverlap(entry, req.muscles);
-    if (req.muscles && req.muscles.length) {
+    if (req.muscles && req.muscles.length > 1) {
+      // Two or more muscles («אימון רגליים וגב»): a full-body clip that lists
+      // them all matched twice (24) and beat every clip built for one of them
+      // (12 + the name hint), so the session was 5 full-body clips with no
+      // legs or back exercise. A match counts once, and a clip whose main
+      // muscle is one of those asked gets the bonus instead.
+      score += overlap ? 12 : -8;
+      if (entry.muscles && req.muscles.indexOf(entry.muscles[0]) !== -1) score += 8;
+    } else if (req.muscles && req.muscles.length) {
       score += overlap * 12;
       if (overlap === 0) score -= 8;
     }
@@ -234,11 +281,21 @@
   // (crunches variants) and the analyzer flagged its own result
   // «88% ליבה, אין עבודת גב». With a group on each row pickDiverse takes the
   // best clip of every group before the second clip of any group. A request
-  // that names muscles keeps the plain score order, where the muscle match
-  // already decides.
+  // that names one muscle keeps the plain score order, where the muscle match
+  // already decides. A request that names several spreads over them: the
+  // group is the asked muscle the clip is built for (its main muscle, else
+  // the first asked one it lists), so «אימון רגליים וגב» takes back clips too
+  // and not only the legs clips the name hint ranks first.
   function spreadGroup(entry, req) {
-    if (req.muscles && req.muscles.length) return null;
     var muscles = (entry && entry.muscles) || [];
+    if (req.muscles && req.muscles.length > 1) {
+      if (muscles.length && req.muscles.indexOf(muscles[0]) !== -1) return muscles[0];
+      for (var i = 0; i < muscles.length; i++) {
+        if (req.muscles.indexOf(muscles[i]) !== -1) return muscles[i];
+      }
+      return 'other';
+    }
+    if (req.muscles && req.muscles.length) return null;
     return muscles.length ? muscles[0] : 'other';
   }
 
@@ -339,19 +396,55 @@
     lower: 'פלג גוף תחתון'
   };
 
+  // A request that names several muscles is labelled with all of them, in the
+  // order named: «אימון רגליים וגב» was titled «אימון רגליים» (the focus is
+  // only the first muscle). Biceps and triceps together read «ידיים».
   function focusLabel(req) {
     if (!req || !req.focus) return '';
-    return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+    if (FOCUS_LABELS[req.focus] && req.focus !== 'arms') return FOCUS_LABELS[req.focus];
+    var muscles = req.muscles || [];
+    var arms = muscles.indexOf('biceps') !== -1 && muscles.indexOf('triceps') !== -1;
+    var labels = [];
+    muscles.forEach(function (m) {
+      var label = (arms && (m === 'biceps' || m === 'triceps')) ? FOCUS_LABELS.arms : Infer.MUSCLE_LABELS[m];
+      if (label && labels.indexOf(label) === -1) labels.push(label);
+    });
+    if (labels.length < 2) return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
+    return labels.slice(0, -1).join(', ') + ' ו' + labels[labels.length - 1];
   }
 
-  function typeLabel(req, analysis) {
+  // «1 דקות» is not Hebrew: one minute is «דקה» («אימון 1 דקה» was titled
+  // «אימון גוף מלא · 1 דקות»).
+  function minutesLabel(minutes) {
+    return Number(minutes) === 1 ? 'דקה' : minutes + ' דקות';
+  }
+
+  // The equipment the picked clips actually use. When the equipment filter
+  // had to be relaxed («אימון רגליים עם משקולות» on a catalog with no
+  // dumbbells) the card's «ציוד» pill, the type line and the client share
+  // link all said «משקולות» over a plan of band and ball drills.
+  function usedEquipment(picked) {
+    var ids = [];
+    picked.forEach(function (e) {
+      var have = e.equipment && e.equipment.length ? e.equipment : ['none'];
+      have.forEach(function (id) {
+        if (ids.indexOf(id) === -1) ids.push(id);
+      });
+    });
+    if (ids.length > 1) ids = ids.filter(function (id) { return id !== 'none'; });
+    return ids;
+  }
+
+  function typeLabel(req, analysis, relax) {
     var parts = [];
     parts.push(focusLabel(req) || 'אימון מהמאגר');
-    if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
+    if (relax && relax.equipment) {
+      // the asked-for equipment is not in the plan; the notice says so
+    } else if (req.equipment && req.equipment[0] === 'none') parts.push('משקל גוף');
     else if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
-    parts.push((req.duration || analysis.durationMinutes || 20) + ' דקות');
+    parts.push(minutesLabel(req.duration || analysis.durationMinutes || 20));
     if (Number(req.participants) > 1) parts.push(req.participants + ' חניכים');
     if (req.level && Infer.LEVEL_LABELS[req.level]) parts.push(Infer.LEVEL_LABELS[req.level]);
     return parts.join(' · ');
@@ -370,7 +463,9 @@
     }
     if (req.level && Infer.LEVEL_LABELS[req.level]) want.push('רמת ' + Infer.LEVEL_LABELS[req.level]);
     var got = picked.length
-      ? 'הנה הקרוב ביותר מתוך הסרטונים שיש במאגר (' + picked.length + ' תרגילים).'
+      // A single fitting clip read «(1 תרגילים)».
+      ? 'הנה הקרוב ביותר מתוך הסרטונים שיש במאגר (' +
+        (picked.length === 1 ? 'תרגיל אחד' : picked.length + ' תרגילים') + ').'
       : 'אין במאגר תרגיל שמתאים.';
     return 'אין במאגר מספיק סרטונים לבקשה' +
       (want.length ? ' («' + want.join(' · ') + '»)' : '') +
@@ -416,6 +511,11 @@
     var mainList = warmup ? list.filter(function (e) {
       return foldName(e) !== foldName(warmup);
     }) : list;
+    // The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
+    // חימום») stay out of Main too: «אימון חזה» prescribed the cone warm-up as
+    // 3 x 8-12 next to the push-ups. Only a catalog with nothing else keeps them.
+    var notWarmups = mainList.filter(function (e) { return !/חימום/.test(foldName(e)); });
+    if (notWarmups.length) mainList = notWarmups;
     var pool = filterPool(mainList, req, relax);
     if (pool.length < 2 && req.level) {
       relax.level = true;
@@ -472,18 +572,21 @@
     }
 
     var title = focusLabel(req) ? ('אימון ' + focusLabel(req)) : 'אימון מהמאגר';
-    if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
+    if (req.durationSpecified) title += ' · ' + minutesLabel(req.duration);
     if (!warmEx.length) warmMinutes = 0;
 
     var mainMinutes = totalMinutes - warmMinutes;
-    var setsRx = fitSets(rx, picked.length, mainMinutes);
-    var mainEx = picked.map(function (e) { return toExercise(e, setsRx); });
+    var setsEach = fitSetsEach(rx, picked.length, mainMinutes);
+    var mainEx = picked.map(function (e, i) {
+      return toExercise(e, Object.assign({}, rx, { sets: setsEach[i] }));
+    });
 
     var workout = {
       title: title,
       duration_minutes: req.duration,
       participants: Math.max(1, Math.floor(Number(req.participants) || 1)),
-      equipment: (req.equipment || []).map(function (e) { return Infer.EQ_LABELS[e] || e; }),
+      equipment: (relax.equipment ? usedEquipment(picked) : (req.equipment || []))
+        .map(function (e) { return Infer.EQ_LABELS[e] || e; }),
       intensity: req.goal === 'strength' ? 'high' : (req.level === 'beginner' ? 'low' : 'medium'),
       tags: [req.focus || 'general', req.goal || 'catalog'].filter(Boolean),
       goal: req.goal || null,
@@ -502,7 +605,7 @@
       return { id: e.id, he: e.he, why: whyChosen(e, req), source: e.source || 'local' };
     });
     var explanation = {
-      type: typeLabel(req, analysis),
+      type: typeLabel(req, analysis, relax),
       primary: analysis.primary,
       secondary: analysis.secondary,
       stimulus: analysis.stimulus,
@@ -530,6 +633,7 @@
     scoreEntry: scoreEntry,
     groupPlan: groupPlan,
     prescription: prescription,
+    coreOnly: coreOnly,
     wantedCount: wantedCount
   };
   root.THEngine = api;

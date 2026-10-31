@@ -59,7 +59,8 @@
   <span class="brand">TrainerHub</span>
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
-  <span class="chip on">ספריית סרטונים</span>
+  <span class="chip on" aria-current="page">ספריית סרטונים</span>
+  <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
@@ -172,7 +173,7 @@
     box.hidden = false;
     $('draftList').innerHTML = main.map(function (ex) {
       return '<div class="pill">' + TH.esc(ex.name) + (ex.sets ? ' · ' + ex.sets + '×' + (ex.reps || '') : '') + '</div>';
-    }).join(' ') + '<div class="pill">' + main.length + ' תרגילים · כ־' + TH.esc(w.duration_minutes) + ' דקות</div>';
+    }).join(' ') + '<div class="pill">' + (main.length === 1 ? 'תרגיל אחד' : main.length + ' תרגילים') + ' · כ־' + TH.esc(w.duration_minutes) + ' דקות</div>';
   }
 
   function render() {

@@ -109,6 +109,12 @@ function loadPage(opts) {
   };
 }
 
+test('weekly.html static markup: nav has accessible label, active page indicator and links to booklet', function () {
+  assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
+  assert.match(html, /<span class="chip on" aria-current="page">בונה שבועי<\/span>/);
+  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+});
+
 test('weekly.html static markup: landmark regions, labels, empty state and toolbars', function () {
   assert.match(html, /<form class="card" id="form" role="region" aria-labelledby="formHeading">/);
   assert.match(html, /<h2 id="formHeading">העדפות מתאמן<\/h2>/);
