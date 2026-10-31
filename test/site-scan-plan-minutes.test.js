@@ -74,7 +74,7 @@ test('a wide site: the 20-minute relay reads «20 דק׳» and the tag game «5 
 });
 
 test('a one-minute warm-up drill reads «1 דק׳»', function () {
-  assert.match(rowOf(planFor([['width', 'wide']]), 'ריצה בהרמת בירכיים'), /— 1 דק׳/);
+  assert.match(rowOf(planFor([['width', 'wide']]), 'ריצה לפנים תוך סיבובי ידיים לפנים'), /— 1 דק׳/);
 });
 
 test('stations under a minute stay in seconds and list their rest', function () {
