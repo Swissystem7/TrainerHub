@@ -1754,8 +1754,19 @@
     return text.replace(TWO_MINUTES_RX, '$12 דקות');
   }
 
+  // «סקוואט 3x10 מנוחה 2-3 דקות», «מנוחה 60-90 שניות», «2-3 דקות מנוחה»: a rest range is its lower
+  // bound, as a range of reps is. The range reader saw only the counts, so the rest was 2 s and the
+  // upper bound became 180 s of work, «60-90» left 10 as the work time and no reps, and a rest line
+  // «מנוחה 2-3 דקות בין הסטים» became an exercise «בין הסטים». «מנוחה 1:00-1:30» is 60 s too.
+  var REST_RANGE_AFTER_RX = /((?:^|[^֐-׿])(?:מנוח(?:ה|ות)|הפסק(?:ה|ות))[ \t]*(?:של[ \t]*|[:\-–][ \t]*)?)(\d{1,2}:[0-5]\d|\d+)[ \t]*(?:[\-–—]|עד)[ \t]*(?:\d{1,2}:[0-5]\d|\d+)(?![\d:.])/g;
+  var REST_RANGE_BEFORE_RX = /(?<![\d:.])(\d+)[ \t]*(?:[\-–—]|עד)[ \t]*\d+(?![\d:.])(?=[ \t]*(?:שניות|שנ[׳']|דקות|דקה|דק[׳'])[ \t]+(?:מנוח(?:ה|ות)|הפסק(?:ה|ות))(?![֐-׿]))/g;
+
+  function normalizeRestRanges(text) {
+    return text.replace(REST_RANGE_AFTER_RX, '$1$2').replace(REST_RANGE_BEFORE_RX, '$1');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeTwoMinutes(normalizeDecimalComma(normalizeTicks(stripEmoji(text))))))).trim();
+    var raw = normalizeRestRanges(normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeTwoMinutes(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))))))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
