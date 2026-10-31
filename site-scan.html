@@ -265,9 +265,11 @@
     TH.copyOrShow(shared.url, host, function () {
       var btn = $('share');
       if (btn) {
-        var orig = btn.textContent;
+        // A second click within the 1.4 s must not save «הועתק» as the label to restore.
+        if (!btn.thLabel) btn.thLabel = btn.textContent;
         btn.textContent = 'הועתק';
-        setTimeout(function () { btn.textContent = orig; }, 1400);
+        clearTimeout(btn.thLabelTimer);
+        btn.thLabelTimer = setTimeout(function () { btn.textContent = btn.thLabel; }, 1400);
       }
     });
   });
