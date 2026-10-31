@@ -1136,11 +1136,17 @@
     };
   }
 
+  // The catalog spells push-ups both ways («שכיבות סמיכה ורגליים», «אתגר שכיבות שמיכה»),
+  // so each spelling found only its own clips. Fold both to one.
+  function searchFold(s) {
+    return foldHe(s).replace(/סמיכה/g, 'שמיכה');
+  }
+
   function filterCatalog(opts) {
     opts = opts || {};
     // Each typed word on its own, in any order: «פלאנק בטן» or «מתח גב» found
     // nothing because the words had to sit side by side in the clip's text.
-    var words = foldHe(opts.q || '').split(' ').filter(Boolean);
+    var words = searchFold(opts.q || '').split(' ').filter(Boolean);
     return catalogList().filter(function (e) {
       if (opts.muscle && (e.muscles || []).indexOf(opts.muscle) === -1) return false;
       if (opts.equipment && (e.equipment || []).indexOf(opts.equipment) === -1) return false;
@@ -1150,7 +1156,9 @@
         // The gear words count too, as the «גומיות» chip does: two band clips are
         // not named «גומיות» («עבודה עם גומייה»), so typing the word missed them.
         var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
-        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || '') + ' ' + gear);
+        // A core clip is a «בטן» clip to a coach: «פלאנק בטן» found nothing, the label is «ליבה».
+        var belly = (e.muscles || [])[0] === 'core' ? ' בטן' : '';
+        var blob = searchFold((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || '') + ' ' + gear + belly);
         if (words.some(function (w) { return blob.indexOf(w) === -1; })) return false;
       }
       return true;
