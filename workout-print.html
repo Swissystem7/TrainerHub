@@ -129,7 +129,12 @@
   $('brandForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var packed = currentWorkout();
-    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: $('brand').value.trim() });
+    var brand = $('brand').value.trim();
+    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: brand });
+    // On the trainer tier the entitlement brand is read first on load and is
+    // the fallback for an empty field, so it has to follow the new name too.
+    var ent = TH.entitlement();
+    if (ent.tier === 'trainer') TH.setEntitlement({ tier: 'trainer', brand: brand, at: ent.at });
     render();
   });
 
