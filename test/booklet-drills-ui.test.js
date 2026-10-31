@@ -109,7 +109,7 @@ test('searching with valid keyword filters the drills', async function () {
   page.$('dq').value = 'כתף';
   page.$('dq').fire('input');
   assert.match(page.$('drillOut').innerHTML, /כתף/);
-  assert.match(page.$('drillStats').textContent, /\d+ תרגילים/);
+  assert.equal(page.$('drillStats').textContent, 'תרגיל אחד');
 });
 
 test('searching with non-matching keyword shows accessible empty state with reset button', async function () {
