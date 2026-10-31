@@ -176,6 +176,7 @@
   var EQ_LABELS = {
     none: 'משקל גוף',
     dumbbells: 'משקולות',
+    kettlebell: 'קטלבל',
     barbell: 'מוט',
     machine: 'מכונה',
     bar: 'מתח',
