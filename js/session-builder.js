@@ -47,9 +47,18 @@
     return Infer.fold((e && (e.he || e.id)) || '');
   }
 
+  // The timed-hold table is for a core-only session. focus is just the first
+  // muscle named, so «בטן ורגליים» gave squats and lunges 3 × 40 s holds while
+  // «רגליים ובטן» gave the same exercises reps.
+  function coreOnly(req) {
+    if (req.focus !== 'core') return false;
+    var muscles = Array.isArray(req.muscles) ? req.muscles : [];
+    return muscles.every(function (m) { return m === 'core'; });
+  }
+
   function prescription(req) {
     if (req.goal && RX[req.goal]) return RX[req.goal];
-    if (req.focus === 'core') return RX.core;
+    if (coreOnly(req)) return RX.core;
     return RX.hypertrophy;
   }
 
@@ -605,6 +614,7 @@
     scoreEntry: scoreEntry,
     groupPlan: groupPlan,
     prescription: prescription,
+    coreOnly: coreOnly,
     wantedCount: wantedCount
   };
   root.THEngine = api;

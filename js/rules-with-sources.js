@@ -113,11 +113,11 @@
 
   function effectiveGoal(req) {
     if (req.goal) return req.goal;
-    return req.focus === 'core' ? 'core' : 'hypertrophy';
+    return Engine.coreOnly(req) ? 'core' : 'hypertrophy';
   }
 
   function prescription(req) {
-    return Engine.prescription({ goal: req.goal, focus: req.focus });
+    return Engine.prescription({ goal: req.goal, focus: req.focus, muscles: req.muscles });
   }
 
   // «אימון 1 דקה» read «1 דקות» in two rows of the panel.
