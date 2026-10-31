@@ -1728,6 +1728,11 @@
         exercises: (ph.exercises || []).map(exercisePrintRow)
       };
     });
+    // A prompt-built or single-clip workout carries an empty Cool-down (and
+    // sometimes Warm-up); printing it gave every sheet a «שחרור» heading over
+    // «אין תרגילים בשלב הזה.». Empty phases are left out unless all are empty.
+    var filled = phases.filter(function (ph) { return ph.exercises.length; });
+    if (filled.length) phases = filled;
     return {
       title: String(workout.title || 'אימון').replace(/\.mp4/ig, '').trim(),
       branded: branded,
