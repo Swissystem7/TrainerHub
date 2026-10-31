@@ -464,7 +464,10 @@
 
   function parseEquipment(text) {
     var t = Infer.fold(text);
-    if (/בלי ציוד|ללא ציוד|בלי שום ציוד|משקל גוף|bodyweight/.test(t)) return ['none'];
+    // «ללא שום ציוד», «בלי אביזרים» and «במשקל הגוף» say the same thing as
+    // «בלי ציוד»; they used to fall through to no filter at all, and «אימון
+    // רגליים ללא שום ציוד» came out as band and football drills.
+    if (/(?:בלי|ללא)\s+(?:שום\s+)?(?:ציוד|אביזר)|משקל\s+ה?גוף|bodyweight/.test(t)) return ['none'];
     var negated = t.match(NEGATED_GEAR_RX);
     var ruledOut = negated && Infer.inferEquipment(negated.join(' '))[0] !== 'none';
     if (negated) t = t.replace(NEGATED_GEAR_RX, ' ');
