@@ -293,6 +293,17 @@
       s = s.replace(m[0], ' ');
     }
 
+    // A ladder «שכיבות סמיכה 2-4-6-8-10» is one set per step, starting at the first step;
+    // the whole ladder goes in the notes, not the name.
+    m = s.match(/(?:^|\s)(\d+(?:\s*[-–]\s*\d+){2,})(?![\d.,]|\s*(?:שניות|שנ[׳']|″|דק))(?:\s*חזרות)?(?=\s|$|[,.;:])/);
+    if (m) {
+      var steps = m[1].split(/\s*[-–]\s*/);
+      sets = steps.length;
+      reps = toInt(steps[0]);
+      notes.push('סולם ' + steps.join('-') + ' חזרות');
+      s = s.replace(m[0], ' ');
+    }
+
     // A load is a note, not part of the name: «לחיצת חזה 4x8 80 קג», «סקוואט עם 100 ק"ג», «120kg».
     m = s.match(/(?:\s(?:עם|ב[-־]?)\s*(?:משקל\s*(?:של\s*)?)?|\s*@\s*)?(\d+(?:[.,]\d+)?)\s*(?:ק["״׳']?ג|קילוגרם|קילו|kg)(?=\s|$|[,.;:])/i);
     if (m) {
