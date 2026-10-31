@@ -34,12 +34,12 @@ test('site drills stretch the Main phase minutes and the workout total, not only
 });
 
 test('the 5-minute tag game is counted in the warm-up and in the total', function () {
-  const solo = Plan.build({ width: 'wide' }, { group: 1 });
+  const small = Plan.build({ width: 'wide' }, { group: 4 });
   const big = Plan.build({ width: 'wide' }, { group: 12 });
   const game = B.games('tag')[0];
   assert.equal(phase(big, 'Warm-up').exercises[0].name, game.he);
-  assert.equal(phase(big, 'Warm-up').duration_minutes, phase(solo, 'Warm-up').duration_minutes + 5);
-  assert.equal(big.workout.duration_minutes, solo.workout.duration_minutes + 5);
+  assert.equal(phase(big, 'Warm-up').duration_minutes, phase(small, 'Warm-up').duration_minutes + 5);
+  assert.equal(big.workout.duration_minutes, small.workout.duration_minutes + 5);
   assert.equal(big.workout.duration_minutes, sumPhases(big));
 });
 
