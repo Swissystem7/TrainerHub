@@ -147,21 +147,44 @@
       } else {
         fallbackCopy(text);
       }
+      // execCommand('copy') returns false when the browser refuses (in-app
+      // browsers, the very case this fallback is for). Report a copy only when
+      // it happened; otherwise select the sheet so the coach can copy by hand.
       function fallbackCopy(val) {
+        var copied = false;
+        var ta = null;
         try {
-          var ta = document.createElement('textarea');
+          ta = document.createElement('textarea');
           ta.value = val;
           ta.setAttribute('readonly', '');
           ta.style.position = 'absolute';
           ta.style.left = '-9999px';
           document.body.appendChild(ta);
           ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          onCopied();
+          copied = document.execCommand('copy') === true;
         } catch (e) {
-          if (copyStatus) copyStatus.textContent = 'שגיאה בהעתקה ללוח.';
+          copied = false;
         }
+        if (ta && ta.parentNode !== null) {
+          try { document.body.removeChild(ta); } catch (e) {}
+        }
+        if (copied) {
+          onCopied();
+          return;
+        }
+        selectSheet();
+        if (copyStatus) copyStatus.textContent = 'הדפדפן חסם העתקה אוטומטית. הטקסט סומן בדף — העתיקו ידנית.';
+      }
+      function selectSheet() {
+        try {
+          var sheet = document.getElementById('sheet');
+          var sel = window.getSelection && window.getSelection();
+          if (!sheet || !sel || !document.createRange) return;
+          var range = document.createRange();
+          range.selectNodeContents(sheet);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch (e) {}
       }
     });
   }

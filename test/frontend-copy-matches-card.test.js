@@ -53,7 +53,7 @@ test('exerciseDetailBits mirrors every detail the card shows', () => {
   assert.deepEqual(exerciseDetailBits({ sets: 3, reps: 12 }), ['3×12']);
   assert.deepEqual(exerciseDetailBits({ sets: 1, reps: 15 }), ['1×15']);
   assert.deepEqual(exerciseDetailBits({ reps: 20 }), ['20 חזרות']);
-  assert.deepEqual(exerciseDetailBits({ sets: 1, duration_seconds: 180 }), ['180″']);
+  assert.deepEqual(exerciseDetailBits({ sets: 1, duration_seconds: 180 }), ['3 דק׳']);
   assert.deepEqual(exerciseDetailBits({ sets: 3, duration_seconds: 30, rest_seconds: 15 }), ['3×30″', 'מנוחה 15″']);
   assert.deepEqual(exerciseDetailBits({ sets: 3, reps: 10, rest_seconds: 60 }), ['3×10', 'מנוחה 60″']);
   assert.deepEqual(exerciseDetailBits({ name: 'x' }), []);
@@ -79,7 +79,7 @@ test('copied text keeps reps-only rows, rounds of timed work and rest', () => {
   });
   assert.equal(text,
     'אימון בוקר\n\n' +
-    'חימום\n- ריצה קלה 180″\n\n' +
+    'חימום\n- ריצה קלה 3 דק׳\n\n' +
     'עיקר\n- סקוואט 3×12 · מנוחה 60″\n- ברפי 20 חזרות\n- פלאנק 3×30″ · מנוחה 15″\n\n');
 });
 
