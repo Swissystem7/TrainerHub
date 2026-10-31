@@ -54,6 +54,18 @@
     return null;
   }
 
+  // What a site feature stands in for in the booklet's stretch bank: a stair or bench is the
+  // raised surface («על מדרגה», «על משטח מוגבה»), playground frames are the bar to hang from.
+  // A towel is nothing the scan sees, so its stretch never qualifies.
+  var STRETCH_GEAR = { step: ['stairs', 'bench'], pullup_bar: ['playground'] };
+
+  function stretchFits(name, features) {
+    var d = Booklet.drills({ category: 'flexibility' }).filter(function (x) { return x.he === name; })[0];
+    return !d || (d.equipment || []).every(function (e) {
+      return e === 'none' || (STRETCH_GEAR[e] || []).some(function (f) { return features.indexOf(f) !== -1; });
+    });
+  }
+
   // Slippery floor slows every site drill; uneven floor only the running ones (its warning says no sprints).
   function floorNote(d, slippery, uneven) {
     if (slippery) return 'משטח חלק: בקצב הליכה, בלי ריצה';
@@ -177,6 +189,11 @@
     } else if (group >= 6) {
       reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + (cars ? 'יש מכוניות ליד השטח' : 'המשטח לא בטוח לריצה'));
     }
+
+    // The closing stretches come from the whole bank, step and bar stretches included; a site
+    // without them keeps only the ones it can host.
+    var cool = workout.phases[workout.phases.length - 1];
+    cool.exercises = cool.exercises.filter(function (x) { return stretchFits(x.name, p.features); });
 
     settleMinutes(workout);
 
