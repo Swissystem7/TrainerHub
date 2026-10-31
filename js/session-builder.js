@@ -99,6 +99,31 @@
     return Object.assign({}, rx, { sets: Math.max(1, Math.floor(budget / (n * perSet))) });
   }
 
+  // fitSets gives every exercise the same count, so a phase a little short
+  // for the full prescription lost a whole set on all of them: «אימון 30
+  // דקות» had 6 exercises in a 25-minute Main phase, 3 sets of each needed 27
+  // minutes, all 6 fell to 2 sets and the session ran 18 minutes («אימון 40
+  // דקות»: 24 of 35). The sets that fit are handed out one by one instead, so
+  // the first exercises keep the prescription and only the last ones get one
+  // set less. Returns the sets of each exercise, in order.
+  function fitSetsEach(rx, count, minutes) {
+    var n = Math.max(1, Number(count) || 1);
+    var sets = Number(rx.sets) || 1;
+    var even = fitSets(rx, n, minutes);
+    var out = [];
+    var i;
+    if (even === rx) {
+      for (i = 0; i < n; i++) out.push(sets);
+      return out;
+    }
+    var perSet = exerciseSeconds(Object.assign({}, rx, { sets: 1 }));
+    var total = Math.floor(Math.max(0, Number(minutes) || 0) * 60 / perSet);
+    var base = Number(even.sets);
+    var extra = Math.max(0, Math.min(n * (sets - base), total - n * base));
+    for (i = 0; i < n; i++) out.push(i < extra ? base + 1 : base);
+    return out;
+  }
+
   function groupPlan(participants, exerciseCount) {
     var people = Math.max(1, Math.floor(Number(participants) || 1));
     var available = Math.max(1, Math.floor(Number(exerciseCount) || 1));
@@ -517,8 +542,10 @@
     if (!warmEx.length) warmMinutes = 0;
 
     var mainMinutes = totalMinutes - warmMinutes;
-    var setsRx = fitSets(rx, picked.length, mainMinutes);
-    var mainEx = picked.map(function (e) { return toExercise(e, setsRx); });
+    var setsEach = fitSetsEach(rx, picked.length, mainMinutes);
+    var mainEx = picked.map(function (e, i) {
+      return toExercise(e, Object.assign({}, rx, { sets: setsEach[i] }));
+    });
 
     var workout = {
       title: title,
