@@ -215,12 +215,20 @@
       .filter(function (s) { return s.length > 1 && !isSessionMeta(s); });
   }
 
+  // «פלאנק 1:30» / «מנוחה 0:45» / «3x0:40» is minutes:seconds, not two numbers in the name.
+  // Exercise lines only - a title «אימון 18:00» keeps its clock time.
+  function clockSeconds(text) {
+    return String(text || '').replace(/(^|[^\d:.,])(\d{1,2}):([0-5]\d)(?![\d:])(?:\s*(?:דקות|דקה|דק['׳]))?(?=\s|$|[,.;)])/g,
+      function (all, pre, min, sec) { return pre + (toInt(min) * 60 + toInt(sec)) + ' שניות'; });
+  }
+
   function parseExerciseLine(line, defaults) {
     defaults = defaults || {};
     var s = quoteSeconds(line)
       .replace(/^(תחנה|תרגיל|עמדה)\s*\d+\s*[:.\-–]\s*/i, '')
       .replace(/^[•\-*]\s*/, '')
       .trim();
+    s = clockSeconds(s);
     if (!s || classifyPhase(s) || isSessionMeta(s)) return null;
     if (isRestOrRepeatLine(s)) return null;
 
