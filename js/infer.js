@@ -201,6 +201,11 @@
   // «שרגס», «shrugs», «הרמת כתפיים». A bare «שראגס» was proposed as «ליבה».
   var SHRUG_RX = /שרא?ג|shrug|הרמ(?:ת|ות) ה?כתפיים/;
 
+  // A face pull («משיכת פנים», «פייס פול») is rear-delt and upper-back pulling.
+  // It names no muscle, so «משיכת פנים בגומייה» fell to the band fallback
+  // (chest, back, legs, core as a push) and a bare one to «ליבה».
+  var FACE_PULL_RX = /משיכ(?:ת|ות) (?:ל)?ה?פנים|פייס ?פול|face ?pulls?/;
+
   function inferEquipment(text) {
     var t = fold(text);
     var eq = [];
@@ -252,6 +257,10 @@
     }
     if (/(?:^| )גב(?: |$)/.test(t) || /וגב|גב ו/.test(t)) found.push('back');
     if (/כתף|כתפי/.test(t) || DELT_RAISE_RX.test(t)) found.push('shoulders');
+    if (FACE_PULL_RX.test(t)) {
+      found.push('shoulders');
+      found.push('back');
+    }
     if (FLY_RX.test(t) && !FLY_NOT_RX.test(t)) {
       if (REVERSE_FLY_RX.test(t)) {
         found.push('shoulders');
@@ -340,7 +349,7 @@
     if (/מטפס|בעיט|סולם|קפיצ|ניתור|בורפי|גאמפינג|ג׳אמפ/.test(t) || SPRINT_RX.test(t)) return 'plyo';
     if (LEG_PRESS_RX.test(t) || KNEE_EXT_RX.test(t)) return 'squat';
     if (PUSH_UP_RX.test(t) || /לחיצ|דיפס|סוחבות|הליכת חיות/.test(t)) return 'push';
-    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t) || SHRUG_RX.test(t)) return 'pull';
+    if (/חתיר|אוסטרל|פטיש/.test(t) || CURL_RX.test(t) || mentionsPullUp(t) || SHRUG_RX.test(t) || FACE_PULL_RX.test(t)) return 'pull';
     if (/סקוואט|מדרג|מכרע|ארבע ראשי/.test(t) || WALL_SIT_RX.test(t) || LUNGE_RX.test(t)) return 'squat';
     if (/דדליפט|גב תחתון|סופרמן|הינג|גשר/.test(t) || DEADLIFT_RX.test(t) || HIP_THRUST_RX.test(t) || BODY_RAISE_RX.test(t)) return 'hinge';
     if (/פלאנק|בטן|ליבה|קראנץ/.test(t) || LEG_RAISE_RX.test(t)) return 'core';
