@@ -344,6 +344,12 @@
     return FOCUS_LABELS[req.focus] || Infer.MUSCLE_LABELS[req.focus] || '';
   }
 
+  // «1 דקות» is not Hebrew: one minute is «דקה» («אימון 1 דקה» was titled
+  // «אימון גוף מלא · 1 דקות»).
+  function minutesLabel(minutes) {
+    return Number(minutes) === 1 ? 'דקה' : minutes + ' דקות';
+  }
+
   function typeLabel(req, analysis) {
     var parts = [];
     parts.push(focusLabel(req) || 'אימון מהמאגר');
@@ -351,7 +357,7 @@
     else if (req.equipment && req.equipment[0] && Infer.EQ_LABELS[req.equipment[0]]) {
       parts.push(Infer.EQ_LABELS[req.equipment[0]]);
     }
-    parts.push((req.duration || analysis.durationMinutes || 20) + ' דקות');
+    parts.push(minutesLabel(req.duration || analysis.durationMinutes || 20));
     if (Number(req.participants) > 1) parts.push(req.participants + ' חניכים');
     if (req.level && Infer.LEVEL_LABELS[req.level]) parts.push(Infer.LEVEL_LABELS[req.level]);
     return parts.join(' · ');
@@ -472,7 +478,7 @@
     }
 
     var title = focusLabel(req) ? ('אימון ' + focusLabel(req)) : 'אימון מהמאגר';
-    if (req.durationSpecified) title += ' · ' + req.duration + ' דקות';
+    if (req.durationSpecified) title += ' · ' + minutesLabel(req.duration);
     if (!warmEx.length) warmMinutes = 0;
 
     var mainMinutes = totalMinutes - warmMinutes;
