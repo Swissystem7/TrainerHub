@@ -152,7 +152,12 @@
       name: 'Cool-down',
       duration_minutes: minutes,
       exercises: pick(bank, n).map(function (d) {
-        return exerciseFrom(d, { seconds: d.holdSeconds || 15, sets: d.repeats || 3, notes: d.timing });
+        var ex = exerciseFrom(d, { seconds: d.holdSeconds || 15, sets: d.repeats || 3 });
+        // Every stretch has its own notes, so a timing passed as the default
+        // note never showed: «15 שניות בכל רגל» was lost and the card read
+        // as one 15 s hold for both legs. The timing leads, the cue follows.
+        ex.notes = [d.timing, d.notes].filter(Boolean).join(' · ') || null;
+        return ex;
       })
     };
   }
