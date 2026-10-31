@@ -218,8 +218,10 @@
   // Cues a trainer writes after the name. They go to the notes so the name
   // still matches its clip («לאנג׳ לכל רגל» found nothing in the catalog).
   // `open` marks a prescription that is not a rep count (to failure, distance).
-  // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side.
-  var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
+  // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side -
+  // unless a hand/elbow/knee goes to it or a side follows: «אולר יד לרגל נגדית» is the name
+  // (was «אולר יד נגדית» with a «לכל רגל» note, in the ready-made workouts too).
+  var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|(?<!(?:יד|ידיים|מרפק|ברך)\s+)ל(רגל)(?!\s+ה?(?:נגדית|נגדי|שנייה|שניה|הפוכה|ימין|שמאל|ימנית|שמאלית)(?![א-ת])))(?=[\s,.]|$)/;
   // «לאנג׳ 12 שני הצדדים» / «לשני הצדדים» / «משני הצדדים» is the count on each side too
   // (was a clip-less name «לאנג׳ 12 שני הצדדים» with 10 invented reps).
   var BOTH_SIDES_RX = /(?:^|\s)[לבמ]?(?:שני|2)\s+(?:ה)?צדדים(?=[\s,.]|$)/;
