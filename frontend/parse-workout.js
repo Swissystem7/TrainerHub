@@ -348,7 +348,8 @@
       sets = toInt(m[1]);
       reps = toInt(m[2]);
       s = s.replace(m[0], ' ');
-    } else if ((m = s.match(/(\d+)\s*[x×]\s*(?=\d+(?:[.,]\d+)?\s*(?:שניות|שנ[׳']|″|דק))/i))) {
+    } else if ((m = s.match(/(\d+)\s*[x×]\s*(?=\d+(?:[.,]\d+)?\s*(?:שניות|שנ[׳']|″|דק)|(?:חצי\s*)?דקה(?=\s|$|[,.;:]))/i))) {
+      // «פלאנק 3x חצי דקה» / «3 x דקה» / «3x דקה וחצי» are 3 sets too; minutesPhrase reads the time.
       sets = toInt(m[1]);
       s = s.replace(m[0], ' ');
     }
