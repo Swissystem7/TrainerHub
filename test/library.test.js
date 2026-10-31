@@ -121,7 +121,7 @@ test('substitutesFor returns same-muscle clips and never the original id', funct
   }));
 });
 
-test('swapExercise keeps sets/reps and rewrites name+id from the catalog', function () {
+test('swapExercise keeps sets/rest, rewrites name+id from the catalog and holds a plank in seconds', function () {
   useFixture();
   const workout = {
     phases: [
@@ -134,7 +134,8 @@ test('swapExercise keeps sets/reps and rewrites name+id from the catalog', funct
   assert.equal(ex.id, 'פלאנק_ברכיים');
   assert.equal(ex.name, 'פלאנק ברכיים');
   assert.equal(ex.sets, 4);
-  assert.equal(ex.reps, '4-6');
+  assert.equal(ex.reps, null);
+  assert.equal(ex.duration_seconds, 30);
   assert.equal(ex.rest_seconds, 120);
   assert.equal(ex.notes, 'form');
 });

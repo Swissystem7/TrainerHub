@@ -110,6 +110,14 @@ test('suggestNextFromLog drops a set after hard RPE and adds one after an easy c
   assert.equal(same.workout.phases[1].exercises[0].sets, 3);
 });
 
+test('suggestNextFromLog never adds a set after a hard log or drops one after an easy log', function () {
+  const one = { t: 'קצר', p: [{ n: 'Main', e: [{ n: 'פלאנק', id: 'plank', s: 1, r: '10' }] }] };
+  assert.equal(TH.suggestNextFromLog(one, { rpe: 5, skipped: 0 }).compact.p[0].e[0].s, 1);
+  const six = { t: 'ארוך', p: [{ n: 'Main', e: [{ n: 'פלאנק', id: 'plank', s: 6, r: '10' }] }] };
+  assert.equal(TH.suggestNextFromLog(six, { rpe: 1, skipped: 0 }).compact.p[0].e[0].s, 6);
+  assert.equal(TH.suggestNextFromLog(six, { rpe: 5, skipped: 0 }).compact.p[0].e[0].s, 5);
+});
+
 test('studio client parser and prompt builder both attach real catalog ids', function () {
   const parsed = parseWorkoutClient('עיקר:\nפלאנק 3 סטים של 10\nשחרור.');
   const plank = parsed.phases[1].exercises.filter(function (e) { return e.id === 'plank'; })[0];

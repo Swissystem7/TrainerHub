@@ -203,10 +203,10 @@
   });
 
   // «מרוץ שליחים» (20 minutes) showed «1200 שנ׳»: whole minutes read «20 דק׳», «40 שנ׳» stays.
-  function secs(seconds) {
-    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
-  }
   function fmtEx(x) {
+    function secs(seconds) {
+      return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+    }
     var bits = [];
     if (x.sets && x.sets > 1) bits.push(x.sets + ' סבבים');
     if (x.reps != null) bits.push(x.reps + ' חזרות');
@@ -269,9 +269,11 @@
     TH.copyOrShow(shared.url, host, function () {
       var btn = $('share');
       if (btn) {
-        var orig = btn.textContent;
+        // A second click within the 1.4 s must not save «הועתק» as the label to restore.
+        if (!btn.thLabel) btn.thLabel = btn.textContent;
         btn.textContent = 'הועתק';
-        setTimeout(function () { btn.textContent = orig; }, 1400);
+        clearTimeout(btn.thLabelTimer);
+        btn.thLabelTimer = setTimeout(function () { btn.textContent = btn.thLabel; }, 1400);
       }
     });
   });

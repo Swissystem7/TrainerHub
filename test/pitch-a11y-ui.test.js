@@ -61,7 +61,8 @@ function mountPitchPage(options) {
     },
     execCommand: function (cmd) {
       execCommands.push(cmd);
-      return true;
+      if (options.execThrows) throw new Error('blocked');
+      return options.execResult !== undefined ? options.execResult : true;
     }
   };
 
@@ -173,4 +174,17 @@ test('pitch.html dynamic: empty sheet displays message in status', function () {
   const page = mountPitchPage({ hasClipboard: true, sheetText: '' });
   page.clickCopy();
   assert.equal(page.el('copyStatus').textContent, 'לא נמצא תוכן להעתקה.');
+});
+
+test('pitch.html dynamic: a refused fallback copy does not claim success', function () {
+  // In-app browsers have no clipboard API and execCommand('copy') returns
+  // false there: the page said «הועתק» although nothing reached the clipboard.
+  [{ execResult: false }, { execThrows: true }].forEach(function (opts) {
+    const page = mountPitchPage(Object.assign({ hasClipboard: false }, opts));
+    page.clickCopy();
+    assert.deepEqual(page.getExecCommands(), ['copy']);
+    const status = page.el('copyStatus').textContent;
+    assert.doesNotMatch(status, /הועתק/);
+    assert.match(status, /העתיקו ידנית/);
+  });
 });

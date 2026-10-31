@@ -4,6 +4,9 @@
     if (!workout || typeof workout !== 'object') return JSON.stringify(workout);
     var copy = Object.assign({}, workout);
     delete copy.savedAt;
+    // The editor stamps a fresh saved_id on every «המר», so the same text
+    // converted twice used to save as two identical history entries.
+    delete copy.saved_id;
     return JSON.stringify(copy);
   }
   function saveWorkouts(store, key, workouts) {

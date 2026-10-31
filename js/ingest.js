@@ -48,8 +48,11 @@
   // they do not give a time, or before the time they give (were a clip-less phantom exercise
   // «מינימלית» / «לפי הצורך» of 10 invented reps, as «מנוחה קצרה» was once). The multi-word
   // phrases come first so «עד התאוששות» is not «עד» and a leftover «התאוששות».
+  // «מנוחה בזמן שבן הזוג עובד», «מנוחה כשהזוג עובד»: the IGO-UGO rest, while the partner works
+  // (was a phantom exercise «בזמן שבן הזוג עובד» of 10 invented reps).
   function restQualifier(ws) {
-    return '(?:ככל' + ws + '+(?:האפשר|הנדרש|הצורך)|כמה' + ws + '+ש(?:פחות|צריך|צריכים|נדרש|רוצים|בא)|' +
+    return '(?:(?:בזמן' + ws + '+ש|כש|כאשר' + ws + '+)(?:ה?(?:בן|בת)' + ws + '+ה?זוג|ה?זוג|ה?(?:שותפ(?:ה|ים)?|שותף|פרטנר(?:ית)?|חבר(?:ה|ים)?))' +
+      ws + '+(?:עוב(?:ד|דת|דים|דות)|מתאמנ(?:ת|ים|ות)|מתאמן)|ככל' + ws + '+(?:האפשר|הנדרש|הצורך)|כמה' + ws + '+ש(?:פחות|צריך|צריכים|נדרש|רוצים|בא)|' +
       'לפי' + ws + '+ה?(?:צורך|הרגשה|תחושה)|במידת' + ws + '+הצורך|בהתאם' + ws + '+לצורך|אם' + ws + '+צריך|' +
       'עד' + ws + '+ל?התאוששות|מינימלית?|מינימום|מקסימום|לפחות|עד|בערך|כנדרש|מלא(?:ה|ות)?|מוחלטת?|' +
       'בינוני(?:ת|ות)?|חופשי(?:ת|ות)?|רגיל(?:ה|ות)?|סביר(?:ה|ות)?|מספק(?:ת|ות)?|קל(?:ה|ות)?)';
@@ -215,8 +218,10 @@
   // Cues a trainer writes after the name. They go to the notes so the name
   // still matches its clip («לאנג׳ לכל רגל» found nothing in the catalog).
   // `open` marks a prescription that is not a rep count (to failure, distance).
-  // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side.
-  var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|ל(רגל))(?=[\s,.]|$)/;
+  // A bare «לצד» is a direction («פלאנק מצד לצד», «הרמת רגל לצד»), only «לרגל» is per side -
+  // unless a hand/elbow/knee goes to it or a side follows: «אולר יד לרגל נגדית» is the name
+  // (was «אולר יד נגדית» with a «לכל רגל» note, in the ready-made workouts too).
+  var PER_SIDE_RX = /(?:^|\s)(?:[לב]?כל\s+(צד|רגל|יד|זרוע|כיוון)|(?<!(?:יד|ידיים|מרפק|ברך)\s+)ל(רגל)(?!\s+ה?(?:נגדית|נגדי|שנייה|שניה|הפוכה|ימין|שמאל|ימנית|שמאלית)(?![א-ת])))(?=[\s,.]|$)/;
   // «לאנג׳ 12 שני הצדדים» / «לשני הצדדים» / «משני הצדדים» is the count on each side too
   // (was a clip-less name «לאנג׳ 12 שני הצדדים» with 10 invented reps).
   var BOTH_SIDES_RX = /(?:^|\s)[לבמ]?(?:שני|2)\s+(?:ה)?צדדים(?=[\s,.]|$)/;
@@ -544,8 +549,14 @@
   var COUNT_UNIT = '(?:חזרות|שניות|שנ[׳\']|דקות|סטים|סדרות|סבבים|סיבובים|פעמים|צעדים|קילו)';
   var NUMBER_WORD_RX = new RegExp('(^|[^א-ת])(?:(של|[x×])\\s*)?' + NUMBER_PHRASE + '(?=(\\s+' + COUNT_UNIT + '(?![א-ת]))|(?![א-ת]))', 'g');
 
+  // A count of one comes after a singular noun: «חזרה אחת», «סט אחד».
+  var SINGLE_UNIT = { 'חזרה': 'חזרות', 'סט': 'סטים', 'סבב': 'סבבים' };
+  var SINGLE_UNIT_RX = new RegExp('(^|[^א-ת])(?:(של)\\s+)?(' + Object.keys(SINGLE_UNIT).join('|') + ')\\s+(?:אחת|אחד)(?![א-ת])', 'g');
+
   function numberWordsToDigits(text) {
-    return String(text || '').replace(NUMBER_WORD_RX, function (all, pre, lead, tens, tensUnit, unit, teen, ten, unitAfter) {
+    return String(text || '').replace(SINGLE_UNIT_RX, function (all, pre, lead, noun) {
+      return pre + (lead ? lead + ' ' : '') + '1 ' + SINGLE_UNIT[noun];
+    }).replace(NUMBER_WORD_RX, function (all, pre, lead, tens, tensUnit, unit, teen, ten, unitAfter) {
       if (!lead && !unitAfter) return all;
       var n = tens ? TENS_WORDS[tens] + (tensUnit ? NUMBER_WORDS[tensUnit] : 0)
         : unit ? NUMBER_WORDS[unit] + (teen ? 10 : 0) : 10;
@@ -642,6 +653,22 @@
     return line;
   }
 
+  // «10 חזרות ניתור לאדמה וגלגול», «4 מטר תנועה לפנים ונגיעה»: a «ו» tail that only
+  // finishes the move (a touch, a roll, a landing, getting back up) is part of its name - it was split
+  // off as a phantom exercise of 10 invented reps. «10 שכיבות סמיכה ומתח» and «10 סקוואט ו12 מתח» still split.
+  var MOVE_TAIL_RX = /^\s*(?:נגיעה|נגיעות|גלגול|גלגולים|נחיתה|קימה|חזרה|חזרה לעמידה)(?:\s+(?:ב|ל|על)[^\s\d]*)*(?=\s*(?:\d|[.:]|$))/;
+
+  function maskMoveTails(line) {
+    return String(line || '').split(/([,،;|•·←→]|\s-+>\s|\s<-+\s)/).map(function (seg, i) {
+      if (i % 2 || seg.indexOf('(') !== -1) return seg;
+      var parts = seg.split(/(\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿]))/);
+      for (var j = 2; j < parts.length; j += 2) {
+        if (MOVE_TAIL_RX.test(parts[j])) parts[j - 1] = parts[j - 1].replace('ו', VAV_MASK);
+      }
+      return parts.join('');
+    }).join('');
+  }
+
   // Pieces on one line: a comma, a «ו» before the next exercise, and the inline separators a
   // pasted list uses instead of a comma - «סופרמן 3x10 | פלאנק 30 שניות», «;», « • », «←», «->».
   var PIECE_SEP_RX = /[,،;|•·←→]|\s-+>\s|\s<-+\s|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/;
@@ -723,6 +750,31 @@
     return m[2].toUpperCase() + (mins ? ' ' + toInt(mins) + ' דקות' : '');
   }
 
+  // «חימום:» / «שחרור:» / «עיקרי:» over the lines below it: the section those exercises belong to.
+  // The header was dropped as a title and its exercises went to Main, so a pasted warm-up ran as
+  // the first exercises of the workout and the analysis said «חסר חימום». A token that starts
+  // with PHASE_MARK switches the phase of the exercises after it.
+  var PHASE_MARK = '\u0002';
+  var WARMUP_LABEL_RX = /^ה?(?:חימום|הכנה)$/;
+  var COOLDOWN_LABEL_RX = /^(?:ה?חלק\s+)?ה?(?:שחרור|קירור|מתיחות|התאוששות)(?:\s+(?:ו?מתיחות|סיום))?$/;
+  var MAIN_LABEL_RX = /^(?:(?:ה?חלק|ה?אימון)\s+)?ה?(?:עיקרי|גוף\s+האימון)$|^(?:סבב|תחנה|בלוק|מחזור)(?:\s+(?:\d+|[א-י][׳']?|ה?(?:ראשון|שני|שלישי|רביעי|אחרון)))?$/;
+
+  function sectionPhase(label) {
+    var t = String(label || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/[.:\s]+$/, '').replace(/\s+/g, ' ').trim();
+    if (WARMUP_LABEL_RX.test(t)) return 'Warm-up';
+    if (COOLDOWN_LABEL_RX.test(t)) return 'Cool-down';
+    if (MAIN_LABEL_RX.test(t)) return 'Main';
+    return null;
+  }
+
+  // The phase a line opens: the whole line is the header («חימום:»), or its label («חימום: ריצה קלה»).
+  function linePhase(line) {
+    var whole = sectionPhase(line);
+    if (whole) return whole;
+    var m = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').trim().match(LABEL_RX);
+    return m ? sectionPhase(m[1]) : null;
+  }
+
   function splitTokens(text, list) {
     var vavRxs = vavNameRxs(list);
     var raw = numberWordsToDigits(text).trim();
@@ -731,6 +783,7 @@
     // colon, as they do on a line of their own (only the first exercise got them, the rest one set).
     raw = raw.replace(/^(\s*\d+\s*סטים(?:\s+של)?)\s*:[ \t]*(?=\S)/, '$1\n');
     var tokens = [];
+    var section = 'Main';
     var body = raw;
     var after = raw.match(/סבבים?\s*[:\-–]\s*([\s\S]+)/);
     if (after) {
@@ -749,18 +802,28 @@
           // «יום שני: רגליים» is a day header with its title: stripSectionLabel reads it line by line.
           if (right && !DAY_HEADER_RX.test(left.replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').trim()) && ((/^[^\d\n]{2,40}$/.test(left) && !/^[*_~\s]*[\d×xX]/.test(right)) || isIntervalPrefix(left))) {
             body = right;
+            // «חימום: ריצה קלה 5 דקות» on the first line is the warm-up's label, not the title.
+            section = sectionPhase(left) || section;
+            if (section !== 'Main') tokens.push(PHASE_MARK + section);
           }
         }
       }
     }
     var pendingName = null;
-    body.split(/\n+/).forEach(function (line) {
+    body.split('\n').forEach(function (line) {
+      // A blank line closes a warm-up that no «עיקרי:» header closes.
+      if (!line.trim()) {
+        if (section === 'Warm-up') tokens.push(PHASE_MARK + (section = 'Main'));
+        return;
+      }
       var held = pendingName;
       pendingName = null;
       if (repeatLineCount(line) != null) return;
       // «EMOM 10 דקות» alone, or before a colon with the exercise after it.
       var lineColon = line.indexOf(':');
       var header = blockHeader(line) || (lineColon > 0 && blockHeader(line.slice(0, lineColon)));
+      var phase = header ? 'Main' : linePhase(line);
+      if (phase) tokens.push(PHASE_MARK + (section = phase));
       if (header) {
         tokens.push(BLOCK_MARK + header);
         line = blockHeader(line) ? '' : line.slice(lineColon + 1);
@@ -778,6 +841,7 @@
         line = titled.rest;
         if (!line.trim()) return;
       }
+      if (isTitleRounds(line, list)) return;
       var stripped = stripSectionLabel(line);
       if (!stripped) {
         // «פלאנק:» with its «30 שניות» on the next line: the name waits for that line.
@@ -796,7 +860,7 @@
       line = splitSlash(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
-      var pieces = splitPieces(maskVavNames(line, vavRxs))
+      var pieces = splitPieces(maskMoveTails(maskVavNames(line, vavRxs)))
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
@@ -906,6 +970,19 @@
     if (!TITLE_WORD_RX.test(title) && (!TITLE_RX.test(title + ' ') || isClipName(title, list))) return null;
     var rest = t.slice(m[0].length).replace(/^[\s:\-–,)]+|[\s:\-–,.]+$/g, '').trim();
     return { minutes: toInt(m[2]), rest: /\d/.test(rest) ? rest : '' };
+  }
+
+  // «אימון רגליים - 3 סבבים» / «אימון 3 סבבים:» on a line of its own: the title and the paste's
+  // rounds (scanDefaults reads the «3 סבבים»), not an exercise. The title rode on as an exercise
+  // «אימון רגליים» of 3x10 invented reps. A clip title («אימון קונוסים 3 סבבים») stays the clip.
+  var TITLE_ROUNDS_RX = /^(ה?(?:אימון|תוכנית|תכנית|שיעור)(?:\s+[^\d:\-–(,]*?)?)\s*[:\-–(,]?\s*(?:של\s+)?\d{1,2}\s*סבבים?\)?[\s:.!]*$/;
+
+  function isTitleRounds(line, list) {
+    var t = String(line || '').replace(/[*#_~]/g, ' ').replace(/^\s*[•\-]\s*/, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(TITLE_ROUNDS_RX);
+    if (!m) return false;
+    var title = m[1].trim().replace(/\s+(?:של|ב)$/, '');
+    return TITLE_WORD_RX.test(title) || (TITLE_RX.test(title + ' ') && !isClipName(title, list));
   }
 
   function titleMinutes(text, list) {
@@ -1533,10 +1610,22 @@
   // «סקוואט 3 סדרות של» with one set. Read it as «סטים» / «סט» everywhere.
   var SERIES_RX = /(^|[^֐-׿])([בלהו]{0,2})סדר(ות|ה)(?![֐-׿])/g;
 
+  // «סיבובים» is the other word for rounds: «בורפי 3 סיבובים של 10» was a name «בורפי 3 סיבובים»
+  // with one set. Only after a count («3 סיבובים», «שלושה סיבובים», «סיבוב אחד»), and not on a line
+  // whose exercise turns («סיבובי ידיים 10 סיבובים» is ten arm circles, not ten rounds).
+  var ROUNDS_RX = new RegExp('(^|[^א-ת])((?:\\d+|' + NUMBER_PHRASE + ')\\s*)סיבובים(?![א-ת])|(^|[^א-ת])סיבוב(\\s+(?:אחד|אחת)(?![א-ת]))', 'g');
+
+  function normalizeRoundWords(line) {
+    if ((line.match(/סיבוב/g) || []).length > 1) return line;
+    return line.replace(ROUNDS_RX, function (all) {
+      return all.replace(/סיבובים$/, 'סבבים').replace(/סיבוב(?=\s)/, 'סבב');
+    });
+  }
+
   function normalizeSetWords(text) {
     return text.replace(SERIES_RX, function (all, pre, prefix, end) {
       return pre + prefix + (end === 'ות' ? 'סטים' : 'סט');
-    });
+    }).split('\n').map(normalizeRoundWords).join('\n');
   }
 
   // «מנוחה 1'», «פלאנק 2׳», «ריצה 10′»: one tick after a number is minutes; «30"», «45״», «20″»,
@@ -1623,8 +1712,18 @@
     }).replace(ENGLISH_OF_RX, '$1 של ');
   }
 
+  // «סקוואט 3x10 מנוחה דקתיים», «דקתיים מנוחה», «פלאנק דקתיים וחצי»: «דקתיים» is two minutes,
+  // but only the exercise line knew the word, so the rest was read as 120 s of work with no rest,
+  // a rest line «מנוחה דקתיים» merged into the exercise above it, and «וחצי» stayed in the name.
+  // Written out as «2 דקות» before anything reads the paste, the rest line and the defaults see it.
+  var TWO_MINUTES_RX = /(^|[^֐-׿])דקתיים(?![֐-׿])/g;
+
+  function normalizeTwoMinutes(text) {
+    return text.replace(TWO_MINUTES_RX, '$12 דקות');
+  }
+
   function ingestText(text, catalogOrList) {
-    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeDecimalComma(normalizeTicks(stripEmoji(text)))))).trim();
+    var raw = normalizeSetWords(normalizeEnglishUnits(normalizeHours(normalizeTwoMinutes(normalizeDecimalComma(normalizeTicks(stripEmoji(text))))))).trim();
     var defaults = scanDefaults(raw);
     var list = Array.isArray(catalogOrList)
       ? catalogOrList
@@ -1639,7 +1738,13 @@
     var lastRest = defaults.rest;
     var blockNote = null;
     var prevInvented = false;
+    var phase = 'Main';
     for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].charAt(0) === PHASE_MARK) {
+        phase = tokens[i].slice(1);
+        blockNote = null;
+        continue;
+      }
       if (tokens[i].charAt(0) === BLOCK_MARK) {
         blockNote = tokens[i].slice(1);
         continue;
@@ -1685,7 +1790,32 @@
         unmatched.push(parsed.name);
         wishlistAdd(parsed.name, 'נקלט מאימון מודבק בלי סרטון במאגר');
       }
+      parsed.phase = phase;
       exercises.push(parsed);
+    }
+    // «חימום:» with nothing that closes it would leave Main empty: the warm-up ends at its first
+    // exercise of several sets («3x10 סקוואט»). Without one, the paste is all Main as before.
+    if (!exercises.some(function (ex) { return ex.phase === 'Main'; })) {
+      var warm = exercises.filter(function (ex) { return ex.phase === 'Warm-up'; });
+      var cut = -1;
+      warm.some(function (ex, k) { return ex.sets > 1 && (cut = k) >= 0; });
+      warm.forEach(function (ex, k) { if (cut < 0 || k >= cut) ex.phase = 'Main'; });
+      if (cut < 0) exercises.forEach(function (ex) { ex.phase = 'Main'; });
+    }
+
+    function phaseExercises(name) {
+      return exercises.filter(function (ex) { return ex.phase === name; }).map(function (ex) {
+        return {
+          name: ex.name,
+          id: ex.id,
+          sets: ex.sets,
+          reps: ex.reps,
+          duration_seconds: ex.duration_seconds,
+          rest_seconds: ex.rest_seconds,
+          notes: [ex.notes, ex.missing ? 'חסר סרטון' : null].filter(Boolean).join(' · ') || null,
+          missing: ex.missing || false
+        };
+      });
     }
 
     var workout = {
@@ -1698,20 +1828,9 @@
       intensity: 'medium',
       tags: ['ingest'],
       phases: [
-        { name: 'Warm-up', duration_minutes: 0, exercises: [] },
-        { name: 'Main', duration_minutes: null, exercises: exercises.map(function (ex) {
-          return {
-            name: ex.name,
-            id: ex.id,
-            sets: ex.sets,
-            reps: ex.reps,
-            duration_seconds: ex.duration_seconds,
-            rest_seconds: ex.rest_seconds,
-            notes: [ex.notes, ex.missing ? 'חסר סרטון' : null].filter(Boolean).join(' · ') || null,
-            missing: ex.missing || false
-          };
-        }) },
-        { name: 'Cool-down', duration_minutes: 0, exercises: [] }
+        { name: 'Warm-up', duration_minutes: 0, exercises: phaseExercises('Warm-up') },
+        { name: 'Main', duration_minutes: null, exercises: phaseExercises('Main') },
+        { name: 'Cool-down', duration_minutes: 0, exercises: phaseExercises('Cool-down') }
       ],
       source: 'ingest'
     };

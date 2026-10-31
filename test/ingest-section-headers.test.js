@@ -15,7 +15,8 @@ TH.setCatalog(require('../js/catalog.json'));
 const Ingest = require('../js/ingest.js');
 
 function all(text) {
-  return Ingest.ingestText(text, TH.catalog).workout.phases[1].exercises.map(function (ex) {
+  // Every phase: a «חימום:» / «שחרור:» header puts the exercises under it in its own phase.
+  return [].concat.apply([], Ingest.ingestText(text, TH.catalog).workout.phases.map(function (ph) { return ph.exercises; })).map(function (ex) {
     return { name: ex.name, id: ex.id, sets: ex.sets, reps: ex.reps, duration_seconds: ex.duration_seconds, notes: ex.notes };
   });
 }
@@ -44,7 +45,7 @@ test('a header label before an exercise is dropped, the exercise kept', () => {
     ['סופרמן', 'superman', 1, 10, null],
     ['סופרמן', 'superman', 3, 10, null]
   ]);
-  assert.deepStrictEqual(ids('סופרמן 10\nחימום: פלאנק 30 שניות')[1], ['פלאנק', 'plank', 1, null, 30]);
+  assert.deepStrictEqual(ids('סופרמן 10\nחימום: פלאנק 30 שניות').filter((e) => e[1] === 'plank'), [['פלאנק', 'plank', 1, null, 30]]);
 });
 
 test('an exercise name with a colon and a bare clip name stay exercises', () => {

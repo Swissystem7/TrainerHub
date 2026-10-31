@@ -103,10 +103,17 @@
     } while (s !== prev);
     s = s
       .replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[מייל הוסר]')
-      .replace(/\+?\d[\d\s-]{6,}\d/g, '[מספר הוסר]')
+      // A phone has 9+ digits (03-1234567, 050-1234567); «10 12 15» reps or a date stay.
+      .replace(/\+?\d[\d\s-]{6,}\d/g, function (m) { return m.replace(/\D/g, '').length >= 9 ? '[מספר הוסר]' : m; })
       .replace(/\s+/g, ' ')
       .trim();
     return s.length > max ? s.slice(0, max) : s;
+  }
+
+  // The trainer's calendar day, not the UTC one: feedback written in Israel
+  // between midnight and 02:59 would otherwise carry yesterday's date.
+  function localDay(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
   function buildFeedback(input, now) {
@@ -118,7 +125,7 @@
     return {
       v: 1,
       pilot: pilot ? pilot.id : '',
-      day: new Date(now || Date.now()).toISOString().slice(0, 10),
+      day: localDay(new Date(now || Date.now())),
       rating: rating,
       worked: cleanText(input.worked, 300),
       improve: cleanText(input.improve, 300),
