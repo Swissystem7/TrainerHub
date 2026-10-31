@@ -1743,17 +1743,23 @@
     loadCatalog();
   }
 
+  // «ריצה 20 דקות» printed as «1 × 1200 שנ׳»: whole minutes read as «20 דק׳»
+  // (like the booklet), «90 שנ׳» stays, and one set has no «1 ×».
+  function printSeconds(seconds) {
+    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+  }
+
   function exercisePrintRow(ex) {
     ex = ex || {};
     var bits = [];
     if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
-    else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
-    else if (ex.duration_seconds) bits.push(ex.duration_seconds + ' שנ׳');
+    else if (ex.sets > 1 && ex.duration_seconds) bits.push(ex.sets + ' × ' + printSeconds(ex.duration_seconds));
+    else if (ex.duration_seconds) bits.push(printSeconds(ex.duration_seconds));
     else if (ex.reps) bits.push(ex.reps + ' חזרות');
     // A distance or «עד כשל» row («ספרינט 6x50 מטר», «מתח 3xמקס») has sets
     // but no reps or seconds; the studio card shows «6 סטים», so must the sheet.
     else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
-    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
+    if (ex.rest_seconds) bits.push('מנוחה ' + printSeconds(ex.rest_seconds));
     var name = ex.name || heName(ex.id) || 'תרגיל';
     var row = {
       name: String(name).replace(/\.mp4/ig, '').trim(),
