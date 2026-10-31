@@ -237,6 +237,18 @@
     return activeWorkout();
   }
 
+  // Share / preview / print keep the client's plan. A client with no plan of
+  // their own gets the active workout, so it becomes their plan: the card must
+  // name it instead of «טרם שויכה תוכנית».
+  function rememberWorkout(c, workout) {
+    if (c.lastWorkout === workout) {
+      if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
+      return;
+    }
+    c.plan = workout.title || 'אימון';
+    assignPlan(c, workout);
+  }
+
   function refreshCoachClients(selectedId) {
     var select = $('coachClient');
     if (!select) return;
@@ -320,8 +332,7 @@
       setStatus($('importStatus'), 'אין אימון פעיל לשיוך. בנו אימון קודם.', true);
       return;
     }
-    if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
-    c.lastWorkout = workout;
+    rememberWorkout(c, workout);
     save();
     if (previewOnly) {
       location.href = TH.encodeLink(workout, { name: c.name || '', tid: c.id || '' });
@@ -340,6 +351,7 @@
       }
       return;
     }
+    render(c.id);
     var msg = 'היי ' + (c.name || '') + ' 💪\nהאימון שלך (בלי הרשמה):\n' + shared.url +
       '\n\nכשתסיים — שלח לי את הקוד ממסך הסיום.';
     window.open(TH.waShareUrl(c.phone, msg), '_blank');
@@ -489,8 +501,7 @@
         setStatus($('importStatus'), 'אין אימון פעיל או משויך להדפסה. בנו אימון או שייכו אימון פעיל קודם.', true);
         return;
       }
-      if (typeof TH.compactPlan === 'function') c.lastPlan = TH.compactPlan(workout);
-      c.lastWorkout = workout;
+      rememberWorkout(c, workout);
       save();
       TH.preparePrint(workout, { name: c.name || '' });
       location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
