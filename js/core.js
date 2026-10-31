@@ -1801,10 +1801,15 @@
     if (!Array.isArray(next.p)) next.p = [];
     next.p.forEach(function (ph) {
       if (!ph || ph.n !== 'Main') return;
+      // The floor of 2 and the cap of 5 only stop the step; they never move a
+      // set count the other way. A 1-set exercise (a short session's Main) went
+      // up to 2 after a hard log under «הורדתי סט», and 6 sets went down to 5
+      // after an easy one under «הוספתי סט».
       (ph.e || []).forEach(function (ex) {
         if (!ex || ex.s == null) return;
-        if (hard) ex.s = Math.max(2, Number(ex.s) - 1);
-        else if (easy) ex.s = Math.min(5, Number(ex.s) + 1);
+        var s = Number(ex.s);
+        if (hard) ex.s = Math.min(s, Math.max(2, s - 1));
+        else if (easy) ex.s = Math.max(s, Math.min(5, s + 1));
       });
     });
     // The suggested plan comes back as the next week's lastPlan, so the suffix
