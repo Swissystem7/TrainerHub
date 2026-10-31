@@ -125,7 +125,7 @@
     if (m[1]) hours = parseFloat(m[1].replace(',', '.'));
     else if (m[2]) hours = /רבע/.test(m[2]) ? (/שלושת/.test(m[2]) ? 0.75 : 0.25) : 0.5;
     else hours = (m[3] === 'שעתיים' ? 2 : 1) + (m[4] ? (/חצי/.test(m[4]) ? 0.5 : 0.25) : 0);
-    return { index: m.index, minutes: Math.round(hours * 60) };
+    return { index: m.index, match: m[0], minutes: Math.round(hours * 60) };
   }
 
   // «3 סבבים של 5 דקות» / «4 סבבים x 3 דקות» are minutes per round, not the session.
@@ -377,6 +377,13 @@
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
+    }
+
+    // «ריצה רבע שעה» / «הליכה שעה» / «אופניים שעה וחצי» are timed work too, when the line has no minutes.
+    var hours = duration_seconds == null && !minutesPhrase(s) ? hoursPhrase(s) : null;
+    if (hours) {
+      duration_seconds = hours.minutes * 60;
+      s = s.replace(hours.match, ' ');
     }
 
     // "ריצה 5 דקות" / "הליכה דקה" / "פלאנק 1.5 דקות" are timed work, not 10 reps.
