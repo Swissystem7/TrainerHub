@@ -158,6 +158,14 @@
     if (p.features.some(function (f) { return SITE_DRILLS[f]; })) workout.tags.push('site');
 
     var warm = workout.phases[0];
+    // The booklet warm-up is running drills («ריצה לפנים…», «ריצה בהרמת בירכיים»); a slippery
+    // floor slows them like the site drills, as its own warning says («להימנע מריצות»).
+    if (slippery) {
+      warm.exercises.forEach(function (x) {
+        var note = floorNote(x, true, false);
+        x.notes = x.notes ? x.notes + ' · ' + note : note;
+      });
+    }
     if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars) {
       var game = Booklet.games('tag')[0];
       if (game) {
