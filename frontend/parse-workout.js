@@ -359,7 +359,19 @@
       s = s.replace(m[0], ' ');
     }
 
-    m = s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)(?:\s*עבודה(?=\s|$|[,.;:]))?/);
+    // A time ladder «פלאנק 20-30-40 שניות» / «ריצה 1-2-3 דקות» is one set per step, starting at
+    // the first step; the whole ladder goes in the notes, not «20 30» in the name.
+    m = s.match(/(?:^|\s)(\d+(?:\s*[-–]\s*\d+){2,})\s*(שניות|שנ[׳']|″|דקות|דק['׳]?)(?=\s|$|[,.;:])/);
+    if (m) {
+      var steps = m[1].split(/\s*[-–]\s*/);
+      var perMinute = /^דק/.test(m[2]);
+      sets = steps.length;
+      duration_seconds = toInt(steps[0]) * (perMinute ? 60 : 1);
+      notes.push('סולם ' + steps.join('-') + (perMinute ? ' דקות' : ' שניות'));
+      s = s.replace(m[0], ' ');
+    }
+
+    m = duration_seconds == null && s.match(/(\d+)\s*(?:שניות|שנ[׳']|″)(?:\s*עבודה(?=\s|$|[,.;:]))?/);
     if (m) {
       duration_seconds = toInt(m[1]);
       s = s.replace(m[0], ' ');
