@@ -368,7 +368,10 @@
     }).join('');
     var notice = unmatched.length
       ? '<div class="card notice" role="status"><p>' +
-        TH.esc(unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
+        // One missing clip read «1 תרגילים בלי סרטון במאגר. הם מוצגים…».
+        TH.esc(unmatched.length === 1
+          ? 'תרגיל אחד בלי סרטון במאגר. הוא מוצג כטקסט ונוסף לרשימת «סרטונים שכדאי לצלם».'
+          : unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
         '</p><ul class="flags">' + unmatched.map(function (n) {
           return '<li>' + TH.esc(n) + '</li>';
         }).join('') + '</ul></div>'

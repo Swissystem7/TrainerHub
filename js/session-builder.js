@@ -431,7 +431,9 @@
     }
     if (req.level && Infer.LEVEL_LABELS[req.level]) want.push('רמת ' + Infer.LEVEL_LABELS[req.level]);
     var got = picked.length
-      ? 'הנה הקרוב ביותר מתוך הסרטונים שיש במאגר (' + picked.length + ' תרגילים).'
+      // A single fitting clip read «(1 תרגילים)».
+      ? 'הנה הקרוב ביותר מתוך הסרטונים שיש במאגר (' +
+        (picked.length === 1 ? 'תרגיל אחד' : picked.length + ' תרגילים') + ').'
       : 'אין במאגר תרגיל שמתאים.';
     return 'אין במאגר מספיק סרטונים לבקשה' +
       (want.length ? ' («' + want.join(' · ') + '»)' : '') +
