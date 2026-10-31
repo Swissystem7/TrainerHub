@@ -214,6 +214,16 @@
     return label === 'חימום' || label.indexOf('חימום ') === 0;
   }
 
+  /**
+   * A cool-down line a pasted workout leaves in Main: «שחרור 5 דקות»,
+   * «מתיחות», «קירור». It is unloaded stretching, not core work.
+   */
+  function isCooldownExercise(ex) {
+    if (!ex) return false;
+    var label = Infer.fold(ex.he || ex.name || '');
+    return /^(שחרור|מתיחות|מתיחה|קירור)( |$)/.test(label);
+  }
+
   function hasWarmup(workout, exercises) {
     var phases = (workout && workout.phases) || [];
     for (var i = 0; i < phases.length; i++) {
@@ -255,13 +265,13 @@
 
   /**
    * The exercises that make up the training itself: the warm-up and
-   * cool-down phases and a «חימום» line are left out, so the warm-up clip
-   * (tagged core) does not show up as a primary muscle of a legs session.
-   * A workout that is nothing but warm-up keeps everything.
+   * cool-down phases and a «חימום» or «שחרור» line are left out, so the
+   * warm-up clip (tagged core) does not show up as a primary muscle of a legs
+   * session. A workout that is nothing but warm-up keeps everything.
    */
   function isWorkingExercise(ex) {
     if (ex._phase === 'Warm-up' || ex._phase === 'Cool-down') return false;
-    return !isWarmupExercise(ex);
+    return !isWarmupExercise(ex) && !isCooldownExercise(ex);
   }
 
   function analyzeSession(workout) {
