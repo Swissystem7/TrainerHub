@@ -109,6 +109,12 @@
     return s.length > max ? s.slice(0, max) : s;
   }
 
+  // The trainer's calendar day, not the UTC one: feedback written in Israel
+  // between midnight and 02:59 would otherwise carry yesterday's date.
+  function localDay(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
   function buildFeedback(input, now) {
     input = input || {};
     var rating = Math.round(Number(input.rating));
@@ -118,7 +124,7 @@
     return {
       v: 1,
       pilot: pilot ? pilot.id : '',
-      day: new Date(now || Date.now()).toISOString().slice(0, 10),
+      day: localDay(new Date(now || Date.now())),
       rating: rating,
       worked: cleanText(input.worked, 300),
       improve: cleanText(input.improve, 300),

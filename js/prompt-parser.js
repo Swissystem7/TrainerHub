@@ -14,7 +14,7 @@
 
   var MUSCLE_KEYS = {
     core: ['בטן', 'ליבה', 'פלאנק', 'קראנץ', 'כפיפות בטן'],
-    legs: ['רגליים', 'רגל', 'ירכיים', 'ארבע ראשי', 'סקוואט', 'מכרעים', 'ישבן', 'עכוז', 'גלוט', 'glute'],
+    legs: ['רגליים', 'רגל', 'ירכיים', 'ירך', 'ארבע ראשי', 'המסטרינג', 'hamstring', 'שוקיים', 'סקוואט', 'מכרעים', 'ישבן', 'עכוז', 'גלוט', 'glute'],
     back: ['גב', 'חתירה', 'אוסטרלי'],
     chest: ['חזה', 'שכיבות'],
     shoulders: ['כתפיים', 'כתף'],
@@ -28,9 +28,10 @@
   // "רגל" in "כדורגל". These must match as whole words, optionally with a
   // ו/ב/ל/ה prefix ("וגב", "לגב"). "ליד" (next to) is deliberately excluded.
   // «יד קדמית» / «יד אחורית» are the biceps / triceps alone, not both arms.
+  // «משקולות יד» / «משקולת יד» are dumbbells, not an arm session.
   var WHOLE_WORD_RX = {
     'גב': /(?:^|[^א-ת])[ובלה]{0,2}גב(?=$|[^א-ת])/,
-    'יד': /(?:^|[^א-ת])[ובה]?יד(?=$|[^א-ת])(?!\s+ה?(?:קדמית|אחורית))/,
+    'יד': /(?<!משקול(?:ת|ות|יות))(?:^|[^א-ת])[ובה]?יד(?=$|[^א-ת])(?!\s+ה?(?:קדמית|אחורית))/,
     'יד קדמית': /(?:^|[^א-ת])[ובלה]{0,2}יד\s+ה?קדמית/,
     'יד אחורית': /(?:^|[^א-ת])[ובלה]{0,2}יד\s+ה?אחורית/,
     'רגל': /(?:^|[^א-ת])[ובלה]{0,2}רגל(?=$|[^א-ת])/
@@ -121,9 +122,30 @@
     return first;
   }
 
+  // "3 סבבים של 5 דקות" / "4 סיבובים ל-8 דקות" is 15 / 32 minutes, not the 5 or 8
+  // of one round. Returns the round count when the text before the minutes ends
+  // with it, else null.
+  var ROUNDS_BEFORE_RX = /(?:^|[^א-ת\d])(\d+|[א-ת]+)\s*(?:סבבים|סיבובים|סטים|מקצים)\s*(?:של|ל|x|×)?[\s-]*$/i;
+
+  function roundsBefore(prefix) {
+    var m = ROUNDS_BEFORE_RX.exec(prefix);
+    if (!m) return null;
+    var n = /^\d+$/.test(m[1]) ? toInt(m[1]) : hebrewNumber(m[1]);
+    return n && n > 1 ? n : null;
+  }
+
+  // A per-round length is tied like a warm-up length: a stated session length
+  // ("אימון 30 דקות, 3 סבבים של 5 דקות") still wins, and without one the
+  // rounds times the round length is the session.
+  function perRound(n, prefix, amount) {
+    var rounds = roundsBefore(prefix);
+    return rounds ? { n: rounds * n, tied: true } : amount;
+  }
+
   function sessionMinutes(t) {
     return firstAmount(t, /(\S+\s+)?(\d+)\s*(דק\S*)(\s+\S+)?/g, function (m) {
-      return { n: toInt(m[2]), tied: partTied(m[1], m[3], m[4]) };
+      var n = toInt(m[2]);
+      return perRound(n, t.slice(0, m.index) + (m[1] || ''), { n: n, tied: partTied(m[1], m[3], m[4]) });
     });
   }
 
@@ -133,20 +155,34 @@
       var parts = m[2].split(' ');
       var n = hebrewNumber(m[2]);
       var before = '';
+      var prefix = t.slice(0, m.index + m[1].length);
       if (parts.length === 2 && unitValue(parts[0]) === null && tensValue(parts[0]) === null) {
         // "חימום עשר דקות": the first word is not a number, it is the lead.
         before = parts[0];
+        prefix += parts[0] + ' ';
       } else if (!m[1].trim()) {
         before = t.slice(0, m.index).split(/\s+/).pop();
       }
       if (n === null || n <= 0) return null;
-      return { n: n, tied: partTied(before, m[3], m[4]) };
+      return perRound(n, prefix, { n: n, tied: partTied(before, m[3], m[4]) });
     });
   }
 
   // "שעה ושלושת רבעי" / "שעה ו-3 רבעי שעה" is an hour and 45 minutes. Without it the
   // trailing "שלושת רבעי שעה" read as 45, and with no "שעה" after it the prompt fell to 20.
   var THREE_QUARTERS_AFTER_RX = /(?:שעה|שעתיים)\s*ו[\s-]*(?:3|שלושת?)\s*רבעי/;
+
+  // "שעה ועשרים" / "שעה ו-40" / "שעתיים ועשרים וחמש": the minutes after an hour
+  // often come with no "דקות". Without it these fell to the 20-minute default
+  // ("שעתיים ועשרים" to 120). Only when the end, punctuation or a ל/ב/עם/של word
+  // follows, so "שעה ו-5 תרגילים" stays an hour.
+  function bareMinutesAfter(t, hourRx) {
+    var m = t.match(new RegExp(hourRx + '\\s*ו[\\s-]*(\\d{1,2}|[א-ת]+(?: ו[א-ת]+)?)' +
+      '(?=\\s*(?:$|[^א-ת\\s])|\\s+(?:[לב]|עם|של)[א-ת]*(?:$|[^א-ת]))'));
+    if (!m) return null;
+    var n = /^\d/.test(m[1]) ? toInt(m[1]) : hebrewNumber(m[1]);
+    return n !== null && n > 0 && n < 60 ? n : null;
+  }
 
   // Hebrew hour phrases. Checked before the bare minute regex so that
   // "שעה ו-15 דקות" is 75 minutes and not just the trailing "15 דקות".
@@ -160,6 +196,8 @@
       n = minuteWords(t, TWO_HOURS_PLUS_MINUTE_WORDS_RX);
       if (n !== null) return 120 + n;
       if (THREE_QUARTERS_AFTER_RX.test(t)) return 165;
+      n = bareMinutesAfter(t, 'שעתיים');
+      if (n !== null) return 120 + n;
       if (/שעתיים\s*וחצי/.test(t)) return 150;
       if (/שעתיים\s*ורבע/.test(t)) return 135;
       return 120;
@@ -188,6 +226,8 @@
         if (extra) return n + toInt(extra[1]);
         if (/(?:שעות|שעה)\s*וחצי/.test(t)) return n + 30;
         if (/(?:שעות|שעה)\s*ורבע/.test(t)) return n + 15;
+        extra = bareMinutesAfter(t, '(?:שעות|שעה)');
+        if (extra !== null) return n + extra;
         return n;
       }
     }
@@ -198,6 +238,8 @@
     if (n !== null) return 60 + n;
     if (/שעה\s*וחצי/.test(t)) return 90;
     if (/שעה\s*ורבע/.test(t)) return 75;
+    n = bareMinutesAfter(t, 'שעה');
+    if (n !== null) return 60 + n;
     var digits = sessionMinutes(t);
     if (digits && !digits.tied) return digits.n;
     var words = sessionMinuteWords(t);
@@ -217,8 +259,9 @@
   // "איש" (20 איש), "בנים"/"בנות" and "נערים"/"נערות" must end at a word
   // boundary: "אימון אישי", "אישור" and "אישה" are not head counts.
   // Soldiers, pupils, students, athletes, fighters, men and women are trainees
-  // too: "אימון ל-15 חיילים" is fifteen people, not one.
-  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות)|חייל(?:ים|ות)|תלמיד(?:ים|ות|י)|סטודנט(?:ים|יות)|ספורטא(?:ים|יות)|לוחמ(?:ים|ות)|נשים|גברים)(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
+  // too: "אימון ל-15 חיילים" is fifteen people, not one. So are friends,
+  // gymnasts, runners and clients: "אימון ל-4 חברים" is four, not one.
+  var PARTICIPANT_TERM = '(?:חניכ(?:ים|ות)?|מתאמנ(?:ים|ות)?|משתתפ(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|(?:איש|בנ(?:ים|ות)|נער(?:ים|ות)|חייל(?:ים|ות)|תלמיד(?:ים|ות|י)|סטודנט(?:ים|יות)|ספורטא(?:ים|יות)|לוחמ(?:ים|ות)|חבר(?:ים|ות)|מתעמל(?:ים|ות)|רצ(?:ים|ות)|לקוחות|נשים|גברים)(?=$|[^א-ת])|שחקנ(?:ים|יות)?|participants?|athletes?|players?)';
   var DIGITS_BEFORE_TERM = new RegExp('(\\d+)\\s*' + PARTICIPANT_TERM, 'i');
   // Up to two Hebrew words right before the participant term ("שלוש עשרה חניכות",
   // "עשרים וחמישה מתאמנים"). Only a space may separate them.
@@ -325,12 +368,26 @@
   // ("מחולק לשניים", "לחלק לשלושה") is not people.
   var BARE_FOR_N_RX = /(?:^|[^א-ת])ל(שניים|שתיים|שלושה|שלוש|ארבעה|ארבע|חמישה|חמש|שישה|שש|שבעה|שבע|שמונה|תשעה|תשע|עשרה|עשר)(?=\s*(?:$|[^א-ת\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/;
   var SPLIT_WORD_RX = /(?:^|[^א-ת])(?:מחולק|מחולקת|מחולקים|לחלק|חלוקה|מתחלק|מתחלקים|נחלק|מפוצל|לפצל)\s*$/;
+  // The same bare count in digits: "אימון ל-12" / "אימון 30 דקות ל-5". A unit
+  // after the number ("ל-20 דקות", "ל-12 חזרות", "ל-30 min") fails the
+  // lookahead, "ל-60+" is an age, and the far end of a range ("מ-8 ל-12") is
+  // not people.
+  var BARE_FOR_DIGITS_RX = /(?:^|[^א-ת\d])ל\s*-?\s*(\d{1,3})(?![\d+%])(?=\s*(?:$|[^א-תa-z\s])|\s+(?:עם|בלי|ללא|ב[א-ת]+)(?=$|[^א-ת]))/i;
+  var RANGE_FROM_RX = /(?:^|[^א-ת])מ\s*-?\s*\d+\s*$/;
 
   function bareForCount(t) {
     var m = BARE_FOR_N_RX.exec(t);
-    if (!m) return null;
-    if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
-    var n = HEB_UNITS[m[1]];
+    var n = null;
+    if (m) {
+      if (SPLIT_WORD_RX.test(t.slice(0, m.index + 1))) return null;
+      n = HEB_UNITS[m[1]];
+    } else {
+      m = BARE_FOR_DIGITS_RX.exec(t);
+      if (!m) return null;
+      var before = t.slice(0, m.index + 1);
+      if (SPLIT_WORD_RX.test(before) || RANGE_FROM_RX.test(before)) return null;
+      n = toInt(m[1]);
+    }
     return n >= 2 ? n : null;
   }
 
@@ -342,6 +399,22 @@
     var size = /^\d+$/.test(m[2]) ? toInt(m[2]) : hebrewNumber(m[2]);
     if (!groups || !size || groups <= 0 || size <= 0) return null;
     return groups * size;
+  }
+
+  // "2 נגד 2" / "שלושה מול שלושה" / "3 על 3" is a game of two sides, so the
+  // head count is both sides together, unless a unit follows ("3 על 3 דקות"
+  // is time). "על" counts only for equal sides of 2-4: "5 על 5" is the 5x5
+  // strength scheme and "אחד על אחד" a personal session.
+  var MATCHUP_RX = /(?:^|[^א-ת\d])(\d{1,2}|[א-ת]+)\s*(נגד|מול|על)\s*(\d{1,2}|[א-ת]+)(?!\s*(?:דק|שנ|סיבוב|סבב|תרגיל|חזר|סט))(?=$|[^א-ת\d])/;
+
+  function matchupCount(t) {
+    var m = t.match(MATCHUP_RX);
+    if (!m) return null;
+    var a = /^\d+$/.test(m[1]) ? toInt(m[1]) : HEB_UNITS[m[1]];
+    var b = /^\d+$/.test(m[3]) ? toInt(m[3]) : HEB_UNITS[m[3]];
+    if (!a || !b) return null;
+    if (m[2] === 'על' && (a !== b || a < 2 || a > 4)) return null;
+    return a + b;
   }
 
   function parseParticipants(text) {
@@ -371,12 +444,27 @@
       // by the unit size. Runs after the trainee words so "10 חניכים בזוגות"
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
+      if (n === null) n = matchupCount(t);
       if (n === null) n = bareForCount(t);
+      if (n === null) n = selfAndCompanionCount(t);
     }
     // "זוג משקולות" was blanked out above, so a bare "זוג" here is a couple,
     // unless it is negated: "לא בזוגות" / "בלי זוגות" is not a couple.
     if (n === null) return /זוג/.test(t.replace(NEGATED_AUDIENCE_RX, ' ')) ? 2 : null;
     return n && n > 0 ? Math.min(n, 500) : null;
+  }
+
+  // "אימון לשנינו" / "לשלושתנו" counts the speaker and the others, and
+  // "אימון לי ולחבר" / "אני ואשתי" is the speaker plus one person. Without
+  // this both fell back to a single trainee.
+  var ALL_OF_US_RX = /(?:^|[^א-ת])[לב]?(שנינו|שתינו|שלושתנו|ארבעתנו|חמשתנו)(?=$|[^א-ת])/;
+  var ALL_OF_US = { 'שנינו': 2, 'שתינו': 2, 'שלושתנו': 3, 'ארבעתנו': 4, 'חמשתנו': 5 };
+  var SELF_AND_ONE_RX = /(?:^|[^א-ת])(?:לי|אני|אותי|בשבילי)\s+ו(?:ל|עם\s+|את\s+)?ה?(?:חבר|חברה|בן\s+ה?זוג|בת\s+ה?זוג|אשתי|בעלי|אחי|אחותי|אבא|אמא|אבי|אמי|שותף|שותפה|שכן|שכנה|בני|בתי|בן|בת)(?:\s+של?י)?(?=$|[^א-ת])/;
+
+  function selfAndCompanionCount(t) {
+    var m = ALL_OF_US_RX.exec(t);
+    if (m) return ALL_OF_US[m[1]];
+    return SELF_AND_ONE_RX.test(t) ? 2 : null;
   }
 
   // "רמה גבוהה" / "רמה נמוכה" / "רמה בסיסית" describe the trainees' level.
@@ -392,11 +480,17 @@
 
   function parseLevel(text) {
     var t = Infer.fold(text).replace(NEGATED_LEVEL_RX, ' ');
-    if (/מתקדמ|advanced/.test(t) || LEVEL_HIGH_RX.test(t)) return 'advanced';
+    var advanced = /מתקדמ|advanced/.test(t);
     // "רמה בינונית" / "בינוניים" is intermediate too, but "קצב בינוני",
     // "משקל בינוני" and "עצימות בינונית" describe the load, not the trainees.
-    if (/ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t)) return 'intermediate';
-    if (/מתחיל|beginner/.test(t) || LEVEL_LOW_RX.test(t)) return 'beginner';
+    var mid = /ביניים|בינים|(?<!(?:קצב|משקל|עומס|עצימות|מנוחה) )בינוני|intermediate/.test(t);
+    var beginner = /מתחיל|beginner/.test(t);
+    // A mixed group («מתחילים ומתקדמים») is every level, like «לכל הרמות»:
+    // no level filter, or the beginners get advanced-only clips.
+    if (advanced + mid + beginner > 1) return null;
+    if (advanced || LEVEL_HIGH_RX.test(t)) return 'advanced';
+    if (mid) return 'intermediate';
+    if (beginner || LEVEL_LOW_RX.test(t)) return 'beginner';
     return null;
   }
 
@@ -405,10 +499,13 @@
   // so «אימון סיבולת, לא כוח» is an endurance session, not a strength one.
   var NEGATED_GOAL_RX = /(?:^|\s)ו?(?:לא|בלי|ללא)\s+[^\s,]+(?:\s+ו[^\s,]+)*|\b(?:not|no)\s+[a-z]+(?:\s+(?:and|or)\s+[a-z]+)*/g;
   var GOAL_WORD_RX = /כוח|strength|היפרטרופ|hypertroph|מסת|מסה|שריר|בני?ית|הגדלת|muscle|סיבולת|סבולת|אירובי|קרדיו|endurance|cardio|hiit|טבא?טה|tabata|אינטרוול|interval/;
+  // HIIT written in Hebrew: «היט» / «הייט», whole word (opt. ו/ב prefix), so
+  // «היטב» («לבצע היטב») stays out.
+  var HIIT_HEBREW_RX = /(?:^|[^א-ת])[וב]?היי?ט(?![א-ת])/;
 
   function withoutNegatedGoals(t) {
     return t.replace(NEGATED_GOAL_RX, function (phrase) {
-      return GOAL_WORD_RX.test(phrase) ? ' ' : phrase;
+      return GOAL_WORD_RX.test(phrase) || HIIT_HEBREW_RX.test(phrase) ? ' ' : phrase;
     });
   }
 
@@ -419,8 +516,9 @@
 
   function parseGoal(text) {
     var t = withoutNegatedGoals(Infer.fold(text).replace(DEFECTIVE_STRENGTH_RX, '$1$2כוח'));
-    if (/כוח|strength/.test(t) && !/חיזוק/.test(t)) return 'strength';
-    if (/חיזוק כוח/.test(t)) return 'strength';
+    // «חיזוק» elsewhere in the prompt does not cancel it: «אימון כוח וחיזוק
+    // ליבה» is still a strength session.
+    if (/כוח|strength/.test(t)) return 'strength';
     // "muscular endurance" names a muscle but is an endurance goal.
     if (/muscular endurance/.test(t)) return 'endurance';
     if (/היפרטרופ|hypertroph|מסת שריר|muscle/.test(t)) return 'hypertrophy';
@@ -432,7 +530,7 @@
     if (/סיבולת|סבולת|אירובי|קרדיו|endurance|cardio/.test(t)) return 'endurance';
     // HIIT, Tabata («טבטה» / «טבאטה») and intervals are short work bouts with
     // short rests: the same endurance stimulus, not a prompt with no goal.
-    if (/hiit|טבא?טה|tabata|אינטרוול|interval/.test(t)) return 'endurance';
+    if (/hiit|טבא?טה|tabata|אינטרוול|interval/.test(t) || HIIT_HEBREW_RX.test(t)) return 'endurance';
     if (/ליבה|ייצוב|core/.test(t) && /מטרה|גירוי/.test(t)) return 'core';
     return null;
   }
@@ -440,12 +538,17 @@
   // "בלי משקולות" / "ללא גומיות ומשקולות" rules the gear out. The negated words
   // (and any joined to them with ו־) are cut before inferring, so «אימון רגליים
   // בלי משקולות» is not a dumbbell request that matches no clip. The negation
-  // may carry ו־ («עם גומיות וללא משקולות»).
-  var NEGATED_GEAR_RX = /(?:^|\s)ו?(?:בלי|ללא)\s+(?:שום\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
+  // may carry ו־ («עם גומיות וללא משקולות»). A two-word gear name («כדורי
+  // טניס», «כדור כדורסל», «מוט מתח», «מכונות כושר») is cut whole, so its
+  // second word is not left behind as a request for that gear.
+  var NEGATED_GEAR_RX = /(?:^|\s)ו?(?:בלי|ללא)\s+(?:שום\s+)?(?:(?:כדור|כדורי|מוט|מוטות|רצוע(?:ה|ת|ות)|מכונ(?:ה|ת|ות))\s+)?[^\s,]+(?:\s+ו[^\s,]+)*/g;
 
   function parseEquipment(text) {
     var t = Infer.fold(text);
-    if (/בלי ציוד|ללא ציוד|בלי שום ציוד|משקל גוף|bodyweight/.test(t)) return ['none'];
+    // «ללא שום ציוד», «בלי אביזרים» and «במשקל הגוף» say the same thing as
+    // «בלי ציוד»; they used to fall through to no filter at all, and «אימון
+    // רגליים ללא שום ציוד» came out as band and football drills.
+    if (/(?:בלי|ללא)\s+(?:שום\s+)?(?:ציוד|אביזר)|משקל\s+ה?גוף|bodyweight/.test(t)) return ['none'];
     var negated = t.match(NEGATED_GEAR_RX);
     var ruledOut = negated && Infer.inferEquipment(negated.join(' '))[0] !== 'none';
     if (negated) t = t.replace(NEGATED_GEAR_RX, ' ');

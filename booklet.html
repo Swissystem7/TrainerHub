@@ -183,12 +183,16 @@
     return '<' + (tag || 'ul') + '>' + items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</' + (tag || 'ul') + '>';
   }
   function credit(id) { return '<p class="credit">' + esc(B.credit(id)) + '</p>'; }
+  // «מרוץ שליחים» (20 minutes) showed «1200 שנ׳»: whole minutes read «20 דק׳», «45 שנ׳» stays.
+  function secs(seconds) {
+    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
+  }
   function fmtEx(x) {
     var bits = [];
     if (x.sets && x.sets > 1) bits.push(x.sets + ' סבבים');
     if (x.reps != null) bits.push(x.reps + ' חזרות');
-    if (x.duration_seconds) bits.push(x.duration_seconds + ' שנ׳');
-    if (x.rest_seconds) bits.push('מנוחה ' + x.rest_seconds + ' שנ׳');
+    if (x.duration_seconds) bits.push(secs(x.duration_seconds));
+    if (x.rest_seconds) bits.push('מנוחה ' + secs(x.rest_seconds));
     var clip = x.id && TH.catalog && TH.catalog[x.id] ? ' <span class="pill clip">יש סרטון</span>' : '';
     return '<li><strong>' + esc(x.name) + '</strong>' + clip + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') + (x.notes ? '<div class="muted" style="white-space:pre-line">' + esc(x.notes) + '</div>' : '') + '</li>';
   }
@@ -243,7 +247,8 @@
     var qVal = ($('dq').value || '').trim();
     var catVal = $('cat').value;
     var items = B.drills({ category: catVal, q: qVal });
-    $('drillStats').textContent = items.length + ' תרגילים';
+    // A search with one hit read «1 תרגילים».
+    $('drillStats').textContent = items.length === 1 ? 'תרגיל אחד' : items.length + ' תרגילים';
     var out = $('drillOut');
     if (!items.length) {
       out.innerHTML = '<div class="card empty-drills" role="status">' +
@@ -416,9 +421,11 @@
     TH.copyOrShow(shared.url, host, function () {
       var btn = $('share');
       if (btn) {
-        var orig = btn.textContent;
+        // A second click within the 1.4 s must not save «הועתק» as the label to restore.
+        if (!btn.thLabel) btn.thLabel = btn.textContent;
         btn.textContent = 'הועתק';
-        setTimeout(function () { btn.textContent = orig; }, 1400);
+        clearTimeout(btn.thLabelTimer);
+        btn.thLabelTimer = setTimeout(function () { btn.textContent = btn.thLabel; }, 1400);
       }
     });
   });

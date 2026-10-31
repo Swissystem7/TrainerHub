@@ -58,9 +58,9 @@ test('reps without sets print as «N חזרות»', function () {
   assert.equal(row.detail, '15 חזרות');
 });
 
-test('sets × reps, timed sets and a one-set timed warm-up are unchanged', function () {
+test('sets × reps and timed sets are unchanged; a one-set warm-up is «3 דק׳»', function () {
   const r = printRows('אימון כוח\nשכיבות סמיכה 3x12\nפלאנק 3x30 שניות');
   assert.equal(r.rows['שכיבות סמיכה'].detail, '3 × 12');
   assert.equal(r.rows['פלאנק'].detail, '3 × 30 שנ׳');
-  assert.equal(r.rows['חימום כללי'].detail, '1 × 180 שנ׳');
+  assert.equal(r.rows['חימום כללי'].detail, '3 דק׳');
 });

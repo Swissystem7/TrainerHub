@@ -37,6 +37,9 @@
   // How many trainees each width holds working together before splitting into waves/stations.
   var CAPACITY = { narrow: 8, medium: 16, wide: 40 };
 
+  // The opening session's relay race splits the group into equal teams; it takes two teams of two.
+  var MIN_RELAY_GROUP = 4;
+
   var HAZARD_LINES = {
     cars: 'זוהו מכוניות: לסמן גבול אימון הרחק מהכביש, בלי ריצות לכיוון הכביש ובלי משחקי רדיפה ליד החניה.',
     uneven: 'משטח לא אחיד: בלי ספרינטים ושינויי כיוון חדים, לבדוק את השטח לפני האימון.',
@@ -52,6 +55,18 @@
     if (!w) return null;
     for (var i = 0; i < w.sections.length; i++) if (w.sections[i].he === sectionHe) return w.sections[i].points[0];
     return null;
+  }
+
+  // What a site feature stands in for in the booklet's stretch bank: a stair or bench is the
+  // raised surface («על מדרגה», «על משטח מוגבה»), playground frames are the bar to hang from.
+  // A towel is nothing the scan sees, so its stretch never qualifies.
+  var STRETCH_GEAR = { step: ['stairs', 'bench'], pullup_bar: ['playground'] };
+
+  function stretchFits(name, features) {
+    var d = Booklet.drills({ category: 'flexibility' }).filter(function (x) { return x.he === name; })[0];
+    return !d || (d.equipment || []).every(function (e) {
+      return e === 'none' || (STRETCH_GEAR[e] || []).some(function (f) { return features.indexOf(f) !== -1; });
+    });
   }
 
   // Slippery floor slows every site drill; uneven floor only the running ones (its warning says no sprints).
@@ -100,7 +115,9 @@
    * Which base workout fits the width. Narrow space → a limited-space method from the booklet.
    * A wide site only gets the opening session when it is safe to run on: that session opens its
    * Main phase with a relay race, which the plan itself rules out on a slippery / uneven floor
-   * ("בלי ספרינטים"), next to cars ("לא שילבתי ... שליחים") and in dim light ("להקטין את המרחקים").
+   * ("בלי ספרינטים"), next to cars ("לא שילבתי ... שליחים") and in dim light ("להקטין את המרחקים"),
+   * and only for a group big enough to split into relay teams: one to three trainees got 20 minutes
+   * of «מחלקים את הצוות לקבוצות שוות».
    */
   function baseChoice(p, group, unsafeFloor, cars, dark) {
     if (p.width === 'narrow') {
@@ -108,8 +125,9 @@
       return { kind: 'method', id: 'tabata', reason: 'בחרתי טבטה כי השטח צר ואפשר לעבוד במקום' };
     }
     if (p.width === 'medium') return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) כי השטח בינוני' };
-    if (unsafeFloor || cars || dark) {
-      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + noRunWhy(unsafeFloor, cars) };
+    if (unsafeFloor || cars || dark || group < MIN_RELAY_GROUP) {
+      var why = (unsafeFloor || cars || dark) ? noRunWhy(unsafeFloor, cars) : 'אין מספיק מתאמנים לשתי קבוצות שליחים';
+      return { kind: 'method', id: 'combined', reason: 'בחרתי אימון משולב (אירובי + כוח) ולא את אימון הפתיחה עם מרוץ השליחים כי ' + why };
     }
     return { kind: 'session', id: 'opening-1', reason: 'בחרתי אימון פתיחה מהחוברת כי השטח רחב ומאפשר ריצות' };
   }
@@ -146,7 +164,9 @@
     var dark = p.hazards.indexOf('dark') !== -1;
 
     var base = baseChoice(p, group, unsafeFloor, cars, dark);
-    var bopts = { season: winter ? 'winter' : 'summer', activity: 'long' };
+    // The warm-up draws only on what the site has: «ריצה קלה במדרגות» needs stairs, the
+    // jump-rope run a rope the scan never sees.
+    var bopts = { season: winter ? 'winter' : 'summer', activity: 'long', gear: p.features };
     var workout = base.kind === 'method' ? Booklet.methodWorkout(base.id, 0, bopts) : Booklet.sessionWorkout(base.id, bopts);
     reasons.push(base.reason);
 
@@ -161,6 +181,14 @@
     if (p.features.some(function (f) { return SITE_DRILLS[f]; })) workout.tags.push('site');
 
     var warm = workout.phases[0];
+    // The booklet warm-up is running drills («ריצה לפנים…», «ריצה בהרמת בירכיים»); a slippery
+    // floor slows them like the site drills, as its own warning says («להימנע מריצות»).
+    if (slippery) {
+      warm.exercises.forEach(function (x) {
+        var note = floorNote(x, true, false);
+        x.notes = x.notes ? x.notes + ' · ' + note : note;
+      });
+    }
     if (p.width === 'wide' && group >= 6 && !unsafeFloor && !cars && !dark) {
       var game = Booklet.games('tag')[0];
       if (game) {
@@ -172,6 +200,11 @@
     } else if (group >= 6) {
       reasons.push('לא שילבתי משחקי תופסת או שליחים כי ' + noRunWhy(unsafeFloor, cars));
     }
+
+    // The closing stretches come from the whole bank, step and bar stretches included; a site
+    // without them keeps only the ones it can host.
+    var cool = workout.phases[workout.phases.length - 1];
+    cool.exercises = cool.exercises.filter(function (x) { return stretchFits(x.name, p.features); });
 
     settleMinutes(workout);
 

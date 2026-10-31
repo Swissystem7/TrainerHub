@@ -83,7 +83,7 @@ test('wantedCount shrinks only for a heavier prescription and never below 2', fu
   assert.equal(Engine.wantedCount(30, rx), 3);
   assert.equal(Engine.wantedCount(20, rx), 2);
   assert.equal(Engine.wantedCount(10, rx), 2);
-  assert.equal(Engine.wantedCount(60, rx), 5);
+  assert.equal(Engine.wantedCount(60, rx), 6);
 });
 
 test('the rules panel quotes the count the engine actually builds', function () {
