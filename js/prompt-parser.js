@@ -400,6 +400,22 @@
     return groups * size;
   }
 
+  // "2 נגד 2" / "שלושה מול שלושה" / "3 על 3" is a game of two sides, so the
+  // head count is both sides together, unless a unit follows ("3 על 3 דקות"
+  // is time). "על" counts only for equal sides of 2-4: "5 על 5" is the 5x5
+  // strength scheme and "אחד על אחד" a personal session.
+  var MATCHUP_RX = /(?:^|[^א-ת\d])(\d{1,2}|[א-ת]+)\s*(נגד|מול|על)\s*(\d{1,2}|[א-ת]+)(?!\s*(?:דק|שנ|סיבוב|סבב|תרגיל|חזר|סט))(?=$|[^א-ת\d])/;
+
+  function matchupCount(t) {
+    var m = t.match(MATCHUP_RX);
+    if (!m) return null;
+    var a = /^\d+$/.test(m[1]) ? toInt(m[1]) : HEB_UNITS[m[1]];
+    var b = /^\d+$/.test(m[3]) ? toInt(m[3]) : HEB_UNITS[m[3]];
+    if (!a || !b) return null;
+    if (m[2] === 'על' && (a !== b || a < 2 || a > 4)) return null;
+    return a + b;
+  }
+
   function parseParticipants(text) {
     var t = withoutGearPairs(Infer.fold(String(text || '')));
     // "3 קבוצות של 5 חניכים" counts every group, so it runs before the
@@ -427,6 +443,7 @@
       // by the unit size. Runs after the trainee words so "10 חניכים בזוגות"
       // keeps its explicit 10.
       if (n === null) n = groupUnitCount(t);
+      if (n === null) n = matchupCount(t);
       if (n === null) n = bareForCount(t);
       if (n === null) n = selfAndCompanionCount(t);
     }
