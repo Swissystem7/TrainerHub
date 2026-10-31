@@ -69,6 +69,7 @@
 
   // Mirrors the full-body branch in THPrompt.parseMuscles — an empty muscle list
   // can mean "you asked for full body" or "we could not tell", and the source differs.
+  // Tested on Infer.fold(raw) like the parser, so «Full Body» and «גוף־מלא» match.
   var FULL_BODY_RX = /פול.?בודי|פול בודי|גוף מלא|full.?body|כל הגוף/;
 
   function esc(s) {
@@ -96,6 +97,7 @@
       return {
         raw: String(req.raw == null ? '' : req.raw),
         muscles: Array.isArray(req.muscles) ? req.muscles : [],
+        excludedMuscles: Array.isArray(req.excludedMuscles) ? req.excludedMuscles : [],
         focus: req.focus || 'full',
         duration: Number(req.duration) || 20,
         durationSpecified: !!req.durationSpecified,
@@ -185,7 +187,11 @@
         if (req.muscles.length) {
           return { value: muscleLabels(req.muscles), source: 'prompt' };
         }
-        if (FULL_BODY_RX.test(req.raw)) {
+        // «אימון בלי רגליים» is a request too: the engine drops those clips.
+        if (req.excludedMuscles.length) {
+          return { value: 'גוף מלא בלי ' + muscleLabels(req.excludedMuscles), source: 'prompt' };
+        }
+        if (FULL_BODY_RX.test(Infer.fold(req.raw))) {
           return { value: 'גוף מלא', source: 'prompt' };
         }
         return { value: 'גוף מלא — לא זוהתה קבוצת שריר בתיאור', source: 'default' };
