@@ -647,6 +647,22 @@
     return line;
   }
 
+  // «10 חזרות ניתור לאדמה וגלגול», «4 מטר תנועה לפנים ונגיעה»: a «ו» tail that only
+  // finishes the move (a touch, a roll, a landing, getting back up) is part of its name - it was split
+  // off as a phantom exercise of 10 invented reps. «10 שכיבות סמיכה ומתח» and «10 סקוואט ו12 מתח» still split.
+  var MOVE_TAIL_RX = /^\s*(?:נגיעה|נגיעות|גלגול|גלגולים|נחיתה|קימה|חזרה|חזרה לעמידה)(?:\s+(?:ב|ל|על)[^\s\d]*)*(?=\s*(?:\d|[.:]|$))/;
+
+  function maskMoveTails(line) {
+    return String(line || '').split(/([,،;|•·←→]|\s-+>\s|\s<-+\s)/).map(function (seg, i) {
+      if (i % 2 || seg.indexOf('(') !== -1) return seg;
+      var parts = seg.split(/(\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿]))/);
+      for (var j = 2; j < parts.length; j += 2) {
+        if (MOVE_TAIL_RX.test(parts[j])) parts[j - 1] = parts[j - 1].replace('ו', VAV_MASK);
+      }
+      return parts.join('');
+    }).join('');
+  }
+
   // Pieces on one line: a comma, a «ו» before the next exercise, and the inline separators a
   // pasted list uses instead of a comma - «סופרמן 3x10 | פלאנק 30 שניות», «;», « • », «←», «->».
   var PIECE_SEP_RX = /[,،;|•·←→]|\s-+>\s|\s<-+\s|\s+ו(?!חצי|רבע)(?=\d|\s*[֐-׿])/;
@@ -801,7 +817,7 @@
       line = splitSlash(line);
       // A title line inside the paste («אימון כוח», «תוכנית שבועית») unless it is a clip.
       if (!/\d/.test(line) && TITLE_RX.test(line.replace(/[*#_~]/g, ' ').trim()) && !matchName(line.replace(/[*#_~]/g, ' ').trim(), list || [])) return;
-      var pieces = splitPieces(maskVavNames(line, vavRxs))
+      var pieces = splitPieces(maskMoveTails(maskVavNames(line, vavRxs)))
         .map(function (s) { return s.split(VAV_MASK).join('ו').replace(/^[•\-*]\s*/, '').replace(/[.:]+$/, '').trim(); })
         .filter(function (s) {
           if (s.length <= 1) return false;
