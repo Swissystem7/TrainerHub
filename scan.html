@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta name="description" content="סריקת סביבה: מצלמים את מקום האימון ומקבלים תרגילים מהספרייה לפי הציוד שיש.">
+  <title>TrainerHub | סריקת סביבה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root {
+      --bg:#070A12; --card:#101624; --ink:#fff; --muted:#b7c3d6;
+      --line:rgba(0,209,255,.22); --cyan:#00D1FF; --cta:#FF7A1A; --ok:#00FF88;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--ink);
+      font-family: "Heebo", "Assistant", Arial, sans-serif;
+      background:
+        radial-gradient(800px 360px at 100% -10%, rgba(0,209,255,.14), transparent 55%),
+        var(--bg);
+    }
+    .wrap { max-width: 980px; margin: auto; padding: 18px 16px 72px; }
+    h1 { font-weight: 900; font-size: clamp(1.7rem, 5vw, 2.4rem); margin: 6px 0; }
+    h2 { font-size: 1.15rem; font-weight: 900; margin: 0 0 8px; }
+    p { color: var(--muted); line-height: 1.55; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+      padding: 16px; margin-top: 14px;
+    }
+    .capture { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    label.file {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
+      border-radius: 14px; background: var(--cta); color: #1a0e06; font-weight: 800; cursor: pointer;
+    }
+    input[type="file"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    button {
+      min-height: 44px; border-radius: 14px; border: 1px solid var(--line); background: transparent;
+      color: var(--ink); font: inherit; font-weight: 800; padding: 0 14px; cursor: pointer;
+    }
+    button.primary { background: var(--cta); color: #1a0e06; border: 0; }
+    button:focus-visible, .file:focus-within { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    video, img.preview, canvas { width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; background: #000; margin-top: 12px; }
+    video[hidden], img[hidden], canvas[hidden], [hidden] { display: none !important; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted);
+      min-height: 40px; padding: 0 12px;
+    }
+    .chip[aria-pressed="true"] { color: #041018; background: var(--cyan); border-color: var(--cyan); }
+    .chip:disabled { opacity: 1; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: rgba(0,209,255,.12); color: var(--cyan); border-radius: 999px; padding: 4px 8px; font-size: .8rem; }
+    .day { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+    .day h3 { margin: 0 0 8px; color: var(--cta); font-weight: 900; }
+    .ex { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .ex b { font-weight: 700; }
+    .ex span { color: var(--muted); font-size: .82rem; }
+    .status { min-height: 1.2em; color: var(--ok); }
+    @media (min-width: 800px) {
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    }
+  </style>
+<script src="./js/sentry-init.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#photo">דלג לצילום</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./exercises.html">ספריית תרגילים</a>
+  <span class="chip on" aria-current="page">סריקת סביבה</span>
+  <a href="./library.html">ספריית סרטונים</a>
+</nav>
+<div class="th-banner">בלי מפתח הראייה רצה בדפדפן, או לפי הציוד שתסמנו. התמונה לא נשמרת בשרת.</div>
+<main class="wrap">
+  <header>
+    <small style="color:var(--cyan);font-weight:800">TRAINERHUB / SCAN</small>
+    <h1>סריקת סביבה</h1>
+    <p>מצלמים פארק, חדר או מרפסת. האימון נבנה רק מתרגילי הספרייה שהציוד שלהם נמצא, או ממשקל גוף.</p>
+  </header>
+
+  <section class="card" aria-labelledby="capHeading">
+    <h2 id="capHeading">צילום המקום</h2>
+    <div class="capture">
+      <label class="file" for="photo">העלאת תמונה או מצלמה</label>
+      <input id="photo" type="file" accept="image/*" capture="environment">
+      <button type="button" id="openCam">מצלמה חיה</button>
+      <button type="button" id="snap" hidden>צלם עכשיו</button>
+      <button type="button" id="closeCam" hidden>סגור מצלמה</button>
+    </div>
+    <video id="cam" playsinline autoplay muted hidden></video>
+    <canvas id="frame" hidden></canvas>
+    <img id="preview" class="preview" alt="התמונה שצולמה" hidden>
+    <p class="status" id="status" role="status"></p>
+  </section>
+
+  <section class="card" aria-labelledby="gearHeading">
+    <h2 id="gearHeading">ציוד שזיהינו</h2>
+    <p id="envLine">עדיין אין תמונה. אפשר לסמן ציוד גם בלי צילום.</p>
+    <div class="tags" id="detected" aria-label="תגיות שזוהו"></div>
+    <h3>מה יש במקום</h3>
+    <div class="chips" id="equipChips" role="group" aria-label="בחירת ציוד ידנית"></div>
+  </section>
+
+  <section class="card" aria-labelledby="planHeading">
+    <h2 id="planHeading">אימון מוצע</h2>
+    <p id="notes"></p>
+    <div id="plan"></div>
+    <button type="button" class="primary" id="loadPlan">טען לבונה האימון</button>
+  </section>
+</main>
+<script src="./js/core.js"></script>
+<script src="./js/reel-library.js"></script>
+<script src="./js/scan-match.js"></script>
+<script>
+(function () {
+  var library = [];
+  var last = null;
+  var stream = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function setStatus(text) { $('status').textContent = text || ''; }
+
+  function selectedTags() {
+    var tags = ['bodyweight'];
+    document.querySelectorAll('#equipChips .chip').forEach(function (btn) {
+      if (btn.getAttribute('aria-pressed') === 'true') tags.push(btn.getAttribute('data-tag'));
+    });
+    return tags;
+  }
+
+  function syncChips(tags) {
+    var have = {};
+    (tags || []).forEach(function (tag) { have[tag] = true; });
+    document.querySelectorAll('#equipChips .chip').forEach(function (btn) {
+      var tag = btn.getAttribute('data-tag');
+      if (tag === 'bodyweight') {
+        btn.setAttribute('aria-pressed', 'true');
+        btn.disabled = true;
+        return;
+      }
+      btn.disabled = false;
+      btn.setAttribute('aria-pressed', have[tag] ? 'true' : 'false');
+    });
+  }
+
+  function renderPlan() {
+    var env = (last && last.detected_environment) || THScan.manualEnvironment();
+    var detected = (last && last.detected_equipment) || [];
+    $('envLine').textContent = env.description_he + ' · ' + env.type + ' · ' + env.space;
+    $('detected').innerHTML = detected.map(function (row) {
+      var label = THScan.TAG_LABELS[row.tag] || row.tag;
+      return '<span class="tag">' + TH.esc(label) + ' ' + Math.round((row.confidence || 0) * 100) + '%</span>';
+    }).join('') || '<span class="tag">משקל גוף</span>';
+    var result = THScan.buildScanResult(library, {
+      available_tags: selectedTags(),
+      detected_equipment: detected,
+      detected_environment: env
+    });
+    last = result;
+    $('notes').textContent = result.notes_he;
+    var plan = result.suggested_weekly_plan;
+    var byCode = {};
+    library.forEach(function (ex) { byCode[ex.id.replace(/^ig-/, '')] = ex; });
+    var html = '';
+    for (var i = 1; i <= plan.days; i++) {
+      var day = plan['day_' + i];
+      if (!day) continue;
+      html += '<section class="day"><h3>יום ' + i + ' · ' + TH.esc(day.focus) + '</h3>';
+      day.exercises.forEach(function (code) {
+        var ex = byCode[code];
+        if (!ex) return;
+        html += '<div class="ex"><b>' + TH.esc(ex.name_he) + '</b><span>' + TH.esc(ex.muscle_group) + ' · ' + TH.esc(ex.sets_reps) + '</span></div>';
+      });
+      html += '</section>';
+    }
+    if (!html) html = '<p>אין תרגילים שמתאימים לציוד שסומן.</p>';
+    $('plan').innerHTML = html;
+  }
+
+  function applyDetection(detected, env, note) {
+    last = { detected_equipment: detected, detected_environment: env };
+    syncChips((detected || []).map(function (row) { return row.tag; }));
+    setStatus(note || '');
+    renderPlan();
+  }
+
+  function loadCoco() {
+    if (window.cocoSsd) return Promise.resolve(window.cocoSsd);
+    function add(src) {
+      return new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+    return add('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js').then(function () {
+      return add('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');
+    }).then(function () { return window.cocoSsd; });
+  }
+
+  function detect(img) {
+    var endpoint = window.TH_SCAN_ENDPOINT || '';
+    var remote = endpoint
+      ? fetch(img.src).then(function (r) { return r.blob(); }).then(function (blob) {
+          return fetch(endpoint, { method: 'POST', body: blob, headers: { 'content-type': blob.type || 'image/jpeg' } });
+        }).then(function (res) { return res.ok ? res.json() : null; }).catch(function () { return null; })
+      : Promise.resolve(null);
+    setStatus('מזהה ציוד…');
+    remote.then(function (payload) {
+      if (payload && payload.detected_environment) {
+        applyDetection(payload.detected_equipment || [], payload.detected_environment, 'זיהוי ממודל הראייה. אפשר לתקן את הצ׳יפים.');
+        return;
+      }
+      loadCoco().then(function (coco) { return coco.load(); }).then(function (model) {
+        return model.detect(img);
+      }).then(function (preds) {
+        applyDetection(
+          THScan.tagsFromCoco(preds, img.naturalWidth || img.width, img.naturalHeight || img.height),
+          THScan.environmentFromCoco(preds),
+          'זיהוי מקומי בדפדפן. אפשר לתקן את הצ׳יפים.'
+        );
+      }).catch(function () {
+        applyDetection([], THScan.manualEnvironment(), 'הזיהוי האוטומטי לא נטען. סמנו את הציוד שיש לכם.');
+      });
+    });
+  }
+
+  function showPreview(src) {
+    var img = $('preview');
+    img.onload = function () { detect(img); };
+    img.hidden = false;
+    img.src = src;
+    $('cam').hidden = true;
+  }
+
+  function stopCam() {
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    stream = null;
+    $('cam').hidden = true;
+    $('snap').hidden = true;
+    $('closeCam').hidden = true;
+  }
+
+  $('equipChips').innerHTML = THScan.EQUIPMENT_TAGS.map(function (tag) {
+    var pressed = tag === 'bodyweight' ? 'true' : 'false';
+    var dis = tag === 'bodyweight' ? ' disabled' : '';
+    return '<button type="button" class="chip" data-tag="' + tag + '" aria-pressed="' + pressed + '"' + dis + '>' +
+      TH.esc(THScan.TAG_LABELS[tag] || tag) + '</button>';
+  }).join('');
+  $('equipChips').addEventListener('click', function (e) {
+    var btn = e.target.closest('.chip');
+    if (!btn || btn.disabled) return;
+    btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    renderPlan();
+  });
+
+  $('photo').addEventListener('change', function () {
+    var file = $('photo').files && $('photo').files[0];
+    if (!file) return;
+    showPreview(URL.createObjectURL(file));
+  });
+  $('openCam').addEventListener('click', function () {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setStatus('הדפדפן לא פתח מצלמה. אפשר להעלות תמונה.');
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function (media) {
+      stream = media;
+      $('cam').srcObject = media;
+      $('cam').hidden = false;
+      $('snap').hidden = false;
+      $('closeCam').hidden = false;
+    }).catch(function () {
+      setStatus('אין גישה למצלמה. אפשר להעלות תמונה.');
+    });
+  });
+  $('snap').addEventListener('click', function () {
+    var video = $('cam');
+    var canvas = $('frame');
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    stopCam();
+    showPreview(canvas.toDataURL('image/jpeg', 0.85));
+  });
+  $('closeCam').addEventListener('click', stopCam);
+
+  $('loadPlan').addEventListener('click', function () {
+    if (!last || !last.suggested_weekly_plan || !last.suggested_weekly_plan.days) {
+      setStatus('אין אימון לטעינה. סמנו ציוד קודם.');
+      return;
+    }
+    var workouts = THScan.workoutsFromPlan(last.suggested_weekly_plan, library);
+    THReels.saveWorkouts(THScan.mergeScanWorkouts(THReels.loadWorkouts(), workouts));
+    if (workouts[0]) {
+      THReels.saveDraft({ title: workouts[0].title, savedId: workouts[0].id, items: workouts[0].exercises });
+    }
+    window.location.href = './exercises.html';
+  });
+
+  fetch('./data/exercises.json', { cache: 'no-cache' }).then(function (res) { return res.json(); }).then(function (data) {
+    library = data.exercises || [];
+    renderPlan();
+  }).catch(function () {
+    $('notes').textContent = 'ספריית התרגילים לא נטענה.';
+  });
+})();
+</script>
+</body>
+</html>

@@ -9,6 +9,7 @@ import asyncio
 
 from demo_workout import DEMO_WORKOUT
 from parser import parse_workout_json, validate_workout
+import environment_scan
 import site_scan
 
 app = FastAPI(title="TrainerHub API")
@@ -85,6 +86,16 @@ async def parse_workout(req: WorkoutRequest):
         raise HTTPException(502, "AI returned an unusable workout: " + "; ".join(problems))
 
     return {"success": True, "workout": workout}
+
+
+@app.post("/api/environment-scan")
+async def environment_scan_route(request: Request):
+    # Optional vision model. TH_VISION_ENDPOINT empty -> 503, and the page
+    # uses the in-browser detector plus the manual equipment chips.
+    raw = await request.body()
+    ctype = request.headers.get("content-type", "application/octet-stream")
+    status, body = await asyncio.to_thread(environment_scan.scan_image, raw, ctype, os.environ)
+    return JSONResponse(body, status_code=status)
 
 
 @app.post("/api/site-scan")

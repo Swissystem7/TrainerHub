@@ -4,7 +4,7 @@
 
 **למי נבנה:** מאמנים אישיים עצמאיים בישראל שרוצים תוכנית מותאמת (מטרה, רמה, ציוד, ימים) בלי אקסל. זה גם כלי תרגול למתאמן בודד.
 
-**[דמו חי על GitHub Pages](https://swissystem7.github.io/TrainerHub/)** · [בנה אימון](https://swissystem7.github.io/TrainerHub/) · [ספריית הסרטונים](https://swissystem7.github.io/TrainerHub/library.html) · [יומן ביצוע](https://swissystem7.github.io/TrainerHub/journal.html) · [הצעה למאמנים](https://swissystem7.github.io/TrainerHub/offer.html) · [דף אחד להדפסה](https://swissystem7.github.io/TrainerHub/pitch.html) · [ניהול מאגר](https://swissystem7.github.io/TrainerHub/manage.html) · [טקסט לכרטיסייה](https://swissystem7.github.io/TrainerHub/frontend/) · [מצב אימון](https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html)
+**[דמו חי על GitHub Pages](https://swissystem7.github.io/TrainerHub/)** · [בנה אימון](https://swissystem7.github.io/TrainerHub/) · [ספריית הסרטונים](https://swissystem7.github.io/TrainerHub/library.html) · [ספריית תרגילים](https://swissystem7.github.io/TrainerHub/exercises.html) · [יומן ביצוע](https://swissystem7.github.io/TrainerHub/journal.html) · [הצעה למאמנים](https://swissystem7.github.io/TrainerHub/offer.html) · [דף אחד להדפסה](https://swissystem7.github.io/TrainerHub/pitch.html) · [ניהול מאגר](https://swissystem7.github.io/TrainerHub/manage.html) · [טקסט לכרטיסייה](https://swissystem7.github.io/TrainerHub/frontend/) · [מצב אימון](https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html)
 
 ---
 
@@ -18,7 +18,8 @@
 - **ליבה משותפת** (`js/core.js` + `js/catalog.json` + `videos/drive-catalog.json`): סכימת `phases`, `esc`, אחסון, `wa.me`, מנוע התוכנית, וקטלוג מאוחד עם שדה `source` (מקומי / דרייב / יוטיוב / קישור). כשהקטלוג טעון המנוע **מעדיף קליפים אמיתיים** על מאגר גנרי. חיפוש, תגיות (ילדים / זוגות / ספורט), חלופות, ולינק לקליפ בודד (`#CLIP.`) — בלי שם קובץ בכתובת. בדיקות: `node --test` (בלי תלויות) על המנוע, הקטלוג, הפרסר, המנתח, הספרייה, קוד הסיום ל־`wa.me`, וסכימת `phases`.
 - **ספריית סרטונים** (`library.html`): 70 רשומות הותאמו ל־68 קובצי OneDrive אמיתיים ונארזו כווידאו H.264 ציבורי דרך GitHub Releases. שמונה רשומות ללא קובץ מסומנות כלא זמינות ואינן נבחרות לאימון. בלי רשת או במקרה שגיאה מוצגים פרטי התרגיל במקום נגן שבור. שמות קבצים לא מוצגים.
 - **ניהול מאגר** (`manage.html`): הדבקת קישור דרייב / מזהה / יוטיוב → הצעת שריר/ציוד/רמה → שמירה ב־localStorage וייצוא JSON. קישור חיצוני נשמר כקישור שנפתח בחוץ — לא חיבור למאמנים ולא חיפוש ביוטיוב.
-- **בונה שבועי** (`weekly.html`): מטרה משנה סטים/חזרות/מנוחה (כוח 4×4–6 / 120 שנ׳, היפרטרופיה 3×8–12 / 60 שנ׳, סיבולת 3×12–15 / 45 שנ׳). ציוד כולל גומיות/קונוסים/כדור (מה שיש בספרייה), וקהל ילדים/ספורט. תרגיל עם קליפ מסומן; אפשר להחליף לחלופה מאותה ספרייה. **התחל אימון** פותח את מצב האימון עם אותה סכימת `phases`.
+- **בונה שבועי** (`weekly.html`): מטרה משנה סטים/חזרות/מנוחה (כוח 4×4–6 / 120 שנ׳, היפרטרופיה 3×8–12 / 60 שנ׳, סיבולת 3×12–15 / 45 שנ׳). ציוד כולל גומיות/קונוסים/כדור (מה שיש בספרייה), וקהל ילדים/ספורט. תרגיל עם קליפ מסומן; אפשר להחליף לחלופה מאותה ספרייה. **התחל אימון** פותח את מצב האימון עם אותה סכימת `phases`. אימונים שנשמרו מ[ספריית התרגילים](exercises.html) מופיעים בראש הדף; «הצג בתוכנית השבועית» (או כתובת `#reel-plan`) מציב כל אימון שמור כיום בתוכנית, עם אותם כפתורי התחלה, תצוגת מתאמן, שיתוף והדפסה.
+- **ספריית תרגילים מרילים** (`exercises.html` + `data/exercises.json` + `js/reel-library.js`): איחוד רשימת הרילים והמיפוי — 79 רשומות. חיפוש וסינון לפי קבוצת שריר בעברית, כרטיס עם קישור לריל, ובניית אימון (סטים וחזרות לכל תרגיל) שנשמר ב־localStorage ומוצג בבונה השבועי. הפירוט מגיע ממיפוי צפייה אוטומטי ו־`verified` הוא `false` עד בדיקה מול הסרטון. «לא מצוין» מוצג כ«לא ממוין». שני רילים שאין להם מיפוי נשארים «לא ממוין». סרטוני Google Drive מ־[`data/drive_videos.json`](data/drive_videos.json) מצטרפים לאותה ספרייה ולאותו בונה. איך מוסיפים רשומה: [למטה](#איך-מוסיפים-תרגיל).
 - **טקסט לכרטיסייה** (`frontend/`): טקסט חופשי → כרטיסייה. אם השרת המקומי נכשל, רץ פענוח כללים בדפדפן (בלי AI). אין Marketplace ואין חשבון.
 - **מצב אימון:** טיימר אחד לכל שלב, דילוג על סט בודד, חזרה שמורידה מונים. נגן: קובץ מקומי כ־`<video>`, דרייב/יוטיוב כ־iframe, ובלי רשת — טקסט התרגיל. **החלף** מציע חלופה מאותה קבוצת שרירים. לינק `#CLIP.` פותח תרגיל בודד מהספרייה.
 - **פתח כמתאמן:** אותו לינק־hash בלי קוד גישה — כדי שאפשר לנסות את הזרימה בדמו. **שתף אימון ללקוח** עדיין דורש מסלול מאמן.
@@ -30,6 +31,146 @@
 - **סריקת שטח** (`js/site-profile.js` + `js/site-plan.js` + `js/site-scan.js` + `worker/site-scan/`): פרופיל שטח (רוחב, משטח, מדרגות/ספסל/קיר/שיפוע, סכנות, צל) שממנו נבנה אימון מהחוברת — שיטה לשטח מוגבל כשצר, תרגילי מדרגות/ספסל/קיר כשזוהו, משחקי תופסת רק כששטח רחב, חלוקה לגלים/תחנות לפי גודל הקבוצה ושורת אזהרה לכל סכנה, עם שורת הסבר בעברית לכל בחירה. **הזיהוי מהתמונות הוא רשות:** בלי AI הכול עובד מהצ'קליסט הידני «מה יש בשטח?», וכל כשל (אין פרוקסי, אין מפתח, תשובה שבורה) מחזיר את המאמן לאותו צ'קליסט עם שורה בעברית. ה־AI, כשהוא מחובר, רץ מאחורי `worker/site-scan/` (Cloudflare Worker, תוכנית חינם) או `backend/main.py` בפיתוח מקומי — מפתח Gemini לא נמצא במאגר ולא בדפדפן, והתמונות לא נשמרות. הפריסה והמפתח הם צעד של הבעלים: [worker/site-scan/README.md](worker/site-scan/README.md). המסך עצמו הוא `site-scan.html` (כפתור «📷 סרוק את השטח» בדף הבית ובחוברת).
 - **מצב פילוט** (`js/pilot.js`): `?pilot=acharai` (או קוד גישה) מפעיל פילוט לעמותת אחריי — יכולות המאמן בלי תשלום, מיתוג «עמותת אחריי» בשיתוף ובהדפסה, והעדפת התרגילים שהחוברת מלמדת כשהמנוע בוחר מהקטלוג (`THPilot.builderOpts(catalog)` כפרמטר שלישי ל־`buildSession`). משוב בסוף אימון (אימון, שטח, דירוג, מה עבד ומה לשפר) נשמר במכשיר ויוצא כ־JSON או כהודעת וואטסאפ שהמאמן שולח בעצמו — בלי טלפונים, מיילים ופרטי מתאמנים. הכול ב־localStorage, בלי שרת. מאמן שכבר יש לו מיתוג משלו שומר אותו.
 אין סליקה ואין וואטסאפ־שרת. קובצי הווידאו אינם נשמרים בהיסטוריית Git: גרסאות H.264 המותאמות לדפדפן מתפרסמות כנכסי release, והקטלוג שומר כתובות יציבות בלבד (ראו [videos/README.md](videos/README.md)). `backend/` אופציונלי ולא רץ ב־Pages. אין GitHub Actions. מחקר המחיר: [MONETIZATION.md](MONETIZATION.md). מסמכי האקתון/תמחור ישנים ב־[docs/archive/](docs/archive/INDEX.md).
+
+---
+
+## איך מוסיפים תרגיל
+
+המאגר הוא [`data/exercises.json`](data/exercises.json). מוסיפים אובייקט אחד לסוף המערך `exercises`. אחר כך מריצים את הבדיקה.
+
+קבוצות שריר מותרות, בדיוק כך: `ליבה`, `חזה`, `גב`, `רגליים/ישבן`, `גוף מלא/HIIT`, `מוביליטי`, `אחר`, `לא ממוין`. תווית מעורבת מהמיפוי (למשל «חזה ושכיבות סמיכה / גוף מלא») נכנסת ל־`muscle_group` הראשונה ול־`secondary_group` אם יש קבוצה קבועה נוספת. תיאור שאינו קבוצה (תזונה, ילדים, זריזות) נשמר ב־`muscle_detail`.
+
+`verified` ברירת המחדל היא `false`. הפירוט הנוכחי הגיע ממיפוי צפייה אוטומטי ולא נבדק מול הסרטון. אחרי בדיקה מול הווידאו מותר להפוך רשומה ל־`true`, ובתנאי שיש לה שם ו־`source_title`.
+
+איור לכרטיס: שמים קובץ ב־`assets/posters/<reel_id>.png` או `.jpg` (ה־shortcode, בלי הקידומת `ig-`). אם הקובץ חסר, הכרטיס והבונה מציגים מציין מקום בצבע קבוצת השריר. שדה `poster` דורס את הנתיב הזה כשהוא מלא. `poster_uncertain: true` מסמן איור שההתאמה לריל לא ודאית — הכרטיס מציג «איור לא ודאי».
+
+`equipment_tags` היא רשימת תגיות מהרשימה הסטנדרטית (משקל גוף, מזרן, ספסל, קיר…). קבוצת `השראה` היא טיפים שאינם תרגיל (תזונה, שינה, מוטיבציה, לימפה) והם לא נכנסים לבונה. סריקת סביבה (`scan.html` + `js/scan-match.js`) בוחרת תרגילים שכל הציוד שלהם זוהה, או משקל גוף, ובונה ימים קבועים. מודל ראייה אופציונלי: `TH_VISION_ENDPOINT` ב־`POST /api/environment-scan`. בלי מפתח הדפדפן מזהה עם COCO-SSD או לפי צ'יפים.
+
+מחרוזת סטים/חזרות שמכילה `לא מצוין` נשמרת כ־`sets_reps: "לא ממוין"`, עם `sets: null` ו־`reps: ""`. בלי `source_title` הרשומה נשארת לא ממוינת: `name_he` הוא `ריל לא ממוין`, בלי סטים, ציוד או שלבים. כך נשארו שני הרילים שאינם במיפוי (`DdHOFvtKk9z`, `DdI_86lNFfY`). המיפוי הוסיף את `DeO8oVyADue` (פוסט) ואת `DdS9ue-knAM`.
+
+| שדה | סוג | הערה |
+| --- | --- | --- |
+| `id` | string | `ig-` ועוד ה־shortcode של הריל. ייחודי. |
+| `name_he` | string | שם בעברית, או `ריל לא ממוין`. |
+| `muscle_group` | string | אחת הקבוצות למעלה. |
+| `secondary_group` | string | קבוצות קבועות נוספות, מופרדות ב־` · `, או ריק. |
+| `muscle_detail` | string | תיאור חופשי מהתווית (תזונה, ילדים…), או ריק. |
+| `sets` | number או null | מספר שלם חיובי, או `null` אם לא ידוע. |
+| `reps` | string | חזרות כפי שנמסרו (`20`). ריק אם לא ידוע. |
+| `sets_reps` | string | תווית תצוגה. `לא ממוין` כשהמקור הוא `לא מצוין`. |
+| `equipment` | string | ציוד מהמיפוי. ריק אם אין מקור. |
+| `steps_he` | string[] | שלבים שחולצו משם המיפוי. מערך ריק אם אין רשימה. |
+| `source_url` | string | `https://www.instagram.com/reel/<shortcode>/` או `/p/<shortcode>/`. |
+| `creator` | string | שם משתמש בלי `@`. |
+| `poster` | string | נתיב יחסי אופציונלי. ריק משאיר את ברירת המחדל `assets/posters/<reel_id>.png` (או `.jpg`). לא כתובת חיצונית. |
+| `poster_uncertain` | boolean | `true` רק כשהאיור הותאם לריל בלי ודאות. ברירת מחדל `false`. |
+| `verified` | boolean | `false` עד בדיקה מול הסרטון. |
+| `source_title` | string | השם המלא מהמיפוי, או ריק. |
+| `source_muscle_group` | string | `original_group` מהמיפוי, או ריק. |
+| `source_muscle_label` | string | תווית השריר הגולמית מהמיפוי, או ריק. |
+| `source_sets_reps` | string | הסטים/חזרות כפי שנכתבו במיפוי, או ריק. |
+| `source_notes` | string | הערת מקור, או ריק. |
+
+דוגמה לרשומה מהמיפוי, עדיין לא מאומתת:
+
+```json
+{
+  "id": "ig-DfDEp8PRL3f",
+  "name_he": "4 תרגילים על ספסל: ברך שמאל/ימין, פוש-אפ מוגבה, נגיעת כתף",
+  "muscle_group": "ליבה",
+  "secondary_group": "",
+  "muscle_detail": "",
+  "sets": 3,
+  "reps": "20",
+  "sets_reps": "3x20 → 5x20 REPS",
+  "equipment": "ספסל שטוח צהוב-שחור ROGUE, רצפת גומי",
+  "steps_he": ["ברך שמאל/ימין", "פוש-אפ מוגבה", "נגיעת כתף"],
+  "source_url": "https://www.instagram.com/reel/DfDEp8PRL3f/",
+  "creator": "coachgiress38",
+  "poster": "",
+  "verified": false,
+  "source_title": "Bench Core Blast - 4 תרגילים על ספסל: ברך שמאל/ימין, פוש-אפ מוגבה, נגיעת כתף",
+  "source_muscle_group": "בטן ו-Core",
+  "source_muscle_label": "בטן ו-Core / ליבה",
+  "source_sets_reps": "3x20 → 5x20 REPS",
+  "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+}
+```
+
+דוגמה לרשומה בלי מיפוי:
+
+```json
+{
+  "id": "ig-DdHOFvtKk9z",
+  "name_he": "ריל לא ממוין",
+  "muscle_group": "לא ממוין",
+  "secondary_group": "",
+  "muscle_detail": "",
+  "sets": null,
+  "reps": "",
+  "sets_reps": "לא ממוין",
+  "equipment": "",
+  "steps_he": [],
+  "source_url": "https://www.instagram.com/reel/DdHOFvtKk9z/",
+  "creator": "mjoepersonaltrainer",
+  "poster": "",
+  "verified": false,
+  "source_title": "",
+  "source_muscle_group": "",
+  "source_muscle_label": "",
+  "source_sets_reps": "",
+  "source_notes": ""
+}
+```
+
+בדיקה אחרי ההוספה:
+
+```bash
+node scripts/validate-exercises.js
+python scripts/validate_exercises.py
+npm test
+```
+
+שני הסקריפטים בודקים את אותה סכימה (`js/reel-library.js` ו־`scripts/validate_exercises.py`). קובץ שלא עומד בה יוצא בקוד 1 ומדפיס את השדות השבורים. אותו ריצה בודקת גם ש־`data/drive_videos.json` הוא מערך תקין.
+
+## סרטוני Google Drive
+
+הספרייה טוענת את [`data/drive_videos.json`](data/drive_videos.json) בנוסף ל־79 הרילים. הקובץ הוא מערך, וכיום יש בו 70 סרטונים. מערך ריק עדיין תקין. אין המצאה של סטים, חזרות, ציוד או שלבים: הכרטיס מציג את שם הקובץ ואת הקבוצה הממופה.
+
+כל פריט:
+
+| שדה | סוג | הערה |
+| --- | --- | --- |
+| `fileId` | string | מזהה הקובץ ב־Drive. נכנס לכתובת `https://drive.google.com/file/d/<fileId>/preview`. |
+| `name` | string | שם הסרטון כפי שהוא ב־Drive. זה השם בכרטיס. |
+| `folder` | string | נתיב תיקייה, למשל `כושר/חזה`. המיפוי משתמש בשם האחרון (`חזה`). |
+| `muscleGroup` | string | בקובץ המסונכרן זה שם תיקיית Drive, לא קבוצת האפליקציה. אפשר להשאיר ריק. |
+
+```json
+[
+  { "fileId": "1a2b3c4d5e6f7g8h", "name": "פלאנק.mp4", "folder": "כושר/חזה", "muscleGroup": "חזה" }
+]
+```
+
+תיקייה מוכרת ממופה לקבוצה שכבר קיימת בספרייה. `לא קשור` ו־`לבדיקה` לא נכנסים לכרטיסים ולא לבונה.
+
+| תיקיית Drive | קבוצה בספרייה |
+| --- | --- |
+| בטן | ליבה |
+| גב | גב |
+| רגליים | רגליים/ישבן |
+| חזה | חזה |
+| כתפיים | אחר |
+| ידיים | אחר |
+| גוף מלא HIIT | גוף מלא/HIIT |
+| קרדיו | גוף מלא/HIIT |
+| חימום | מוביליטי |
+| זמן תגובה וקואורדינציה | אחר |
+| זמן תגובה וקאורדינצייה | אחר |
+| לא קשור | דילוג |
+| לבדיקה | דילוג |
+
+כרטיס Drive מציג את השם, את קבוצת השריר, נגן `iframe` עם `loading="lazy"` לכתובת ה־preview, וקישור «פתיחה ב-Drive» (`/view`). אין סטים, חזרות או שלבים עד שהרשומה מועשרת. «הוסף לאימון» מכניס אותו לבונה כמו תרגיל ריל, והסטים והחזרות נרשמים שם.
 
 ---
 

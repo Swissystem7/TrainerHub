@@ -3,6 +3,7 @@
   "private": true,
   "description": "Hebrew RTL workout builder and live workout-mode demo",
   "scripts": {
-    "test": "node --test test/*.js"
+    "test": "node --test test/*.js",
+    "validate:exercises": "node scripts/validate-exercises.js"
   }
 }
