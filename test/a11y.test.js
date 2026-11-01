@@ -18,7 +18,8 @@ const pages = {
   print: fs.readFileSync(path.join(root, 'workout-print.html'), 'utf8'),
   journal: fs.readFileSync(path.join(root, 'journal.html'), 'utf8'),
   booklet: fs.readFileSync(path.join(root, 'booklet.html'), 'utf8'),
-  scan: fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8')
+  scan: fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8'),
+  exercises: fs.readFileSync(path.join(root, 'exercises.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
@@ -110,6 +111,7 @@ test('shared chrome has visible focus and reduced motion', function () {
   assert.match(pages.journal, /class="skip-link/);
   assert.match(pages.booklet, /class="skip-link/);
   assert.match(pages.scan, /class="skip-link/);
+  assert.match(pages.exercises, /class="skip-link/);
   assert.match(pages.prompt, /shareToClient/);
   assert.match(pages.prompt, /encodeLink/);
   assert.match(pages.journal, /suggestNextFromLog/);

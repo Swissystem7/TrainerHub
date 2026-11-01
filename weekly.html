@@ -10,6 +10,7 @@
   <a href="./">בנה אימון</a>
   <span class="chip on" aria-current="page">בונה שבועי</span>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./exercises.html">ספריית תרגילים</a>
   <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
@@ -21,7 +22,8 @@
   התוכנית השבועית נבנית בדפדפן מהמאגר. אין שרת חי בדמו הזה.
 </div>
 <script src="./js/core.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
+<script src="./js/reel-library.js"></script>
+<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
 
@@ -185,5 +187,40 @@ function resetForm(){
 }
 $('form').addEventListener('submit', run);
 $('resetBtn').addEventListener('click', resetForm);
-TH.ready(run);
+function renderSavedReelCard(){
+  var api = window.THReels;
+  var card = $('savedReelCard');
+  var list = $('savedReelList');
+  if (!card || !list) return;
+  if (!api) { card.hidden = true; return; }
+  var workouts = api.loadWorkouts();
+  if (!workouts.length) { card.hidden = true; list.innerHTML = ''; return; }
+  card.hidden = false;
+  list.innerHTML = workouts.map(function (w) {
+    var n = (w.exercises || []).length;
+    var label = n === 1 ? 'תרגיל אחד' : (n + ' תרגילים');
+    return '<div class="exercise"><b>'+esc(w.title || 'אימון')+'</b><span>'+label+'</span></div>';
+  }).join('');
+}
+function applySavedReelPlan(){
+  var api = window.THReels;
+  if (!api) return;
+  var program = api.toDailyProgram(api.loadWorkouts());
+  if (!program.dailyWorkouts.length) {
+    $('result').innerHTML = '<p class="empty" role="status">אין אימון שמור מהספרייה. בונים אחד בספריית התרגילים.</p>';
+    return;
+  }
+  window.__lastProgram = program;
+  window.__lastMeta = { equipment: [], intensity: 'medium', tags: ['reel-library'] };
+  renderProgram(program);
+}
+function maybeApplyReelPlan(){
+  var hash = window.location && window.location.hash ? window.location.hash : '';
+  if (hash.indexOf('reel-plan') === -1) return;
+  applySavedReelPlan();
+}
+renderSavedReelCard();
+var useSavedReelBtn = $('useSavedReelBtn');
+if (useSavedReelBtn && useSavedReelBtn.addEventListener) useSavedReelBtn.addEventListener('click', applySavedReelPlan);
+TH.ready(function () { run(); maybeApplyReelPlan(); });
 </script></body></html>
