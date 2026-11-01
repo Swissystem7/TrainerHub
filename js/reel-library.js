@@ -34,7 +34,8 @@
     'גוף מלא/HIIT': 'גוף מלא/HIIT',
     'קרדיו': 'גוף מלא/HIIT',
     'חימום': 'מוביליטי',
-    'זמן תגובה וקואורדינציה': 'אחר'
+    'זמן תגובה וקואורדינציה': 'אחר',
+    'זמן תגובה וקאורדינצייה': 'אחר'
   };
   var DRIVE_SKIP_FOLDERS = { 'לא קשור': true, 'לבדיקה': true };
   var DRIVE_KEYS = ['fileId', 'name', 'folder', 'muscleGroup'];
@@ -592,18 +593,31 @@
     return String(value == null ? '' : value).trim();
   }
 
+  // folder may be a path such as «כושר/חזה». The folder name is the last segment.
+  function driveFolderName(value) {
+    var label = driveLabel(value);
+    if (!label) return '';
+    var parts = label.split('/');
+    return driveLabel(parts[parts.length - 1]);
+  }
+
   function driveSkipped(row) {
-    var folder = driveLabel(row && row.folder);
-    var given = driveLabel(row && row.muscleGroup);
-    return !!(DRIVE_SKIP_FOLDERS[folder] || DRIVE_SKIP_FOLDERS[given]);
+    if (!row) return false;
+    var names = [
+      driveLabel(row.folder), driveLabel(row.muscleGroup),
+      driveFolderName(row.folder), driveFolderName(row.muscleGroup)
+    ];
+    return names.some(function (name) { return !!DRIVE_SKIP_FOLDERS[name]; });
   }
 
   function driveMuscleGroup(row) {
     if (!row || driveSkipped(row)) return '';
-    var folder = driveLabel(row.folder);
+    var names = [driveFolderName(row.folder), driveFolderName(row.muscleGroup)];
+    for (var i = 0; i < names.length; i++) {
+      if (DRIVE_FOLDER_GROUPS[names[i]]) return DRIVE_FOLDER_GROUPS[names[i]];
+    }
     var given = driveLabel(row.muscleGroup);
-    if (DRIVE_FOLDER_GROUPS[folder]) return DRIVE_FOLDER_GROUPS[folder];
-    if (DRIVE_FOLDER_GROUPS[given]) return DRIVE_FOLDER_GROUPS[given];
+    var folder = driveFolderName(row.folder);
     if (MUSCLE_GROUPS.indexOf(given) !== -1) return given;
     if (MUSCLE_GROUPS.indexOf(folder) !== -1) return folder;
     return UNKNOWN_MUSCLE;

@@ -29,10 +29,33 @@ function esc(s) {
   });
 }
 
-test('drive_videos.json ships as an empty valid array', function () {
-  assert.deepEqual(shipped, []);
-  assert.equal(THReels.validateDriveVideos(shipped).ok, true);
-  assert.deepEqual(THReels.driveVideosToExercises(shipped), []);
+test('drive_videos.json ships 70 Drive videos and all of them map', function () {
+  assert.equal(shipped.length, 70);
+  const check = THReels.validateDriveVideos(shipped);
+  assert.deepEqual(check.errors, []);
+  const list = THReels.driveVideosToExercises(shipped);
+  assert.equal(list.length, 70);
+  const counts = {};
+  list.forEach(function (ex) {
+    assert.equal(ex.sets, null);
+    assert.equal(ex.reps, '');
+    assert.deepEqual(ex.steps_he, []);
+    assert.equal(ex.equipment, '');
+    assert.equal(ex.source, 'drive');
+    assert.match(ex.preview_url, /\/preview$/);
+    counts[ex.muscle_group] = (counts[ex.muscle_group] || 0) + 1;
+  });
+  assert.deepEqual(counts, {
+    'ליבה': 25,
+    'חזה': 9,
+    'גוף מלא/HIIT': 10,
+    'גב': 8,
+    'אחר': 13,
+    'רגליים/ישבן': 3,
+    'מוביליטי': 2
+  });
+  const reels = JSON.parse(fs.readFileSync(path.join(root, 'data', 'exercises.json'), 'utf8'));
+  assert.equal(reels.exercises.length + list.length, 149);
 });
 
 test('Drive folders map onto the library muscle groups and two folders are skipped', function () {
@@ -53,6 +76,10 @@ test('Drive folders map onto the library muscle groups and two folders are skipp
   });
   assert.equal(THReels.driveMuscleGroup(row('לא קשור')), '');
   assert.equal(THReels.driveMuscleGroup(row('לבדיקה')), '');
+  assert.equal(THReels.driveMuscleGroup(row('זמן תגובה וקאורדינצייה')), 'אחר');
+  assert.equal(THReels.driveMuscleGroup({ folder: 'כושר/חזה', muscleGroup: 'חזה' }), 'חזה');
+  assert.equal(THReels.driveMuscleGroup({ folder: 'כושר/בטן', muscleGroup: 'בטן' }), 'ליבה');
+  assert.equal(THReels.driveMuscleGroup({ folder: 'כושר/לא קשור', muscleGroup: 'לא קשור' }), '');
   assert.equal(THReels.driveMuscleGroup({ folder: 'בטן', muscleGroup: 'חזה' }), 'ליבה');
   assert.equal(THReels.driveMuscleGroup({ folder: '', muscleGroup: 'חזה' }), 'חזה');
   assert.equal(THReels.driveMuscleGroup({ folder: 'תיקייה חדשה', muscleGroup: '' }), 'לא ממוין');
