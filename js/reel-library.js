@@ -21,6 +21,24 @@
   var UNKNOWN_SETS = 'לא ממוין';
   var UNCLASSIFIED_NAME = 'ריל לא ממוין';
 
+  // Drive folder name → existing library group. Folders with no first-class
+  // group stay in «אחר» and remain searchable by the folder name.
+  var DRIVE_FOLDER_GROUPS = {
+    'בטן': 'ליבה',
+    'גב': 'גב',
+    'רגליים': 'רגליים/ישבן',
+    'חזה': 'חזה',
+    'כתפיים': 'אחר',
+    'ידיים': 'אחר',
+    'גוף מלא HIIT': 'גוף מלא/HIIT',
+    'גוף מלא/HIIT': 'גוף מלא/HIIT',
+    'קרדיו': 'גוף מלא/HIIT',
+    'חימום': 'מוביליטי',
+    'זמן תגובה וקואורדינציה': 'אחר'
+  };
+  var DRIVE_SKIP_FOLDERS = { 'לא קשור': true, 'לבדיקה': true };
+  var DRIVE_KEYS = ['fileId', 'name', 'folder', 'muscleGroup'];
+
   var REQUIRED_KEYS = [
     'id', 'name_he', 'muscle_group', 'secondary_group', 'muscle_detail',
     'sets', 'reps', 'sets_reps', 'equipment', 'steps_he', 'source_url', 'creator',
@@ -147,7 +165,7 @@
 
   function haystack(ex) {
     return [
-      ex.name_he, ex.creator, ex.id, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
+      ex.name_he, ex.creator, ex.id, ex.folder, ex.file_id, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
       ex.equipment, ex.sets_reps, ex.source_title, ex.source_notes, (ex.steps_he || []).join(' ')
     ].join(' ').toLowerCase();
   }
@@ -558,8 +576,133 @@
     return empty;
   }
 
+  function driveFileIdOk(fileId) {
+    return /^[A-Za-z0-9_-]{8,}$/.test(String(fileId || ''));
+  }
+
+  function drivePreviewUrl(fileId) {
+    return 'https://drive.google.com/file/d/' + fileId + '/preview';
+  }
+
+  function driveViewUrl(fileId) {
+    return 'https://drive.google.com/file/d/' + fileId + '/view';
+  }
+
+  function driveLabel(value) {
+    return String(value == null ? '' : value).trim();
+  }
+
+  function driveSkipped(row) {
+    var folder = driveLabel(row && row.folder);
+    var given = driveLabel(row && row.muscleGroup);
+    return !!(DRIVE_SKIP_FOLDERS[folder] || DRIVE_SKIP_FOLDERS[given]);
+  }
+
+  function driveMuscleGroup(row) {
+    if (!row || driveSkipped(row)) return '';
+    var folder = driveLabel(row.folder);
+    var given = driveLabel(row.muscleGroup);
+    if (DRIVE_FOLDER_GROUPS[folder]) return DRIVE_FOLDER_GROUPS[folder];
+    if (DRIVE_FOLDER_GROUPS[given]) return DRIVE_FOLDER_GROUPS[given];
+    if (MUSCLE_GROUPS.indexOf(given) !== -1) return given;
+    if (MUSCLE_GROUPS.indexOf(folder) !== -1) return folder;
+    return UNKNOWN_MUSCLE;
+  }
+
+  function validateDriveVideos(data) {
+    var errors = [];
+    function err(path, message) {
+      errors.push(path + ': ' + message);
+    }
+    if (!Array.isArray(data)) {
+      err('$', 'הקובץ חייב להיות מערך');
+      return { ok: false, errors: errors };
+    }
+    var seen = {};
+    data.forEach(function (row, i) {
+      var path = '[' + i + ']';
+      if (!isObject(row)) {
+        err(path, 'חייב להיות אובייקט');
+        return;
+      }
+      DRIVE_KEYS.forEach(function (key) {
+        if (typeof row[key] !== 'string') err(path + '.' + key, 'מחרוזת');
+      });
+      var fileId = driveLabel(row.fileId);
+      if (!driveFileIdOk(fileId)) err(path + '.fileId', 'מזהה Drive לא תקין');
+      else if (seen[fileId]) err(path + '.fileId', 'מזהה כפול ' + fileId);
+      else seen[fileId] = true;
+      if (!driveLabel(row.name)) err(path + '.name', 'שם חסר');
+    });
+    return { ok: errors.length === 0, errors: errors };
+  }
+
+  // Sparse library rows. Name and muscle only — sets, steps, and gear stay
+  // empty until a person enriches the entry. Skip folders produce nothing.
+  function driveVideosToExercises(data) {
+    if (!Array.isArray(data)) return [];
+    var seen = {};
+    var out = [];
+    data.forEach(function (row) {
+      if (!isObject(row) || driveSkipped(row)) return;
+      var fileId = driveLabel(row.fileId);
+      var name = driveLabel(row.name);
+      if (!driveFileIdOk(fileId) || !name || seen[fileId]) return;
+      var muscle = driveMuscleGroup(row);
+      if (!muscle) return;
+      seen[fileId] = true;
+      out.push({
+        id: 'drive-' + fileId,
+        source: 'drive',
+        file_id: fileId,
+        folder: driveLabel(row.folder),
+        name_he: name,
+        muscle_group: muscle,
+        secondary_group: '',
+        muscle_detail: '',
+        sets: null,
+        reps: '',
+        sets_reps: '',
+        equipment: '',
+        equipment_tags: [],
+        steps_he: [],
+        source_url: driveViewUrl(fileId),
+        preview_url: drivePreviewUrl(fileId),
+        creator: '',
+        poster: '',
+        verified: false
+      });
+    });
+    return out;
+  }
+
+  function driveCardHtml(ex, esc) {
+    var muscle = ex.muscle_group || UNKNOWN_MUSCLE;
+    var preview = ex.preview_url || drivePreviewUrl(ex.file_id);
+    var view = ex.source_url || driveViewUrl(ex.file_id);
+    var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
+    var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
+    var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
+    return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
+      '<div class="poster-frame tone-' + toneName(muscle) + '">' +
+        '<iframe class="drive-frame" title="' + esc(displayName(ex)) + '" src="' + esc(preview) + '" loading="lazy" allow="fullscreen" allowfullscreen></iframe>' +
+        '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
+        indexNo +
+      '</div>' +
+      '<div class="card-body">' +
+        '<div class="card-kicker"><span class="pill tone">' + muscleIcon(muscle) + esc(muscle) + '</span></div>' +
+        '<h2>' + esc(displayName(ex)) + '</h2>' +
+        '<div class="actions">' +
+          '<a class="reel" href="' + esc(view) + '" target="_blank" rel="noopener noreferrer">פתיחה ב-Drive</a>' +
+          '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
   function exerciseCardHtml(ex, esc) {
     esc = esc || function (s) { return String(s == null ? '' : s); };
+    if (ex && ex.source === 'drive') return driveCardHtml(ex, esc);
     var steps = (ex.steps_he || []).map(function (step) {
       return '<li>' + esc(step) + '</li>';
     }).join('');
@@ -627,6 +770,14 @@
     muscleIcon: muscleIcon,
     posterSources: posterSources,
     posterFrameHtml: posterFrameHtml,
+    DRIVE_FOLDER_GROUPS: DRIVE_FOLDER_GROUPS,
+    DRIVE_SKIP_FOLDERS: DRIVE_SKIP_FOLDERS,
+    DRIVE_KEYS: DRIVE_KEYS,
+    drivePreviewUrl: drivePreviewUrl,
+    driveViewUrl: driveViewUrl,
+    driveMuscleGroup: driveMuscleGroup,
+    validateDriveVideos: validateDriveVideos,
+    driveVideosToExercises: driveVideosToExercises,
     groupByMuscle: groupByMuscle,
     draftSections: draftSections,
     moveDraftInSection: moveDraftInSection,

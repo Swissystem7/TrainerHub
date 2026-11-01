@@ -124,6 +124,10 @@
     }
     .poster.is-ready { opacity: 1; }
     .poster.is-broken { display: none; }
+    .drive-frame {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: 0; background: #070A12;
+    }
     .poster-fallback {
       position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
       color: var(--tone); font-weight: 800;
@@ -699,13 +703,24 @@
 
   renderDraft();
   renderSaved();
-  fetch('./data/exercises.json', { cache: 'no-cache' })
-    .then(function (res) { if (!res.ok) throw new Error('status ' + res.status); return res.json(); })
-    .then(function (data) {
+  function readJson(res) {
+    if (!res.ok) throw new Error('status ' + res.status);
+    return res.json();
+  }
+  Promise.all([
+    fetch('./data/exercises.json', { cache: 'no-cache' }).then(readJson),
+    fetch('./data/drive_videos.json', { cache: 'no-cache' }).then(readJson).catch(function () { return []; })
+  ])
+    .then(function (parts) {
+      var data = parts[0];
+      var driveRaw = parts[1];
       var check = THReels.validateLibrary(data);
       if (!check.ok) throw new Error(check.errors[0]);
-      library = data.exercises;
+      var driveCheck = THReels.validateDriveVideos(driveRaw);
+      var drive = driveCheck.ok ? THReels.driveVideosToExercises(driveRaw) : [];
+      library = data.exercises.concat(drive);
       renderGrid();
+      if (!driveCheck.ok) setStatus('קובץ סרטוני Drive לא בפורמט. הרילים נטענו בלי הסרטונים.');
     })
     .catch(function () {
       $('stats').textContent = 'לא הצלחנו לטעון את ספריית התרגילים.';

@@ -207,7 +207,46 @@ def main(argv):
         return 1
     verified = sum(1 for ex in data["exercises"] if ex.get("verified"))
     print(f"ok {len(data['exercises'])} exercises ({verified} verified) {file}")
+    if len(argv) == 1:
+        drive_file = file.parent / "drive_videos.json"
+        try:
+            drive = json.loads(drive_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"{drive_file}: {exc}", file=sys.stderr)
+            return 1
+        drive_errors = validate_drive_videos(drive)
+        if drive_errors:
+            print("\n".join(drive_errors), file=sys.stderr)
+            print(f"{len(drive_errors)} שגיאות ב־{drive_file}", file=sys.stderr)
+            return 1
+        print(f"ok {len(drive)} drive videos {drive_file}")
     return 0
+
+
+def validate_drive_videos(data):
+    errors = []
+    if not isinstance(data, list):
+        return ["$: הקובץ חייב להיות מערך"]
+    seen = set()
+    file_id = re.compile(r"^[A-Za-z0-9_-]{8,}$")
+    for i, row in enumerate(data):
+        path = f"[{i}]"
+        if not isinstance(row, dict):
+            errors.append(f"{path}: חייב להיות אובייקט")
+            continue
+        for key in ("fileId", "name", "folder", "muscleGroup"):
+            if not isinstance(row.get(key), str):
+                errors.append(f"{path}.{key}: מחרוזת")
+        fid = str(row.get("fileId") or "").strip()
+        if not file_id.match(fid):
+            errors.append(f"{path}.fileId: מזהה Drive לא תקין")
+        elif fid in seen:
+            errors.append(f"{path}.fileId: מזהה כפול {fid}")
+        else:
+            seen.add(fid)
+        if not str(row.get("name") or "").strip():
+            errors.append(f"{path}.name: שם חסר")
+    return errors
 
 
 if __name__ == "__main__":
