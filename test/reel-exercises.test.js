@@ -135,6 +135,27 @@ test('a workout can be built, prescribed, saved, and placed on the weekly plan',
   assert.equal(THReels.removeWorkout('rw_test', store).length, 0);
 });
 
+test('posters use assets/posters/<reel_id> and exercises group by muscle', function () {
+  const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
+  const src = THReels.posterSources(bench);
+  assert.equal(src.primary, 'assets/posters/DfDEp8PRL3f.png');
+  assert.equal(src.secondary, 'assets/posters/DfDEp8PRL3f.jpg');
+  assert.equal(THReels.posterSources({ id: 'ig-X', poster: 'assets/posters/custom.jpg' }).primary, 'assets/posters/custom.jpg');
+  const html = THReels.posterFrameHtml(bench, function (s) { return String(s); });
+  assert.match(html, /assets\/posters\/DfDEp8PRL3f\.png/);
+  assert.match(html, /poster-fallback/);
+  const groups = THReels.groupByMuscle([
+    { id: 'a', muscle_group: 'חזה' },
+    { id: 'b', muscle_group: 'ליבה' },
+    { id: 'c', muscle_group: 'ליבה' }
+  ]);
+  assert.deepEqual(groups.map(function (section) { return section.muscle; }), ['ליבה', 'חזה']);
+  assert.equal(groups[0].exercises.length, 2);
+  const draft = THReels.addToDraft(THReels.addToDraft(THReels.emptyDraft(), bench), data.exercises.find(function (ex) { return ex.id === 'ig-DfFxxAruQGT'; }));
+  const moved = THReels.moveDraftInSection(draft, bench.id, 1);
+  assert.equal(moved.items[0].exerciseId, bench.id);
+});
+
 test('exercise cards link to the source reel', function () {
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   const html = THReels.exerciseCardHtml(bench, function (s) {

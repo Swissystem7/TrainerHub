@@ -42,6 +42,8 @@
 
 `verified` ברירת המחדל היא `false`. הפירוט הנוכחי הגיע ממיפוי צפייה אוטומטי ולא נבדק מול הסרטון. אחרי בדיקה מול הווידאו מותר להפוך רשומה ל־`true`, ובתנאי שיש לה שם ו־`source_title`.
 
+איור לכרטיס: שמים קובץ ב־`assets/posters/<reel_id>.png` או `.jpg` (ה־shortcode, בלי הקידומת `ig-`). אם הקובץ חסר, הכרטיס והבונה מציגים מציין מקום בצבע קבוצת השריר. שדה `poster` דורס את הנתיב הזה כשהוא מלא.
+
 מחרוזת סטים/חזרות שמכילה `לא מצוין` נשמרת כ־`sets_reps: "לא ממוין"`, עם `sets: null` ו־`reps: ""`. בלי `source_title` הרשומה נשארת לא ממוינת: `name_he` הוא `ריל לא ממוין`, בלי סטים, ציוד או שלבים. כך נשארו שני הרילים שאינם במיפוי (`DdHOFvtKk9z`, `DdI_86lNFfY`). המיפוי הוסיף את `DeO8oVyADue` (פוסט) ואת `DdS9ue-knAM`.
 
 | שדה | סוג | הערה |
@@ -58,7 +60,7 @@
 | `steps_he` | string[] | שלבים שחולצו משם המיפוי. מערך ריק אם אין רשימה. |
 | `source_url` | string | `https://www.instagram.com/reel/<shortcode>/` או `/p/<shortcode>/`. |
 | `creator` | string | שם משתמש בלי `@`. |
-| `poster` | string | נתיב יחסי אופציונלי (`images/exercises/ig-XXXX.jpg`). ריק אם אין קובץ במאגר. לא כתובת חיצונית. |
+| `poster` | string | נתיב יחסי אופציונלי. ריק משאיר את ברירת המחדל `assets/posters/<reel_id>.png` (או `.jpg`). לא כתובת חיצונית. |
 | `verified` | boolean | `false` עד בדיקה מול הסרטון. |
 | `source_title` | string | השם המלא מהמיפוי, או ריק. |
 | `source_muscle_group` | string | `original_group` מהמיפוי, או ריק. |

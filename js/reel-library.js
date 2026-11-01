@@ -177,6 +177,7 @@
           equipment: item.equipment || '',
           source_url: item.source_url || '',
           creator: item.creator || '',
+          poster: item.poster || '',
           steps_he: Array.isArray(item.steps_he) ? item.steps_he.slice() : []
         };
       })
@@ -196,6 +197,7 @@
       equipment: exercise.equipment || '',
       source_url: exercise.source_url,
       creator: exercise.creator,
+      poster: exercise.poster || '',
       steps_he: Array.isArray(exercise.steps_he) ? exercise.steps_he.slice() : []
     });
     return next;
@@ -221,6 +223,130 @@
   function removeFromDraft(draft, exerciseId) {
     var next = cloneDraft(draft || emptyDraft());
     next.items = next.items.filter(function (item) { return item.exerciseId !== exerciseId; });
+    return next;
+  }
+
+  var TONE = {
+    'ליבה': 'core',
+    'חזה': 'chest',
+    'גב': 'back',
+    'רגליים/ישבן': 'legs',
+    'גוף מלא/HIIT': 'hiit',
+    'מוביליטי': 'mobility',
+    'אחר': 'other',
+    'לא ממוין': 'unknown'
+  };
+
+  var ICON = {
+    'הכל': '<rect x="3" y="3" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="3" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.7"/>',
+    'ליבה': '<circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7"/>',
+    'חזה': '<path d="M4 10c2-4 6-4 8 0 2-4 6-4 8 0 0 6-4 10-8 10S4 16 4 10z" fill="currentColor"/>',
+    'גב': '<path d="M7 4.5v15M12 4.5v15M17 4.5v15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    'רגליים/ישבן': '<path d="M8 3.5c2.2 4 2.2 8.5 0 17M16 3.5c-2.2 4-2.2 8.5 0 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    'גוף מלא/HIIT': '<path d="M13 2 6 13h5l-1 9 8-12h-5l0-8z" fill="currentColor"/>',
+    'מוביליטי': '<path d="M3 15c2.5-6 4.5 5 8 0s5 6 7 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    'אחר': '<circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/>',
+    'לא ממוין': '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="2.4 2.6"/>'
+  };
+
+  function toneName(muscle) {
+    return TONE[muscle] || 'unknown';
+  }
+
+  function muscleIcon(muscle) {
+    var key = muscle && ICON[muscle] ? muscle : 'הכל';
+    return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">' + ICON[key] + '</svg>';
+  }
+
+  function reelCode(ex) {
+    var id = ex && (ex.id || ex.exerciseId) || '';
+    var match = /^ig-([A-Za-z0-9_-]+)$/.exec(String(id));
+    return match ? match[1] : '';
+  }
+
+  // Drop a file at assets/posters/<reel_id>.png or .jpg and the card picks it up.
+  // An explicit poster field wins when it is set.
+  function posterSources(ex) {
+    ex = ex || {};
+    if (ex.poster) return { primary: ex.poster, secondary: '' };
+    var code = reelCode(ex);
+    if (!code) return { primary: '', secondary: '' };
+    return {
+      primary: 'assets/posters/' + code + '.png',
+      secondary: 'assets/posters/' + code + '.jpg'
+    };
+  }
+
+  function posterFrameHtml(ex, esc, thumb) {
+    esc = esc || function (s) { return String(s == null ? '' : s); };
+    var muscle = (ex && ex.muscle_group) || UNKNOWN_MUSCLE;
+    var src = posterSources(ex || {});
+    var img = src.primary
+      ? '<img class="poster" alt="" src="' + esc(src.primary) + '"' +
+        (src.secondary ? ' data-jpg="' + esc(src.secondary) + '"' : '') + '>'
+      : '';
+    return '<div class="poster-frame tone-' + toneName(muscle) + (thumb ? ' is-thumb' : '') + '">' +
+      img +
+      '<div class="poster-fallback">' + muscleIcon(muscle) + '<span>' + esc(muscle) + '</span></div>' +
+      '</div>';
+  }
+
+  function groupByMuscle(list) {
+    var buckets = {};
+    (list || []).forEach(function (ex) {
+      if (!ex) return;
+      var key = ex.muscle_group || UNKNOWN_MUSCLE;
+      if (!buckets[key]) buckets[key] = [];
+      buckets[key].push(ex);
+    });
+    return MUSCLE_GROUPS.filter(function (group) {
+      return buckets[group] && buckets[group].length;
+    }).map(function (group) {
+      return { muscle: group, tone: toneName(group), exercises: buckets[group] };
+    });
+  }
+
+  function draftSections(draft) {
+    return groupByMuscle((draft && draft.items) || []).map(function (section) {
+      return { muscle: section.muscle, tone: section.tone, items: section.exercises };
+    });
+  }
+
+  function moveDraftInSection(draft, exerciseId, delta) {
+    var next = cloneDraft(draft || emptyDraft());
+    var index = -1;
+    next.items.forEach(function (item, i) { if (item.exerciseId === exerciseId) index = i; });
+    if (index < 0) return next;
+    var muscle = next.items[index].muscle_group;
+    var indexes = [];
+    next.items.forEach(function (item, i) {
+      if (item.muscle_group === muscle) indexes.push(i);
+    });
+    var pos = indexes.indexOf(index);
+    var dest = pos + delta;
+    if (dest < 0 || dest >= indexes.length) return next;
+    var swapAt = indexes[dest];
+    var held = next.items[index];
+    next.items[index] = next.items[swapAt];
+    next.items[swapAt] = held;
+    return next;
+  }
+
+  function insertDraftItem(draft, exerciseId, beforeId) {
+    var next = cloneDraft(draft || emptyDraft());
+    var from = -1;
+    var to = -1;
+    next.items.forEach(function (item, i) {
+      if (item.exerciseId === exerciseId) from = i;
+      if (item.exerciseId === beforeId) to = i;
+    });
+    if (from < 0 || to < 0 || from === to) return next;
+    if (next.items[from].muscle_group !== next.items[to].muscle_group) return next;
+    var moving = next.items.splice(from, 1)[0];
+    to = -1;
+    next.items.forEach(function (item, i) { if (item.exerciseId === beforeId) to = i; });
+    if (to < 0) next.items.push(moving);
+    else next.items.splice(to, 0, moving);
     return next;
   }
 
@@ -414,29 +540,27 @@
     var equipment = ex.equipment ? '<span class="pill">' + esc(ex.equipment) + '</span>' : '';
     var secondary = ex.secondary_group ? '<span class="pill">' + esc(ex.secondary_group) + '</span>' : '';
     var detail = ex.muscle_detail ? '<span class="pill">' + esc(ex.muscle_detail) + '</span>' : '';
-    var flag = ex.verified ? '<span class="pill">מאומת</span>' : '<span class="pill unverified">לא מאומת</span>';
+    var flag = ex.verified ? '<span class="pill ok">מאומת</span>' : '<span class="pill unverified">לא מאומת</span>';
     var watchLabel = /\/p\//.test(ex.source_url || '') ? 'צפייה בפוסט' : 'צפייה בריל';
-    var poster = ex.poster
-      ? '<img class="poster" src="' + esc(ex.poster) + '" alt="">'
-      : '';
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
-    return '<article class="card" data-id="' + esc(ex.id) + '">' +
-      poster +
-      '<h2>' + esc(displayName(ex)) + '</h2>' +
-      '<p class="creator"><a href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">@' + esc(ex.creator) + '</a></p>' +
-      '<div class="meta">' +
-        flag +
-        '<span class="pill">' + esc(ex.muscle_group) + '</span>' +
-        secondary +
-        detail +
-        '<span class="pill">' + esc(ex.sets_reps) + '</span>' +
-        equipment +
-      '</div>' +
-      stepsHtml +
-      '<div class="actions">' +
-        '<a class="reel" href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">' + watchLabel + '</a>' +
-        '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>' +
+    return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '">' +
+      posterFrameHtml(ex, esc, false) +
+      '<div class="card-body">' +
+        '<div class="card-kicker">' + flag + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +
+        '<h2>' + esc(displayName(ex)) + '</h2>' +
+        '<p class="creator"><a href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">@' + esc(ex.creator) + '</a></p>' +
+        '<div class="meta">' +
+          '<span class="pill">' + esc(ex.sets_reps) + '</span>' +
+          secondary +
+          detail +
+          equipment +
+        '</div>' +
+        stepsHtml +
+        '<div class="actions">' +
+          '<a class="reel" href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">' + watchLabel + '</a>' +
+          '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>' +
+        '</div>' +
       '</div>' +
     '</article>';
   }
@@ -467,6 +591,14 @@
     loadDraft: loadDraft,
     saveDraft: saveDraft,
     clearDraft: clearDraft,
-    exerciseCardHtml: exerciseCardHtml
+    exerciseCardHtml: exerciseCardHtml,
+    toneName: toneName,
+    muscleIcon: muscleIcon,
+    posterSources: posterSources,
+    posterFrameHtml: posterFrameHtml,
+    groupByMuscle: groupByMuscle,
+    draftSections: draftSections,
+    moveDraftInSection: moveDraftInSection,
+    insertDraftItem: insertDraftItem
   };
 });
