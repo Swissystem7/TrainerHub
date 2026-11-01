@@ -145,6 +145,11 @@ def validate(data):
         poster = ex.get("poster")
         if not isinstance(poster, str) or ".." in poster or POSTER_SCHEME.match(poster or ""):
             err(f"{path}.poster", "נתיב יחסי בתוך המאגר, או ריק")
+        uncertain = ex.get("poster_uncertain", False)
+        if not isinstance(uncertain, bool):
+            err(f"{path}.poster_uncertain", "בוליאני")
+        if uncertain and not poster:
+            err(f"{path}.poster_uncertain", "איור לא ודאי דורש קובץ פוסטר")
         if not isinstance(ex.get("verified"), bool):
             err(f"{path}.verified", "בוליאני")
         for key in ("source_title", "source_muscle_group", "source_sets_reps", "source_notes"):

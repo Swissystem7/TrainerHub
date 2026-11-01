@@ -138,12 +138,22 @@ test('a workout can be built, prescribed, saved, and placed on the weekly plan',
 test('posters use assets/posters/<reel_id> and exercises group by muscle', function () {
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   const src = THReels.posterSources(bench);
-  assert.equal(src.primary, 'assets/posters/DfDEp8PRL3f.png');
-  assert.equal(src.secondary, 'assets/posters/DfDEp8PRL3f.jpg');
+  assert.equal(src.primary, 'assets/posters/DfDEp8PRL3f.jpg');
+  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).primary, 'assets/posters/DdHOFvtKk9z.png');
+  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).secondary, 'assets/posters/DdHOFvtKk9z.jpg');
   assert.equal(THReels.posterSources({ id: 'ig-X', poster: 'assets/posters/custom.jpg' }).primary, 'assets/posters/custom.jpg');
-  const html = THReels.posterFrameHtml(bench, function (s) { return String(s); });
-  assert.match(html, /assets\/posters\/DfDEp8PRL3f\.png/);
+  const html = THReels.posterFrameHtml(Object.assign({}, bench, { _index: 2 }), function (s) { return String(s); });
+  assert.match(html, /assets\/posters\/DfDEp8PRL3f\.jpg/);
   assert.match(html, /poster-fallback/);
+  assert.match(html, /muscle-badge/);
+  assert.match(html, />02</);
+  const uncertain = data.exercises.filter(function (ex) { return ex.poster_uncertain; }).map(function (ex) { return ex.id; }).sort();
+  assert.deepEqual(uncertain, ['ig-De_zG55tsgJ', 'ig-DfCCPegA5tj', 'ig-DfCmQ2uOLpM', 'ig-DfCxqpMDrS6']);
+  uncertain.forEach(function (id) {
+    const ex = data.exercises.find(function (row) { return row.id === id; });
+    assert.match(ex.poster, /\.jpg$/);
+    assert.match(THReels.exerciseCardHtml(ex, function (s) { return String(s); }), /איור לא ודאי/);
+  });
   const groups = THReels.groupByMuscle([
     { id: 'a', muscle_group: 'חזה' },
     { id: 'b', muscle_group: 'ליבה' },

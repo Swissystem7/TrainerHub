@@ -107,6 +107,12 @@
       if (typeof ex.poster !== 'string' || ex.poster.indexOf('..') !== -1 || /^([a-z]+:|\/)/i.test(ex.poster)) {
         err(path + '.poster', 'נתיב יחסי בתוך המאגר, או ריק');
       }
+      if (ex.poster_uncertain != null && typeof ex.poster_uncertain !== 'boolean') {
+        err(path + '.poster_uncertain', 'בוליאני');
+      }
+      if (ex.poster_uncertain === true && !ex.poster) {
+        err(path + '.poster_uncertain', 'איור לא ודאי דורש קובץ פוסטר');
+      }
       if (typeof ex.verified !== 'boolean') err(path + '.verified', 'בוליאני');
       ['source_title', 'source_muscle_group', 'source_sets_reps', 'source_notes'].forEach(function (key) {
         if (typeof ex[key] !== 'string') err(path + '.' + key, 'מחרוזת');
@@ -178,6 +184,7 @@
           source_url: item.source_url || '',
           creator: item.creator || '',
           poster: item.poster || '',
+          poster_uncertain: !!item.poster_uncertain,
           steps_he: Array.isArray(item.steps_he) ? item.steps_he.slice() : []
         };
       })
@@ -198,6 +205,7 @@
       source_url: exercise.source_url,
       creator: exercise.creator,
       poster: exercise.poster || '',
+      poster_uncertain: !!exercise.poster_uncertain,
       steps_he: Array.isArray(exercise.steps_he) ? exercise.steps_he.slice() : []
     });
     return next;
@@ -285,10 +293,21 @@
       ? '<img class="poster" alt="" src="' + esc(src.primary) + '"' +
         (src.secondary ? ' data-jpg="' + esc(src.secondary) + '"' : '') + '>'
       : '';
+    var badge = thumb ? '' : '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>';
+    var indexNo = (!thumb && ex && ex._index) ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
+    var uncertain = (!thumb && ex && ex.poster_uncertain)
+      ? '<span class="uncertain-flag">איור לא ודאי</span>'
+      : (thumb && ex && ex.poster_uncertain ? '<span class="uncertain-dot" title="איור לא ודאי"></span>' : '');
     return '<div class="poster-frame tone-' + toneName(muscle) + (thumb ? ' is-thumb' : '') + '">' +
       img +
       '<div class="poster-fallback">' + muscleIcon(muscle) + '<span>' + esc(muscle) + '</span></div>' +
+      badge + indexNo + uncertain +
       '</div>';
+  }
+
+  function twoDigit(n) {
+    var s = String(n);
+    return s.length < 2 ? '0' + s : s;
   }
 
   function groupByMuscle(list) {
@@ -544,7 +563,7 @@
     var watchLabel = /\/p\//.test(ex.source_url || '') ? 'צפייה בפוסט' : 'צפייה בריל';
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
-    return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '">' +
+    return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       posterFrameHtml(ex, esc, false) +
       '<div class="card-body">' +
         '<div class="card-kicker">' + flag + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +

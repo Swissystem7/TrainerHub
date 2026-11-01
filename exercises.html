@@ -8,27 +8,29 @@
   <title>TrainerHub | ספריית תרגילים</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/app.css">
   <style>
     :root {
-      --bg: #0c0f0d;
-      --card: #171e19;
-      --card-2: #121815;
-      --ink: #f4f7f2;
-      --muted: #9eaea4;
-      --line: rgba(244, 247, 242, .1);
-      --lime: #d6ff4a;
-      --shadow: 0 18px 40px rgba(0, 0, 0, .28);
-      --tone-all: #d6ff4a;
-      --tone-core: #f5c451;
-      --tone-chest: #ff7b7b;
-      --tone-back: #6aa4ff;
-      --tone-legs: #3ddea0;
-      --tone-hiit: #ff9a4a;
-      --tone-mobility: #c89bff;
-      --tone-other: #9aabba;
-      --tone-unknown: #8d978f;
+      --bg: #070A12;
+      --card: #101624;
+      --card-2: #0c1220;
+      --ink: #ffffff;
+      --muted: #b7c3d6;
+      --line: rgba(0, 209, 255, .2);
+      --lime: #00D1FF;
+      --cta: #FF7A1A;
+      --ok: #00FF88;
+      --shadow: 0 18px 40px rgba(0, 0, 0, .35);
+      --tone-all: #00D1FF;
+      --tone-core: #00D1FF;
+      --tone-chest: #FF7A1A;
+      --tone-back: #b388ff;
+      --tone-legs: #00FF88;
+      --tone-hiit: #FF1E3C;
+      --tone-mobility: #7ae7ff;
+      --tone-other: #9aa8c7;
+      --tone-unknown: #7d879c;
     }
     * { box-sizing: border-box; }
     body {
@@ -38,13 +40,13 @@
       font-family: "Heebo", "Assistant", Arial, sans-serif;
       overflow-x: hidden;
       background:
-        radial-gradient(900px 420px at 100% -8%, rgba(214, 255, 74, .14), transparent 55%),
-        radial-gradient(700px 380px at 0% 0%, rgba(106, 164, 255, .08), transparent 50%),
+        radial-gradient(900px 420px at 100% -8%, rgba(0, 209, 255, .12), transparent 55%),
+        radial-gradient(700px 380px at 0% 0%, rgba(255, 122, 26, .08), transparent 50%),
         var(--bg);
     }
     .wrap { max-width: 1180px; margin: auto; padding: 18px 16px 96px; }
     .top small { color: var(--lime); font-weight: 700; letter-spacing: .08em; }
-    .top h1 { font-size: clamp(1.8rem, 6vw, 2.7rem); line-height: 1.15; margin: 6px 0 8px; font-weight: 800; }
+    .top h1 { font-size: clamp(1.8rem, 6vw, 2.7rem); line-height: 1.15; margin: 6px 0 8px; font-weight: 900; }
     .top p { color: var(--muted); max-width: 40rem; line-height: 1.65; margin: 0; }
     .layout { display: flex; flex-direction: column; gap: 16px; margin-top: 18px; min-width: 0; }
     .library-col { order: 1; min-width: 0; max-width: 100%; }
@@ -100,7 +102,13 @@
     .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
     .card {
       background: var(--card); border: 1px solid var(--line); border-radius: 22px; overflow: hidden;
-      display: flex; flex-direction: column; box-shadow: var(--shadow);
+      display: flex; flex-direction: column; box-shadow: var(--shadow); cursor: grab;
+      transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+    }
+    .card:hover {
+      border-color: rgba(0, 209, 255, .55);
+      box-shadow: 0 0 18px #00D1FF40;
+      transform: translateY(-2px);
     }
     .poster-frame {
       position: relative; aspect-ratio: 4 / 5; background:
@@ -118,12 +126,31 @@
       position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
       color: var(--tone); font-weight: 800;
     }
+    .muscle-badge, .card-index, .uncertain-flag, .uncertain-dot { position: absolute; z-index: 2; }
+    .muscle-badge {
+      top: 10px; inset-inline-start: 10px; display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(7, 10, 18, .78); color: #fff; border-radius: 999px; padding: 4px 9px;
+      font-size: .74rem; font-weight: 800; border: 1px solid color-mix(in srgb, var(--tone) 75%, #fff);
+    }
+    .muscle-badge .ico { width: 14px; height: 14px; color: var(--tone); }
+    .card-index {
+      top: 8px; inset-inline-end: 12px; color: var(--cta); font-weight: 900; font-size: 1.45rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .65);
+    }
+    .uncertain-flag {
+      bottom: 10px; inset-inline-start: 10px; font-size: .68rem; font-weight: 700; color: #fff;
+      background: rgba(7, 10, 18, .72); border: 1px solid rgba(255, 255, 255, .28); border-radius: 999px; padding: 3px 8px;
+    }
+    .uncertain-dot {
+      top: 6px; inset-inline-end: 6px; width: 8px; height: 8px; border-radius: 999px; background: #fff;
+      box-shadow: 0 0 0 2px rgba(7, 10, 18, .8);
+    }
     .poster-fallback .ico { width: 42px; height: 42px; }
     .poster-frame.is-thumb .poster-fallback .ico { width: 22px; height: 22px; }
     .poster-frame.is-thumb .poster-fallback span { display: none; }
     .card-body { display: flex; flex-direction: column; gap: 8px; padding: 14px 14px 16px; }
     .card-kicker, .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-    .card h2, .builder h2 { margin: 0; font-size: 1.05rem; line-height: 1.35; font-weight: 750; }
+    .card h2, .builder h2 { margin: 0; font-size: 1.05rem; line-height: 1.35; font-weight: 900; }
     .creator { margin: 0; color: var(--muted); font-size: .84rem; }
     .creator a { color: var(--lime); text-decoration: none; unicode-bidi: isolate; direction: ltr; }
     .pill {
@@ -139,13 +166,13 @@
     .actions, .builder-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
     .actions button, .actions a.reel, .builder-actions button {
       flex: 1; min-width: 108px; min-height: 44px; margin: 0; padding: 10px 12px;
-      border-radius: 14px; border: 0; background: var(--lime); color: #12160f;
+      border-radius: 14px; border: 0; background: var(--cta); color: #1a0e06;
       font: inherit; font-weight: 800; text-align: center; text-decoration: none; cursor: pointer;
     }
     .actions a.reel, .builder-actions button.ghost {
       background: transparent; color: var(--ink); border: 1px solid var(--line);
     }
-    .actions button[aria-pressed="true"] { background: #243028; color: var(--lime); }
+    .actions button[aria-pressed="true"] { background: rgba(0, 255, 136, .16); color: var(--ok); }
     .builder {
       background: color-mix(in srgb, var(--card) 92%, black);
       border: 1px solid var(--line); border-radius: 24px; padding: 14px;
@@ -157,9 +184,10 @@
       background: transparent; color: var(--ink); border: 0; font: inherit; font-weight: 800; font-size: 1.05rem;
       padding: 4px 2px; cursor: pointer;
     }
+    .builder.is-drop { outline: 2px dashed var(--lime); outline-offset: 4px; }
     .draft-count {
       min-width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
-      background: var(--lime); color: #12160f; font-size: .85rem;
+      background: var(--cta); color: #1a0e06; font-size: .85rem; font-weight: 900;
     }
     .builder p { color: var(--muted); font-size: .84rem; line-height: 1.5; margin: 0; }
     .draft-list, .saved-list, .section-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
@@ -181,19 +209,19 @@
     .icon-row button[disabled] { opacity: .35; cursor: default; }
     .drag-handle { cursor: grab; }
     .stepper { display: flex; align-items: center; gap: 4px; min-width: 0; direction: ltr; }
-    .stepper input { text-align: center; padding: 8px; min-height: 36px; min-width: 0; }
+    .stepper input { text-align: center; padding: 8px; min-height: 36px; min-width: 0; color: var(--cta); font-weight: 900; font-size: 1.15rem; }
     .pair { display: grid; grid-template-columns: 1fr; gap: 8px; }
     .stepper input { flex: 1 1 auto; }
     .status { min-height: 1.2em; color: var(--lime); font-size: .82rem; }
     .empty-state, .draft-empty {
-      border: 1px dashed color-mix(in srgb, var(--lime) 45%, var(--line));
+      border: 1px dashed color-mix(in srgb, var(--lime) 55%, var(--line));
       border-radius: 20px; padding: 28px 16px; text-align: center; color: var(--muted);
-      background: rgba(214, 255, 74, .04);
+      background: rgba(0, 209, 255, .05);
     }
     .empty-state strong, .draft-empty strong { display: block; color: var(--ink); font-size: 1.05rem; margin: 8px 0 4px; }
     .empty-mark {
       width: 64px; height: 64px; margin: 0 auto; border-radius: 20px;
-      display: grid; place-items: center; background: rgba(214, 255, 74, .12); color: var(--lime);
+      display: grid; place-items: center; background: rgba(0, 209, 255, .12); color: var(--lime);
     }
     .empty-mark .ico { width: 28px; height: 28px; }
     .empty-state button { margin-top: 12px; }
@@ -206,7 +234,7 @@
     }
     @media (min-width: 700px) {
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .poster-frame { aspect-ratio: 5 / 4; }
+      .poster-frame { aspect-ratio: 4 / 5; }
     }
     @media (min-width: 980px) {
       .wrap { padding: 28px 20px 64px; }
@@ -214,11 +242,15 @@
       .builder { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; order: 0; }
       .builder-toggle { pointer-events: none; }
       .library-col { order: 0; }
-      .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .chips { flex-wrap: wrap; overflow: visible; }
     }
+    @media (min-width: 1280px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .poster { transition: none; }
+      .poster, .card { transition: none; }
+      .card:hover { transform: none; }
     }
   </style>
 <script src="./js/sentry-init.js"></script>
@@ -263,7 +295,7 @@
         <div class="draft-empty" id="draftEmpty">
           <div class="empty-mark" aria-hidden="true"></div>
           <strong>האימון עדיין ריק</strong>
-          <span>סננו לפי שריר והוסיפו כרטיס. כאן הוא ייכנס למדור המתאים.</span>
+          <span>גררו כרטיס ליום האימון, או לחצו «הוסף לאימון». הוא ייכנס למדור השריר.</span>
         </div>
         <ol class="draft-list" id="draftList"></ol>
         <p class="status" id="builderStatus" role="status" aria-live="polite"></p>
@@ -433,8 +465,20 @@
     }).join('');
   }
 
-  function cardHtml(ex, added) {
-    return THReels.exerciseCardHtml(Object.assign({}, ex, { _added: !!added[ex.id] }), TH.esc);
+  function cardHtml(ex, added, index) {
+    return THReels.exerciseCardHtml(Object.assign({}, ex, { _added: !!added[ex.id], _index: index }), TH.esc);
+  }
+
+  function addExerciseById(id) {
+    var ex = null;
+    for (var i = 0; i < library.length; i++) if (library[i].id === id) ex = library[i];
+    if (!ex) return;
+    var before = draft.items.length;
+    draft = THReels.addToDraft(draft, ex);
+    persistDraft();
+    renderDraft();
+    renderGrid();
+    setStatus(draft.items.length === before ? 'התרגיל כבר ביום האימון.' : 'נוסף «' + THReels.displayName(ex) + '».');
   }
 
   function renderGrid() {
@@ -453,16 +497,17 @@
     }
     if (viewMode === 'groups') {
       $('grid').className = 'stack';
+      var running = 0;
       $('grid').innerHTML = THReels.groupByMuscle(shown).map(function (section) {
         return '<section class="muscle-section tone-' + section.tone + '">' +
           '<h3 class="section-head">' + THReels.muscleIcon(section.muscle) + TH.esc(section.muscle) +
             '<span class="count">' + section.exercises.length + '</span></h3>' +
-          '<div class="grid">' + section.exercises.map(function (ex) { return cardHtml(ex, added); }).join('') + '</div></section>';
+          '<div class="grid">' + section.exercises.map(function (ex) { running += 1; return cardHtml(ex, added, running); }).join('') + '</div></section>';
       }).join('');
       return;
     }
     $('grid').className = 'grid';
-    $('grid').innerHTML = shown.map(function (ex) { return cardHtml(ex, added); }).join('');
+    $('grid').innerHTML = shown.map(function (ex, i) { return cardHtml(ex, added, i + 1); }).join('');
   }
 
   function persistDraft() {
@@ -520,16 +565,31 @@
     }
     var btn = e.target.closest('[data-add]');
     if (!btn) return;
-    var id = btn.getAttribute('data-add');
-    var ex = null;
-    for (var i = 0; i < library.length; i++) if (library[i].id === id) ex = library[i];
-    if (!ex) return;
-    var before = draft.items.length;
-    draft = THReels.addToDraft(draft, ex);
-    persistDraft();
-    renderDraft();
-    renderGrid();
-    setStatus(draft.items.length === before ? 'התרגיל כבר באימון.' : 'נוסף «' + THReels.displayName(ex) + '».');
+    addExerciseById(btn.getAttribute('data-add'));
+  });
+  $('grid').addEventListener('dragstart', function (e) {
+    var card = e.target.closest('.card');
+    if (!card || !e.dataTransfer) return;
+    e.dataTransfer.setData('application/x-reel', card.getAttribute('data-id') || '');
+    e.dataTransfer.effectAllowed = 'copy';
+  });
+  $('builder').addEventListener('dragover', function (e) {
+    if (!e.dataTransfer) return;
+    var types = e.dataTransfer.types ? Array.prototype.slice.call(e.dataTransfer.types) : [];
+    if (types.indexOf('application/x-reel') === -1 && !dragId) return;
+    e.preventDefault();
+    $('builder').classList.add('is-drop');
+  });
+  $('builder').addEventListener('dragleave', function (e) {
+    if (e.target === $('builder')) $('builder').classList.remove('is-drop');
+  });
+  $('builder').addEventListener('drop', function (e) {
+    $('builder').classList.remove('is-drop');
+    var id = '';
+    try { id = e.dataTransfer.getData('application/x-reel'); } catch (err) { id = ''; }
+    if (!id) return;
+    e.preventDefault();
+    addExerciseById(id);
   });
 
   $('draftList').addEventListener('click', function (e) {
@@ -634,7 +694,7 @@
 
   renderDraft();
   renderSaved();
-  fetch('./data/exercises.json')
+  fetch('./data/exercises.json', { cache: 'no-cache' })
     .then(function (res) { if (!res.ok) throw new Error('status ' + res.status); return res.json(); })
     .then(function (data) {
       var check = THReels.validateLibrary(data);

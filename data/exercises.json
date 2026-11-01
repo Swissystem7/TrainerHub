@@ -27,13 +27,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfFxxAruQGT/",
       "creator": "_kevykevv",
-      "poster": "",
+      "poster": "assets/posters/DfFxxAruQGT.jpg",
       "verified": false,
       "source_title": "Buddah Bear Crawl - זחילת דוב עם כדור רפואי",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "WHO DID IT BEST? אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfDF7NHBZsM",
@@ -48,13 +49,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfDF7NHBZsM/",
       "creator": "jakethomasfitness",
-      "poster": "",
+      "poster": "assets/posters/DfDF7NHBZsM.jpg",
       "verified": false,
       "source_title": "Full Core No Equipment - 4 תרגילי בטן ללא ציוד",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "2x15 & 4x WEEKLY",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfDEp8PRL3f",
@@ -73,13 +75,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DfDEp8PRL3f/",
       "creator": "coachgiress38",
-      "poster": "",
+      "poster": "assets/posters/DfDEp8PRL3f.jpg",
       "verified": false,
       "source_title": "Bench Core Blast - 4 תרגילים על ספסל: ברך שמאל/ימין, פוש-אפ מוגבה, נגיעת כתף",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "3x20 → 5x20 REPS",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfCxqpMDrS6",
@@ -99,13 +102,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DfCxqpMDrS6/",
       "creator": "bigprido",
-      "poster": "",
+      "poster": "assets/posters/DfCxqpMDrS6.jpg",
       "verified": false,
       "source_title": "Home Ab Workout - הרמת רגליים, כפיפת ברכיים, פלאנק הפוך, כפיפות צד",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין (4 תרגילים עם איורים אנטומיים וצ'ק ירוק)",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": true
     },
     {
       "id": "ig-DfCmQ2uOLpM",
@@ -125,13 +129,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DfCmQ2uOLpM/",
       "creator": "coach__pascal",
-      "poster": "",
+      "poster": "assets/posters/DfCmQ2uOLpM.jpg",
       "verified": false,
       "source_title": "Beginner Ab - מתיחות בישיבה, כפיפות בטן, טוויסט רוסי, הרמת רגליים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "Before/After - ללא ציון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": true
     },
     {
       "id": "ig-DfCCPegA5tj",
@@ -146,13 +151,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfCCPegA5tj/",
       "creator": "vagalapa.82",
-      "poster": "",
+      "poster": "assets/posters/DfCCPegA5tj.jpg",
       "verified": false,
       "source_title": "Wall-Supported Crunch - כפיפות בטן עם רגליים על קיר",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "Before/After קוביות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": true
     },
     {
       "id": "ig-DfB3oKkB-Vu",
@@ -167,13 +173,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfB3oKkB-Vu/",
       "creator": "jakethomasfitness",
-      "poster": "",
+      "poster": "assets/posters/DfB3oKkB-Vu.jpg",
       "verified": false,
       "source_title": "Full Abs Wall Workout - 5 תרגילי בטן עם קיר",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "2x20 & 4x WEEKLY, 6 PACK BEFORE 2027",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfBp7o0sv18",
@@ -188,13 +195,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfBp7o0sv18/",
       "creator": "bura_rated",
-      "poster": "",
+      "poster": "assets/posters/DfBp7o0sv18.jpg",
       "verified": false,
       "source_title": "Side Plank Abs - פלאנק צדדי 4 וריאציות",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "4x30 SEC",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfBRl7Ksmyt",
@@ -209,13 +217,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DfBRl7Ksmyt/",
       "creator": "martin.fithub",
-      "poster": "",
+      "poster": "assets/posters/DfBRl7Ksmyt.jpg",
       "verified": false,
       "source_title": "Squat Deeper Stand Taller - סקוואט עמוק + הרמת ברך",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן",
       "source_sets_reps": "20 X 6",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DfAVEWdsnKg",
@@ -236,13 +245,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DfAVEWdsnKg/",
       "creator": "itslaurenwellness",
-      "poster": "",
+      "poster": "assets/posters/DfAVEWdsnKg.jpg",
       "verified": false,
       "source_title": "Mike Tyson Push-up Challenge 61 - מעמידה לפלאנק, נגיעת כתף, ברך, רגל, פלאנק הפוך",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה / גוף מלא",
       "source_sets_reps": "Challenge - ללא חזרות קבועות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De_zG55tsgJ",
@@ -260,13 +270,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/De_zG55tsgJ/",
       "creator": "famosft",
-      "poster": "",
+      "poster": "assets/posters/De_zG55tsgJ.jpg",
       "verified": false,
       "source_title": "Core Oblique Plank - פלאנק אמות עם ברך לחזה, הרחקה",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "4x20 Reps, 4x15 Reps",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": true
     },
     {
       "id": "ig-De_RXTUBRDk",
@@ -281,13 +292,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/De_RXTUBRDk/",
       "creator": "mr.highlevel_",
-      "poster": "",
+      "poster": "assets/posters/De_RXTUBRDk.jpg",
       "verified": false,
       "source_title": "Brain Coordination Ball Toss - קואורדינציה 1 דקה עם כדור",
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / קואורדינציה",
       "source_sets_reps": "1 דקה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De-B03DRTf9",
@@ -302,13 +314,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/De-B03DRTf9/",
       "creator": "coachgiress38",
-      "poster": "",
+      "poster": "assets/posters/De-B03DRTf9.jpg",
       "verified": false,
       "source_title": "Ab Workout Medicine Ball 5KG - V-up עם כדור רפואי",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "4X25",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De4yvaCxfZT",
@@ -327,13 +340,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/De4yvaCxfZT/",
       "creator": "gabi_rex_omar",
-      "poster": "",
+      "poster": "assets/posters/De4yvaCxfZT.jpg",
       "verified": false,
       "source_title": "Home Bodyweight - שכיבות סמיכה, סקוואט, שכיבות צרות",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ורגליים",
       "source_sets_reps": "3x20, 3x10",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De4nsvDTBkL",
@@ -353,13 +367,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/De4nsvDTBkL/",
       "creator": "vianney.fit",
-      "poster": "",
+      "poster": "assets/posters/De4nsvDTBkL.jpg",
       "verified": false,
       "source_title": "Lower Body Box - סקוואט רחב, ירידה צדדית, לאנג' על קופסה, ברך גבוהה",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן",
       "source_sets_reps": "30s X 3",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De3E0IcqzLH",
@@ -381,13 +396,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/De3E0IcqzLH/",
       "creator": "bigasian_fit",
-      "poster": "",
+      "poster": "assets/posters/De3E0IcqzLH.jpg",
       "verified": false,
       "source_title": "3 Min Full Body Resistance Band - 6 תרגילים: סקוואט, RDL, חתירה, פרפר, כפיפות, פשיטות",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "3 דקות, 20 שניות לתרגיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De2ZKEaKxYf",
@@ -402,13 +418,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/De2ZKEaKxYf/",
       "creator": "fitnesseni",
-      "poster": "",
+      "poster": "assets/posters/De2ZKEaKxYf.jpg",
       "verified": false,
       "source_title": "11 Plank Variations - 11 וריאציות פלאנק",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "11 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-De1E2tzI1WY",
@@ -427,13 +444,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/De1E2tzI1WY/",
       "creator": "annalysasforza",
-      "poster": "",
+      "poster": "assets/posters/De1E2tzI1WY.jpg",
       "verified": false,
       "source_title": "Group Medicine Ball Relay - סקוואט עמוק, הליכה עם כדור, פלאנק בשורה",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "פול באדי ו-HIIT / קבוצתי",
       "source_sets_reps": "Relay - ללא ציון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dez8o94zqDt",
@@ -451,13 +469,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/Dez8o94zqDt/",
       "creator": "endureit.llc",
-      "poster": "",
+      "poster": "assets/posters/Dez8o94zqDt.jpg",
       "verified": false,
       "source_title": "Find A Way To Win - מוטיבציה גראז' דדליפט, מתח",
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / מוטיבציה",
       "source_sets_reps": "מוטיבציה - ללא ציון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeziUrQNeiZ",
@@ -476,13 +495,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DeziUrQNeiZ/",
       "creator": "iamagapovm",
-      "poster": "",
+      "poster": "assets/posters/DeziUrQNeiZ.jpg",
       "verified": false,
       "source_title": "Kneeling Resistance Band Back - חתירה אופקית, משיכה עליונה, רחבה",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "5 איורים אנטומיים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeuTsX3xdUf",
@@ -497,13 +517,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DeuTsX3xdUf/",
       "creator": "ahmari_2",
-      "poster": "",
+      "poster": "assets/posters/DeuTsX3xdUf.jpg",
       "verified": false,
       "source_title": "Medicine Ball Push-up Variations - פלאנק העברת כדור מתחת לגוף",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "ללא ציון - וריאציות מתקדמות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeuHcU9o8A1",
@@ -518,13 +539,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DeuHcU9o8A1/",
       "creator": "romavelych",
-      "poster": "",
+      "poster": "assets/posters/DeuHcU9o8A1.jpg",
       "verified": false,
       "source_title": "9 Exercises Joint Stability - 9 תרגילי יציבות מפרקים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "מוביליטי / ליבה",
       "source_sets_reps": "9 תרגילים - ללא ציון מדויק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeoNSIcsWia",
@@ -543,13 +565,14 @@
       ],
       "source_url": "https://www.instagram.com/reel/DeoNSIcsWia/",
       "creator": "kenzo121k",
-      "poster": "",
+      "poster": "assets/posters/DeoNSIcsWia.jpg",
       "verified": false,
       "source_title": "Home Ab & Oblique - פשיטת ירך בשכיבה עם משקולת, הרמת רגליים בישיבה, הרחקת ירכיים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ישבן",
       "source_sets_reps": "3x20, 3x15",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DekhvfkoCfN",
@@ -564,13 +587,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DekhvfkoCfN/",
       "creator": "tyfu_ng",
-      "poster": "",
+      "poster": "assets/posters/DekhvfkoCfN.jpg",
       "verified": false,
       "source_title": "HIIT Burn Hanging Belly Fat - 6 תרגילי HIIT",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "בטן ו-Core / HIIT",
       "source_sets_reps": "4x 20s WORK 15s REST, 1 WEEK",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeglA_wt3Sv",
@@ -585,13 +609,14 @@
       "steps_he": [],
       "source_url": "https://www.instagram.com/reel/DeglA_wt3Sv/",
       "creator": "tema.raznkv",
-      "poster": "",
+      "poster": "assets/posters/DeglA_wt3Sv.jpg",
       "verified": false,
       "source_title": "Core Pillow Workout - אימון בטן עם כרית V-sit",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Deemlz3juAA",
@@ -618,7 +643,8 @@
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן / מוביליטי",
       "source_sets_reps": "1 סט, 2 דקות לכל צד",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DecQ9KKC296",
@@ -639,7 +665,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "100 ביום לחודש",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeQzQzyNg8P",
@@ -660,7 +687,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeO8oVyADue",
@@ -686,7 +714,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / תזונה",
       "source_sets_reps": "לא רלוונטי - קרוסלת תזונה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeLmr2qt1Du",
@@ -714,7 +743,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה - זוגי",
       "source_sets_reps": "3x30sec לכל תרגיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeHiSngSlmg",
@@ -735,7 +765,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "גב / מוביליטי",
       "source_sets_reps": "לא מצוין - תרגילי הסברה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeEZisjq5ti",
@@ -756,7 +787,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / ליבה",
       "source_sets_reps": "This Looks Easy Until You Try It - אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeAGCs_sc-e",
@@ -783,7 +815,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "מוביליטי / גב תחתון",
       "source_sets_reps": "8 reps each, 10 reps each, 2x15 reps",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DeAAHz3zTcx",
@@ -804,7 +837,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "4 sets of 12 reps per variation",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dd8g8CaM4ST",
@@ -829,7 +863,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / אלכסונים",
       "source_sets_reps": "לא מצוין - 3 תרגילים",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dd3jpQ3t-7Y",
@@ -856,7 +891,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / מוטיבציה",
       "source_sets_reps": "מוטיבציה - ללא חזרות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdxN4I-hoQp",
@@ -877,7 +913,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "אתגר 1 דקה - We Will Rock You",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Ddt-A9oS8lU",
@@ -898,7 +935,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין - תרגיל יציבות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Ddt0bQRsEQe",
@@ -919,7 +957,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "גב / מוביליטי",
       "source_sets_reps": "5 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdthU1EtHnN",
@@ -940,7 +979,8 @@
       "source_muscle_group": "מוביליטי וגמישות",
       "source_muscle_label": "אחר / בריאות",
       "source_sets_reps": "2 דקות ביום, 30 שניות לכל אזור",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdsgLw6zeP9",
@@ -961,7 +1001,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdmPI6hoXNT",
@@ -982,7 +1023,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "3x15 res each",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdbhN0kxQG8",
@@ -1003,7 +1045,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "5 תרגילים 1/5 עד 5/5",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdVphimgjpS",
@@ -1027,7 +1070,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "10 חזרות (ספירה קולית)",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdS9ue-knAM",
@@ -1052,7 +1096,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / תזונה",
       "source_sets_reps": "לא רלוונטי - טיפי שינה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdKNMkQTnA6",
@@ -1077,7 +1122,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdAofnSsWdO",
@@ -1102,7 +1148,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "3 x 12",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dc_BOIkotw1",
@@ -1123,7 +1170,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות",
       "source_sets_reps": "תרגיל זריזות - ספרינט צדדי",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dc-20XLhaO2",
@@ -1150,7 +1198,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "פול באדי ו-HIIT / קליסטניקס",
       "source_sets_reps": "25, 20, 30, 35, 45 שניות - 3 ROUNDS",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dc546O3RmMI",
@@ -1171,7 +1220,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה - ילדים",
       "source_sets_reps": "לא מצוין - Atletas diferentes mesma base",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DcxqrUuM1xB",
@@ -1196,7 +1246,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "גב / יציבה",
       "source_sets_reps": "4x15, 4x12, 3 פעמים בשבוע, +3cm",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dcv4lAKitq9",
@@ -1217,7 +1268,8 @@
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן / ברכיים",
       "source_sets_reps": "9 תרגילים: LATERAL RAISE, LEG LIFT, MARCH HOLDS וכו'",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DcsZNbkoKlJ",
@@ -1238,7 +1290,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה / אתגר",
       "source_sets_reps": "Can you do it? אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DclexQGAeqK",
@@ -1259,7 +1312,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות / פליאו",
       "source_sets_reps": "Try these quick feet & plyo drills",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DclaHnEtQtJ",
@@ -1280,7 +1334,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DceCjqNtz9d",
@@ -1305,7 +1360,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ישבן",
       "source_sets_reps": "3x45, 3x30, 3x20",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DcYz60YqrzZ",
@@ -1326,7 +1382,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "בטן ו-Core / משחק ילדים",
       "source_sets_reps": "משחק - מי אוסף הכי הרבה כדורים מנצח",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DcVfEVJOQmQ",
@@ -1347,7 +1404,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ילדים",
       "source_sets_reps": "10 זריקות בלי להפיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DcBdCyrRDDq",
@@ -1368,7 +1426,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "גב / כתפיים",
       "source_sets_reps": "לא מצוין - תנועה מבוקרת",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Db_0bHxi0vk",
@@ -1389,7 +1448,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "5 אזורי חזה עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Db_prUBsVP_",
@@ -1417,7 +1477,8 @@
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "4 sets of 15-20 reps",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Db_lH-pykzO",
@@ -1438,7 +1499,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / ילדים / זריזות",
       "source_sets_reps": "תרגיל זריזות - מסלול",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Db-6LUKoluR",
@@ -1463,7 +1525,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "לא מצוין - Train differently",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Db8b43Dtsym",
@@ -1484,7 +1547,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ילדים",
       "source_sets_reps": "לא מצוין - תרגיל קבוצתי",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dbpb8X1s51t",
@@ -1505,7 +1569,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות / שיווי משקל",
       "source_sets_reps": "Can you do this? אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dbn7nvntdhB",
@@ -1531,7 +1596,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "10, 12, 20, 20 שניות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DbRtKjLuRAp",
@@ -1552,7 +1618,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות",
       "source_sets_reps": "משחק תחרות לפני אימון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Da4KifLSq3S",
@@ -1573,7 +1640,8 @@
       "source_muscle_group": "גב",
       "source_muscle_label": "אחר / קרדיו",
       "source_sets_reps": "I'M BACK - ללא חזרות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dar9SgDOsrC",
@@ -1594,7 +1662,8 @@
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "בטן ו-Core / משפחתי / כתפיים, ידיים, גב, בטן",
       "source_sets_reps": "לא מצוין - אתגר משפחתי",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-Dart5bjomQ5",
@@ -1620,7 +1689,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / קרדיו",
       "source_sets_reps": "READY! 20 שניות עבודה עם טיימר ספירה לאחור",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DagmG-Ih4Ji",
@@ -1641,7 +1711,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות / ליבה",
       "source_sets_reps": "כמה שיותר העברות ב-10 שניות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DaYaktpO8aa",
@@ -1662,7 +1733,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / פלאנק / זריזות",
       "source_sets_reps": "תחרות - ללא חזרות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DaSiindCCj8",
@@ -1683,7 +1755,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / חימום פלג גוף עליון",
       "source_sets_reps": "One of the best upper body warmups",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DZnFFSvscK_",
@@ -1704,7 +1777,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "אחר / מוטיבציה",
       "source_sets_reps": "מוטיבציה - לא תרגיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DZkEztOv9CD",
@@ -1725,7 +1799,8 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "אחר / זריזות / טניס",
       "source_sets_reps": "תרגיל תגובה - הפלת קונוס וספרינט",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DVvjbFwkhpk",
@@ -1751,7 +1826,8 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "גב / יציבה",
       "source_sets_reps": "לא מצוין - 4 תנועות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DQ85J9ykRwz",
@@ -1772,7 +1848,8 @@
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "4 SETS 15 REPS, 4 SETS 20 REPS",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון"
+      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdHOFvtKk9z",
@@ -1793,7 +1870,8 @@
       "source_muscle_group": "",
       "source_muscle_label": "",
       "source_sets_reps": "",
-      "source_notes": ""
+      "source_notes": "",
+      "poster_uncertain": false
     },
     {
       "id": "ig-DdI_86lNFfY",
@@ -1814,7 +1892,8 @@
       "source_muscle_group": "",
       "source_muscle_label": "",
       "source_sets_reps": "",
-      "source_notes": ""
+      "source_notes": "",
+      "poster_uncertain": false
     }
   ]
 }
