@@ -149,13 +149,13 @@ test('posters use assets/posters/<reel_id> and exercises group by muscle', funct
   assert.match(html, /poster-fallback/);
   assert.match(html, /muscle-badge/);
   assert.match(html, />02</);
-  const uncertain = data.exercises.filter(function (ex) { return ex.poster_uncertain; }).map(function (ex) { return ex.id; }).sort();
-  assert.deepEqual(uncertain, ['ig-De_zG55tsgJ', 'ig-DfCCPegA5tj', 'ig-DfCmQ2uOLpM', 'ig-DfCxqpMDrS6']);
-  uncertain.forEach(function (id) {
-    const ex = data.exercises.find(function (row) { return row.id === id; });
-    assert.match(ex.poster, /\.jpg$/);
-    assert.match(THReels.exerciseCardHtml(ex, function (s) { return String(s); }), /איור לא ודאי/);
+  ['De_zG55tsgJ', 'DfCCPegA5tj', 'DfCmQ2uOLpM', 'DfCxqpMDrS6'].forEach(function (code) {
+    const ex = data.exercises.find(function (row) { return row.id === 'ig-' + code; });
+    assert.equal(ex.poster, 'assets/posters/' + code + '.jpg');
+    assert.equal(ex.poster_uncertain, false);
   });
+  const flagged = Object.assign({}, bench, { poster_uncertain: true });
+  assert.match(THReels.exerciseCardHtml(flagged, function (s) { return String(s); }), /איור לא ודאי/);
   const groups = THReels.groupByMuscle([
     { id: 'a', muscle_group: 'חזה' },
     { id: 'b', muscle_group: 'ליבה' },
