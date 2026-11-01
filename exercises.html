@@ -30,6 +30,7 @@
       --tone-hiit: #FF1E3C;
       --tone-mobility: #7ae7ff;
       --tone-other: #9aa8c7;
+      --tone-inspire: #7CFFB2;
       --tone-unknown: #7d879c;
     }
     * { box-sizing: border-box; }
@@ -76,6 +77,7 @@
     .tone-hiit { --tone: var(--tone-hiit); }
     .tone-mobility { --tone: var(--tone-mobility); }
     .tone-other { --tone: var(--tone-other); }
+    .tone-inspire { --tone: var(--tone-inspire); }
     .tone-unknown { --tone: var(--tone-unknown); }
     .chip-btn .ico { width: 16px; height: 16px; color: var(--tone, var(--lime)); }
     .chip-btn[aria-pressed="true"], .view-btn[aria-pressed="true"] {
@@ -263,6 +265,7 @@
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <span class="chip on" aria-current="page">ספריית תרגילים</span>
+  <a href="./scan.html">סריקת סביבה</a>
   <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
@@ -328,6 +331,7 @@
             <option value="גוף מלא/HIIT">גוף מלא/HIIT</option>
             <option value="מוביליטי">מוביליטי</option>
             <option value="אחר">אחר</option>
+            <option value="השראה">השראה</option>
             <option value="לא ממוין">לא ממוין</option>
           </select>
         </div>
@@ -341,6 +345,7 @@
         <button type="button" class="chip-btn tone-hiit" data-muscle="גוף מלא/HIIT" aria-pressed="false">גוף מלא/HIIT</button>
         <button type="button" class="chip-btn tone-mobility" data-muscle="מוביליטי" aria-pressed="false">מוביליטי</button>
         <button type="button" class="chip-btn tone-other" data-muscle="אחר" aria-pressed="false">אחר</button>
+        <button type="button" class="chip-btn tone-inspire" data-muscle="השראה" aria-pressed="false">השראה</button>
         <button type="button" class="chip-btn tone-unknown" data-muscle="לא ממוין" aria-pressed="false">לא ממוין</button>
       </div>
       <div class="toolbar">

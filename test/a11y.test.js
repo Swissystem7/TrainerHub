@@ -19,7 +19,8 @@ const pages = {
   journal: fs.readFileSync(path.join(root, 'journal.html'), 'utf8'),
   booklet: fs.readFileSync(path.join(root, 'booklet.html'), 'utf8'),
   scan: fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8'),
-  exercises: fs.readFileSync(path.join(root, 'exercises.html'), 'utf8')
+  exercises: fs.readFileSync(path.join(root, 'exercises.html'), 'utf8'),
+  scan: fs.readFileSync(path.join(root, 'scan.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));

@@ -23,6 +23,7 @@ MUSCLE_GROUPS = [
     "גוף מלא/HIIT",
     "מוביליטי",
     "אחר",
+    "השראה",
     "לא ממוין",
 ]
 UNKNOWN_MUSCLE = "לא ממוין"
@@ -42,6 +43,7 @@ REQUIRED_KEYS = [
     "source_url",
     "creator",
     "poster",
+    "equipment_tags",
     "verified",
     "source_title",
     "source_muscle_group",
@@ -150,6 +152,16 @@ def validate(data):
             err(f"{path}.poster_uncertain", "בוליאני")
         if uncertain and not poster:
             err(f"{path}.poster_uncertain", "איור לא ודאי דורש קובץ פוסטר")
+        tags = ex.get("equipment_tags")
+        allowed = {
+            "bodyweight", "mat", "bench", "wall", "medicine_ball", "resistance_band", "mini_band",
+            "loop_band", "dumbbell", "kettlebell", "pillow", "chair", "foam_roller", "yoga_blocks",
+            "plyo_box", "wooden_box", "bosu", "weight_plate", "wooden_dowel", "power_rack",
+            "water_bottle", "soccer_ball", "tennis_ball", "small_ball", "cones", "discs", "hoops",
+            "jump_rope", "pullup_bar", "towel", "sofa", "basket", "kitchen_floor",
+        }
+        if not isinstance(tags, list) or any(tag not in allowed for tag in tags):
+            err(f"{path}.equipment_tags", "רשימת תגיות ציוד מהרשימה הסטנדרטית")
         if not isinstance(ex.get("verified"), bool):
             err(f"{path}.verified", "בוליאני")
         for key in ("source_title", "source_muscle_group", "source_sets_reps", "source_notes"):

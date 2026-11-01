@@ -16,7 +16,7 @@
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
-  var MUSCLE_GROUPS = ['ליבה', 'חזה', 'גב', 'רגליים/ישבן', 'גוף מלא/HIIT', 'מוביליטי', 'אחר', 'לא ממוין'];
+  var MUSCLE_GROUPS = ['ליבה', 'חזה', 'גב', 'רגליים/ישבן', 'גוף מלא/HIIT', 'מוביליטי', 'אחר', 'השראה', 'לא ממוין'];
   var UNKNOWN_MUSCLE = 'לא ממוין';
   var UNKNOWN_SETS = 'לא ממוין';
   var UNCLASSIFIED_NAME = 'ריל לא ממוין';
@@ -24,7 +24,7 @@
   var REQUIRED_KEYS = [
     'id', 'name_he', 'muscle_group', 'secondary_group', 'muscle_detail',
     'sets', 'reps', 'sets_reps', 'equipment', 'steps_he', 'source_url', 'creator',
-    'poster', 'verified', 'source_title', 'source_muscle_group', 'source_muscle_label',
+    'poster', 'equipment_tags', 'verified', 'source_title', 'source_muscle_group', 'source_muscle_label',
     'source_sets_reps', 'source_notes'
   ];
 
@@ -113,6 +113,11 @@
       if (ex.poster_uncertain === true && !ex.poster) {
         err(path + '.poster_uncertain', 'איור לא ודאי דורש קובץ פוסטר');
       }
+      if (!Array.isArray(ex.equipment_tags) || ex.equipment_tags.some(function (tag) {
+        return ['bodyweight','mat','bench','wall','medicine_ball','resistance_band','mini_band','loop_band','dumbbell','kettlebell','pillow','chair','foam_roller','yoga_blocks','plyo_box','wooden_box','bosu','weight_plate','wooden_dowel','power_rack','water_bottle','soccer_ball','tennis_ball','small_ball','cones','discs','hoops','jump_rope','pullup_bar','towel','sofa','basket','kitchen_floor'].indexOf(tag) === -1;
+      })) {
+        err(path + '.equipment_tags', 'רשימת תגיות ציוד מהרשימה הסטנדרטית');
+      }
       if (typeof ex.verified !== 'boolean') err(path + '.verified', 'בוליאני');
       ['source_title', 'source_muscle_group', 'source_sets_reps', 'source_notes'].forEach(function (key) {
         if (typeof ex[key] !== 'string') err(path + '.' + key, 'מחרוזת');
@@ -194,6 +199,7 @@
   function addToDraft(draft, exercise) {
     var next = cloneDraft(draft || emptyDraft());
     if (!exercise || !exercise.id) return next;
+    if (exercise.muscle_group === 'השראה') return next;
     if (next.items.some(function (item) { return item.exerciseId === exercise.id; })) return next;
     next.items.push({
       exerciseId: exercise.id,
@@ -242,6 +248,7 @@
     'גוף מלא/HIIT': 'hiit',
     'מוביליטי': 'mobility',
     'אחר': 'other',
+    'השראה': 'inspire',
     'לא ממוין': 'unknown'
   };
 
@@ -254,7 +261,8 @@
     'גוף מלא/HIIT': '<path d="M13 2 6 13h5l-1 9 8-12h-5l0-8z" fill="currentColor"/>',
     'מוביליטי': '<path d="M3 15c2.5-6 4.5 5 8 0s5 6 7 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
     'אחר': '<circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/>',
-    'לא ממוין': '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="2.4 2.6"/>'
+    'לא ממוין': '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="2.4 2.6"/>',
+    'השראה': '<path d="M12 3.5l1.8 4.2 4.6.4-3.5 3 1.1 4.4L12 13.2 8 15.5l1.1-4.4-3.5-3 4.6-.4L12 3.5z" fill="currentColor"/>'
   };
 
   function toneName(muscle) {
@@ -561,9 +569,13 @@
     var detail = ex.muscle_detail ? '<span class="pill">' + esc(ex.muscle_detail) + '</span>' : '';
     var flag = ex.verified ? '<span class="pill ok">מאומת</span>' : '<span class="pill unverified">לא מאומת</span>';
     var watchLabel = /\/p\//.test(ex.source_url || '') ? 'צפייה בפוסט' : 'צפייה בריל';
+    var trainable = ex.muscle_group !== 'השראה';
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
-    return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
+    var addBtn = trainable
+      ? '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>'
+      : '<span class="pill">טיפ / השראה</span>';
+    return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '"' + (trainable ? ' draggable="true"' : '') + '>' +
       posterFrameHtml(ex, esc, false) +
       '<div class="card-body">' +
         '<div class="card-kicker">' + flag + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +
@@ -578,7 +590,7 @@
         stepsHtml +
         '<div class="actions">' +
           '<a class="reel" href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">' + watchLabel + '</a>' +
-          '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>' +
+          addBtn +
         '</div>' +
       '</div>' +
     '</article>';

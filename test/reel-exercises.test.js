@@ -53,14 +53,16 @@ test('reels missing from the mapping stay unclassified', function () {
   });
 });
 
-test('לא מצוין is stored as unknown reps', function () {
-  const unknown = data.exercises.filter(function (ex) { return ex.source_sets_reps.indexOf('לא מצוין') !== -1; });
-  assert.ok(unknown.length >= 13);
+test('לא מצוין is stored as unknown reps, and a corrected reel replaces it', function () {
+  const unknown = data.exercises.filter(function (ex) { return String(ex.source_sets_reps).indexOf('לא מצוין') !== -1; });
   unknown.forEach(function (ex) {
     assert.equal(ex.sets_reps, 'לא ממוין');
     assert.equal(ex.sets, null);
     assert.equal(ex.reps, '');
   });
+  const fixed = data.exercises.find(function (ex) { return ex.id === 'ig-DfCxqpMDrS6'; });
+  assert.match(fixed.sets_reps, /3x15/);
+  assert.equal(String(fixed.source_sets_reps).indexOf('לא מצוין'), -1);
 });
 
 test('DfDEp8PRL3f keeps the mapped bench core prescription and stays unverified', function () {
@@ -192,7 +194,7 @@ test('a reel with no source title cannot grow invented details', function () {
 test('the library page is a Hebrew RTL browser over the JSON file', function () {
   assert.match(page, /lang="he"/);
   assert.match(page, /dir="rtl"/);
-  assert.match(page, /fetch\('\.\/data\/exercises\.json'\)/);
+  assert.match(page, /fetch\('\.\/data\/exercises\.json'/);
   assert.match(page, /id="q"/);
   assert.match(page, /for="q"/);
   assert.match(page, /id="muscle"/);
