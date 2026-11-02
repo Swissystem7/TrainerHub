@@ -29,7 +29,7 @@
       justify-content: space-between;
       flex-shrink: 0;
     }
-    .top-bar h1 { font-size: 1.1rem; color: #7c3aed; font-weight: 700; }
+    .top-bar h1 { font-size: 1.1rem; color: #a78bfa; font-weight: 700; }
     .top-bar .workout-title { color: #a78bfa; font-size: 0.85rem; margin-top: 2px; max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .exit-btn {
       background: none; border: 1px solid #3a3a5a; color: #9ca3af;
@@ -44,7 +44,7 @@
     }
     .progress-info {
       display: flex; justify-content: space-between;
-      font-size: 0.78rem; color: #9ca3af; margin-bottom: 6px;
+      font-size: var(--th-text-xs); color: #9ca3af; margin-bottom: 6px;
     }
     .progress-bar {
       height: 6px; background: #2a2a4a; border-radius: 3px; overflow: hidden;
@@ -69,7 +69,7 @@
     }
 
     .phase-label {
-      font-size: 0.78rem; color: #9ca3af; text-transform: uppercase;
+      font-size: var(--th-text-xs); color: #9ca3af; text-transform: uppercase;
       letter-spacing: 1.5px; font-weight: 600;
     }
 
@@ -119,7 +119,7 @@
       background: #1a1a2e; border: 1px solid #2a2a4a;
       border-radius: 12px; padding: 14px 24px; max-width: 340px; width: 100%;
     }
-    .next-preview .label { font-size: 0.75rem; color: #9ca3af; margin-bottom: 4px; }
+    .next-preview .label { font-size: var(--th-text-xs); color: #9ca3af; margin-bottom: 4px; }
     .next-preview .name { font-size: 1.05rem; color: #a78bfa; font-weight: 700; }
     .next-preview .detail { font-size: 0.82rem; color: #9ca3af; margin-top: 4px; }
 
@@ -158,7 +158,7 @@
       transition: all 0.2s; min-width: 72px; color: #f0f0f0;
     }
     .ctrl-btn .icon { font-size: 1.5rem; }
-    .ctrl-btn .label { font-size: 0.72rem; color: #9ca3af; }
+    .ctrl-btn .label { font-size: var(--th-text-xs); color: #9ca3af; }
     .ctrl-btn:hover { border-color: #7c3aed; background: #1e1b3a; }
     .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .ctrl-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; }
@@ -207,7 +207,7 @@
       padding: 16px 24px; min-width: 110px;
     }
     .stat-card .val { font-size: 1.8rem; font-weight: 800; color: #a78bfa; }
-    .stat-card .lbl { font-size: 0.75rem; color: #9ca3af; margin-top: 2px; }
+    .stat-card .lbl { font-size: var(--th-text-xs); color: #9ca3af; margin-top: 2px; }
     .done-btn {
       background: linear-gradient(135deg, #7c3aed, #5b21b6); color: white;
       border: none; padding: 14px 40px; border-radius: 14px; cursor: pointer;
@@ -220,7 +220,7 @@
       display: flex; align-items: center; gap: 8px;
       padding: 8px 24px 0; flex-shrink: 0;
     }
-    .elapsed-label { font-size: 0.75rem; color: #9ca3af; white-space: nowrap; }
+    .elapsed-label { font-size: var(--th-text-xs); color: #9ca3af; white-space: nowrap; }
     .elapsed-val { font-size: 0.82rem; color: #a78bfa; font-weight: 600; white-space: nowrap; }
   </style>
 </head>

@@ -38,6 +38,8 @@
       .sheet { min-height: 0; padding: 20px; }
       .cols { grid-template-columns: 1fr; }
     }
+    /* Light page: the shared amber-on-dark banner is unreadable here (1.5:1). */
+    .th-banner { background: #fff4dc; border-bottom-color: #e3c27a; color: #6b4300; }
     @media print {
       body { background: #fff; }
       .wrap { margin: 0; max-width: none; }
@@ -56,7 +58,7 @@
   <a href="./exercises.html">ספריית תרגילים</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
-  <span class="chip on">דף אחד להדפסה</span>
+  <span class="chip on" aria-current="page">דף אחד להדפסה</span>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>

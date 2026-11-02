@@ -40,7 +40,7 @@
     .notice { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.35); color: #f0b542; }
     .empty { color: var(--muted); text-align: center; padding: 12px; }
     .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
-    .pill { background: #26302b; border-radius: 999px; padding: 4px 10px; font-size: .78rem; color: var(--muted); }
+    .pill { background: #26302b; border-radius: 999px; padding: 4px 10px; font-size: var(--th-text-xs); color: var(--muted); }
     .ex { border-top: 1px solid var(--line); padding: 12px 0; }
     .ex:first-of-type { border-top: 0; }
     .ex b { display: block; margin-bottom: 4px; }
@@ -51,7 +51,7 @@
     .flags li { color: #f0b542; font-size: .85rem; margin: 4px 0; }
     .stim { margin: 8px 0 0; color: var(--ink); line-height: 1.5; }
     .stim small { display: block; color: var(--muted); margin-top: 4px; }
-    .phase { color: var(--lime); font-size: .78rem; font-weight: 700; margin: 16px 0 4px; }
+    .phase { color: var(--lime); font-size: var(--th-text-xs); font-weight: 700; margin: 16px 0 4px; }
     .status { color: var(--lime); font-size: .88rem; min-height: 1.2em; margin-top: 8px; }
     .modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
     .modes button {
@@ -83,7 +83,7 @@
 <a class="skip-link" href="#prompt">דלג לשדה האימון</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
-  <span class="chip on">בנה אימון</span>
+  <span class="chip on" aria-current="page">בנה אימון</span>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>

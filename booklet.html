@@ -16,7 +16,7 @@
     .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
     .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
-    .tabs a { background: #26302b; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: .85rem; text-decoration: none; }
+    .tabs a { display: inline-flex; align-items: center; min-height: 44px; background: #26302b; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: .85rem; text-decoration: none; }
     section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 0 0 18px; }
     section h2 { margin: 0 0 10px; font-size: 1.25rem; }
     h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--lime); }
@@ -31,14 +31,14 @@
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
     .card { background: #151a18; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
     .card h4 { margin: 0 0 6px; font-size: .95rem; }
-    .pill { display: inline-block; background: #26302b; border-radius: 999px; padding: 2px 8px; font-size: .72rem; color: var(--muted); margin-inline-end: 4px; }
+    .pill { display: inline-block; background: #26302b; border-radius: 999px; padding: 2px 8px; font-size: var(--th-text-xs); color: var(--muted); margin-inline-end: 4px; }
     .pill.clip { color: var(--lime); }
     table { width: 100%; border-collapse: collapse; font-size: .88rem; }
     th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; vertical-align: top; }
     th { background: #151a18; }
     /* Wide tables (risk matrix, roster) scroll inside themselves on a phone instead of widening the page. */
     @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
-    .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
+    .credit { font-size: var(--th-text-xs); color: var(--muted); margin-top: 8px; }
     .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
     button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
       outline: 2px solid var(--lime);
@@ -58,7 +58,7 @@
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
-  <span class="chip on">חוברת הקורס</span>
+  <span class="chip on" aria-current="page">חוברת הקורס</span>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>

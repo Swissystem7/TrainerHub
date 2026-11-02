@@ -107,7 +107,7 @@ test('pitch.html static: document structure, language, direction and skip link',
 
 test('pitch.html static: nav has accessible label, full site links and active indicator', function () {
   assert.match(html, /<nav class="th-nav no-print" aria-label="ניווט ראשי">/);
-  assert.match(html, /<span class="chip on">דף אחד להדפסה<\/span>/);
+  assert.match(html, /<span class="chip on" aria-current="page">דף אחד להדפסה<\/span>/);
   assert.match(html, /<a href="\.\/">בנה אימון<\/a>/);
   assert.match(html, /<a href="\.\/weekly\.html">בונה שבועי<\/a>/);
   assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);

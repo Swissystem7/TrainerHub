@@ -1,36 +1,98 @@
 /* Shared surface chrome — weekly builder, Studio, workout-mode */
+
+/* Design tokens. Pages still define their own --bg/--ink/--lime; these
+   --th-* tokens are the shared scale every page can lean on.
+   Spacing is a 4px grid; type is a 4-step scale with a 13px floor. */
+:root {
+  --th-tap: 44px;            /* minimum touch target (WCAG 2.5.5 / Apple HIG) */
+  --th-space-1: 4px;
+  --th-space-2: 8px;
+  --th-space-3: 12px;
+  --th-space-4: 16px;
+  --th-space-5: 24px;
+  --th-space-6: 32px;
+  --th-gutter: 16px;         /* side padding at 360px */
+  --th-text-xs: 0.8125rem;   /* 13px — smallest text allowed (pills, badges) */
+  --th-text-sm: 0.875rem;    /* 14px — secondary text, nav */
+  --th-text-md: 1rem;        /* 16px — body, inputs (no iOS zoom-on-focus) */
+  --th-text-lg: 1.25rem;     /* 20px — card titles */
+  --th-leading: 1.55;        /* Hebrew needs a little more line-height than Latin */
+  --th-radius: 12px;
+  --th-surface: #0d100f;
+  --th-line: #303834;
+  --th-ink: #f6f8f6;
+  --th-muted: #a7b1ab;       /* 7.9:1 on --th-surface */
+  --th-lime: #b9f24a;
+  --th-warn: #f0b542;
+  --th-focus: #c4b5fd;
+}
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-wrap: break-word; }
+img, video, iframe { max-width: 100%; }
+
 .th-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--th-space-2);
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
-  background: #0d100f;
-  border-bottom: 1px solid #303834;
-  font: 600 0.78rem system-ui, sans-serif;
+  padding: var(--th-space-2) var(--th-space-3);
+  background: var(--th-surface);
+  border-bottom: 1px solid var(--th-line);
+  font: 600 var(--th-text-sm)/1.2 system-ui, sans-serif;
   position: relative;
   z-index: 9999;
   direction: rtl;
 }
-.th-nav .brand { color: #b9f24a; }
+.th-nav .brand { color: var(--th-lime); font-weight: 800; }
 .th-nav a, .th-nav .chip {
-  color: #f6f8f6;
-  border: 1px solid #303834;
-  border-radius: 14px;
-  padding: 3px 11px;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--th-tap);
+  color: var(--th-ink);
+  border: 1px solid var(--th-line);
+  border-radius: 999px;
+  padding: 0 var(--th-space-4);
   text-decoration: none;
+  white-space: nowrap;
 }
+.th-nav a:hover { border-color: rgba(185, 242, 74, 0.4); }
 .th-nav .chip.on {
   background: rgba(185, 242, 74, 0.15);
   border-color: rgba(185, 242, 74, 0.4);
 }
+/* Mobile: one swipeable row instead of 5 wrapped rows (~150px of a 780px
+   screen). Brand and the current page come first so they are always visible;
+   the current chip is a non-focusable <span>, so reordering it does not change
+   keyboard order. */
+@media (max-width: 720px) {
+  .th-nav {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding: var(--th-space-1) var(--th-gutter);
+    -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to left, #000 calc(100% - 28px), transparent);
+  }
+  .th-nav::-webkit-scrollbar { display: none; }
+  .th-nav > * { flex: 0 0 auto; }
+  .th-nav .brand { order: -2; }
+  .th-nav .chip.on { order: -1; }
+  .th-nav::after { content: ""; flex: 0 0 12px; }
+}
+/* Wide screen + mouse: 44px is a touch rule, so the nav can stay compact. */
+@media (min-width: 721px) and (pointer: fine) {
+  .th-nav { gap: 6px; padding: 6px 12px; }
+  .th-nav a, .th-nav .chip { min-height: 34px; padding: 0 12px; }
+}
 .th-banner {
   background: rgba(245, 158, 11, 0.1);
   border-bottom: 1px solid rgba(245, 158, 11, 0.3);
-  color: #f0b542;
-  font: 600 0.74rem system-ui, sans-serif;
-  padding: 7px 14px;
+  color: var(--th-warn);
+  font: 600 var(--th-text-xs)/1.5 system-ui, sans-serif;
+  padding: var(--th-space-2) var(--th-gutter);
   text-align: center;
   direction: rtl;
 }
@@ -39,16 +101,46 @@
   color: #fff;
   border: 1px solid #7c3aed;
   border-radius: 10px;
-  padding: 9px 16px;
+  min-height: var(--th-tap);
+  padding: 10px 18px;
   font-weight: 700;
+  line-height: 1.2;
   cursor: pointer;
   font-family: inherit;
+  touch-action: manipulation;
+}
+a.th-btn:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 .th-btn.ghost {
   background: #1a1a2e;
   color: #c4b5fd;
   border-color: #3a3a5a;
 }
+
+/* Touch targets: every control is at least 44px tall (and 44px wide for
+   buttons) at any viewport. Only min-* sizes are set here so page styles
+   keep their own padding/colors, and `display` is never touched (author
+   `display` would beat the UA rule for [hidden]). */
+button,
+select,
+summary,
+[role="tab"],
+[role="button"],
+input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="range"]):not([type="file"]) {
+  min-height: var(--th-tap);
+}
+button, [role="tab"], [role="button"] { min-width: var(--th-tap); touch-action: manipulation; }
+input[type="checkbox"], input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--th-lime);
+}
+/* 16px in form fields stops iOS Safari from zooming the page on focus. */
+body :is(input, select, textarea) { font-size: max(var(--th-text-md), 1em); }
 
 /* Shared a11y: visible focus, skip link, live-region helper, reduced motion */
 :focus-visible {

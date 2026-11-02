@@ -85,7 +85,7 @@ function reset() {
 
 test('offer.html static: nav has accessible label, active page indicator and full site links', function () {
   assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
-  assert.match(html, /<span class="chip on">הצעה למאמנים<\/span>/);
+  assert.match(html, /<span class="chip on" aria-current="page">הצעה למאמנים<\/span>/);
   assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
   assert.match(html, /<a href="\.\/frontend\/workout-mode\.html">מצב אימון חי<\/a>/);
 });

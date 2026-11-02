@@ -86,7 +86,7 @@ function reset() {
 
 test('workout-print.html static: nav has accessible label and active page indicator', function () {
   assert.match(html, /<nav class="th-nav no-print" aria-label="ניווט ראשי">/);
-  assert.match(html, /<span class="chip on">דף להדפסה<\/span>/);
+  assert.match(html, /<span class="chip on" aria-current="page">דף להדפסה<\/span>/);
 });
 
 test('workout-print.html static: toolbar form and interactive elements have accessible roles and labels', function () {

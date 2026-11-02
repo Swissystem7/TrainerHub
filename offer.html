@@ -42,6 +42,7 @@
       cursor: not-allowed;
     }
     @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    main a:not(.th-btn):not(.skip-link) { color: var(--lime); text-underline-offset: 3px; }
   </style>
 </head>
 <body>
@@ -55,7 +56,7 @@
   <a href="./booklet.html">חוברת הקורס</a>
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./manage.html">ניהול מאגר</a>
-  <span class="chip on">הצעה למאמנים</span>
+  <span class="chip on" aria-current="page">הצעה למאמנים</span>
   <a href="./pitch.html">דף אחד להדפסה</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
