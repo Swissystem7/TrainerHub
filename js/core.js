@@ -1322,6 +1322,65 @@
     return bits.join(' · ');
   }
 
+  // Lazy video loading (CT-015). A <video preload="metadata" src> fetches a few
+  // hundred KB per clip straight away, so the 70-clip library pulled ~8 MB on a
+  // phone before anything was scrolled to. In a browser with IntersectionObserver
+  // the clip URL is parked in data-th-src and moved to src once its card comes
+  // near the viewport; drive/youtube iframes already use loading="lazy".
+  // Without the observers (or outside a browser) src is written directly, as before.
+  var LAZY_SRC = 'data-th-src';
+  var lazyMedia = null;
+
+  function canLazyLoadMedia() {
+    return typeof document !== 'undefined' && !!document.documentElement &&
+      typeof root.IntersectionObserver === 'function' &&
+      typeof root.MutationObserver === 'function';
+  }
+
+  function loadLazyVideos(host) {
+    var list = host.querySelectorAll ? host.querySelectorAll('video[' + LAZY_SRC + ']') : [];
+    for (var i = 0; i < list.length; i++) {
+      var src = list[i].getAttribute(LAZY_SRC);
+      list[i].removeAttribute(LAZY_SRC);
+      if (src) list[i].setAttribute('src', src);
+    }
+  }
+
+  function setupLazyMedia() {
+    if (lazyMedia || !canLazyLoadMedia()) return lazyMedia;
+    var io = new root.IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        loadLazyVideos(e.target);
+      });
+    }, { rootMargin: '400px 0px' });
+    var queued = false;
+    function scan() {
+      queued = false;
+      var list = document.querySelectorAll('video[' + LAZY_SRC + ']');
+      for (var i = 0; i < list.length; i++) {
+        var v = list[i];
+        if (v.__thLazyWatched) continue;
+        v.__thLazyWatched = true;
+        // The video stays hidden until it has data, so watch its wrapper.
+        io.observe(v.parentNode || v);
+      }
+    }
+    var mo = new root.MutationObserver(function () {
+      if (queued) return;
+      queued = true;
+      Promise.resolve().then(scan);
+    });
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+    lazyMedia = { scan: scan };
+    return lazyMedia;
+  }
+
+  function videoSrcAttr(url) {
+    return (setupLazyMedia() ? LAZY_SRC : 'src') + '="' + esc(url) + '"';
+  }
+
   function mediaMarkup(entry, opts) {
     opts = opts || {};
     var cls = esc(opts.className || 'ex-media');
@@ -1346,9 +1405,9 @@
     }
     if (entry.file) {
       return '<div class="' + cls + '-wrap">' +
-        '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" src="' +
-        esc(catalogSrc(entry.file)) +
-        '" onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
+        '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" ' +
+        videoSrcAttr(catalogSrc(entry.file)) +
+        ' onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
         '<div class="' + cls + '-fallback" hidden role="note">' + esc(mediaFallbackText(entry)) +
         ' — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>';
     }
