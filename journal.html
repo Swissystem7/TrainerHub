@@ -92,10 +92,40 @@
         <input id="newPhone" name="newPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X…">
       </div>
     </div>
+    <div class="row">
+      <div>
+        <label for="newGoal">מטרה (לא חובה)</label>
+        <select id="newGoal" name="newGoal"></select>
+      </div>
+      <div>
+        <label for="newLevel">רמה (לא חובה)</label>
+        <select id="newLevel" name="newLevel"></select>
+      </div>
+    </div>
     <div class="actions" role="toolbar" aria-label="פעולות הוספת מתאמן">
       <button type="submit" class="th-btn ghost" aria-label="הוסף מתאמן חדש">הוסף מתאמן</button>
     </div>
     <p class="honest">השם והטלפון לא נשלחים לשום שרת. תזכורת פותחת wa.me במכשיר.</p>
+  </form>
+
+  <form class="card" id="backupForm" role="region" aria-labelledby="backupHeading">
+    <h2 id="backupHeading">גיבוי ושחזור מוצפן</h2>
+    <p class="honest">כל נתוני TrainerHub בדפדפן הזה (מתאמנים, אימונים, יומן, קטלוג אישי) נשמרים לקובץ מוצפן בסיסמה (AES-GCM). שום דבר לא עולה לשרת. בלי הסיסמה אי אפשר לפתוח את הקובץ — גם לא אנחנו.</p>
+    <div class="row">
+      <div>
+        <label for="backupPass">סיסמת גיבוי (6 תווים לפחות)</label>
+        <input id="backupPass" name="backupPass" type="password" autocomplete="new-password" minlength="6">
+      </div>
+      <div>
+        <label for="backupFile">קובץ גיבוי לשחזור</label>
+        <input id="backupFile" name="backupFile" type="file" accept=".json,application/json">
+      </div>
+    </div>
+    <div class="actions" role="toolbar" aria-label="פעולות גיבוי">
+      <button type="button" class="th-btn ghost" id="backupExport">הורד גיבוי מוצפן</button>
+      <button type="button" class="th-btn ghost" id="backupImport">שחזר מקובץ</button>
+    </div>
+    <p class="status" id="backupStatus" role="status" aria-live="polite"></p>
   </form>
 
   <form class="card" id="coachBuildForm" role="region" aria-labelledby="coachBuildHeading">
@@ -304,6 +334,7 @@
               TH.esc(lastTxt) +
               (last && last.rpe ? ' · קושי ' + last.rpe + '/5' : '') +
               ' · ' + adh + '% מ־28 יום</p>' +
+            (TH.clientDetailsText(c) ? '<p class="honest" data-role="details-summary">' + TH.esc(TH.clientDetailsText(c)) + '</p>' : '') +
           '</div>' +
           '<div class="actions" role="toolbar" aria-label="פעולות עבור ' + TH.esc(c.name || 'מתאמן') + '">' +
             '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '" aria-label="פתח כמתאמן עבור ' + TH.esc(c.name || 'מתאמן') + '">פתח כמתאמן</button>' +
@@ -315,12 +346,54 @@
           '</div>' +
         '</div>' +
         '<div class="dots" aria-hidden="true">' + dots + '</div>' +
+        detailsMarkup(c, i) +
         '<div class="th-gate-host"></div>' +
       '</article>';
     }).join('');
     $('clActive').textContent = String(active);
     $('clAdherence').textContent = Math.round(adhSum / clients.length) + '%';
     $('clRisk').textContent = String(risk);
+  }
+
+  function optionsHtml(map, selected) {
+    return '<option value="">—</option>' + Object.keys(map).map(function (k) {
+      return '<option value="' + k + '"' + (k === selected ? ' selected' : '') + '>' + TH.esc(map[k]) + '</option>';
+    }).join('');
+  }
+
+  function detailsMarkup(c, i) {
+    var d = TH.normalizeClientDetails(c);
+    var who = TH.esc(c.name || 'מתאמן');
+    var days = TH.WEEKDAYS_HE.map(function (lbl, n) {
+      return '<label><input type="checkbox" aria-label="יום ' + lbl + '" data-day="' + n + '"' + (d.days.indexOf(n) >= 0 ? ' checked' : '') + '> ' + lbl + '</label>';
+    }).join(' ');
+    var hist = d.measurements.slice(-5).reverse().map(function (m) {
+      return '<li>' + TH.esc(m.at) + (m.weightKg != null ? ' · ' + m.weightKg + ' ק״ג' : '') +
+        (m.waistCm != null ? ' · מותן ' + m.waistCm + ' ס״מ' : '') + (m.note ? ' · ' + TH.esc(m.note) : '') + '</li>';
+    }).join('');
+    var p = 'cd' + i + '_';
+    return '<details data-role="client-details">' +
+      '<summary>פרטים ומדידות</summary>' +
+      '<div class="row">' +
+        '<div><label for="' + p + 'nick">כינוי</label><input id="' + p + 'nick" data-f="nickname" aria-label="כינוי" type="text" maxlength="40" value="' + TH.esc(d.nickname) + '"></div>' +
+        '<div><label for="' + p + 'goal">מטרה</label><select id="' + p + 'goal" data-f="goal" aria-label="מטרה">' + optionsHtml(TH.CLIENT_GOALS, d.goal) + '</select></div>' +
+        '<div><label for="' + p + 'level">רמה</label><select id="' + p + 'level" data-f="level" aria-label="רמה">' + optionsHtml(TH.CLIENT_LEVELS, d.level) + '</select></div>' +
+      '</div>' +
+      '<fieldset><legend>ימי אימון</legend>' + days + '</fieldset>' +
+      '<div class="actions"><button type="button" class="th-btn ghost" data-act="details" data-i="' + i + '" aria-label="שמור פרטים עבור ' + who + '">שמור פרטים</button></div>' +
+      '<div class="row">' +
+        '<div><label for="' + p + 'w">משקל (ק״ג)</label><input id="' + p + 'w" data-f="weightKg" aria-label="משקל בק״ג" type="number" inputmode="decimal" step="0.1" min="0"></div>' +
+        '<div><label for="' + p + 'waist">היקף מותן (ס״מ)</label><input id="' + p + 'waist" data-f="waistCm" aria-label="היקף מותן בס״מ" type="number" inputmode="decimal" step="0.1" min="0"></div>' +
+        '<div><label for="' + p + 'note">הערה</label><input id="' + p + 'note" data-f="note" aria-label="הערת מדידה" type="text" maxlength="120"></div>' +
+      '</div>' +
+      '<div class="actions"><button type="button" class="th-btn ghost" data-act="measure" data-i="' + i + '" aria-label="הוסף מדידה עבור ' + who + '">הוסף מדידה להיום</button></div>' +
+      (hist ? '<ul class="honest" data-role="measurements">' + hist + '</ul>' : '') +
+    '</details>';
+  }
+
+  function fieldVal(scope, f) {
+    var el = scope.querySelector('[data-f="' + f + '"]');
+    return el ? el.value : '';
   }
 
   function setStatus(el, text, warn) {
@@ -472,6 +545,42 @@
     render(c.id);
   });
 
+  $('newGoal').innerHTML = optionsHtml(TH.CLIENT_GOALS, '');
+  $('newLevel').innerHTML = optionsHtml(TH.CLIENT_LEVELS, '');
+
+  $('backupExport').addEventListener('click', function () {
+    var st = $('backupStatus');
+    TH.encryptBackup($('backupPass').value).then(function (text) {
+      var blob = new Blob([text], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'trainerhub-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+      setStatus(st, 'הגיבוי ירד (' + JSON.parse(text).keys + ' מפתחות). שמרו את הסיסמה — בלעדיה אין שחזור.');
+    }, function (err) { setStatus(st, err.message, true); });
+  });
+
+  $('backupImport').addEventListener('click', function () {
+    var st = $('backupStatus');
+    var file = $('backupFile').files && $('backupFile').files[0];
+    if (!file) { setStatus(st, 'בחרו קובץ גיבוי קודם.', true); return; }
+    file.text().then(function (text) {
+      return TH.decryptBackup(text, $('backupPass').value);
+    }).then(function (data) {
+      var n = Object.keys(data).length;
+      if (!window.confirm('לשחזר ' + n + ' מפתחות? נתונים קיימים באותם מפתחות יוחלפו; שאר הנתונים לא יימחקו.')) {
+        setStatus(st, 'השחזור בוטל.', true);
+        return;
+      }
+      var done = TH.restoreBackup(data);
+      clients = TH.store.get(CKEY, []) || [];
+      render();
+      setStatus(st, 'שוחזרו ' + done + ' מפתחות. רעננו עמודים פתוחים אחרים.');
+    }).catch(function (err) { setStatus(st, err.message, true); });
+  });
+
   $('addForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var name = $('newName').value.trim();
@@ -486,8 +595,11 @@
       plan: 'טרם שויכה תוכנית',
       logs: []
     };
+    TH.setClientDetails(newClient, { goal: $('newGoal').value, level: $('newLevel').value });
     clients.push(newClient);
     $('newName').value = '';
+    $('newGoal').value = '';
+    $('newLevel').value = '';
     $('newPhone').value = '';
     save();
     setStatus($('importStatus'), 'נוסף «' + name + '». הנתונים נשארים בדפדפן.');
@@ -501,6 +613,29 @@
     var c = clients[i];
     if (!c) return;
     var act = btn.getAttribute('data-act');
+    if (act === 'details' || act === 'measure') {
+      var box = btn.closest('details');
+      if (act === 'details') {
+        var picked = [];
+        var boxes = box.querySelectorAll('input[data-day]');
+        for (var b = 0; b < boxes.length; b++) if (boxes[b].checked) picked.push(Number(boxes[b].getAttribute('data-day')));
+        TH.setClientDetails(c, { nickname: fieldVal(box, 'nickname'), goal: fieldVal(box, 'goal'), level: fieldVal(box, 'level'), days: picked });
+        save();
+        setStatus($('importStatus'), 'נשמרו הפרטים של ' + c.name + '.');
+      } else {
+        var added = TH.addMeasurement(c, { weightKg: fieldVal(box, 'weightKg'), waistCm: fieldVal(box, 'waistCm'), note: fieldVal(box, 'note') });
+        if (!added) {
+          setStatus($('importStatus'), 'צריך משקל, היקף מותן או הערה כדי לשמור מדידה.', true);
+          return;
+        }
+        save();
+        setStatus($('importStatus'), 'נשמרה מדידה ל' + c.name + ' (' + added.at + ').');
+      }
+      render(c.id);
+      var again = $('list').querySelectorAll('details[data-role="client-details"]')[i];
+      if (again) again.open = true;
+      return;
+    }
     if (act === 'preview') shareOrPreview(c, true);
     else if (act === 'share') shareOrPreview(c, false, btn);
     else if (act === 'pdf') {

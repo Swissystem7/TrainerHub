@@ -189,3 +189,16 @@ npm test
 ---
 
 הועלה מהמחשב של אבירן — יולי 2026. תיקוני הדמו והמיצוב — אוגוסט 2026.
+
+## גיבוי מוצפן ופרטי מתאמן (journal.html)
+
+- **פרטים ומדידות** בכרטיס המתאמן הקיים: כינוי, מטרה, רמה, ימי אימון ומדידות (משקל, היקף מותן, הערה). הנתונים נשמרים באותה רשומת `trainerhub_clients` (שדות `nickname/goal/level/days/measurements`) — בלי מפתח או DB חדש. ראו `TH.setClientDetails`, `TH.addMeasurement` ב־`js/core.js`.
+- **גיבוי ושחזור מוצפן**: מוריד קובץ JSON מוצפן (PBKDF2‑SHA256 210k → AES‑GCM‑256, WebCrypto בדפדפן) של כל מפתחות `trainerhub_*` (כל `TH.KEYS` + pilot). שחזור כותב רק את המפתחות שבקובץ — שום דבר אחר לא נמחק. אין שרת ואין מפתחות בקוד; בלי הסיסמה אין שחזור. ראו `TH.encryptBackup/decryptBackup/restoreBackup`.
+
+בדיקה ידנית:
+1. פתחו `journal.html`, הוסיפו מתאמן עם מטרה ורמה.
+2. בכרטיס → «פרטים ומדידות»: סמנו ימים, «שמור פרטים», הזינו משקל → «הוסף מדידה להיום». שורת הסיכום בכרטיס מתעדכנת.
+3. «גיבוי ושחזור מוצפן»: סיסמה (6+ תווים) → «הורד גיבוי מוצפן». פתחו את הקובץ — אין בו שמות קריאים.
+4. בחלון גלישה בסתר: בחרו את הקובץ, סיסמה שגויה → «סיסמה שגויה». סיסמה נכונה → אישור → המתאמן חוזר.
+
+בדיקות: `node --test test/backup-client-details.test.js`; Playwright (דסקטופ + 360px): `NODE_PATH=<playwright> TH_SCREENSHOTS=1 node --test test/backup-client-details-e2e.test.js` (מדולג אם Playwright לא מותקן). צילומים: `docs/screenshots/client-details-*.png`, `backup-*.png`.

@@ -276,6 +276,176 @@
     try { localStorage.removeItem(key); } catch (e) {}
   }
 
+  // ---- Client details + measurements (extends the existing trainerhub_clients record) ----
+  var CLIENT_GOALS = { strength: 'כוח', hypertrophy: 'מסת שריר', endurance: 'סיבולת', weight_loss: 'ירידה במשקל', health: 'בריאות כללית', sport: 'ספורט' };
+  var CLIENT_LEVELS = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
+  var WEEKDAYS_HE = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
+
+  function numOrNull(v) {
+    if (v === '' || v == null) return null;
+    var n = Number(String(v).replace(',', '.'));
+    return isFinite(n) && n > 0 ? Math.round(n * 10) / 10 : null;
+  }
+
+  function normalizeClientDetails(raw) {
+    raw = raw && typeof raw === 'object' ? raw : {};
+    var days = Array.isArray(raw.days) ? raw.days : [];
+    days = days.map(Number).filter(function (d, i, a) { return d >= 0 && d <= 6 && d === Math.floor(d) && a.indexOf(d) === i; }).sort();
+    return {
+      nickname: String(raw.nickname || '').trim().slice(0, 40),
+      goal: CLIENT_GOALS[raw.goal] ? raw.goal : '',
+      level: CLIENT_LEVELS[raw.level] ? raw.level : '',
+      days: days,
+      measurements: (Array.isArray(raw.measurements) ? raw.measurements : []).map(normalizeMeasurement).filter(Boolean)
+    };
+  }
+
+  function normalizeMeasurement(m) {
+    m = m && typeof m === 'object' ? m : {};
+    var out = { at: String(m.at || '').slice(0, 10), weightKg: numOrNull(m.weightKg), waistCm: numOrNull(m.waistCm), note: String(m.note || '').trim().slice(0, 120) };
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(out.at)) return null;
+    if (out.weightKg == null && out.waistCm == null && !out.note) return null;
+    return out;
+  }
+
+  /** Writes goal/level/days/nickname onto the client object in place (other fields untouched). */
+  function setClientDetails(client, details) {
+    if (!client || typeof client !== 'object') return client;
+    var d = normalizeClientDetails(Object.assign({}, normalizeClientDetails(client), details || {}, { measurements: client.measurements }));
+    client.nickname = d.nickname;
+    client.goal = d.goal;
+    client.level = d.level;
+    client.days = d.days;
+    client.measurements = d.measurements;
+    return client;
+  }
+
+  /** Adds a measurement (newest last); same date replaces the earlier one of that day. */
+  function addMeasurement(client, m) {
+    if (!client || typeof client !== 'object') return null;
+    var now = new Date();
+    var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var item = normalizeMeasurement(Object.assign({ at: today }, m || {}));
+    if (!item) return null;
+    var list = normalizeClientDetails(client).measurements.filter(function (x) { return x.at !== item.at; });
+    list.push(item);
+    list.sort(function (a, b) { return a.at < b.at ? -1 : a.at > b.at ? 1 : 0; });
+    client.measurements = list;
+    return item;
+  }
+
+  function clientDetailsText(client) {
+    var d = normalizeClientDetails(client);
+    var parts = [];
+    if (d.goal) parts.push('מטרה: ' + CLIENT_GOALS[d.goal]);
+    if (d.level) parts.push('רמה: ' + CLIENT_LEVELS[d.level]);
+    if (d.days.length) parts.push('ימים: ' + d.days.map(function (x) { return WEEKDAYS_HE[x]; }).join(' '));
+    var m = d.measurements[d.measurements.length - 1];
+    if (m) parts.push('מדידה אחרונה ' + m.at + (m.weightKg != null ? ' · ' + m.weightKg + ' ק״ג' : '') + (m.waistCm != null ? ' · מותן ' + m.waistCm + ' ס״מ' : ''));
+    return parts.join(' · ');
+  }
+
+  // ---- Password-encrypted backup/restore of every TrainerHub localStorage key (WebCrypto, no server) ----
+  var BACKUP_FORMAT = 'trainerhub-backup';
+  var BACKUP_ITER = 210000;
+
+  function subtle() {
+    var c = (root.crypto && root.crypto.subtle) ? root.crypto : null;
+    if (!c && typeof require === 'function') { try { c = require('crypto').webcrypto; } catch (e) {} }
+    if (!c || !c.subtle) throw new Error('הדפדפן לא תומך בהצפנה (WebCrypto).');
+    return c;
+  }
+
+  function bytesToB64(bytes) {
+    var bin = '';
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
+  }
+
+  function b64ToBytes(b64) {
+    var bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary');
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function backupKeyNames() {
+    var names = Object.keys(KEYS).map(function (k) { return KEYS[k]; });
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('trainerhub_') === 0 && names.indexOf(k) === -1) names.push(k);
+      }
+    } catch (e) {}
+    return names;
+  }
+
+  /** Snapshot of all TrainerHub keys as raw strings (only keys that exist). */
+  function collectBackup() {
+    var data = {};
+    backupKeyNames().forEach(function (k) {
+      try {
+        var v = localStorage.getItem(k);
+        if (v != null) data[k] = v;
+      } catch (e) {}
+    });
+    return data;
+  }
+
+  function deriveKey(password, salt, usage) {
+    var c = subtle();
+    return c.subtle.importKey('raw', new TextEncoder().encode(String(password)), 'PBKDF2', false, ['deriveKey'])
+      .then(function (base) {
+        return c.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: BACKUP_ITER, hash: 'SHA-256' },
+          base, { name: 'AES-GCM', length: 256 }, false, [usage]);
+      });
+  }
+
+  /** Resolves to the JSON text of an encrypted backup file. */
+  function encryptBackup(password, data) {
+    if (!password || String(password).length < 6) return Promise.reject(new Error('סיסמה של 6 תווים לפחות.'));
+    var c;
+    try { c = subtle(); } catch (e) { return Promise.reject(e); }
+    var payload = data || collectBackup();
+    var salt = c.getRandomValues(new Uint8Array(16));
+    var iv = c.getRandomValues(new Uint8Array(12));
+    return deriveKey(password, salt, 'encrypt').then(function (key) {
+      return c.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(JSON.stringify(payload)));
+    }).then(function (buf) {
+      return JSON.stringify({
+        format: BACKUP_FORMAT, v: 1, createdAt: new Date().toISOString(), keys: Object.keys(payload).length,
+        kdf: 'PBKDF2-SHA256', iter: BACKUP_ITER, cipher: 'AES-GCM-256',
+        salt: bytesToB64(salt), iv: bytesToB64(iv), data: bytesToB64(new Uint8Array(buf))
+      });
+    });
+  }
+
+  /** Resolves to { key: rawString } or rejects with a Hebrew message. */
+  function decryptBackup(text, password) {
+    var file;
+    try { file = typeof text === 'string' ? JSON.parse(text) : text; } catch (e) { return Promise.reject(new Error('הקובץ אינו גיבוי של TrainerHub.')); }
+    if (!file || file.format !== BACKUP_FORMAT || !file.data) return Promise.reject(new Error('הקובץ אינו גיבוי של TrainerHub.'));
+    var c;
+    try { c = subtle(); } catch (e) { return Promise.reject(e); }
+    return deriveKey(password, b64ToBytes(file.salt), 'decrypt').then(function (key) {
+      return c.subtle.decrypt({ name: 'AES-GCM', iv: b64ToBytes(file.iv) }, key, b64ToBytes(file.data));
+    }).then(function (buf) {
+      var data = JSON.parse(new TextDecoder().decode(buf));
+      if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('bad');
+      return data;
+    }, function () { throw new Error('סיסמה שגויה או קובץ פגום.'); });
+  }
+
+  /** Writes restored keys back. Keys not in the backup are left as they are (nothing is deleted). */
+  function restoreBackup(data) {
+    var restored = 0;
+    Object.keys(data || {}).forEach(function (k) {
+      if (k.indexOf('trainerhub_') !== 0 || typeof data[k] !== 'string') return;
+      try { localStorage.setItem(k, data[k]); restored++; } catch (e) {}
+    });
+    return restored;
+  }
+
   function assetUrl(rel) {
     var path = (root.location && location.pathname) || '';
     if (/\/frontend(\/|$)/.test(path)) return '../' + rel.replace(/^\.\//, '');
@@ -2037,6 +2207,17 @@
     addUserEntry: addUserEntry,
     removeUserEntry: removeUserEntry,
     exportUserCatalog: exportUserCatalog,
+    CLIENT_GOALS: CLIENT_GOALS,
+    CLIENT_LEVELS: CLIENT_LEVELS,
+    WEEKDAYS_HE: WEEKDAYS_HE,
+    normalizeClientDetails: normalizeClientDetails,
+    setClientDetails: setClientDetails,
+    addMeasurement: addMeasurement,
+    clientDetailsText: clientDetailsText,
+    collectBackup: collectBackup,
+    encryptBackup: encryptBackup,
+    decryptBackup: decryptBackup,
+    restoreBackup: restoreBackup,
     get catalog() { return catalog; }
   };
 
