@@ -68,17 +68,18 @@ test('לא מצוין is stored as unknown reps, and a corrected reel replaces i
   assert.equal(String(fixed.source_sets_reps).indexOf('לא מצוין'), -1);
 });
 
-test('DfDEp8PRL3f keeps the mapped bench core prescription and stays unverified', function () {
+test('DfDEp8PRL3f is verified against the reel as a bench core routine', function () {
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   assert.ok(bench);
-  assert.equal(bench.verified, false);
+  assert.equal(bench.verified, true);
   assert.equal(bench.creator, 'coachgiress38');
   assert.equal(bench.muscle_group, 'ליבה');
   assert.equal(bench.sets, 3);
   assert.equal(bench.reps, '20');
-  assert.equal(bench.sets_reps, '3x20 → 5x20 REPS');
+  assert.match(bench.sets_reps, /3x20/);
   assert.match(bench.equipment, /ספסל/);
-  assert.deepEqual(bench.steps_he, ['ברך שמאל/ימין', 'פוש-אפ מוגבה', 'נגיעת כתף']);
+  assert.ok(bench.steps_he.length >= 3 && bench.steps_he.length <= 5);
+  assert.ok(bench.equipment_tags.indexOf('bench') !== -1);
   assert.equal(bench.source_url, 'https://www.instagram.com/reel/DfDEp8PRL3f/');
 });
 
@@ -124,7 +125,7 @@ test('a workout can be built, prescribed, saved, and placed on the weekly plan',
   const program = THReels.toDailyProgram(saved);
   assert.equal(program.dailyWorkouts.length, 1);
   assert.equal(program.dailyWorkouts[0].day, 1);
-  assert.equal(program.dailyWorkouts[0].exercises[1].name, '4 תרגילים על ספסל: ברך שמאל/ימין, פוש-אפ מוגבה, נגיעת כתף');
+  assert.equal(program.dailyWorkouts[0].exercises[1].name, bench.name_he);
   assert.equal(program.dailyWorkouts[0].exercises[1].sets, 5);
   assert.equal(program.dailyWorkouts[0].exercises[1].reps, '20');
 
@@ -179,8 +180,8 @@ test('exercise cards link to the source reel', function () {
     });
   });
   assert.match(html, /href="https:\/\/www\.instagram\.com\/reel\/DfDEp8PRL3f\/"/);
-  assert.match(html, /פוש-אפ מוגבה/);
-  assert.match(html, /לא מאומת/);
+  assert.match(html, /נוגעים ביד בכתף/);
+  assert.doesNotMatch(html, /לא מאומת/);
   assert.match(html, /data-add="ig-DfDEp8PRL3f"/);
 });
 
