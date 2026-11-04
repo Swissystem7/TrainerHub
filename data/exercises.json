@@ -1261,28 +1261,39 @@
     },
     {
       "id": "ig-Ddt-A9oS8lU",
-      "name_he": "הליכת ברך בעמידה עם גומייה מיני כחולה ליציבות אגן",
+      "name_he": "הרמת ברך בעמידה עם גומייה מיני סביב כפות הרגליים, בגב נשען על קיר",
       "muscle_group": "ליבה",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x12 לכל רגל הליכת ברך בעמידה + 3x30 שניות החזקה",
-      "equipment": "גומייה מיני כחולה, קיר, דשא סינטטי",
-      "steps_he": [],
+      "secondary_group": "רגליים/ישבן",
+      "muscle_detail": "כופפי ירך, בטן עמוקה, יציבות אגן",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x12 לכל רגל",
+      "equipment": "גומייה מיני, קיר",
+      "steps_he": [
+        "נשענים בגב על קיר, גומייה סביב כפות הרגליים",
+        "מרימים ברך אחת למעלה נגד הגומייה",
+        "מחזיקים שנייה ומורידים לאט",
+        "מחליפים רגל"
+      ],
       "source_url": "https://www.instagram.com/reel/Ddt-A9oS8lU/",
       "creator": "workout_athletics",
       "poster": "assets/posters/Ddt-A9oS8lU.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Wall-Supported Band Core - הליכת ברך בעמידה עם גומייה מיני כחולה ליציבות אגן",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "ליבה עמוקה - מייצבי אגן Transverse",
       "source_sets_reps": "3x12 לכל רגל הליכת ברך בעמידה + 3x30 שניות החזקה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mini_band",
         "wall"
+      ],
+      "safety_he": "הגב התחתון נשאר צמוד לקיר – בלי להתקמר",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DfDF7NHBZsM",
+        "ig-DfCmQ2uOLpM"
       ]
     },
     {
@@ -1346,27 +1357,38 @@
     },
     {
       "id": "ig-DdsgLw6zeP9",
-      "name_he": "כפיפות בטן בישיבה עם הרמת רגליים",
+      "name_he": "כפיפות בטן בישיבה: ברכיים לחזה בהישענות על הידיים",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x15 V-up בישיבה",
-      "equipment": "מזרן חום",
-      "steps_he": [],
+      "muscle_detail": "בטן תחתונה",
+      "sets": 3,
+      "reps": "15",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x15",
+      "equipment": "מזרן",
+      "steps_he": [
+        "יושבים ונשענים לאחור על הידיים",
+        "מרימים רגליים מהרצפה",
+        "מקרבים ברכיים לחזה",
+        "מיישרים רגליים בלי לגעת ברצפה"
+      ],
       "source_url": "https://www.instagram.com/reel/DdsgLw6zeP9/",
       "creator": "nasib_wrestler1",
       "poster": "assets/posters/DdsgLw6zeP9.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Seated V-up Core - כפיפות בטן בישיבה עם הרמת רגליים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן - ישר בטני עליון ותחתון",
       "source_sets_reps": "3x15 V-up בישיבה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "כתפיים רחוקות מהאוזניים וגב ישר",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
@@ -1446,32 +1468,39 @@
     },
     {
       "id": "ig-DdVphimgjpS",
-      "name_he": "הרמת רגליים עם גומייה, כפיפות בישיבה",
+      "name_he": "תרגילי בטן עם גומייה: הרמת רגליים בשכיבה ובישיבה כשהגומייה קשורה לרגל",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "10 חזרות (ספירה קולית)",
-      "equipment": "גומייה התנגדות, מזרן yoga high, ראק, שק אגרוף",
+      "muscle_detail": "בטן תחתונה, כופפי ירך",
+      "sets": 3,
+      "reps": "10",
+      "sets_reps": "10 חזרות (ספירה בסרטון); מומלץ 3 סטים",
+      "equipment": "גומייה, מזרן",
       "steps_he": [
-        "הרמת רגליים עם גומייה",
-        "כפיפות בישיבה"
+        "קושרים גומייה לעמוד יציב ולכף הרגל",
+        "שוכבים ומרימים רגליים ישרות למעלה",
+        "בישיבה – מקרבים ומרחיקים רגליים בשליטה",
+        "סופרים 10 חזרות"
       ],
       "source_url": "https://www.instagram.com/reel/DdVphimgjpS/",
       "creator": "francis.dodoo.7",
       "poster": "assets/posters/DdVphimgjpS.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Resistance Band Abs - הרמת רגליים עם גומייה, כפיפות בישיבה",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "10 חזרות (ספירה קולית)",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
-        "mat",
-        "power_rack"
+        "mat"
+      ],
+      "safety_he": "בודקים שהגומייה קשורה חזק לפני שמתחילים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
@@ -1503,62 +1532,77 @@
     },
     {
       "id": "ig-DdKNMkQTnA6",
-      "name_he": "הרמת רגליים עם כרית, כפיפות הפוכות, סיט-אפס עם דמבל",
+      "name_he": "אימון בטן בבית: הרמת רגליים עם כרית, כפיפות הפוכות, כפיפות עם משקולת ואלכסונים",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "אלכסונים",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x15 לכל אחד: הרמת רגליים עם כרית, כפיפות הפוכות, סיט-אפס עם דמבל, הרמת רגליים משקולת",
-      "equipment": "מזרן ורוד, כרית, דמבלים סגולים קטנים, כיסא עץ, פטיו",
+      "muscle_detail": "בטן עליונה ותחתונה, אלכסונים",
+      "sets": 4,
+      "reps": "20 שניות",
+      "sets_reps": "4 סבבים × 20 שניות לכל תרגיל, 45-60 שניות מנוחה (לפי הכיתוב)",
+      "equipment": "כרית, משקולת (או בקבוק מים), מזרן",
       "steps_he": [
-        "הרמת רגליים עם כרית",
-        "כפיפות הפוכות",
-        "סיט-אפס עם דמבל"
+        "שוכבים עם כרית בין הכפות ומרימים רגליים",
+        "מרימים אגן לכפיפה הפוכה",
+        "עולים לכפיפת בטן עם משקולת בידיים",
+        "20 שניות לתרגיל ומנוחה בין סבבים"
       ],
       "source_url": "https://www.instagram.com/reel/DdKNMkQTnA6/",
       "creator": "mariamarinf_",
       "poster": "assets/posters/DdKNMkQTnA6.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Night Outdoor Ab Circuit - הרמת רגליים עם כרית, כפיפות הפוכות, סיט-אפס עם דמבל",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן מלאה - עליון/תחתון/אלכסונים",
       "source_sets_reps": "3x15 לכל אחד: הרמת רגליים עם כרית, כפיפות הפוכות, סיט-אפס עם דמבל, הרמת רגליים משקולת",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "mat",
         "pillow",
-        "dumbbell"
+        "dumbbell",
+        "water_bottle",
+        "mat"
+      ],
+      "safety_he": "אין משקולת? משתמשים בבקבוק מים של ליטר",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DdAofnSsWdO",
-      "name_he": "V-ups, כפיפות, הרמת רגליים ישרות",
+      "name_he": "אימון הבטן של רונאלדו: וי-אפ, כפיפות בטן והרמת רגליים ישרות",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
+      "muscle_detail": "בטן עליונה ותחתונה",
       "sets": 3,
       "reps": "12",
-      "sets_reps": "3 x 12",
-      "equipment": "מזרן כחול (רונאלדו), מזרן שחור דשא (מאמן), מכנסי Real Madrid",
+      "sets_reps": "3x12 (כתוב בכיתוב)",
+      "equipment": "מזרן",
       "steps_he": [
-        "V-ups",
-        "כפיפות",
-        "הרמת רגליים ישרות"
+        "שוכבים על הגב",
+        "וי-אפ: ידיים ורגליים נפגשות למעלה",
+        "כפיפות בטן רגילות",
+        "הרמת רגליים ישרות עד 90 ומורידים לאט"
       ],
       "source_url": "https://www.instagram.com/reel/DdAofnSsWdO/",
       "creator": "jakethomasfitness",
       "poster": "assets/posters/DdAofnSsWdO.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Cristiano Ronaldo Abs - V-ups, כפיפות, הרמת רגליים ישרות",
       "source_muscle_group": "אחר",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "3 x 12",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "מורידים רגליים לאט בלי לקמר את הגב",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
@@ -1620,29 +1664,39 @@
     },
     {
       "id": "ig-Dc546O3RmMI",
-      "name_he": "פלאנק עם כדור כדורגל צהוב",
+      "name_he": "פלאנק עם גלגול כדור לשותף – מאמן וילדים (בסיס של בטן חזקה)",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "ילדים · יציבה",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x30 שניות פלאנק + 10 נגיעות בכדור צהוב",
-      "equipment": "כדור כדורגל צהוב, כדור רפואי שחור, מזרן אדום",
-      "steps_he": [],
+      "muscle_detail": "בטן, כתפיים (יציבות)",
+      "sets": 3,
+      "reps": "30 שניות",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x30 שניות",
+      "equipment": "כדור כדורגל, מזרן",
+      "steps_he": [
+        "שני שותפים בפלאנק מול מול",
+        "מגלגלים את הכדור ביד אחת לשותף",
+        "שומרים על אגן יציב",
+        "ממשיכים 30 שניות"
+      ],
       "source_url": "https://www.instagram.com/reel/Dc546O3RmMI/",
       "creator": "irmaospantarotti",
       "poster": "assets/posters/Dc546O3RmMI.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Kids & Adult Plank Core - פלאנק עם כדור כדורגל צהוב",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "ליבה - יציבה לילדים ומבוגרים",
       "source_sets_reps": "3x30 שניות פלאנק + 10 נגיעות בכדור צהוב",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "soccer_ball",
-        "medicine_ball",
         "mat"
+      ],
+      "safety_he": "גוף ישר – לא מרימים אגן גבוה מדי",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DfDF7NHBZsM",
+        "ig-DfCmQ2uOLpM"
       ]
     },
     {
@@ -1796,82 +1850,110 @@
     },
     {
       "id": "ig-DceCjqNtz9d",
-      "name_he": "פלאנק עם ברך לחזה, פלאנק סטטי, פוש-אפ לפלאנק עם רגל",
+      "name_he": "פלאנק עם ברך לחזה, פלאנק סטטי ופלאנק עם הושטת רגל לאחור",
       "muscle_group": "ליבה",
       "secondary_group": "רגליים/ישבן",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x45, 3x30, 3x20",
-      "equipment": "מזרן, חדר כושר, חזיית שחורה",
+      "muscle_detail": "בטן, אלכסונים, ישבן",
+      "sets": 3,
+      "reps": "45/30/20",
+      "sets_reps": "3x45, 3x30, 3x20 (כתוב בסרטון)",
+      "equipment": "מזרן",
       "steps_he": [
-        "פלאנק עם ברך לחזה",
-        "פלאנק סטטי",
-        "פוש-אפ לפלאנק עם רגל"
+        "פלאנק על האמות – מקרבים ברך לחזה לסירוגין",
+        "מחזיקים פלאנק סטטי",
+        "מפלאנק גבוה מושיטים רגל לאחור ולמעלה",
+        "מבצעים לפי מספרי הסרטון"
       ],
       "source_url": "https://www.instagram.com/reel/DceCjqNtz9d/",
       "creator": "karenalbz.fit",
       "poster": "assets/posters/DceCjqNtz9d.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Core & Glute Workout - פלאנק עם ברך לחזה, פלאנק סטטי, פוש-אפ לפלאנק עם רגל",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ישבן",
       "source_sets_reps": "3x45, 3x30, 3x20",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "לא שוקעים בגב התחתון – מכווצים בטן",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DcYz60YqrzZ",
-      "name_he": "משחק כדורים לסירים עם רגליים - חיזוק בטן וגמישות",
+      "name_he": "משחק לילדים: מרימים כדורים ברגליים מהגב ומכניסים לסיר מאחורי הראש",
       "muscle_group": "ליבה",
-      "secondary_group": "",
-      "muscle_detail": "ילדים · משחק",
+      "secondary_group": "מוביליטי",
+      "muscle_detail": "בטן תחתונה, גמישות גב",
       "sets": null,
       "reps": "",
-      "sets_reps": "משחק - מי אוסף הכי הרבה כדורים מנצח",
-      "equipment": "כדורי כדורגל שונים, סירים מתכת גדולים, כריות",
-      "steps_he": [],
+      "sets_reps": "משחק – מי אוסף הכי הרבה כדורים (לפי הסרטון)",
+      "equipment": "כדורים, סירים",
+      "steps_he": [
+        "שוכבים על הגב, ראש לכיוון הסיר",
+        "תופסים כדור בין כפות הרגליים",
+        "מגלגלים רגליים מעל הראש ומפילים את הכדור לסיר",
+        "מי שאסף הכי הרבה מנצח"
+      ],
       "source_url": "https://www.instagram.com/reel/DcYz60YqrzZ/",
       "creator": "yael_kremer_s",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Kids Balls In Pots Game - משחק כדורים לסירים עם רגליים - חיזוק בטן וגמישות",
       "source_muscle_group": "גב",
       "source_muscle_label": "בטן ו-Core / משחק ילדים",
       "source_sets_reps": "משחק - מי אוסף הכי הרבה כדורים מנצח",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "soccer_ball",
-        "pillow"
+        "soccer_ball"
+      ],
+      "safety_he": "שמים כרית מתחת לראש ולא מעמיסים על הצוואר",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DcVfEVJOQmQ",
-      "name_he": "פלאנק עם נגיעת כדור/לימון ירוק",
+      "name_he": "אתגר פלאנק לילדים: זריקת כדור טניס/לימון ותפיסה ביד אחת",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "ילדים",
+      "muscle_detail": "בטן, כתפיים, קואורדינציה",
       "sets": null,
-      "reps": "",
-      "sets_reps": "10 זריקות בלי להפיל",
-      "equipment": "כדור קטן ירוק / לימון, רצפה מרוצפת",
-      "steps_he": [],
+      "reps": "10",
+      "sets_reps": "10 זריקות בלי להפיל (כתוב בסרטון)",
+      "equipment": "כדור טניס או לימון",
+      "steps_he": [
+        "נכנסים לפלאנק על כפות הידיים",
+        "זורקים כדור קטן ביד אחת לגובה נמוך",
+        "תופסים ומחליפים יד",
+        "מנסים 10 זריקות בלי להפיל"
+      ],
       "source_url": "https://www.instagram.com/reel/DcVfEVJOQmQ/",
       "creator": "yael_kremer_s",
       "poster": "assets/posters/DcVfEVJOQmQ.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Kids Plank Ball Tap - פלאנק עם נגיעת כדור/לימון ירוק",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ילדים",
       "source_sets_reps": "10 זריקות בלי להפיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "small_ball"
+        "tennis_ball"
+      ],
+      "safety_he": "זריקות נמוכות כדי לא לאבד שיווי משקל",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
@@ -2014,58 +2096,76 @@
     },
     {
       "id": "ig-Db-6LUKoluR",
-      "name_he": "knee tucks, Russian twists, V-ups עם כדור רפואי",
+      "name_he": "תרגילי בטן עם כדור רפואי: ברכיים לחזה, טוויסט רוסי וכפיפות עם כדור מעל הראש",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "אלכסונים",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x12 כל תרגיל: knee tucks, Russian twists עם כדור, V-ups",
-      "equipment": "כדור רפואי ירוק-שחור, מזרן שחור",
+      "muscle_detail": "בטן, אלכסונים",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x12 לכל תרגיל",
+      "equipment": "כדור רפואי, מזרן",
       "steps_he": [
-        "knee tucks",
-        "Russian twists",
-        "V-ups עם כדור רפואי"
+        "יושבים ומקרבים ברכיים לחזה",
+        "מחזיקים כדור ומסובבים לצדדים",
+        "מרימים כדור מעל הראש בכפיפה",
+        "חוזרים לאט"
       ],
       "source_url": "https://www.instagram.com/reel/Db-6LUKoluR/",
       "creator": "erfon_ebrahimi",
       "poster": "assets/posters/Db-6LUKoluR.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Medicine Ball Core - knee tucks, Russian twists, V-ups עם כדור רפואי",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן - אלכסונים וישר בטני",
       "source_sets_reps": "3x12 כל תרגיל: knee tucks, Russian twists עם כדור, V-ups",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "medicine_ball",
         "mat"
+      ],
+      "safety_he": "בטוויסט מסובבים מהבטן, לא רק מהידיים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-Db8b43Dtsym",
-      "name_he": "פלאנק בשורה עם העברת כדורי טניס",
+      "name_he": "פלאנק בשורה עם העברת כדורי טניס לילדים",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "ילדים",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x10 העברות כדור טניס בפלאנק בשורה",
-      "equipment": "כדורי טניס צהוב-ירוק קטנים, מזרני פאזל אדום-כחול",
-      "steps_he": [],
+      "muscle_detail": "בטן, כתפיים, עבודת צוות",
+      "sets": 3,
+      "reps": "10",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x10 העברות",
+      "equipment": "כדורי טניס, מזרני פאזל",
+      "steps_he": [
+        "הילדים בפלאנק בשורה אחד ליד השני",
+        "מעבירים כדור טניס ביד לשכן",
+        "הכדור עובר עד סוף השורה",
+        "חוזרים בכיוון השני"
+      ],
       "source_url": "https://www.instagram.com/reel/Db8b43Dtsym/",
       "creator": "sk__element",
       "poster": "assets/posters/Db8b43Dtsym.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Kids Plank Passing Balls - פלאנק בשורה עם העברת כדורי טניס",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "ליבה וכתפיים - ילדים",
       "source_sets_reps": "3x10 העברות כדור טניס בפלאנק בשורה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "tennis_ball",
         "mat"
+      ],
+      "safety_he": "מרווח מספיק בין הילדים כדי לא להתנגש",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DfDF7NHBZsM",
+        "ig-DfCmQ2uOLpM"
       ]
     },
     {
@@ -2184,27 +2284,38 @@
     },
     {
       "id": "ig-Dar9SgDOsrC",
-      "name_he": "פוש-אפ/פלאנק עם העברת כדור כדורגל",
+      "name_he": "אתגר זוגי עם הילדים: פלאנק מול פלאנק ומסירת כדור ביד",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "משפחתי",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x10 העברות כדור בפוש-אפ/פלאנק זוגי עם ילד",
-      "equipment": "כדור כדורגל צבעוני, רצפה מרוצפת",
-      "steps_he": [],
+      "muscle_detail": "בטן, כתפיים",
+      "sets": 3,
+      "reps": "10",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x10 מסירות",
+      "equipment": "כדור",
+      "steps_he": [
+        "שני שותפים בפלאנק מול מול",
+        "מגלגלים את הכדור ביד לשותף",
+        "השותף עוצר ומחזיר",
+        "ממשיכים בלי לרדת על הברכיים"
+      ],
       "source_url": "https://www.instagram.com/reel/Dar9SgDOsrC/",
       "creator": "yael_kremer_s",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Partner Push-up Ball Pass With Son - פוש-אפ/פלאנק עם העברת כדור כדורגל",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "ליבה וכתפיים - משפחתי",
       "source_sets_reps": "3x10 העברות כדור בפוש-אפ/פלאנק זוגי עם ילד",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "soccer_ball"
+      ],
+      "safety_he": "גלגול עדין ולא זריקה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DfDF7NHBZsM",
+        "ig-DfCmQ2uOLpM"
       ]
     },
     {
@@ -2239,78 +2350,111 @@
     },
     {
       "id": "ig-DagmG-Ih4Ji",
-      "name_he": "זחילת דוב עם העברת כדור טניס ב-10 שניות",
+      "name_he": "זחילת דוב עם העברת כדור טניס – כמה שיותר ב-10 שניות",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "כמה שיותר העברות כדור טניס ב-10 שניות x 5 סטים בזחילת דוב",
-      "equipment": "כדורי טניס צהובים, דשא סינטטי ירוק",
-      "steps_he": [],
+      "muscle_detail": "כתפיים, בטן, קואורדינציה",
+      "sets": 5,
+      "reps": "10 שניות",
+      "sets_reps": "10 שניות (כתוב בכיתוב); מומלץ 5 סטים",
+      "equipment": "כדור טניס",
+      "steps_he": [
+        "נכנסים לתנוחת דוב – ברכיים מעט מעל הרצפה",
+        "מעבירים כדור טניס מיד ליד מתחת לגוף",
+        "סופרים העברות ב-10 שניות",
+        "מנסים לשבור את השיא"
+      ],
       "source_url": "https://www.instagram.com/reel/DagmG-Ih4Ji/",
       "creator": "divisionxtraining",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Youth Bear Crawl Tennis Ball Transfer 10s - זחילת דוב עם העברת כדור טניס ב-10 שניות",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "ליבה ויציבות כתפיים",
       "source_sets_reps": "כמה שיותר העברות כדור טניס ב-10 שניות x 5 סטים בזחילת דוב",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "tennis_ball"
+      ],
+      "safety_he": "גב ישר, ברכיים לא נוגעות ברצפה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DaYaktpO8aa",
-      "name_he": "תחרות פלאנק עם החלקת דיסקים",
+      "name_he": "הוקי פונקציונלי: דחיפת דיסק ביד בפלאנק/דוב סביב קונוסים",
       "muscle_group": "ליבה",
-      "secondary_group": "רגליים/ישבן",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x20 החלקות דיסק צהוב בפלאנק + תחרות זוגית",
-      "equipment": "דיסק צהוב שטוח, קונוסים קטנים צבעוניים, אולם ספורט",
-      "steps_he": [],
+      "secondary_group": "גוף מלא/HIIT",
+      "muscle_detail": "בטן, כתפיים, זריזות",
+      "sets": 3,
+      "reps": "30 שניות",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x30 שניות",
+      "equipment": "דיסק, קונוסים",
+      "steps_he": [
+        "נכנסים לפלאנק או לדוב",
+        "דוחפים דיסק ביד קדימה",
+        "מתקדמים סביב הקונוסים",
+        "אפשר להתחרות בזוגות"
+      ],
       "source_url": "https://www.instagram.com/reel/DaYaktpO8aa/",
       "creator": "edf.prof.marcos",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Plank Disc Slide Hockey Drill - תחרות פלאנק עם החלקת דיסקים",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "ליבה וזריזות - פלאנק",
       "source_sets_reps": "3x20 החלקות דיסק צהוב בפלאנק + תחרות זוגית",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "discs",
         "cones"
+      ],
+      "safety_he": "משאירים מרחק בין המשתתפים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DaSiindCCj8",
-      "name_he": "תרגיל חימום פלאנק עם נגיעות רגליים",
+      "name_he": "חימום פלג גוף עליון: נגיעת רגליים בתנוחת דוב זוגית",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x8 נגיעות רגליים בזחילת דוב (Bear Foot Touch) - חימום דינמי",
-      "equipment": "דשא סינטטי, מתקן אימון פנים",
-      "steps_he": [],
+      "muscle_detail": "כתפיים, בטן, זריזות",
+      "sets": 3,
+      "reps": "8",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x8 לכל צד",
+      "equipment": "ללא ציוד",
+      "steps_he": [
+        "שני שותפים בתנוחת דוב מול מול",
+        "מנסים לגעת ביד ברגל של השותף",
+        "זזים מהר לצדדים כדי להתחמק",
+        "נשארים כל הזמן על ידיים ורגליים"
+      ],
       "source_url": "https://www.instagram.com/reel/DaSiindCCj8/",
       "creator": "emergeperformance",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Bear Foot Touch Drill - תרגיל חימום פלאנק עם נגיעות רגליים",
       "source_muscle_group": "אחר",
       "source_muscle_label": "חימום פלג גוף עליון - כתפיים וליבה",
       "source_sets_reps": "3x8 נגיעות רגליים בזחילת דוב (Bear Foot Touch) - חימום דינמי",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "bodyweight"
+      ],
+      "safety_he": "נוגעים בעדינות – לא מושכים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
@@ -2400,27 +2544,38 @@
     },
     {
       "id": "ig-DQ85J9ykRwz",
-      "name_he": "כפיפות בטן בישיבה עם הרמת ברכיים",
+      "name_he": "כפיפות בטן בישיבה: הרמת ברכיים לחזה ועליות בטן",
       "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4 SETS 15 REPS, 4 SETS 20 REPS",
-      "equipment": "מזרן סגול, שק אגרוף אדום CSK, כדור כחול, ראק משקולות",
-      "steps_he": [],
+      "muscle_detail": "בטן תחתונה ועליונה",
+      "sets": 4,
+      "reps": "15-20",
+      "sets_reps": "4x15 ו-4x20 (כתוב בסרטון)",
+      "equipment": "מזרן",
+      "steps_he": [
+        "יושבים ונשענים על הידיים",
+        "מקרבים ברכיים לחזה ומיישרים",
+        "בשכיבה – עולים לכפיפת בטן",
+        "מבצעים לפי הסטים שבסרטון"
+      ],
       "source_url": "https://www.instagram.com/reel/DQ85J9ykRwz/",
       "creator": "berlinwire",
       "poster": "assets/posters/DQ85J9ykRwz.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Seated V-up Reverse Crunch - כפיפות בטן בישיבה עם הרמת ברכיים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "בטן ו-Core / ליבה",
       "source_sets_reps": "4 SETS 15 REPS, 4 SETS 20 REPS",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "לא מושכים את הצוואר",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
