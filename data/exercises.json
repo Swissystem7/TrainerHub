@@ -17,29 +17,38 @@
   "exercises": [
     {
       "id": "ig-DfFxxAruQGT",
-      "name_he": "זחילת דוב עם כדור רפואי",
+      "name_he": "אתגר זחילת דוב עם דחיפת כדור רפואי – מי עשה הכי טוב?",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "WHO DID IT BEST? אתגר",
-      "equipment": "כדור רפואי שחור, מזרן, קירות כחולים",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "כתפיים, בטן, רגליים",
+      "sets": 3,
+      "reps": "10 מטר",
+      "sets_reps": "אתגר – ללא חזרות בסרטון; מומלץ: 3 מקטעים × 10 מטר",
+      "equipment": "כדור רפואי",
+      "steps_he": [
+        "נכנסים לתנוחת דוב, ברכיים מעל הרצפה",
+        "דוחפים את הכדור קדימה ביד",
+        "זוחלים אחרי הכדור",
+        "ממשיכים עד הקו"
+      ],
       "source_url": "https://www.instagram.com/reel/DfFxxAruQGT/",
       "creator": "_kevykevv",
       "poster": "assets/posters/DfFxxAruQGT.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Buddah Bear Crawl - זחילת דוב עם כדור רפואי",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "WHO DID IT BEST? אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "mat",
-        "medicine_ball",
-        "wall"
+        "medicine_ball"
+      ],
+      "safety_he": "גב ישר וראש מורם – לא נופלים על הכדור",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DeEZisjq5ti",
+        "ig-Dc-20XLhaO2"
       ]
     },
     {
@@ -551,35 +560,38 @@
     },
     {
       "id": "ig-De3E0IcqzLH",
-      "name_he": "6 תרגילים: סקוואט, RDL, חתירה, פרפר, כפיפות, פשיטות",
+      "name_he": "אימון גומייה לכל הגוף: סקוואט, דדליפט רומני, חתירה, פרפר לחזה, כפיפת מרפקים ופשיטת מרפקים",
       "muscle_group": "גוף מלא/HIIT",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3 דקות, 20 שניות לתרגיל",
-      "equipment": "גומייה לופ, מזרן סגול מגולגל",
+      "muscle_detail": "רגליים, גב, חזה, ידיים",
+      "sets": 3,
+      "reps": "20 שניות",
+      "sets_reps": "20 שניות לכל תרגיל (טיימר בסרטון); מומלץ 3 סבבים",
+      "equipment": "גומייה",
       "steps_he": [
-        "סקוואט",
-        "RDL",
-        "חתירה",
-        "פרפר",
-        "כפיפות",
-        "פשיטות"
+        "עומדים על הגומייה",
+        "עושים כל תרגיל 20 שניות לפי הרשימה בסרטון",
+        "עוברים מיד לתרגיל הבא",
+        "נחים בסוף סבב"
       ],
       "source_url": "https://www.instagram.com/reel/De3E0IcqzLH/",
       "creator": "bigasian_fit",
       "poster": "assets/posters/De3E0IcqzLH.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "3 Min Full Body Resistance Band - 6 תרגילים: סקוואט, RDL, חתירה, פרפר, כפיפות, פשיטות",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "3 דקות, 20 שניות לתרגיל",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "loop_band",
-        "mat"
+        "resistance_band"
+      ],
+      "safety_he": "דורכים על הגומייה חזק שלא תקפוץ",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De1E2tzI1WY",
+        "ig-DeQzQzyNg8P"
       ]
     },
     {
@@ -620,59 +632,71 @@
     },
     {
       "id": "ig-De1E2tzI1WY",
-      "name_he": "סקוואט עמוק, הליכה עם כדור, פלאנק בשורה",
+      "name_he": "אימון קבוצתי: פלאנק בשורה ומעבר בריצה עם כדור רפואי (שליחים)",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "קבוצתי",
+      "secondary_group": "ליבה",
+      "muscle_detail": "בטן, כתפיים, רגליים",
       "sets": null,
       "reps": "",
-      "sets_reps": "Relay - ללא ציון",
-      "equipment": "כדור רפואי שחור, חדר כושר מודרני",
+      "sets_reps": "שליחים – ללא חזרות בסרטון; מומלץ: 3 סבבים",
+      "equipment": "כדור רפואי",
       "steps_he": [
-        "סקוואט עמוק",
-        "הליכה עם כדור",
-        "פלאנק בשורה"
+        "כולם בפלאנק בשורה",
+        "האחרון קם, לוקח כדור ועובר לאורך השורה",
+        "נכנס לפלאנק בתחילת השורה",
+        "הבא בתור ממשיך"
       ],
       "source_url": "https://www.instagram.com/reel/De1E2tzI1WY/",
       "creator": "annalysasforza",
       "poster": "assets/posters/De1E2tzI1WY.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Group Medicine Ball Relay - סקוואט עמוק, הליכה עם כדור, פלאנק בשורה",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "פול באדי ו-HIIT / קבוצתי",
       "source_sets_reps": "Relay - ללא ציון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "medicine_ball"
+      ],
+      "safety_he": "עוברים בזהירות ליד הראשים של השוכבים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De3E0IcqzLH",
+        "ig-DeQzQzyNg8P"
       ]
     },
     {
       "id": "ig-Dez8o94zqDt",
-      "name_he": "מוטיבציה גראז' דדליפט, מתח",
+      "name_he": "מוטיבציה: \"תמצא דרך לנצח\" – אימון בחדר כושר ביתי",
       "muscle_group": "אחר",
       "secondary_group": "",
       "muscle_detail": "מוטיבציה",
       "sets": null,
       "reps": "",
-      "sets_reps": "מוטיבציה - אם לאימון: 3x8 דדליפט, 3x מקס מתח",
-      "equipment": "גראז', מוט מתח, משקולות",
+      "sets_reps": "לא תרגיל – סרטון מוטיבציה",
+      "equipment": "ללא",
       "steps_he": [
-        "מוטיבציה גראז' דדליפט",
-        "מתח"
+        "בוחרים אימון קבוע",
+        "מתאמנים גם כשאין חשק",
+        "מודדים התקדמות",
+        "משמעת חשובה ממוטיבציה"
       ],
       "source_url": "https://www.instagram.com/reel/Dez8o94zqDt/",
       "creator": "endureit.llc",
       "poster": "assets/posters/Dez8o94zqDt.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Find A Way To Win - מוטיבציה גראז' דדליפט, מתח",
       "source_muscle_group": "אחר",
       "source_muscle_label": "מוטיבציה - גוף מלא (דדליפט + מתח)",
       "source_sets_reps": "מוטיבציה - אם לאימון: 3x8 דדליפט, 3x מקס מתח",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
-      "equipment_tags": [
-        "pullup_bar"
+      "equipment_tags": [],
+      "safety_he": "מתאמנים במשקל מתאים ובהשגחה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-De_RXTUBRDk"
       ]
     },
     {
@@ -968,27 +992,38 @@
     },
     {
       "id": "ig-DeQzQzyNg8P",
-      "name_he": "8 תרגילים בחוץ",
+      "name_he": "8 תרגילי גומייה בשכיבה ובישיבה: פשיטת מרפקים, משיכה, כפיפות בטן, פרפר ולחיצת רגליים",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "equipment": "גומייה סגולה לופ, מסלול ריצה חיצוני",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "ידיים, גב, חזה, בטן, רגליים",
+      "sets": 3,
+      "reps": "10-12",
+      "sets_reps": "10-12 חזרות במעגל (לפי הכיתוב)",
+      "equipment": "גומייה לופ",
+      "steps_he": [
+        "שוכבים על הגב עם הגומייה",
+        "מבצעים כל תרגיל 10-12 חזרות",
+        "עוברים במעגל בין 8 התרגילים",
+        "חוזרים על המעגל"
+      ],
       "source_url": "https://www.instagram.com/reel/DeQzQzyNg8P/",
       "creator": "kirsanov.gym",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Full Body Resistance Band Circuit - 8 תרגילים בחוץ",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "loop_band"
+      ],
+      "safety_he": "מחזיקים את הגומייה רחוק מהפנים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De3E0IcqzLH",
+        "ig-De1E2tzI1WY"
       ]
     },
     {
@@ -1002,10 +1037,10 @@
       "sets_reps": "לא רלוונטי - קרוסלת שילובי מזון",
       "equipment": "מזון: אבוקדו, ביצים, בטטה, קינמון, אוכמניות, אגוזים, צ'יה",
       "steps_he": [
-        "אבוקדו+ביצים",
-        "בטטה+קינמון",
-        "אוכמניות+אגוז",
-        "צ'יה+מי קוקוס"
+        "אבוקדו עם ביצים",
+        "בטטה עם קינמון",
+        "אוכמניות עם אגוזי מלך",
+        "צ'יה עם מי קוקוס"
       ],
       "source_url": "https://www.instagram.com/p/DeO8oVyADue/",
       "creator": "yarin.zano.fit",
@@ -1015,7 +1050,7 @@
       "source_muscle_group": "אחר",
       "source_muscle_label": "תזונה - לא תרגיל אימון",
       "source_sets_reps": "לא רלוונטי - קרוסלת שילובי מזון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "לא נגיש",
       "poster_uncertain": false,
       "equipment_tags": []
     },
@@ -1096,27 +1131,38 @@
     },
     {
       "id": "ig-DeEZisjq5ti",
-      "name_he": "זחילת דוב עם כדור רפואי MOTIVE 14LB",
+      "name_he": "זחילת דוב עם דחיפת כדור רפואי – נראה קל עד שמנסים",
       "muscle_group": "גוף מלא/HIIT",
       "secondary_group": "ליבה",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "This Looks Easy Until You Try It - אתגר",
-      "equipment": "כדור רפואי 14LB כחול-שחור MOTIVE, דשא סינטטי ירוק",
-      "steps_he": [],
+      "muscle_detail": "כתפיים, בטן, רגליים",
+      "sets": 3,
+      "reps": "10 מטר",
+      "sets_reps": "אתגר – ללא חזרות בסרטון; מומלץ: 3 מקטעים × 10 מטר",
+      "equipment": "כדור רפואי",
+      "steps_he": [
+        "תנוחת דוב עם הכדור לפני הידיים",
+        "מגלגלים את הכדור קדימה ביד אחת",
+        "צועדים ביד וברגל נגדית",
+        "ממשיכים בשליטה"
+      ],
       "source_url": "https://www.instagram.com/reel/DeEZisjq5ti/",
       "creator": "ahmari_2",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Bear Crawl Medicine Ball - זחילת דוב עם כדור רפואי MOTIVE 14LB",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / ליבה",
       "source_sets_reps": "This Looks Easy Until You Try It - אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "medicine_ball"
+      ],
+      "safety_he": "כדור לא כבד מדי ומשטח פנוי",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfFxxAruQGT",
+        "ig-Dc-20XLhaO2"
       ]
     },
     {
@@ -1229,32 +1275,37 @@
     },
     {
       "id": "ig-Dd3jpQ3t-7Y",
-      "name_he": "אמבט קרח, ריצה, תפילה, עבודה, מתח",
+      "name_he": "לשחרר ולהתקדם: זורקים זיכרונות, אמבט קרח, ריצה ומתח",
       "muscle_group": "השראה",
       "secondary_group": "",
       "muscle_detail": "מוטיבציה",
       "sets": null,
       "reps": "",
-      "sets_reps": "לא תרגיל - 5 פעולות: אמבט קרח 3 דק', ריצה 20 דק', תפילה, עבודה, מתח",
-      "equipment": "אמבט קרח, בגדי ריצה ISRAEL, שופר, טלית, פארק מתח",
+      "sets_reps": "לא תרגיל – סרטון השראה",
+      "equipment": "ללא",
       "steps_he": [
-        "אמבט קרח",
-        "ריצה",
-        "תפילה",
-        "עבודה",
-        "מתח"
+        "מזהים מה מחזיק אותך תקוע",
+        "משחררים ומפנים מקום",
+        "יוצאים לפעילות – ריצה או מתח",
+        "ממשיכים בעקביות"
       ],
       "source_url": "https://www.instagram.com/reel/Dd3jpQ3t-7Y/",
       "creator": "segev_saada",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "התמודדות פרידה - אמבט קרח, ריצה, תפילה, עבודה, מתח",
       "source_muscle_group": "אחר",
       "source_muscle_label": "מוטיבציה - חוסן מנטלי",
       "source_sets_reps": "לא תרגיל - 5 פעולות: אמבט קרח 3 דק', ריצה 20 דק', תפילה, עבודה, מתח",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
-      "equipment_tags": []
+      "equipment_tags": [],
+      "safety_he": "אמבט קרח רק בהשגחת מבוגר ולזמן קצר",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DdS9ue-knAM",
+        "ig-DZnFFSvscK_"
+      ]
     },
     {
       "id": "ig-DdxN4I-hoQp",
@@ -1375,7 +1426,12 @@
       "reps": "",
       "sets_reps": "2 דקות ביום, 30 שניות לכל אזור (צוואר, בתי שחי, בטן, מפשעות)",
       "equipment": "ללא ציוד",
-      "steps_he": [],
+      "steps_he": [
+        "טופחים בעדינות בצוואר 30 שניות",
+        "טופחים בבתי השחי 30 שניות",
+        "טופחים על הבטן 30 שניות",
+        "טופחים במפשעות 30 שניות"
+      ],
       "source_url": "https://www.instagram.com/reel/DdthU1EtHnN/",
       "creator": "dor_nakash",
       "poster": "",
@@ -1384,7 +1440,7 @@
       "source_muscle_group": "מוביליטי וגמישות",
       "source_muscle_label": "בריאות - מערכת לימפטית",
       "source_sets_reps": "2 דקות ביום, 30 שניות לכל אזור (צוואר, בתי שחי, בטן, מפשעות)",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "לא נגיש",
       "poster_uncertain": false,
       "equipment_tags": []
     },
@@ -1538,30 +1594,37 @@
     },
     {
       "id": "ig-DdS9ue-knAM",
-      "name_he": "תה קמומיל, תה פסיפלורה, מגנזיום גליצינט",
+      "name_he": "3 דברים לשינה עמוקה: תה קמומיל, תה פסיפלורה ומגנזיום גליצינאט",
       "muscle_group": "השראה",
       "secondary_group": "",
-      "muscle_detail": "תזונה · שינה",
+      "muscle_detail": "שינה",
       "sets": null,
       "reps": "",
-      "sets_reps": "לא רלוונטי - 3 טיפים: תה קמומיל, תה פסיפלורה, מגנזיום גליצינט 30-60 דק' לפני שינה",
-      "equipment": "תה קמומיל, תה פסיפלורה, מגנזיום",
+      "sets_reps": "לא תרגיל – טיפים לשינה",
+      "equipment": "ללא",
       "steps_he": [
-        "תה קמומיל",
-        "תה פסיפלורה",
-        "מגנזיום גליצינט"
+        "שותים תה קמומיל בערב",
+        "אפשר תה פסיפלורה",
+        "מגנזיום רק באישור רופא",
+        "הולכים לישון בשעה קבועה"
       ],
       "source_url": "https://www.instagram.com/reel/DdS9ue-knAM/",
       "creator": "erika_yachmanik",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "שינה טבעית - תה קמומיל, תה פסיפלורה, מגנזיום גליצינט",
       "source_muscle_group": "אחר",
       "source_muscle_label": "בריאות - שינה טבעית (תזונה)",
       "source_sets_reps": "לא רלוונטי - 3 טיפים: תה קמומיל, תה פסיפלורה, מגנזיום גליצינט 30-60 דק' לפני שינה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
-      "equipment_tags": []
+      "equipment_tags": [],
+      "safety_he": "תוספים לילדים רק באישור רופא",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Dd3jpQ3t-7Y",
+        "ig-DZnFFSvscK_"
+      ]
     },
     {
       "id": "ig-DdKNMkQTnA6",
@@ -1676,34 +1739,39 @@
     },
     {
       "id": "ig-Dc-20XLhaO2",
-      "name_he": "25 שכיבות, 20 knee-ins, 30 סקוואט, 35 מאונטן, 45 שניות פלאנק",
+      "name_he": "אימון יומי: 25 שכיבות סמיכה, 20 ברכיים לחזה, 30 סקוואט, 35 מטפסי הרים ו-45 שניות פלאנק",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "קליסטניקס",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "25, 20, 30, 35, 45 שניות - 3 ROUNDS",
-      "equipment": "מזרן שחור, דמבל, גינת דשא",
+      "secondary_group": "חזה",
+      "muscle_detail": "חזה, בטן, רגליים",
+      "sets": 3,
+      "reps": "25/20/30/35/45 שניות",
+      "sets_reps": "3 סבבים (כתוב בסרטון)",
+      "equipment": "מזרן",
       "steps_he": [
-        "25 שכיבות",
-        "20 knee-ins",
+        "25 שכיבות סמיכה",
+        "20 ברכיים לחזה בישיבה",
         "30 סקוואט",
-        "35 מאונטן",
-        "45 שניות פלאנק"
+        "35 מטפסי הרים ואז 45 שניות פלאנק",
+        "3 סבבים"
       ],
       "source_url": "https://www.instagram.com/reel/Dc-20XLhaO2/",
       "creator": "jakethomasfitness",
       "poster": "assets/posters/Dc-20XLhaO2.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Daily Calisthenics Circuit - 25 שכיבות, 20 knee-ins, 30 סקוואט, 35 מאונטן, 45 שניות פלאנק",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "פול באדי ו-HIIT / קליסטניקס",
       "source_sets_reps": "25, 20, 30, 35, 45 שניות - 3 ROUNDS",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "mat",
-        "dumbbell"
+        "mat"
+      ],
+      "safety_he": "לילדים – מורידים את המספרים בחצי",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfFxxAruQGT",
+        "ig-DeEZisjq5ti"
       ]
     },
     {
@@ -1891,27 +1959,38 @@
     },
     {
       "id": "ig-DclaHnEtQtJ",
-      "name_he": "8 תרגילים עם גומייה סגולה",
+      "name_he": "אימון גומייה לכל הגוף בשכיבה ובישיבה – 8 תרגילים",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "equipment": "גומייה סגולה, מסלול ריצה אדום-כחול",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "ידיים, גב, חזה, בטן, רגליים",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x12 במעגל",
+      "equipment": "גומייה לופ",
+      "steps_he": [
+        "שוכבים עם גומייה בידיים או ברגליים",
+        "מבצעים כל תרגיל לפי הסדר",
+        "12 חזרות לכל תרגיל",
+        "חוזרים על המעגל"
+      ],
       "source_url": "https://www.instagram.com/reel/DclaHnEtQtJ/",
       "creator": "kirsanov.gym",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Full Body Resistance Band Outdoor - 8 תרגילים עם גומייה סגולה",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "8 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "loop_band"
+      ],
+      "safety_he": "בודקים שאין קרעים בגומייה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De3E0IcqzLH",
+        "ig-De1E2tzI1WY"
       ]
     },
     {
@@ -2099,39 +2178,40 @@
     },
     {
       "id": "ig-Db_prUBsVP_",
-      "name_he": "דדליפט, כפיפות מרפקים, סקוואט, פרס, חתירה, בטן",
+      "name_he": "אימון גומייה בבית: דדליפט, כפיפת מרפקים, סקוואט, לחיצת כתפיים, חתירה ובטן",
       "muscle_group": "גוף מלא/HIIT",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4 sets of 15-20 reps",
-      "equipment": "גומייה אדומה וצהובה, מוט עץ, מזרן כחול, קטלבל, דמבל, כדור יציבות, גג שקיעה",
+      "muscle_detail": "רגליים, גב, כתפיים, ידיים, בטן",
+      "sets": 4,
+      "reps": "15-20",
+      "sets_reps": "4x15-20 (כתוב בכיתוב)",
+      "equipment": "גומיות, מוט עץ, מזרן",
       "steps_he": [
-        "דדליפט",
-        "כפיפות מרפקים",
-        "סקוואט",
-        "פרס",
-        "חתירה",
-        "בטן"
+        "עומדים על הגומייה",
+        "עושים כל תרגיל 15-20 חזרות",
+        "גב ישר בדדליפט ובחתירה",
+        "4 סבבים"
       ],
       "source_url": "https://www.instagram.com/reel/Db_prUBsVP_/",
       "creator": "kisjee",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Rooftop Full Body Band - דדליפט, כפיפות מרפקים, סקוואט, פרס, חתירה, בטן",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "פול באדי ו-HIIT / גוף מלא",
       "source_sets_reps": "4 sets of 15-20 reps",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
-        "loop_band",
         "wooden_dowel",
-        "mat",
-        "dumbbell",
-        "kettlebell"
+        "mat"
+      ],
+      "safety_he": "גומייה עם התנגדות מתאימה – מתחילים קל",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De3E0IcqzLH",
+        "ig-De1E2tzI1WY"
       ]
     },
     {
@@ -2357,27 +2437,38 @@
     },
     {
       "id": "ig-Da4KifLSq3S",
-      "name_he": "קפיצה בחבל אחרי פציעת שוק",
+      "name_he": "קפיצה בחבל – חזרה לאימון אחרי פציעה בשוק",
       "muscle_group": "גוף מלא/HIIT",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x1 דקה קפיצה בחבל, 30 שניות מנוחה - קאמבק אחרי פציעת שוק",
-      "equipment": "חבל קפיצה, קיר בטון",
-      "steps_he": [],
+      "secondary_group": "רגליים/ישבן",
+      "muscle_detail": "שוקיים, כושר לב-ריאה",
+      "sets": 3,
+      "reps": "1 דקה",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x1 דקה, 30 שניות מנוחה",
+      "equipment": "חבל קפיצה",
+      "steps_he": [
+        "מחזיקים את ידיות החבל ליד המותניים",
+        "מסובבים מפרק כף היד",
+        "קופצים קפיצות קטנות על כריות הרגליים",
+        "נחים בין סטים"
+      ],
       "source_url": "https://www.instagram.com/reel/Da4KifLSq3S/",
       "creator": "marfie9091",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Jump Rope Comeback I'M BACK - קפיצה בחבל אחרי פציעת שוק",
       "source_muscle_group": "גב",
       "source_muscle_label": "קרדיו - סיבולת",
       "source_sets_reps": "3x1 דקה קפיצה בחבל, 30 שניות מנוחה - קאמבק אחרי פציעת שוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "jump_rope"
+      ],
+      "safety_he": "אם יש כאב בשוק – עוצרים",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De3E0IcqzLH",
+        "ig-De1E2tzI1WY"
       ]
     },
     {
@@ -2440,7 +2531,7 @@
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "פול באדי ו-HIIT / קרדיו",
       "source_sets_reps": "READY! 20 שניות עבודה עם טיימר ספירה לאחור",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "לא נגיש",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
@@ -2557,26 +2648,37 @@
     },
     {
       "id": "ig-DZnFFSvscK_",
-      "name_he": "הצלחה מעבודה עקבית ואמונה פנימית",
+      "name_he": "הצלחה נבנית בעקביות ובאמונה – ג׳יילן ברנסון (ניקס)",
       "muscle_group": "השראה",
       "secondary_group": "",
       "muscle_detail": "מוטיבציה",
       "sets": null,
       "reps": "",
-      "sets_reps": "לא תרגיל - נאום Jalen Brunson אליפות Knicks: עבודה עקבית ואמונה פנימית",
-      "equipment": "ללא - וידאו מוטיבציה NBA",
-      "steps_he": [],
+      "sets_reps": "לא תרגיל – סרטון השראה",
+      "equipment": "ללא",
+      "steps_he": [
+        "מציבים מטרה קטנה",
+        "מתאמנים כל יום קצת",
+        "מאמינים בעצמך גם בלי תוצאות מיד",
+        "ממשיכים בעקביות"
+      ],
       "source_url": "https://www.instagram.com/reel/DZnFFSvscK_/",
       "creator": "michal_azar_coach",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Jalen Brunson Motivation - הצלחה מעבודה עקבית ואמונה פנימית",
       "source_muscle_group": "אחר",
       "source_muscle_label": "מוטיבציה - הצלחה מעבודה עקבית",
       "source_sets_reps": "לא תרגיל - נאום Jalen Brunson אליפות Knicks: עבודה עקבית ואמונה פנימית",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
-      "equipment_tags": []
+      "equipment_tags": [],
+      "safety_he": "מנוחה ושינה הן חלק מההצלחה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Dd3jpQ3t-7Y",
+        "ig-DdS9ue-knAM"
+      ]
     },
     {
       "id": "ig-DZkEztOv9CD",
@@ -2689,52 +2791,72 @@
     },
     {
       "id": "ig-DdHOFvtKk9z",
-      "name_he": "ריל לא ממוין",
-      "muscle_group": "לא ממוין",
+      "name_he": "אימון בטן למתחילים בבית: פלאנק עם ברך למרפק, פלאנק עם סיבוב ומטפסי הרים",
+      "muscle_group": "ליבה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "לא ממוין",
-      "equipment": "",
-      "steps_he": [],
+      "muscle_detail": "בטן, אלכסונים",
+      "sets": 3,
+      "reps": "10-15",
+      "sets_reps": "3x10 ו-3x15 (כתוב בסרטון)",
+      "equipment": "מזרן",
+      "steps_he": [
+        "נכנסים לפלאנק על כפות הידיים",
+        "מקרבים ברך למרפק לסירוגין",
+        "מסובבים אגן לצדדים",
+        "מבצעים לפי מספרי הסרטון"
+      ],
       "source_url": "https://www.instagram.com/reel/DdHOFvtKk9z/",
       "creator": "mjoepersonaltrainer",
       "poster": "",
-      "verified": false,
-      "source_title": "",
+      "verified": true,
+      "source_title": "אימון בטן למתחילים בבית: פלאנק עם ברך למרפק, פלאנק עם סיבוב ומטפסי הרים",
       "source_muscle_group": "",
       "source_muscle_label": "",
       "source_sets_reps": "",
-      "source_notes": "",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "bodyweight"
+        "mat"
+      ],
+      "safety_he": "גוף ישר ולא שוקעים בגב",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfCxqpMDrS6",
+        "ig-DfBp7o0sv18"
       ]
     },
     {
       "id": "ig-DdI_86lNFfY",
-      "name_he": "ריל לא ממוין",
-      "muscle_group": "לא ממוין",
+      "name_he": "שיר וריקוד עם ילדים – \"בוא תגיד שלום\" (ישי סוויסה)",
+      "muscle_group": "השראה",
       "secondary_group": "",
-      "muscle_detail": "",
+      "muscle_detail": "תנועה וריקוד, לא תרגיל",
       "sets": null,
       "reps": "",
-      "sets_reps": "לא ממוין",
-      "equipment": "",
-      "steps_he": [],
+      "sets_reps": "לא תרגיל – קליפ מוזיקה",
+      "equipment": "ללא",
+      "steps_he": [
+        "מדליקים את השיר",
+        "רוקדים יחד עם הילדים",
+        "מחקים את התנועות בקליפ",
+        "נהנים ומזיעים"
+      ],
       "source_url": "https://www.instagram.com/reel/DdI_86lNFfY/",
       "creator": "israel_mashup",
       "poster": "",
-      "verified": false,
-      "source_title": "",
+      "verified": true,
+      "source_title": "שיר וריקוד עם ילדים – \"בוא תגיד שלום\" (ישי סוויסה)",
       "source_muscle_group": "",
       "source_muscle_label": "",
       "source_sets_reps": "",
-      "source_notes": "",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
-      "equipment_tags": [
-        "bodyweight"
+      "equipment_tags": [],
+      "safety_he": "רוקדים במקום פנוי בלי רהיטים קרובים",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Dd3jpQ3t-7Y",
+        "ig-DdS9ue-knAM"
       ]
     }
   ]
