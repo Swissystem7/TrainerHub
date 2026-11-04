@@ -6,46 +6,50 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="סריקת שטח: מצלמים את מקום האימון, מסמנים מה יש בו, ומקבלים אימון מחוברת אחריי שמתאים לשטח ולקבוצה.">
   <title>TrainerHub | סריקת שטח</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; --warn:#ffb454; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); --warn:var(--th-orange); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
     .wrap { max-width: 760px; margin: auto; padding: 24px 16px 64px; }
-    .top small { color: var(--lime); font-weight: bold; }
-    .top h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); margin: 8px 0; }
+    .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.625rem, 6vw, 2.5rem); font-weight: 900; line-height: 1.15; margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
-    section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 0 0 16px; }
-    section h2 { margin: 0 0 10px; font-size: 1.2rem; }
-    h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--lime); }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin: 0 0 16px; }
+    section h2 { margin: 0 0 10px; font-size: 18px; font-weight: 800; }
+    h3 { font-size: 16px; margin: 16px 0 8px; color: var(--th-teal-ink); }
     ol, ul { padding-inline-start: 1.3rem; line-height: 1.6; }
-    label { display: block; color: var(--muted); font-size: .82rem; margin: 8px 0 4px; }
-    input, select { width: 100%; padding: 10px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
+    input, select { width: 100%; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; }
     .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-    button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--lime); color: #101312; font-weight: 700; cursor: pointer; font: inherit; margin-top: 10px; }
-    button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
-    .shot { display: block; text-align: center; padding: 18px; border: 2px dashed var(--line); border-radius: 14px; color: var(--ink); font-size: 1.1rem; cursor: pointer; margin: 0; }
+    button { padding: 0 20px; border: 0; border-radius: 14px; background: var(--th-teal); color: var(--th-on-teal); cursor: pointer; font: inherit; font-weight: 700; margin-top: 12px; }
+    button.ghost { background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); }
+    .shot { display: block; text-align: center; padding: 18px; border: 2px dashed var(--line); border-radius: 14px; background: var(--th-surface); color: var(--ink); font-size: 1.1rem; font-weight: 700; cursor: pointer; margin: 0; }
     .shot input { position: absolute; width: 1px; height: 1px; opacity: 0; }
     .thumbs { display: flex; gap: 8px; margin-top: 10px; }
     .thumbs img { width: 31%; max-width: 160px; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
     .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
-    button, .shot { min-height: 44px; }
+    button { min-height: 48px; }
+    .shot { min-height: 44px; }
     a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, .shot:focus-within { outline: 3px solid var(--lime); outline-offset: 2px; }
-    .empty-plan { text-align: center; padding: 20px 12px; margin: 12px 0 0; background: #111513; border: 1px dashed var(--line); border-radius: 12px; line-height: 1.6; }
+    .empty-plan { text-align: center; padding: 20px 12px; margin: 12px 0 0; background: var(--th-bg); border: 1px dashed var(--line); border-radius: 12px; line-height: 1.6; }
     .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
     .actions button { margin-top: 0; }
     .meters { max-width: 220px; }
-    .chips button { margin: 0; padding: 7px 13px; border-radius: 999px; background: #111513; color: var(--muted); border: 1px solid var(--line); font-weight: 400; font-size: .9rem; }
-    .chips button[aria-pressed="true"] { background: #26302b; color: var(--ink); border-color: var(--lime); }
-    .chips button[aria-pressed="true"]::before { content: '✓ '; color: var(--lime); }
-    .chips button.unsure::after { content: ' ?'; color: var(--warn); }
-    .warn { border-inline-start: 4px solid var(--warn); background: #2a2216; padding: 8px 10px; border-radius: 8px; margin: 6px 0; line-height: 1.5; }
+    .chips button { margin: 0; min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); font-weight: 500; font-size: 15px; }
+    .chips button[aria-pressed="true"] { background: var(--th-ink); color: var(--th-bg); border-color: var(--th-ink); font-weight: 700; }
+    .chips button[aria-pressed="true"]::before { content: '✓ '; color: var(--th-teal-soft); }
+    .chips button.unsure::after { content: ' ?'; color: var(--th-orange-ink); }
+    .warn { border-inline-start: 4px solid var(--warn); background: var(--th-orange-soft); color: var(--th-orange-ink); padding: 8px 10px; border-radius: 8px; margin: 6px 0; line-height: 1.5; }
     .why li { color: var(--muted); }
-    .pill { display: inline-block; background: #26302b; border-radius: 999px; padding: 2px 8px; font-size: .72rem; color: var(--lime); margin-inline-start: 4px; }
+    .pill { display: inline-block; background: var(--th-teal-soft); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 700; color: var(--th-teal-ink); margin-inline-start: 4px; }
     [hidden] { display: none !important; }
   </style>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#photos">דלג לצילום השטח</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
