@@ -1,0 +1,61 @@
+name: Reels queue -> Drive + library
+
+on:
+  push:
+    branches: [master]
+    paths: [data/reels_queue.json]
+  workflow_dispatch:
+    inputs:
+      test_url:
+        description: "Test only: download this URL with yt-dlp (no upload, no PR)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: reels-queue
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -q -U yt-dlp google-api-python-client google-auth
+      - name: Instagram cookies (optional)
+        env:
+          IG_COOKIES: ${{ secrets.IG_COOKIES }}
+        run: |
+          if [ -n "$IG_COOKIES" ]; then printf '%s' "$IG_COOKIES" > /tmp/ig_cookies.txt; echo "cookies: yes"; else echo "cookies: no"; fi
+      - name: Process queue
+        env:
+          TEST_URL: ${{ github.event.inputs.test_url }}
+          GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+        run: python scripts/process_reels_queue.py
+      - name: Open PR with auto-merge
+        if: github.event.inputs.test_url == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet; then echo "no changes"; exit 0; fi
+          BR="bot/reels-$(date +%Y%m%d-%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BR"
+          git add data/reels_queue.json data/drive_videos.json
+          git commit -m "Add reels from queue"
+          git push origin "$BR"
+          URL=$(gh pr create --base master --head "$BR" --title "Reels from queue $(date +%Y-%m-%d)" --body "Automatic: reels downloaded from data/reels_queue.json and uploaded to Drive.")
+          gh pr merge "$URL" --auto --squash
