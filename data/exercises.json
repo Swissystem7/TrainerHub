@@ -263,34 +263,39 @@
     },
     {
       "id": "ig-DfAVEWdsnKg",
-      "name_he": "מעמידה לפלאנק, נגיעת כתף, ברך, רגל, פלאנק הפוך",
+      "name_he": "אתגר שכיבות הסמיכה של מייק טייסון: מעמידה לפלאנק, שכיבת סמיכה, ברך לחזה וחזרה לעמידה",
       "muscle_group": "חזה",
       "secondary_group": "גוף מלא/HIIT",
-      "muscle_detail": "",
+      "muscle_detail": "חזה, כתפיים, יד אחורית, ליבה",
       "sets": null,
       "reps": "",
-      "sets_reps": "Challenge - ללא חזרות קבועות",
-      "equipment": "סלון ביתי, ספה בז', רצפה מרוצפת",
+      "sets_reps": "אתגר – ללא חזרות בסרטון; מומלץ: 3 סבבים × 5 חזרות",
+      "equipment": "ללא ציוד, רצפה בסלון",
       "steps_he": [
-        "מעמידה לפלאנק",
-        "נגיעת כתף",
-        "ברך",
-        "רגל",
-        "פלאנק הפוך"
+        "עומדים ישר ומתכופפים להניח ידיים על הרצפה",
+        "הולכים עם הידיים קדימה עד פלאנק",
+        "עושים שכיבת סמיכה אחת",
+        "מקפיצים/מקרבים ברכיים לחזה",
+        "הולכים עם הידיים אחורה וקמים לעמידה"
       ],
       "source_url": "https://www.instagram.com/reel/DfAVEWdsnKg/",
       "creator": "itslaurenwellness",
       "poster": "assets/posters/DfAVEWdsnKg.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Mike Tyson Push-up Challenge 61 - מעמידה לפלאנק, נגיעת כתף, ברך, רגל, פלאנק הפוך",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה / גוף מלא",
       "source_sets_reps": "Challenge - ללא חזרות קבועות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "bodyweight",
-        "sofa"
+        "bodyweight"
+      ],
+      "safety_he": "שומרים על גב ישר בפלאנק – לא לתת לאגן לצנוח",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DeuTsX3xdUf",
+        "ig-DeAAHz3zTcx"
       ]
     },
     {
@@ -375,31 +380,38 @@
     },
     {
       "id": "ig-De4yvaCxfZT",
-      "name_he": "שכיבות סמיכה, סקוואט, שכיבות צרות",
+      "name_he": "שכיבות סמיכה, סקוואט ושכיבות סמיכה צרות",
       "muscle_group": "חזה",
       "secondary_group": "רגליים/ישבן",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x20, 3x10",
-      "equipment": "ללא ציוד, חדר שינה",
+      "muscle_detail": "חזה, ירכיים, יד אחורית (בשכיבות הצרות)",
+      "sets": 3,
+      "reps": "20",
+      "sets_reps": "3x20 (לפי הכיתוב)",
+      "equipment": "ללא ציוד",
       "steps_he": [
-        "שכיבות סמיכה",
-        "סקוואט",
-        "שכיבות צרות"
+        "שכיבות סמיכה: ידיים ברוחב כתפיים, יורדים עם חזה לרצפה ודוחפים חזרה",
+        "סקוואט: רגליים ברוחב כתפיים, יורדים עם ישבן אחורה כמו לכיסא וקמים",
+        "שכיבות צרות: ידיים קרובות מתחת לחזה, מרפקים צמודים לגוף",
+        "נחים קצת בין תרגיל לתרגיל"
       ],
       "source_url": "https://www.instagram.com/reel/De4yvaCxfZT/",
       "creator": "gabi_rex_omar",
       "poster": "assets/posters/De4yvaCxfZT.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Home Bodyweight - שכיבות סמיכה, סקוואט, שכיבות צרות",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ורגליים",
       "source_sets_reps": "3x20, 3x10",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "bodyweight"
+      ],
+      "safety_he": "בסקוואט הברכיים מצביעות לכיוון האצבעות ולא נכנסות פנימה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfAVEWdsnKg",
+        "ig-DeuTsX3xdUf"
       ]
     },
     {
@@ -551,58 +563,75 @@
     },
     {
       "id": "ig-DeziUrQNeiZ",
-      "name_he": "חתירה אופקית, משיכה עליונה, רחבה",
+      "name_he": "5 תרגילי גב בישיבה על הברכיים עם גומייה: חתירה, משיכה עליונה, משיכה אלכסונית, הרחקה ומשיכה מאחורי הראש",
       "muscle_group": "גב",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "5 איורים אנטומיים עם צ'ק ירוק",
-      "equipment": "גומייה אדומה, מזרן סגול, סרט ראש סגול",
+      "muscle_detail": "רחב גבי, מעוינים, טרפז, כתף אחורית",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x12 לכל תרגיל",
+      "equipment": "גומייה, מזרן, קיר",
       "steps_he": [
-        "חתירה אופקית",
-        "משיכה עליונה",
-        "רחבה"
+        "יושבים על הברכיים מול קיר, אוחזים גומייה בשתי ידיים",
+        "מותחים את הגומייה לצדדים ומקרבים שכמות",
+        "משנים כיוון: למעלה, באלכסון ומאחורי הראש",
+        "חוזרים לאט למרכז בכל חזרה"
       ],
       "source_url": "https://www.instagram.com/reel/DeziUrQNeiZ/",
       "creator": "iamagapovm",
       "poster": "assets/posters/DeziUrQNeiZ.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Kneeling Resistance Band Back - חתירה אופקית, משיכה עליונה, רחבה",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "5 איורים אנטומיים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
         "mat"
+      ],
+      "safety_he": "לא מקמרים את הגב התחתון – בטן אסופה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Ddt0bQRsEQe",
+        "ig-DcxqrUuM1xB"
       ]
     },
     {
       "id": "ig-DeuTsX3xdUf",
-      "name_he": "פלאנק העברת כדור מתחת לגוף",
+      "name_he": "3 תרגילים עם כדור רפואי: פלאנק עם העברת כדור מתחת לגוף, פלאנק עם הרמת כדור לכתף, שכיבת סמיכה על כדור מברכיים",
       "muscle_group": "חזה",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "ללא ציון - וריאציות מתקדמות",
-      "equipment": "כדור כחול-שחור, קופסאות PLYOSOFT BOX",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "חזה, כתפיים, ליבה (יציבות)",
+      "sets": 3,
+      "reps": "30 שניות",
+      "sets_reps": "3x30 שניות לכל תרגיל (לפי הכיתוב)",
+      "equipment": "כדור רפואי",
+      "steps_he": [
+        "נכנסים לפלאנק על כפות הידיים עם כדור ליד יד אחת",
+        "מעבירים את הכדור ביד מתחת לגוף לצד השני ומחליפים ידיים",
+        "מרימים את הכדור לכתף ומחזירים לרצפה",
+        "בסוף: על הברכיים, ידיים על הכדור, יורדים עם החזה לכדור ודוחפים"
+      ],
       "source_url": "https://www.instagram.com/reel/DeuTsX3xdUf/",
       "creator": "ahmari_2",
       "poster": "assets/posters/DeuTsX3xdUf.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Medicine Ball Push-up Variations - פלאנק העברת כדור מתחת לגוף",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "ללא ציון - וריאציות מתקדמות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "medicine_ball",
-        "plyo_box"
+        "medicine_ball"
+      ],
+      "safety_he": "הכדור צריך להיות יציב – מתחילים לאט ובאגן ישר",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfAVEWdsnKg",
+        "ig-DeAAHz3zTcx"
       ]
     },
     {
@@ -749,27 +778,39 @@
     },
     {
       "id": "ig-DecQ9KKC296",
-      "name_he": "שכיבות סמיכה 100 ביום",
+      "name_he": "שכיבות סמיכה על הברכיים – אתגר 100 ביום",
       "muscle_group": "חזה",
       "secondary_group": "",
-      "muscle_detail": "",
+      "muscle_detail": "חזה, כתפיים, יד אחורית",
       "sets": null,
-      "reps": "",
-      "sets_reps": "100 ביום לחודש",
-      "equipment": "מזרן ירוק בהיר",
-      "steps_he": [],
+      "reps": "100",
+      "sets_reps": "100 חזרות ביום (לפי הכיתוב); מומלץ לחלק ל-5x20",
+      "equipment": "מזרן",
+      "steps_he": [
+        "עולים על הברכיים על המזרן, ידיים מעט רחבות מהכתפיים",
+        "גוף ישר מהברכיים עד הראש",
+        "יורדים לאט עם החזה לכיוון הרצפה",
+        "דוחפים חזרה למעלה",
+        "מחלקים את 100 החזרות לסטים קטנים לאורך היום"
+      ],
       "source_url": "https://www.instagram.com/reel/DecQ9KKC296/",
       "creator": "coachgiress38",
       "poster": "assets/posters/DecQ9KKC296.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "100 Push-ups Daily - שכיבות סמיכה 100 ביום",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "100 ביום לחודש",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "לא לשקוע בגב התחתון – מכווצים בטן לאורך כל התנועה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DdmPI6hoXNT",
+        "ig-Db_0bHxi0vk"
       ]
     },
     {
@@ -861,28 +902,39 @@
     },
     {
       "id": "ig-DeHiSngSlmg",
-      "name_he": "חיזוק זוקפי גב עמוקים וישבן ליציבות עמוד שדרה",
+      "name_he": "חיזוק שרירי גב עמוקים וישבן בעמידה מול קיר: כפיפת ירך ביד על הקיר והרמת ברך",
       "muscle_group": "גב",
       "secondary_group": "רגליים/ישבן",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x12-15 החזקה 2 שניות - חיזוק יציבות עמוד שדרה",
-      "equipment": "גומיית התנגדות, קיר ELITE FITNESS, איור אנטומי",
-      "steps_he": [],
+      "muscle_detail": "זוקפי גב, שרירי גב עמוקים, ישבן",
+      "sets": 3,
+      "reps": "12-15",
+      "sets_reps": "3x12-15 עם החזקה של 2 שניות (מומלץ – לא כתוב בסרטון)",
+      "equipment": "קיר, גומייה",
+      "steps_he": [
+        "עומדים מול קיר ומניחים יד אחת עליו",
+        "מכופפים את הגוף קדימה מהירכיים עם גב ישר",
+        "עומדים על רגל אחת ומרימים ברך שנייה",
+        "מחזיקים 2 שניות וחוזרים"
+      ],
       "source_url": "https://www.instagram.com/reel/DeHiSngSlmg/",
       "creator": "aminhashemi_band",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Deep Back Muscles - חיזוק זוקפי גב עמוקים וישבן ליציבות עמוד שדרה",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב - זוקפי גב עמוקים + ישבן",
       "source_sets_reps": "3x12-15 החזקה 2 שניות - חיזוק יציבות עמוד שדרה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
         "wall"
+      ],
+      "safety_he": "גב ישר לאורך כל התנועה – לא לעגל",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DdbhN0kxQG8",
+        "ig-DcBdCyrRDDq"
       ]
     },
     {
@@ -943,27 +995,38 @@
     },
     {
       "id": "ig-DeAAHz3zTcx",
-      "name_he": "5 וריאציות שכיבות סמיכה לחזה פנימי/חיצוני/עליון",
+      "name_he": "5 וריאציות שכיבות סמיכה לחזה: רחבות, רגילות, צרות, פייק ופייק עם רגליים מוגבהות",
       "muscle_group": "חזה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4 sets of 12 reps per variation",
-      "equipment": "מזרן שחור, דק עץ, ספסל כחול",
-      "steps_he": [],
+      "muscle_detail": "חזה פנימי, חיצוני ועליון, כתפיים, יד אחורית",
+      "sets": 4,
+      "reps": "12",
+      "sets_reps": "4x12 לכל וריאציה, 15 שניות מנוחה, דקה מנוחה בין סבבים (לפי הכיתוב)",
+      "equipment": "מזרן",
+      "steps_he": [
+        "מתחילים בשכיבות סמיכה רחבות – ידיים רחבות מהכתפיים",
+        "עוברים לרגילות ואז לצרות – ידיים קרובות",
+        "שכיבות פייק: אגן גבוה, ראש יורד בין הידיים",
+        "נחים 15 שניות בין וריאציה לוריאציה ודקה אחרי סבב"
+      ],
       "source_url": "https://www.instagram.com/reel/DeAAHz3zTcx/",
       "creator": "tyfu_ng",
       "poster": "assets/posters/DeAAHz3zTcx.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "5 Pushup Variations Chest - 5 וריאציות שכיבות סמיכה לחזה פנימי/חיצוני/עליון",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "4 sets of 12 reps per variation",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "בשכיבות פייק יורדים לאט כדי לא לדפוק את הראש ברצפה",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfAVEWdsnKg",
+        "ig-DeuTsX3xdUf"
       ]
     },
     {
@@ -1078,27 +1141,38 @@
     },
     {
       "id": "ig-Ddt0bQRsEQe",
-      "name_he": "5 תרגילי גב עליון עם גלילי נייר",
+      "name_he": "5 תרגילי מוביליטי וחיזוק לגב עליון בשכיבה על הבטן עם גלילי נייר",
       "muscle_group": "גב",
       "secondary_group": "מוביליטי",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "5 תרגילים עם צ'ק ירוק",
-      "equipment": "4 גלילי נייר טואלט, 2 כדורים צהובים קטנים, רצפת עץ",
-      "steps_he": [],
+      "muscle_detail": "גב עליון, שכמות, כתפיים",
+      "sets": 2,
+      "reps": "8",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 2x8 לכל תרגיל",
+      "equipment": "גלילי נייר טואלט (או חפצים קלים), רצפה",
+      "steps_he": [
+        "שוכבים על הבטן, מצח קרוב לרצפה",
+        "מרימים ידיים מעט מהרצפה ומזיזים את הגלילים ממקום למקום",
+        "עושים תנועות של Y, T ו-W עם הידיים",
+        "מחזירים לאט וחוזר חלילה"
+      ],
       "source_url": "https://www.instagram.com/reel/Ddt0bQRsEQe/",
       "creator": "igor.system",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Prone Back Mobility Toilet Paper Rolls - 5 תרגילי גב עליון עם גלילי נייר",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב / מוביליטי",
       "source_sets_reps": "5 תרגילים עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "מרימים רק את הידיים – הצוואר נשאר ארוך ולא נזרק לאחור",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeziUrQNeiZ",
+        "ig-DcxqrUuM1xB"
       ]
     },
     {
@@ -1151,54 +1225,77 @@
     },
     {
       "id": "ig-DdmPI6hoXNT",
-      "name_he": "לחיצת חזה עם גומייה צהובה",
+      "name_he": "לחיצת חזה בשכיבה עם גומייה ומוט",
       "muscle_group": "חזה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x15 res each",
-      "equipment": "גומייה צהובה, מוט, מזרן שחור, קטלבל",
-      "steps_he": [],
+      "muscle_detail": "חזה (5 אזורים), יד אחורית, כתף קדמית",
+      "sets": 3,
+      "reps": "15",
+      "sets_reps": "3x15 לכל וריאציה (כתוב בסרטון)",
+      "equipment": "גומייה, מוט, מזרן",
+      "steps_he": [
+        "שוכבים על הגב, הגומייה עוברת מתחת לגב ומחוברת לקצוות המוט",
+        "מחזיקים את המוט מעל החזה",
+        "דוחפים את המוט למעלה עד יישור ידיים",
+        "מורידים לאט חזרה לחזה",
+        "משנים זווית/אחיזה לכל וריאציה"
+      ],
       "source_url": "https://www.instagram.com/reel/DdmPI6hoXNT/",
       "creator": "getfitbyrkb",
       "poster": "assets/posters/DdmPI6hoXNT.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Resistance Band Chest Press - לחיצת חזה עם גומייה צהובה",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "3x15 res each",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
         "mat"
+      ],
+      "safety_he": "בודקים שהגומייה תפוסה היטב במוט לפני שמתחילים",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DecQ9KKC296",
+        "ig-Db_0bHxi0vk"
       ]
     },
     {
       "id": "ig-DdbhN0kxQG8",
-      "name_he": "5 תרגילי גב בשכיבה עם גומייה",
+      "name_he": "5 תרגילי גומייה בשכיבה על הבטן ליציבה: חתירה, הרחקה, משיכה צידית, משיכה מעל הראש ו-Y",
       "muscle_group": "גב",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "5 תרגילים 1/5 עד 5/5",
-      "equipment": "2 גומיות ירוקות, מזרן שחור, חדר כושר רצפת גומי",
-      "steps_he": [],
+      "muscle_detail": "מעוינים, טרפז אמצעי ותחתון, כתף אחורית",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "5 תרגילים (1/5–5/5); מומלץ: 3x12 לכל תרגיל",
+      "equipment": "2 גומיות, מזרן",
+      "steps_he": [
+        "שוכבים על הבטן, הגומיות קשורות לפני הראש",
+        "מושכים לכיוון הגוף ומקרבים שכמות",
+        "עוברים בין 5 התרגילים לפי הסדר",
+        "חוזרים לאט לנקודת ההתחלה"
+      ],
       "source_url": "https://www.instagram.com/reel/DdbhN0kxQG8/",
       "creator": "themuscle.ninja",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "5 Resistance Band Back Prone - 5 תרגילי גב בשכיבה עם גומייה",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "5 תרגילים 1/5 עד 5/5",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
         "mat"
+      ],
+      "safety_he": "משתמשים בגומייה קלה – תנועה איטית ושליטה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DeHiSngSlmg",
+        "ig-DcBdCyrRDDq"
       ]
     },
     {
@@ -1404,32 +1501,39 @@
     },
     {
       "id": "ig-DcxqrUuM1xB",
-      "name_he": "כפיפות, Y-raises עם בקבוקי מים, סופרמן",
+      "name_he": "תרגילי יציבה על הרצפה: סופרמן עם ידיים, הרמות Y/T עם בקבוקי מים וכפיפות בטן הפוכות",
       "muscle_group": "גב",
-      "secondary_group": "",
-      "muscle_detail": "יציבה",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4x15, 4x12, 3 פעמים בשבוע, +3cm",
-      "equipment": "מזרן שחור, דשא ירוק, בקבוקי מים",
+      "secondary_group": "ליבה",
+      "muscle_detail": "זוקפי גב, שכמות, כתפיים – יציבה",
+      "sets": 4,
+      "reps": "15",
+      "sets_reps": "4x15 (כתוב בסרטון); בכיתוב 4x12, 3 פעמים בשבוע",
+      "equipment": "מזרן, בקבוקי מים",
       "steps_he": [
-        "כפיפות",
-        "Y-raises עם בקבוקי מים",
-        "סופרמן"
+        "שוכבים על הבטן ומרימים חזה וידיים קדימה (סופרמן)",
+        "מחזיקים בקבוק בכל יד ומרימים לצדדים בצורת T",
+        "מתהפכים לגב ומרימים ברגליים וידיים למעלה",
+        "נושמים ולא ממהרים"
       ],
       "source_url": "https://www.instagram.com/reel/DcxqrUuM1xB/",
       "creator": "hutch_b345t",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Posture Correction Floor - כפיפות, Y-raises עם בקבוקי מים, סופרמן",
       "source_muscle_group": "אחר",
       "source_muscle_label": "גב / יציבה",
       "source_sets_reps": "4x15, 4x12, 3 פעמים בשבוע, +3cm",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat",
         "water_bottle"
+      ],
+      "safety_he": "לא להרים את הראש גבוה מדי – מבט לרצפה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeziUrQNeiZ",
+        "ig-Ddt0bQRsEQe"
       ]
     },
     {
@@ -1459,27 +1563,38 @@
     },
     {
       "id": "ig-DcsZNbkoKlJ",
-      "name_he": "שכיבות סמיכה זוגיות מסונכרנות",
+      "name_he": "שכיבות סמיכה זוגיות – אחד בפלאנק מעל השני",
       "muscle_group": "חזה",
-      "secondary_group": "",
-      "muscle_detail": "אתגר",
+      "secondary_group": "ליבה",
+      "muscle_detail": "חזה, כתפיים, ליבה – אתגר זוגי",
       "sets": null,
       "reps": "",
-      "sets_reps": "Can you do it? אתגר",
-      "equipment": "ללא ציוד, רצפה, חדר כושר ניאון כחול-ורוד",
-      "steps_he": [],
+      "sets_reps": "אתגר – ללא חזרות בסרטון; מומלץ: 3x5",
+      "equipment": "ללא ציוד",
+      "steps_he": [
+        "שותף אחד בפלאנק על כפות הידיים",
+        "השותף השני מניח ידיים על הרצפה והרגליים על גב השותף (או בניצב אליו)",
+        "עושים יחד שכיבת סמיכה – יורדים ועולים בקצב אחד",
+        "מתחלפים בתפקידים"
+      ],
       "source_url": "https://www.instagram.com/reel/DcsZNbkoKlJ/",
       "creator": "serhii.bazarov",
       "poster": "assets/posters/DcsZNbkoKlJ.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Partner Push-ups Challenge - שכיבות סמיכה זוגיות מסונכרנות",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה / אתגר",
       "source_sets_reps": "Can you do it? אתגר",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "bodyweight"
+      ],
+      "safety_he": "תרגיל מתקדם – רק עם מבוגר משגיח ושותף חזק ויציב",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfAVEWdsnKg",
+        "ig-DeuTsX3xdUf"
       ]
     },
     {
@@ -1615,56 +1730,77 @@
     },
     {
       "id": "ig-DcBdCyrRDDq",
-      "name_he": "משיכות גומייה בברכיים לגב עליון",
+      "name_he": "משיכות גומייה בישיבה על הברכיים לכתפיים וגב עליון: משיכה מעל הראש, משיכה מאחורי הראש, הרחקה לצדדים",
       "muscle_group": "גב",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x15 כל וריאציה: משיכה אופקית בברכיים, משיכה מאחורי ראש, הרחקה",
-      "equipment": "גומייה ירוקה, ראק שחור, מזרן שחור",
-      "steps_he": [],
+      "muscle_detail": "גב עליון, כתף אחורית, שרוול מסובב",
+      "sets": 3,
+      "reps": "15",
+      "sets_reps": "3x15 לכל וריאציה (מיפוי); לא כתוב בסרטון – מומלץ",
+      "equipment": "גומייה, מתקן לקשירה",
+      "steps_he": [
+        "יושבים על הברכיים מול מתקן שהגומייה קשורה אליו",
+        "מושכים את הגומייה למטה עד מאחורי הראש",
+        "מותחים לצדדים בגובה הכתפיים",
+        "חוזרים לאט בשליטה"
+      ],
       "source_url": "https://www.instagram.com/reel/DcBdCyrRDDq/",
       "creator": "themuscle.ninja",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Kneeling Band Shoulder/Back - משיכות גומייה בברכיים לגב עליון",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב עליון וכתף אחורית - Lats, Rear Delts",
       "source_sets_reps": "3x15 כל וריאציה: משיכה אופקית בברכיים, משיכה מאחורי ראש, הרחקה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
-        "mat",
         "power_rack"
+      ],
+      "safety_he": "הגומייה צריכה להיות קשורה חזק – בודקים לפני כל סט",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DeHiSngSlmg",
+        "ig-DdbhN0kxQG8"
       ]
     },
     {
       "id": "ig-Db_0bHxi0vk",
-      "name_he": "לחיצת חזה עם גומייה סגולה ומוט עץ",
+      "name_he": "לחיצת חזה בשכיבה עם גומייה ומוט עץ (מקל מטאטא) – 5 וריאציות",
       "muscle_group": "חזה",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "5 אזורי חזה עם צ'ק ירוק",
-      "equipment": "גומייה סגולה, מוט עץ, מזרן סגול",
-      "steps_he": [],
+      "muscle_detail": "חזה פנימי, חיצוני, עליון ותחתון",
+      "sets": 3,
+      "reps": "12",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x12 לכל וריאציה",
+      "equipment": "גומייה, מוט עץ, מזרן",
+      "steps_he": [
+        "שוכבים על המזרן, הגומייה מתחת לגב ומחוברת לשני קצות המקל",
+        "מחזיקים את המקל מעל החזה",
+        "דוחפים ישר למעלה ומורידים לאט",
+        "משנים אחיזה (רחבה/צרה/אלכסון) לכל וריאציה"
+      ],
       "source_url": "https://www.instagram.com/reel/Db_0bHxi0vk/",
       "creator": "iamagapovm",
       "poster": "assets/posters/Db_0bHxi0vk.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Chest Press Band Wooden Bar - לחיצת חזה עם גומייה סגולה ומוט עץ",
       "source_muscle_group": "חזה ושכיבות סמיכה",
       "source_muscle_label": "חזה ושכיבות סמיכה",
       "source_sets_reps": "5 אזורי חזה עם צ'ק ירוק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "resistance_band",
         "wooden_dowel",
         "mat"
+      ],
+      "safety_he": "אוחזים את המקל חזק כדי שהגומייה לא תחליק ותקפוץ",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DecQ9KKC296",
+        "ig-DdmPI6hoXNT"
       ]
     },
     {
@@ -1815,32 +1951,38 @@
     },
     {
       "id": "ig-Dbn7nvntdhB",
-      "name_he": "10 פשיטות גב, 12 משיכות כיווץ, 20 החלפות ידיים, 20 שניות סופרמן",
+      "name_he": "אימון גב 2 דקות בשכיבה על הבטן: פשיטות גב, משיכות וכיווץ, החלפות ידיים, סופרמן",
       "muscle_group": "גב",
       "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "10, 12, 20, 20 שניות",
-      "equipment": "מזרן כחול",
+      "muscle_detail": "זוקפי גב, שכמות, כתפיים",
+      "sets": 1,
+      "reps": "10, 12, 20, 20 שניות",
+      "sets_reps": "10 פשיטות גב, 12 משיכות וכיווץ, 20 החלפות ידיים, 20 שניות סופרמן (כתוב בסרטון)",
+      "equipment": "מזרן",
       "steps_he": [
-        "10 פשיטות גב",
-        "12 משיכות כיווץ",
-        "20 החלפות ידיים",
-        "20 שניות סופרמן"
+        "10 פשיטות גב: ידיים מאחורי הראש, מרימים חזה",
+        "12 משיכות: מרפקים לצלעות ומכווצים שכמות",
+        "20 החלפות ידיים: יד אחת למעלה ויד אחת למטה",
+        "20 שניות סופרמן: ידיים ורגליים באוויר"
       ],
       "source_url": "https://www.instagram.com/reel/Dbn7nvntdhB/",
       "creator": "galhfit",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "2 Min Prone Back Workout - 10 פשיטות גב, 12 משיכות כיווץ, 20 החלפות ידיים, 20 שניות סופרמן",
       "source_muscle_group": "גב",
       "source_muscle_label": "גב",
       "source_sets_reps": "10, 12, 20, 20 שניות",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "עולים לגובה נוח – לא לכפות קשת חזקה בגב",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeziUrQNeiZ",
+        "ig-Ddt0bQRsEQe"
       ]
     },
     {
@@ -2075,32 +2217,39 @@
     },
     {
       "id": "ig-DVvjbFwkhpk",
-      "name_he": "רוורס פלאנק היפ דיפס, כפיפה קדימה, רוורס פלאנק הולד, סקפולה פוש-אפס",
+      "name_he": "5 תרגילים לשיפור היציבה: רוורס פלאנק היפ דיפס, כפיפה קדימה בעמידה, החזקת רוורס פלאנק (שולחן), סקפולה פוש-אפס וסקוואט עמוק עם סיבוב",
       "muscle_group": "גב",
-      "secondary_group": "",
-      "muscle_detail": "יציבה",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x10 כל תרגיל: רוורס פלאנק היפ דיפס, כפיפה קדימה, רוורס פלאנק הולד, סקפולה פוש-אפס",
-      "equipment": "מזרן / רצפה, חדר כושר חשוך לוגו STC",
+      "secondary_group": "מוביליטי",
+      "muscle_detail": "יציבה: גב עליון, שכמות, ירך אחורית, פותחי חזה",
+      "sets": 3,
+      "reps": "10",
+      "sets_reps": "לא כתוב בסרטון; מומלץ: 3x10 לכל תרגיל",
+      "equipment": "ללא ציוד, רצפה",
       "steps_he": [
-        "רוורס פלאנק היפ דיפס",
-        "כפיפה קדימה",
-        "רוורס פלאנק הולד",
-        "סקפולה פוש-אפס"
+        "רוורס פלאנק: יושבים, ידיים מאחור, מרימים ומורידים אגן",
+        "כפיפה קדימה: עומדים ומורידים ידיים לרצפה ברגליים ישרות-רכות",
+        "שולחן: מרימים אגן לקו ישר ומחזיקים",
+        "סקפולה פוש-אפס: בפלאנק מקרבים ומרחיקים שכמות בלי לכופף ידיים",
+        "סקוואט עמוק: יושבים נמוך ומסובבים יד אחת לתקרה"
       ],
       "source_url": "https://www.instagram.com/reel/DVvjbFwkhpk/",
       "creator": "vks_fitness_studio",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "5 Posture Improvement Exercises - רוורס פלאנק היפ דיפס, כפיפה קדימה, רוורס פלאנק הולד, סקפולה פוש-אפס",
       "source_muscle_group": "אחר",
       "source_muscle_label": "גב עליון - יציבה",
       "source_sets_reps": "3x10 כל תרגיל: רוורס פלאנק היפ דיפס, כפיפה קדימה, רוורס פלאנק הולד, סקפולה פוש-אפס",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "bodyweight"
+      ],
+      "safety_he": "בכפיפה קדימה לא מקפיצים – יורדים לאט עד מתיחה נעימה",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeziUrQNeiZ",
+        "ig-Ddt0bQRsEQe"
       ]
     },
     {

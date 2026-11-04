@@ -142,7 +142,24 @@
       ['source_title', 'source_muscle_group', 'source_sets_reps', 'source_notes'].forEach(function (key) {
         if (typeof ex[key] !== 'string') err(path + '.' + key, 'מחרוזת');
       });
-      if (typeof ex.source_sets_reps === 'string' && ex.source_sets_reps.indexOf('לא מצוין') !== -1) {
+      if (ex.safety_he != null && typeof ex.safety_he !== 'string') err(path + '.safety_he', 'מחרוזת');
+      if (ex.difficulty != null && (!Number.isInteger(ex.difficulty) || ex.difficulty < 1 || ex.difficulty > 3)) {
+        err(path + '.difficulty', 'מספר שלם 1–3 או null');
+      }
+      if (ex.alternatives != null) {
+        if (!Array.isArray(ex.alternatives) || ex.alternatives.length > 2) err(path + '.alternatives', 'מערך של עד 2 מזהים');
+        else ex.alternatives.forEach(function (altId) {
+          var alt = data.exercises.find(function (row) { return row && row.id === altId; });
+          if (!alt || altId === ex.id) err(path + '.alternatives', 'מזהה לא קיים בספרייה «' + altId + '»');
+          else if (alt.muscle_group !== ex.muscle_group) err(path + '.alternatives', 'חלופה מקבוצת שריר אחרת «' + altId + '»');
+        });
+      }
+      if (ex.verified === true) {
+        if (!Array.isArray(ex.steps_he) || ex.steps_he.length < 3 || ex.steps_he.length > 5) err(path + '.steps_he', 'תרגיל מאומת דורש 3–5 שלבי ביצוע');
+        if (typeof ex.safety_he !== 'string' || !ex.safety_he.trim()) err(path + '.safety_he', 'תרגיל מאומת דורש דגש בטיחות');
+        if (!Number.isInteger(ex.difficulty)) err(path + '.difficulty', 'תרגיל מאומת דורש רמת קושי 1–3');
+      }
+      if (ex.verified !== true && typeof ex.source_sets_reps === 'string' && ex.source_sets_reps.indexOf('לא מצוין') !== -1) {
         if (ex.sets !== null) err(path + '.sets', '«לא מצוין» נשאר בלי סטים');
         if (ex.reps !== '') err(path + '.reps', '«לא מצוין» נשאר בלי חזרות');
         if (ex.sets_reps !== UNKNOWN_SETS) err(path + '.sets_reps', '«לא מצוין» מוצג כ«' + UNKNOWN_SETS + '»');
@@ -722,6 +739,9 @@
       return '<li>' + esc(step) + '</li>';
     }).join('');
     var stepsHtml = steps ? '<ol class="steps">' + steps + '</ol>' : '';
+    var safetyHtml = ex.safety_he ? '<p class="safety"><strong>בטיחות:</strong> ' + esc(ex.safety_he) + '</p>' : '';
+    var difficultyLabel = { 1: 'קל', 2: 'בינוני', 3: 'מתקדם' }[ex.difficulty];
+    var difficulty = difficultyLabel ? '<span class="pill difficulty">רמת קושי: ' + esc(difficultyLabel) + '</span>' : '';
     var equipment = ex.equipment ? '<span class="pill">' + esc(ex.equipment) + '</span>' : '';
     var secondary = ex.secondary_group ? '<span class="pill">' + esc(ex.secondary_group) + '</span>' : '';
     var detail = ex.muscle_detail ? '<span class="pill">' + esc(ex.muscle_detail) + '</span>' : '';
@@ -744,8 +764,10 @@
           secondary +
           detail +
           equipment +
+          difficulty +
         '</div>' +
         stepsHtml +
+        safetyHtml +
         '<div class="actions">' +
           '<a class="reel" href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">' + watchLabel + '</a>' +
           addBtn +
