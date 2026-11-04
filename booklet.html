@@ -6,51 +6,57 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="תוכן חוברת קורס המאמנים של עמותת אחריי: חימום, משחקים, גמישות, מערכי אימון, בוחן כושר ותיק בטיחות קבוצה.">
   <title>TrainerHub | חוברת הקורס</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
-    .wrap { max-width: 1100px; margin: auto; padding: 28px 20px 64px; }
-    .top small { color: var(--lime); font-weight: bold; }
-    .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 1100px; margin: auto; padding: 16px 16px 64px; }
+    .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.625rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.15; margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
-    .tabs a { background: #26302b; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: .85rem; text-decoration: none; }
-    section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 0 0 18px; }
-    section h2 { margin: 0 0 10px; font-size: 1.25rem; }
-    h3 { font-size: 1rem; margin: 14px 0 6px; color: var(--lime); }
+    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tabs a { flex: none; display: inline-flex; align-items: center; min-height: 44px; background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; font-size: 15px; font-weight: 500; white-space: nowrap; text-decoration: none; }
+    .tabs a:hover { border-color: var(--th-teal); color: var(--ink); }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin: 0 0 16px; }
+    section h2 { margin: 0 0 10px; font-size: 20px; font-weight: 800; }
+    h3 { font-size: 16px; margin: 16px 0 8px; color: var(--th-teal-ink); }
     ol, ul { padding-inline-start: 1.3rem; line-height: 1.6; }
-    label { display: block; color: var(--muted); font-size: .82rem; margin: 8px 0 4px; }
-    input, select { width: 100%; padding: 10px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
+    input, select { width: 100%; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; }
     .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
-    button { padding: 10px 14px; border: 0; border-radius: 9px; background: var(--lime); color: #101312; font-weight: 700; cursor: pointer; font: inherit; margin-top: 10px; }
-    button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
+    button { min-height: 48px; padding: 0 20px; border: 0; border-radius: 14px; background: var(--th-teal); color: var(--th-on-teal); cursor: pointer; font: inherit; font-weight: 700; margin-top: 12px; }
+    button.ghost { background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); }
     .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
     .actions button { margin-top: 0; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-    .card { background: #151a18; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-    .card h4 { margin: 0 0 6px; font-size: .95rem; }
-    .pill { display: inline-block; background: #26302b; border-radius: 999px; padding: 2px 8px; font-size: .72rem; color: var(--muted); margin-inline-end: 4px; }
-    .pill.clip { color: var(--lime); }
-    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .card { background: var(--th-bg); border: 1px solid var(--line); border-radius: var(--th-r-md); padding: 12px; }
+    .card h4 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+    .pill { display: inline-block; background: var(--th-surface2); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 700; color: var(--muted); margin-inline-end: 4px; }
+    .pill.clip { color: var(--th-teal-ink); background: var(--th-teal-soft); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; vertical-align: top; }
-    th { background: #151a18; }
+    th { background: var(--th-surface2); }
     /* Wide tables (risk matrix, roster) scroll inside themselves on a phone instead of widening the page. */
     @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
-    .credit { font-size: .75rem; color: var(--muted); margin-top: 8px; }
-    .total { font-size: 1.3rem; font-weight: 700; color: var(--lime); }
+    .credit { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .total { font-size: 24px; font-weight: 900; color: var(--th-teal-ink); }
     button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
       outline: 2px solid var(--lime);
       outline-offset: 2px;
     }
+    .muted a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
     .empty-drills { text-align: center; padding: 28px 12px; color: var(--muted); line-height: 1.6; }
     .empty-drills button { margin-top: 12px; }
     @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#build">דלג לבניית אימון מהחוברת</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
