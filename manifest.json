@@ -1,0 +1,22 @@
+{
+  "name": "TrainerHub – אפליקציית מאמן",
+  "short_name": "TrainerHub",
+  "description": "בונים אימון בעברית, מנהלים מתאמנים ומתאמנים גם בלי אינטרנט.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d100f",
+  "theme_color": "#0d100f",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "מצב אימון", "url": "./frontend/workout-mode.html" },
+    { "name": "תוכנית שבועית", "url": "./weekly.html" }
+  ]
+}

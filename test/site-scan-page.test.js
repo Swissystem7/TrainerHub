@@ -12,7 +12,7 @@ const page = read('site-scan.html');
 test('site scan page is Hebrew RTL and labels every field', function () {
   assert.match(page, /lang="he"/);
   assert.match(page, /dir="rtl"/);
-  const ids = [...page.matchAll(/<(?:input|select)\b[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
+  const ids = [...page.matchAll(/<(?:input|select)\b[^>]*\bid="([^"]+)"/g)].map((m) => m[1]).filter((s) => s !== 'js/pwa.js');
   assert.deepEqual(ids, ['photos', 'meters', 'group', 'season']);
   ids.forEach((id) => assert.match(page, new RegExp('for="' + id + '"'), id));
 });
@@ -26,7 +26,7 @@ test('camera input opens the back camera and takes several photos', function () 
 });
 
 test('scripts load the profile, plan and scan modules after core and booklet', function () {
-  const srcs = [...page.matchAll(/<script src="\.\/(js\/[^"]+)"/g)].map((m) => m[1]);
+  const srcs = [...page.matchAll(/<script src="\.\/(js\/[^"]+)"/g)].map((m) => m[1]).filter((s) => s !== 'js/pwa.js');
   assert.deepEqual(srcs, ['js/core.js', 'js/booklet.js', 'js/site-profile.js', 'js/site-plan.js', 'js/site-scan.js']);
   ['js/core.js', 'js/booklet.js', 'js/site-profile.js', 'js/site-plan.js'].forEach((rel) => {
     assert.ok(fs.existsSync(path.join(root, rel)), rel);
