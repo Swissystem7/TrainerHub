@@ -6,80 +6,87 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה.">
   <title>TrainerHub | בנה אימון</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
-    .wrap { max-width: 760px; margin: auto; padding: 36px 20px 72px; }
-    .top small { color: var(--lime); font-weight: bold; letter-spacing: .04em; }
-    .top h1 { font-size: clamp(2rem, 6vw, 3.4rem); margin: 10px 0 8px; line-height: 1.15; }
-    .top p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; max-width: 38rem; }
-    form.prompt { margin: 28px 0 12px; }
-    .input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+    body { margin: 0; background: var(--th-bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 760px; margin: auto; padding: 16px 16px 72px; }
+    .top { background: var(--th-hero); color: var(--th-on-hero); border-radius: var(--th-r-xl); padding: 24px 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .top small { color: var(--th-orange); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 900; margin: 0; line-height: 1.15; }
+    .top p { color: var(--th-on-hero); opacity: .85; font-size: 1rem; line-height: 1.6; max-width: 38rem; margin: 0; }
+    .top .th-btn { background: var(--th-orange); color: var(--th-on-orange); min-height: 56px; font-size: 17px; font-weight: 800; padding: 0 24px; }
+    form.prompt { margin: 20px 0 12px; }
+    .input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
     .input-grid label { margin-top: 0; }
-    .field-help { color: var(--muted); font-size: .8rem; line-height: 1.4; margin: 7px 0 0; }
-    label { display: block; color: var(--muted); font-size: .9rem; margin: 12px 0 8px; }
+    .field-help { color: var(--muted); font-size: 13px; line-height: 1.4; margin: 8px 0 0; }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
     #prompt, #ingestText {
       width: 100%; min-height: 110px; resize: vertical;
-      padding: 16px; border-radius: 14px; border: 1px solid var(--line);
-      background: #111513; color: var(--ink); font: inherit; line-height: 1.5;
+      padding: 16px; border-radius: var(--th-r-md); border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5;
     }
     input, select {
-      width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
-      background: #111513; color: var(--ink); font: inherit;
+      width: 100%; min-height: 48px; padding: 0 16px; border-radius: var(--th-r-sm); border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px;
     }
-    .go { width: 100%; margin-top: 12px; padding: 14px; border: 0; border-radius: 12px; background: var(--lime); color: #101312; font-weight: 900; font-size: 1.05rem; cursor: pointer; font-family: inherit; }
+    .go { width: 100%; min-height: 56px; margin-top: 16px; padding: 0 24px; border: 0; border-radius: var(--th-r-md); background: var(--th-teal); color: var(--th-on-teal); font-weight: 800; font-size: 17px; cursor: pointer; font-family: inherit; }
+    .go:hover { filter: brightness(1.08); }
     .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 24px; }
     .examples button {
-      background: #26302b; border: 1px solid var(--line); color: var(--ink);
-      border-radius: 999px; padding: 7px 12px; font: inherit; font-size: .82rem; cursor: pointer;
+      min-height: var(--th-tap); background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink);
+      border-radius: 999px; padding: 0 16px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
     }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; margin-bottom: 14px; }
-    .card h2 { margin: 0 0 10px; font-size: 1.2rem; }
-    .notice { background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.35); color: #f0b542; }
+    .examples button:hover { border-color: var(--th-teal); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin-bottom: 12px; }
+    .card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 800; }
+    .notice { background: var(--th-orange-soft); border-color: transparent; color: var(--th-orange-ink); }
     .empty { color: var(--muted); text-align: center; padding: 12px; }
-    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
-    .pill { background: #26302b; border-radius: 999px; padding: 4px 10px; font-size: .78rem; color: var(--muted); }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+    .pill { background: var(--th-teal-soft); color: var(--th-teal-ink); border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 700; }
     .ex { border-top: 1px solid var(--line); padding: 12px 0; }
     .ex:first-of-type { border-top: 0; }
-    .ex b { display: block; margin-bottom: 4px; }
-    .why { color: var(--muted); font-size: .85rem; line-height: 1.45; }
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-    .actions button { width: auto; margin-top: 0; padding: 10px 16px; }
+    .ex b { display: block; margin-bottom: 4px; font-size: 16px; }
+    .why { color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .actions button { width: auto; margin-top: 0; }
     .flags { margin: 8px 0 0; padding: 0; list-style: none; }
-    .flags li { color: #f0b542; font-size: .85rem; margin: 4px 0; }
+    .flags li { color: var(--th-orange-ink); font-size: 14px; margin: 4px 0; }
     .stim { margin: 8px 0 0; color: var(--ink); line-height: 1.5; }
     .stim small { display: block; color: var(--muted); margin-top: 4px; }
-    .phase { color: var(--lime); font-size: .78rem; font-weight: 700; margin: 16px 0 4px; }
-    .status { color: var(--lime); font-size: .88rem; min-height: 1.2em; margin-top: 8px; }
-    .modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+    .phase { color: var(--th-orange-ink); font-size: 13px; font-weight: 700; margin: 16px 0 4px; }
+    .status { color: var(--th-teal-ink); font-size: 14px; min-height: 1.2em; margin-top: 8px; }
+    .modes { display: flex; gap: 4px; margin: 20px 0 8px; padding: 4px; background: var(--th-surface2); border-radius: var(--th-r-md); }
     .modes button {
-      background: #26302b; border: 1px solid var(--line); color: var(--ink);
-      border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer;
+      flex: 1; min-height: var(--th-tap); background: transparent; border: 0; color: var(--muted);
+      border-radius: 10px; padding: 0 8px; font: inherit; font-size: 15px; font-weight: 500; white-space: nowrap; cursor: pointer;
     }
-    .modes button[aria-selected="true"] { background: rgba(185,242,74,.15); border-color: var(--lime); }
+    .modes button[aria-selected="true"] { background: var(--th-surface); color: var(--ink); font-weight: 700; box-shadow: 0 1px 2px rgba(15,27,25,.08); }
     .panel[hidden] { display: none !important; }
-    .missing { color: #f0b542; font-size: .82rem; }
-    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: 12px; background: #000; }
-    .ex-media-segment, .honest { color: var(--muted); font-size: .82rem; line-height: 1.45; }
+    .missing { color: var(--th-orange-ink); font-size: 13px; }
+    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: var(--th-r-sm); background: var(--th-hero); }
+    .ex-media-segment, .honest { color: var(--muted); font-size: 13px; line-height: 1.45; }
     .rules { margin-top: 16px; }
-    .rules h2 { font-size: 1.05rem; }
-    .rules-for { color: var(--muted); font-size: .82rem; line-height: 1.45; margin: 6px 0 0; }
+    .rules h2 { font-size: 16px; }
+    .rules-for { color: var(--muted); font-size: 13px; line-height: 1.45; margin: 6px 0 0; }
     .rules-list { margin: 10px 0 0; padding: 0; list-style: none; }
     .rule { border-top: 1px solid var(--line); padding: 10px 0; }
     .rule:first-of-type { border-top: 0; }
     .rule b { display: block; margin-bottom: 4px; }
-    .rule-value { display: block; color: var(--ink); font-size: .92rem; line-height: 1.45; }
+    .rule-value { display: block; color: var(--ink); font-size: 15px; line-height: 1.45; }
     .rule-source { display: inline-block; margin-top: 6px; }
-    .rule-detail { display: block; color: var(--muted); font-size: .8rem; line-height: 1.45; margin-top: 4px; }
-    @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } }
+    .rule-detail { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 4px; }
+    @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } .th-steps { margin-top: 16px; } }
     button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#prompt">דלג לשדה האימון</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
@@ -103,7 +110,7 @@
     <small>TRAINERHUB / מנוע אימון</small>
     <h1>תגיד איזה אימון אתה רוצה.</h1>
     <p>בוחרים זמן, ציוד וכמות חניכים, מוסיפים מטרה קצרה — ומקבלים אימון מהמאגר עם הסבר על כל בחירה.</p>
-    <a class="th-btn" href="./site-scan.html">📷 סרוק את השטח</a>
+    <a class="th-btn energy" href="./site-scan.html">📷 סרוק את השטח</a>
   </header>
   <ol class="th-steps">
     <li><b>1. כותבים</b>מה רוצים, או מדביקים אימון קיים.</li>
