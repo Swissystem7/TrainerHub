@@ -59,7 +59,10 @@
 | `reps` | string | חזרות כפי שנמסרו (`20`). ריק אם לא ידוע. |
 | `sets_reps` | string | תווית תצוגה. `לא ממוין` כשהמקור הוא `לא מצוין`. |
 | `equipment` | string | ציוד מהמיפוי. ריק אם אין מקור. |
-| `steps_he` | string[] | שלבים שחולצו משם המיפוי. מערך ריק אם אין רשימה. |
+| `steps_he` | string[] | שלבי ביצוע בעברית. תרגיל מאומת: 3–5 שלבים קצרים למתאמן מתחיל. |
+| `safety_he` | string | אופציונלי. דגש בטיחות אחד; חובה כש-`verified` הוא `true`. |
+| `difficulty` | number או null | אופציונלי. 1 קל, 2 בינוני, 3 מתקדם; חובה כש-`verified` הוא `true`. |
+| `alternatives` | string[] | אופציונלי. עד 2 מזהים מהספרייה מאותה `muscle_group`. |
 | `source_url` | string | `https://www.instagram.com/reel/<shortcode>/` או `/p/<shortcode>/`. |
 | `creator` | string | שם משתמש בלי `@`. |
 | `poster` | string | נתיב יחסי אופציונלי. ריק משאיר את ברירת המחדל `assets/posters/<reel_id>.png` (או `.jpg`). לא כתובת חיצונית. |
