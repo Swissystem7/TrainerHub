@@ -29,12 +29,12 @@ function esc(s) {
   });
 }
 
-test('drive_videos.json ships 70 Drive videos and all of them map', function () {
-  assert.equal(shipped.length, 70);
+test('drive_videos.json ships 93 Drive videos and all of them map', function () {
+  assert.equal(shipped.length, 93);
   const check = THReels.validateDriveVideos(shipped);
   assert.deepEqual(check.errors, []);
   const list = THReels.driveVideosToExercises(shipped);
-  assert.equal(list.length, 70);
+  assert.equal(list.length, 93);
   const counts = {};
   list.forEach(function (ex) {
     assert.equal(ex.sets, null);
@@ -48,14 +48,14 @@ test('drive_videos.json ships 70 Drive videos and all of them map', function () 
   assert.deepEqual(counts, {
     'ליבה': 25,
     'חזה': 9,
-    'גוף מלא/HIIT': 10,
+    'גוף מלא/HIIT': 15,
     'גב': 8,
-    'אחר': 13,
-    'רגליים/ישבן': 3,
-    'מוביליטי': 2
+    'אחר': 18,
+    'רגליים/ישבן': 8,
+    'מוביליטי': 10
   });
   const reels = JSON.parse(fs.readFileSync(path.join(root, 'data', 'exercises.json'), 'utf8'));
-  assert.equal(reels.exercises.length + list.length, 149);
+  assert.equal(reels.exercises.length + list.length, 172);
 });
 
 test('Drive folders map onto the library muscle groups and two folders are skipped', function () {
@@ -69,6 +69,7 @@ test('Drive folders map onto the library muscle groups and two folders are skipp
     'גוף מלא HIIT': 'גוף מלא/HIIT',
     'קרדיו': 'גוף מלא/HIIT',
     'חימום': 'מוביליטי',
+    'מתיחות וגמישות': 'מוביליטי',
     'זמן תגובה וקואורדינציה': 'אחר'
   };
   Object.keys(expect).forEach(function (folder) {
