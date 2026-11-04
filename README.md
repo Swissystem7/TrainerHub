@@ -202,3 +202,16 @@ npm test
 4. בחלון גלישה בסתר: בחרו את הקובץ, סיסמה שגויה → «סיסמה שגויה». סיסמה נכונה → אישור → המתאמן חוזר.
 
 בדיקות: `node --test test/backup-client-details.test.js`; Playwright (דסקטופ + 360px): `NODE_PATH=<playwright> TH_SCREENSHOTS=1 node --test test/backup-client-details-e2e.test.js` (מדולג אם Playwright לא מותקן). צילומים: `docs/screenshots/client-details-*.png`, `backup-*.png`.
+
+## יומן: חיפוש, סינון, גרפים, מפת חום ושיאים (journal.html)
+
+- **חיפוש וסינון** מעל רשימת המתאמנים: לפי שם, כינוי, טלפון או תוכנית; סינון לפי פעילים, בלי ביצוע שבוע+, מטרה או רמה.
+- **תובנות מתאמן** (`#insights`): מפת חום של 12 שבועות, גרף היענות שבועית (מול ימי האימון שהוגדרו, ברירת מחדל 3), נפח (חזרות × ק״ג לפי יום) וגרף התקדמות במשקל הגוף מהמדידות. כל הגרפים הם SVG נגיש ונבנים בלי ספריות.
+- **שיאים אישיים**: «תיעוד סט» שומר דרך `js/journal-storage.js` הקיים (מפתח `trainerhub_journal_entries`, עכשיו עם `clientId`). `js/session-tracker.js` הקיים מראה כמה תרגילים מהתוכנית המשויכת תועדו היום. שני המודולים כבר נמצאים ב־precache של `sw.js` (#551).
+
+בדיקה ידנית:
+1. ב־`journal.html`, עם 2 מתאמנים או יותר: הקלידו חלק משם; בחרו «מטרה: …». שורת הסטטוס מראה «מוצגים X מתוך Y».
+2. ב«תובנות מתאמן» בחרו מתאמן: מפת חום, היענות, והתקדמות (אחרי 2 מדידות משקל).
+3. תעדו סט (squat, 5, 60): מופיע «🏆 שיא אישי חדש», גרף הנפח מופיע, והשיא נכנס לרשימה. סט קל יותר לא משנה את השיא.
+
+בדיקות: `node --test test/journal-insights.test.js`. Playwright (דסקטופ + 360px): `TH_SCREENSHOTS=1 node --test test/journal-insights-e2e.test.js`. צילומים: `docs/screenshots/journal-filter-*.png`, `journal-insights-*.png`.
