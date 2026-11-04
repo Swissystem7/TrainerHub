@@ -6,18 +6,21 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="דף אימון להדפסה או לשמירה כ־PDF. בלי שמות קבצים.">
   <title>TrainerHub | דף אימון להדפסה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #101312; color: var(--ink); font-family: Arial, sans-serif; }
+    body { margin: 0; background: var(--th-bg); color: var(--ink); font-family: var(--th-font); }
     .wrap { max-width: 760px; margin: auto; padding: 20px 16px 64px; }
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin-bottom: 16px; }
     .toolbar .field { flex: 1; min-width: 180px; }
     label { display: block; color: var(--muted); font-size: .82rem; margin-bottom: 6px; }
     input {
-      width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--line);
-      background: #111513; color: var(--ink); font: inherit;
+      width: 100%; min-height: 48px; padding: 10px 14px; border-radius: var(--th-r-sm); border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit;
     }
     .empty { color: var(--muted); padding: 24px 0; }
     button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
@@ -29,7 +32,7 @@
     }
   </style>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link no-print" href="#sheet">דלג לדף האימון</a>
 <nav class="th-nav no-print" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
