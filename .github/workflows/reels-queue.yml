@@ -4,6 +4,8 @@ on:
   push:
     branches: [master]
     paths: [data/reels_queue.json]
+  pull_request:
+    paths: [.github/workflows/reels-queue.yml, scripts/process_reels_queue.py]
   workflow_dispatch:
     inputs:
       test_url:
@@ -39,13 +41,13 @@ jobs:
           if [ -n "$IG_COOKIES" ]; then printf '%s' "$IG_COOKIES" > /tmp/ig_cookies.txt; echo "cookies: yes"; else echo "cookies: no"; fi
       - name: Process queue
         env:
-          TEST_URL: ${{ github.event.inputs.test_url }}
+          TEST_URL: ${{ github.event_name == 'pull_request' && 'https://www.instagram.com/reel/DaSiindCCj8/' || github.event.inputs.test_url }}
           GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
           GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
           GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
         run: python scripts/process_reels_queue.py
       - name: Open PR with auto-merge
-        if: github.event.inputs.test_url == ''
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.test_url == '')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
