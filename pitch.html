@@ -6,32 +6,37 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="דף אחד להדפסה: ספריית תרגילי TrainerHub בעברית למאמן אישי.">
   <title>TrainerHub | דף אחד למאמן</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --ink:#111; --muted:#444; --line:#ccc; --lime:#3d6b00; }
+    :root { --ink:var(--th-ink); --muted:var(--th-muted); --line:var(--th-line); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #e8ebe8; color: var(--ink); font-family: Arial, sans-serif; }
+    body { margin: 0; background: var(--th-bg); color: var(--ink); font-family: var(--th-font); }
     .wrap { max-width: 210mm; margin: 16px auto 40px; }
     .sheet {
       background: #fff;
-      border: 1px solid #c9cfc9;
+      border: 1px solid var(--th-line);
+      border-radius: var(--th-r-lg);
+      box-shadow: var(--th-shadow);
       min-height: 277mm;
       padding: 16mm 16mm 14mm;
     }
-    header { border-bottom: 3px solid #3d6b00; padding-bottom: 10px; margin-bottom: 14px; }
-    header small { color: #3d6b00; font-weight: 800; letter-spacing: .04em; }
+    header { border-bottom: 3px solid var(--th-teal); padding-bottom: 10px; margin-bottom: 14px; }
+    header small { color: var(--th-teal-ink); font-weight: 800; letter-spacing: .04em; }
     h1 { font-size: 1.85rem; margin: 6px 0 8px; line-height: 1.2; }
     .lede { font-size: 1.02rem; line-height: 1.5; margin: 0; }
     h2 { font-size: 1rem; margin: 16px 0 6px; }
     p, li { line-height: 1.45; font-size: 0.95rem; }
     ul { margin: 0; padding: 0 1.1rem 0 0; }
     .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .box { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+    .box { border: 1px solid var(--line); border-radius: var(--th-r-sm); padding: 10px 12px; background: var(--th-surface2); }
     .price { font-size: 1.6rem; font-weight: 900; margin: 0; }
     .fine { color: var(--muted); font-size: 0.82rem; }
     footer { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 8px; }
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 10px; }
-    .status-msg { text-align: center; font-size: 0.88rem; min-height: 1.4em; margin-bottom: 8px; color: var(--lime); font-weight: bold; }
+    .status-msg { text-align: center; font-size: 0.88rem; min-height: 1.4em; margin-bottom: 8px; color: var(--th-teal-ink); font-weight: bold; }
     button:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
     .th-btn[disabled], .th-btn[aria-disabled="true"] { opacity: 0.6; cursor: not-allowed; }
     @media (max-width: 700px) {
@@ -41,11 +46,11 @@
     @media print {
       body { background: #fff; }
       .wrap { margin: 0; max-width: none; }
-      .sheet { border: 0; min-height: auto; padding: 10mm 12mm; }
+      .sheet { border: 0; border-radius: 0; box-shadow: none; min-height: auto; padding: 10mm 12mm; }
     }
   </style>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link no-print" href="#sheet">דלג לדף</a>
 <nav class="th-nav no-print" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
