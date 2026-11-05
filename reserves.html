@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta name="description" content="מדדי מילואים ב-TrainerHub: ארבעה מבחני עובר/לא עובר, תוכנית 6 שבועות ומעקב מהטלפון.">
+  <title>TrainerHub | מדדי מילואים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 720px; margin: auto; padding: 16px 16px 80px; }
+    .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 900; line-height: 1.2; margin: 8px 0; }
+    .top p, .muted { color: var(--muted); line-height: 1.6; }
+    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tabs a { flex: none; display: inline-flex; align-items: center; min-height: 44px; background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; font-size: 15px; font-weight: 500; white-space: nowrap; text-decoration: none; }
+    .tabs a:hover { border-color: var(--th-teal); }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin: 0 0 16px; }
+    section h2 { margin: 0 0 10px; font-size: 20px; font-weight: 800; }
+    h3 { font-size: 16px; margin: 16px 0 8px; color: var(--th-teal-ink); }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
+    input, select { width: 100%; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+    button { min-height: 48px; padding: 0 20px; border: 0; border-radius: 14px; background: var(--th-teal); color: var(--th-on-teal); cursor: pointer; font: inherit; font-weight: 700; margin-top: 12px; }
+    button.ghost { background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .actions button { margin-top: 0; }
+    .card { background: var(--th-bg); border: 1px solid var(--line); border-radius: var(--th-r-md); padding: 12px; margin-bottom: 10px; }
+    .card h4 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+    .pill { display: inline-block; background: var(--th-surface2); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 700; color: var(--muted); margin-inline-end: 4px; margin-bottom: 4px; }
+    .pill.ok { color: var(--th-teal-ink); background: var(--th-teal-soft); }
+    .pill.bad { color: #8a1f1f; background: #fde8e8; }
+    .pill.warn { color: #7a5b00; background: #fff3cd; }
+    .status-box { font-size: 18px; font-weight: 800; padding: 12px; border-radius: 12px; border: 1.5px solid var(--line); margin-top: 12px; }
+    .status-box.pass { border-color: var(--th-teal); color: var(--th-teal-ink); background: var(--th-teal-soft); }
+    .status-box.fail { border-color: #e0a0a0; color: #8a1f1f; background: #fde8e8; }
+    .status-box.incomplete { border-color: #e0d090; color: #7a5b00; background: #fff8e1; }
+    ol, ul { padding-inline-start: 1.3rem; line-height: 1.6; margin: 8px 0; }
+    .equip { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
+    .unverified { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  </style>
+<script src="./js/sentry-init.js"></script>
+</head>
+<body class="th-ds">
+<a class="skip-link" href="#tests">דלג לתוכן מדדי מילואים</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <a href="./">דף אימון</a>
+  <a href="./weekly.html">דף שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./exercises.html">ספריית תרגילים</a>
+  <a href="./booklet.html">חוברת מאמן</a>
+  <span class="chip on" aria-current="page">מדדי מילואים</span>
+  <a href="./journal.html">יומן אימון</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  יעדי עובר/לא עובר למילואים (ממתינים לאישור יחידה). טכניקת ניתוק ידיים לפי GoArmy/ACFT. הכול verified:false — בדקו מול המפקד/המסמך שלכם.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / RESERVE FITNESS</small>
+    <h1 id="page-title">מדדי מילואים</h1>
+    <p id="page-sub">ארבעה מבחנים · כולם חובה · יעד עד <span id="deadline">1.12</span></p>
+    <div class="equip" id="equip" aria-label="ציוד נדרש"></div>
+  </header>
+
+  <nav class="tabs" aria-label="חלקי המסלול">
+    <a href="#tests">המדדים</a>
+    <a href="#status">סטטוס</a>
+    <a href="#demos">הדגמות</a>
+    <a href="#plan">תוכנית 6 שבועות</a>
+    <a href="#adapt">משוב והתאמה</a>
+    <a href="#strength">תוכניות כוח</a>
+  </nav>
+
+  <section id="tests" aria-labelledby="tests-h">
+    <h2 id="tests-h">רישום תוצאות</h2>
+    <p class="muted">מזינים תוצאה לכל מדד ושומרים. הסטטוס הכללי מתעדכן אוטומטית במכשיר שלכם בלבד.</p>
+    <div class="row" style="margin-bottom:8px">
+      <div>
+        <label for="checkpoint">סוג רישום</label>
+        <select id="checkpoint" aria-label="סוג רישום מדדים">
+          <option value="practice">אימון / תרגול</option>
+          <option value="placement">מבחן מיון</option>
+          <option value="midpoint">מבחן אמצע</option>
+          <option value="final">מבחן סיום</option>
+        </select>
+      </div>
+    </div>
+    <div id="testFields"></div>
+    <div class="actions" role="toolbar" aria-label="פעולות מדדי מילואים">
+      <button type="button" id="saveBtn" aria-label="שמור תוצאות מדדים">שמור תוצאות</button>
+      <button type="button" class="ghost" id="evalBtn" aria-label="בדוק עובר או לא עובר בלי לשמור">בדיקה בלי שמירה</button>
+      <button type="button" class="ghost" id="resetBtn" aria-label="נקה תוצאות שמורות">נקה שמורים</button>
+    </div>
+  </section>
+
+  <section id="status" aria-labelledby="status-h">
+    <h2 id="status-h">סטטוס כללי</h2>
+    <div id="statusOut" class="status-box incomplete" role="status" aria-live="polite">טוען…</div>
+    <div id="statusRows" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <section id="demos" aria-labelledby="demos-h">
+    <h2 id="demos-h">כרטיסי הדגמה</h2>
+    <p class="muted">התקדמות שלב־אחר־שלב. מתחילים משכיבת סמיכה עם ניתוק ידיים.</p>
+    <div id="demosOut"></div>
+  </section>
+
+  <section id="plan" aria-labelledby="plan-h">
+    <h2 id="plan-h">תוכנית 6 שבועות</h2>
+    <p class="muted" id="planSummary"></p>
+    <div id="checkpointsOut"></div>
+    <div id="sessionsOut"></div>
+  </section>
+
+  <section id="adapt" aria-labelledby="adapt-h">
+    <h2 id="adapt-h">משוב אחרי אימון</h2>
+    <p class="muted">אחרי כל אימון בוחרים: קל / בדיוק / לא סיימתי — והאימון הבא מותאם אוטומטית.</p>
+    <div class="row">
+      <div>
+        <label for="adaptSession">אימון שסיימתי</label>
+        <select id="adaptSession" aria-label="בחירת אימון למשוב"></select>
+      </div>
+    </div>
+    <div class="actions" role="group" aria-label="משוב קושי אימון">
+      <button type="button" id="fb-easy" data-fb="easy" aria-label="האימון היה קל">קל</button>
+      <button type="button" id="fb-exact" class="ghost" data-fb="exact" aria-label="האימון היה בדיוק ברמה">בדיוק</button>
+      <button type="button" id="fb-incomplete" class="ghost" data-fb="incomplete" aria-label="לא סיימתי את האימון">לא סיימתי</button>
+    </div>
+    <div id="adaptOut" class="card" style="margin-top:12px" role="status" aria-live="polite"></div>
+  </section>
+
+  <section id="strength" aria-labelledby="strength-h">
+    <h2 id="strength-h">תוכניות כוח מדורגות</h2>
+    <p class="muted">רמות מתחילים / בינוני / מתקדמים — עם ציוד (מתח+מקבילים) או בלי ציוד.</p>
+    <div class="row">
+      <div>
+        <label for="strLevel">רמה</label>
+        <select id="strLevel" aria-label="רמת תוכנית כוח">
+          <option value="1">מתחילים</option>
+          <option value="2">בינוני</option>
+          <option value="3">מתקדמים</option>
+        </select>
+      </div>
+      <div>
+        <label for="strEquip">ציוד</label>
+        <select id="strEquip" aria-label="ציוד לתוכנית כוח">
+          <option value="none">בלי ציוד</option>
+          <option value="bars">עם מתח ומקבילים</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="strShow" aria-label="הצג תוכנית כוח">הצג תוכנית</button>
+    </div>
+    <div id="strengthOut" style="margin-top:12px"></div>
+  </section>
+
+</main>
+
+<script src="./js/core.js"></script>
+<script src="./js/reserves-track.js"></script>
+<script src="./js/th-nav.js"></script>
+<script>
+(function () {
+  'use strict';
+  var R = window.THReserves;
+  if (!R) return;
+
+  function el(id) { return document.getElementById(id); }
+
+  function readInputs() {
+    var map = {};
+    R.tests().forEach(function (t) {
+      var input = el('in-' + t.id);
+      map[t.id] = input ? input.value : '';
+    });
+    return map;
+  }
+
+  function fillInputsFromStore() {
+    var store = R.loadResults();
+    R.tests().forEach(function (t) {
+      var input = el('in-' + t.id);
+      var row = store.results[t.id];
+      if (input && row && row.raw != null) input.value = row.raw;
+    });
+  }
+
+  function renderEquip(meta) {
+    var host = el('equip');
+    host.innerHTML = '';
+    (meta.equipment_he || []).forEach(function (e) {
+      var s = document.createElement('span');
+      s.className = 'pill';
+      s.textContent = e;
+      host.appendChild(s);
+    });
+    var dead = document.createElement('span');
+    dead.className = 'pill warn';
+    dead.textContent = 'יעד: ' + (meta.deadline_display_he || '1.12');
+    host.appendChild(dead);
+  }
+
+  function renderFields() {
+    var host = el('testFields');
+    host.innerHTML = '';
+    R.tests().forEach(function (t) {
+      var wrap = document.createElement('div');
+      wrap.className = 'card';
+      var label = document.createElement('label');
+      label.htmlFor = 'in-' + t.id;
+      label.textContent = t.name_he + ' — יעד: ' + t.threshold_display + (t.pass_when === 'lte' ? ' או פחות' : ' או יותר') + ' (ממתין לאישור יחידה)';
+      var input = document.createElement('input');
+      input.id = 'in-' + t.id;
+      input.setAttribute('aria-label', t.name_he);
+      if (t.input === 'clock') {
+        input.placeholder = t.placeholder || 'mm:ss';
+        input.inputMode = 'numeric';
+        input.autocomplete = 'off';
+      } else {
+        input.type = 'number';
+        input.min = '0';
+        input.step = '1';
+        input.inputMode = 'numeric';
+        input.placeholder = t.placeholder || String(t.threshold);
+      }
+      var eq = document.createElement('p');
+      eq.className = 'unverified';
+      eq.textContent = 'ציוד: ' + (t.equipment_he || '') + (t.verified ? '' : ' · לא מאומת');
+      wrap.appendChild(label);
+      wrap.appendChild(input);
+      wrap.appendChild(eq);
+      host.appendChild(wrap);
+    });
+  }
+
+  function renderStatus(summary) {
+    var box = el('statusOut');
+    box.className = 'status-box ' + summary.overall;
+    box.textContent = R.overallLabelHe(summary.overall);
+    var rows = el('statusRows');
+    rows.innerHTML = '';
+    summary.tests.forEach(function (t) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      var h = document.createElement('h4');
+      h.textContent = t.name_he;
+      var pill = document.createElement('span');
+      pill.className = 'pill ' + (t.incomplete ? 'warn' : (t.pass ? 'ok' : 'bad'));
+      pill.textContent = t.incomplete ? 'חסר' : (t.pass ? 'עובר' : 'לא עובר');
+      var detail = document.createElement('p');
+      detail.className = 'muted';
+      detail.style.margin = '6px 0 0';
+      detail.textContent = (t.display ? ('תוצאה: ' + t.display + ' · ') : '') + 'יעד: ' + t.threshold_display + ' (ממתין לאישור)';
+      card.appendChild(h);
+      card.appendChild(pill);
+      card.appendChild(detail);
+      rows.appendChild(card);
+    });
+  }
+
+  function renderDemos() {
+    var host = el('demosOut');
+    host.innerHTML = '';
+    R.demos().forEach(function (d) {
+      var card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('aria-label', 'הדגמה: ' + d.name_he);
+      var h = document.createElement('h3');
+      h.textContent = d.name_he;
+      var focus = document.createElement('p');
+      focus.className = 'muted';
+      focus.textContent = d.focus_he || '';
+      if (d.technique_he && d.technique_he.length) {
+        var th = document.createElement('h4');
+        th.textContent = 'טכניקה';
+        card.appendChild(th);
+        var tOl = document.createElement('ol');
+        d.technique_he.forEach(function (s) {
+          var li = document.createElement('li');
+          li.textContent = s;
+          tOl.appendChild(li);
+        });
+        card.appendChild(tOl);
+      }
+      var prog = document.createElement('h4');
+      prog.textContent = 'התקדמות';
+      card.appendChild(prog);
+      var ol = document.createElement('ol');
+      (d.steps_he || []).forEach(function (s) {
+        var li = document.createElement('li');
+        li.textContent = s;
+        ol.appendChild(li);
+      });
+      card.appendChild(h);
+      card.appendChild(focus);
+      card.appendChild(ol);
+      if (d.cues_he && d.cues_he.length) {
+        var ul = document.createElement('ul');
+        d.cues_he.forEach(function (c) {
+          var li = document.createElement('li');
+          li.textContent = c;
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
+      }
+      var flag = document.createElement('p');
+      flag.className = 'unverified';
+      flag.textContent = d.verified ? '' : 'verified: false — לא אומת מול מקור רשמי';
+      card.appendChild(flag);
+      host.appendChild(card);
+    });
+  }
+
+  function renderPlan() {
+    var p = R.plan();
+    el('planSummary').textContent = p.summary_he || p.title_he || '';
+    if (p.deload && !document.getElementById('deloadCard')) {
+      var dl = document.createElement('div');
+      dl.className = 'card';
+      dl.id = 'deloadCard';
+      dl.innerHTML = '<h4>דילוד</h4><p class="muted" style="margin:0">' + (p.deload.note_he || '') + ' · ' + (p.deload.volume_reduction_he || '') + '</p>';
+      el('checkpointsOut').parentNode.insertBefore(dl, el('checkpointsOut'));
+    }
+    var cp = el('checkpointsOut');
+    cp.innerHTML = '<h3>נקודות מבחן</h3>';
+    (p.checkpoints || []).forEach(function (c) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = '<h4>' + c.name_he + '</h4><p class="muted" style="margin:0">שבוע ' + c.week + ' · ' + (c.note_he || '') + '</p>';
+      cp.appendChild(card);
+    });
+    var sessions = el('sessionsOut');
+    sessions.innerHTML = '<h3>אימונים</h3>';
+    var byWeek = {};
+    (p.sessions || []).forEach(function (s) {
+      byWeek[s.week] = byWeek[s.week] || [];
+      byWeek[s.week].push(s);
+    });
+    Object.keys(byWeek).sort(function (a, b) { return Number(a) - Number(b); }).forEach(function (w) {
+      var h = document.createElement('h3');
+      h.textContent = 'שבוע ' + w;
+      sessions.appendChild(h);
+      byWeek[w].forEach(function (s) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        var title = document.createElement('h4');
+        title.textContent = s.day_he + ' — ' + s.focus_he;
+        var ul = document.createElement('ul');
+        (s.items_he || []).forEach(function (it) {
+          var li = document.createElement('li');
+          li.textContent = it;
+          ul.appendChild(li);
+        });
+        var flag = document.createElement('p');
+        flag.className = 'unverified';
+        flag.textContent = s.verified ? '' : 'verified: false';
+        card.appendChild(title);
+        card.appendChild(ul);
+        card.appendChild(flag);
+        sessions.appendChild(card);
+      });
+    });
+  }
+
+
+  function renderAdaptSessions() {
+    var sel = el('adaptSession');
+    if (!sel) return;
+    sel.innerHTML = '';
+    (R.plan().sessions || []).forEach(function (s) {
+      var opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = 'שבוע ' + s.week + ' · ' + s.day_he + ' — ' + s.focus_he;
+      sel.appendChild(opt);
+    });
+  }
+
+  function showNextAfterFeedback(sessionId, fb) {
+    var recorded = R.recordWorkoutFeedback(sessionId, fb);
+    var next = R.nextWorkout(sessionId, fb);
+    var host = el('adaptOut');
+    if (!recorded) { host.textContent = 'משוב לא תקין'; return; }
+    var lines = [];
+    lines.push('נרשם: ' + (recorded.adjustment && recorded.adjustment.he ? recorded.adjustment.he : fb));
+    if (!next || next.done) {
+      lines.push((next && next.message_he) || 'אין אימון הבא במסלול');
+    } else {
+      var s = next.session;
+      lines.push('האימון הבא: ' + (s.day_he || s.name_he || s.id) + (s.focus_he ? (' — ' + s.focus_he) : ''));
+      lines.push('סטים מותאמים: ' + (s.load && s.load.sets) + ' · ' + (s.load && s.load.effort_he || ''));
+      if (s.adjustment_note_he) lines.push(s.adjustment_note_he);
+      if (s.items_he && s.items_he.length) {
+        lines.push('תרגילים:');
+        s.items_he.forEach(function (it) { lines.push('• ' + it); });
+      }
+    }
+    host.innerHTML = lines.map(function (l) { return '<p style="margin:6px 0">' + l + '</p>'; }).join('');
+  }
+
+  function bindFeedback() {
+    ['fb-easy', 'fb-exact', 'fb-incomplete'].forEach(function (id) {
+      var btn = el(id);
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var sid = el('adaptSession').value;
+        showNextAfterFeedback(sid, btn.getAttribute('data-fb'));
+      });
+    });
+  }
+
+  function renderStrength() {
+    var level = Number(el('strLevel').value);
+    var equipment = el('strEquip').value;
+    var plans = R.strengthPlans({ level: level, equipment: equipment });
+    var host = el('strengthOut');
+    host.innerHTML = '';
+    if (!plans.length) {
+      host.textContent = 'לא נמצאה תוכנית';
+      return;
+    }
+    plans.forEach(function (p) {
+      var card = document.createElement('article');
+      card.className = 'card';
+      var h = document.createElement('h3');
+      h.textContent = p.title_he;
+      card.appendChild(h);
+      var meta = document.createElement('p');
+      meta.className = 'muted';
+      meta.textContent = p.level_he + ' · ' + p.equipment_he + (p.verified ? '' : ' · verified: false');
+      card.appendChild(meta);
+      (p.sessions || []).forEach(function (s) {
+        var sub = document.createElement('div');
+        sub.style.marginTop = '10px';
+        var h4 = document.createElement('h4');
+        h4.textContent = s.name_he + ' — ' + s.focus_he;
+        sub.appendChild(h4);
+        if (s.load) {
+          var load = document.createElement('p');
+          load.className = 'muted';
+          load.textContent = 'סטים בסיס: ' + s.load.sets + ' · ' + (s.load.effort_he || '');
+          sub.appendChild(load);
+        }
+        var ul = document.createElement('ul');
+        (s.items_he || []).forEach(function (it) {
+          var li = document.createElement('li');
+          li.textContent = it;
+          ul.appendChild(li);
+        });
+        sub.appendChild(ul);
+        card.appendChild(sub);
+      });
+      host.appendChild(card);
+    });
+  }
+
+  function boot(track) {
+    if (!track) {
+      el('statusOut').textContent = 'לא ניתן לטעון את מסלול המילואים.';
+      return;
+    }
+    R.setData(track);
+    var m = R.meta();
+    el('page-title').textContent = m.title_he || 'מדדי מילואים';
+    el('page-sub').innerHTML = (m.subtitle_he || '') + ' · יעד עד <span id="deadline">' + (m.deadline_display_he || '1.12') + '</span>';
+    renderEquip(m);
+    renderFields();
+    fillInputsFromStore();
+    renderStatus(R.currentSummary());
+    renderDemos();
+    renderPlan();
+    renderAdaptSessions();
+    bindFeedback();
+    var strBtn = el('strShow');
+    if (strBtn) strBtn.addEventListener('click', renderStrength);
+  }
+
+  el('saveBtn').addEventListener('click', function () {
+    var map = readInputs();
+    var cp = el('checkpoint').value;
+    Object.keys(map).forEach(function (id) {
+      if (map[id] !== '') R.logResult(id, map[id], cp);
+    });
+    renderStatus(R.currentSummary());
+  });
+  el('evalBtn').addEventListener('click', function () {
+    renderStatus(R.evaluateAll(readInputs()));
+  });
+  el('resetBtn').addEventListener('click', function () {
+    R.clearResults();
+    R.tests().forEach(function (t) {
+      var input = el('in-' + t.id);
+      if (input) input.value = '';
+    });
+    renderStatus(R.currentSummary());
+  });
+
+  if (R.data) {
+    boot(R.data);
+  } else {
+    R.load().then(function () { boot(R.data); });
+  }
+})();
+</script>
+</body>
+</html>
