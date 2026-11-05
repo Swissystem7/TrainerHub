@@ -167,7 +167,31 @@ def validate(data):
         for key in ("source_title", "source_muscle_group", "source_sets_reps", "source_notes"):
             if not isinstance(ex.get(key), str):
                 err(f"{path}.{key}", "מחרוזת")
-        if isinstance(ex.get("source_sets_reps"), str) and "לא מצוין" in ex.get("source_sets_reps"):
+        if "safety_he" in ex and ex.get("safety_he") is not None and not isinstance(ex.get("safety_he"), str):
+            err(f"{path}.safety_he", "מחרוזת")
+        diff = ex.get("difficulty")
+        if diff is not None and (not isinstance(diff, int) or isinstance(diff, bool) or not 1 <= diff <= 3):
+            err(f"{path}.difficulty", "מספר שלם 1–3 או null")
+        alts = ex.get("alternatives")
+        if alts is not None:
+            if not isinstance(alts, list) or len(alts) > 2:
+                err(f"{path}.alternatives", "מערך של עד 2 מזהים")
+            else:
+                by_id = {row.get("id"): row for row in exercises if isinstance(row, dict)}
+                for alt_id in alts:
+                    alt = by_id.get(alt_id)
+                    if alt is None or alt_id == ex.get("id"):
+                        err(f"{path}.alternatives", f"מזהה לא קיים בספרייה «{alt_id}»")
+                    elif alt.get("muscle_group") != ex.get("muscle_group"):
+                        err(f"{path}.alternatives", f"חלופה מקבוצת שריר אחרת «{alt_id}»")
+        if ex.get("verified") is True:
+            if not isinstance(steps, list) or not 3 <= len(steps) <= 5:
+                err(f"{path}.steps_he", "תרגיל מאומת דורש 3–5 שלבי ביצוע")
+            if not isinstance(ex.get("safety_he"), str) or not ex.get("safety_he").strip():
+                err(f"{path}.safety_he", "תרגיל מאומת דורש דגש בטיחות")
+            if not isinstance(diff, int) or isinstance(diff, bool):
+                err(f"{path}.difficulty", "תרגיל מאומת דורש רמת קושי 1–3")
+        if ex.get("verified") is not True and isinstance(ex.get("source_sets_reps"), str) and "לא מצוין" in ex.get("source_sets_reps"):
             if ex.get("sets") is not None:
                 err(f"{path}.sets", "«לא מצוין» נשאר בלי סטים")
             if ex.get("reps") != "":
