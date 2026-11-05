@@ -24,7 +24,8 @@
     access: 'trainerhub_content_access',
     print: 'trainerhub_print_workout',
     clientProfiles: 'trainerhub_client_profiles',
-    journal: 'trainerhub_journal_entries'
+    journal: 'trainerhub_journal_entries',
+    workoutPrefs: 'trainerhub_workout_prefs'
   };
 
   // Hash of the trainer access code (sent after payment) — product boundary
@@ -444,6 +445,100 @@
       try { localStorage.setItem(k, data[k]); restored++; } catch (e) {}
     });
     return restored;
+  }
+
+  // ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
+  /** First whole number in a reps value ("8-10" → 8, "12" → 12, "עד כשל" → null). */
+  function parseRepsNumber(reps) {
+    var m = String(reps == null ? '' : reps).match(/\d+/);
+    var n = m ? Number(m[0]) : NaN;
+    return n > 0 && n < 1000 ? n : null;
+  }
+
+  function workoutPrefs() {
+    var p = storeGet(KEYS.workoutPrefs, null);
+    p = p && typeof p === 'object' ? p : {};
+    return { tts: p.tts !== false, sound: p.sound !== false };
+  }
+
+  function setWorkoutPrefs(patch) {
+    var next = Object.assign(workoutPrefs(), patch || {});
+    storeSet(KEYS.workoutPrefs, next);
+    return next;
+  }
+
+  /** Text spoken at the start of a rest: "מנוחה 60 שניות. הבא: סקוואט, 10 חזרות". */
+  function nextExerciseSpeech(step) {
+    if (!step) return '';
+    var parts = [];
+    if (step.duration) parts.push('מנוחה ' + step.duration + ' שניות.');
+    if (step.nextName) parts.push('הבא: ' + step.nextName + (step.nextDetail ? ', ' + step.nextDetail : ''));
+    return parts.join(' ');
+  }
+
+  /** Speaks Hebrew via the device's speechSynthesis (works offline with a local voice). Returns true if queued. */
+  function speakHebrew(text, win) {
+    win = win || root;
+    var synth = win && win.speechSynthesis;
+    var Utter = win && win.SpeechSynthesisUtterance;
+    if (!text || !synth || !Utter) return false;
+    try {
+      var u = new Utter(String(text));
+      u.lang = 'he-IL';
+      var voices = synth.getVoices ? synth.getVoices() : [];
+      var he = (voices || []).filter(function (v) { return /^he|^iw/i.test(v.lang || ''); })[0];
+      if (he) u.voice = he;
+      synth.cancel();
+      synth.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  var cueAudio = null;
+  /** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
+  function restEndCue(win, opts) {
+    win = win || root;
+    opts = opts || {};
+    var out = { vibrated: false, beeped: false };
+    try {
+      var nav = win.navigator;
+      if (nav && typeof nav.vibrate === 'function') out.vibrated = !!nav.vibrate([200, 100, 200]);
+    } catch (e) {}
+    if (opts.sound === false) return out;
+    try {
+      var AC = win.AudioContext || win.webkitAudioContext;
+      if (!AC) return out;
+      cueAudio = cueAudio || new AC();
+      if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
+      var t = cueAudio.currentTime;
+      [0, 0.25].forEach(function (offset) {
+        var osc = cueAudio.createOscillator();
+        var gain = cueAudio.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.0001, t + offset);
+        gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
+        osc.connect(gain);
+        gain.connect(cueAudio.destination);
+        osc.start(t + offset);
+        osc.stop(t + offset + 0.2);
+      });
+      out.beeped = true;
+    } catch (e) {}
+    return out;
+  }
+
+  /** Unlocks audio on a user gesture (iOS/Chrome autoplay rules). */
+  function primeAudio(win) {
+    win = win || root;
+    try {
+      var AC = win.AudioContext || win.webkitAudioContext;
+      if (!AC) return false;
+      cueAudio = cueAudio || new AC();
+      if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
+      return true;
+    } catch (e) { return false; }
   }
 
   function assetUrl(rel) {
@@ -2266,6 +2361,13 @@
     addUserEntry: addUserEntry,
     removeUserEntry: removeUserEntry,
     exportUserCatalog: exportUserCatalog,
+    parseRepsNumber: parseRepsNumber,
+    workoutPrefs: workoutPrefs,
+    setWorkoutPrefs: setWorkoutPrefs,
+    nextExerciseSpeech: nextExerciseSpeech,
+    speakHebrew: speakHebrew,
+    restEndCue: restEndCue,
+    primeAudio: primeAudio,
     CLIENT_GOALS: CLIENT_GOALS,
     CLIENT_LEVELS: CLIENT_LEVELS,
     WEEKDAYS_HE: WEEKDAYS_HE,
