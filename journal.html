@@ -198,9 +198,52 @@
     <div class="stat"><b id="clRisk">0</b> בלי ביצוע שבוע+</div>
   </section>
 
+  <form class="card" id="filterForm" role="search" aria-label="חיפוש וסינון מתאמנים">
+    <div class="row">
+      <div>
+        <label for="clientSearch">חיפוש מתאמן</label>
+        <input id="clientSearch" name="clientSearch" type="search" placeholder="שם, כינוי או טלפון" autocomplete="off">
+      </div>
+      <div>
+        <label for="clientFilter">סינון</label>
+        <select id="clientFilter" name="clientFilter"></select>
+      </div>
+    </div>
+    <p class="status" id="filterStatus" role="status" aria-live="polite"></p>
+  </form>
+
   <section id="list" role="region" aria-label="רשימת מתאמנים וביצועים"></section>
+
+  <section class="card" id="insights" role="region" aria-labelledby="insightsHeading">
+    <h2 id="insightsHeading">תובנות מתאמן</h2>
+    <label for="insClient">מתאמן</label>
+    <select id="insClient" name="insClient"></select>
+    <div id="insBody"></div>
+    <form id="setForm" aria-label="תיעוד סט לשיאים אישיים">
+      <h3>תיעוד סט (שיאים ונפח)</h3>
+      <div class="row">
+        <div>
+          <label for="setExercise">תרגיל</label>
+          <input id="setExercise" name="setExercise" type="text" list="setExerciseList" maxlength="60">
+          <datalist id="setExerciseList"></datalist>
+        </div>
+        <div>
+          <label for="setReps">חזרות</label>
+          <input id="setReps" name="setReps" type="number" inputmode="numeric" min="1" step="1">
+        </div>
+        <div>
+          <label for="setWeight">משקל (ק״ג)</label>
+          <input id="setWeight" name="setWeight" type="number" inputmode="decimal" min="0.5" step="0.5">
+        </div>
+      </div>
+      <div class="actions"><button type="submit" class="th-btn ghost">שמור סט</button></div>
+      <p class="status" id="setStatus" role="status" aria-live="polite"></p>
+    </form>
+  </section>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/session-tracker.js"></script>
+<script src="./js/journal-storage.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -309,17 +352,22 @@
       $('clActive').textContent = '0';
       $('clAdherence').textContent = '0%';
       $('clRisk').textContent = '0';
+      setStatus($('filterStatus'), '');
+      renderInsights();
       return;
     }
     var active = 0;
     var adhSum = 0;
     var risk = 0;
-    list.innerHTML = clients.map(function (c, i) {
+    var shown = 0;
+    var html = clients.map(function (c, i) {
       var adh = Math.round(sessionsLastDays(c, 28) / 28 * 100);
       var weekEmpty = sessionsLastDays(c, 7) === 0;
       if (sessionsLastDays(c, 7) > 0) active++;
       adhSum += adh;
       if (weekEmpty) risk++;
+      if (!matchesFilter(c, weekEmpty)) return '';
+      shown++;
       var last = lastLog(c);
       var lastTxt = last
         ? ('אחרון: ' + (last.title || 'אימון') + ' · ' + dayKey(last.at || last.doneAt))
@@ -354,6 +402,9 @@
         '<div class="th-gate-host"></div>' +
       '</article>';
     }).join('');
+    list.innerHTML = shown ? html : '<p class="empty" role="status">אין מתאמנים שתואמים לחיפוש.</p>';
+    setStatus($('filterStatus'), shown === clients.length ? '' : 'מוצגים ' + shown + ' מתוך ' + clients.length + ' מתאמנים.');
+    renderInsights();
     $('clActive').textContent = String(active);
     $('clAdherence').textContent = Math.round(adhSum / clients.length) + '%';
     $('clRisk').textContent = String(risk);
@@ -398,6 +449,91 @@
   function fieldVal(scope, f) {
     var el = scope.querySelector('[data-f="' + f + '"]');
     return el ? el.value : '';
+  }
+
+  var JS = window.THJournalStorage;
+  var ST = window.THSessionTracker;
+
+  function matchesFilter(c, weekEmpty) {
+    var q = ($('clientSearch').value || '').trim().toLowerCase();
+    var f = $('clientFilter').value || '';
+    if (q) {
+      var hay = [c.name, c.nickname, c.phone, c.plan].join(' ').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    if (f === 'risk') return weekEmpty;
+    if (f === 'active') return !weekEmpty;
+    if (f.indexOf('goal:') === 0) return c.goal === f.slice(5);
+    if (f.indexOf('level:') === 0) return c.level === f.slice(6);
+    return true;
+  }
+
+  function fillFilterOptions() {
+    var opts = '<option value="">כל המתאמנים</option><option value="active">פעילים השבוע</option><option value="risk">בלי ביצוע שבוע+</option>';
+    Object.keys(TH.CLIENT_GOALS).forEach(function (k) { opts += '<option value="goal:' + k + '">מטרה: ' + TH.esc(TH.CLIENT_GOALS[k]) + '</option>'; });
+    Object.keys(TH.CLIENT_LEVELS).forEach(function (k) { opts += '<option value="level:' + k + '">רמה: ' + TH.esc(TH.CLIENT_LEVELS[k]) + '</option>'; });
+    $('clientFilter').innerHTML = opts;
+  }
+
+  function insightsClient() {
+    var id = $('insClient').value;
+    return clients.filter(function (c) { return c.id === id; })[0] || null;
+  }
+
+  function planSession(c) {
+    if (!ST || !c || !c.lastPlan) return null;
+    return ST.createSession(c.lastPlan);
+  }
+
+  function renderInsights() {
+    var sel = $('insClient');
+    var prev = sel.value;
+    sel.innerHTML = clients.map(function (c) {
+      return '<option value="' + TH.esc(c.id || '') + '">' + TH.esc(c.name || 'מתאמן') + '</option>';
+    }).join('');
+    if (prev && clients.some(function (c) { return c.id === prev; })) sel.value = prev;
+    var c = insightsClient();
+    $('insights').hidden = !c || !JS;
+    if (!c || !JS) return;
+    var d = TH.normalizeClientDetails(c);
+    var logs = logsOf(c);
+    var heat = JS.heatmapSvg(JS.heatmapWeeks(logs, 12), { label: 'מפת חום — 12 שבועות של ' + (c.name || 'מתאמן') });
+    var adh = JS.weeklyAdherence(logs, 8, d.days.length || 3);
+    var adhSvg = JS.barChartSvg(adh.map(function (w) { return { label: 'שבוע ' + w.week, value: w.pct }; }),
+      { label: 'היענות שבועית (% מיעד ' + (d.days.length || 3) + ' אימונים)', unit: '%', max: 100, empty: 'אין עדיין ביצועים מיובאים' });
+    var snap = JS.getClientSnapshot(c.id);
+    var volSvg = JS.barChartSvg(snap.progressGraph.slice(-12).map(function (p) { return { label: p.date, value: p.volume }; }),
+      { label: 'נפח אימון (חזרות × ק״ג) לפי יום', unit: ' ק״ג', empty: 'תעדו סטים למטה כדי לראות נפח' });
+    var progSvg = JS.lineChartSvg(d.measurements.filter(function (m) { return m.weightKg != null; })
+      .map(function (m) { return { label: m.at, value: m.weightKg }; }), { label: 'התקדמות משקל גוף', unit: ' ק״ג', empty: 'צריך לפחות 2 מדידות משקל' });
+    var prs = Object.keys(snap.personalRecords).map(function (k) { return snap.personalRecords[k]; })
+      .sort(function (a, b) { return b.tonnage - a.tonnage; });
+    var prHtml = prs.length
+      ? '<ul data-role="prs">' + prs.map(function (p) {
+          return '<li><b>' + TH.esc(p.exerciseId) + '</b> · ' + p.weightKg + ' ק״ג × ' + p.reps + ' · ' + TH.esc(dayKey(p.doneAt)) + '</li>';
+        }).join('') + '</ul>'
+      : '<p class="honest">עדיין אין שיאים. תעדו סט עם משקל וחזרות.</p>';
+    var session = planSession(c);
+    var today = dayKey(new Date().toISOString());
+    var planTxt = '';
+    var names = [];
+    if (session) {
+      snap.entries.forEach(function (e) {
+        if (dayKey(e.doneAt) !== today) return;
+        (e.sets || []).forEach(function (s) { session.complete(s.exerciseId); });
+      });
+      var st = session.state();
+      var done = st.exercises.filter(function (x) { return x.status === 'done'; }).length;
+      names = st.exercises.map(function (x) { return x.id; });
+      planTxt = '<p class="honest" data-role="plan-progress">היום תועדו ' + done + '/' + st.exercises.length + ' תרגילים מהתוכנית «' + TH.esc(c.plan || '') + '».</p>';
+    }
+    $('setExerciseList').innerHTML = names.map(function (n) { return '<option value="' + TH.esc(n) + '"></option>'; }).join('');
+    $('insBody').innerHTML =
+      '<h3>מפת חום</h3>' + heat +
+      '<h3>היענות</h3>' + adhSvg +
+      '<h3>נפח</h3>' + volSvg +
+      '<h3>התקדמות</h3>' + progSvg +
+      '<h3>שיאים אישיים</h3>' + prHtml + planTxt;
   }
 
   function setStatus(el, text, warn) {
@@ -547,6 +683,31 @@
     setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.')
       : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.')));
     render(c.id);
+  });
+
+  fillFilterOptions();
+  $('clientSearch').addEventListener('input', function () { render(); });
+  $('clientFilter').addEventListener('change', function () { render(); });
+  $('filterForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  $('insClient').addEventListener('change', renderInsights);
+  $('setForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = insightsClient();
+    var ex = $('setExercise').value.trim();
+    var reps = Number($('setReps').value);
+    var kg = Number(String($('setWeight').value).replace(',', '.'));
+    if (!c || !ex || !(reps > 0) || !(kg > 0)) {
+      setStatus($('setStatus'), 'צריך תרגיל, חזרות ומשקל.', true);
+      return;
+    }
+    var before = JS.getClientSnapshot(c.id).personalRecords[ex];
+    var saved = JS.saveEntry({ clientId: c.id, title: c.plan || 'אימון', sets: [{ exerciseId: ex, reps: reps, weightKg: kg }] });
+    if (!saved) { setStatus($('setStatus'), 'השמירה נכשלה (אחסון מלא?).', true); return; }
+    var after = JS.getClientSnapshot(c.id).personalRecords[ex];
+    var isPr = after && (!before || after.weightKg !== before.weightKg || after.reps !== before.reps);
+    $('setReps').value = '';
+    renderInsights();
+    setStatus($('setStatus'), isPr ? '🏆 שיא אישי חדש ב' + ex + ': ' + kg + ' ק״ג × ' + reps : 'נשמר סט ' + ex + '.');
   });
 
   $('newGoal').innerHTML = optionsHtml(TH.CLIENT_GOALS, '');
