@@ -233,9 +233,25 @@
       current.phases.map(function (p) {
         return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
       }).join('');
+    renderRisks();
     $('start').hidden = false;
     if ($('scanActions')) $('scanActions').hidden = false;
     if ($('planOut').scrollIntoView) $('planOut').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Risk calculator: the site's hazards scored against the booklet team-file table (likelihood × severity).
+  function renderRisks() {
+    var rows = THSitePlan.risks ? THSitePlan.risks(profile, { season: $('season').value }) : [];
+    if (!rows.length) return;
+    $('planOut').insertAdjacentHTML('beforeend',
+      '<section aria-labelledby="riskTitle"><h3 id="riskTitle">מחשבון סיכונים</h3><ol class="risks">' +
+      rows.map(function (r) {
+        return '<li class="warn" data-level="' + esc(r.level.id) + '"><strong>' + esc(r.hazard) + '</strong>' +
+          (r.causes.length ? ' <small>(' + esc(r.causes.join(', ')) + ')</small>' : '') +
+          '<br>סבירות ' + r.likelihood + ' × חומרה ' + r.severity + ' = <strong>' + r.score + '</strong> · סיכון ' + esc(r.level.he) +
+          '<details><summary>אמצעים להקטנת הסיכון</summary><ul>' + r.siteLines.concat(r.mitigations).map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></details></li>';
+      }).join('') + '</ol>' +
+      '<p class="muted">ציון = סבירות × חומרה (1–100), לפי טבלת הסיכונים בתיק הקבוצה. מפגע שסומן בשטח מעלה את הסבירות ב-2.</p></section>');
   }
 
   $('build').addEventListener('click', buildNow);

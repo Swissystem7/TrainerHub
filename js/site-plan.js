@@ -233,10 +233,71 @@
     };
   }
 
+  // ---------- risk calculator (likelihood × severity) ----------
+  // Each site hazard points at a row of the booklet's team-file risk table (content/booklet/team-safety-file.json).
+  // The booklet scores run 1–10, so the score runs 1–100. A hazard actually seen on site raises its likelihood by 2.
+  var RISK_ROWS = {
+    cars: 'דריסה',
+    uneven: 'פציעות במהלך ספורט',
+    slippery: 'פציעות במהלך ספורט',
+    glass: 'פציעות במהלך ספורט',
+    dark: 'אובדן חניך',
+    crowd: 'פגיעה מאימון עם חניכים נוספים',
+    water: 'נפילה ממצוק ונפילה לבורות',
+    heat: 'התייבשות ומכת חום'
+  };
+  var SEEN_BUMP = 2;
+
+  function riskLevel(score) {
+    if (score >= 50) return { id: 'high', he: 'גבוה' };
+    if (score >= 25) return { id: 'medium', he: 'בינוני' };
+    return { id: 'low', he: 'נמוך' };
+  }
+
+  /**
+   * risks(profile, { season }) → rows sorted by score, highest first:
+   * { hazard, causes[], likelihood, severity, score, level{id,he}, mitigations[], siteLine }
+   * Every field session carries the sports-injury row; summer adds heat. Empty when the team file is not loaded.
+   */
+  function risks(profile, opts) {
+    opts = opts || {};
+    var team = Booklet.teamFile && Booklet.teamFile();
+    if (!team || !team.riskMatrix) return [];
+    var p = Profile.normalize(profile, profile && profile.source);
+    var rows = team.riskMatrix.rows;
+    function rowFor(key) { return rows.filter(function (r) { return r.hazard.indexOf(key) !== -1; })[0] || null; }
+    var byHazard = {};
+    var order = [];
+    function add(key, cause, seen, siteLine) {
+      var r = rowFor(key);
+      if (!r) return;
+      var x = byHazard[r.hazard];
+      if (!x) {
+        x = byHazard[r.hazard] = { hazard: r.hazard, causes: [], seen: false, severity: r.severity, baseLikelihood: r.likelihood, mitigations: r.mitigations.slice(), siteLines: [] };
+        order.push(x);
+      }
+      if (cause && x.causes.indexOf(cause) === -1) x.causes.push(cause);
+      if (seen) x.seen = true;
+      if (siteLine && x.siteLines.indexOf(siteLine) === -1) x.siteLines.push(siteLine);
+    }
+    var labels = {};
+    Profile.HAZARDS.forEach(function (h) { labels[h.id] = h.he; });
+    p.hazards.forEach(function (id) { if (RISK_ROWS[id]) add(RISK_ROWS[id], labels[id], true, HAZARD_LINES[id] || null); });
+    add('פציעות במהלך ספורט', 'כל אימון בשטח', false, null);
+    if (opts.season !== 'winter') add('התייבשות ומכת חום', 'עונת קיץ', false, null);
+    return order.map(function (x) {
+      var likelihood = Math.min(10, x.baseLikelihood + (x.seen ? SEEN_BUMP : 0));
+      var score = Math.round(likelihood * x.severity);
+      return { hazard: x.hazard, causes: x.causes, likelihood: likelihood, severity: x.severity, score: score, level: riskLevel(score), mitigations: x.mitigations, siteLines: x.siteLines };
+    }).sort(function (a, b) { return b.score - a.score; });
+  }
+
   var api = {
     SITE_DRILLS: SITE_DRILLS,
     CAPACITY: CAPACITY,
-    build: build
+    build: build,
+    risks: risks,
+    riskLevel: riskLevel
   };
 
   root.THSitePlan = api;
