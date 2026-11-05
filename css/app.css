@@ -186,3 +186,208 @@ video.ex-media { max-height: 160px; aspect-ratio: auto; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   TrainerHub design system (Claude Design project 88687c89, export from #533)
+   Tokens + base components. Opt-in per page with <body class="th-ds"> so
+   pages move to the new look screen by screen without breaking the others.
+   ========================================================================== */
+:root {
+  --th-bg: #F4F7F6;
+  --th-surface: #FFFFFF;
+  --th-surface2: #E9F0EE;
+  --th-ink: #0F1B19;
+  --th-muted: #4B5B57;
+  --th-line: #D6E0DD;
+  --th-teal: #00756A;
+  --th-on-teal: #FFFFFF;
+  --th-teal-soft: #D5F2EC;
+  --th-teal-ink: #00584F;
+  --th-orange: #FF7A2F;
+  --th-on-orange: #1A0E05;
+  --th-orange-ink: #B03F06;
+  --th-orange-soft: #FFE8DA;
+  --th-hero: #0F1B19;
+  --th-on-hero: #FFFFFF;
+  --th-font: 'Heebo', system-ui, 'Segoe UI', Arial, sans-serif;
+  /* radii 12-22, 4px spacing grid, 44px min tap target */
+  --th-r-sm: 12px;
+  --th-r-md: 14px;
+  --th-r-lg: 18px;
+  --th-r-xl: 22px;
+  --th-tap: 44px;
+  --th-shadow: 0 1px 2px rgba(15, 27, 25, .06), 0 8px 24px rgba(15, 27, 25, .06);
+}
+
+/* Claude Design dark set (export 70f21d9 / #538). Opt-in via OS preference or data-theme. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --th-bg: #0A1513;
+    --th-surface: #12211E;
+    --th-surface2: #1A2C28;
+    --th-ink: #E8F1EE;
+    --th-muted: #A3B7B1;
+    --th-line: #28423C;
+    --th-teal: #2DD4BF;
+    --th-on-teal: #03201B;
+    --th-teal-soft: #123C35;
+    --th-teal-ink: #7FE9D9;
+    --th-orange: #FF8A45;
+    --th-on-orange: #1A0E05;
+    --th-orange-ink: #FFA772;
+    --th-orange-soft: #3A2416;
+    --th-hero: #1A2C28;
+    --th-on-hero: #E8F1EE;
+    --th-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .35);
+  }
+}
+[data-theme="dark"] {
+  --th-bg: #0A1513;
+  --th-surface: #12211E;
+  --th-surface2: #1A2C28;
+  --th-ink: #E8F1EE;
+  --th-muted: #A3B7B1;
+  --th-line: #28423C;
+  --th-teal: #2DD4BF;
+  --th-on-teal: #03201B;
+  --th-teal-soft: #123C35;
+  --th-teal-ink: #7FE9D9;
+  --th-orange: #FF8A45;
+  --th-on-orange: #1A0E05;
+  --th-orange-ink: #FFA772;
+  --th-orange-soft: #3A2416;
+  --th-hero: #1A2C28;
+  --th-on-hero: #E8F1EE;
+  --th-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+body.th-ds {
+  background: var(--th-bg);
+  color: var(--th-ink);
+  font-family: var(--th-font);
+  -webkit-font-smoothing: antialiased;
+}
+body.th-ds a { color: var(--th-teal); }
+body.th-ds a:hover { color: var(--th-teal-ink); }
+body.th-ds :focus-visible { outline-color: var(--th-teal); }
+
+/* Nav: one horizontally scrolling row of 44px chips, current page in teal */
+body.th-ds .th-nav {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  background: var(--th-bg);
+  border-bottom: 0;
+  font: 500 15px/1 var(--th-font);
+}
+body.th-ds .th-nav::-webkit-scrollbar { display: none; }
+body.th-ds .th-nav .brand {
+  flex: none;
+  color: var(--th-ink);
+  font-weight: 900;
+  font-size: 18px;
+  padding-inline-end: 4px;
+}
+body.th-ds .th-nav a,
+body.th-ds .th-nav .chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--th-tap);
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--th-surface);
+  border: 1.5px solid var(--th-line);
+  color: var(--th-ink);
+  white-space: nowrap;
+}
+body.th-ds .th-nav a:hover { border-color: var(--th-teal); color: var(--th-ink); }
+body.th-ds .th-nav .chip.on {
+  background: var(--th-teal);
+  border-color: var(--th-teal);
+  color: var(--th-on-teal);
+  font-weight: 700;
+}
+
+body.th-ds .th-banner {
+  background: var(--th-orange-soft);
+  border-bottom: 0;
+  color: var(--th-orange-ink);
+  font: 500 13px/1.5 var(--th-font);
+  padding: 8px 16px;
+}
+
+/* Buttons: primary teal, energy orange, secondary outline (48px, radius 14) */
+body.th-ds .th-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--th-r-md);
+  background: var(--th-teal);
+  color: var(--th-on-teal);
+  font: 700 16px/1.2 var(--th-font);
+  text-decoration: none;
+}
+body.th-ds .th-btn:hover { color: var(--th-on-teal); filter: brightness(1.08); }
+body.th-ds .th-btn.energy { background: var(--th-orange); color: var(--th-on-orange); }
+body.th-ds .th-btn.ghost {
+  background: var(--th-surface);
+  color: var(--th-ink);
+  border: 1.5px solid var(--th-line);
+}
+body.th-ds .th-btn.ghost:hover { border-color: var(--th-teal); filter: none; }
+body.th-ds .th-btn:disabled { background: var(--th-surface2); color: var(--th-muted); cursor: not-allowed; filter: none; }
+
+body.th-ds .skip-link { background: var(--th-teal); color: var(--th-on-teal); }
+body.th-ds .kbd-hint { color: var(--th-muted); }
+
+body.th-ds .th-steps li {
+  background: var(--th-surface);
+  border: 1px solid var(--th-line);
+  border-radius: var(--th-r-lg);
+  padding: 12px 16px;
+  color: var(--th-muted);
+  font-size: 14px;
+}
+body.th-ds .th-steps b { color: var(--th-ink); font-size: 15px; }
+
+body.th-ds .th-gate {
+  background: var(--th-orange-soft);
+  border: 0;
+  border-radius: var(--th-r-md);
+  color: var(--th-orange-ink);
+}
+body.th-ds .th-gate-link { color: var(--th-teal-ink); }
+body.th-ds .ex-media-fallback {
+  background: var(--th-surface2);
+  border: 1px solid var(--th-line);
+  border-radius: var(--th-r-sm);
+  color: var(--th-muted);
+}
+body.th-ds .ex-media-link { color: var(--th-teal-ink); }
+
+/* Tags: small 6px-radius labels (level / status) */
+body.th-ds .th-tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--th-teal-soft);
+  color: var(--th-teal-ink);
+}
+body.th-ds .th-tag.warm { background: var(--th-orange-soft); color: var(--th-orange-ink); }
+
+@media (min-width: 1100px) {
+  body.th-ds .th-nav { flex-wrap: wrap; overflow-x: visible; }
+}
+@media (max-width: 700px) {
+  body.th-ds .th-steps { gap: 8px; }
+}
