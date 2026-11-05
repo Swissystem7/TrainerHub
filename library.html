@@ -300,7 +300,7 @@
             '<span>' + count + ' סרטונים</span></div>' +
           '<button type="button" class="rail-all" data-rail-muscle="' + TH.esc(key) + '" aria-label="הצג את כל תרגילי ' + TH.esc(label) + '">הכל</button>' +
         '</div>' +
-        '<div class="rail" role="list">' + items.map(cardHtml).join('') + '</div>' +
+        '<div class="rail" role="list">' + items.map(function (x) { return '<div role="listitem" style="display:contents">' + cardHtml(x) + '</div>'; }).join('') + '</div>' +
       '</section>';
     }).join('');
   }

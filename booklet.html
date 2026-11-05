@@ -317,7 +317,7 @@
 
     function table(items) {
       if (!items.length) return '';
-      return '<table><thead><tr><th>שם</th><th>תיאור המשחק</th><th>הערות</th></tr></thead><tbody>' + items.map(function (g) {
+      return '<table tabindex="0"><thead><tr><th>שם</th><th>תיאור המשחק</th><th>הערות</th></tr></thead><tbody>' + items.map(function (g) {
         return '<tr><td>' + esc(g.he) + '</td><td>' + esc(g.description) + '</td><td>' + esc(g.notes) + '</td></tr>';
       }).join('') + '</tbody></table>';
     }
@@ -342,7 +342,7 @@
 
   function renderFitnessInfo() {
     var f = B.data.fitnessTest;
-    $('fitnessInfo').innerHTML = '<h3>מטרת הבוחן</h3>' + list(f.goals, 'ol') + '<h3>תמהיל הציון</h3><table><thead><tr><th>רכיב בבוחן</th><th>משקל</th></tr></thead><tbody>' + f.components.map(function (c) {
+    $('fitnessInfo').innerHTML = '<h3>מטרת הבוחן</h3>' + list(f.goals, 'ol') + '<h3>תמהיל הציון</h3><table tabindex="0"><thead><tr><th>רכיב בבוחן</th><th>משקל</th></tr></thead><tbody>' + f.components.map(function (c) {
       return '<tr><td>' + esc(c.group + ' – ' + c.he) + '<div class="muted">' + esc(c.text) + '</div></td><td>' + c.weight + '%</td></tr>';
     }).join('') + '</tbody></table>' + credit('fitness_test');
   }
@@ -375,7 +375,7 @@
       pullups: $('f-pullups').value, pushups: $('f-pushups').value, plank: $('f-plank').value,
       run300: $('f-run300').value, run3k: $('f-run3k').value
     }, $('f-sex').value);
-    $('fitnessOut').innerHTML = '<table><thead><tr><th>רכיב</th><th>ציון</th><th>משקל</th><th>תרומה</th></tr></thead><tbody>' + res.components.map(function (c) {
+    $('fitnessOut').innerHTML = '<table tabindex="0"><thead><tr><th>רכיב</th><th>ציון</th><th>משקל</th><th>תרומה</th></tr></thead><tbody>' + res.components.map(function (c) {
       return '<tr><td>' + esc(c.he) + '</td><td>' + (c.score == null ? '—' : c.score) + '</td><td>' + c.weight + '%</td><td>' + c.weighted + '</td></tr>';
     }).join('') + '</tbody></table><p class="total" role="status">ציון משוקלל: ' + res.total + (res.complete ? '' : ' (חסרים רכיבים)') + '</p>';
   }
@@ -387,18 +387,18 @@
     if (t) {
       h += '<h3>' + esc(t._meta.title) + '</h3><p>' + esc(t.purpose) + '</p>' + list(t.contents, 'ol');
       h += '<h3>מבדק לשטח הפעילות</h3>' + list(t.siteAudit.generalQuestions) + B.siteChecklist().map(function (s) {
-        return '<p><strong>' + esc(s.he) + '</strong></p><table><thead><tr><th>מה בודקים</th><th>כן/לא</th><th>הערות</th></tr></thead><tbody>' + s.items.map(function (q) {
+        return '<p><strong>' + esc(s.he) + '</strong></p><table tabindex="0"><thead><tr><th>מה בודקים</th><th>כן/לא</th><th>הערות</th></tr></thead><tbody>' + s.items.map(function (q) {
           return '<tr><td>' + esc(q) + '</td><td></td><td></td></tr>';
         }).join('') + '</tbody></table>';
       }).join('');
-      h += '<h3>' + esc(t.riskMatrix.he) + '</h3><table><thead><tr>' + t.riskMatrix.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' + t.riskMatrix.rows.map(function (r) {
+      h += '<h3>' + esc(t.riskMatrix.he) + '</h3><table tabindex="0"><thead><tr>' + t.riskMatrix.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' + t.riskMatrix.rows.map(function (r) {
         return '<tr><td>' + esc(r.hazard) + '</td><td>' + r.relevance + '</td><td>' + r.severity + '</td><td>' + r.likelihood + '</td><td>' + list(r.mitigations, 'ol') + '</td></tr>';
       }).join('') + '</tbody></table><p>' + esc(t.riskMatrix.footer) + '</p>';
-      h += '<h3>' + esc(t.incidentResponses.he) + '</h3><table><thead><tr><th>#</th><th>סוג פציעה</th><th>תגובה</th></tr></thead><tbody>' + t.incidentResponses.rows.map(function (r) {
+      h += '<h3>' + esc(t.incidentResponses.he) + '</h3><table tabindex="0"><thead><tr><th>#</th><th>סוג פציעה</th><th>תגובה</th></tr></thead><tbody>' + t.incidentResponses.rows.map(function (r) {
         return '<tr><td>' + r.n + '</td><td>' + esc(r.type) + '</td><td>' + esc(r.response) + '</td></tr>';
       }).join('') + '</tbody></table>' + list(t.incidentResponses.reminder);
       h += '<h3>' + esc(t.instructorDeclaration.he) + '</h3><p>' + esc(t.instructorDeclaration.intro) + '</p>' + list(t.instructorDeclaration.commitments);
-      h += '<h3>' + esc(t.traineeRoster.he) + '</h3><p class="muted">' + esc(t.traineeRoster.privacy) + '</p><table><thead><tr>' + t.traineeRoster.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      h += '<h3>' + esc(t.traineeRoster.he) + '</h3><p class="muted">' + esc(t.traineeRoster.privacy) + '</p><table tabindex="0"><thead><tr>' + t.traineeRoster.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
         Array.apply(null, Array(t.traineeRoster.templateRows)).map(function (_, i) { return '<tr><td>' + (i + 1) + '</td>' + '<td></td>'.repeat(t.traineeRoster.columns.length - 1) + '</tr>'; }).join('') + '</tbody></table>';
       h += '<p class="credit">' + esc('מקור: ' + t._meta.source.title + ' — ' + t._meta.organization) + '</p>';
     }

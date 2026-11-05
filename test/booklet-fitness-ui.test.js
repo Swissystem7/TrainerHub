@@ -101,7 +101,7 @@ test('scoreNow with valid results renders score table and weighted total', funct
 
   app.get('score').click();
   const out = app.get('fitnessOut');
-  assert.match(out.innerHTML, /<table>/);
+  assert.match(out.innerHTML, /<table[ >]/);
   assert.match(out.innerHTML, /ציון משוקלל: 75/);
 });
 
@@ -133,7 +133,7 @@ test('pressing Enter in any fitness input field triggers calculation', function 
   app.get('f-pullups').value = '15';
 
   app.get('f-pullups').keydown('Enter');
-  assert.match(app.get('fitnessOut').innerHTML, /<table>/);
+  assert.match(app.get('fitnessOut').innerHTML, /<table[ >]/);
   assert.match(app.get('fitnessOut').innerHTML, /ציון משוקלל/);
 
   app.get('fitnessReset').click();
@@ -141,5 +141,5 @@ test('pressing Enter in any fitness input field triggers calculation', function 
 
   app.get('f-pushups').value = '25';
   app.get('f-pushups').keydown('Enter');
-  assert.match(app.get('fitnessOut').innerHTML, /<table>/);
+  assert.match(app.get('fitnessOut').innerHTML, /<table[ >]/);
 });
