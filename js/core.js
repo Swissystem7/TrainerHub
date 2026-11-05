@@ -2448,10 +2448,34 @@
     return storeGet(KEYS.activeSession, null);
   }
 
-  function suggestNextFromLog(compact, lastLog) {
+  function painOf(log) {
+    if (!log) return false;
+    var p = log.pain;
+    if (p === true) return true;
+    if (typeof p === 'number') return p >= 3;
+    if (typeof p === 'string') return /^(1|true|yes|כן)$/i.test(p.trim()) || Number(p) >= 3;
+    return false;
+  }
+
+  // Per-exercise RPE from an imported TH1 detail (log.ex, 1–10 scale).
+  function exerciseRpeMap(log) {
+    var map = {};
+    (log && Array.isArray(log.ex) ? log.ex : []).forEach(function (e) {
+      if (e && e.id && e.rpe != null && isFinite(Number(e.rpe))) map[e.id] = Number(e.rpe);
+    });
+    return map;
+  }
+
+  // opts (optional): { plan, week } — a periodization plan from periodizePlan
+  // and the 1-based week just trained; the result then carries the adjusted plan.
+  function suggestNextFromLog(compact, lastLog, opts) {
     lastLog = lastLog || {};
-    var hard = (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
-    var easy = lastLog.rpe != null && Number(lastLog.rpe) <= 2 && !(Number(lastLog.skipped) || 0);
+    opts = opts || {};
+    var pain = painOf(lastLog);
+    var hard = pain || (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
+    var easy = !pain && lastLog.rpe != null && Number(lastLog.rpe) <= 2 && !(Number(lastLog.skipped) || 0);
+    var exRpe = exerciseRpeMap(lastLog);
+    var decisions = [];
     var next;
     try {
       next = JSON.parse(JSON.stringify(compact || {}));
@@ -2468,21 +2492,170 @@
       (ph.e || []).forEach(function (ex) {
         if (!ex || ex.s == null) return;
         var s = Number(ex.s);
-        if (hard) ex.s = Math.min(s, Math.max(2, s - 1));
-        else if (easy) ex.s = Math.max(s, Math.min(5, s + 1));
+        var r = ex.id != null ? exRpe[ex.id] : undefined;
+        var down = hard || (r != null && r >= 9);
+        var up = !down && (easy || (r != null && r <= 5 && !hard && lastLog.rpe == null));
+        if (down) ex.s = Math.min(s, Math.max(2, s - 1));
+        else if (up) ex.s = Math.max(s, Math.min(5, s + 1));
+        if (r != null || pain) {
+          decisions.push({
+            id: ex.id || ex.n,
+            from: s,
+            to: ex.s,
+            why: pain ? 'דווח על כאב — לא מעלים נפח ב«' + (ex.n || ex.id) + '»'
+              : r >= 9 ? 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — סט אחד פחות'
+              : (ex.s > s ? 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — יש מקום לסט נוסף' : 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — נשאר אותו נפח')
+          });
+        }
       });
     });
     // The suggested plan comes back as the next week's lastPlan, so the suffix
     // must not stack up week after week.
     next.t = String(next.t || 'אימון').replace(/(\s*·\s*שבוע הבא)+\s*$/, '') + ' · שבוע הבא';
-    return {
+    var out = {
       compact: next,
       workout: expandPlan(next),
       adjusted: hard ? 'down' : (easy ? 'up' : 'same'),
-      why: hard
+      why: pain
+        ? 'הורדתי סט — דווח על כאב'
+        : hard
         ? 'הורדתי סט — היו דילוגים או קושי גבוה'
-        : (easy ? 'הוספתי סט — הביצוע היה קל ונקי' : 'השארתי נפח — אין אות ברור')
+        : (easy ? 'הוספתי סט — הביצוע היה קל ונקי' : 'השארתי נפח — אין אות ברור'),
+      decisions: decisions
     };
+    if (opts.plan && opts.week) {
+      out.plan = adjustNextWeek(opts.plan, opts.week, { rpe: lastLog.rpe, skipped: lastLog.skipped, pain: pain });
+    }
+    return out;
+  }
+
+  // ---- Periodization (4–12 weeks) ----------------------------------------
+  // Weekly blocks of three loading weeks and one deload. The plan only holds
+  // numbers per week; applyPlanWeek turns a week into the same phases workout.
+  var MOVE_OF_MUSCLE = { chest: 'push', shoulders: 'push', triceps: 'push', back: 'pull', biceps: 'pull', legs: 'legs' };
+
+  function movementOf(ex) {
+    var id = ex && (ex.id || ex.name);
+    if (!id) return 'other';
+    for (var i = 0; i < PROGRAM_POOL.length; i++) {
+      if (PROGRAM_POOL[i].id === id) {
+        var ms = PROGRAM_POOL[i].muscles || [];
+        for (var j = 0; j < ms.length; j++) if (MOVE_OF_MUSCLE[ms[j]]) return MOVE_OF_MUSCLE[ms[j]];
+        return 'other';
+      }
+    }
+    var t = String(id) + ' ' + String((ex && ex.name) || '');
+    if (/squat|lunge|deadlift|leg|calf|glute|step|סקוואט|לאנג|רגל|ישבן|דדליפט/i.test(t)) return 'legs';
+    if (/row|pull|chin|curl|חתיר|משיכ|מתח|כפיפ/i.test(t)) return 'pull';
+    if (/push|press|bench|dip|fly|לחיצ|שכיב|מקבילים/i.test(t)) return 'push';
+    return 'other';
+  }
+
+  var MOVE_LABELS = { push: 'דחיפה', pull: 'משיכה', legs: 'רגליים' };
+
+  // Sets per movement across every day's main phase of a weekly program.
+  function pplBalance(program) {
+    var tally = { push: 0, pull: 0, legs: 0 };
+    ((program && program.dailyWorkouts) || []).forEach(function (d) {
+      (d.phases || []).forEach(function (ph) {
+        if (!/^main$/i.test(String(ph.name || ''))) return;
+        (ph.exercises || []).forEach(function (ex) {
+          var m = movementOf(ex);
+          if (tally[m] != null) tally[m] += Number(ex.sets) || 1;
+        });
+      });
+    });
+    var keys = ['push', 'pull', 'legs'];
+    var max = Math.max(tally.push, tally.pull, tally.legs);
+    var low = keys.filter(function (k) { return max > 0 && tally[k] < max * 0.6; });
+    var why;
+    if (!max) why = 'אין תרגילי כוח מרכזיים למדידת איזון.';
+    else if (!low.length) why = 'איזון טוב: דחיפה ' + tally.push + ' · משיכה ' + tally.pull + ' · רגליים ' + tally.legs + ' סטים בשבוע.';
+    else why = 'חוסר איזון: ' + low.map(function (k) { return MOVE_LABELS[k] + ' (' + tally[k] + ')'; }).join(', ') +
+      ' מתחת ל-60% מהקבוצה המובילה (' + max + ' סטים). מומלץ להוסיף סט לתרגילי ' + low.map(function (k) { return MOVE_LABELS[k]; }).join(' / ') + ' או להחליף תרגיל.';
+    return { push: tally.push, pull: tally.pull, legs: tally.legs, balanced: !!max && !low.length, low: low, why: why };
+  }
+
+  function planWeek(n, kind, loadPct, setsDelta, why) {
+    return { week: n, kind: kind, loadPct: loadPct, setsDelta: setsDelta, why: why, adjusted: false };
+  }
+
+  function periodizePlan(opts) {
+    opts = opts || {};
+    var weeks = Math.min(12, Math.max(4, Math.floor(Number(opts.weeks) || 4)));
+    var step = opts.goal === 'endurance' ? 2.5 : 5;
+    var out = [];
+    var level = 100;
+    for (var n = 1; n <= weeks; n++) {
+      var inBlock = (n - 1) % 4; // 0,1,2 load · 3 deload
+      if (inBlock === 3) {
+        out.push(planWeek(n, 'deload', 60, -0.4, 'שבוע פריקה: 60% עומס ו-40% פחות סטים — התאוששות אחרי 3 שבועות העמסה.'));
+        continue;
+      }
+      if (n > 1) level += step;
+      var extra = inBlock === 2 ? 1 : 0;
+      out.push(planWeek(n, 'load', level, extra, n === 1
+        ? 'שבוע בסיס: 100% עומס — מודדים את נקודת הפתיחה.'
+        : 'העמסה הדרגתית: +' + step + '% עומס' + (extra ? ' וסט נוסף — שבוע שיא לפני פריקה.' : ' לעומת השבוע הקודם.')));
+    }
+    return { weeks: out, total: weeks, step: step };
+  }
+
+  // actual: { rpe (1–5), skipped, pain } for the week just trained (1-based).
+  function adjustNextWeek(plan, week, actual) {
+    var p = JSON.parse(JSON.stringify(plan || { weeks: [] }));
+    actual = actual || {};
+    var idx = Math.floor(Number(week) || 0); // index of the next week (0-based) === week
+    var next = p.weeks[idx];
+    if (!next) return p;
+    var cur = p.weeks[idx - 1] || { loadPct: 100 };
+    var pain = painOf(actual);
+    var skipped = Number(actual.skipped) || 0;
+    var rpe = actual.rpe != null && actual.rpe !== '' ? Number(actual.rpe) : null;
+    var shift = 0;
+    if (pain) {
+      next.kind = 'deload'; next.loadPct = 60; next.setsDelta = -0.4;
+      next.why = 'דווח על כאב בשבוע ' + week + ' — הוקדם שבוע פריקה (60%) ומומלץ לבדוק את מקור הכאב לפני שחוזרים להעמיס.';
+      shift = -(p.step || 5);
+    } else if (next.kind === 'deload') {
+      next.why += rpe != null || skipped ? ' (נשמר לפי התוכנית)' : '';
+    } else if (cur.kind !== 'deload' && (skipped >= 2 || (rpe != null && rpe >= 4))) {
+      shift = cur.loadPct - next.loadPct;
+      next.loadPct = cur.loadPct;
+      next.setsDelta = 0;
+      next.why = (skipped >= 2 ? skipped + ' אימונים דולגו' : 'קושי ' + rpe + '/5') + ' בשבוע ' + week + ' — חוזרים על אותו עומס (' + next.loadPct + '%) במקום להעלות.';
+    } else if (rpe != null && rpe <= 2 && !skipped) {
+      next.loadPct += 2.5; shift = 2.5;
+      next.why = 'שבוע ' + week + ' היה קל ונקי (קושי ' + rpe + '/5) — מעלים 2.5% נוספים ל-' + next.loadPct + '%.';
+    } else {
+      next.why += ' (לפי התוכנית — הביצוע תאם)';
+    }
+    next.adjusted = true;
+    if (shift) {
+      for (var i = idx + 1; i < p.weeks.length; i++) {
+        if (p.weeks[i].kind === 'deload') break; // the block's deload resets the shift
+        p.weeks[i].loadPct = Math.max(60, p.weeks[i].loadPct + shift);
+      }
+    }
+    return p;
+  }
+
+  // Same phases schema: only main-phase sets/notes change.
+  function applyPlanWeek(workout, wk) {
+    var w = JSON.parse(JSON.stringify(workout || {}));
+    if (!wk) return w;
+    (w.phases || []).forEach(function (ph) {
+      if (!/^main$/i.test(String(ph.name || ''))) return;
+      (ph.exercises || []).forEach(function (ex) {
+        if (ex.sets == null) return;
+        var s = Number(ex.sets) || 1;
+        ex.sets = wk.setsDelta < 0 ? Math.max(1, Math.round(s * (1 + wk.setsDelta))) : s + (wk.setsDelta || 0);
+        var note = 'שבוע ' + wk.week + ': ' + wk.loadPct + '% עומס';
+        ex.notes = ex.notes ? ex.notes + ' · ' + note : note;
+      });
+    });
+    w.title = String(w.title || 'אימון').replace(/\s*·\s*שבוע \d+$/, '') + ' · שבוע ' + wk.week;
+    return w;
   }
 
   // The workout rules live in their own module. Resolved on call, not on load,
@@ -2548,6 +2721,11 @@
     loadWorkoutSession: loadWorkoutSession,
     SessionTracker: SessionTracker,
     suggestNextFromLog: suggestNextFromLog,
+    periodizePlan: periodizePlan,
+    adjustNextWeek: adjustNextWeek,
+    applyPlanWeek: applyPlanWeek,
+    pplBalance: pplBalance,
+    movementOf: movementOf,
     rulesWithSources: rulesWithSources,
     findRule: findRule,
     rulesMarkup: rulesMarkup,
