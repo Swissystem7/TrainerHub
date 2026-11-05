@@ -493,9 +493,20 @@
     return clients.filter(function (c) { return c.id === id; })[0] || null;
   }
 
+  // lastPlan is the compact report shape ({p:[{e}]}). The session tracker
+  // reads phases. A stored plan still has to count today's logged exercises.
+  function planForSession(plan) {
+    if (!plan || typeof plan !== 'object') return null;
+    if (Array.isArray(plan.phases)) return plan;
+    if (Array.isArray(plan.p) && typeof TH.expandPlan === 'function') return TH.expandPlan(plan);
+    return plan;
+  }
+
   function planSession(c) {
     if (!ST || !c || !c.lastPlan) return null;
-    return ST.createSession(c.lastPlan);
+    var plan = planForSession(c.lastPlan);
+    if (!plan) return null;
+    return ST.createSession(plan);
   }
 
   function renderInsights() {
@@ -651,6 +662,32 @@
     });
   });
 
+  // Finish already wrote this session on the same device («פתח כמתאמן»
+  // then paste the code here). Importing it must not add the sets again.
+  function journalSessionStored(clientId, doneAt, title, flat) {
+    var J = window.THJournalStorage;
+    if (!J || typeof J.listEntries !== 'function') return false;
+    var want = String(title || 'אימון').trim() || 'אימון';
+    var rows = J.listEntries();
+    var i, e, sets, s, same;
+    for (i = 0; i < rows.length; i++) {
+      e = rows[i];
+      if (String(e.clientId || '') !== String(clientId || '')) continue;
+      if (String(e.doneAt || '') !== String(doneAt || '')) continue;
+      if ((String(e.title || 'אימון').trim() || 'אימון') !== want) continue;
+      sets = e.sets || [];
+      if (sets.length !== flat.length) continue;
+      same = true;
+      for (s = 0; s < flat.length; s++) {
+        if (String(sets[s].exerciseId || '') !== String(flat[s].exerciseId || '')) { same = false; break; }
+        if (Number(sets[s].reps) !== Number(flat[s].reps)) { same = false; break; }
+        if (Number(sets[s].weightKg) !== Number(flat[s].weightKg)) { same = false; break; }
+      }
+      if (same) return true;
+    }
+    return false;
+  }
+
   $('importForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var parsed = TH.decodeResult($('importCode').value);
@@ -698,7 +735,7 @@
         exLog.forEach(function (ex) {
           ex.sets.forEach(function (st) { flat.push({ exerciseId: ex.id, reps: st.reps, weightKg: st.weightKg }); });
         });
-        if (flat.length && window.THJournalStorage) {
+        if (flat.length && window.THJournalStorage && !journalSessionStored(c.id, parsed.doneAt, parsed.title, flat)) {
           window.THJournalStorage.saveEntry({ clientId: c.id, title: parsed.title, doneAt: parsed.doneAt, sets: flat });
         }
       }
