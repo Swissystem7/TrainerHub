@@ -11,8 +11,10 @@ function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
 
-test('there is no GitHub Actions workflow directory', function () {
-  assert.equal(fs.existsSync(path.join(root, '.github', 'workflows')), false);
+test('the only GitHub Actions workflow is the reels queue (#532)', function () {
+  const dir = path.join(root, '.github', 'workflows');
+  const files = fs.existsSync(dir) ? fs.readdirSync(dir).sort() : [];
+  assert.deepEqual(files.filter(function (f) { return f !== 'reels-queue.yml'; }), []);
 });
 
 test('unused lib/ helpers are not in the live tree', function () {
