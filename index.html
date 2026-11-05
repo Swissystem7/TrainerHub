@@ -266,6 +266,9 @@
         host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
         return;
       }
+      var oldQr = host.parentNode.querySelector('[data-role="share-qr"]');
+      if (oldQr) oldQr.parentNode.removeChild(oldQr);
+      if (TH.shareQrMarkup) host.insertAdjacentHTML('afterend', TH.shareQrMarkup(shared.url));
       TH.copyOrShow(shared.url, host, function () {
         $('copyBtn').textContent = 'הועתק';
         setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
