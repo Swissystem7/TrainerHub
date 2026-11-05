@@ -118,3 +118,40 @@ test('every pilot page loads js/sentry-init.js once, in the head', function () {
     assert.ok(html.indexOf('sentry-init.js') < html.indexOf('</head>'), p + ': in head');
   });
 });
+
+test('start() waits for the load event before fetching the bundle (CT-015)', function () {
+  const listeners = {};
+  const appended = [];
+  const win = {
+    location: { hostname: 'localhost', search: '' },
+    addEventListener: function (t, f) { listeners[t] = f; },
+    removeEventListener: function (t) { delete listeners[t]; },
+    document: {
+      readyState: 'interactive',
+      createElement: function () { return {}; },
+      head: { appendChild: function (el) { appended.push(el); } }
+    }
+  };
+  assert.equal(S.start(win), true);
+  assert.equal(appended.length, 0, 'nothing fetched before load');
+  assert.equal(typeof listeners.error, 'function', 'early errors are still buffered');
+  listeners.load();
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].src, S.BUNDLE_URL);
+});
+
+test('start() fetches the bundle at once when the page has already loaded', function () {
+  const appended = [];
+  const win = {
+    location: { hostname: 'localhost', search: '' },
+    addEventListener: function () {},
+    removeEventListener: function () {},
+    document: {
+      readyState: 'complete',
+      createElement: function () { return {}; },
+      head: { appendChild: function (el) { appended.push(el); } }
+    }
+  };
+  S.start(win);
+  assert.equal(appended.length, 1);
+});

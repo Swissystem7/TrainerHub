@@ -105,7 +105,17 @@
       early = [];
     };
     s.onerror = function () { stopKeeping(); early = []; };
-    (doc.head || doc.documentElement).appendChild(s);
+    function inject() { (doc.head || doc.documentElement).appendChild(s); }
+    // CT-015: the bundle is not needed to render, so it waits for the page's
+    // load event instead of competing with the page's own CSS/JS (Lighthouse
+    // flagged the CDN connection on the critical path). Errors thrown before it
+    // arrives are still buffered above and sent after init.
+    if (typeof doc.readyState === 'string' && doc.readyState !== 'complete' &&
+        typeof win.addEventListener === 'function') {
+      win.addEventListener('load', inject, { once: true });
+    } else {
+      inject();
+    }
     return true;
   }
 
