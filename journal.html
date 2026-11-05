@@ -6,36 +6,40 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="יומן ביצוע מקומי: ייבוא קוד TH1 מהוואטסאפ, רשת 28 יום, הצעת שבוע הבא. בלי שרת ובלי לקוחות בדויים.">
   <title>TrainerHub | יומן ביצוע</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
-    .wrap { max-width: 900px; margin: auto; padding: 28px 20px 72px; }
-    .top small { color: var(--lime); font-weight: bold; }
-    .top h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 8px 0; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 900px; margin: auto; padding: 16px 16px 72px; }
+    .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.625rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.15; margin: 8px 0; }
     .top p { color: var(--muted); line-height: 1.6; max-width: 44rem; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 16px 0; }
-    label { display: block; color: var(--muted); font-size: .84rem; margin: 12px 0 6px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin: 16px 0; }
+    .card h2 { font-size: 18px; font-weight: 800; }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
     input, textarea, select {
-      width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
-      background: #111513; color: var(--ink); font: inherit;
+      width: 100%; min-height: 48px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px;
     }
-    textarea { min-height: 72px; font-family: ui-monospace, Consolas, monospace; font-size: .82rem; }
+    textarea { min-height: 72px; font-family: ui-monospace, Consolas, monospace; font-size: 14px; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .stat { background: #111513; border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
-    .stat b { display: block; font-size: 1.5rem; }
+    .stat { background: var(--th-surface2); border: 0; border-radius: var(--th-r-md); padding: 12px; text-align: center; color: var(--muted); font-size: 13px; }
+    .stat b { display: block; font-size: 24px; font-weight: 900; color: var(--ink); }
     .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .actions button { width: auto; margin-top: 0; }
-    .status { min-height: 1.3em; margin-top: 8px; color: var(--lime); }
-    .warn { color: #f0b542; }
-    .honest { color: var(--muted); font-size: .88rem; line-height: 1.5; }
+    .actions button { width: auto; margin-top: 0; min-height: 48px; }
+    .status { min-height: 1.3em; margin-top: 8px; color: var(--th-teal-ink); }
+    .warn { color: var(--th-orange-ink); }
+    .honest { color: var(--muted); font-size: 14px; line-height: 1.5; }
     .dots { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 10px; }
-    .dot { width: 12px; height: 12px; border-radius: 3px; background: #26302b; border: 1px solid #303834; }
-    .dot.on { background: #3d6b00; border-color: var(--lime); }
+    .dot { width: 12px; height: 12px; border-radius: 3px; background: var(--th-surface2); border: 1px solid var(--line); }
+    .dot.on { background: var(--th-teal); border-color: var(--th-teal); }
     .person { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; justify-content: space-between; }
-    .risk { color: #f0b542; font-size: .78rem; }
+    .risk { color: var(--th-orange-ink); font-size: 13px; font-weight: 700; }
     .empty { color: var(--muted); text-align: center; padding: 24px 8px; line-height: 1.7; }
     button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, a:focus-visible {
       outline: 2px solid var(--lime);
@@ -45,7 +49,7 @@
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#importCode">דלג לייבוא קוד</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
@@ -937,5 +941,6 @@
   render();
 })();
 </script>
+<script src="./js/th-nav.js"></script>
 </body>
 </html>
