@@ -30,7 +30,10 @@ test('the reel library validates and is the union of the reel list and the mappi
   const result = THReels.validateLibrary(data);
   assert.deepEqual(result.errors, []);
   assert.equal(data.exercises.length, 79);
-  assert.equal(data.exercises.filter(function (ex) { return ex.verified; }).length, 0);
+  data.exercises.forEach(function (ex) { assert.equal(typeof ex.verified, 'boolean', ex.id); });
+  data.exercises.filter(function (ex) { return ex.verified; }).forEach(function (ex) {
+    assert.match(ex.source_notes, /אומת מול הסרטון/, ex.id);
+  });
   assert.ok(data.exercises.some(function (ex) { return ex.id === 'ig-DeO8oVyADue'; }));
   assert.ok(data.exercises.some(function (ex) { return ex.id === 'ig-DdS9ue-knAM'; }));
 });
@@ -65,17 +68,18 @@ test('לא מצוין is stored as unknown reps, and a corrected reel replaces i
   assert.equal(String(fixed.source_sets_reps).indexOf('לא מצוין'), -1);
 });
 
-test('DfDEp8PRL3f keeps the mapped bench core prescription and stays unverified', function () {
+test('DfDEp8PRL3f is verified against the reel as a bench core routine', function () {
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   assert.ok(bench);
-  assert.equal(bench.verified, false);
+  assert.equal(bench.verified, true);
   assert.equal(bench.creator, 'coachgiress38');
   assert.equal(bench.muscle_group, 'ליבה');
   assert.equal(bench.sets, 3);
   assert.equal(bench.reps, '20');
-  assert.equal(bench.sets_reps, '3x20 → 5x20 REPS');
+  assert.match(bench.sets_reps, /3x20/);
   assert.match(bench.equipment, /ספסל/);
-  assert.deepEqual(bench.steps_he, ['ברך שמאל/ימין', 'פוש-אפ מוגבה', 'נגיעת כתף']);
+  assert.ok(bench.steps_he.length >= 3 && bench.steps_he.length <= 5);
+  assert.ok(bench.equipment_tags.indexOf('bench') !== -1);
   assert.equal(bench.source_url, 'https://www.instagram.com/reel/DfDEp8PRL3f/');
 });
 
@@ -121,7 +125,7 @@ test('a workout can be built, prescribed, saved, and placed on the weekly plan',
   const program = THReels.toDailyProgram(saved);
   assert.equal(program.dailyWorkouts.length, 1);
   assert.equal(program.dailyWorkouts[0].day, 1);
-  assert.equal(program.dailyWorkouts[0].exercises[1].name, '4 תרגילים על ספסל: ברך שמאל/ימין, פוש-אפ מוגבה, נגיעת כתף');
+  assert.equal(program.dailyWorkouts[0].exercises[1].name, bench.name_he);
   assert.equal(program.dailyWorkouts[0].exercises[1].sets, 5);
   assert.equal(program.dailyWorkouts[0].exercises[1].reps, '20');
 
@@ -176,8 +180,8 @@ test('exercise cards link to the source reel', function () {
     });
   });
   assert.match(html, /href="https:\/\/www\.instagram\.com\/reel\/DfDEp8PRL3f\/"/);
-  assert.match(html, /פוש-אפ מוגבה/);
-  assert.match(html, /לא מאומת/);
+  assert.match(html, /נוגעים ביד בכתף/);
+  assert.doesNotMatch(html, /לא מאומת/);
   assert.match(html, /data-add="ig-DfDEp8PRL3f"/);
 });
 
@@ -238,4 +242,38 @@ test('the node and python validators both accept the seed file', function () {
   const py = spawnSync('python3', ['scripts/validate_exercises.py'], { cwd: root, encoding: 'utf8' });
   assert.equal(py.status, 0, py.stderr || py.stdout);
   assert.match(py.stdout, /79 exercises/);
+});
+
+test('verified exercises carry steps, safety, difficulty and same-group alternatives', function () {
+  const byId = {};
+  data.exercises.forEach(function (ex) { byId[ex.id] = ex; });
+  data.exercises.filter(function (ex) { return ex.verified; }).forEach(function (ex) {
+    assert.ok(ex.steps_he.length >= 3 && ex.steps_he.length <= 5, ex.id);
+    assert.ok(typeof ex.safety_he === 'string' && ex.safety_he.trim(), ex.id);
+    assert.ok([1, 2, 3].indexOf(ex.difficulty) !== -1, ex.id);
+    assert.ok(Array.isArray(ex.alternatives) && ex.alternatives.length <= 2, ex.id);
+    ex.alternatives.forEach(function (alt) {
+      assert.ok(byId[alt], alt);
+      assert.equal(byId[alt].muscle_group, ex.muscle_group);
+    });
+  });
+  const copy = JSON.parse(JSON.stringify(data));
+  const one = copy.exercises.find(function (ex) { return ex.verified; });
+  if (one) {
+    one.difficulty = 7;
+    one.alternatives = ['ig-nope'];
+    const result = THReels.validateLibrary(copy);
+    assert.ok(result.errors.some(function (line) { return /difficulty/.test(line); }));
+    assert.ok(result.errors.some(function (line) { return /alternatives/.test(line); }));
+  }
+});
+
+test('the exercise card shows steps, safety and difficulty', function () {
+  const ex = { id: 'ig-X', name_he: 'תרגיל', muscle_group: 'חזה', sets_reps: '3x10', steps_he: ['שלב א', 'שלב ב', 'שלב ג'],
+    safety_he: 'גב ישר', difficulty: 2, verified: true, source_url: 'https://www.instagram.com/reel/X/', creator: 'c', poster: '' };
+  const html = THReels.exerciseCardHtml(ex, function (s) { return String(s); });
+  assert.match(html, /<ol class="steps"><li>שלב א<\/li>/);
+  assert.match(html, /בטיחות:<\/strong> גב ישר/);
+  assert.match(html, /רמת קושי: בינוני/);
+  assert.match(html, /מאומת/);
 });
