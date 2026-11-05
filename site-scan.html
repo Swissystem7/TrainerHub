@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
-  <meta name="description" content="סריקת שטח: מצלמים את מקום האימון, מסמנים מה יש בו, ומקבלים אימון מחוברת אחריי שמתאים לשטח ולקבוצה.">
+  <meta name="description" content="סריקת שטח: מצלמים את מקום האימון, מסמנים מה יש בו, ומקבלים אימון שמתאים לשטח ולקבוצה.">
   <title>TrainerHub | סריקת שטח</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,19 +55,19 @@
   <span class="brand">TrainerHub</span>
   <a href="./">בנה אימון</a>
   <span class="chip on">סריקת שטח</span>
-  <a href="./booklet.html">חוברת הקורס</a>
+  <a href="./booklet.html">תיק בטיחות</a>
   <a href="./exercises.html">ספריית תרגילים</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
   <a href="./reserves.html">מדדי מילואים</a>
 </nav>
 <div class="th-banner">
-  סריקת השטח ובניית האימון רצות בדפדפן לפי חוברת אחריי. הזיהוי הוא הצעה בלבד ללא שרת.
+  סריקת השטח ובניית האימון רצות בדפדפן. הזיהוי הוא הצעה בלבד ללא שרת.
 </div>
 <main class="wrap">
   <header class="top">
     <small>TRAINERHUB / סריקת שטח</small>
     <h1>📷 סרוק את השטח</h1>
-    <p>מצלמים את מקום האימון (עד 3 תמונות), בודקים מה זוהה, ומקבלים אימון מחוברת אחריי שמתאים לשטח. הזיהוי הוא הצעה בלבד: אתם מתקנים כל דבר לפני הבנייה.</p>
+    <p>מצלמים את מקום האימון (עד 3 תמונות), בודקים מה זוהה, ומקבלים אימון שמתאים לשטח. הזיהוי הוא הצעה בלבד: אתם מתקנים כל דבר לפני הבנייה.</p>
   </header>
 
   <section aria-labelledby="photos-h">
@@ -98,7 +98,7 @@
       <button type="button" id="reset" class="ghost" aria-label="נקה נתונים והתחל סריקה מחדש">נקה והתחל מחדש</button>
     </div>
     <div id="planOut" aria-live="polite">
-      <p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי.</p>
+      <p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם לשטח.</p>
     </div>
     <div class="actions" id="scanActions" hidden>
       <button type="button" id="start" aria-label="התחל אימון שטח במצב אימון חי">התחל במצב אימון</button>
@@ -223,7 +223,7 @@
   }
 
   function buildNow() {
-    if (!THBooklet.data) { $('planOut').innerHTML = '<p class="muted empty-plan" role="status">תוכן החוברת עוד לא נטען.</p>'; return; }
+    if (!THSitePlan || typeof THSitePlan.build !== 'function') { $('planOut').innerHTML = '<p class="muted empty-plan" role="status">בונה האימון לשטח עוד לא נטען.</p>'; return; }
     var res = THSitePlan.build(profile, { group: $('group').value, season: $('season').value });
     current = res.workout;
     var layout = { waves: 'בגלים', stations: 'בתחנות' }[res.layout];
@@ -263,7 +263,7 @@
     $('photos').value = '';
     $('thumbs').innerHTML = '';
     $('meters').value = '';
-    $('planOut').innerHTML = '<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי.</p>';
+    $('planOut').innerHTML = '<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם לשטח.</p>';
     $('start').hidden = true;
     if ($('scanActions')) $('scanActions').hidden = true;
     if ($('scanGateHost')) $('scanGateHost').innerHTML = '';

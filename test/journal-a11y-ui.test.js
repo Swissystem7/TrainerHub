@@ -71,7 +71,7 @@ test('journal.html has skip-link and valid Hebrew RTL headers', function () {
 test('journal.html static markup: nav has accessible label, active page indicator and links to booklet', function () {
   assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
   assert.match(html, /<span class="chip on" aria-current="page">יומן ביצוע<\/span>/);
-  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+  assert.match(html, /<a href="\.\/booklet\.html">תיק בטיחות<\/a>/);
 });
 
 test('journal.html forms declare landmark regions and aria-labelledby headers', function () {

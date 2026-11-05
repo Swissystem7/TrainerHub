@@ -8,7 +8,7 @@ const PAGES = [
   ['/library.html', 'ספריית סרטונים'],
   ['/exercises.html', 'ספריית תרגילים'],
   ['/journal.html', 'יומן ביצוע'],
-  ['/booklet.html', 'חוברת הקורס'],
+  ['/booklet.html', 'תיק בטיחות'],
   ['/offer.html', 'הצעה למאמנים'],
   ['/frontend/', 'טקסט לכרטיסייה'],
 ];

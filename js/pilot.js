@@ -2,8 +2,8 @@
  * TrainerHub — מצב פיילוט לעמותת אחריי (SPEC-site-scan.md).
  *
  * ?pilot=acharai בכתובת (או קוד הפיילוט «אחריי») פותח את יכולות המאמן בחינם,
- * עם המיתוג של אחריי בשיתוף ובהדפסה, ומסמן שבבניית אימון מעדיפים את תרגילי
- * החוברת. המצב נשמר ב-localStorage בלבד — אין שרת ואין חשבון.
+ * עם המיתוג של אחריי בשיתוף ובהדפסה.
+ * המצב נשמר ב-localStorage בלבד — אין שרת ואין חשבון.
  *
  * משוב אחרי אימון: buildFeedback() מנקה את הקלט (בלי תגיות, בלי טלפונים ובלי
  * מיילים), saveFeedback() שומר עד 50 רשומות במכשיר, ו-exportJson() / waUrl()
@@ -68,7 +68,7 @@
     return !!current();
   }
 
-  // מה שבונה האימון שואל: להעדיף את תרגילי החוברת של אחריי?
+  // Prefer-list hook kept for API compatibility; course booklet is gone so it is always empty.
   function prefersBooklet() {
     return isActive();
   }
@@ -163,10 +163,7 @@
     return lines.join('\n');
   }
 
-  // Builder hint: ids of catalog clips the Acharai booklet teaches, for
-  // THBuilder.buildSession(text, catalog, THPilot.builderOpts(catalog)). Between
-  // two clips that fit equally well, the booklet clip wins. { prefer: [] } when
-  // no pilot is on or the booklet data is not loaded yet, which changes nothing.
+  // Builder hint API kept for compatibility. Course booklet removed → always { prefer: [] }.
   function builderOpts(catalog) {
     var booklet = root.THBooklet;
     if (!booklet && typeof module === 'object' && module.exports) {

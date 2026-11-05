@@ -13,10 +13,9 @@ const SP = require('../js/site-profile.js');
 const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
-const main = JSON.parse(fs.readFileSync(path.join(root, B.MAIN_PATH), 'utf8'));
 const team = JSON.parse(fs.readFileSync(path.join(root, B.TEAM_PATH), 'utf8'));
 const catalog = JSON.parse(fs.readFileSync(path.join(root, 'js', 'catalog.json'), 'utf8'));
-B.setData(main, team);
+B.setData(null, team);
 TH.setCatalog(catalog);
 
 const mem = {};
@@ -117,12 +116,6 @@ test('site-scan «שתף אימון ללקוח» gets its label back after two q
   const page = mountPage('site-scan.html', ['THBooklet', 'THSiteProfile', 'THSitePlan'], [B, SP, Plan]);
   await new Promise(function (r) { setImmediate(r); });
   assertDoubleTapRestores(page, function () { page.$('build').click(); });
-});
-
-test('booklet «שתף אימון ללקוח» gets its label back after two quick taps', async function () {
-  const page = mountPage('booklet.html', ['THBooklet'], [B]);
-  await new Promise(function (r) { setImmediate(r); });
-  assertDoubleTapRestores(page, function () {});
 });
 
 test('weekly day share button gets its label back after two quick taps', async function () {

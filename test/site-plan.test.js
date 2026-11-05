@@ -11,7 +11,7 @@ const Plan = require('../js/site-plan.js');
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
 const catalog = read('js/catalog.json');
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 function names(r) {
   return r.workout.phases.reduce(function (a, ph) { return a.concat(ph.exercises.map(function (x) { return x.name; })); }, []);
@@ -55,16 +55,16 @@ test('site drill catalog ids exist in the video catalog', function () {
 
 test('wide site + big group → tag game; not when narrow', function () {
   const wide = Plan.build({ width: 'wide' }, { group: 12 });
-  assert.equal(wide.workout.phases[0].exercises[0].name, B.games('tag')[0].he);
+  assert.equal(wide.workout.phases[0].exercises[0].name, Plan.TAG_GAME.he);
   assert.ok(wide.reasons.some(function (x) { return /כי השטח רחב והקבוצה גדולה/.test(x); }));
   const narrow = Plan.build({ width: 'narrow' }, { group: 12 });
-  assert.ok(!names(narrow).includes(B.games('tag')[0].he));
+  assert.ok(!names(narrow).includes(Plan.TAG_GAME.he));
   assert.ok(narrow.reasons.some(function (x) { return /לא שילבתי משחקי תופסת/.test(x); }));
   const cars = Plan.build({ width: 'wide', hazards: ['cars'] }, { group: 12 });
-  assert.ok(!names(cars).includes(B.games('tag')[0].he), 'no chase games next to cars');
+  assert.ok(!names(cars).includes(Plan.TAG_GAME.he), 'no chase games next to cars');
 });
 
-test('hazards → warning lines, slippery uses the Acharai winter rule', function () {
+test('hazards → warning lines, slippery uses the winter ground rule', function () {
   const r = Plan.build({ width: 'medium', features: ['stairs'], hazards: ['cars', 'slippery'] }, { group: 4 });
   assert.ok(r.warnings.some(function (w) { return /^זוהו מכוניות/.test(w); }));
   assert.ok(r.warnings.some(function (w) { return /^משטח חלק: יש לשים לב לתנאי הקרקע/.test(w); }));
