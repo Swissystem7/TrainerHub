@@ -9,7 +9,7 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8');
 
 function extractPageScript(src) {
-  const match = src.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/);
+  const match = src.match(/<script>([\s\S]*?)<\/script>\s*(?:<script src="[^"]*th-nav\.js"><\/script>\s*)?<\/body>/);
   assert.ok(match, 'page script block found');
   return match[1];
 }

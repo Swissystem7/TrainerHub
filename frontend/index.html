@@ -6,19 +6,29 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="המרו טקסט חופשי בעברית לכרטיסיית אימון. פענוח כללים בדפדפן — בלי שרת ובלי הרשמה.">
   <title>TrainerHub — טקסט לכרטיסייה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="../css/app.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Design tokens (Claude Design 88687c89, dark set as in workout-mode.html) */
+    :root {
+      --bg: #0A1513; --surface: #12211E; --surface2: #1A2C28; --line: #28423C;
+      --ink: #E8F1EE; --muted: #9ca3af; --teal: #2DD4BF; --teal-ink: #7FE9D9;
+      --teal-fill: #00756A; --orange: #FF8A45; --on-orange: #1A0E05;
+      --r-sm: 12px; --r-md: 14px; --r-lg: 18px; --tap: 44px;
+    }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f13;
-      color: #f0f0f0;
+      font-family: 'Heebo', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
       min-height: 100vh;
     }
     .page-head { padding: 28px 20px 8px; max-width: 1100px; margin: 0 auto; }
-    .page-head small { color: #c4b5fd; font-weight: 700; }
-    .page-head h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 8px 0; }
-    .page-head p { color: #9ca3af; line-height: 1.6; max-width: 40rem; }
+    .page-head small { color: var(--teal-ink); font-weight: 700; letter-spacing: .04em; }
+    .page-head h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 8px 0; font-weight: 800; }
+    .page-head p { color: var(--muted); line-height: 1.6; max-width: 40rem; }
     .container {
       max-width: 1100px;
       margin: 0 auto;
@@ -29,129 +39,141 @@
     }
     @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
     .panel {
-      background: #1a1a2e;
-      border-radius: 16px;
+      background: var(--surface);
+      border-radius: var(--r-lg);
       padding: 24px;
-      border: 1px solid #2a2a4a;
+      border: 1px solid var(--line);
     }
     .panel h2 {
       font-size: 1rem;
-      color: #c4b5fd;
+      color: var(--teal-ink);
       margin-bottom: 16px;
+      font-weight: 700;
     }
     textarea {
       width: 100%;
       height: 220px;
-      background: #0f0f13;
-      border: 1px solid #3a3a5a;
-      border-radius: 10px;
+      background: var(--bg);
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-md);
       padding: 16px;
-      color: #f0f0f0;
+      color: var(--ink);
       font-size: 0.95rem;
       resize: vertical;
       font-family: inherit;
       line-height: 1.6;
       direction: rtl;
     }
+    textarea:focus { border-color: var(--teal); }
     .example-btn {
       margin-top: 8px;
-      background: none;
-      border: 1px solid #3a3a5a;
-      color: #c4b5fd;
-      padding: 6px 14px;
-      border-radius: 8px;
+      background: var(--surface2);
+      border: 1.5px solid var(--line);
+      color: var(--teal-ink);
+      min-height: var(--tap);
+      padding: 0 16px;
+      border-radius: 999px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 500;
       font-family: inherit;
     }
+    .example-btn:hover { border-color: var(--teal); }
     .parse-btn {
       width: 100%;
       margin-top: 16px;
-      background: linear-gradient(135deg, #7c3aed, #5b21b6);
-      color: white;
+      background: var(--teal-fill);
+      color: #fff;
       border: none;
+      min-height: 56px;
       padding: 14px;
-      border-radius: 12px;
+      border-radius: var(--r-md);
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
     }
+    .parse-btn:hover { filter: brightness(1.1); }
     .parse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .card-empty {
       min-height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #9ca3af;
+      color: var(--muted);
       text-align: center;
       line-height: 1.6;
+      border: 1.5px dashed var(--line);
+      border-radius: var(--r-md);
     }
     .card-header {
-      background: linear-gradient(135deg, #7c3aed22, #5b21b622);
-      border: 1px solid #7c3aed44;
-      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
       padding: 16px;
       margin-bottom: 16px;
     }
-    .card-title { font-size: 1.3rem; font-weight: 700; color: #c4b5fd; margin-bottom: 8px; }
+    .card-title { font-size: 1.3rem; font-weight: 800; color: var(--teal); margin-bottom: 8px; }
     .card-meta { display: flex; gap: 12px; flex-wrap: wrap; }
     .badge {
-      background: #2a2a4a;
+      background: var(--bg);
+      border: 1px solid var(--line);
       border-radius: 20px;
       padding: 4px 12px;
       font-size: 0.78rem;
-      color: #c4b5fd;
+      color: var(--teal-ink);
     }
     .intensity-high { background: #7f1d1d33; color: #fca5a5; border: 1px solid #7f1d1d; }
     .intensity-medium { background: #78350f33; color: #fcd34d; border: 1px solid #78350f; }
     .intensity-low { background: #14532d33; color: #86efac; border: 1px solid #14532d; }
-    .phase { margin-bottom: 14px; border-radius: 10px; overflow: hidden; border: 1px solid #2a2a4a; }
+    .phase { margin-bottom: 14px; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--line); }
     .phase-header {
       padding: 10px 16px; font-weight: 700; font-size: 0.85rem;
       display: flex; justify-content: space-between;
     }
-    .phase-warmup { background: #1e3a5f; color: #93c5fd; }
-    .phase-main { background: #3b1f5e; color: #c4b5fd; }
-    .phase-cooldown { background: #1a3a2a; color: #86efac; }
+    .phase-warmup { background: #1A2C28; color: var(--teal-ink); }
+    .phase-main { background: #00584F; color: #fff; }
+    .phase-cooldown { background: #1A2C28; color: var(--teal-ink); }
     .exercise {
       padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid #2a2a4a;
+      border-top: 1px solid var(--line);
       font-size: 0.88rem;
       gap: 10px;
     }
-    .exercise-details { color: #c4b5fd; font-size: 0.8rem; }
+    .exercise-details { color: var(--teal-ink); font-size: 0.8rem; }
     .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
-    .tag { background: #2a2a4a; color: #c4b5fd; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; }
+    .tag { background: var(--surface2); color: var(--teal-ink); padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; }
     .action-bar { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
     .action-btn {
-      flex: 1; padding: 10px 14px; border-radius: 10px; border: 1px solid #3a3a5a;
-      background: #0f0f13; color: #c4b5fd; font-size: 0.85rem; cursor: pointer;
+      flex: 1; min-height: var(--tap); padding: 10px 14px; border-radius: var(--r-md); border: 1.5px solid var(--line);
+      background: var(--bg); color: var(--teal-ink); font-size: 0.85rem; font-weight: 500; cursor: pointer;
       min-width: 100px; font-family: inherit;
     }
-    .action-btn.primary { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: #7c3aed; color: #fff; font-weight: 700; }
-    .history-title { font-size: 0.8rem; color: #9ca3af; margin: 18px 0 10px; }
+    .action-btn:hover { border-color: var(--teal); }
+    .action-btn.primary { background: var(--orange); border-color: var(--orange); color: var(--on-orange); font-weight: 700; }
+    .history-title { font-size: 0.8rem; color: var(--muted); margin: 18px 0 10px; }
     .history-item {
-      padding: 10px 14px; border: 1px solid #2a2a4a; border-radius: 10px;
-      margin-bottom: 8px; cursor: pointer;
+      min-height: var(--tap); padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--r-sm);
+      margin-bottom: 8px; cursor: pointer; background: var(--surface2);
       display: flex; justify-content: space-between; align-items: center;
     }
+    .history-item:hover { border-color: var(--teal); }
     .history-item:focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; }
     .history-name { font-size: 0.88rem; font-weight: 600; }
-    .history-meta { font-size: 0.75rem; color: #9ca3af; margin-top: 2px; }
-    .history-del { color: #9ca3af; font-size: 0.8rem; cursor: pointer; padding: 2px 8px; border: 0; background: none; font-family: inherit; }
-    .honest { color: #9ca3af; font-size: 0.82rem; line-height: 1.5; margin-top: 8px; }
+    .history-meta { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .history-del { color: var(--muted); font-size: 0.8rem; cursor: pointer; min-height: var(--tap); padding: 2px 8px; border: 0; background: none; font-family: inherit; }
+    .honest { color: var(--muted); font-size: 0.82rem; line-height: 1.5; margin-top: 8px; }
     .error-card {
       background: #7f1d1d22; border: 1px solid #7f1d1d44;
-      border-radius: 14px; padding: 24px; text-align: center; color: #fca5a5;
+      border-radius: var(--r-md); padding: 24px; text-align: center; color: #fca5a5;
     }
     #saveToast {
       display: none; position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
-      background: #14532d; border: 1px solid #22c55e; color: #86efac;
-      padding: 12px 24px; border-radius: 12px; font-weight: 600; z-index: 1000;
+      background: var(--teal-fill); border: 1px solid var(--teal); color: #fff;
+      padding: 12px 24px; border-radius: var(--r-md); font-weight: 600; z-index: 1000;
     }
     #saveToast.visible { display: block; }
     .equipment-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
@@ -174,6 +196,12 @@
     .history-item:focus {
       border-color: #7c3aed;
     }
+    /* The shared nav/banner sit on the design's light tokens; on this dark page use the dark set. */
+    .th-nav { background: var(--bg); }
+    .th-nav .brand { color: var(--ink); }
+    .th-nav a, .th-nav .chip { background: var(--surface); border-color: var(--line); color: var(--ink); }
+    .th-nav .chip.on { background: var(--teal-fill); border-color: var(--teal-fill); color: #fff; }
+    .th-banner { background: var(--surface2); color: var(--teal-ink); }
   </style>
 <script src="../js/sentry-init.js"></script>
 </head>
@@ -510,5 +538,6 @@
   renderHistory();
 })();
 </script>
+<script src="../js/th-nav.js"></script>
 </body>
 </html>

@@ -6,35 +6,61 @@
   <link rel="icon" href="data:,">
   <meta name="description" content="ספריית סרטוני תרגיל בעברית — חיפוש, החלפה ושליחה בוואטסאפ. בלי הרשמה.">
   <title>TrainerHub | ספריית סרטונים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="./css/app.css">
   <style>
-    :root { --bg:#101312; --card:#1a1f1d; --line:#303834; --ink:#f6f8f6; --muted:#a7b1ab; --lime:#b9f24a; }
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(135deg, #101312, #17221c); color: var(--ink); font-family: Arial, sans-serif; min-height: 100vh; }
-    .wrap { max-width: 1100px; margin: auto; padding: 28px 20px 64px; }
-    .top small { color: var(--lime); font-weight: bold; }
-    .top h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin: 8px 0; }
-    .top p { color: var(--muted); max-width: 46rem; line-height: 1.6; }
-    .filters { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 12px; margin: 22px 0 10px; }
-    .filters label { display: block; color: var(--muted); font-size: .82rem; margin-bottom: 6px; }
-    input, select { width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line); background: #111513; color: var(--ink); font: inherit; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
-    .chip { background: #26302b; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: .8rem; cursor: pointer; font: inherit; }
-    .chip[aria-pressed="true"] { background: rgba(185,242,74,.15); border-color: var(--lime); color: var(--ink); }
-    .stats { color: var(--muted); font-size: .85rem; margin-bottom: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
-    .card h2 { font-size: 1.05rem; margin: 0; }
+    body { margin: 0; background: var(--th-bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 1100px; margin: auto; padding: 16px 16px 64px; }
+    .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.625rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.15; margin: 8px 0; }
+    .top p { color: var(--muted); max-width: 46rem; line-height: 1.6; margin: 0; }
+    .filters { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 12px; margin: 20px 0 12px; }
+    .filters label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    input, select { width: 100%; min-height: 48px; padding: 0 16px; border-radius: var(--th-r-sm); border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; }
+    .chips { display: flex; gap: 8px; margin: 12px -16px 16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { flex: none; display: inline-flex; align-items: center; min-height: var(--th-tap); background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; cursor: pointer; font: inherit; font-size: 15px; font-weight: 500; white-space: nowrap; }
+    .chip[aria-pressed="true"] { background: var(--th-ink); border-color: var(--th-ink); color: var(--th-bg); font-weight: 700; }
+    .stats { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    /* Per-muscle horizontal rails (Claude Design Video library screen). */
+    .grid { display: flex; flex-direction: column; gap: 28px; }
+    .rail-section { display: flex; flex-direction: column; gap: 8px; }
+    .rail-head { display: flex; justify-content: space-between; align-items: center; min-height: var(--th-tap); gap: 12px; }
+    .rail-head .rail-title { display: flex; align-items: baseline; gap: 8px; }
+    .rail-head .rail-title strong { font-size: 18px; font-weight: 800; }
+    .rail-head .rail-title span { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .rail-head .rail-all {
+      flex: none; display: inline-flex; align-items: center; min-height: var(--th-tap);
+      padding: 0 4px; border: 0; background: none; color: var(--th-teal-ink);
+      font: 700 15px/1 var(--th-font); cursor: pointer;
+    }
+    .rail {
+      display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none;
+      margin: 0 -16px; padding: 0 16px 4px;
+    }
+    .rail::-webkit-scrollbar { display: none; }
+    .rail .card { flex: none; width: min(240px, 72vw); }
+    .grid.flat {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;
+    }
+    .grid.flat .card { width: auto; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .card h2 { font-size: 18px; font-weight: 800; margin: 4px 0 0; }
     .meta { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pill { background: #26302b; border-radius: 999px; padding: 3px 8px; font-size: .72rem; color: var(--muted); }
-    video { width: 100%; max-height: 160px; border-radius: 10px; background: #000; border: 1px solid var(--line); }
+    .pill { background: var(--th-teal-soft); color: var(--th-teal-ink); border-radius: 6px; padding: 4px 8px; font-size: 13px; font-weight: 700; }
+    .pill.source-pill { background: var(--th-surface2); color: var(--muted); }
+    video { width: 100%; max-height: 200px; border-radius: var(--th-r-sm); background: var(--th-hero); border: 0; }
     video[hidden] { display: none; }
-    .ex-media-fallback { min-height: 120px; border: 1px dashed var(--line); border-radius: 10px; padding: 16px; color: var(--muted); display: grid; place-items: center; text-align: center; }
+    .ex-media-fallback { min-height: 120px; border: 1px dashed var(--line); border-radius: var(--th-r-sm); padding: 16px; color: var(--muted); display: grid; place-items: center; text-align: center; }
     .ex-media-fallback[hidden] { display: none; }
-    .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
-    .actions button { flex: 1; min-width: 96px; margin-top: 0; padding: 8px 10px; font-size: .78rem; font-weight: 700; border: 0; border-radius: 8px; background: var(--lime); color: #101312; cursor: pointer; font-family: inherit; }
-    .actions button.ghost { background: #111513; color: var(--ink); border: 1px solid var(--line); }
-    .chip.reset-chip { background: #111513; border-color: #3a3a5a; color: #c4b5fd; margin-inline-start: auto; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+    .actions button { flex: 1; min-width: 96px; min-height: var(--th-tap); margin-top: 0; padding: 0 12px; font-size: 14px; font-weight: 700; border: 0; border-radius: var(--th-r-sm); background: var(--th-teal); color: var(--th-on-teal); cursor: pointer; font-family: inherit; }
+    .actions button.ghost { background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); }
+    .chip.reset-chip { background: var(--th-surface); border-color: var(--line); color: var(--th-teal-ink); font-weight: 700; margin-inline-start: auto; }
     .chip.reset-chip:hover { border-color: var(--lime); color: var(--ink); }
     .empty { color: var(--muted); text-align: center; padding: 40px 12px; }
     .empty button { margin-top: 12px; }
@@ -42,18 +68,20 @@
       outline: 2px solid var(--lime);
       outline-offset: 2px;
     }
-    .alts { font-size: .8rem; color: var(--muted); }
-    .alts button { background: none; border: 0; color: var(--lime); cursor: pointer; font: inherit; padding: 0 4px; }
-    .draft { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 18px; }
-    .draft h2 { font-size: 1rem; margin: 0 0 8px; }
-    .draft-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .alts { font-size: 13px; color: var(--muted); }
+    .alts button { background: none; border: 0; color: var(--th-teal-ink); cursor: pointer; font: inherit; font-weight: 700; min-height: var(--th-tap); min-width: var(--th-tap); padding: 0 4px; }
+    .draft { background: var(--th-hero); color: var(--th-on-hero); border: 0; border-radius: var(--th-r-xl); padding: 20px; margin: 16px 0; }
+    .draft h2 { font-size: 13px; font-weight: 700; color: var(--th-orange); margin: 0 0 8px; }
+    .draft .pill { background: rgba(255,255,255,.12); color: var(--th-on-hero); display: inline-block; margin: 0 0 6px; }
+    .draft-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .draft-actions button { width: auto; margin-top: 0; }
+    .draft-actions #draftStart { background: var(--th-orange); color: var(--th-on-orange); }
     @media (max-width: 800px) { .filters { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 520px) { .filters { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } .filters > div:first-child { grid-column: 1 / -1; } .filters select { padding: 0 8px; } }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#q">דלג לחיפוש</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
@@ -145,6 +173,7 @@
   <p class="stats" id="stats" aria-live="polite"></p>
   <div class="grid" id="grid" role="region" aria-label="ספריית תרגילים"></div>
 </main>
+<script src="./js/th-nav.js"></script>
 <script src="./js/core.js"></script>
 <script>
 (function () {
@@ -178,25 +207,7 @@
   }
 
   function render() {
-    var list = pinned
-      ? TH.catalogList().filter(function (e) { return e.id === pinned; })
-      : TH.filterCatalog(currentFilters());
-    var stats = TH.catalogStats();
-    $('stats').textContent = list.length + ' מתוך ' + stats.total + ' תרגילים' +
-      (tag ? ' · סינון: ' + TH.tagLabel(tag) : '') +
-      (pinned ? ' · חלופה שנבחרה' : '');
-    if (pinned) {
-      $('stats').insertAdjacentHTML('beforeend', ' <button type="button" class="chip" data-unpin="1" aria-label="בטל בחירת חלופה והצג את כל התוצאות">הצג את כל התוצאות</button>');
-    }
-    var grid = $('grid');
-    if (!list.length) {
-      grid.innerHTML = '<div class="empty" role="status">' +
-        '<p>אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>' +
-        '<button type="button" class="th-btn ghost" id="emptyResetBtn" aria-label="נקה את כל המסננים והצג את כל התרגילים">נקה סינון והצג הכל</button>' +
-        '</div>';
-      return;
-    }
-    grid.innerHTML = list.map(function (e) {
+    function cardHtml(e) {
       var muscles = (e.muscles || []).map(function (m) {
         return '<span class="pill">' + TH.esc(TH.muscleLabel(m)) + '</span>';
       }).join('');
@@ -232,10 +243,71 @@
           '<button type="button" class="ghost" data-act="wa" aria-label="שתף בוואטסאפ: ' + exName + '">וואטסאפ</button>' +
           '<button type="button" class="ghost" data-act="add" aria-label="הוסף ' + exName + ' לאימון">הוסף לאימון</button>' +
         '</div></article>';
+    }
+    var MUSCLE_RAIL_ORDER = ['legs', 'core', 'chest', 'back', 'shoulders', 'biceps', 'triceps'];
+    function primaryMuscle(e) {
+      var ms = e.muscles || [];
+      for (var i = 0; i < MUSCLE_RAIL_ORDER.length; i++) {
+        if (ms.indexOf(MUSCLE_RAIL_ORDER[i]) !== -1) return MUSCLE_RAIL_ORDER[i];
+      }
+      return ms[0] || 'other';
+    }
+    var list = pinned
+      ? TH.catalogList().filter(function (e) { return e.id === pinned; })
+      : TH.filterCatalog(currentFilters());
+    var stats = TH.catalogStats();
+    $('stats').textContent = list.length + ' מתוך ' + stats.total + ' תרגילים' +
+      (tag ? ' · סינון: ' + TH.tagLabel(tag) : '') +
+      (pinned ? ' · חלופה שנבחרה' : '');
+    if (pinned) {
+      $('stats').insertAdjacentHTML('beforeend', ' <button type="button" class="chip" data-unpin="1" aria-label="בטל בחירת חלופה והצג את כל התוצאות">הצג את כל התוצאות</button>');
+    }
+    var grid = $('grid');
+    if (!list.length) {
+      grid.className = 'grid';
+      grid.innerHTML = '<div class="empty" role="status">' +
+        '<p>אין תרגיל שמתאים לסינון. נסו ציוד אחר או נקו את החיפוש.</p>' +
+        '<button type="button" class="th-btn ghost" id="emptyResetBtn" aria-label="נקה את כל המסננים והצג את כל התרגילים">נקה סינון והצג הכל</button>' +
+        '</div>';
+      return;
+    }
+    // Flat grid when pinned or a single muscle filter is active; otherwise per-muscle rails.
+    var muscleFilter = $('muscle').value;
+    var useRails = !pinned && !muscleFilter;
+    if (!useRails) {
+      grid.className = 'grid flat';
+      grid.innerHTML = list.map(cardHtml).join('');
+      return;
+    }
+    grid.className = 'grid';
+    var groups = {};
+    list.forEach(function (e) {
+      var key = primaryMuscle(e);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(e);
+    });
+    var keys = MUSCLE_RAIL_ORDER.filter(function (k) { return groups[k] && groups[k].length; });
+    Object.keys(groups).forEach(function (k) {
+      if (keys.indexOf(k) === -1) keys.push(k);
+    });
+    grid.innerHTML = keys.map(function (key) {
+      var items = groups[key];
+      var label = key === 'other' ? 'אחר' : TH.muscleLabel(key);
+      var count = items.length;
+      return '<section class="rail-section" data-muscle="' + TH.esc(key) + '">' +
+        '<div class="rail-head">' +
+          '<div class="rail-title"><strong>' + TH.esc(label) + '</strong>' +
+            '<span>' + count + ' סרטונים</span></div>' +
+          '<button type="button" class="rail-all" data-rail-muscle="' + TH.esc(key) + '" aria-label="הצג את כל תרגילי ' + TH.esc(label) + '">הכל</button>' +
+        '</div>' +
+        '<div class="rail" role="list">' + items.map(cardHtml).join('') + '</div>' +
+      '</section>';
     }).join('');
   }
 
   function onChip(btn) {
+
+
     tag = btn.getAttribute('data-tag') || '';
     document.querySelectorAll('.chip[data-tag]').forEach(function (el) {
       el.setAttribute('aria-pressed', el === btn ? 'true' : 'false');
