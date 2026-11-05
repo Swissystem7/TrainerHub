@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
-  <meta name="description" content="תוכן חוברת קורס המאמנים של עמותת אחריי: חימום, משחקים, גמישות, מערכי אימון, בוחן כושר ותיק בטיחות קבוצה.">
-  <title>TrainerHub | חוברת הקורס</title>
+  <meta name="description" content="תיק בטיחות קבוצה לאימון בשטח: מבדק שטח, טבלת סיכונים, תגובה לאירועים ורשימת חניכים להדפסה.">
+  <title>TrainerHub | תיק בטיחות</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
@@ -18,578 +18,106 @@
     .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
     .top h1 { font-size: clamp(1.625rem, 5vw, 2.5rem); font-weight: 900; line-height: 1.15; margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
-    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
-    .tabs::-webkit-scrollbar { display: none; }
-    .tabs a { flex: none; display: inline-flex; align-items: center; min-height: 44px; background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; font-size: 15px; font-weight: 500; white-space: nowrap; text-decoration: none; }
-    .tabs a:hover { border-color: var(--th-teal); color: var(--ink); }
     section { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin: 0 0 16px; }
     section h2 { margin: 0 0 10px; font-size: 20px; font-weight: 800; }
     h3 { font-size: 16px; margin: 16px 0 8px; color: var(--th-teal-ink); }
     ol, ul { padding-inline-start: 1.3rem; line-height: 1.6; }
-    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
-    input, select { width: 100%; min-height: 48px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; }
-    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
     button { min-height: 48px; padding: 0 20px; border: 0; border-radius: 14px; background: var(--th-teal); color: var(--th-on-teal); cursor: pointer; font: inherit; font-weight: 700; margin-top: 12px; }
     button.ghost { background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line); }
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .actions button { margin-top: 0; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-    .card { background: var(--th-bg); border: 1px solid var(--line); border-radius: var(--th-r-md); padding: 12px; }
-    .card h4 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
-    .pill { display: inline-block; background: var(--th-surface2); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 700; color: var(--muted); margin-inline-end: 4px; }
-    .pill.clip { color: var(--th-teal-ink); background: var(--th-teal-soft); }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: right; vertical-align: top; }
     th { background: var(--th-surface2); }
-    /* Wide tables (risk matrix, roster) scroll inside themselves on a phone instead of widening the page. */
     @media screen and (max-width: 600px) { table { display: block; overflow-x: auto; } }
     .credit { font-size: 13px; color: var(--muted); margin-top: 8px; }
-    .total { font-size: 24px; font-weight: 900; color: var(--th-teal-ink); }
-    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+    button:focus-visible, a:focus-visible {
       outline: 2px solid var(--lime);
       outline-offset: 2px;
     }
     .muted a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
-    .empty-drills { text-align: center; padding: 28px 12px; color: var(--muted); line-height: 1.6; }
-    .empty-drills button { margin-top: 12px; }
-    @media print { .th-nav, .tabs, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
+    @media print { .th-nav, button, .no-print { display: none !important; } body { background: #fff; color: #000; } section { border-color: #999; } }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
 <body class="th-ds">
-<a class="skip-link" href="#build">דלג לבניית אימון מהחוברת</a>
+<a class="skip-link" href="#safety">דלג לתיק הבטיחות</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
   <a href="./">בנה אימון</a>
   <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
-  <span class="chip on">חוברת הקורס</span>
+  <span class="chip on">תיק בטיחות</span>
   <a href="./reserves.html">מדדי מילואים</a>
-
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  תוכן החוברת נטען מהמאגר המקומי בדפדפן. אין שרת חי ואין שמירת נתונים אישיים.
+  תיק הבטיחות נטען מהמאגר המקומי בדפדפן. אין שרת חי ואין שמירת נתונים אישיים.
 </div>
 <main class="wrap">
   <header class="top">
-    <small>TRAINERHUB / COACH COURSE BOOKLET</small>
-    <h1>חוברת קורס המאמנים</h1>
-    <p id="credit">טוען את תוכן החוברת…</p>
+    <small>TRAINERHUB / TEAM SAFETY FILE</small>
+    <h1>תיק בטיחות קבוצה</h1>
+    <p id="credit">טוען את תיק הבטיחות…</p>
   </header>
-  <nav class="tabs" aria-label="פרקי החוברת">
-    <a href="#build">בנה אימון מהחוברת</a>
-    <a href="#principles">תורת האימון</a>
-    <a href="#drills">בנק תרגילים</a>
-    <a href="#games">משחקי הכנה</a>
-    <a href="#fitness">בוחן כושר</a>
-    <a href="#safety">בטיחות ותיק קבוצה</a>
-    <a href="#zohar">חוקת כדור זוהר</a>
-  </nav>
-
-  <section id="build" aria-labelledby="build-h">
-    <h2 id="build-h">בנה אימון מהחוברת</h2>
-    <p class="muted">אימון פתיחה מהבנק או שיטת אימון לשטח מוגבל, עם חימום לפי כללי החלק המכין ושחרור מאוצר הגמישות. נפתח במצב אימון הרגיל של TrainerHub.</p>
-    <div class="row">
-      <div><label for="plan">מערך</label><select id="plan"></select></div>
-      <div><label for="season">עונה</label><select id="season"><option value="summer">קיץ</option><option value="winter">חורף</option></select></div>
-      <div><label for="activity">אופי הפעילות</label><select id="activity"><option value="long">ממושכת ורציפה</option><option value="short">קצרה ועצימה</option></select></div>
-    </div>
-    <div class="actions" role="toolbar" aria-label="פעולות מערך אימון מהחוברת">
-      <button type="button" id="start">התחל במצב אימון</button>
-      <button type="button" id="previewTrainee" class="ghost">פתח כמתאמן</button>
-      <button type="button" id="share" class="ghost">שתף אימון ללקוח</button>
-      <button type="button" id="pdf" class="ghost">דף להדפסה / PDF</button>
-      <button type="button" id="preview" class="ghost">הצג אימון</button>
-    </div>
-    <div id="buildGateHost"></div>
-    <p class="muted no-print">מתאמנים בשטח מוגבל? <a href="./site-scan.html" style="color:var(--lime)">📷 סרקו את השטח</a> ותקבלו מערך שמתאים לו.</p>
-    <div id="planOut" aria-live="polite"></div>
-  </section>
-
-  <section id="principles" aria-labelledby="principles-h">
-    <h2 id="principles-h">תורת האימון</h2>
-    <div id="principlesOut"></div>
-  </section>
-
-  <section id="drills" aria-labelledby="drills-h">
-    <h2 id="drills-h">בנק תרגילים</h2>
-    <div class="row no-print">
-      <div><label for="cat">קטגוריה</label><select id="cat" aria-label="סינון תרגילים לפי קטגוריה">
-        <option value="warmup">תרגילי הכנה (חימום)</option>
-        <option value="static_stretch">מתיחות סטטיות בחלק המכין</option>
-        <option value="flexibility">אוצר תרגילי גמישות</option>
-        <option value="partner_stretch">מתיחות בזוגות</option>
-      </select></div>
-      <div><label for="dq">חיפוש</label><input id="dq" type="search" placeholder="למשל: ירך, כתף, מדרגה" aria-label="חיפוש תרגיל לפי שם או אזור גוף" autocomplete="off" aria-controls="drillOut"></div>
-    </div>
-    <div class="actions no-print" role="toolbar" aria-label="פעולות סינון בנק תרגילים">
-      <button type="button" class="ghost" id="drillReset" aria-label="נקה חיפוש ואיפוס סינון תרגילים">נקה סינון</button>
-    </div>
-    <p class="muted" id="drillStats" role="status" aria-live="polite"></p>
-    <div class="grid" id="drillOut" role="region" aria-label="רשימת תרגילים מהחוברת"></div>
-  </section>
-
-  <section id="games" aria-labelledby="games-h">
-    <h2 id="games-h">משחקי הכנה</h2>
-    <div class="row no-print" role="search" aria-label="חיפוש וסינון משחקי הכנה">
-      <div><label for="gcat">סוג משחק</label><select id="gcat">
-        <option value="">כל משחקי ההכנה</option>
-        <option value="tag">משחקי תופסת</option>
-        <option value="ball">משחקי כדור</option>
-      </select></div>
-      <div><label for="gq">חיפוש משחק</label><input id="gq" type="search" placeholder="למשל: עכברים, זוגות, קו, כדור" autocomplete="off"></div>
-    </div>
-    <div class="actions no-print" style="margin: 8px 0 12px">
-      <button type="button" id="greset" class="ghost" aria-label="אפס חיפוש וסינון משחקים">נקה סינון</button>
-    </div>
-    <p class="muted" id="gameStats" aria-live="polite"></p>
-    <div id="gamesOut" aria-live="polite"></div>
-  </section>
-
-  <section id="fitness" aria-labelledby="fitness-h">
-    <h2 id="fitness-h">בוחן כושר – מחשבון ציון</h2>
-    <p class="muted">החישוב נעשה בדפדפן בלבד ולא נשמר. זמנים בפורמט דקות:שניות.</p>
-    <div class="row">
-      <div><label for="f-sex">טבלת ריצה</label><select id="f-sex"><option value="male">בנים</option><option value="female">בנות</option></select></div>
-      <div><label for="f-pullups">עליות מתח (חזרות)</label><input id="f-pullups" inputmode="numeric" placeholder="למשל: 10"></div>
-      <div><label for="f-pushups">שכיבות שמיכה (חזרות)</label><input id="f-pushups" inputmode="numeric" placeholder="למשל: 25"></div>
-      <div><label for="f-plank">פלאנק (מ:שש)</label><input id="f-plank" placeholder="2:00"></div>
-      <div><label for="f-run300">2X150 מ׳ (מ:שש)</label><input id="f-run300" placeholder="0:55"></div>
-      <div><label for="f-run3k">3 ק״מ (מ:שש)</label><input id="f-run3k" placeholder="13:30"></div>
-    </div>
-    <div class="actions" role="toolbar" aria-label="פעולות מחשבון בוחן כושר">
-      <button type="button" id="score" aria-label="חשב ציון בבוחן כושר">חשב ציון</button>
-      <button type="button" class="ghost" id="fitnessReset" aria-label="נקה נתוני בוחן כושר">נקה טופס</button>
-    </div>
-    <div id="fitnessOut" aria-live="polite"></div>
-    <div id="fitnessInfo"></div>
-  </section>
 
   <section id="safety" aria-labelledby="safety-h">
     <h2 id="safety-h">בטיחות ותיק קבוצה</h2>
+    <p class="muted no-print">מתאמנים בשטח? <a href="./site-scan.html" style="color:var(--lime)">📷 סרקו את השטח</a> ותקבלו מערך שמתאים לו.</p>
     <button type="button" class="ghost no-print" onclick="window.print()" aria-label="הדפס את תיק הבטיחות">הדפס את התיק</button>
     <div id="safetyOut"></div>
   </section>
-
-  <section id="zohar" aria-labelledby="zohar-h">
-    <h2 id="zohar-h">חוקת כדור זוהר</h2>
-    <div class="row no-print" role="search" aria-label="חיפוש וסינון חוקת כדור זוהר">
-      <div><label for="zcat">נושא</label><select id="zcat">
-        <option value="">כל הכללים</option>
-        <option value="goals">שערים והבקעה</option>
-        <option value="fouls">עבירות ופנדלים</option>
-        <option value="keeper">שוער ורחבה</option>
-        <option value="movement">תנועה ומסירות</option>
-      </select></div>
-      <div><label for="zq">חיפוש בכללי המשחק</label><input id="zq" type="search" placeholder="למשל: שוער, שער, פנדל, מסירה" autocomplete="off"></div>
-    </div>
-    <div class="actions no-print" role="toolbar" aria-label="פעולות חוקת כדור זוהר" style="margin: 8px 0 12px">
-      <button type="button" id="zcopy" class="ghost" aria-label="העתק חוקה לשיתוף">העתק חוקה לשיתוף</button>
-      <button type="button" id="zreset" class="ghost" aria-label="אפס חיפוש וסינון חוקה">נקה סינון</button>
-      <span id="zcopyStatus" class="muted" role="status" aria-live="polite" style="margin-inline-start:8px"></span>
-    </div>
-    <p class="muted" id="zoharStats" aria-live="polite"></p>
-    <ol id="zoharOut"></ol>
-  </section>
 </main>
 <script src="./js/core.js"></script>
-<script src="./js/pilot.js"></script>
 <script src="./js/booklet.js"></script>
 <script>
 (function () {
   'use strict';
-  var esc = TH.esc;
   var B = THBooklet;
   function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
   function list(items, tag) {
-    return '<' + (tag || 'ul') + '>' + items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</' + (tag || 'ul') + '>';
+    tag = tag || 'ul';
+    if (!items || !items.length) return '';
+    return '<' + tag + '>' + items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</' + tag + '>';
   }
-  function credit(id) { return '<p class="credit">' + esc(B.credit(id)) + '</p>'; }
-  // «מרוץ שליחים» (20 minutes) showed «1200 שנ׳»: whole minutes read «20 דק׳», «45 שנ׳» stays.
-  function secs(seconds) {
-    return seconds >= 60 && seconds % 60 === 0 ? (seconds / 60) + ' דק׳' : seconds + ' שנ׳';
-  }
-  function fmtEx(x) {
-    var bits = [];
-    if (x.sets && x.sets > 1) bits.push(x.sets + ' סבבים');
-    if (x.reps != null) bits.push(x.reps + ' חזרות');
-    if (x.duration_seconds) bits.push(secs(x.duration_seconds));
-    if (x.rest_seconds) bits.push('מנוחה ' + secs(x.rest_seconds));
-    var clip = x.id && TH.catalog && TH.catalog[x.id] ? ' <span class="pill clip">יש סרטון</span>' : '';
-    return '<li><strong>' + esc(x.name) + '</strong>' + clip + (bits.length ? ' — ' + esc(bits.join(' · ')) : '') + (x.notes ? '<div class="muted" style="white-space:pre-line">' + esc(x.notes) + '</div>' : '') + '</li>';
-  }
-
-  var current = null;
-  function buildPlan() {
-    var v = $('plan').value.split(':');
-    var opts = { season: $('season').value, activity: $('activity').value };
-    current = v[0] === 'session' ? B.sessionWorkout(v[1], opts) : B.methodWorkout(v[1], Number(v[2] || 0), opts);
-    if (!current) { $('planOut').innerHTML = '<p class="muted" role="status">לא נמצא מערך.</p>'; return; }
-    $('planOut').innerHTML = '<h3>' + esc(current.title) + ' · ' + current.duration_minutes + ' דק׳</h3>' + current.phases.map(function (p) {
-      return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
-    }).join('');
-  }
-
-  function renderPlanOptions() {
-    var html = '<optgroup label="אימוני פתיחה">' + B.sessionList().map(function (s) {
-      return '<option value="session:' + esc(s.id) + '">' + esc(s.he) + '</option>';
-    }).join('') + '</optgroup><optgroup label="אימונים בשטח מוגבל">';
-    B.data.methods.forEach(function (m) {
-      if (m.id === '21-reps') return;
-      var exs = m.examples && m.examples.length ? m.examples : [null];
-      exs.forEach(function (e, i) {
-        html += '<option value="method:' + esc(m.id) + ':' + i + '">' + esc(m.he + (e && e.he ? ' — ' + e.he : '')) + '</option>';
-      });
-    });
-    $('plan').innerHTML = html + '</optgroup>';
-  }
-
-  function renderPrinciples() {
-    var p = B.data.principles;
-    var h = '<h3>בניית יחידת אימון</h3>' + p.sessionStructure.parts.map(function (x) { return '<p><strong>' + esc(x.he) + ':</strong> ' + esc(x.text) + '</p>'; }).join('');
-    h += '<h3>' + esc(p.warmup.title) + '</h3>' + list(p.warmup.durations.map(function (d) { return d.he + ' – ' + d.minutes + ' דקות'; }));
-    h += '<p><strong>עקרונות:</strong></p>' + list(p.warmup.principles, 'ol') + '<p>' + esc(p.warmup.gamesNote) + '</p>' + credit('prep');
-    h += '<h3>אימון גמישות</h3><p>' + esc(p.flexibilityProtocol.rule) + ' ' + esc(p.flexibilityProtocol.minutesNote) + '</p>' + list(p.flexibilityProtocol.beforeAfterMain, 'ol') + credit('flexibility');
-    h += '<h3>סוגי פעילויות</h3><p>' + esc(p.energySystems.aerobic) + '</p><p>' + esc(p.energySystems.anaerobic) + '</p>' + list(p.energySystems.aerobicMethods.map(function (m) { return m.he + ' – ' + m.text; }));
-    h += '<h3>עומסים</h3><p>' + esc(p.load.intro) + '</p>' + list(p.load.components.map(function (c) { return c.he + ': ' + c.text; })) + list(p.load.principles.map(function (c) { return c.he + ': ' + c.text + (c.note ? ' ' + c.note : ''); }));
-    h += '<h3>עומס יתר</h3><p>' + esc(p.overtraining.definition) + '</p><p><strong>סימנים:</strong> ' + esc(p.overtraining.signs.join(', ')) + '</p><p><strong>שינויים תפקודיים:</strong> ' + esc(p.overtraining.functionalChanges.join(', ')) + '</p>';
-    h += '<h3>מרכיבי ההתאוששות</h3>' + list(p.recovery.items.map(function (r) { return r.he + ': ' + r.text; })) + '<p class="muted">' + esc(p.reading.text) + '</p>' + credit('foundations');
-    $('principlesOut').innerHTML = h;
-  }
-
-  function resetDrills() {
-    $('cat').value = 'warmup';
-    $('dq').value = '';
-    renderDrills();
-    var dq = $('dq');
-    if (dq && typeof dq.focus === 'function') dq.focus();
-  }
-
-  function renderDrills() {
-    var qVal = ($('dq').value || '').trim();
-    var catVal = $('cat').value;
-    var items = B.drills({ category: catVal, q: qVal });
-    // A search with one hit read «1 תרגילים».
-    $('drillStats').textContent = items.length === 1 ? 'תרגיל אחד' : items.length + ' תרגילים';
-    var out = $('drillOut');
-    if (!items.length) {
-      out.innerHTML = '<div class="card empty-drills" role="status">' +
-        '<p>לא נמצאו תרגילים התואמים את החיפוש' + (qVal ? ' «' + esc(qVal) + '»' : '') + '.</p>' +
-        '<button type="button" class="ghost" id="emptyDrillReset" aria-label="נקה סינון והצג את כל התרגילים בקטגוריה">נקה סינון והצג הכל</button>' +
-        '</div>';
-      return;
-    }
-    out.innerHTML = items.map(function (d) {
-      var clip = d.catalogId && TH.catalog && TH.catalog[d.catalogId] ? '<span class="pill clip">יש סרטון בספרייה</span>' : '';
-      var meta = (d.timing ? '<span class="pill">' + esc(d.timing) + '</span>' : '') + (d.position ? '<span class="pill">' + esc(d.position) + '</span>' : '') + (d.prepFriendly ? '<span class="pill">מתאים גם לחלק המכין</span>' : '') + clip;
-      return '<article class="card"><h4>' + (d.order ? d.order + '. ' : '') + esc(d.he) + '</h4>' + meta + (d.notes ? '<p class="muted">' + esc(d.notes) + '</p>' : '') + credit(d.source) + '</article>';
-    }).join('');
-  }
-
-  function foldText(s) {
-    return String(s || '').toLowerCase().replace(/[\u0591-\u05C7]/g, '').replace(/[״"׳'`]/g, '').replace(/\s+/g, ' ').trim();
-  }
-
-  function renderGames() {
-    var r = B.data.gameRules;
-    var cat = $('gcat') ? $('gcat').value : '';
-    var q = $('gq') ? foldText($('gq').value) : '';
-
-    var allGames = B.games();
-    var filtered = allGames.filter(function (g) {
-      if (cat && g.kind !== cat) return false;
-      if (q) {
-        var hay = foldText(g.he + ' ' + (g.description || '') + ' ' + (g.notes || ''));
-        if (hay.indexOf(q) === -1) return false;
-      }
-      return true;
-    });
-
-    if ($('gameStats')) {
-      $('gameStats').textContent = filtered.length + ' מתוך ' + allGames.length + ' משחקים';
-    }
-
-    if (!filtered.length) {
-      $('gamesOut').innerHTML = '<p class="muted" style="text-align:center;padding:24px 8px">לא נמצאו משחקי הכנה שמתאימים לחיפוש. נסו מילת חיפוש אחרת או נקו את המסננים.</p>';
-      return;
-    }
-
-    function table(items) {
-      if (!items.length) return '';
-      return '<table tabindex="0"><thead><tr><th>שם</th><th>תיאור המשחק</th><th>הערות</th></tr></thead><tbody>' + items.map(function (g) {
-        return '<tr><td>' + esc(g.he) + '</td><td>' + esc(g.description) + '</td><td>' + esc(g.notes) + '</td></tr>';
-      }).join('') + '</tbody></table>';
-    }
-
-    var tagGames = filtered.filter(function (g) { return g.kind === 'tag'; });
-    var ballGames = filtered.filter(function (g) { return g.kind === 'ball'; });
-    var otherGames = filtered.filter(function (g) { return g.kind !== 'tag' && g.kind !== 'ball'; });
-
-    var html = '<p>' + esc(B.data.principles.warmup.eliminationRule) + '</p>';
-    if (tagGames.length) {
-      html += '<h3>משחקי תופסת (' + tagGames.length + ')</h3>' + (q ? '' : list(r.tag)) + table(tagGames);
-    }
-    if (ballGames.length) {
-      html += '<h3>משחקי כדור (' + ballGames.length + ')</h3>' + (q ? '' : list(r.ball)) + table(ballGames);
-    }
-    if (otherGames.length) {
-      html += '<h3>משחקים נוספים (' + otherGames.length + ')</h3>' + table(otherGames);
-    }
-    html += credit('prep');
-    $('gamesOut').innerHTML = html;
-  }
-
-  function renderFitnessInfo() {
-    var f = B.data.fitnessTest;
-    $('fitnessInfo').innerHTML = '<h3>מטרת הבוחן</h3>' + list(f.goals, 'ol') + '<h3>תמהיל הציון</h3><table tabindex="0"><thead><tr><th>רכיב בבוחן</th><th>משקל</th></tr></thead><tbody>' + f.components.map(function (c) {
-      return '<tr><td>' + esc(c.group + ' – ' + c.he) + '<div class="muted">' + esc(c.text) + '</div></td><td>' + c.weight + '%</td></tr>';
-    }).join('') + '</tbody></table>' + credit('fitness_test');
-  }
-
-  var FITNESS_FIELDS = ['f-pullups', 'f-pushups', 'f-plank', 'f-run300', 'f-run3k'];
-
-  function hasFitnessInputs() {
-    return FITNESS_FIELDS.some(function (id) {
-      var el = $(id);
-      return el && typeof el.value === 'string' && el.value.trim().length > 0;
-    });
-  }
-
-  function resetFitness() {
-    FITNESS_FIELDS.forEach(function (id) {
-      var el = $(id);
-      if (el) el.value = '';
-    });
-    $('fitnessOut').innerHTML = '';
-    var first = $('f-pullups');
-    if (first && first.focus) first.focus();
-  }
-
-  function scoreNow() {
-    if (!hasFitnessInputs()) {
-      $('fitnessOut').innerHTML = '<p class="muted" role="status">הזינו לפחות תוצאה אחת (מתח, שכיבות שמיכה, פלאנק או ריצה) כדי לחשב ציון.</p>';
-      return;
-    }
-    var res = B.scoreFitnessTest({
-      pullups: $('f-pullups').value, pushups: $('f-pushups').value, plank: $('f-plank').value,
-      run300: $('f-run300').value, run3k: $('f-run3k').value
-    }, $('f-sex').value);
-    $('fitnessOut').innerHTML = '<table tabindex="0"><thead><tr><th>רכיב</th><th>ציון</th><th>משקל</th><th>תרומה</th></tr></thead><tbody>' + res.components.map(function (c) {
-      return '<tr><td>' + esc(c.he) + '</td><td>' + (c.score == null ? '—' : c.score) + '</td><td>' + c.weight + '%</td><td>' + c.weighted + '</td></tr>';
-    }).join('') + '</tbody></table><p class="total" role="status">ציון משוקלל: ' + res.total + (res.complete ? '' : ' (חסרים רכיבים)') + '</p>';
-  }
-
   function renderSafety() {
-    var w = B.data.safety.winter;
-    var h = '<h3>' + esc(w.title) + '</h3>' + w.sections.map(function (s, i) { return '<p><strong>' + (i + 1) + '. ' + esc(s.he) + '</strong></p>' + list(s.points); }).join('') + credit('winter');
     var t = B.teamFile();
-    if (t) {
-      h += '<h3>' + esc(t._meta.title) + '</h3><p>' + esc(t.purpose) + '</p>' + list(t.contents, 'ol');
-      h += '<h3>מבדק לשטח הפעילות</h3>' + list(t.siteAudit.generalQuestions) + B.siteChecklist().map(function (s) {
-        return '<p><strong>' + esc(s.he) + '</strong></p><table tabindex="0"><thead><tr><th>מה בודקים</th><th>כן/לא</th><th>הערות</th></tr></thead><tbody>' + s.items.map(function (q) {
-          return '<tr><td>' + esc(q) + '</td><td></td><td></td></tr>';
-        }).join('') + '</tbody></table>';
-      }).join('');
-      h += '<h3>' + esc(t.riskMatrix.he) + '</h3><table tabindex="0"><thead><tr>' + t.riskMatrix.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' + t.riskMatrix.rows.map(function (r) {
-        return '<tr><td>' + esc(r.hazard) + '</td><td>' + r.relevance + '</td><td>' + r.severity + '</td><td>' + r.likelihood + '</td><td>' + list(r.mitigations, 'ol') + '</td></tr>';
-      }).join('') + '</tbody></table><p>' + esc(t.riskMatrix.footer) + '</p>';
-      h += '<h3>' + esc(t.incidentResponses.he) + '</h3><table tabindex="0"><thead><tr><th>#</th><th>סוג פציעה</th><th>תגובה</th></tr></thead><tbody>' + t.incidentResponses.rows.map(function (r) {
-        return '<tr><td>' + r.n + '</td><td>' + esc(r.type) + '</td><td>' + esc(r.response) + '</td></tr>';
-      }).join('') + '</tbody></table>' + list(t.incidentResponses.reminder);
-      h += '<h3>' + esc(t.instructorDeclaration.he) + '</h3><p>' + esc(t.instructorDeclaration.intro) + '</p>' + list(t.instructorDeclaration.commitments);
-      h += '<h3>' + esc(t.traineeRoster.he) + '</h3><p class="muted">' + esc(t.traineeRoster.privacy) + '</p><table tabindex="0"><thead><tr>' + t.traineeRoster.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
-        Array.apply(null, Array(t.traineeRoster.templateRows)).map(function (_, i) { return '<tr><td>' + (i + 1) + '</td>' + '<td></td>'.repeat(t.traineeRoster.columns.length - 1) + '</tr>'; }).join('') + '</tbody></table>';
-      h += '<p class="credit">' + esc('מקור: ' + t._meta.source.title + ' — ' + t._meta.organization) + '</p>';
+    if (!t) {
+      $('safetyOut').innerHTML = '<p class="muted" role="status">לא הצלחנו לטעון את תיק הבטיחות.</p>';
+      return;
     }
+    var h = '';
+    h += '<h3>' + esc(t._meta.title) + '</h3><p>' + esc(t.purpose) + '</p>' + list(t.contents, 'ol');
+    h += '<h3>מבדק לשטח הפעילות</h3>' + list(t.siteAudit.generalQuestions) + B.siteChecklist().map(function (s) {
+      return '<p><strong>' + esc(s.he) + '</strong></p><table tabindex="0"><thead><tr><th>מה בודקים</th><th>כן/לא</th><th>הערות</th></tr></thead><tbody>' + s.items.map(function (q) {
+        return '<tr><td>' + esc(q) + '</td><td></td><td></td></tr>';
+      }).join('') + '</tbody></table>';
+    }).join('');
+    h += '<h3>' + esc(t.riskMatrix.he) + '</h3><table tabindex="0"><thead><tr>' + t.riskMatrix.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' + t.riskMatrix.rows.map(function (r) {
+      return '<tr><td>' + esc(r.hazard) + '</td><td>' + r.relevance + '</td><td>' + r.severity + '</td><td>' + r.likelihood + '</td><td>' + list(r.mitigations, 'ol') + '</td></tr>';
+    }).join('') + '</tbody></table><p>' + esc(t.riskMatrix.footer) + '</p>';
+    h += '<h3>' + esc(t.incidentResponses.he) + '</h3><table tabindex="0"><thead><tr><th>#</th><th>סוג פציעה</th><th>תגובה</th></tr></thead><tbody>' + t.incidentResponses.rows.map(function (r) {
+      return '<tr><td>' + r.n + '</td><td>' + esc(r.type) + '</td><td>' + esc(r.response) + '</td></tr>';
+    }).join('') + '</tbody></table>' + list(t.incidentResponses.reminder);
+    h += '<h3>' + esc(t.instructorDeclaration.he) + '</h3><p>' + esc(t.instructorDeclaration.intro) + '</p>' + list(t.instructorDeclaration.commitments);
+    h += '<h3>' + esc(t.traineeRoster.he) + '</h3><p class="muted">' + esc(t.traineeRoster.privacy) + '</p><table tabindex="0"><thead><tr>' + t.traineeRoster.columns.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      Array.apply(null, Array(t.traineeRoster.templateRows)).map(function (_, i) { return '<tr><td>' + (i + 1) + '</td>' + '<td></td>'.repeat(t.traineeRoster.columns.length - 1) + '</tr>'; }).join('') + '</tbody></table>';
+    h += '<p class="credit">' + esc('מקור: ' + t._meta.source.title + ' — ' + t._meta.organization) + '</p>';
     $('safetyOut').innerHTML = h;
   }
 
-  function renderZohar() {
-    var z = B.data && B.data.rules && B.data.rules.zoharBall;
-    if (!z || !z.rules) return;
-    var q = ($('zq') ? $('zq').value : '').trim().toLowerCase();
-    var cat = $('zcat') ? $('zcat').value : '';
-    var list = z.rules.filter(function (r) {
-      if (q && r.text.toLowerCase().indexOf(q) === -1) return false;
-      if (!cat) return true;
-      var t = r.text;
-      if (cat === 'goals') return /שער|הבקע|נקוד|משקוף|קורה/.test(t);
-      if (cat === 'fouls') return /פנדל|עביר|קלל|גדף|סכנ|איגרוף/.test(t);
-      if (cat === 'keeper') return /שוער|רחב/.test(t);
-      if (cat === 'movement') return /מסיר|כדור|ללכת|כדרר|התקפה|הגנה|חילוף/.test(t);
-      return true;
-    });
-
-    if ($('zoharStats')) {
-      $('zoharStats').textContent = (q || cat)
-        ? (list.length === 1 ? 'כלל אחד תואם לסינון' : list.length + ' כללים תואמים לסינון')
-        : z.rules.length + ' כללים בחוקת כדור זוהר';
-    }
-
-    if (!list.length) {
-      $('zoharOut').innerHTML = '<li style="list-style:none"><p class="muted" role="status" style="text-align:center;padding:24px 8px">לא נמצאו כללים התואמים את החיפוש. נסו מילת חיפוש אחרת או אפסו את הסינון.</p></li>';
-      return;
-    }
-
-    $('zoharOut').innerHTML = list.map(function (r) {
-      return '<li value="' + r.n + '">' + esc(r.text) + '</li>';
-    }).join('') + '<li style="list-style:none" class="credit">' + esc(z.moreInfo + ' · ' + B.credit('zohar')) + '</li>';
-  }
-
   Promise.all([new Promise(function (r) { TH.ready(r); }), B.load()]).then(function () {
-    if (!B.data) { $('credit').textContent = 'לא הצלחנו לטעון את תוכן החוברת.'; return; }
-    $('credit').textContent = B.data._meta.credit;
-    renderPlanOptions(); renderPrinciples(); renderDrills(); renderGames(); renderFitnessInfo(); renderSafety(); renderZohar(); buildPlan();
-  });
-  $('preview').addEventListener('click', buildPlan);
-  // The preview and «התחל במצב אימון» follow the controls as they are now:
-  // starting right after changing the dropdown used to open the plan that
-  // was previewed before the change.
-  ['plan', 'season', 'activity'].forEach(function (id) { $(id).addEventListener('change', buildPlan); });
-  $('start').addEventListener('click', function () {
-    buildPlan();
-    if (!current) return;
-    TH.store.set(TH.KEYS.active, current);
-    location.href = './frontend/workout-mode.html';
-  });
-  $('previewTrainee').addEventListener('click', function () {
-    buildPlan();
-    if (!current) return;
-    location.href = TH.encodeLink(current, {});
-  });
-  $('share').addEventListener('click', function () {
-    buildPlan();
-    if (!current) return;
-    var host = $('buildGateHost') || $('build');
-    if (host.innerHTML !== undefined) host.innerHTML = '';
-    var shared = TH.shareToClient(current, {});
-    if (!shared.ok) {
-      if (host.insertAdjacentHTML) host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
-      return;
-    }
-    TH.copyOrShow(shared.url, host, function () {
-      var btn = $('share');
-      if (btn) {
-        // A second click within the 1.4 s must not save «הועתק» as the label to restore.
-        if (!btn.thLabel) btn.thLabel = btn.textContent;
-        btn.textContent = 'הועתק';
-        clearTimeout(btn.thLabelTimer);
-        btn.thLabelTimer = setTimeout(function () { btn.textContent = btn.thLabel; }, 1400);
-      }
-    });
-  });
-  $('pdf').addEventListener('click', function () {
-    buildPlan();
-    if (!current) return;
-    TH.preparePrint(current, {});
-    location.href = TH.printUrl();
-  });
-  $('cat').addEventListener('change', renderDrills);
-  $('dq').addEventListener('input', renderDrills);
-  var drillResetBtn = $('drillReset');
-  if (drillResetBtn) {
-    drillResetBtn.addEventListener('click', resetDrills);
-  }
-  $('drillOut').addEventListener('click', function (e) {
-    var btn = e.target && (e.target.id === 'emptyDrillReset' ? e.target : (e.target.closest && e.target.closest('#emptyDrillReset')));
-    if (btn) {
-      resetDrills();
-    }
-  });
-  $('dq').addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      resetDrills();
-    }
-  });
-  if ($('gcat')) $('gcat').addEventListener('change', renderGames);
-  if ($('gq')) {
-    $('gq').addEventListener('input', renderGames);
-    $('gq').addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        $('gq').value = '';
-        renderGames();
-      }
-    });
-  }
-  if ($('greset')) {
-    $('greset').addEventListener('click', function () {
-      if ($('gcat')) $('gcat').value = '';
-      if ($('gq')) $('gq').value = '';
-      renderGames();
-      if ($('gq')) $('gq').focus();
-    });
-  }
-  if ($('zcat')) $('zcat').addEventListener('change', renderZohar);
-  if ($('zq')) {
-    $('zq').addEventListener('input', renderZohar);
-    $('zq').addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        $('zq').value = '';
-        renderZohar();
-      }
-    });
-  }
-  if ($('zreset')) {
-    $('zreset').addEventListener('click', function () {
-      if ($('zcat')) $('zcat').value = '';
-      if ($('zq')) $('zq').value = '';
-      renderZohar();
-      if ($('zq')) $('zq').focus();
-    });
-  }
-  if ($('zcopy')) {
-    $('zcopy').addEventListener('click', function () {
-      var z = B.data && B.data.rules && B.data.rules.zoharBall;
-      if (!z || !z.rules) return;
-      var q = ($('zq') ? $('zq').value : '').trim().toLowerCase();
-      var cat = $('zcat') ? $('zcat').value : '';
-      var list = z.rules.filter(function (r) {
-        if (q && r.text.toLowerCase().indexOf(q) === -1) return false;
-        if (!cat) return true;
-        var t = r.text;
-        if (cat === 'goals') return /שער|הבקע|נקוד|משקוף|קורה/.test(t);
-        if (cat === 'fouls') return /פנדל|עביר|קלל|גדף|סכנ|איגרוף/.test(t);
-        if (cat === 'keeper') return /שוער|רחב/.test(t);
-        if (cat === 'movement') return /מסיר|כדור|ללכת|כדרר|התקפה|הגנה|חילוף/.test(t);
-        return true;
-      });
-      var textToCopy = 'חוקת כדור זוהר:\n\n' + list.map(function (r) {
-        return r.n + '. ' + r.text;
-      }).join('\n\n') + '\n\n' + z.moreInfo;
-
-      function onCopied() {
-        if ($('zcopyStatus')) $('zcopyStatus').textContent = 'הועתק ללוח!';
-        setTimeout(function () {
-          if ($('zcopyStatus')) $('zcopyStatus').textContent = '';
-        }, 2500);
-      }
-
-      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(textToCopy).then(onCopied).catch(onCopied);
-      } else {
-        onCopied();
-      }
-    });
-  }
-  $('score').addEventListener('click', scoreNow);
-  $('fitnessReset').addEventListener('click', resetFitness);
-  FITNESS_FIELDS.forEach(function (id) {
-    var el = $(id);
-    if (el) {
-      el.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          scoreNow();
-        }
-      });
-    }
+    var t = B.teamFile();
+    if (!t) { $('credit').textContent = 'לא הצלחנו לטעון את תיק הבטיחות.'; return; }
+    $('credit').textContent = t._meta.credit || (t._meta.title + ' — תבנית ריקה למילוי.');
+    renderSafety();
   });
 })();
 </script>
-<script src="./js/th-nav.js"></script>
 </body>
 </html>

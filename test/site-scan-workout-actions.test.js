@@ -11,11 +11,10 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8');
-const main = JSON.parse(fs.readFileSync(path.join(root, B.MAIN_PATH), 'utf8'));
 const team = JSON.parse(fs.readFileSync(path.join(root, B.TEAM_PATH), 'utf8'));
 const catalog = JSON.parse(fs.readFileSync(path.join(root, 'js', 'catalog.json'), 'utf8'));
 
-B.setData(main, team);
+B.setData(null, team);
 TH.setCatalog(catalog);
 
 function inlineScript() {

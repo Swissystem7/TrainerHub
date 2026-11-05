@@ -41,9 +41,9 @@ test('site-scan.html summary has role="status" and aria-live="polite"', function
 });
 
 test('site-scan.html plan output has an initial polite status message and empty plan guidance on reset', function () {
-  assert.match(html, /<div\s+id="planOut"\s+aria-live="polite">\s*<p\s+class="muted empty-plan"\s+role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי\.<\/p>\s*<\/div>/);
-  assert.match(html, /\$\('planOut'\)\.innerHTML\s*=\s*'<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם מחוברת אחריי\.<\/p>';/);
-  assert.match(html, /\$\('planOut'\)\.innerHTML\s*=\s*'<p class="muted empty-plan" role="status">תוכן החוברת עוד לא נטען\.<\/p>';/);
+  assert.match(html, /<div\s+id="planOut"\s+aria-live="polite">\s*<p\s+class="muted empty-plan"\s+role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם לשטח\.<\/p>\s*<\/div>/);
+  assert.match(html, /\$\('planOut'\)\.innerHTML\s*=\s*'<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם לשטח\.<\/p>';/);
+  assert.match(html, /\$\('planOut'\)\.innerHTML\s*=\s*'<p class="muted empty-plan" role="status">בונה האימון לשטח עוד לא נטען\.<\/p>';/);
 });
 
 test('site-scan.html plan warnings expose role="alert"', function () {

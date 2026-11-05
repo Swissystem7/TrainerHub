@@ -148,7 +148,7 @@ test('frontend/index.html static: navigation includes full site links and active
   assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
   assert.match(html, /<a href="\.\.\/">בנה אימון<\/a>/);
   assert.match(html, /<a href="\.\.\/weekly\.html">בונה שבועי<\/a>/);
-  assert.match(html, /<a href="\.\.\/booklet\.html">חוברת הקורס<\/a>/);
+  assert.match(html, /<a href="\.\.\/booklet\.html">תיק בטיחות<\/a>/);
   assert.match(html, /<a href="\.\.\/site-scan\.html">סריקת שטח<\/a>/);
   assert.match(html, /<a href="\.\.\/library\.html">ספריית סרטונים<\/a>/);
   assert.match(html, /<a href="\.\.\/journal\.html">יומן ביצוע<\/a>/);

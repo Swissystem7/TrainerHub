@@ -9,10 +9,10 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 const gearOf = {};
-B.drills({ category: 'flexibility' }).forEach(function (d) { gearOf[d.he] = d.equipment || []; });
+Plan.STRETCH_BANK.forEach(function (d) { gearOf[d.he] = d.equipment || []; });
 const cooldown = function (r) { return r.workout.phases[r.workout.phases.length - 1]; };
 
 test('bare site: no cool-down stretch needs a step, a bar or a towel', function () {

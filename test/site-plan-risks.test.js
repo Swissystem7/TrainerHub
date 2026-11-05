@@ -7,7 +7,7 @@ const B = require('../js/booklet.js');
 const Plan = require('../js/site-plan.js');
 const root = path.join(__dirname, '..');
 const read = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 test('score is likelihood × severity from the team-file table, sorted high to low', function () {
   const rows = Plan.risks({ hazards: ['cars'] }, { season: 'winter' });
