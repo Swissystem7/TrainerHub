@@ -2421,6 +2421,177 @@
       '</article>';
   }
 
+  // ---- Monthly client report (printed by workout-print.html) -------------
+  var HE_MONTHS = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+
+  function monthKey(v) {
+    var m = /^(\d{4})-(\d{2})/.exec(String(v || ''));
+    if (m) return m[1] + '-' + m[2];
+    var d = v instanceof Date ? v : new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  function localMonthOf(at) {
+    var d = new Date(at);
+    if (isNaN(d.getTime())) return String(at || '').slice(0, 7);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  // client: a journal client ({name, logs[], measurements[], days[], plan});
+  // opts.entries: journal-storage entries for that client (sets with weightKg).
+  function monthlyReportModel(client, opts) {
+    client = client || {};
+    opts = opts || {};
+    var month = monthKey(opts.month);
+    var y = Number(month.slice(0, 4)), mo = Number(month.slice(5, 7));
+    var logs = (Array.isArray(client.logs) ? client.logs : []).filter(function (l) { return localMonthOf(l.at || l.doneAt) === month; })
+      .sort(function (a, b) { return String(a.at || a.doneAt || '').localeCompare(String(b.at || b.doneAt || '')); });
+    var minutes = logs.reduce(function (n, l) { return n + (Number(l.minutes) || 0); }, 0);
+    var rpes = logs.filter(function (l) { return l.rpe != null && isFinite(Number(l.rpe)); }).map(function (l) { return Number(l.rpe); });
+    var avgRpe = rpes.length ? Math.round(rpes.reduce(function (a, b) { return a + b; }, 0) / rpes.length * 10) / 10 : null;
+    // Planned sessions: weekdays in client.days falling in the month (up to today for the current month).
+    var daysInMonth = new Date(y, mo, 0).getDate();
+    var today = opts.now ? new Date(opts.now) : new Date();
+    var planned = 0;
+    var wd = Array.isArray(client.days) ? client.days.map(Number) : [];
+    if (wd.length) {
+      for (var d = 1; d <= daysInMonth; d++) {
+        var dt = new Date(y, mo - 1, d);
+        if (dt > today) break;
+        if (wd.indexOf(dt.getDay()) !== -1) planned++;
+      }
+    }
+    var adherence = planned ? Math.min(100, Math.round(logs.length / planned * 100)) : null;
+    var meas = (Array.isArray(client.measurements) ? client.measurements : []).filter(function (m) { return localMonthOf(m.at) === month && m.weightKg != null; })
+      .sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+    var best = {};
+    (Array.isArray(opts.entries) ? opts.entries : []).forEach(function (e) {
+      if (localMonthOf(e.doneAt || e.at || e.createdAt) !== month) return;
+      (e.sets || []).forEach(function (st) {
+        var w = Number(st.weightKg) || 0;
+        var id = st.exerciseId || st.name;
+        if (!id || !w) return;
+        if (!best[id] || w > best[id].weightKg || (w === best[id].weightKg && (Number(st.reps) || 0) > best[id].reps)) best[id] = { id: id, weightKg: w, reps: Number(st.reps) || 0 };
+      });
+    });
+    var tops = Object.keys(best).map(function (k) { return best[k]; }).sort(function (a, b) { return b.weightKg - a.weightKg; }).slice(0, 8);
+    return {
+      kind: 'monthly',
+      month: month,
+      title: 'דוח חודשי · ' + HE_MONTHS[mo - 1] + ' ' + y,
+      client: sanitizeBrand(client.name || 'מתאמן'),
+      plan: client.plan || '',
+      sessions: logs.length,
+      planned: planned,
+      adherence: adherence,
+      minutes: minutes,
+      avgRpe: avgRpe,
+      weightStart: meas.length ? meas[0].weightKg : null,
+      weightEnd: meas.length ? meas[meas.length - 1].weightKg : null,
+      bests: tops.map(function (t) { return { name: exerciseLabel(t.id), weightKg: t.weightKg, reps: t.reps }; }),
+      logs: logs.map(function (l) {
+        return { day: String(l.at || l.doneAt || '').slice(0, 10), title: l.title || 'אימון', minutes: Number(l.minutes) || null, rpe: l.rpe != null ? Number(l.rpe) : null };
+      })
+    };
+  }
+
+  function exerciseLabel(id) {
+    if (HE_NAMES[id]) return HE_NAMES[id];
+    if (catalog[id] && catalog[id].he) return catalog[id].he;
+    return String(id).replace(/_/g, ' ');
+  }
+
+  function monthlyReportHtml(model, opts) {
+    model = model || monthlyReportModel({}, {});
+    opts = opts || {};
+    var ent = entitlement();
+    var brand = sanitizeBrand(opts.brand || ent.brand || '');
+    var branded = !!(ent.canBrandedPdf && brand);
+    var fmt = function (n) { return n == null ? '—' : String(n); };
+    var stat = function (label, val) { return '<tr><th scope="row">' + esc(label) + '</th><td>' + esc(val) + '</td></tr>'; };
+    var weight = model.weightStart == null ? '—'
+      : (model.weightStart === model.weightEnd ? model.weightEnd + ' ק״ג'
+        : model.weightStart + ' → ' + model.weightEnd + ' ק״ג (' + (model.weightEnd - model.weightStart > 0 ? '+' : '') + (Math.round((model.weightEnd - model.weightStart) * 10) / 10) + ')');
+    var summary = '<section class="print-phase" data-role="report-summary"><h2>סיכום</h2><table>' +
+      stat('אימונים שבוצעו', model.sessions + (model.planned ? ' מתוך ' + model.planned + ' מתוכננים' : '')) +
+      stat('התמדה', model.adherence == null ? '—' : model.adherence + '%') +
+      stat('דקות אימון', fmt(model.minutes)) +
+      stat('קושי ממוצע', model.avgRpe == null ? '—' : model.avgRpe + '/5') +
+      stat('משקל גוף', weight) +
+      '</table></section>';
+    var bests = '<section class="print-phase" data-role="report-bests"><h2>שיאי החודש</h2><table>' +
+      (model.bests.length ? model.bests.map(function (b) { return '<tr><th scope="row">' + esc(b.name) + '</th><td>' + esc(b.weightKg + ' ק״ג' + (b.reps ? ' × ' + b.reps : '')) + '</td></tr>'; }).join('')
+        : '<tr><td>אין סטים עם משקל בחודש הזה.</td></tr>') + '</table></section>';
+    var logs = '<section class="print-phase" data-role="report-logs"><h2>יומן החודש</h2><table>' +
+      (model.logs.length ? model.logs.map(function (l) { return '<tr><th scope="row">' + esc(l.day) + '</th><td>' + esc(l.title) + '</td><td>' + esc((l.minutes ? l.minutes + ' דק׳' : '') + (l.rpe != null ? ' · קושי ' + l.rpe + '/5' : '')) + '</td></tr>'; }).join('')
+        : '<tr><td>לא יובאו ביצועים בחודש הזה.</td></tr>') + '</table></section>';
+    return '<article class="print-sheet" dir="rtl" lang="he" data-kind="monthly">' +
+      (branded ? '<p class="print-brand">' + esc(brand) + '</p>' : '') +
+      '<h1>' + esc(model.title) + '</h1>' +
+      '<p class="print-client">עבור: ' + esc(model.client) + (model.plan ? ' · ' + esc(model.plan) : '') + '</p>' +
+      summary + bests + logs +
+      (branded ? '' : '<p class="print-watermark">תרגול — לא למסירה ללקוח</p>') +
+      '<footer class="print-footer"><p>' + esc(branded ? 'הוכן על ידי ' + brand + ' ב-TrainerHub.' : 'גרסת תרגול — דוח ממותג ללקוח דורש מסלול מאמן.') + '</p><p>הנתונים מהיומן בדפדפן הזה בלבד. הדפסה או שמירה כ־PDF מהדפדפן, בלי שרת.</p></footer>' +
+      '</article>';
+  }
+
+  // Same print key; a later preparePrint (workout) replaces the report.
+  function prepareMonthlyReport(client, opts) {
+    var prev = storeGet(KEYS.print, null);
+    var model = monthlyReportModel(client, opts);
+    storeSet(KEYS.print, { workout: (prev && prev.workout) || null, brand: (prev && prev.brand) || '', client: model.client, report: model });
+    return { model: model, url: printUrl() };
+  }
+
+  // ---- Local reminders (Notification API, no server/push) -----------------
+  function todayKey(now) {
+    var d = now ? new Date(now) : new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  // Clients with a training day today and no imported log today.
+  function dueReminders(clients, now) {
+    var d = now ? new Date(now) : new Date();
+    var key = todayKey(d);
+    return (Array.isArray(clients) ? clients : []).filter(function (c) {
+      if (!c || !Array.isArray(c.days) || c.days.map(Number).indexOf(d.getDay()) === -1) return false;
+      return !(c.logs || []).some(function (l) { return todayKey(l.at || l.doneAt) === key; });
+    }).map(function (c) {
+      return { id: c.id, name: c.name || 'מתאמן', title: 'היום אימון: ' + (c.name || 'מתאמן'), body: (c.plan ? '«' + c.plan + '» · ' : '') + 'עוד לא יובא ביצוע היום. אפשר לשלוח תזכורת בוואטסאפ מהיומן.' };
+    });
+  }
+
+  function reminderPrefs() {
+    var p = storeGet(KEYS.workoutPrefs, null) || {};
+    return { on: !!p.remind, last: p.remindedOn || '' };
+  }
+
+  function setReminderPrefs(patch) {
+    var p = storeGet(KEYS.workoutPrefs, null) || {};
+    if (patch.on != null) p.remind = !!patch.on;
+    if (patch.last != null) p.remindedOn = String(patch.last);
+    storeSet(KEYS.workoutPrefs, p);
+    return reminderPrefs();
+  }
+
+  // Shows at most one batch per day. Returns {shown, reason}.
+  function runReminders(clients, opts) {
+    opts = opts || {};
+    var N = opts.Notification || root.Notification;
+    var prefs = reminderPrefs();
+    if (!prefs.on) return { shown: 0, reason: 'off' };
+    if (!N) return { shown: 0, reason: 'unsupported' };
+    if (N.permission !== 'granted') return { shown: 0, reason: 'permission' };
+    var key = todayKey(opts.now);
+    if (prefs.last === key && !opts.force) return { shown: 0, reason: 'already' };
+    var due = dueReminders(clients, opts.now);
+    due.forEach(function (r) {
+      try { new N(r.title, { body: r.body, tag: 'th-remind-' + r.id + '-' + key, lang: 'he', dir: 'rtl' }); } catch (e) { /* mobile needs SW */ }
+    });
+    setReminderPrefs({ last: key });
+    return { shown: due.length, reason: due.length ? 'ok' : 'none' };
+  }
+
   // The name typed in «עדכן שם» on the print page is kept: every «דף להדפסה»
   // button calls this without a brand, and writing '' over it sent a trainer
   // whose access code carries no brand back to a watermarked sheet each time.
@@ -2715,6 +2886,13 @@
     redeemAccessCode: redeemAccessCode,
     workoutPrintModel: workoutPrintModel,
     workoutPrintHtml: workoutPrintHtml,
+    monthlyReportModel: monthlyReportModel,
+    monthlyReportHtml: monthlyReportHtml,
+    prepareMonthlyReport: prepareMonthlyReport,
+    dueReminders: dueReminders,
+    reminderPrefs: reminderPrefs,
+    setReminderPrefs: setReminderPrefs,
+    runReminders: runReminders,
     preparePrint: preparePrint,
     createWorkoutSession: createWorkoutSession,
     saveWorkoutSession: saveWorkoutSession,

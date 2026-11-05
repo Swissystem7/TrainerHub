@@ -205,6 +205,17 @@
         <select id="clientFilter" name="clientFilter"></select>
       </div>
     </div>
+    <div class="row">
+      <div>
+        <label for="reportMonth">חודש לדוח החודשי</label>
+        <input id="reportMonth" name="reportMonth" type="month" aria-label="חודש לדוח החודשי">
+      </div>
+      <div>
+        <label for="remindToggle">תזכורות במכשיר</label>
+        <button type="button" class="th-btn ghost" id="remindToggle" aria-pressed="false" aria-label="הפעל תזכורות מקומיות לימי אימון">הפעל תזכורות</button>
+      </div>
+    </div>
+    <p class="status" id="remindStatus" role="status" aria-live="polite"></p>
     <p class="status" id="filterStatus" role="status" aria-live="polite"></p>
   </form>
 
@@ -388,6 +399,7 @@
             '<button type="button" class="th-btn" data-act="preview" data-i="' + i + '" aria-label="פתח כמתאמן עבור ' + TH.esc(c.name || 'מתאמן') + '">פתח כמתאמן</button>' +
             '<button type="button" class="th-btn ghost" data-act="share" data-i="' + i + '" aria-label="שתף אימון עבור ' + TH.esc(c.name || 'מתאמן') + '">שתף אימון ללקוח</button>' +
             '<button type="button" class="th-btn ghost" data-act="pdf" data-i="' + i + '" aria-label="דף להדפסה / PDF עבור ' + TH.esc(c.name || 'מתאמן') + '">דף להדפסה / PDF</button>' +
+            '<button type="button" class="th-btn ghost" data-act="report" data-i="' + i + '" aria-label="דוח חודשי להדפסה עבור ' + TH.esc(c.name || 'מתאמן') + '">דוח חודשי</button>' +
             '<button type="button" class="th-btn ghost" data-act="nudge" data-i="' + i + '" aria-label="תזכורת בוואטסאפ עבור ' + TH.esc(c.name || 'מתאמן') + '">תזכורת</button>' +
             '<button type="button" class="th-btn ghost" data-act="next" data-i="' + i + '" aria-label="הצע שבוע הבא עבור ' + TH.esc(c.name || 'מתאמן') + '">הצע שבוע הבא</button>' +
             '<button type="button" class="th-btn ghost" data-act="assign" data-i="' + i + '" aria-label="שייך אימון פעיל ל' + TH.esc(c.name || 'מתאמן') + '">שייך אימון פעיל</button>' +
@@ -838,6 +850,12 @@
       save();
       TH.preparePrint(workout, { name: c.name || '' });
       location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
+    } else if (act === 'report') {
+      var month = ($('reportMonth') && $('reportMonth').value) || '';
+      var entries = window.THJournalStorage && window.THJournalStorage.listEntries
+        ? window.THJournalStorage.listEntries().filter(function (e) { return e.clientId === c.id; }) : [];
+      TH.prepareMonthlyReport(c, { month: month, entries: entries });
+      location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
     } else if (act === 'nudge') {
       window.open(TH.waShareUrl(c.phone, TH.nudgeMessage(c)), '_blank');
     } else if (act === 'assign') {
@@ -873,6 +891,48 @@
       render();
     }
   });
+
+  // Local reminders: Notification API only, flag kept in workout prefs.
+  function remindUi() {
+    var b = $('remindToggle');
+    if (!b || !TH.reminderPrefs || typeof b.setAttribute !== 'function') return;
+    var on = TH.reminderPrefs().on;
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = on ? 'כבה תזכורות' : 'הפעל תזכורות';
+    var st = $('remindStatus');
+    if (st && !('Notification' in window)) st.textContent = 'הדפדפן הזה לא תומך בהתראות מקומיות.';
+  }
+  function remindCheck() {
+    if (!TH.runReminders) return;
+    var r;
+    try { r = TH.runReminders(clients); } catch (e) { return; }
+    var st = $('remindStatus');
+    if (!st) return;
+    if (r.reason === 'ok') st.textContent = 'נשלחו ' + r.shown + ' תזכורות למתאמנים שמתאמנים היום.';
+    else if (r.reason === 'none') st.textContent = 'אין היום מתאמנים שמחכים לתזכורת.';
+    else if (r.reason === 'permission') st.textContent = 'צריך לאשר התראות בדפדפן כדי לקבל תזכורות.';
+  }
+  if ($('reportMonth') && $('reportMonth').type === 'month' && !$('reportMonth').value) {
+    var nowD = new Date();
+    $('reportMonth').value = nowD.getFullYear() + '-' + String(nowD.getMonth() + 1).padStart(2, '0');
+  }
+  if ($('remindToggle') && typeof $('remindToggle').addEventListener === 'function' && TH.setReminderPrefs) {
+    $('remindToggle').addEventListener('click', function () {
+      var on = !TH.reminderPrefs().on;
+      TH.setReminderPrefs({ on: on, last: '' });
+      remindUi();
+      if (on && window.Notification && Notification.permission !== 'granted' && Notification.requestPermission) {
+        Promise.resolve(Notification.requestPermission()).then(remindCheck);
+      } else if (on) remindCheck();
+      else $('remindStatus').textContent = 'התזכורות כבויות.';
+    });
+    remindUi();
+    remindCheck();
+    if (typeof document !== 'undefined' && document.visibilityState) {
+      var remindTimer = setInterval(remindCheck, 30 * 60 * 1000);
+      if (remindTimer && remindTimer.unref) remindTimer.unref();
+    }
+  }
 
   render();
 })();
