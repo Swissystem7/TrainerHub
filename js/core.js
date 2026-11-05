@@ -1030,6 +1030,261 @@
     }
   }
 
+  // ---- QR code (self-written, no library, no network) ----------------------
+  // Byte mode, error correction M (falls back to L for long links), versions
+  // 1-40, all 8 masks scored. Follows ISO/IEC 18004; output is an SVG string.
+  var QR_ECC = {
+    L: [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    M: [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28]
+  };
+  var QR_BLOCKS = {
+    L: [-1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8, 8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25],
+    M: [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49]
+  };
+  function qrRawModules(ver) {
+    var r = (16 * ver + 128) * ver + 64;
+    if (ver >= 2) {
+      var n = Math.floor(ver / 7) + 2;
+      r -= (25 * n - 10) * n - 55;
+      if (ver >= 7) r -= 36;
+    }
+    return r;
+  }
+  function qrDataCodewords(ver, ecl) {
+    return Math.floor(qrRawModules(ver) / 8) - QR_ECC[ecl][ver] * QR_BLOCKS[ecl][ver];
+  }
+  function gfMul(x, y) {
+    var z = 0;
+    for (var i = 7; i >= 0; i--) {
+      z = (z << 1) ^ ((z >>> 7) * 0x11D);
+      z ^= ((y >>> i) & 1) * x;
+    }
+    return z & 0xFF;
+  }
+  function rsDivisor(degree) {
+    var res = [];
+    for (var i = 0; i < degree - 1; i++) res.push(0);
+    res.push(1);
+    var root = 1;
+    for (i = 0; i < degree; i++) {
+      for (var j = 0; j < res.length; j++) {
+        res[j] = gfMul(res[j], root);
+        if (j + 1 < res.length) res[j] ^= res[j + 1];
+      }
+      root = gfMul(root, 0x02);
+    }
+    return res;
+  }
+  function rsRemainder(data, div) {
+    var res = div.map(function () { return 0; });
+    data.forEach(function (b) {
+      var f = b ^ res.shift();
+      res.push(0);
+      div.forEach(function (c, i) { res[i] ^= gfMul(c, f); });
+    });
+    return res;
+  }
+  function qrAlignPositions(ver, size) {
+    if (ver === 1) return [];
+    var n = Math.floor(ver / 7) + 2;
+    var step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (n * 2 - 2)) * 2;
+    var res = [6];
+    for (var pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
+    return res;
+  }
+  function qrPenalty(m, size) {
+    var p = 0, x, y, dark = 0;
+    function lines(get) {
+      for (var a = 0; a < size; a++) {
+        var run = 1, s = '';
+        for (var b = 0; b < size; b++) {
+          var v = get(a, b);
+          s += v ? '1' : '0';
+          if (b > 0 && v === get(a, b - 1)) run++;
+          else { if (run >= 5) p += run - 2; run = 1; }
+        }
+        if (run >= 5) p += run - 2;
+        var pad = '0000' + s + '0000', k = -1;
+        while ((k = pad.indexOf('10111010000', k + 1)) !== -1) p += 40;
+        k = -1;
+        while ((k = pad.indexOf('00001011101', k + 1)) !== -1) p += 40;
+      }
+    }
+    lines(function (a, b) { return m[a][b]; });
+    lines(function (a, b) { return m[b][a]; });
+    for (y = 0; y < size; y++) {
+      for (x = 0; x < size; x++) {
+        if (m[y][x]) dark++;
+        if (x < size - 1 && y < size - 1) {
+          var c = m[y][x];
+          if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) p += 3;
+        }
+      }
+    }
+    var total = size * size;
+    p += Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+    return p;
+  }
+
+  // Returns {version, ecl, size, modules[y][x] booleans} or null when the text
+  // is too long for any version.
+  function qrMatrix(text) {
+    var bytes = [];
+    var utf = unescape(encodeURIComponent(String(text || '')));
+    for (var i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
+    var ver = 0, ecl = null;
+    ['M', 'L'].some(function (e) {
+      for (var v = 1; v <= 40; v++) {
+        var bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
+        if (bits <= qrDataCodewords(v, e) * 8) { ver = v; ecl = e; return true; }
+      }
+      return false;
+    });
+    if (!ver) return null;
+    var cap = qrDataCodewords(ver, ecl) * 8;
+    var bb = [];
+    function put(val, len) { for (var k = len - 1; k >= 0; k--) bb.push((val >>> k) & 1); }
+    put(4, 4);
+    put(bytes.length, ver < 10 ? 8 : 16);
+    bytes.forEach(function (b) { put(b, 8); });
+    put(0, Math.min(4, cap - bb.length));
+    put(0, (8 - bb.length % 8) % 8);
+    for (var pad = 0xEC; bb.length < cap; pad ^= 0xEC ^ 0x11) put(pad, 8);
+    var data = [];
+    for (i = 0; i < bb.length; i += 8) {
+      var byte = 0;
+      for (var j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
+      data.push(byte);
+    }
+    // Split into blocks, add Reed-Solomon, interleave.
+    var nb = QR_BLOCKS[ecl][ver], eccLen = QR_ECC[ecl][ver];
+    var raw = Math.floor(qrRawModules(ver) / 8);
+    var nShort = nb - raw % nb, shortLen = Math.floor(raw / nb);
+    var div = rsDivisor(eccLen), blocks = [], k = 0;
+    for (i = 0; i < nb; i++) {
+      var dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
+      k += dat.length;
+      var ecc = rsRemainder(dat, div);
+      if (i < nShort) dat.push(0);
+      blocks.push(dat.concat(ecc));
+    }
+    var words = [];
+    for (i = 0; i < blocks[0].length; i++) {
+      for (j = 0; j < blocks.length; j++) {
+        if (i !== shortLen - eccLen || j >= nShort) words.push(blocks[j][i]);
+      }
+    }
+    var size = ver * 4 + 17, mod = [], fn = [];
+    for (i = 0; i < size; i++) {
+      mod.push(new Array(size).fill(false));
+      fn.push(new Array(size).fill(false));
+    }
+    function setFn(x, y, d) { mod[y][x] = d; fn[y][x] = true; }
+    for (i = 0; i < size; i++) { setFn(6, i, i % 2 === 0); setFn(i, 6, i % 2 === 0); }
+    [[3, 3], [size - 4, 3], [3, size - 4]].forEach(function (c) {
+      for (var dy = -4; dy <= 4; dy++) {
+        for (var dx = -4; dx <= 4; dx++) {
+          var d = Math.max(Math.abs(dx), Math.abs(dy)), xx = c[0] + dx, yy = c[1] + dy;
+          if (xx >= 0 && xx < size && yy >= 0 && yy < size) setFn(xx, yy, d !== 2 && d !== 4);
+        }
+      }
+    });
+    var al = qrAlignPositions(ver, size), na = al.length;
+    for (i = 0; i < na; i++) {
+      for (j = 0; j < na; j++) {
+        if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue;
+        for (var ay = -2; ay <= 2; ay++) {
+          for (var ax = -2; ax <= 2; ax++) setFn(al[i] + ax, al[j] + ay, Math.max(Math.abs(ax), Math.abs(ay)) !== 1);
+        }
+      }
+    }
+    function formatBits(mask) {
+      var d = ((ecl === 'L' ? 1 : 0) << 3) | mask, r = d;
+      for (var q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      var bits = ((d << 10) | r) ^ 0x5412;
+      function bit(n) { return ((bits >>> n) & 1) !== 0; }
+      for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
+      setFn(8, 7, bit(6)); setFn(8, 8, bit(7)); setFn(7, 8, bit(8));
+      for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
+      for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
+      for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
+      setFn(8, size - 8, true);
+    }
+    formatBits(0);
+    if (ver >= 7) {
+      var r = ver;
+      for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25);
+      var vb = (ver << 12) | r;
+      for (i = 0; i < 18; i++) {
+        var on = ((vb >>> i) & 1) !== 0, a = size - 11 + i % 3, b = Math.floor(i / 3);
+        setFn(a, b, on); setFn(b, a, on);
+      }
+    }
+    var bi = 0;
+    for (var right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (var vert = 0; vert < size; vert++) {
+        for (j = 0; j < 2; j++) {
+          var x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+          if (!fn[y][x] && bi < words.length * 8) {
+            mod[y][x] = ((words[bi >>> 3] >>> (7 - (bi & 7))) & 1) !== 0;
+            bi++;
+          }
+        }
+      }
+    }
+    function applyMask(mask) {
+      for (var yy = 0; yy < size; yy++) {
+        for (var xx = 0; xx < size; xx++) {
+          var inv;
+          switch (mask) {
+            case 0: inv = (xx + yy) % 2 === 0; break;
+            case 1: inv = yy % 2 === 0; break;
+            case 2: inv = xx % 3 === 0; break;
+            case 3: inv = (xx + yy) % 3 === 0; break;
+            case 4: inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0; break;
+            case 5: inv = xx * yy % 2 + xx * yy % 3 === 0; break;
+            case 6: inv = (xx * yy % 2 + xx * yy % 3) % 2 === 0; break;
+            default: inv = ((xx + yy) % 2 + xx * yy % 3) % 2 === 0;
+          }
+          if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
+        }
+      }
+    }
+    var best = 0, bestP = Infinity;
+    for (var mk = 0; mk < 8; mk++) {
+      applyMask(mk); formatBits(mk);
+      var pen = qrPenalty(mod, size);
+      if (pen < bestP) { bestP = pen; best = mk; }
+      applyMask(mk);
+    }
+    applyMask(best); formatBits(best);
+    return { version: ver, ecl: ecl, size: size, mask: best, modules: mod };
+  }
+
+  // SVG with a 4-module quiet zone, dark on white so phone cameras read it on a dark page.
+  function qrSvg(text, opts) {
+    opts = opts || {};
+    var q = qrMatrix(text);
+    if (!q) return '';
+    var n = q.size + 8, d = '';
+    for (var y = 0; y < q.size; y++) {
+      for (var x = 0; x < q.size; x++) if (q.modules[y][x]) d += 'M' + (x + 4) + ' ' + (y + 4) + 'h1v1h-1z';
+    }
+    var px = opts.size || 220;
+    return '<svg xmlns="http://www.w3.org/2000/svg" class="th-qr" role="img" aria-label="' + esc(opts.label || 'קוד QR לקישור') +
+      '" width="' + px + '" height="' + px + '" viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges">' +
+      '<rect width="' + n + '" height="' + n + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
+  }
+
+  // Markup shown under a share action: the QR plus the link itself.
+  function shareQrMarkup(url) {
+    var svg = qrSvg(url, { label: 'קוד QR לקישור האימון' });
+    if (!svg) return '';
+    return '<figure class="th-share-qr" data-role="share-qr" style="margin:12px 0;text-align:center">' + svg +
+      '<figcaption style="font-size:0.8rem;margin-top:6px">סורקים במצלמה של הטלפון כדי לפתוח את האימון (נוצר במכשיר, בלי שירות חיצוני)</figcaption></figure>';
+  }
+
   function encodeResult(result) {
     result = result || {};
     var payload = {
@@ -1045,6 +1300,10 @@
       rpe: result.rpe != null ? result.rpe : null,
       pl: result.plan || null
     };
+    // Optional per-exercise detail, added later. Old readers ignore «x», and a
+    // code without it decodes to an empty log, so old and new codes both import.
+    var x = compactExerciseLog(result.log);
+    if (x.length) payload.x = x;
     return 'TH1.' + utf8ToB64url(JSON.stringify(payload));
   }
 
@@ -1061,8 +1320,44 @@
       skipped: Number(obj.sk != null ? obj.sk : obj.skipped) || 0,
       tid: obj.tid || '',
       rpe: obj.rpe != null ? Number(obj.rpe) : null,
-      plan: obj.pl || obj.plan || null
+      plan: obj.pl || obj.plan || null,
+      log: expandExerciseLog(obj.x || obj.log)
     };
+  }
+
+  // log: [{id, sets:[{reps, weightKg}], rpe}] <-> x: [[id, [[reps, kg], ...], rpe]]
+  function cleanNum(v, max) {
+    var n = Number(v);
+    return isFinite(n) && n > 0 && n <= max ? Math.round(n * 10) / 10 : 0;
+  }
+  function compactExerciseLog(log) {
+    if (!Array.isArray(log)) return [];
+    return log.map(function (ex) {
+      if (!ex || !ex.id) return null;
+      var sets = (Array.isArray(ex.sets) ? ex.sets : []).map(function (st) {
+        var r = cleanNum(st && st.reps, 1000);
+        return r ? [r, cleanNum(st.weightKg, 1000)] : null;
+      }).filter(Boolean);
+      var rpe = cleanNum(ex.rpe, 10);
+      if (!sets.length && !rpe) return null;
+      return [String(ex.id).slice(0, 80), sets, rpe];
+    }).filter(Boolean);
+  }
+  function expandExerciseLog(x) {
+    if (!Array.isArray(x)) return [];
+    return x.map(function (row) {
+      if (Array.isArray(row)) {
+        return {
+          id: String(row[0] || ''),
+          sets: (Array.isArray(row[1]) ? row[1] : []).map(function (st) {
+            return { reps: cleanNum(st && st[0], 1000), weightKg: cleanNum(st && st[1], 1000) };
+          }).filter(function (st) { return st.reps; }),
+          rpe: cleanNum(row[2], 10) || null
+        };
+      }
+      if (row && row.id) return expandExerciseLog(compactExerciseLog([row]))[0] || null;
+      return null;
+    }).filter(function (e) { return e && e.id; });
   }
 
   function decodeResult(text) {
@@ -2258,6 +2553,9 @@
     rulesMarkup: rulesMarkup,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
+    qrMatrix: qrMatrix,
+    qrSvg: qrSvg,
+    shareQrMarkup: shareQrMarkup,
     decodeResult: decodeResult,
     waShareUrl: waShareUrl,
     workoutModeUrl: workoutModeUrl,
@@ -2329,6 +2627,9 @@
     shareToClient: shareToClient,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
+    qrMatrix: qrMatrix,
+    qrSvg: qrSvg,
+    shareQrMarkup: shareQrMarkup,
     decodeResult: decodeResult,
     compactPlan: compactPlan,
     expandPlan: expandPlan,

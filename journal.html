@@ -537,6 +537,21 @@
     el.className = warn ? 'status warn' : 'status';
   }
 
+  // QR of the share link, drawn on the device (TH.shareQrMarkup), so the trainee
+  // can scan it from the coach's screen instead of waiting for WhatsApp.
+  function showShareQr(clientId, url) {
+    var list = $('list');
+    if (!TH.shareQrMarkup || !list || !list.querySelectorAll) return;
+    var olds = list.querySelectorAll('[data-role="share-qr"]');
+    for (var q = 0; q < olds.length; q++) olds[q].parentNode.removeChild(olds[q]);
+    var idx = -1;
+    for (var i = 0; i < clients.length; i++) if (clients[i].id === clientId) idx = i;
+    var btn = $('list').querySelector('[data-act="share"][data-i="' + idx + '"]');
+    var card = btn && btn.closest ? btn.closest('article.card') : null;
+    var host = (card && card.querySelector('.th-gate-host')) || card || $('list');
+    if (host && host.insertAdjacentHTML) host.insertAdjacentHTML('beforeend', TH.shareQrMarkup(url));
+  }
+
   function shareOrPreview(c, previewOnly, sourceBtn) {
     var workout = assignedWorkout(c);
     if (!workout) {
@@ -563,6 +578,7 @@
       return;
     }
     render(c.id);
+    showShareQr(c.id, shared.url);
     var msg = 'היי ' + (c.name || '') + ' 💪\nהאימון שלך (בלי הרשמה):\n' + shared.url +
       '\n\nכשתסיים — שלח לי את הקוד ממסך הסיום.';
     window.open(TH.waShareUrl(c.phone, msg), '_blank');
@@ -657,6 +673,18 @@
         skipped: parsed.skipped,
         rpe: parsed.rpe
       };
+      // Newer codes carry per-exercise sets/weight/RPE («x»); old codes have none.
+      var exLog = parsed.log || [];
+      if (exLog.length) {
+        log.ex = exLog;
+        var flat = [];
+        exLog.forEach(function (ex) {
+          ex.sets.forEach(function (st) { flat.push({ exerciseId: ex.id, reps: st.reps, weightKg: st.weightKg }); });
+        });
+        if (flat.length && window.THJournalStorage) {
+          window.THJournalStorage.saveEntry({ clientId: c.id, title: parsed.title, doneAt: parsed.doneAt, sets: flat });
+        }
+      }
       c.logs.push(log);
       // A report that arrives late (Monday's code pasted after Wednesday's) is
       // logged, but the client's current plan stays the one from the newest report.
@@ -677,7 +705,8 @@
     save();
     $('importCode').value = '';
     setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.')
-      : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.')));
+      : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.' +
+        ((parsed.log || []).length ? ' כולל פירוט ל-' + parsed.log.length + ' תרגילים (סטים/משקל/קושי).' : ''))));
     render(c.id);
   });
 

@@ -314,6 +314,7 @@
       <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0" aria-label="שלח סיכום למאמן בוואטסאפ">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <div id="exRpeBox" role="group" aria-label="קושי לכל תרגיל"></div>
     <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0A1513;color:#7FE9D9;border:1px solid #28423C;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
     <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#12211E;border:1px solid #28423C" aria-label="העתק קוד סיכום לייבוא ביומן המאמן">📋 העתק קוד</button>
@@ -558,6 +559,37 @@ function recordSet(step) {
   const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0 };
   setLog.push(item);
   return item;
+}
+
+// Sets grouped per exercise for the TH1 report (optional «x» field), with the
+// per-exercise RPE (1-10) the trainee picks on the finish screen.
+let exerciseRpe = {};
+function exerciseLogForReport() {
+  const order = [], byId = {};
+  setLog.forEach(function (s) {
+    if (!byId[s.exerciseId]) { byId[s.exerciseId] = { id: s.exerciseId, sets: [], rpe: null }; order.push(s.exerciseId); }
+    byId[s.exerciseId].sets.push({ reps: s.reps, weightKg: s.weightKg });
+  });
+  return order.map(function (id) { byId[id].rpe = exerciseRpe[id] || null; return byId[id]; });
+}
+function exerciseNameFor(id) {
+  let name = id;
+  ((workout && workout.phases) || []).forEach(function (ph) {
+    (ph.exercises || []).forEach(function (ex) { if (ex && (ex.id === id || ex.name === id)) name = ex.name || id; });
+  });
+  return name;
+}
+function exerciseRpeMarkup() {
+  const log = exerciseLogForReport();
+  if (!log.length) return '';
+  const opts = ['<option value="">—</option>'].concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}">${n}</option>`)).join('');
+  return '<p style="font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קושי לכל תרגיל (RPE 1-10, לא חובה)</p>' +
+    log.map(function (ex, i) {
+      const sets = ex.sets.map(s => s.reps + (s.weightKg ? '×' + s.weightKg : '')).join(', ');
+      return `<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin:4px 0">` +
+        `<label for="exRpe${i}" style="font-size:0.85rem">${esc(exerciseNameFor(ex.id))} <span dir="ltr" style="color:#9ca3af">${esc(sets)}</span></label>` +
+        `<select id="exRpe${i}" data-ex="${esc(ex.id)}" aria-label="קושי ${esc(exerciseNameFor(ex.id))}">${opts}</select></div>`;
+    }).join('');
 }
 
 function saveSetLog(doneAt) {
@@ -1094,7 +1126,8 @@ function finishWorkout() {
       skipped: skippedSets,
       tid: linkMeta.tid || '',
       rpe: reportRpe,
-      plan: TH.compactPlan(workout)
+      plan: TH.compactPlan(workout),
+      log: typeof exerciseLogForReport === 'function' ? exerciseLogForReport() : []
     };
   }
   function refreshReport() {
@@ -1134,6 +1167,16 @@ function finishWorkout() {
           rpeRow.querySelectorAll('[data-rpe]').forEach(b => {
             b.style.background = Number(b.getAttribute('data-rpe')) === reportRpe ? '#00756A' : '#12211E';
           });
+          refreshReport();
+        };
+      });
+    }
+    const exBox = document.getElementById('exRpeBox');
+    if (exBox && typeof exerciseRpeMarkup === 'function') {
+      exBox.innerHTML = exerciseRpeMarkup();
+      exBox.querySelectorAll('select[data-ex]').forEach(sel => {
+        sel.onchange = function () {
+          exerciseRpe[sel.getAttribute('data-ex')] = Number(sel.value) || null;
           refreshReport();
         };
       });
