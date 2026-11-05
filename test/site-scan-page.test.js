@@ -27,7 +27,7 @@ test('camera input opens the back camera and takes several photos', function () 
 
 test('scripts load the profile, plan and scan modules after core and booklet', function () {
   const srcs = [...page.matchAll(/<script src="\.\/(js\/[^"]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(srcs, ['js/core.js', 'js/booklet.js', 'js/site-profile.js', 'js/site-plan.js', 'js/site-scan.js']);
+  assert.deepEqual(srcs, ['js/core.js', 'js/booklet.js', 'js/site-profile.js', 'js/site-plan.js', 'js/site-scan.js', 'js/th-nav.js']);
   ['js/core.js', 'js/booklet.js', 'js/site-profile.js', 'js/site-plan.js'].forEach((rel) => {
     assert.ok(fs.existsSync(path.join(root, rel)), rel);
   });
