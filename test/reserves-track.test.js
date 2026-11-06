@@ -254,6 +254,184 @@ test('plan includes deload every 3–4 weeks and before final test', function ()
   assert.match(track.plan.sessions.find((s) => s.id === 'w6a').focus_he, /דילוד/);
 });
 
+test('boundary: every benchmark passes exactly at threshold and fails one unit beyond', function () {
+  R.setData(track);
+  // run3000 is lte 1080s: at/inside passes, one second over fails.
+  assert.equal(R.evaluateTest('run3000', 1080).pass, true);
+  assert.equal(R.evaluateTest('run3000', 1079).pass, true);
+  assert.equal(R.evaluateTest('run3000', 1081).pass, false);
+  assert.equal(R.evaluateTest('run3000', '17:59').pass, true);
+  assert.equal(R.evaluateTest('run3000', '18:01').pass, false);
+  // gte rep tests: at threshold passes, one rep below fails, fractional below fails.
+  for (const [id, thr] of [['pullups', 3], ['dips', 5], ['hr_pushups', 15]]) {
+    assert.equal(R.evaluateTest(id, thr).pass, true, id + ' at threshold');
+    assert.equal(R.evaluateTest(id, thr - 1).pass, false, id + ' one below');
+    assert.equal(R.evaluateTest(id, thr - 0.1).pass, false, id + ' fraction below');
+    assert.equal(R.evaluateTest(id, thr + 1).pass, true, id + ' one above');
+    assert.equal(R.evaluateTest(id, 0).pass, false, id + ' zero');
+    const ev = R.evaluateTest(id, thr);
+    assert.equal(ev.incomplete, false);
+    assert.equal(ev.value, thr);
+    assert.equal(ev.verified, false);
+  }
+});
+
+test('parseClock rejects out-of-range and malformed clocks; formatClock guards bad input', function () {
+  assert.equal(R.parseClock('0:00'), 0);
+  assert.equal(R.parseClock('1080'), 1080);
+  assert.equal(R.parseClock(' 18:00 '), 1080);
+  assert.ok(Number.isNaN(R.parseClock('18:60')));
+  assert.ok(Number.isNaN(R.parseClock('1:60:00')));
+  assert.ok(Number.isNaN(R.parseClock('1:2:3:4')));
+  assert.ok(Number.isNaN(R.parseClock('')));
+  assert.ok(Number.isNaN(R.parseClock('abc')));
+  assert.ok(Number.isNaN(R.parseClock(':')));
+  assert.ok(Number.isNaN(R.parseClock(null)));
+  assert.equal(R.formatClock(0), '0:00');
+  assert.equal(R.formatClock(59), '0:59');
+  assert.equal(R.formatClock(60), '1:00');
+  assert.equal(R.formatClock(3599), '59:59');
+  assert.equal(R.formatClock(-1), '');
+  assert.equal(R.formatClock(NaN), '');
+  assert.equal(R.formatClock(Infinity), '');
+});
+
+test('evaluateTest invalid inputs are incomplete+invalid, never a pass', function () {
+  R.setData(track);
+  assert.equal(R.evaluateTest('unknown-id', 5), null);
+  assert.equal(R.testById('unknown-id'), null);
+  for (const raw of ['abc', '18:60', -5, NaN, Infinity, -Infinity]) {
+    const ev = R.evaluateTest('run3000', raw);
+    assert.equal(ev.pass, false, 'run3000 ' + String(raw));
+    assert.equal(ev.incomplete, true, 'run3000 ' + String(raw));
+    assert.equal(ev.invalid, true, 'run3000 ' + String(raw));
+    assert.equal(ev.value, null);
+  }
+  for (const raw of ['abc', '-3', -1, NaN, Infinity]) {
+    const ev = R.evaluateTest('pullups', raw);
+    assert.equal(ev.pass, false, 'pullups ' + String(raw));
+    assert.equal(ev.invalid, true, 'pullups ' + String(raw));
+  }
+  for (const raw of ['', null, undefined]) {
+    const ev = R.evaluateTest('dips', raw);
+    assert.equal(ev.incomplete, true);
+    assert.equal(ev.pass, false);
+    assert.equal(ev.invalid, undefined);
+  }
+  // String numbers and decimal-comma input already accepted by normalizeValue.
+  assert.equal(R.evaluateTest('pullups', '3').pass, true);
+  assert.equal(R.evaluateTest('pullups', '3,0').pass, true);
+});
+
+test('negative clock strings are invalid, not stripped into a passing time', function () {
+  R.setData(track);
+  for (const raw of ['-1', '-18:00', '-0:01']) {
+    assert.ok(Number.isNaN(R.parseClock(raw)), raw);
+    const ev = R.evaluateTest('run3000', raw);
+    assert.equal(ev.pass, false, raw);
+    assert.equal(ev.incomplete, true, raw);
+    assert.equal(ev.invalid, true, raw);
+  }
+});
+
+test('evaluateAll: invalid or missing input is incomplete, a valid miss is fail', function () {
+  R.setData(track);
+  assert.equal(R.evaluateAll().overall, 'incomplete');
+  assert.equal(R.evaluateAll({}).overall, 'incomplete');
+  assert.equal(R.evaluateAll({ run3000: 'abc', pullups: 9, dips: 9, hr_pushups: 99 }).overall, 'incomplete');
+  const oneFail = R.evaluateAll({ run3000: '18:01', pullups: 3, dips: 5, hr_pushups: 15 });
+  assert.equal(oneFail.overall, 'fail');
+  assert.equal(oneFail.allPassed, false);
+  assert.equal(oneFail.tests.filter((t) => !t.pass).map((t) => t.id).join(','), 'run3000');
+  const exact = R.evaluateAll({ run3000: '18:00', pullups: 3, dips: 5, hr_pushups: 15 });
+  assert.equal(exact.overall, 'pass');
+  assert.equal(exact.allPassed, true);
+  // Unknown extra keys do not substitute for a required test.
+  assert.equal(R.evaluateAll({ pullups: 3, dips: 5, hr_pushups: 15, bogus: 1 }).overall, 'incomplete');
+});
+
+test('6-week plan distribution: exactly 2 ordered sessions in each week 1-6', function () {
+  const sessions = track.plan.sessions;
+  assert.equal(sessions.length, 12);
+  for (let week = 1; week <= 6; week++) {
+    const inWeek = sessions.filter((s) => s.week === week);
+    assert.deepEqual(inWeek.map((s) => s.id), ['w' + week + 'a', 'w' + week + 'b'], 'week ' + week);
+    inWeek.forEach((s) => {
+      assert.ok(Array.isArray(s.items_he) && s.items_he.length >= 2);
+      assert.ok(s.load && Number.isFinite(s.load.sets) && s.load.sets >= 1);
+      assert.equal(s.verified, false);
+    });
+  }
+  // Sessions are stored in chronological week order.
+  assert.deepEqual(sessions.map((s) => s.week), [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]);
+  assert.deepEqual(track.plan.checkpoints.map((c) => c.week), [0, 3, 6]);
+  // Deload sessions named in the documented deload rule (week 3 and pre-final week 6).
+  assert.match(sessions.find((s) => s.id === 'w3b').focus_he, /דילוד/);
+  assert.match(sessions.find((s) => s.id === 'w6a').focus_he, /דילוד/);
+});
+
+test('graded load: strength plan sets rise with level for both equipment kinds', function () {
+  R.setData(track);
+  const minSets = (level, equipment) => Math.min(...R.strengthPlans({ level, equipment })[0].sessions.map((s) => s.load.sets));
+  for (const equipment of ['none', 'bars']) {
+    assert.ok(minSets(1, equipment) < minSets(2, equipment), equipment + ' L1<L2');
+    assert.ok(minSets(2, equipment) <= minSets(3, equipment), equipment + ' L2<=L3');
+  }
+  assert.equal(minSets(1, 'none'), 3);
+  assert.equal(minSets(2, 'none'), 4);
+  assert.equal(minSets(3, 'none'), 5);
+  // Unknown filters match nothing instead of falling back to all plans.
+  assert.deepEqual(R.strengthPlans({ level: 99 }), []);
+  assert.deepEqual(R.strengthPlans({ equipment: 'bogus' }), []);
+  assert.equal(R.strengthPlanById('no-such-plan'), null);
+  // tests() hands out a copy: mutating it must not shrink the catalogue.
+  const copy = R.tests();
+  copy.pop();
+  assert.equal(R.tests().length, 4);
+});
+
+test('scaleLoad clamps sets to 2..6 and does not mutate the input load', function () {
+  const base = { sets: 6, effort_he: 'בינוני' };
+  assert.equal(R.scaleLoad(base, 10).sets, 6);
+  assert.equal(base.sets, 6);
+  assert.equal(R.scaleLoad({ sets: 2, effort_he: 'בינוני' }, -10).sets, 2);
+  assert.equal(R.scaleLoad({ sets: 3, effort_he: 'בינוני' }, 1).sets, 4);
+  assert.equal(R.scaleLoad(null, 0).sets, 3);
+  assert.equal(R.scaleLoad(undefined, -1).sets, 2);
+  assert.match(R.scaleLoad({ sets: 3 }, 1).effort_he, /קל/);
+  assert.match(R.scaleLoad({ sets: 3 }, -1).effort_he, /לא סיימתי/);
+});
+
+test('nextWorkout ends at the last session, rejects unknown ids and feedback', function () {
+  R.setData(track);
+  const mem = {};
+  global.localStorage = {
+    getItem(k) { return Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null; },
+    setItem(k, v) { mem[k] = String(v); },
+    removeItem(k) { delete mem[k]; }
+  };
+  R.clearResults();
+  const done = R.nextWorkout('w6b', 'exact');
+  assert.equal(done.done, true);
+  assert.equal(done.session, null);
+  assert.equal(R.nextWorkout('no-such-session', 'exact'), null);
+  assert.equal(R.findPlanSession('no-such-session'), null);
+  assert.equal(R.recordWorkoutFeedback('w1a', 'bogus-feedback'), null);
+  assert.equal(R.adjustmentFor('bogus-feedback'), null);
+  // Unknown feedback id in nextWorkout falls back to zero volume delta.
+  const next = R.nextWorkout('w1a', 'bogus-feedback');
+  assert.equal(next.done, false);
+  assert.equal(next.session.id, 'w1b');
+  assert.equal(next.session.load.sets, track.plan.sessions[1].load.sets);
+  // Strength-plan sessions chain within their own plan only.
+  const strNext = R.nextWorkout('bw1-a', 'exact');
+  assert.equal(strNext.source, 'strength');
+  assert.equal(strNext.planId, 'str-bw-1');
+  assert.equal(strNext.session.id, 'bw1-b');
+  assert.equal(R.nextWorkout('bw1-b', 'exact').done, true);
+  delete global.localStorage;
+});
+
 test('strength plans expose duration and deload guidance by level', function () {
   R.setData(track);
   const plans = R.strengthPlans();

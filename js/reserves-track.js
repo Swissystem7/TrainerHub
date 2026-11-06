@@ -62,7 +62,9 @@
   /** Parse m:ss / h:mm:ss / bare seconds → total seconds. */
   function parseClock(v) {
     if (typeof v === 'number') return v;
-    var s = String(v == null ? '' : v).trim().replace(/[^\d:.]/g, '');
+    var trimmed = String(v == null ? '' : v).trim();
+    if (trimmed.charAt(0) === '-') return NaN;
+    var s = trimmed.replace(/[^\d:.]/g, '');
     if (!s) return NaN;
     if (s.indexOf(':') !== -1) {
       var p = s.split(':');
