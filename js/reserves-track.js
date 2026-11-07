@@ -370,33 +370,128 @@
   }
 
   /**
-   * Build the next session after sessionId, scaled by last (or provided) feedback.
+   * Build the next session after sessionId or (week, day), scaled by last (or provided) feedback.
    */
-  function nextWorkout(afterSessionId, feedbackId) {
+  function nextWorkout(arg1, arg2, arg3) {
+    if (arg1 == null) return null;
+
+    var weekNum = null;
+    var afterSessionId = null;
+    var feedbackId = null;
+
+    if (typeof arg1 === 'number') {
+      if (!isFinite(arg1) || arg1 <= 0 || Object.is(arg1, -0)) return null;
+      weekNum = arg1;
+      if (weekNum > 6) {
+        var fb = (typeof arg2 === 'string' && arg2 !== '1' && arg2 !== '2' && arg2 !== 'a' && arg2 !== 'b')
+          ? arg2
+          : (typeof arg3 === 'string' ? arg3 : (loadResults().lastFeedback || 'exact'));
+        var adj = adjustmentFor(fb) || { volume_delta: 0, note_he: '' };
+        return {
+          done: true,
+          isCompleted: true,
+          session: null,
+          feedbackId: fb,
+          adjustment: adj,
+          message_he: 'סיימת את רצף האימונים במסלול הזה'
+        };
+      }
+      var dayLetter = null;
+      if (arg2 === 1 || arg2 === '1' || arg2 === 'a' || arg2 === 'A') {
+        dayLetter = 'a';
+      } else if (arg2 === 2 || arg2 === '2' || arg2 === 'b' || arg2 === 'B') {
+        dayLetter = 'b';
+      } else {
+        return null;
+      }
+      afterSessionId = 'w' + Math.floor(weekNum) + dayLetter;
+      feedbackId = typeof arg3 === 'string' ? arg3 : null;
+    } else if (typeof arg1 === 'string') {
+      var trimmed = arg1.trim();
+      if (!trimmed) return null;
+
+      if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+        var parsedNum = Number(trimmed);
+        if (!isFinite(parsedNum) || parsedNum <= 0) return null;
+        if (parsedNum > 6) {
+          var fbNum = (typeof arg2 === 'string' && arg2 !== '1' && arg2 !== '2' && arg2 !== 'a' && arg2 !== 'b')
+            ? arg2
+            : (typeof arg3 === 'string' ? arg3 : (loadResults().lastFeedback || 'exact'));
+          var adjNum = adjustmentFor(fbNum) || { volume_delta: 0, note_he: '' };
+          return {
+            done: true,
+            isCompleted: true,
+            session: null,
+            feedbackId: fbNum,
+            adjustment: adjNum,
+            message_he: 'סיימת את רצף האימונים במסלול הזה'
+          };
+        }
+        var dayLetterNum = null;
+        if (arg2 === 1 || arg2 === '1' || arg2 === 'a' || arg2 === 'A') {
+          dayLetterNum = 'a';
+        } else if (arg2 === 2 || arg2 === '2' || arg2 === 'b' || arg2 === 'B') {
+          dayLetterNum = 'b';
+        } else {
+          return null;
+        }
+        afterSessionId = 'w' + Math.floor(parsedNum) + dayLetterNum;
+        feedbackId = typeof arg3 === 'string' ? arg3 : null;
+      } else {
+        var foundDirect = findPlanSession(trimmed);
+        if (foundDirect) {
+          afterSessionId = trimmed;
+          feedbackId = typeof arg2 === 'string' ? arg2 : null;
+        } else {
+          var wMatch = trimmed.match(/^w(-?\d+)([a-z])?$/i);
+          if (wMatch) {
+            var wVal = Number(wMatch[1]);
+            if (!isFinite(wVal) || wVal <= 0) return null;
+            if (wVal > 6) {
+              var fbW = typeof arg2 === 'string' ? arg2 : (loadResults().lastFeedback || 'exact');
+              var adjW = adjustmentFor(fbW) || { volume_delta: 0, note_he: '' };
+              return {
+                done: true,
+                isCompleted: true,
+                session: null,
+                feedbackId: fbW,
+                adjustment: adjW,
+                message_he: 'סיימת את רצף האימונים במסלול הזה'
+              };
+            }
+          }
+          return null;
+        }
+      }
+    } else {
+      return null;
+    }
+
     var found = findPlanSession(afterSessionId);
     if (!found) return null;
-    var fb = feedbackId || loadResults().lastFeedback || 'exact';
-    var adj = adjustmentFor(fb) || { volume_delta: 0, note_he: '' };
+    var finalFb = feedbackId || loadResults().lastFeedback || 'exact';
+    var finalAdj = adjustmentFor(finalFb) || { volume_delta: 0, note_he: '' };
     var nextIndex = found.index + 1;
     if (nextIndex >= found.list.length) {
       return {
         done: true,
-        feedbackId: fb,
-        adjustment: adj,
+        isCompleted: true,
         session: null,
+        feedbackId: finalFb,
+        adjustment: finalAdj,
         message_he: 'סיימת את רצף האימונים במסלול הזה'
       };
     }
     var base = found.list[nextIndex];
     var scaled = Object.assign({}, base, {
-      load: scaleLoad(base.load, adj.volume_delta),
-      adjustment_note_he: adj.note_he || '',
-      from_feedback: fb
+      load: scaleLoad(base.load, finalAdj.volume_delta),
+      adjustment_note_he: finalAdj.note_he || '',
+      from_feedback: finalFb
     });
     return {
       done: false,
-      feedbackId: fb,
-      adjustment: adj,
+      feedbackId: finalFb,
+      adjustment: finalAdj,
       session: scaled,
       source: found.source,
       planId: found.planId || null
