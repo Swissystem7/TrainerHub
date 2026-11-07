@@ -107,6 +107,19 @@ test('parseClock and formatClock round-trip common values', function () {
   assert.equal(R.formatClock(65), '1:05');
 });
 
+test('parseClock validates input: rejects negative values, empty input, and invalid characters', function () {
+  assert.ok(Number.isNaN(R.parseClock('-01:30')));
+  assert.ok(Number.isNaN(R.parseClock(-5)));
+  assert.ok(Number.isNaN(R.parseClock(-1080)));
+  assert.ok(Number.isNaN(R.parseClock('')));
+  assert.ok(Number.isNaN(R.parseClock('   ')));
+  assert.ok(Number.isNaN(R.parseClock('abc')));
+  assert.ok(Number.isNaN(R.parseClock('18:00abc')));
+  assert.ok(Number.isNaN(R.parseClock('18:xx')));
+  assert.equal(R.parseClock(1080), 1080);
+  assert.equal(R.parseClock('1080'), 1080);
+});
+
 test('logResult persists via in-memory localStorage shim and clearResults wipes it', function () {
   R.setData(track);
   const mem = {};
@@ -195,6 +208,44 @@ test('recordWorkoutFeedback + nextWorkout scales sets up after קל and down aft
   const same = R.nextWorkout(first.id, 'exact');
   assert.equal(same.session.load.sets, baseSets);
   delete global.localStorage;
+});
+
+test('scaleLoad validates volumeDelta and preserves load on invalid input or negative result', function () {
+  const baseLoad = { sets: 3, effort_he: 'בינוני' };
+
+  // Extreme negative volumeDelta turning load negative returns original structure unchanged
+  const extremeNeg = R.scaleLoad(baseLoad, -10);
+  assert.equal(extremeNeg, baseLoad);
+  assert.equal(extremeNeg.sets, 3);
+  assert.equal(extremeNeg.effort_he, 'בינוני');
+
+  // Infinity returns original structure unchanged
+  const infResult = R.scaleLoad(baseLoad, Infinity);
+  assert.equal(infResult, baseLoad);
+
+  // -Infinity returns original structure unchanged
+  const negInfResult = R.scaleLoad(baseLoad, -Infinity);
+  assert.equal(negInfResult, baseLoad);
+
+  // NaN preserves original load values and returns original structure unchanged
+  const nanResult = R.scaleLoad(baseLoad, NaN);
+  assert.equal(nanResult, baseLoad);
+  assert.equal(nanResult.sets, 3);
+  assert.equal(nanResult.effort_he, 'בינוני');
+
+  // null, undefined, or non-numeric volumeDelta preserves original load
+  assert.equal(R.scaleLoad(baseLoad, null), baseLoad);
+  assert.equal(R.scaleLoad(baseLoad, undefined), baseLoad);
+  assert.equal(R.scaleLoad(baseLoad, 'invalid'), baseLoad);
+
+  // Valid volumeDelta values scale properly
+  const scaledUp = R.scaleLoad(baseLoad, 1);
+  assert.equal(scaledUp.sets, 4);
+  assert.equal(scaledUp.effort_he, 'מועלה אחרי משוב «קל»');
+
+  const scaledDown = R.scaleLoad(baseLoad, -1);
+  assert.equal(scaledDown.sets, 2);
+  assert.equal(scaledDown.effort_he, 'מוקל אחרי משוב «לא סיימתי»');
 });
 
 test('leveled strength plans exist with and without equipment', function () {

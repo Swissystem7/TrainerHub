@@ -61,21 +61,27 @@
 
   /** Parse m:ss / h:mm:ss / bare seconds → total seconds. */
   function parseClock(v) {
-    if (typeof v === 'number') return v;
-    var s = String(v == null ? '' : v).trim().replace(/[^\d:.]/g, '');
-    if (!s) return NaN;
+    if (typeof v === 'number') {
+      return (!isFinite(v) || v < 0 || Object.is(v, -0)) ? NaN : v;
+    }
+    if (v == null) return NaN;
+    var s = String(v).trim();
+    if (!s || s.charAt(0) === '-' || /[^\d:.]/.test(s)) return NaN;
     if (s.indexOf(':') !== -1) {
       var p = s.split(':');
-      if (p.length > 3) return NaN;
+      if (p.length < 2 || p.length > 3) return NaN;
       var total = 0;
       for (var i = 0; i < p.length; i++) {
-        var n = p[i].trim() === '' ? NaN : Number(p[i]);
+        if (!p[i] || (i < p.length - 1 && p[i].indexOf('.') !== -1)) return NaN;
+        var n = Number(p[i]);
         if (!isFinite(n) || n < 0 || (i > 0 && n >= 60)) return NaN;
         total = total * 60 + n;
       }
       return total;
     }
-    return Number(s);
+    var num = Number(s);
+    if (!isFinite(num) || num < 0 || Object.is(num, -0)) return NaN;
+    return num;
   }
 
   function formatClock(seconds) {
@@ -320,13 +326,19 @@
   }
 
   function scaleLoad(load, volumeDelta) {
-    load = load && typeof load === 'object' ? Object.assign({}, load) : { sets: 3, effort_he: 'בינוני' };
-    var sets = Number(load.sets) || 3;
-    sets = Math.max(2, Math.min(6, sets + (Number(volumeDelta) || 0)));
-    load.sets = sets;
-    if (volumeDelta > 0) load.effort_he = 'מועלה אחרי משוב «קל»';
-    if (volumeDelta < 0) load.effort_he = 'מוקל אחרי משוב «לא סיימתי»';
-    return load;
+    if (typeof volumeDelta !== 'number' || !isFinite(volumeDelta)) {
+      return load;
+    }
+    var currentSets = (load && typeof load === 'object' && Number(load.sets)) || 3;
+    if (currentSets + volumeDelta < 0) {
+      return load;
+    }
+    var target = load && typeof load === 'object' ? Object.assign({}, load) : { sets: 3, effort_he: 'בינוני' };
+    var sets = Math.max(2, Math.min(6, currentSets + volumeDelta));
+    target.sets = sets;
+    if (volumeDelta > 0) target.effort_he = 'מועלה אחרי משוב «קל»';
+    if (volumeDelta < 0) target.effort_he = 'מוקל אחרי משוב «לא סיימתי»';
+    return target;
   }
 
   function findPlanSession(sessionId) {
