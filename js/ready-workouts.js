@@ -17,11 +17,8 @@
     var all = Array.isArray(entries) ? entries.slice() : [];
 
     function search(query) {
-      if (query === undefined || query === null) {
+      if (query === undefined || query === null || typeof query !== 'string') {
         return all.slice();
-      }
-      if (typeof query !== 'string') {
-        return [];
       }
       var q = query.trim().toLowerCase();
       if (!q) {
