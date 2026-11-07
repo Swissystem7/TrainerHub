@@ -104,13 +104,20 @@ test('search with null, undefined, empty string or whitespace returns shallow cl
   }
 });
 
-test('search with non-string queries returns empty array', () => {
+test('search with non-string queries returns shallow clone of all fixture entries', () => {
   const lib = ReadyWorkouts.createReadyWorkouts(FIXTURE);
+  const originalLength = lib.all.length;
   const nonStringQueries = [123, true, false, {}, [], () => {}, Symbol('test')];
 
   for (const q of nonStringQueries) {
     const results = lib.search(q);
-    assert.deepStrictEqual(results, []);
+    assert.strictEqual(Array.isArray(results), true);
+    assert.strictEqual(results.length, originalLength);
+    assert.deepStrictEqual(results, FIXTURE);
+    assert.notStrictEqual(results, lib.all);
+
+    results.push({ title: 'dummy', text: 'dummy' });
+    assert.strictEqual(lib.all.length, originalLength);
   }
 });
 
@@ -208,4 +215,125 @@ test('toWorkout delegates to THIngest.ingestText when passed a plain text string
   assert.ok(workout);
   assert.deepStrictEqual(workout, expectedWorkout);
   assert.strictEqual(exerciseCount(workout) >= 1, true);
+});
+
+test('non-string inputs return all entries without throwing or mutating library.all', () => {
+  const lib = ReadyWorkouts.createReadyWorkouts(FIXTURE);
+  const originalLength = lib.all.length;
+  const variousNonStringInputs = [
+    42,
+    0,
+    -100,
+    NaN,
+    Infinity,
+    -Infinity,
+    true,
+    false,
+    {},
+    { query: 'test' },
+    [],
+    [1, 2, 3],
+    ['אימון'],
+    () => {},
+    Symbol('search'),
+    new Date(),
+    /regex/
+  ];
+
+  for (const input of variousNonStringInputs) {
+    let results;
+    assert.doesNotThrow(() => {
+      results = lib.search(input);
+    });
+    assert.strictEqual(Array.isArray(results), true);
+    assert.strictEqual(results.length, originalLength);
+    assert.deepStrictEqual(results, FIXTURE);
+    assert.notStrictEqual(results, lib.all);
+
+    results.push({ title: 'mutation-probe', text: 'should not touch lib.all' });
+    assert.strictEqual(lib.all.length, originalLength);
+  }
+});
+
+test('whitespace-padded queries and case-insensitivity on mixed English/Hebrew titles', () => {
+  const mixedFixture = [
+    { title: 'אימון כוח וליבה למתקדמים', text: '3 סבבים: פלאנק' },
+    { title: 'Full Body Tabata Blast', text: '4 סבבים: סקוואטים' },
+    { title: 'HIIT Cardio Express', text: '5 סבבים: ברפיז' },
+    { title: 'אימון פילאטיס ובוקר Pilates Flow', text: '3 סבבים: מתיחות' }
+  ];
+  const lib = ReadyWorkouts.createReadyWorkouts(mixedFixture);
+
+  // Whitespace-only queries with tabs, newlines, and spaces return shallow clone of all entries
+  const whitespaceQueries = ['   ', '\t', '\n', '\r\n', ' \t \n \r '];
+  for (const ws of whitespaceQueries) {
+    const allResults = lib.search(ws);
+    assert.strictEqual(allResults.length, mixedFixture.length);
+    assert.deepStrictEqual(allResults, mixedFixture);
+    assert.notStrictEqual(allResults, lib.all);
+  }
+
+  // Whitespace-padded Hebrew queries
+  const hebrewCases = [
+    { query: '  אימון  ', expectedCount: 2 },
+    { query: '\tליבה\n', expectedCount: 1 },
+    { query: '\r\n פילאטיס \t', expectedCount: 1 }
+  ];
+  for (const item of hebrewCases) {
+    const res = lib.search(item.query);
+    assert.strictEqual(res.length, item.expectedCount);
+    for (const entry of res) {
+      assert.ok(entry.title.includes(item.query.trim()));
+    }
+  }
+
+  // Whitespace-padded English / mixed-case queries
+  const englishCases = [
+    { query: '  \t hiit \n ', expectedTitle: 'HIIT Cardio Express' },
+    { query: '\n\nTABATA\t', expectedTitle: 'Full Body Tabata Blast' },
+    { query: '  bOdY  ', expectedTitle: 'Full Body Tabata Blast' },
+    { query: '\t PiLaTeS \r\n', expectedTitle: 'אימון פילאטיס ובוקר Pilates Flow' },
+    { query: '   FLOW   ', expectedTitle: 'אימון פילאטיס ובוקר Pilates Flow' }
+  ];
+  for (const item of englishCases) {
+    const res = lib.search(item.query);
+    assert.strictEqual(res.length, 1);
+    assert.strictEqual(res[0].title, item.expectedTitle);
+  }
+});
+
+test('TH.readyWorkouts.search safely returns all 46 ready workouts when called with numbers, booleans, objects, or whitespace strings', () => {
+  assert.ok(TH.readyWorkouts);
+  assert.strictEqual(TH.readyWorkouts.all.length, 46);
+
+  const testInputs = [
+    42,
+    0,
+    -1,
+    NaN,
+    true,
+    false,
+    {},
+    { search: 'test' },
+    [],
+    [1, 2],
+    Symbol('sample'),
+    '',
+    '   ',
+    '\t\n\r '
+  ];
+
+  for (const input of testInputs) {
+    let results;
+    assert.doesNotThrow(() => {
+      results = TH.readyWorkouts.search(input);
+    });
+    assert.strictEqual(Array.isArray(results), true);
+    assert.strictEqual(results.length, 46);
+    assert.notStrictEqual(results, TH.readyWorkouts.all);
+
+    // Verify mutating result does not mutate TH.readyWorkouts.all
+    results.push({ title: 'temp-tamper', text: 'temp' });
+    assert.strictEqual(TH.readyWorkouts.all.length, 46);
+  }
 });
