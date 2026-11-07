@@ -210,6 +210,76 @@ test('recordWorkoutFeedback + nextWorkout scales sets up after קל and down aft
   delete global.localStorage;
 });
 
+test('nextWorkout handles week/day parameters, boundary completion, and invalid edge cases', function () {
+  R.setData(track);
+
+  // a) Week 7 (or week > 6): returns { isCompleted: true } with session null and no out-of-bounds errors
+  const w7 = R.nextWorkout(7);
+  assert.equal(w7.done, true);
+  assert.equal(w7.isCompleted, true);
+  assert.equal(w7.session, null);
+  assert.equal(typeof w7.message_he, 'string');
+
+  const w7Day1 = R.nextWorkout(7, 1);
+  assert.equal(w7Day1.done, true);
+  assert.equal(w7Day1.isCompleted, true);
+  assert.equal(w7Day1.session, null);
+
+  const w8Day2 = R.nextWorkout(8, 2);
+  assert.equal(w8Day2.done, true);
+  assert.equal(w8Day2.isCompleted, true);
+  assert.equal(w8Day2.session, null);
+
+  const w7String = R.nextWorkout('w7a');
+  assert.equal(w7String.done, true);
+  assert.equal(w7String.isCompleted, true);
+  assert.equal(w7String.session, null);
+
+  const pastFinal = R.nextWorkout('w6b');
+  assert.equal(pastFinal.done, true);
+  assert.equal(pastFinal.isCompleted, true);
+  assert.equal(pastFinal.session, null);
+
+  // b) Negative week (e.g., -1, -5): validates and returns null (or week 1 day 1 per pattern)
+  assert.equal(R.nextWorkout(-1), null);
+  assert.equal(R.nextWorkout(-5), null);
+  assert.equal(R.nextWorkout(-1, 1), null);
+  assert.equal(R.nextWorkout(0), null);
+  assert.equal(R.nextWorkout('w-1a'), null);
+  assert.equal(R.nextWorkout('w0a'), null);
+
+  // c) Invalid/abnormal day (e.g., day 3, day 0, or NaN): handled safely without exceptions
+  assert.equal(R.nextWorkout(1, 3), null);
+  assert.equal(R.nextWorkout(1, 0), null);
+  assert.equal(R.nextWorkout(1, NaN), null);
+  assert.equal(R.nextWorkout(2, -1), null);
+  assert.equal(R.nextWorkout(1, 'invalid'), null);
+  assert.equal(R.nextWorkout('w1c'), null);
+
+  // d) Undefined, NaN, or invalid string input: handled safely without exceptions
+  assert.equal(R.nextWorkout(undefined), null);
+  assert.equal(R.nextWorkout(), null);
+  assert.equal(R.nextWorkout(NaN), null);
+  assert.equal(R.nextWorkout('invalid'), null);
+  assert.equal(R.nextWorkout(''), null);
+  assert.equal(R.nextWorkout(null), null);
+
+  // Valid week/day calls work and advance properly
+  const w1d1 = R.nextWorkout(1, 1, 'easy');
+  assert.equal(w1d1.done, false);
+  assert.equal(w1d1.session.id, 'w1b');
+  assert.equal(w1d1.session.load.sets, 4);
+
+  const w1d2 = R.nextWorkout(1, 2, 'exact');
+  assert.equal(w1d2.done, false);
+  assert.equal(w1d2.session.id, 'w2a');
+
+  const w6d2 = R.nextWorkout(6, 2);
+  assert.equal(w6d2.done, true);
+  assert.equal(w6d2.isCompleted, true);
+  assert.equal(w6d2.session, null);
+});
+
 test('scaleLoad validates volumeDelta and preserves load on invalid input or negative result', function () {
   const baseLoad = { sets: 3, effort_he: 'בינוני' };
 
