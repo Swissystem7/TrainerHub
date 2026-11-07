@@ -38,22 +38,13 @@ test('the reel library validates and is the union of the reel list and the mappi
   assert.ok(data.exercises.some(function (ex) { return ex.id === 'ig-DdS9ue-knAM'; }));
 });
 
-test('reels missing from the mapping stay unclassified', function () {
-  ['ig-DdHOFvtKk9z', 'ig-DdI_86lNFfY'].forEach(function (id) {
-    const ex = data.exercises.find(function (row) { return row.id === id; });
-    assert.ok(ex, id);
-    assert.equal(ex.verified, false);
-    assert.equal(ex.name_he, 'ריל לא ממוין');
-    assert.equal(ex.muscle_group, 'לא ממוין');
-    assert.equal(ex.sets_reps, 'לא ממוין');
-    assert.equal(ex.sets, null);
-    assert.equal(ex.reps, '');
-    assert.equal(ex.equipment, '');
-    assert.deepEqual(ex.steps_he, []);
-    assert.equal(ex.source_title, '');
-    assert.match(ex.source_url, /^https:\/\/www\.instagram\.com\/reel\/[^/]+\/$/);
-    assert.ok(ex.creator);
-  });
+test('the two formerly unmapped reels are now verified against their videos', function () {
+  const abs = data.exercises.find(function (row) { return row.id === 'ig-DdHOFvtKk9z'; });
+  assert.equal(abs.verified, true);
+  assert.equal(abs.muscle_group, 'ליבה');
+  const song = data.exercises.find(function (row) { return row.id === 'ig-DdI_86lNFfY'; });
+  assert.equal(song.verified, true);
+  assert.equal(song.muscle_group, 'השראה');
 });
 
 test('לא מצוין is stored as unknown reps, and a corrected reel replaces it', function () {
@@ -95,7 +86,7 @@ test('filtering by muscle group and search uses the normalized groups', function
   assert.equal(mixed.secondary_group, 'רגליים/ישבן');
   assert.ok(THReels.filterExercises(data.exercises, { muscle: 'רגליים/ישבן' }).some(function (ex) { return ex.id === mixed.id; }));
   const unknown = THReels.filterExercises(data.exercises, { muscle: 'לא ממוין' });
-  assert.deepEqual(unknown.map(function (ex) { return ex.id; }).sort(), ['ig-DdHOFvtKk9z', 'ig-DdI_86lNFfY']);
+  assert.deepEqual(unknown.map(function (ex) { return ex.id; }), []);
   const found = THReels.filterExercises(data.exercises, { query: 'ספסל', muscle: 'ליבה' });
   assert.ok(found.some(function (ex) { return ex.creator === 'coachgiress38'; }));
   assert.equal(THReels.filterExercises(data.exercises, { query: 'אין-כזה-תרגיל' }).length, 0);
@@ -188,6 +179,8 @@ test('exercise cards link to the source reel', function () {
 test('a reel with no source title cannot grow invented details', function () {
   const copy = JSON.parse(JSON.stringify(data));
   const bare = copy.exercises.find(function (ex) { return ex.id === 'ig-DdHOFvtKk9z'; });
+  bare.source_title = '';
+  bare.verified = false;
   bare.muscle_group = 'חזה';
   bare.name_he = 'לחיצת חזה';
   const result = THReels.validateLibrary(copy);
