@@ -29,7 +29,7 @@ function memoryStore() {
 test('the reel library validates and is the union of the reel list and the mapping', function () {
   const result = THReels.validateLibrary(data);
   assert.deepEqual(result.errors, []);
-  assert.equal(data.exercises.length, 79);
+  assert.equal(data.exercises.length, 90);
   data.exercises.forEach(function (ex) { assert.equal(typeof ex.verified, 'boolean', ex.id); });
   data.exercises.filter(function (ex) { return ex.verified; }).forEach(function (ex) {
     assert.match(ex.source_notes, /אומת מול הסרטון/, ex.id);
@@ -84,7 +84,7 @@ test('DfDEp8PRL3f is verified against the reel as a bench core routine', functio
 });
 
 test('filtering by muscle group and search uses the normalized groups', function () {
-  assert.equal(THReels.filterExercises(data.exercises, {}).length, 79);
+  assert.equal(THReels.filterExercises(data.exercises, {}).length, 90);
   const core = THReels.filterExercises(data.exercises, { muscle: 'ליבה' });
   assert.ok(core.some(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; }));
   assert.ok(core.length > 2);
@@ -238,10 +238,10 @@ test('the README documents how to append an exercise', function () {
 test('the node and python validators both accept the seed file', function () {
   const node = spawnSync(process.execPath, ['scripts/validate-exercises.js'], { cwd: root, encoding: 'utf8' });
   assert.equal(node.status, 0, node.stderr);
-  assert.match(node.stdout, /79 exercises/);
+  assert.match(node.stdout, /90 exercises/);
   const py = spawnSync('python3', ['scripts/validate_exercises.py'], { cwd: root, encoding: 'utf8' });
   assert.equal(py.status, 0, py.stderr || py.stdout);
-  assert.match(py.stdout, /79 exercises/);
+  assert.match(py.stdout, /90 exercises/);
 });
 
 test('verified exercises carry steps, safety, difficulty and same-group alternatives', function () {

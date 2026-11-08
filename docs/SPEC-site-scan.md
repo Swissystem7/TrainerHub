@@ -18,11 +18,11 @@ hazards).
 3. Result card "מה זיהיתי": chips the coach can toggle/fix (מדרגות ✓, ספסל ✓, קיר ✓, רוחב: צר ~4 מ׳,
    משטח: אספלט, סכנה: מכוניות). The coach must be able to correct everything before building — the AI is a
    suggestion, never final.
-4. Build session → the builder uses the site profile: drills whose equipment/space fit, Acharai limited-space
+4. Build session → the builder uses the site profile: drills whose equipment/space fit, limited-space
    methods (I-go-you-go, Tabata, 21, pyramid, combined) when narrow, stair drills when stairs, bench dips /
    step-ups when bench, wall sits / push-ups when wall, relay and tag games only when wide. One Hebrew line
    per choice ("בחרתי עליות מדרגות כי זוהו מדרגות").
-5. Safety: hazards → warning line + the Acharai winter/safety rules where relevant. Group size × space check
+5. Safety: hazards → warning line + winter/safety rules where relevant. Group size × space check
    (20 trainees in a narrow strip → stations/waves).
 
 ## Site profile schema — `js/site-profile.js`

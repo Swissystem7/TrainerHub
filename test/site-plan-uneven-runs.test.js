@@ -9,7 +9,7 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 function drill(r, name) {
   const main = r.workout.phases.filter(function (ph) { return ph.name === 'Main'; })[0];

@@ -12,51 +12,49 @@
   <link rel="stylesheet" href="./css/app.css">
   <style>
     :root {
-      --bg:#070A12; --card:#101624; --ink:#fff; --muted:#b7c3d6;
-      --line:rgba(0,209,255,.22); --cyan:#00D1FF; --cta:#FF7A1A; --ok:#00FF88;
+      --bg:var(--th-bg); --card:var(--th-surface); --ink:var(--th-ink); --muted:var(--th-muted);
+      --line:var(--th-line); --cyan:var(--th-teal); --cta:var(--th-orange); --ok:var(--th-teal-ink);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0; min-height: 100vh; color: var(--ink);
       font-family: "Heebo", "Assistant", Arial, sans-serif;
-      background:
-        radial-gradient(800px 360px at 100% -10%, rgba(0,209,255,.14), transparent 55%),
-        var(--bg);
+      background: var(--bg);
     }
     .wrap { max-width: 980px; margin: auto; padding: 18px 16px 72px; }
     h1 { font-weight: 900; font-size: clamp(1.7rem, 5vw, 2.4rem); margin: 6px 0; }
-    h2 { font-size: 1.15rem; font-weight: 900; margin: 0 0 8px; }
+    h2 { font-size: 18px; font-weight: 800; margin: 0 0 8px; }
     p { color: var(--muted); line-height: 1.55; }
     .card {
-      background: var(--card); border: 1px solid var(--line); border-radius: 22px;
-      padding: 16px; margin-top: 14px;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg);
+      padding: 16px; margin-top: 16px;
     }
     .capture { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     label.file {
-      display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
-      border-radius: 14px; background: var(--cta); color: #1a0e06; font-weight: 800; cursor: pointer;
+      display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px;
+      border-radius: 14px; background: var(--cta); color: var(--th-on-orange); font-weight: 800; cursor: pointer;
     }
     input[type="file"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
     button {
-      min-height: 44px; border-radius: 14px; border: 1px solid var(--line); background: transparent;
-      color: var(--ink); font: inherit; font-weight: 800; padding: 0 14px; cursor: pointer;
+      min-height: 48px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--th-surface);
+      color: var(--ink); font: inherit; font-weight: 700; padding: 0 20px; cursor: pointer;
     }
-    button.primary { background: var(--cta); color: #1a0e06; border: 0; }
+    button.primary { background: var(--th-teal); color: var(--th-on-teal); border: 0; }
     button:focus-visible, .file:focus-within { outline: 2px solid var(--cyan); outline-offset: 2px; }
-    video, img.preview, canvas { width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; background: #000; margin-top: 12px; }
+    video, img.preview, canvas { width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px; background: var(--th-hero); margin-top: 12px; }
     video[hidden], img[hidden], canvas[hidden], [hidden] { display: none !important; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
-      border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted);
-      min-height: 40px; padding: 0 12px;
+      border-radius: 999px; border: 1.5px solid var(--line); background: var(--th-surface); color: var(--ink);
+      min-height: 44px; padding: 0 16px; font-weight: 500;
     }
-    .chip[aria-pressed="true"] { color: #041018; background: var(--cyan); border-color: var(--cyan); }
+    .chip[aria-pressed="true"] { color: var(--th-bg); background: var(--th-ink); border-color: var(--th-ink); font-weight: 700; }
     .chip:disabled { opacity: 1; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag { background: rgba(0,209,255,.12); color: var(--cyan); border-radius: 999px; padding: 4px 8px; font-size: .8rem; }
+    .tag { background: var(--th-teal-soft); color: var(--th-teal-ink); border-radius: 6px; padding: 4px 8px; font-size: 13px; font-weight: 700; }
     .day { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
-    .day h3 { margin: 0 0 8px; color: var(--cta); font-weight: 900; }
-    .ex { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .day h3 { margin: 0 0 8px; color: var(--th-orange-ink); font-weight: 800; }
+    .ex { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
     .ex b { font-weight: 700; }
     .ex span { color: var(--muted); font-size: .82rem; }
     .status { min-height: 1.2em; color: var(--ok); }
@@ -66,7 +64,7 @@
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds">
 <a class="skip-link" href="#photo">דלג לצילום</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
@@ -75,6 +73,7 @@
   <a href="./exercises.html">ספריית תרגילים</a>
   <span class="chip on" aria-current="page">סריקת סביבה</span>
   <a href="./library.html">ספריית סרטונים</a>
+  <a href="./reserves.html">מדדי מילואים</a>
 </nav>
 <div class="th-banner">בלי מפתח הראייה רצה בדפדפן, או לפי הציוד שתסמנו. התמונה לא נשמרת בשרת.</div>
 <main class="wrap">
@@ -314,5 +313,6 @@
   });
 })();
 </script>
+<script src="./js/th-nav.js"></script>
 </body>
 </html>

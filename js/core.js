@@ -24,7 +24,8 @@
     access: 'trainerhub_content_access',
     print: 'trainerhub_print_workout',
     clientProfiles: 'trainerhub_client_profiles',
-    journal: 'trainerhub_journal_entries'
+    journal: 'trainerhub_journal_entries',
+    workoutPrefs: 'trainerhub_workout_prefs'
   };
 
   // Hash of the trainer access code (sent after payment) — product boundary
@@ -274,6 +275,270 @@
 
   function storeRemove(key) {
     try { localStorage.removeItem(key); } catch (e) {}
+  }
+
+  // ---- Client details + measurements (extends the existing trainerhub_clients record) ----
+  var CLIENT_GOALS = { strength: 'כוח', hypertrophy: 'מסת שריר', endurance: 'סיבולת', weight_loss: 'ירידה במשקל', health: 'בריאות כללית', sport: 'ספורט' };
+  var CLIENT_LEVELS = { beginner: 'מתחיל', intermediate: 'בינוני', advanced: 'מתקדם' };
+  var WEEKDAYS_HE = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
+
+  function numOrNull(v) {
+    if (v === '' || v == null) return null;
+    var n = Number(String(v).replace(',', '.'));
+    return isFinite(n) && n > 0 ? Math.round(n * 10) / 10 : null;
+  }
+
+  function normalizeClientDetails(raw) {
+    raw = raw && typeof raw === 'object' ? raw : {};
+    var days = Array.isArray(raw.days) ? raw.days : [];
+    days = days.map(Number).filter(function (d, i, a) { return d >= 0 && d <= 6 && d === Math.floor(d) && a.indexOf(d) === i; }).sort();
+    return {
+      nickname: String(raw.nickname || '').trim().slice(0, 40),
+      goal: CLIENT_GOALS[raw.goal] ? raw.goal : '',
+      level: CLIENT_LEVELS[raw.level] ? raw.level : '',
+      days: days,
+      measurements: (Array.isArray(raw.measurements) ? raw.measurements : []).map(normalizeMeasurement).filter(Boolean)
+    };
+  }
+
+  function normalizeMeasurement(m) {
+    m = m && typeof m === 'object' ? m : {};
+    var out = { at: String(m.at || '').slice(0, 10), weightKg: numOrNull(m.weightKg), waistCm: numOrNull(m.waistCm), note: String(m.note || '').trim().slice(0, 120) };
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(out.at)) return null;
+    if (out.weightKg == null && out.waistCm == null && !out.note) return null;
+    return out;
+  }
+
+  /** Writes goal/level/days/nickname onto the client object in place (other fields untouched). */
+  function setClientDetails(client, details) {
+    if (!client || typeof client !== 'object') return client;
+    var d = normalizeClientDetails(Object.assign({}, normalizeClientDetails(client), details || {}, { measurements: client.measurements }));
+    client.nickname = d.nickname;
+    client.goal = d.goal;
+    client.level = d.level;
+    client.days = d.days;
+    client.measurements = d.measurements;
+    return client;
+  }
+
+  /** Adds a measurement (newest last); same date replaces the earlier one of that day. */
+  function addMeasurement(client, m) {
+    if (!client || typeof client !== 'object') return null;
+    var now = new Date();
+    var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var item = normalizeMeasurement(Object.assign({ at: today }, m || {}));
+    if (!item) return null;
+    var list = normalizeClientDetails(client).measurements.filter(function (x) { return x.at !== item.at; });
+    list.push(item);
+    list.sort(function (a, b) { return a.at < b.at ? -1 : a.at > b.at ? 1 : 0; });
+    client.measurements = list;
+    return item;
+  }
+
+  function clientDetailsText(client) {
+    var d = normalizeClientDetails(client);
+    var parts = [];
+    if (d.goal) parts.push('מטרה: ' + CLIENT_GOALS[d.goal]);
+    if (d.level) parts.push('רמה: ' + CLIENT_LEVELS[d.level]);
+    if (d.days.length) parts.push('ימים: ' + d.days.map(function (x) { return WEEKDAYS_HE[x]; }).join(' '));
+    var m = d.measurements[d.measurements.length - 1];
+    if (m) parts.push('מדידה אחרונה ' + m.at + (m.weightKg != null ? ' · ' + m.weightKg + ' ק״ג' : '') + (m.waistCm != null ? ' · מותן ' + m.waistCm + ' ס״מ' : ''));
+    return parts.join(' · ');
+  }
+
+  // ---- Password-encrypted backup/restore of every TrainerHub localStorage key (WebCrypto, no server) ----
+  var BACKUP_FORMAT = 'trainerhub-backup';
+  var BACKUP_ITER = 210000;
+
+  function subtle() {
+    var c = (root.crypto && root.crypto.subtle) ? root.crypto : null;
+    if (!c && typeof require === 'function') { try { c = require('crypto').webcrypto; } catch (e) {} }
+    if (!c || !c.subtle) throw new Error('הדפדפן לא תומך בהצפנה (WebCrypto).');
+    return c;
+  }
+
+  function bytesToB64(bytes) {
+    var bin = '';
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
+  }
+
+  function b64ToBytes(b64) {
+    var bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary');
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function backupKeyNames() {
+    var names = Object.keys(KEYS).map(function (k) { return KEYS[k]; });
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('trainerhub_') === 0 && names.indexOf(k) === -1) names.push(k);
+      }
+    } catch (e) {}
+    return names;
+  }
+
+  /** Snapshot of all TrainerHub keys as raw strings (only keys that exist). */
+  function collectBackup() {
+    var data = {};
+    backupKeyNames().forEach(function (k) {
+      try {
+        var v = localStorage.getItem(k);
+        if (v != null) data[k] = v;
+      } catch (e) {}
+    });
+    return data;
+  }
+
+  function deriveKey(password, salt, usage) {
+    var c = subtle();
+    return c.subtle.importKey('raw', new TextEncoder().encode(String(password)), 'PBKDF2', false, ['deriveKey'])
+      .then(function (base) {
+        return c.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: BACKUP_ITER, hash: 'SHA-256' },
+          base, { name: 'AES-GCM', length: 256 }, false, [usage]);
+      });
+  }
+
+  /** Resolves to the JSON text of an encrypted backup file. */
+  function encryptBackup(password, data) {
+    if (!password || String(password).length < 6) return Promise.reject(new Error('סיסמה של 6 תווים לפחות.'));
+    var c;
+    try { c = subtle(); } catch (e) { return Promise.reject(e); }
+    var payload = data || collectBackup();
+    var salt = c.getRandomValues(new Uint8Array(16));
+    var iv = c.getRandomValues(new Uint8Array(12));
+    return deriveKey(password, salt, 'encrypt').then(function (key) {
+      return c.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(JSON.stringify(payload)));
+    }).then(function (buf) {
+      return JSON.stringify({
+        format: BACKUP_FORMAT, v: 1, createdAt: new Date().toISOString(), keys: Object.keys(payload).length,
+        kdf: 'PBKDF2-SHA256', iter: BACKUP_ITER, cipher: 'AES-GCM-256',
+        salt: bytesToB64(salt), iv: bytesToB64(iv), data: bytesToB64(new Uint8Array(buf))
+      });
+    });
+  }
+
+  /** Resolves to { key: rawString } or rejects with a Hebrew message. */
+  function decryptBackup(text, password) {
+    var file;
+    try { file = typeof text === 'string' ? JSON.parse(text) : text; } catch (e) { return Promise.reject(new Error('הקובץ אינו גיבוי של TrainerHub.')); }
+    if (!file || file.format !== BACKUP_FORMAT || !file.data) return Promise.reject(new Error('הקובץ אינו גיבוי של TrainerHub.'));
+    var c;
+    try { c = subtle(); } catch (e) { return Promise.reject(e); }
+    return deriveKey(password, b64ToBytes(file.salt), 'decrypt').then(function (key) {
+      return c.subtle.decrypt({ name: 'AES-GCM', iv: b64ToBytes(file.iv) }, key, b64ToBytes(file.data));
+    }).then(function (buf) {
+      var data = JSON.parse(new TextDecoder().decode(buf));
+      if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('bad');
+      return data;
+    }, function () { throw new Error('סיסמה שגויה או קובץ פגום.'); });
+  }
+
+  /** Writes restored keys back. Keys not in the backup are left as they are (nothing is deleted). */
+  function restoreBackup(data) {
+    var restored = 0;
+    Object.keys(data || {}).forEach(function (k) {
+      if (k.indexOf('trainerhub_') !== 0 || typeof data[k] !== 'string') return;
+      try { localStorage.setItem(k, data[k]); restored++; } catch (e) {}
+    });
+    return restored;
+  }
+
+  // ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
+  /** First whole number in a reps value ("8-10" → 8, "12" → 12, "עד כשל" → null). */
+  function parseRepsNumber(reps) {
+    var m = String(reps == null ? '' : reps).match(/\d+/);
+    var n = m ? Number(m[0]) : NaN;
+    return n > 0 && n < 1000 ? n : null;
+  }
+
+  function workoutPrefs() {
+    var p = storeGet(KEYS.workoutPrefs, null);
+    p = p && typeof p === 'object' ? p : {};
+    return { tts: p.tts !== false, sound: p.sound !== false };
+  }
+
+  function setWorkoutPrefs(patch) {
+    var next = Object.assign(workoutPrefs(), patch || {});
+    storeSet(KEYS.workoutPrefs, next);
+    return next;
+  }
+
+  /** Text spoken at the start of a rest: "מנוחה 60 שניות. הבא: סקוואט, 10 חזרות". */
+  function nextExerciseSpeech(step) {
+    if (!step) return '';
+    var parts = [];
+    if (step.duration) parts.push('מנוחה ' + step.duration + ' שניות.');
+    if (step.nextName) parts.push('הבא: ' + step.nextName + (step.nextDetail ? ', ' + step.nextDetail : ''));
+    return parts.join(' ');
+  }
+
+  /** Speaks Hebrew via the device's speechSynthesis (works offline with a local voice). Returns true if queued. */
+  function speakHebrew(text, win) {
+    win = win || root;
+    var synth = win && win.speechSynthesis;
+    var Utter = win && win.SpeechSynthesisUtterance;
+    if (!text || !synth || !Utter) return false;
+    try {
+      var u = new Utter(String(text));
+      u.lang = 'he-IL';
+      var voices = synth.getVoices ? synth.getVoices() : [];
+      var he = (voices || []).filter(function (v) { return /^he|^iw/i.test(v.lang || ''); })[0];
+      if (he) u.voice = he;
+      synth.cancel();
+      synth.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  var cueAudio = null;
+  /** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
+  function restEndCue(win, opts) {
+    win = win || root;
+    opts = opts || {};
+    var out = { vibrated: false, beeped: false };
+    try {
+      var nav = win.navigator;
+      if (nav && typeof nav.vibrate === 'function') out.vibrated = !!nav.vibrate([200, 100, 200]);
+    } catch (e) {}
+    if (opts.sound === false) return out;
+    try {
+      var AC = win.AudioContext || win.webkitAudioContext;
+      if (!AC) return out;
+      cueAudio = cueAudio || new AC();
+      if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
+      var t = cueAudio.currentTime;
+      [0, 0.25].forEach(function (offset) {
+        var osc = cueAudio.createOscillator();
+        var gain = cueAudio.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.0001, t + offset);
+        gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
+        osc.connect(gain);
+        gain.connect(cueAudio.destination);
+        osc.start(t + offset);
+        osc.stop(t + offset + 0.2);
+      });
+      out.beeped = true;
+    } catch (e) {}
+    return out;
+  }
+
+  /** Unlocks audio on a user gesture (iOS/Chrome autoplay rules). */
+  function primeAudio(win) {
+    win = win || root;
+    try {
+      var AC = win.AudioContext || win.webkitAudioContext;
+      if (!AC) return false;
+      cueAudio = cueAudio || new AC();
+      if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
+      return true;
+    } catch (e) { return false; }
   }
 
   function assetUrl(rel) {
@@ -765,6 +1030,261 @@
     }
   }
 
+  // ---- QR code (self-written, no library, no network) ----------------------
+  // Byte mode, error correction M (falls back to L for long links), versions
+  // 1-40, all 8 masks scored. Follows ISO/IEC 18004; output is an SVG string.
+  var QR_ECC = {
+    L: [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    M: [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28]
+  };
+  var QR_BLOCKS = {
+    L: [-1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8, 8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25],
+    M: [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49]
+  };
+  function qrRawModules(ver) {
+    var r = (16 * ver + 128) * ver + 64;
+    if (ver >= 2) {
+      var n = Math.floor(ver / 7) + 2;
+      r -= (25 * n - 10) * n - 55;
+      if (ver >= 7) r -= 36;
+    }
+    return r;
+  }
+  function qrDataCodewords(ver, ecl) {
+    return Math.floor(qrRawModules(ver) / 8) - QR_ECC[ecl][ver] * QR_BLOCKS[ecl][ver];
+  }
+  function gfMul(x, y) {
+    var z = 0;
+    for (var i = 7; i >= 0; i--) {
+      z = (z << 1) ^ ((z >>> 7) * 0x11D);
+      z ^= ((y >>> i) & 1) * x;
+    }
+    return z & 0xFF;
+  }
+  function rsDivisor(degree) {
+    var res = [];
+    for (var i = 0; i < degree - 1; i++) res.push(0);
+    res.push(1);
+    var root = 1;
+    for (i = 0; i < degree; i++) {
+      for (var j = 0; j < res.length; j++) {
+        res[j] = gfMul(res[j], root);
+        if (j + 1 < res.length) res[j] ^= res[j + 1];
+      }
+      root = gfMul(root, 0x02);
+    }
+    return res;
+  }
+  function rsRemainder(data, div) {
+    var res = div.map(function () { return 0; });
+    data.forEach(function (b) {
+      var f = b ^ res.shift();
+      res.push(0);
+      div.forEach(function (c, i) { res[i] ^= gfMul(c, f); });
+    });
+    return res;
+  }
+  function qrAlignPositions(ver, size) {
+    if (ver === 1) return [];
+    var n = Math.floor(ver / 7) + 2;
+    var step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (n * 2 - 2)) * 2;
+    var res = [6];
+    for (var pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
+    return res;
+  }
+  function qrPenalty(m, size) {
+    var p = 0, x, y, dark = 0;
+    function lines(get) {
+      for (var a = 0; a < size; a++) {
+        var run = 1, s = '';
+        for (var b = 0; b < size; b++) {
+          var v = get(a, b);
+          s += v ? '1' : '0';
+          if (b > 0 && v === get(a, b - 1)) run++;
+          else { if (run >= 5) p += run - 2; run = 1; }
+        }
+        if (run >= 5) p += run - 2;
+        var pad = '0000' + s + '0000', k = -1;
+        while ((k = pad.indexOf('10111010000', k + 1)) !== -1) p += 40;
+        k = -1;
+        while ((k = pad.indexOf('00001011101', k + 1)) !== -1) p += 40;
+      }
+    }
+    lines(function (a, b) { return m[a][b]; });
+    lines(function (a, b) { return m[b][a]; });
+    for (y = 0; y < size; y++) {
+      for (x = 0; x < size; x++) {
+        if (m[y][x]) dark++;
+        if (x < size - 1 && y < size - 1) {
+          var c = m[y][x];
+          if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) p += 3;
+        }
+      }
+    }
+    var total = size * size;
+    p += Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+    return p;
+  }
+
+  // Returns {version, ecl, size, modules[y][x] booleans} or null when the text
+  // is too long for any version.
+  function qrMatrix(text) {
+    var bytes = [];
+    var utf = unescape(encodeURIComponent(String(text || '')));
+    for (var i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
+    var ver = 0, ecl = null;
+    ['M', 'L'].some(function (e) {
+      for (var v = 1; v <= 40; v++) {
+        var bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
+        if (bits <= qrDataCodewords(v, e) * 8) { ver = v; ecl = e; return true; }
+      }
+      return false;
+    });
+    if (!ver) return null;
+    var cap = qrDataCodewords(ver, ecl) * 8;
+    var bb = [];
+    function put(val, len) { for (var k = len - 1; k >= 0; k--) bb.push((val >>> k) & 1); }
+    put(4, 4);
+    put(bytes.length, ver < 10 ? 8 : 16);
+    bytes.forEach(function (b) { put(b, 8); });
+    put(0, Math.min(4, cap - bb.length));
+    put(0, (8 - bb.length % 8) % 8);
+    for (var pad = 0xEC; bb.length < cap; pad ^= 0xEC ^ 0x11) put(pad, 8);
+    var data = [];
+    for (i = 0; i < bb.length; i += 8) {
+      var byte = 0;
+      for (var j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
+      data.push(byte);
+    }
+    // Split into blocks, add Reed-Solomon, interleave.
+    var nb = QR_BLOCKS[ecl][ver], eccLen = QR_ECC[ecl][ver];
+    var raw = Math.floor(qrRawModules(ver) / 8);
+    var nShort = nb - raw % nb, shortLen = Math.floor(raw / nb);
+    var div = rsDivisor(eccLen), blocks = [], k = 0;
+    for (i = 0; i < nb; i++) {
+      var dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
+      k += dat.length;
+      var ecc = rsRemainder(dat, div);
+      if (i < nShort) dat.push(0);
+      blocks.push(dat.concat(ecc));
+    }
+    var words = [];
+    for (i = 0; i < blocks[0].length; i++) {
+      for (j = 0; j < blocks.length; j++) {
+        if (i !== shortLen - eccLen || j >= nShort) words.push(blocks[j][i]);
+      }
+    }
+    var size = ver * 4 + 17, mod = [], fn = [];
+    for (i = 0; i < size; i++) {
+      mod.push(new Array(size).fill(false));
+      fn.push(new Array(size).fill(false));
+    }
+    function setFn(x, y, d) { mod[y][x] = d; fn[y][x] = true; }
+    for (i = 0; i < size; i++) { setFn(6, i, i % 2 === 0); setFn(i, 6, i % 2 === 0); }
+    [[3, 3], [size - 4, 3], [3, size - 4]].forEach(function (c) {
+      for (var dy = -4; dy <= 4; dy++) {
+        for (var dx = -4; dx <= 4; dx++) {
+          var d = Math.max(Math.abs(dx), Math.abs(dy)), xx = c[0] + dx, yy = c[1] + dy;
+          if (xx >= 0 && xx < size && yy >= 0 && yy < size) setFn(xx, yy, d !== 2 && d !== 4);
+        }
+      }
+    });
+    var al = qrAlignPositions(ver, size), na = al.length;
+    for (i = 0; i < na; i++) {
+      for (j = 0; j < na; j++) {
+        if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue;
+        for (var ay = -2; ay <= 2; ay++) {
+          for (var ax = -2; ax <= 2; ax++) setFn(al[i] + ax, al[j] + ay, Math.max(Math.abs(ax), Math.abs(ay)) !== 1);
+        }
+      }
+    }
+    function formatBits(mask) {
+      var d = ((ecl === 'L' ? 1 : 0) << 3) | mask, r = d;
+      for (var q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      var bits = ((d << 10) | r) ^ 0x5412;
+      function bit(n) { return ((bits >>> n) & 1) !== 0; }
+      for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
+      setFn(8, 7, bit(6)); setFn(8, 8, bit(7)); setFn(7, 8, bit(8));
+      for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
+      for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
+      for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
+      setFn(8, size - 8, true);
+    }
+    formatBits(0);
+    if (ver >= 7) {
+      var r = ver;
+      for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25);
+      var vb = (ver << 12) | r;
+      for (i = 0; i < 18; i++) {
+        var on = ((vb >>> i) & 1) !== 0, a = size - 11 + i % 3, b = Math.floor(i / 3);
+        setFn(a, b, on); setFn(b, a, on);
+      }
+    }
+    var bi = 0;
+    for (var right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (var vert = 0; vert < size; vert++) {
+        for (j = 0; j < 2; j++) {
+          var x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+          if (!fn[y][x] && bi < words.length * 8) {
+            mod[y][x] = ((words[bi >>> 3] >>> (7 - (bi & 7))) & 1) !== 0;
+            bi++;
+          }
+        }
+      }
+    }
+    function applyMask(mask) {
+      for (var yy = 0; yy < size; yy++) {
+        for (var xx = 0; xx < size; xx++) {
+          var inv;
+          switch (mask) {
+            case 0: inv = (xx + yy) % 2 === 0; break;
+            case 1: inv = yy % 2 === 0; break;
+            case 2: inv = xx % 3 === 0; break;
+            case 3: inv = (xx + yy) % 3 === 0; break;
+            case 4: inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0; break;
+            case 5: inv = xx * yy % 2 + xx * yy % 3 === 0; break;
+            case 6: inv = (xx * yy % 2 + xx * yy % 3) % 2 === 0; break;
+            default: inv = ((xx + yy) % 2 + xx * yy % 3) % 2 === 0;
+          }
+          if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
+        }
+      }
+    }
+    var best = 0, bestP = Infinity;
+    for (var mk = 0; mk < 8; mk++) {
+      applyMask(mk); formatBits(mk);
+      var pen = qrPenalty(mod, size);
+      if (pen < bestP) { bestP = pen; best = mk; }
+      applyMask(mk);
+    }
+    applyMask(best); formatBits(best);
+    return { version: ver, ecl: ecl, size: size, mask: best, modules: mod };
+  }
+
+  // SVG with a 4-module quiet zone, dark on white so phone cameras read it on a dark page.
+  function qrSvg(text, opts) {
+    opts = opts || {};
+    var q = qrMatrix(text);
+    if (!q) return '';
+    var n = q.size + 8, d = '';
+    for (var y = 0; y < q.size; y++) {
+      for (var x = 0; x < q.size; x++) if (q.modules[y][x]) d += 'M' + (x + 4) + ' ' + (y + 4) + 'h1v1h-1z';
+    }
+    var px = opts.size || 220;
+    return '<svg xmlns="http://www.w3.org/2000/svg" class="th-qr" role="img" aria-label="' + esc(opts.label || 'קוד QR לקישור') +
+      '" width="' + px + '" height="' + px + '" viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges">' +
+      '<rect width="' + n + '" height="' + n + '" fill="#fff"/><path fill="#000" d="' + d + '"/></svg>';
+  }
+
+  // Markup shown under a share action: the QR plus the link itself.
+  function shareQrMarkup(url) {
+    var svg = qrSvg(url, { label: 'קוד QR לקישור האימון' });
+    if (!svg) return '';
+    return '<figure class="th-share-qr" data-role="share-qr" style="margin:12px 0;text-align:center">' + svg +
+      '<figcaption style="font-size:0.8rem;margin-top:6px">סורקים במצלמה של הטלפון כדי לפתוח את האימון (נוצר במכשיר, בלי שירות חיצוני)</figcaption></figure>';
+  }
+
   function encodeResult(result) {
     result = result || {};
     var payload = {
@@ -780,6 +1300,10 @@
       rpe: result.rpe != null ? result.rpe : null,
       pl: result.plan || null
     };
+    // Optional per-exercise detail, added later. Old readers ignore «x», and a
+    // code without it decodes to an empty log, so old and new codes both import.
+    var x = compactExerciseLog(result.log);
+    if (x.length) payload.x = x;
     return 'TH1.' + utf8ToB64url(JSON.stringify(payload));
   }
 
@@ -796,8 +1320,44 @@
       skipped: Number(obj.sk != null ? obj.sk : obj.skipped) || 0,
       tid: obj.tid || '',
       rpe: obj.rpe != null ? Number(obj.rpe) : null,
-      plan: obj.pl || obj.plan || null
+      plan: obj.pl || obj.plan || null,
+      log: expandExerciseLog(obj.x || obj.log)
     };
+  }
+
+  // log: [{id, sets:[{reps, weightKg}], rpe}] <-> x: [[id, [[reps, kg], ...], rpe]]
+  function cleanNum(v, max) {
+    var n = Number(v);
+    return isFinite(n) && n > 0 && n <= max ? Math.round(n * 10) / 10 : 0;
+  }
+  function compactExerciseLog(log) {
+    if (!Array.isArray(log)) return [];
+    return log.map(function (ex) {
+      if (!ex || !ex.id) return null;
+      var sets = (Array.isArray(ex.sets) ? ex.sets : []).map(function (st) {
+        var r = cleanNum(st && st.reps, 1000);
+        return r ? [r, cleanNum(st.weightKg, 1000)] : null;
+      }).filter(Boolean);
+      var rpe = cleanNum(ex.rpe, 10);
+      if (!sets.length && !rpe) return null;
+      return [String(ex.id).slice(0, 80), sets, rpe];
+    }).filter(Boolean);
+  }
+  function expandExerciseLog(x) {
+    if (!Array.isArray(x)) return [];
+    return x.map(function (row) {
+      if (Array.isArray(row)) {
+        return {
+          id: String(row[0] || ''),
+          sets: (Array.isArray(row[1]) ? row[1] : []).map(function (st) {
+            return { reps: cleanNum(st && st[0], 1000), weightKg: cleanNum(st && st[1], 1000) };
+          }).filter(function (st) { return st.reps; }),
+          rpe: cleanNum(row[2], 10) || null
+        };
+      }
+      if (row && row.id) return expandExerciseLog(compactExerciseLog([row]))[0] || null;
+      return null;
+    }).filter(function (e) { return e && e.id; });
   }
 
   function decodeResult(text) {
@@ -1322,6 +1882,65 @@
     return bits.join(' · ');
   }
 
+  // Lazy video loading (CT-015). A <video preload="metadata" src> fetches a few
+  // hundred KB per clip straight away, so the 70-clip library pulled ~8 MB on a
+  // phone before anything was scrolled to. In a browser with IntersectionObserver
+  // the clip URL is parked in data-th-src and moved to src once its card comes
+  // near the viewport; drive/youtube iframes already use loading="lazy".
+  // Without the observers (or outside a browser) src is written directly, as before.
+  var LAZY_SRC = 'data-th-src';
+  var lazyMedia = null;
+
+  function canLazyLoadMedia() {
+    return typeof document !== 'undefined' && !!document.documentElement &&
+      typeof root.IntersectionObserver === 'function' &&
+      typeof root.MutationObserver === 'function';
+  }
+
+  function loadLazyVideos(host) {
+    var list = host.querySelectorAll ? host.querySelectorAll('video[' + LAZY_SRC + ']') : [];
+    for (var i = 0; i < list.length; i++) {
+      var src = list[i].getAttribute(LAZY_SRC);
+      list[i].removeAttribute(LAZY_SRC);
+      if (src) list[i].setAttribute('src', src);
+    }
+  }
+
+  function setupLazyMedia() {
+    if (lazyMedia || !canLazyLoadMedia()) return lazyMedia;
+    var io = new root.IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        loadLazyVideos(e.target);
+      });
+    }, { rootMargin: '400px 0px' });
+    var queued = false;
+    function scan() {
+      queued = false;
+      var list = document.querySelectorAll('video[' + LAZY_SRC + ']');
+      for (var i = 0; i < list.length; i++) {
+        var v = list[i];
+        if (v.__thLazyWatched) continue;
+        v.__thLazyWatched = true;
+        // The video stays hidden until it has data, so watch its wrapper.
+        io.observe(v.parentNode || v);
+      }
+    }
+    var mo = new root.MutationObserver(function () {
+      if (queued) return;
+      queued = true;
+      Promise.resolve().then(scan);
+    });
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+    lazyMedia = { scan: scan };
+    return lazyMedia;
+  }
+
+  function videoSrcAttr(url) {
+    return (setupLazyMedia() ? LAZY_SRC : 'src') + '="' + esc(url) + '"';
+  }
+
   function mediaMarkup(entry, opts) {
     opts = opts || {};
     var cls = esc(opts.className || 'ex-media');
@@ -1346,9 +1965,9 @@
     }
     if (entry.file) {
       return '<div class="' + cls + '-wrap">' +
-        '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" src="' +
-        esc(catalogSrc(entry.file)) +
-        '" onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
+        '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" ' +
+        videoSrcAttr(catalogSrc(entry.file)) +
+        ' onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
         '<div class="' + cls + '-fallback" hidden role="note">' + esc(mediaFallbackText(entry)) +
         ' — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>';
     }
@@ -1861,6 +2480,177 @@
       '</article>';
   }
 
+  // ---- Monthly client report (printed by workout-print.html) -------------
+  var HE_MONTHS = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+
+  function monthKey(v) {
+    var m = /^(\d{4})-(\d{2})/.exec(String(v || ''));
+    if (m) return m[1] + '-' + m[2];
+    var d = v instanceof Date ? v : new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  function localMonthOf(at) {
+    var d = new Date(at);
+    if (isNaN(d.getTime())) return String(at || '').slice(0, 7);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  // client: a journal client ({name, logs[], measurements[], days[], plan});
+  // opts.entries: journal-storage entries for that client (sets with weightKg).
+  function monthlyReportModel(client, opts) {
+    client = client || {};
+    opts = opts || {};
+    var month = monthKey(opts.month);
+    var y = Number(month.slice(0, 4)), mo = Number(month.slice(5, 7));
+    var logs = (Array.isArray(client.logs) ? client.logs : []).filter(function (l) { return localMonthOf(l.at || l.doneAt) === month; })
+      .sort(function (a, b) { return String(a.at || a.doneAt || '').localeCompare(String(b.at || b.doneAt || '')); });
+    var minutes = logs.reduce(function (n, l) { return n + (Number(l.minutes) || 0); }, 0);
+    var rpes = logs.filter(function (l) { return l.rpe != null && isFinite(Number(l.rpe)); }).map(function (l) { return Number(l.rpe); });
+    var avgRpe = rpes.length ? Math.round(rpes.reduce(function (a, b) { return a + b; }, 0) / rpes.length * 10) / 10 : null;
+    // Planned sessions: weekdays in client.days falling in the month (up to today for the current month).
+    var daysInMonth = new Date(y, mo, 0).getDate();
+    var today = opts.now ? new Date(opts.now) : new Date();
+    var planned = 0;
+    var wd = Array.isArray(client.days) ? client.days.map(Number) : [];
+    if (wd.length) {
+      for (var d = 1; d <= daysInMonth; d++) {
+        var dt = new Date(y, mo - 1, d);
+        if (dt > today) break;
+        if (wd.indexOf(dt.getDay()) !== -1) planned++;
+      }
+    }
+    var adherence = planned ? Math.min(100, Math.round(logs.length / planned * 100)) : null;
+    var meas = (Array.isArray(client.measurements) ? client.measurements : []).filter(function (m) { return localMonthOf(m.at) === month && m.weightKg != null; })
+      .sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+    var best = {};
+    (Array.isArray(opts.entries) ? opts.entries : []).forEach(function (e) {
+      if (localMonthOf(e.doneAt || e.at || e.createdAt) !== month) return;
+      (e.sets || []).forEach(function (st) {
+        var w = Number(st.weightKg) || 0;
+        var id = st.exerciseId || st.name;
+        if (!id || !w) return;
+        if (!best[id] || w > best[id].weightKg || (w === best[id].weightKg && (Number(st.reps) || 0) > best[id].reps)) best[id] = { id: id, weightKg: w, reps: Number(st.reps) || 0 };
+      });
+    });
+    var tops = Object.keys(best).map(function (k) { return best[k]; }).sort(function (a, b) { return b.weightKg - a.weightKg; }).slice(0, 8);
+    return {
+      kind: 'monthly',
+      month: month,
+      title: 'דוח חודשי · ' + HE_MONTHS[mo - 1] + ' ' + y,
+      client: sanitizeBrand(client.name || 'מתאמן'),
+      plan: client.plan || '',
+      sessions: logs.length,
+      planned: planned,
+      adherence: adherence,
+      minutes: minutes,
+      avgRpe: avgRpe,
+      weightStart: meas.length ? meas[0].weightKg : null,
+      weightEnd: meas.length ? meas[meas.length - 1].weightKg : null,
+      bests: tops.map(function (t) { return { name: exerciseLabel(t.id), weightKg: t.weightKg, reps: t.reps }; }),
+      logs: logs.map(function (l) {
+        return { day: String(l.at || l.doneAt || '').slice(0, 10), title: l.title || 'אימון', minutes: Number(l.minutes) || null, rpe: l.rpe != null ? Number(l.rpe) : null };
+      })
+    };
+  }
+
+  function exerciseLabel(id) {
+    if (HE_NAMES[id]) return HE_NAMES[id];
+    if (catalog[id] && catalog[id].he) return catalog[id].he;
+    return String(id).replace(/_/g, ' ');
+  }
+
+  function monthlyReportHtml(model, opts) {
+    model = model || monthlyReportModel({}, {});
+    opts = opts || {};
+    var ent = entitlement();
+    var brand = sanitizeBrand(opts.brand || ent.brand || '');
+    var branded = !!(ent.canBrandedPdf && brand);
+    var fmt = function (n) { return n == null ? '—' : String(n); };
+    var stat = function (label, val) { return '<tr><th scope="row">' + esc(label) + '</th><td>' + esc(val) + '</td></tr>'; };
+    var weight = model.weightStart == null ? '—'
+      : (model.weightStart === model.weightEnd ? model.weightEnd + ' ק״ג'
+        : model.weightStart + ' → ' + model.weightEnd + ' ק״ג (' + (model.weightEnd - model.weightStart > 0 ? '+' : '') + (Math.round((model.weightEnd - model.weightStart) * 10) / 10) + ')');
+    var summary = '<section class="print-phase" data-role="report-summary"><h2>סיכום</h2><table>' +
+      stat('אימונים שבוצעו', model.sessions + (model.planned ? ' מתוך ' + model.planned + ' מתוכננים' : '')) +
+      stat('התמדה', model.adherence == null ? '—' : model.adherence + '%') +
+      stat('דקות אימון', fmt(model.minutes)) +
+      stat('קושי ממוצע', model.avgRpe == null ? '—' : model.avgRpe + '/5') +
+      stat('משקל גוף', weight) +
+      '</table></section>';
+    var bests = '<section class="print-phase" data-role="report-bests"><h2>שיאי החודש</h2><table>' +
+      (model.bests.length ? model.bests.map(function (b) { return '<tr><th scope="row">' + esc(b.name) + '</th><td>' + esc(b.weightKg + ' ק״ג' + (b.reps ? ' × ' + b.reps : '')) + '</td></tr>'; }).join('')
+        : '<tr><td>אין סטים עם משקל בחודש הזה.</td></tr>') + '</table></section>';
+    var logs = '<section class="print-phase" data-role="report-logs"><h2>יומן החודש</h2><table>' +
+      (model.logs.length ? model.logs.map(function (l) { return '<tr><th scope="row">' + esc(l.day) + '</th><td>' + esc(l.title) + '</td><td>' + esc((l.minutes ? l.minutes + ' דק׳' : '') + (l.rpe != null ? ' · קושי ' + l.rpe + '/5' : '')) + '</td></tr>'; }).join('')
+        : '<tr><td>לא יובאו ביצועים בחודש הזה.</td></tr>') + '</table></section>';
+    return '<article class="print-sheet" dir="rtl" lang="he" data-kind="monthly">' +
+      (branded ? '<p class="print-brand">' + esc(brand) + '</p>' : '') +
+      '<h1>' + esc(model.title) + '</h1>' +
+      '<p class="print-client">עבור: ' + esc(model.client) + (model.plan ? ' · ' + esc(model.plan) : '') + '</p>' +
+      summary + bests + logs +
+      (branded ? '' : '<p class="print-watermark">תרגול — לא למסירה ללקוח</p>') +
+      '<footer class="print-footer"><p>' + esc(branded ? 'הוכן על ידי ' + brand + ' ב-TrainerHub.' : 'גרסת תרגול — דוח ממותג ללקוח דורש מסלול מאמן.') + '</p><p>הנתונים מהיומן בדפדפן הזה בלבד. הדפסה או שמירה כ־PDF מהדפדפן, בלי שרת.</p></footer>' +
+      '</article>';
+  }
+
+  // Same print key; a later preparePrint (workout) replaces the report.
+  function prepareMonthlyReport(client, opts) {
+    var prev = storeGet(KEYS.print, null);
+    var model = monthlyReportModel(client, opts);
+    storeSet(KEYS.print, { workout: (prev && prev.workout) || null, brand: (prev && prev.brand) || '', client: model.client, report: model });
+    return { model: model, url: printUrl() };
+  }
+
+  // ---- Local reminders (Notification API, no server/push) -----------------
+  function todayKey(now) {
+    var d = now ? new Date(now) : new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  // Clients with a training day today and no imported log today.
+  function dueReminders(clients, now) {
+    var d = now ? new Date(now) : new Date();
+    var key = todayKey(d);
+    return (Array.isArray(clients) ? clients : []).filter(function (c) {
+      if (!c || !Array.isArray(c.days) || c.days.map(Number).indexOf(d.getDay()) === -1) return false;
+      return !(c.logs || []).some(function (l) { return todayKey(l.at || l.doneAt) === key; });
+    }).map(function (c) {
+      return { id: c.id, name: c.name || 'מתאמן', title: 'היום אימון: ' + (c.name || 'מתאמן'), body: (c.plan ? '«' + c.plan + '» · ' : '') + 'עוד לא יובא ביצוע היום. אפשר לשלוח תזכורת בוואטסאפ מהיומן.' };
+    });
+  }
+
+  function reminderPrefs() {
+    var p = storeGet(KEYS.workoutPrefs, null) || {};
+    return { on: !!p.remind, last: p.remindedOn || '' };
+  }
+
+  function setReminderPrefs(patch) {
+    var p = storeGet(KEYS.workoutPrefs, null) || {};
+    if (patch.on != null) p.remind = !!patch.on;
+    if (patch.last != null) p.remindedOn = String(patch.last);
+    storeSet(KEYS.workoutPrefs, p);
+    return reminderPrefs();
+  }
+
+  // Shows at most one batch per day. Returns {shown, reason}.
+  function runReminders(clients, opts) {
+    opts = opts || {};
+    var N = opts.Notification || root.Notification;
+    var prefs = reminderPrefs();
+    if (!prefs.on) return { shown: 0, reason: 'off' };
+    if (!N) return { shown: 0, reason: 'unsupported' };
+    if (N.permission !== 'granted') return { shown: 0, reason: 'permission' };
+    var key = todayKey(opts.now);
+    if (prefs.last === key && !opts.force) return { shown: 0, reason: 'already' };
+    var due = dueReminders(clients, opts.now);
+    due.forEach(function (r) {
+      try { new N(r.title, { body: r.body, tag: 'th-remind-' + r.id + '-' + key, lang: 'he', dir: 'rtl' }); } catch (e) { /* mobile needs SW */ }
+    });
+    setReminderPrefs({ last: key });
+    return { shown: due.length, reason: due.length ? 'ok' : 'none' };
+  }
+
   // The name typed in «עדכן שם» on the print page is kept: every «דף להדפסה»
   // button calls this without a brand, and writing '' over it sent a trainer
   // whose access code carries no brand back to a watermarked sheet each time.
@@ -1888,10 +2678,34 @@
     return storeGet(KEYS.activeSession, null);
   }
 
-  function suggestNextFromLog(compact, lastLog) {
+  function painOf(log) {
+    if (!log) return false;
+    var p = log.pain;
+    if (p === true) return true;
+    if (typeof p === 'number') return p >= 3;
+    if (typeof p === 'string') return /^(1|true|yes|כן)$/i.test(p.trim()) || Number(p) >= 3;
+    return false;
+  }
+
+  // Per-exercise RPE from an imported TH1 detail (log.ex, 1–10 scale).
+  function exerciseRpeMap(log) {
+    var map = {};
+    (log && Array.isArray(log.ex) ? log.ex : []).forEach(function (e) {
+      if (e && e.id && e.rpe != null && isFinite(Number(e.rpe))) map[e.id] = Number(e.rpe);
+    });
+    return map;
+  }
+
+  // opts (optional): { plan, week } — a periodization plan from periodizePlan
+  // and the 1-based week just trained; the result then carries the adjusted plan.
+  function suggestNextFromLog(compact, lastLog, opts) {
     lastLog = lastLog || {};
-    var hard = (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
-    var easy = lastLog.rpe != null && Number(lastLog.rpe) <= 2 && !(Number(lastLog.skipped) || 0);
+    opts = opts || {};
+    var pain = painOf(lastLog);
+    var hard = pain || (lastLog.rpe != null && Number(lastLog.rpe) >= 4) || (Number(lastLog.skipped) || 0) >= 2;
+    var easy = !pain && lastLog.rpe != null && Number(lastLog.rpe) <= 2 && !(Number(lastLog.skipped) || 0);
+    var exRpe = exerciseRpeMap(lastLog);
+    var decisions = [];
     var next;
     try {
       next = JSON.parse(JSON.stringify(compact || {}));
@@ -1908,21 +2722,170 @@
       (ph.e || []).forEach(function (ex) {
         if (!ex || ex.s == null) return;
         var s = Number(ex.s);
-        if (hard) ex.s = Math.min(s, Math.max(2, s - 1));
-        else if (easy) ex.s = Math.max(s, Math.min(5, s + 1));
+        var r = ex.id != null ? exRpe[ex.id] : undefined;
+        var down = hard || (r != null && r >= 9);
+        var up = !down && (easy || (r != null && r <= 5 && !hard && lastLog.rpe == null));
+        if (down) ex.s = Math.min(s, Math.max(2, s - 1));
+        else if (up) ex.s = Math.max(s, Math.min(5, s + 1));
+        if (r != null || pain) {
+          decisions.push({
+            id: ex.id || ex.n,
+            from: s,
+            to: ex.s,
+            why: pain ? 'דווח על כאב — לא מעלים נפח ב«' + (ex.n || ex.id) + '»'
+              : r >= 9 ? 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — סט אחד פחות'
+              : (ex.s > s ? 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — יש מקום לסט נוסף' : 'קושי ' + r + '/10 ב«' + (ex.n || ex.id) + '» — נשאר אותו נפח')
+          });
+        }
       });
     });
     // The suggested plan comes back as the next week's lastPlan, so the suffix
     // must not stack up week after week.
     next.t = String(next.t || 'אימון').replace(/(\s*·\s*שבוע הבא)+\s*$/, '') + ' · שבוע הבא';
-    return {
+    var out = {
       compact: next,
       workout: expandPlan(next),
       adjusted: hard ? 'down' : (easy ? 'up' : 'same'),
-      why: hard
+      why: pain
+        ? 'הורדתי סט — דווח על כאב'
+        : hard
         ? 'הורדתי סט — היו דילוגים או קושי גבוה'
-        : (easy ? 'הוספתי סט — הביצוע היה קל ונקי' : 'השארתי נפח — אין אות ברור')
+        : (easy ? 'הוספתי סט — הביצוע היה קל ונקי' : 'השארתי נפח — אין אות ברור'),
+      decisions: decisions
     };
+    if (opts.plan && opts.week) {
+      out.plan = adjustNextWeek(opts.plan, opts.week, { rpe: lastLog.rpe, skipped: lastLog.skipped, pain: pain });
+    }
+    return out;
+  }
+
+  // ---- Periodization (4–12 weeks) ----------------------------------------
+  // Weekly blocks of three loading weeks and one deload. The plan only holds
+  // numbers per week; applyPlanWeek turns a week into the same phases workout.
+  var MOVE_OF_MUSCLE = { chest: 'push', shoulders: 'push', triceps: 'push', back: 'pull', biceps: 'pull', legs: 'legs' };
+
+  function movementOf(ex) {
+    var id = ex && (ex.id || ex.name);
+    if (!id) return 'other';
+    for (var i = 0; i < PROGRAM_POOL.length; i++) {
+      if (PROGRAM_POOL[i].id === id) {
+        var ms = PROGRAM_POOL[i].muscles || [];
+        for (var j = 0; j < ms.length; j++) if (MOVE_OF_MUSCLE[ms[j]]) return MOVE_OF_MUSCLE[ms[j]];
+        return 'other';
+      }
+    }
+    var t = String(id) + ' ' + String((ex && ex.name) || '');
+    if (/squat|lunge|deadlift|leg|calf|glute|step|סקוואט|לאנג|רגל|ישבן|דדליפט/i.test(t)) return 'legs';
+    if (/row|pull|chin|curl|חתיר|משיכ|מתח|כפיפ/i.test(t)) return 'pull';
+    if (/push|press|bench|dip|fly|לחיצ|שכיב|מקבילים/i.test(t)) return 'push';
+    return 'other';
+  }
+
+  var MOVE_LABELS = { push: 'דחיפה', pull: 'משיכה', legs: 'רגליים' };
+
+  // Sets per movement across every day's main phase of a weekly program.
+  function pplBalance(program) {
+    var tally = { push: 0, pull: 0, legs: 0 };
+    ((program && program.dailyWorkouts) || []).forEach(function (d) {
+      (d.phases || []).forEach(function (ph) {
+        if (!/^main$/i.test(String(ph.name || ''))) return;
+        (ph.exercises || []).forEach(function (ex) {
+          var m = movementOf(ex);
+          if (tally[m] != null) tally[m] += Number(ex.sets) || 1;
+        });
+      });
+    });
+    var keys = ['push', 'pull', 'legs'];
+    var max = Math.max(tally.push, tally.pull, tally.legs);
+    var low = keys.filter(function (k) { return max > 0 && tally[k] < max * 0.6; });
+    var why;
+    if (!max) why = 'אין תרגילי כוח מרכזיים למדידת איזון.';
+    else if (!low.length) why = 'איזון טוב: דחיפה ' + tally.push + ' · משיכה ' + tally.pull + ' · רגליים ' + tally.legs + ' סטים בשבוע.';
+    else why = 'חוסר איזון: ' + low.map(function (k) { return MOVE_LABELS[k] + ' (' + tally[k] + ')'; }).join(', ') +
+      ' מתחת ל-60% מהקבוצה המובילה (' + max + ' סטים). מומלץ להוסיף סט לתרגילי ' + low.map(function (k) { return MOVE_LABELS[k]; }).join(' / ') + ' או להחליף תרגיל.';
+    return { push: tally.push, pull: tally.pull, legs: tally.legs, balanced: !!max && !low.length, low: low, why: why };
+  }
+
+  function planWeek(n, kind, loadPct, setsDelta, why) {
+    return { week: n, kind: kind, loadPct: loadPct, setsDelta: setsDelta, why: why, adjusted: false };
+  }
+
+  function periodizePlan(opts) {
+    opts = opts || {};
+    var weeks = Math.min(12, Math.max(4, Math.floor(Number(opts.weeks) || 4)));
+    var step = opts.goal === 'endurance' ? 2.5 : 5;
+    var out = [];
+    var level = 100;
+    for (var n = 1; n <= weeks; n++) {
+      var inBlock = (n - 1) % 4; // 0,1,2 load · 3 deload
+      if (inBlock === 3) {
+        out.push(planWeek(n, 'deload', 60, -0.4, 'שבוע פריקה: 60% עומס ו-40% פחות סטים — התאוששות אחרי 3 שבועות העמסה.'));
+        continue;
+      }
+      if (n > 1) level += step;
+      var extra = inBlock === 2 ? 1 : 0;
+      out.push(planWeek(n, 'load', level, extra, n === 1
+        ? 'שבוע בסיס: 100% עומס — מודדים את נקודת הפתיחה.'
+        : 'העמסה הדרגתית: +' + step + '% עומס' + (extra ? ' וסט נוסף — שבוע שיא לפני פריקה.' : ' לעומת השבוע הקודם.')));
+    }
+    return { weeks: out, total: weeks, step: step };
+  }
+
+  // actual: { rpe (1–5), skipped, pain } for the week just trained (1-based).
+  function adjustNextWeek(plan, week, actual) {
+    var p = JSON.parse(JSON.stringify(plan || { weeks: [] }));
+    actual = actual || {};
+    var idx = Math.floor(Number(week) || 0); // index of the next week (0-based) === week
+    var next = p.weeks[idx];
+    if (!next) return p;
+    var cur = p.weeks[idx - 1] || { loadPct: 100 };
+    var pain = painOf(actual);
+    var skipped = Number(actual.skipped) || 0;
+    var rpe = actual.rpe != null && actual.rpe !== '' ? Number(actual.rpe) : null;
+    var shift = 0;
+    if (pain) {
+      next.kind = 'deload'; next.loadPct = 60; next.setsDelta = -0.4;
+      next.why = 'דווח על כאב בשבוע ' + week + ' — הוקדם שבוע פריקה (60%) ומומלץ לבדוק את מקור הכאב לפני שחוזרים להעמיס.';
+      shift = -(p.step || 5);
+    } else if (next.kind === 'deload') {
+      next.why += rpe != null || skipped ? ' (נשמר לפי התוכנית)' : '';
+    } else if (cur.kind !== 'deload' && (skipped >= 2 || (rpe != null && rpe >= 4))) {
+      shift = cur.loadPct - next.loadPct;
+      next.loadPct = cur.loadPct;
+      next.setsDelta = 0;
+      next.why = (skipped >= 2 ? skipped + ' אימונים דולגו' : 'קושי ' + rpe + '/5') + ' בשבוע ' + week + ' — חוזרים על אותו עומס (' + next.loadPct + '%) במקום להעלות.';
+    } else if (rpe != null && rpe <= 2 && !skipped) {
+      next.loadPct += 2.5; shift = 2.5;
+      next.why = 'שבוע ' + week + ' היה קל ונקי (קושי ' + rpe + '/5) — מעלים 2.5% נוספים ל-' + next.loadPct + '%.';
+    } else {
+      next.why += ' (לפי התוכנית — הביצוע תאם)';
+    }
+    next.adjusted = true;
+    if (shift) {
+      for (var i = idx + 1; i < p.weeks.length; i++) {
+        if (p.weeks[i].kind === 'deload') break; // the block's deload resets the shift
+        p.weeks[i].loadPct = Math.max(60, p.weeks[i].loadPct + shift);
+      }
+    }
+    return p;
+  }
+
+  // Same phases schema: only main-phase sets/notes change.
+  function applyPlanWeek(workout, wk) {
+    var w = JSON.parse(JSON.stringify(workout || {}));
+    if (!wk) return w;
+    (w.phases || []).forEach(function (ph) {
+      if (!/^main$/i.test(String(ph.name || ''))) return;
+      (ph.exercises || []).forEach(function (ex) {
+        if (ex.sets == null) return;
+        var s = Number(ex.sets) || 1;
+        ex.sets = wk.setsDelta < 0 ? Math.max(1, Math.round(s * (1 + wk.setsDelta))) : s + (wk.setsDelta || 0);
+        var note = 'שבוע ' + wk.week + ': ' + wk.loadPct + '% עומס';
+        ex.notes = ex.notes ? ex.notes + ' · ' + note : note;
+      });
+    });
+    w.title = String(w.title || 'אימון').replace(/\s*·\s*שבוע \d+$/, '') + ' · שבוע ' + wk.week;
+    return w;
   }
 
   // The workout rules live in their own module. Resolved on call, not on load,
@@ -1982,17 +2945,32 @@
     redeemAccessCode: redeemAccessCode,
     workoutPrintModel: workoutPrintModel,
     workoutPrintHtml: workoutPrintHtml,
+    monthlyReportModel: monthlyReportModel,
+    monthlyReportHtml: monthlyReportHtml,
+    prepareMonthlyReport: prepareMonthlyReport,
+    dueReminders: dueReminders,
+    reminderPrefs: reminderPrefs,
+    setReminderPrefs: setReminderPrefs,
+    runReminders: runReminders,
     preparePrint: preparePrint,
     createWorkoutSession: createWorkoutSession,
     saveWorkoutSession: saveWorkoutSession,
     loadWorkoutSession: loadWorkoutSession,
     SessionTracker: SessionTracker,
     suggestNextFromLog: suggestNextFromLog,
+    periodizePlan: periodizePlan,
+    adjustNextWeek: adjustNextWeek,
+    applyPlanWeek: applyPlanWeek,
+    pplBalance: pplBalance,
+    movementOf: movementOf,
     rulesWithSources: rulesWithSources,
     findRule: findRule,
     rulesMarkup: rulesMarkup,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
+    qrMatrix: qrMatrix,
+    qrSvg: qrSvg,
+    shareQrMarkup: shareQrMarkup,
     decodeResult: decodeResult,
     waShareUrl: waShareUrl,
     workoutModeUrl: workoutModeUrl,
@@ -2037,6 +3015,24 @@
     addUserEntry: addUserEntry,
     removeUserEntry: removeUserEntry,
     exportUserCatalog: exportUserCatalog,
+    parseRepsNumber: parseRepsNumber,
+    workoutPrefs: workoutPrefs,
+    setWorkoutPrefs: setWorkoutPrefs,
+    nextExerciseSpeech: nextExerciseSpeech,
+    speakHebrew: speakHebrew,
+    restEndCue: restEndCue,
+    primeAudio: primeAudio,
+    CLIENT_GOALS: CLIENT_GOALS,
+    CLIENT_LEVELS: CLIENT_LEVELS,
+    WEEKDAYS_HE: WEEKDAYS_HE,
+    normalizeClientDetails: normalizeClientDetails,
+    setClientDetails: setClientDetails,
+    addMeasurement: addMeasurement,
+    clientDetailsText: clientDetailsText,
+    collectBackup: collectBackup,
+    encryptBackup: encryptBackup,
+    decryptBackup: decryptBackup,
+    restoreBackup: restoreBackup,
     get catalog() { return catalog; }
   };
 
@@ -2046,6 +3042,9 @@
     shareToClient: shareToClient,
     decodeHash: decodeHash,
     encodeResult: encodeResult,
+    qrMatrix: qrMatrix,
+    qrSvg: qrSvg,
+    shareQrMarkup: shareQrMarkup,
     decodeResult: decodeResult,
     compactPlan: compactPlan,
     expandPlan: expandPlan,

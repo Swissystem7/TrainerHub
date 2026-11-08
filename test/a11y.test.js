@@ -20,6 +20,7 @@ const pages = {
   booklet: fs.readFileSync(path.join(root, 'booklet.html'), 'utf8'),
   scan: fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8'),
   exercises: fs.readFileSync(path.join(root, 'exercises.html'), 'utf8'),
+  reserves: fs.readFileSync(path.join(root, 'reserves.html'), 'utf8'),
   scan: fs.readFileSync(path.join(root, 'scan.html'), 'utf8')
 };
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');

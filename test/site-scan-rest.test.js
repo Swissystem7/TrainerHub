@@ -14,7 +14,7 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const page = fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8');
-B.setData(JSON.parse(fs.readFileSync(path.join(root, B.MAIN_PATH), 'utf8')), null);
+B.setData(null, JSON.parse(fs.readFileSync(path.join(root, B.TEAM_PATH), 'utf8')));
 
 function extract(name) {
   const start = page.indexOf('function ' + name + '(');
