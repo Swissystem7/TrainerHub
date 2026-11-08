@@ -11,10 +11,10 @@ function read(rel) {
   return fs.readFileSync(path.join(root, rel), 'utf8');
 }
 
-test('the only GitHub Actions workflow is the reels queue (#532)', function () {
+test('the only GitHub Actions workflows are the reels queue (#532) and ci', function () {
   const dir = path.join(root, '.github', 'workflows');
   const files = fs.existsSync(dir) ? fs.readdirSync(dir).sort() : [];
-  assert.deepEqual(files.filter(function (f) { return f !== 'reels-queue.yml'; }), []);
+  assert.deepEqual(files.filter(function (f) { return f !== 'reels-queue.yml' && f !== 'ci.yml'; }), []);
 });
 
 test('unused lib/ helpers are not in the live tree', function () {
