@@ -110,7 +110,7 @@ test('pitch.html static: nav has accessible label, full site links and active in
   assert.match(html, /<span class="chip on">דף אחד להדפסה<\/span>/);
   assert.match(html, /<a href="\.\/">בנה אימון<\/a>/);
   assert.match(html, /<a href="\.\/weekly\.html">בונה שבועי<\/a>/);
-  assert.match(html, /<a href="\.\/booklet\.html">חוברת הקורס<\/a>/);
+  assert.match(html, /<a href="\.\/booklet\.html">תיק בטיחות<\/a>/);
   assert.match(html, /<a href="\.\/library\.html">ספריית סרטונים<\/a>/);
   assert.match(html, /<a href="\.\/journal\.html">יומן ביצוע<\/a>/);
   assert.match(html, /<a href="\.\/offer\.html">הצעה למאמנים<\/a>/);

@@ -288,6 +288,9 @@
   <button type="button" class="ctrl-btn" id="btnSwap" onclick="toggleSwap()" title="החלף תרגיל" aria-label="החלף תרגיל" aria-expanded="false" aria-controls="swapPanel">
     <span class="icon" aria-hidden="true">🔁</span><span class="label">החלף</span>
   </button>
+  <button type="button" class="ctrl-btn" id="btnTts" onclick="toggleTts()" title="הקראת התרגיל הבא" aria-label="הקראת התרגיל הבא" aria-pressed="true">
+    <span class="icon" id="ttsIcon" aria-hidden="true">🔊</span><span class="label" id="ttsLabel">קול</span>
+  </button>
 </div>
 <div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
@@ -303,6 +306,7 @@
     <div class="stat-card" role="group" aria-label="סטים שהושלמו"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
+  <p id="setsSaved" role="status" aria-live="polite" style="color:#7FE9D9;font-size:0.85rem"></p>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
     <p style="color:#7FE9D9;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
@@ -310,6 +314,7 @@
       <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0" aria-label="שלח סיכום למאמן בוואטסאפ">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <div id="exRpeBox" role="group" aria-label="קושי לכל תרגיל"></div>
     <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0A1513;color:#7FE9D9;border:1px solid #28423C;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
     <button class="done-btn" id="btnCopyCode" type="button" style="width:100%;margin-top:8px;background:#12211E;border:1px solid #28423C" aria-label="העתק קוד סיכום לייבוא ביומן המאמן">📋 העתק קוד</button>
@@ -319,6 +324,7 @@
 </div>
 
 <script src="../js/core.js"></script>
+<script src="../js/journal-storage.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -465,6 +471,9 @@ let elapsedInterval = null;
 let completedSets = 0;
 let completedExercises = 0;
 let completedStepIds = new Set();
+// Per-set log: { exerciseId, reps, weightKg } — saved to the existing journal storage on finish.
+let setLog = [];
+let setsSavedOnce = false;
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
@@ -477,6 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   TH.ready(refreshStepMedia);
 
   workout = loadWorkout();
+  if (TH.workoutPrefs) updateTtsButton();
 
   if (!workout) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -500,6 +510,134 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderStep();
 });
+
+/* ═══════════════════════════════════════════
+   PER-SET LOGGING · REST CUES · TTS
+═══════════════════════════════════════════ */
+
+function setExerciseId(step) {
+  return String((step && (step.id || step.name)) || '').trim();
+}
+
+function lastWeightFor(exerciseId) {
+  // Same exercise earlier in this session first, then the journal history.
+  for (let i = setLog.length - 1; i >= 0; i--) {
+    if (setLog[i].exerciseId === exerciseId && setLog[i].weightKg > 0) return setLog[i].weightKg;
+  }
+  const J = window.THJournalStorage;
+  if (!J) return null;
+  const entries = J.listEntries();
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const sets = entries[i].sets || [];
+    for (let k = sets.length - 1; k >= 0; k--) {
+      if (sets[k].exerciseId === exerciseId && sets[k].weightKg > 0) return sets[k].weightKg;
+    }
+  }
+  return null;
+}
+
+function setLogMarkup(step) {
+  if (!step || step.duration) return '';
+  const reps = TH.parseRepsNumber(step.reps);
+  const kg = lastWeightFor(setExerciseId(step));
+  return `<div class="next-preview" id="setLogBox" role="group" aria-label="תיעוד הסט">
+      <div class="label">תיעוד סט (לא חובה)</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <label for="logReps" style="font-size:0.8rem">חזרות<br><input id="logReps" type="number" inputmode="numeric" min="0" step="1" value="${reps || ''}" style="width:5.5em;font-size:1.1rem;text-align:center"></label>
+        <label for="logWeight" style="font-size:0.8rem">משקל ק״ג<br><input id="logWeight" type="number" inputmode="decimal" min="0" step="0.5" value="${kg || ''}" placeholder="0" style="width:5.5em;font-size:1.1rem;text-align:center"></label>
+      </div>
+    </div>`;
+}
+
+function recordSet(step) {
+  const repsEl = document.getElementById('logReps');
+  if (!step || step.duration || !repsEl) return null;
+  const reps = Number(repsEl.value);
+  const weightEl = document.getElementById('logWeight');
+  const weightKg = Number(String(weightEl ? weightEl.value : '').replace(',', '.')) || 0;
+  if (!(reps > 0)) return null;
+  const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0 };
+  setLog.push(item);
+  return item;
+}
+
+// Sets grouped per exercise for the TH1 report (optional «x» field), with the
+// per-exercise RPE (1-10) the trainee picks on the finish screen.
+let exerciseRpe = {};
+function exerciseLogForReport() {
+  const order = [], byId = {};
+  setLog.forEach(function (s) {
+    if (!byId[s.exerciseId]) { byId[s.exerciseId] = { id: s.exerciseId, sets: [], rpe: null }; order.push(s.exerciseId); }
+    byId[s.exerciseId].sets.push({ reps: s.reps, weightKg: s.weightKg });
+  });
+  return order.map(function (id) { byId[id].rpe = exerciseRpe[id] || null; return byId[id]; });
+}
+function exerciseNameFor(id) {
+  let name = id;
+  ((workout && workout.phases) || []).forEach(function (ph) {
+    (ph.exercises || []).forEach(function (ex) { if (ex && (ex.id === id || ex.name === id)) name = ex.name || id; });
+  });
+  return name;
+}
+function exerciseRpeMarkup() {
+  const log = exerciseLogForReport();
+  if (!log.length) return '';
+  const opts = ['<option value="">—</option>'].concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option value="${n}">${n}</option>`)).join('');
+  return '<p style="font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קושי לכל תרגיל (RPE 1-10, לא חובה)</p>' +
+    log.map(function (ex, i) {
+      const sets = ex.sets.map(s => s.reps + (s.weightKg ? '×' + s.weightKg : '')).join(', ');
+      return `<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin:4px 0">` +
+        `<label for="exRpe${i}" style="font-size:0.85rem">${esc(exerciseNameFor(ex.id))} <span dir="ltr" style="color:#9ca3af">${esc(sets)}</span></label>` +
+        `<select id="exRpe${i}" data-ex="${esc(ex.id)}" aria-label="קושי ${esc(exerciseNameFor(ex.id))}">${opts}</select></div>`;
+    }).join('');
+}
+
+function saveSetLog(doneAt) {
+  if (setsSavedOnce || !setLog.length) return null;
+  const J = window.THJournalStorage;
+  if (!J) return null;
+  setsSavedOnce = true;
+  const before = J.getPersonalRecords();
+  const saved = J.saveEntry({
+    clientId: linkMeta.tid || '',
+    title: (workout && workout.title) || 'אימון',
+    doneAt,
+    sets: setLog.slice()
+  });
+  if (!saved) return null;
+  const prs = Object.keys(saved.personalRecords).filter(function (k) {
+    const a = before[k], b = saved.personalRecords[k];
+    return b && (!a || a.weightKg !== b.weightKg || a.reps !== b.reps);
+  });
+  return { sets: setLog.length, volume: saved.volume, prs };
+}
+
+function updateTtsButton() {
+  const on = TH.workoutPrefs().tts;
+  const btn = document.getElementById('btnTts');
+  if (!btn) return;
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  document.getElementById('ttsIcon').textContent = on ? '🔊' : '🔇';
+  document.getElementById('ttsLabel').textContent = on ? 'קול' : 'מושתק';
+}
+
+function toggleTts() {
+  const on = !TH.workoutPrefs().tts;
+  TH.setWorkoutPrefs({ tts: on });
+  if (!on && window.speechSynthesis) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+  updateTtsButton();
+  announceStatus(on ? 'הקראה הופעלה' : 'הקראה כובתה');
+}
+
+function speakNext(step) {
+  if (!TH.workoutPrefs().tts || !started || paused) return false;
+  return TH.speakHebrew(TH.nextExerciseSpeech(step));
+}
+
+function restDone() {
+  TH.restEndCue(window, { sound: TH.workoutPrefs().sound });
+  advance();
+}
 
 /* ═══════════════════════════════════════════
    RENDER
@@ -543,6 +681,7 @@ function renderExercise(step) {
     ${setInfo}
     <div class="ex-media-slot" id="exMediaSlot">${videoHtml}</div>
     ${repsOrTime}
+    ${typeof setLogMarkup === 'function' ? setLogMarkup(step) : ''}
     ${notes}
   `;
   announceStatus(step.name + (step.totalSets > 1 ? (', סט ' + step.set + ' מתוך ' + step.totalSets) : ''));
@@ -596,9 +735,10 @@ function renderRest(step) {
   const swapPanelRest = document.getElementById('swapPanel');
   if (swapPanelRest) { swapPanelRest.hidden = true; swapPanelRest.innerHTML = ''; }
 
+  if (typeof speakNext === 'function') speakNext(step);
   clearCountdown();
   if (!paused && started) {
-    startCountdown(step.duration, () => advance());
+    startCountdown(step.duration, typeof restDone === 'function' ? restDone : advance);
   } else {
     countdown = step.duration;
     countdownMax = step.duration;
@@ -734,6 +874,7 @@ function announceTimer(val, max) {
 ═══════════════════════════════════════════ */
 
 function togglePause() {
+  if (TH.primeAudio) TH.primeAudio(window);
   if (!started) {
     started = true;
     paused = false;
@@ -769,7 +910,8 @@ function resumeCurrentStep() {
   if (step.type === 'exercise' && step.duration) {
     startCountdown(countdown || step.duration, () => markSetDone(), step.duration);
   } else if (step.type === 'rest') {
-    startCountdown(countdown || step.duration, () => advance(), step.duration);
+    if ((!countdown || countdown === step.duration) && typeof speakNext === 'function') speakNext(step);
+    startCountdown(countdown || step.duration, typeof restDone === 'function' ? restDone : advance, step.duration);
   }
 }
 
@@ -784,6 +926,7 @@ function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
   const step = steps[stepIdx];
   if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
+    if (typeof recordSet === 'function') recordSet(step);
     // An exercise counts once any of its sets is done: 2 of 3 sets with the
     // last one skipped is still an exercise the trainee did.
     if (!hasDoneSet(step.exercise)) completedExercises++;
@@ -964,6 +1107,14 @@ function finishWorkout() {
 
   let reportRpe = null;
   const finishedAt = new Date().toISOString();
+  const savedSets = typeof saveSetLog === 'function' ? saveSetLog(finishedAt) : null;
+  const savedEl = document.getElementById('setsSaved');
+  if (savedEl) {
+    savedEl.textContent = savedSets
+      ? ('נשמרו ' + savedSets.sets + ' סטים ביומן במכשיר' + (savedSets.volume ? ' · נפח ' + savedSets.volume + ' ק״ג' : '') +
+         (savedSets.prs.length ? ' · 🏆 שיא חדש: ' + savedSets.prs.join(', ') : ''))
+      : '';
+  }
   function buildResult() {
     return {
       name: linkMeta.name || '',
@@ -975,7 +1126,8 @@ function finishWorkout() {
       skipped: skippedSets,
       tid: linkMeta.tid || '',
       rpe: reportRpe,
-      plan: TH.compactPlan(workout)
+      plan: TH.compactPlan(workout),
+      log: typeof exerciseLogForReport === 'function' ? exerciseLogForReport() : []
     };
   }
   function refreshReport() {
@@ -1015,6 +1167,16 @@ function finishWorkout() {
           rpeRow.querySelectorAll('[data-rpe]').forEach(b => {
             b.style.background = Number(b.getAttribute('data-rpe')) === reportRpe ? '#00756A' : '#12211E';
           });
+          refreshReport();
+        };
+      });
+    }
+    const exBox = document.getElementById('exRpeBox');
+    if (exBox && typeof exerciseRpeMarkup === 'function') {
+      exBox.innerHTML = exerciseRpeMarkup();
+      exBox.querySelectorAll('select[data-ex]').forEach(sel => {
+        sel.onchange = function () {
+          exerciseRpe[sel.getAttribute('data-ex')] = Number(sel.value) || null;
           refreshReport();
         };
       });

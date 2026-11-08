@@ -9,7 +9,7 @@ const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8');
 
 function extractPageScript(src) {
-  const match = src.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/);
+  const match = src.match(/<script>([\s\S]*?)<\/script>\s*(?:<script src="[^"]*th-nav\.js"><\/script>\s*)?<\/body>/);
   assert.ok(match, 'page script block found');
   return match[1];
 }
@@ -148,7 +148,7 @@ test('frontend/index.html static: navigation includes full site links and active
   assert.match(html, /<nav class="th-nav" aria-label="ניווט ראשי">/);
   assert.match(html, /<a href="\.\.\/">בנה אימון<\/a>/);
   assert.match(html, /<a href="\.\.\/weekly\.html">בונה שבועי<\/a>/);
-  assert.match(html, /<a href="\.\.\/booklet\.html">חוברת הקורס<\/a>/);
+  assert.match(html, /<a href="\.\.\/booklet\.html">תיק בטיחות<\/a>/);
   assert.match(html, /<a href="\.\.\/site-scan\.html">סריקת שטח<\/a>/);
   assert.match(html, /<a href="\.\.\/library\.html">ספריית סרטונים<\/a>/);
   assert.match(html, /<a href="\.\.\/journal\.html">יומן ביצוע<\/a>/);

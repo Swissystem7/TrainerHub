@@ -9,7 +9,7 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 test('slippery floor: every booklet warm-up drill drops to walking pace', function () {
   ['narrow', 'medium', 'wide'].forEach(function (width) {

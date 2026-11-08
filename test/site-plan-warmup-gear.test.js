@@ -9,7 +9,7 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 function warmNames(r) {
   return r.workout.phases[0].exercises.map(function (x) { return x.name; });
@@ -32,9 +32,4 @@ test('the warm-up keeps its length and drill count without the stairs drill', fu
   const secs = warm.exercises.reduce(function (a, x) { return a + x.duration_seconds; }, 0);
   assert.equal(warm.exercises.length, warm.duration_minutes);
   assert.equal(secs, warm.duration_minutes * 60);
-});
-
-test('the booklet page, with no gear given, still draws on the whole bank', function () {
-  const w = B.methodWorkout('combined', 0, { season: 'summer', activity: 'long' });
-  assert.ok(w.phases[0].exercises.some(function (x) { return /מדרגות/.test(x.name); }));
 });

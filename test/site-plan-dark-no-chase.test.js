@@ -9,14 +9,14 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const read = function (rel) { return JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8')); };
-B.setData(read(B.MAIN_PATH), read(B.TEAM_PATH));
+B.setData(null, read(B.TEAM_PATH));
 
 function allNames(r) {
   return r.workout.phases.reduce(function (a, ph) { return a.concat(ph.exercises.map(function (x) { return x.name; })); }, []);
 }
 
 test('wide site in dim light: no tag game and no relay race, and the reasons say why', function () {
-  const tag = B.games('tag')[0];
+  const tag = Plan.TAG_GAME;
   const r = Plan.build({ width: 'wide', hazards: ['dark'] }, { group: 12 });
   assert.notEqual(r.method, 'opening-1');
   assert.ok(!allNames(r).some(function (n) { return /שליחים/.test(n); }), allNames(r).join(' | '));
@@ -32,7 +32,7 @@ test('the floor reason still wins when the floor is unsafe in the dark too', fun
 });
 
 test('a lit wide site still opens with the tag game', function () {
-  const tag = B.games('tag')[0];
+  const tag = Plan.TAG_GAME;
   const r = Plan.build({ width: 'wide', hazards: [] }, { group: 12 });
   assert.equal(r.method, 'opening-1');
   if (tag) assert.ok(allNames(r).includes(tag.he));

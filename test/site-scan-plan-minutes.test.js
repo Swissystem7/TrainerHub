@@ -16,7 +16,7 @@ const Plan = require('../js/site-plan.js');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'site-scan.html'), 'utf8');
-B.setData(JSON.parse(fs.readFileSync(path.join(root, B.MAIN_PATH), 'utf8')), null);
+B.setData(null, JSON.parse(fs.readFileSync(path.join(root, B.TEAM_PATH), 'utf8')));
 
 function inlineScript() {
   const start = html.lastIndexOf('<script>');
@@ -35,6 +35,7 @@ function makeElement(id) {
     dataset: {},
     appendChild: function () {},
     scrollIntoView: function () {},
+    insertAdjacentHTML: function (pos, html) { this.innerHTML += html; },
     addEventListener: function (type, fn) { (handlers[type] = handlers[type] || []).push(fn); },
     fire: function (type, event) { const el = this; (handlers[type] || []).forEach(function (fn) { fn.call(el, event || { target: el }); }); }
   };
@@ -83,6 +84,6 @@ test('stations under a minute stay in seconds and list their rest', function () 
   assert.match(rowOf(out, 'עליות מדרגות בריצה קלה'), /— 3 סבבים · 40 שנ׳ · מנוחה 45 שנ׳/);
 });
 
-test('a reps drill without rest shows only its reps', function () {
-  assert.match(rowOf(planFor([['width', 'narrow']]), 'סקוואטים'), /<\/strong> — 15 חזרות<div/);
+test('a reps site drill lists its reps and rest', function () {
+  assert.match(rowOf(planFor([['width', 'medium'], ['features', 'bench']]), '<strong>עליות על ספסל'), /— 3 סבבים · 12 חזרות · מנוחה 45 שנ׳/);
 });

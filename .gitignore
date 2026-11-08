@@ -10,3 +10,9 @@ build/
 videos/*.mp4
 *.key
 *.pem
+
+# Playwright E2E output
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
