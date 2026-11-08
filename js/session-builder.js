@@ -204,7 +204,7 @@
   }
 
   // Ids the caller would rather see, as a lookup. Pilot mode passes the clips
-  // the Acharai booklet teaches (THPilot.builderOpts), so between two clips that
+  // an optional prefer list (THPilot.builderOpts), so between two clips that
   // fit the request equally well the one the coach was trained on wins. The
   // bonus stays below one muscle match, so it never pulls in a wrong exercise.
   var PREFER_BONUS = 8;

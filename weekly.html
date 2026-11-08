@@ -14,7 +14,9 @@
   <span class="chip on" aria-current="page">בונה שבועי</span>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
-  <a href="./booklet.html">חוברת הקורס</a>
+  <a href="./booklet.html">תיק בטיחות</a>
+  <a href="./reserves.html">מדדי מילואים</a>
+
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
@@ -26,27 +28,41 @@
 </div>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
+<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
+// Periodization: the plan only holds per-week numbers; the shown week is applied
+// on top of the same phases workout (TH.applyPlanWeek), nothing else changes.
+function currentPlanWeek(){
+  const per = window.__period;
+  if (!per || !per.weeks || !per.weeks.length) return null;
+  return per.weeks[(window.__periodWeek || 1) - 1] || null;
+}
+function planned(workout){
+  const wk = currentPlanWeek();
+  return wk && TH.applyPlanWeek ? TH.applyPlanWeek(workout, wk) : workout;
+}
 
 function startDayWorkout(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const base = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const workout = typeof planned === 'function' ? planned(base) : base;
   TH.store.set(TH.KEYS.active, workout);
   window.location.href = './frontend/workout-mode.html';
 }
 function previewDayWorkout(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const base = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const workout = typeof planned === 'function' ? planned(base) : base;
   window.location.href = TH.encodeLink(workout, {});
 }
 function copyDayTraineeLink(dayIndex, sourceBtn){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const base = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const workout = typeof planned === 'function' ? planned(base) : base;
   const shared = TH.shareToClient(workout, {});
   const day = sourceBtn && sourceBtn.closest ? sourceBtn.closest('.day') : null;
   const host = (day && day.querySelector('.th-gate-host')) || day || $('result');
@@ -74,7 +90,8 @@ function copyDayTraineeLink(dayIndex, sourceBtn){
 function printDayWorkout(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
-  const workout = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const base = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
+  const workout = typeof planned === 'function' ? planned(base) : base;
   TH.preparePrint(workout, {});
   window.location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
 }
@@ -96,7 +113,8 @@ function renderProgram(p){
   }, 0);
   $('result').innerHTML = '<div class="summary"><div class="pill">'+countPill(p.dailyWorkouts.length,'אימון אחד','אימונים')+'</div><div class="pill">'+countPill(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0,'תרגיל אחד','תרגילים')+' באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
     p.dailyWorkouts.map((d, i) => {
-      const w = TH.toPhasesWorkout(d, window.__lastMeta);
+      const w0 = TH.toPhasesWorkout(d, window.__lastMeta);
+      const w = typeof planned === 'function' ? planned(w0) : w0;
       const dayExercises = (w.phases || []).flatMap(phase => phase.exercises || []);
       const phasesHtml = (w.phases || []).map((phase, pi) => {
         const label = TH.phaseLabel(phase.name);
@@ -125,6 +143,7 @@ function renderProgram(p){
         '<button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')" aria-label="דף להדפסה / PDF עבור ' + esc(dayName) + '">דף להדפסה / PDF</button>' +
         '</div><div class="th-gate-host"></div></section>';
     }).join('');
+  if (typeof renderPeriod === 'function') renderPeriod(p);
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {
       if (!sel.value) return;
@@ -150,6 +169,58 @@ function renderProgram(p){
   });
 }
 
+function renderPeriod(p){
+  const per = window.__period;
+  if (!per || !TH.periodizePlan) return;
+  const bal = TH.pplBalance ? TH.pplBalance(p) : null;
+  const cur = window.__periodWeek || 1;
+  const kindLabel = k => k === 'deload' ? 'פריקה' : 'העמסה';
+  const rows = per.weeks.map(function (wk) {
+    const n = wk.week;
+    const a = (window.__periodActual || {})[n] || {};
+    const sets = wk.setsDelta < 0 ? '−40% סטים' : (wk.setsDelta ? '+' + wk.setsDelta + ' סט' : 'סטים כרגיל');
+    const rpeOpts = ['', '1', '2', '3', '4', '5'].map(v => '<option value="'+v+'"'+(String(a.rpe == null ? '' : a.rpe) === v ? ' selected' : '')+'>'+(v || '—')+'</option>').join('');
+    return '<li class="period-week" data-week="'+n+'" data-kind="'+wk.kind+'" style="padding:10px 0;border-top:1px solid var(--th-line)'+(n === cur ? ';outline:2px solid var(--th-teal);outline-offset:4px;border-radius:6px' : '')+'">' +
+      '<b>שבוע '+n+' · '+kindLabel(wk.kind)+' · '+wk.loadPct+'% · '+sets+'</b>' +
+      (wk.adjusted ? ' <span style="color:var(--th-teal)" title="הותאם לפי הביצוע">✓ הותאם</span>' : '') +
+      '<p class="period-why" style="margin:4px 0;color:var(--th-muted)">'+esc(wk.why)+'</p>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">' +
+      '<button type="button" class="th-btn ghost period-show" data-week="'+n+'" aria-label="הצג את ימי האימון של שבוע '+n+'">הצג שבוע</button>' +
+      '<label for="pRpe'+n+'" style="margin:0">קושי בפועל (1–5)</label><select id="pRpe'+n+'" class="period-in" data-week="'+n+'" data-f="rpe" style="width:auto;min-width:4.5em;margin:0" aria-label="קושי בפועל בשבוע '+n+'">'+rpeOpts+'</select>' +
+      '<label for="pSkip'+n+'" style="margin:0">דילוגים</label><input id="pSkip'+n+'" class="period-in" data-week="'+n+'" data-f="skipped" type="number" min="0" max="7" value="'+(a.skipped || 0)+'" style="width:4.5em;margin:0" aria-label="אימונים שדולגו בשבוע '+n+'">' +
+      '<label for="pPain'+n+'" style="margin:0">כאב</label><input id="pPain'+n+'" class="period-in" data-week="'+n+'" data-f="pain" type="checkbox" style="width:auto;margin:0"'+(a.pain ? ' checked' : '')+' aria-label="דווח כאב בשבוע '+n+'">' +
+      '</div></li>';
+  }).join('');
+  $('result').insertAdjacentHTML('beforeend',
+    '<section class="day" id="periodCard" aria-labelledby="periodHeading"><h3 id="periodHeading">תוכנית תקופתית · '+per.total+' שבועות</h3>' +
+    (bal ? '<p id="pplBalance" data-balanced="'+bal.balanced+'" style="margin:4px 0">⚖️ '+esc(bal.why)+'</p>' : '') +
+    '<p style="margin:4px 0;color:var(--th-muted)">מזינים את הביצוע בפועל של שבוע — והשבוע הבא מתעדכן אוטומטית, עם הסבר.</p>' +
+    '<ol style="list-style:none;padding:0;margin:0">'+rows+'</ol></section>');
+  $('result').querySelectorAll('.period-show').forEach(function (b) {
+    b.addEventListener('click', function () { window.__periodWeek = Number(b.dataset.week); renderProgram(window.__lastProgram); });
+  });
+  $('result').querySelectorAll('.period-in').forEach(function (el) {
+    el.addEventListener('change', function () { onPeriodActual(Number(el.dataset.week)); });
+  });
+}
+function onPeriodActual(n){
+  const actual = {
+    rpe: $('pRpe'+n).value === '' ? null : Number($('pRpe'+n).value),
+    skipped: Math.max(0, Number($('pSkip'+n).value) || 0),
+    pain: $('pPain'+n).checked
+  };
+  window.__periodActual = window.__periodActual || {};
+  window.__periodActual[n] = actual;
+  // Re-plan from the base so a corrected entry replaces, not stacks on, the earlier one.
+  let plan = TH.periodizePlan({ weeks: window.__period.total, goal: $('goal').value });
+  Object.keys(window.__periodActual).map(Number).sort((a, b) => a - b).forEach(function (w) {
+    plan = TH.adjustNextWeek(plan, w, window.__periodActual[w]);
+  });
+  window.__period = plan;
+  renderProgram(window.__lastProgram);
+  const next = document.querySelector('.period-week[data-week="'+(n+1)+'"]');
+  if (next && next.scrollIntoView) next.scrollIntoView({ block: 'nearest' });
+}
 function run(e){
   if (e) e.preventDefault();
   try {
@@ -172,6 +243,10 @@ function run(e){
       intensity: $('goal').value === 'strength' ? 'high' : 'medium',
       tags: [muscle, $('goal').value].concat(audience && audience !== 'general' ? [audience] : [])
     };
+    const pw = Number($('periodWeeks') ? $('periodWeeks').value : 0) || 0;
+    window.__period = pw && TH.periodizePlan ? TH.periodizePlan({ weeks: pw, goal: $('goal').value }) : null;
+    window.__periodWeek = 1;
+    window.__periodActual = {};
     renderProgram(p);
   } catch (err) {
     $('result').innerHTML = '<p class="empty error" role="status">'+esc(err.message)+'</p>';
@@ -184,6 +259,8 @@ function resetForm(){
   $('equipment').value = 'none';
   $('audience').value = 'general';
   $('days').value = '3';
+  if ($('periodWeeks')) $('periodWeeks').value = '0';
+  window.__period = null;
   window.__lastProgram = null;
   window.__lastMeta = null;
   $('result').innerHTML = '<p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p>';
@@ -226,4 +303,5 @@ renderSavedReelCard();
 var useSavedReelBtn = $('useSavedReelBtn');
 if (useSavedReelBtn && useSavedReelBtn.addEventListener) useSavedReelBtn.addEventListener('click', applySavedReelPlan);
 TH.ready(function () { run(); maybeApplyReelPlan(); });
-</script></body></html>
+</script><script src="./js/th-nav.js"></script>
+</body></html>

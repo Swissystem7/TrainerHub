@@ -41,7 +41,7 @@
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
   <a href="./journal.html">יומן ביצוע</a>
-  <a href="./booklet.html">חוברת הקורס</a>
+  <a href="./booklet.html">תיק בטיחות</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <span class="chip on">דף להדפסה</span>
   <a href="./manage.html">ניהול מאגר</a>
@@ -102,8 +102,16 @@
   }
 
   function render() {
-    var packed = currentWorkout();
     var box = $('sheet');
+    var raw = TH.store.get(TH.KEYS.print, null);
+    if (raw && raw.report && raw.report.kind === 'monthly' && TH.monthlyReportHtml) {
+      updatePrintBtn(true);
+      box.innerHTML = TH.monthlyReportHtml(raw.report, { brand: $('brand').value.trim() });
+      $('hint').textContent = 'דוח חודשי מהיומן. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
+      if ($('backBtn')) { $('backBtn').setAttribute('href', './journal.html'); $('backBtn').textContent = 'חזרה ליומן'; }
+      return;
+    }
+    var packed = currentWorkout();
     if (!packed) {
       box.innerHTML = '<div class="empty" role="status"><p>אין אימון בדפדפן. בנו אימון ואז לחצו «דף להדפסה».</p><a class="th-btn ghost" href="./" style="display:inline-block;margin-top:10px;">בנה אימון עכשיו</a></div>';
       $('hint').textContent = '';

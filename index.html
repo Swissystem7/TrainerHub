@@ -95,7 +95,9 @@
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
   <a href="./scan.html">סריקת סביבה</a>
-  <a href="./booklet.html">חוברת הקורס</a>
+  <a href="./booklet.html">תיק בטיחות</a>
+  <a href="./reserves.html">מדדי מילואים</a>
+
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
@@ -266,6 +268,9 @@
         host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
         return;
       }
+      var oldQr = host.parentNode.querySelector('[data-role="share-qr"]');
+      if (oldQr) oldQr.parentNode.removeChild(oldQr);
+      if (TH.shareQrMarkup) host.insertAdjacentHTML('afterend', TH.shareQrMarkup(shared.url));
       TH.copyOrShow(shared.url, host, function () {
         $('copyBtn').textContent = 'הועתק';
         setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
@@ -558,5 +563,6 @@
   });
 })();
 </script>
+<script src="./js/th-nav.js"></script>
 </body>
 </html>
