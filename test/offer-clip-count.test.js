@@ -26,9 +26,9 @@ const distinctClips = new Set(rows.filter(function (e) { return e.available !== 
   .map(function (e) { return e.file; })).size;
 
 test('catalog numbers the sales pages rely on', function () {
-  assert.equal(playable, 70);
-  assert.equal(unavailable, 8);
-  assert.equal(distinctClips, 68);
+  assert.equal(playable, 77);
+  assert.equal(unavailable, 1);
+  assert.equal(distinctClips, 75);
 });
 
 test('offer and pitch count distinct clips, not rows that repeat the same video', function () {
@@ -45,7 +45,7 @@ test('offer and pitch do not sell unavailable rows as clips connected to the bui
   for (const [name, html] of [['offer', offer], ['pitch', pitch]]) {
     assert.doesNotMatch(html, new RegExp(rows.length + ' קליפ'), name + ' claims every catalog row is a clip');
   }
-  assert.match(offer, new RegExp(unavailable + ' רשומות'), 'offer must say how many rows have no video');
+  assert.match(offer, /רשומה אחת בלי סרטון/, 'offer must say the one row with no video');
 });
 
 test('offer does not claim videos are local repo files', function () {

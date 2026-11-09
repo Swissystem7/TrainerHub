@@ -44,7 +44,9 @@
     ],
     "level": "beginner",
     "file": "עבודה עם יד אחת.mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "NubSSALIqsU",
+    "available": true
   },
   "אתגר_שתייה": {
     "id": "אתגר_שתייה",
@@ -84,7 +86,9 @@
     ],
     "level": "beginner",
     "file": "בטן גומיות␠.mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "eVXtFHa1g_c",
+    "available": true
   },
   "בטן_הגיע_ברגל_אחורית_ולהחליף": {
     "id": "בטן_הגיע_ברגל_אחורית_ולהחליף",
@@ -125,7 +129,9 @@
     ],
     "level": "beginner",
     "file": "בטן זוגות (4.7 MB).mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "6cnP5Xk_RLg",
+    "available": true
   },
   "בטן_כדור_כדורסל": {
     "id": "בטן_כדור_כדורסל",
@@ -166,7 +172,9 @@
     ],
     "level": "beginner",
     "file": "בטן עם כדור.mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "ZjkeaLU_gIM",
+    "available": true
   },
   "בטן_עם_קיר": {
     "id": "בטן_עם_קיר",
@@ -305,7 +313,9 @@
     ],
     "level": "beginner",
     "file": "פלאנק שעון.mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "g6i5FokCR-I",
+    "available": true
   },
   "superman": {
     "id": "superman",
@@ -853,7 +863,9 @@
     ],
     "level": "beginner",
     "file": "יציאה מהמקום (10.8 MB).mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "pqpiHeNh1OY",
+    "available": true
   },
   "כדורגל_אחד_על_אחד": {
     "id": "כדורגל_אחד_על_אחד",
@@ -1112,7 +1124,9 @@
     ],
     "level": "beginner",
     "file": "מדרגות.mp4",
-    "available": false
+    "source": "youtube",
+    "youtubeId": "nhVyTCGGvS0",
+    "available": true
   },
   "סולם_רגליים": {
     "id": "סולם_רגליים",
