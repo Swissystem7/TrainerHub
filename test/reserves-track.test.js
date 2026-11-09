@@ -122,6 +122,15 @@ test("parseClock and formatClock round-trip common values", () => {
 	assert.equal(R.formatClock(65), "1:05");
 });
 
+test("formatClock coerces numeric strings and rejects non-numeric input", () => {
+	assert.equal(R.formatClock("90"), "1:30");
+	assert.equal(R.formatClock(90), "1:30");
+	assert.equal(R.formatClock("invalid"), "");
+	assert.equal(R.formatClock(""), "");
+	assert.equal(R.formatClock(null), "");
+	assert.equal(R.formatClock(undefined), "");
+});
+
 test("parseClock validates input: rejects negative values, empty input, and invalid characters", () => {
 	assert.ok(Number.isNaN(R.parseClock("-01:30")));
 	assert.ok(Number.isNaN(R.parseClock(-5)));
