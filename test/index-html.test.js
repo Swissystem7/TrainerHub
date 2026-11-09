@@ -99,8 +99,45 @@ test("index.html scripts exist on disk and core.js is loaded before dependent sc
 	}
 });
 
+function withoutScriptBlocks(text) {
+	const lower = text.toLowerCase();
+	let result = "";
+	let from = 0;
+
+	while (from < text.length) {
+		const start = lower.indexOf("<script", from);
+		if (start === -1) {
+			result += text.slice(from);
+			break;
+		}
+		result += text.slice(from, start);
+		const end = lower.indexOf("</script>", start);
+		if (end === -1) {
+			break;
+		}
+		from = end + "</script>".length;
+	}
+
+	return result;
+}
+
+function visibleText(markup) {
+	let inTag = false;
+	let text = "";
+	for (const char of markup) {
+		if (char === "<") {
+			inTag = true;
+		} else if (char === ">") {
+			inTag = false;
+		} else if (!inTag) {
+			text += char;
+		}
+	}
+	return text.trim();
+}
+
 test("every <button> in the static markup has readable text or an accessible label", () => {
-	const staticHtml = html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
+	const staticHtml = withoutScriptBlocks(html);
 	const buttons = [
 		...staticHtml.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi),
 	];
@@ -111,13 +148,13 @@ test("every <button> in the static markup has readable text or an accessible lab
 
 	for (const button of buttons) {
 		const attrs = button[1];
-		const innerText = button[2].replace(/<[^>]+>/g, "").trim();
+		const inner = button[2];
 		const ariaLabelMatch = attrs.match(/\baria-label=["']([^"']+)["']/i);
 		const ariaLabelledbyMatch = attrs.match(
 			/\baria-labelledby=["']([^"']+)["']/i,
 		);
 
-		const hasReadableText = innerText.length > 0;
+		const hasReadableText = visibleText(inner).length > 0;
 		const hasAriaLabel = Boolean(ariaLabelMatch?.[1]?.trim());
 		const hasAriaLabelledby = Boolean(ariaLabelledbyMatch?.[1]?.trim());
 
