@@ -57,7 +57,6 @@
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
   <a href="./">דף אימון</a>
-  <a href="index.html">חזרה לתוכנית אימון שבועית</a>
   <a href="./weekly.html">דף שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
@@ -184,6 +183,32 @@
   if (!R) return;
 
   function el(id) { return document.getElementById(id); }
+
+  
+  var RESERVES_INPUTS_KEY = 'trainerhub_reserves_inputs';
+  function saveReservesInputs() {
+    var map;
+    try {
+      map = readInputs();
+      localStorage.setItem(RESERVES_INPUTS_KEY, JSON.stringify(map));
+    } catch (err) { /* private mode / SecurityError */ }
+  }
+  function restoreReservesInputs() {
+    var raw;
+    var map;
+    try {
+      raw = localStorage.getItem(RESERVES_INPUTS_KEY);
+      if (!raw) return;
+      map = JSON.parse(raw);
+      if (!map || typeof map !== 'object') return;
+      R.tests().forEach((t) => {
+        var input = el('in-' + t.id);
+        if (input && Object.prototype.hasOwnProperty.call(map, t.id) && map[t.id] != null) {
+          input.value = String(map[t.id]);
+        }
+      });
+    } catch (err) { /* ignore corrupt / private mode */ }
+  }
 
   function readInputs() {
     var map = {};
@@ -502,6 +527,14 @@
     renderEquip(m);
     renderFields();
     fillInputsFromStore();
+    restoreReservesInputs();
+    R.tests().forEach((t) => {
+      var input = el('in-' + t.id);
+      if (!input || input.dataset.reservesPersistBound === '1') return;
+      input.dataset.reservesPersistBound = '1';
+      input.addEventListener('input', saveReservesInputs);
+      input.addEventListener('change', saveReservesInputs);
+    });
     renderStatus(R.currentSummary());
     renderDemos();
     renderPlan();
@@ -562,6 +595,7 @@
   }
 
   el('saveBtn').addEventListener('click', () => {
+    saveReservesInputs();
     var map = readInputs();
     var cp = el('checkpoint').value;
     Object.keys(map).forEach((id) => {

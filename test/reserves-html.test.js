@@ -143,11 +143,13 @@ test("reserves.html CSS defines minimum 48px touch targets for controls", () => 
 	assert.match(html, /button[^}]*min-height:\s*48px/);
 });
 
-test("reserves.html links back to index.html", () => {
+test("reserves.html autosaves metric inputs under trainerhub_reserves_inputs", () => {
 	const html = fs.readFileSync(
 		path.join(__dirname, "..", "reserves.html"),
 		"utf8",
 	);
-	assert.ok(html.includes('href="index.html"'));
-	assert.ok(html.includes("חזרה לתוכנית אימון שבועית"));
+	assert.ok(html.includes("trainerhub_reserves_inputs"));
+	assert.ok(html.includes("saveReservesInputs"));
+	assert.ok(html.includes("restoreReservesInputs"));
+	assert.ok(html.includes("localStorage"));
 });
