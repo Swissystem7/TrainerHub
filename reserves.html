@@ -18,7 +18,7 @@
     .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
     .top h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 900; line-height: 1.2; margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
-    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
+    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-padding-inline: 16px; }
     .tabs::-webkit-scrollbar { display: none; }
     .tabs a { flex: none; display: inline-flex; align-items: center; min-height: 44px; background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; font-size: 15px; font-weight: 500; white-space: nowrap; text-decoration: none; }
     .tabs a:hover { border-color: var(--th-teal); }
@@ -56,21 +56,25 @@
 <a class="skip-link" href="#tests">דלג לתוכן מדדי מילואים</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
-  <a href="./">דף אימון</a>
-  <a href="./weekly.html">דף שבועי</a>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
+  <a href="./scan.html">סריקת סביבה</a>
   <a href="./booklet.html">תיק בטיחות</a>
   <span class="chip on" aria-current="page">מדדי מילואים</span>
-  <a href="./journal.html">יומן אימון</a>
+  <a href="./journal.html">יומן ביצוע</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  יעדי עובר/לא עובר למילואים (ממתינים לאישור יחידה). טכניקת ניתוק ידיים לפי GoArmy/ACFT. הכול verified:false — בדקו מול המפקד/המסמך שלכם.
+  ארבעה מבחני עובר/לא עובר למילואים. בשכיבות הסמיכה עם ניתוק ידיים: קו ישר, חזה וירכיים על הרצפה, וידיים נמתחות לצדדים.
 </div>
 <main class="wrap">
   <header class="top">
-    <small>TRAINERHUB / RESERVE FITNESS</small>
+    <small>TRAINERHUB / מדדי מילואים</small>
     <h1 id="page-title">מדדי מילואים</h1>
     <p id="page-sub">ארבעה מבחנים · כולם חובה · יעד עד <span id="deadline">1.12</span></p>
     <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: equip list -->
@@ -251,7 +255,7 @@
       wrap.className = 'card';
       var label = document.createElement('label');
       label.htmlFor = 'in-' + t.id;
-      label.textContent = t.name_he + ' — יעד: ' + t.threshold_display + (t.pass_when === 'lte' ? ' או פחות' : ' או יותר') + ' (ממתין לאישור יחידה)';
+      label.textContent = t.name_he + ' — יעד: ' + t.threshold_display + (t.pass_when === 'lte' ? ' או פחות' : ' או יותר');
       var input = document.createElement('input');
       input.id = 'in-' + t.id;
       input.setAttribute('aria-label', t.name_he);
@@ -268,7 +272,7 @@
       }
       var eq = document.createElement('p');
       eq.className = 'unverified';
-      eq.textContent = 'ציוד: ' + (t.equipment_he || '') + (t.verified ? '' : ' · לא מאומת');
+      eq.textContent = 'ציוד: ' + (t.equipment_he || '');
       wrap.appendChild(label);
       wrap.appendChild(input);
       wrap.appendChild(eq);
@@ -293,7 +297,7 @@
       var detail = document.createElement('p');
       detail.className = 'muted';
       detail.style.margin = '6px 0 0';
-      detail.textContent = (t.display ? ('תוצאה: ' + t.display + ' · ') : '') + 'יעד: ' + t.threshold_display + ' (ממתין לאישור)';
+      detail.textContent = (t.display ? ('תוצאה: ' + t.display + ' · ') : '') + 'יעד: ' + t.threshold_display;
       card.appendChild(h);
       card.appendChild(pill);
       card.appendChild(detail);
@@ -349,10 +353,6 @@
         });
         card.appendChild(ul);
       }
-      var flag = document.createElement('p');
-      flag.className = 'unverified';
-      flag.textContent = d.verified ? '' : 'verified: false — לא אומת מול מקור רשמי';
-      card.appendChild(flag);
       host.appendChild(card);
     });
   }
@@ -398,9 +398,6 @@
           li.textContent = it;
           ul.appendChild(li);
         });
-        var flag = document.createElement('p');
-        flag.className = 'unverified';
-        flag.textContent = s.verified ? '' : 'verified: false';
         var start = document.createElement('button');
         start.type = 'button';
         start.className = 'ghost';
@@ -409,7 +406,6 @@
         start.addEventListener('click', () => { startReserveSession(s.id); });
         card.appendChild(title);
         card.appendChild(ul);
-        card.appendChild(flag);
         card.appendChild(start);
         sessions.appendChild(card);
       });
@@ -487,7 +483,7 @@
       card.appendChild(h);
       var meta = document.createElement('p');
       meta.className = 'muted';
-      meta.textContent = p.level_he + ' · ' + p.equipment_he + (p.verified ? '' : ' · verified: false');
+      meta.textContent = p.level_he + ' · ' + p.equipment_he;
       card.appendChild(meta);
       (p.sessions || []).forEach((s) => {
         var load;
@@ -523,7 +519,13 @@
     R.setData(track);
     var m = R.meta();
     el('page-title').textContent = m.title_he || 'מדדי מילואים';
-    el('page-sub').innerHTML = (m.subtitle_he || '') + ' · יעד עד <span id="deadline">' + (m.deadline_display_he || '1.12') + '</span>';
+    var sub = el('page-sub');
+    var deadline = document.createElement('span');
+    deadline.id = 'deadline';
+    deadline.textContent = m.deadline_display_he || '1.12';
+    sub.textContent = '';
+    sub.appendChild(document.createTextNode((m.subtitle_he || '') + ' · יעד עד '));
+    sub.appendChild(deadline);
     renderEquip(m);
     renderFields();
     fillInputsFromStore();
