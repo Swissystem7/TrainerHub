@@ -59,6 +59,33 @@ test('אתגר שתייה is left without an invented video', function () {
   assert.equal(built.workout, null);
 });
 
+test('advanced youtube rows keep their aliases searchable in the library', function () {
+  const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
+  TH.setCatalog(merged);
+  const expectId = {
+    'one arm push up': 'yt_one_arm_pushup',
+    'pistol squat': 'yt_pistol_squat',
+    'handstand': 'yt_wall_handstand',
+    'אל סיט': 'yt_l_sit',
+    'l sit': 'yt_l_sit',
+    'nordic hamstring curl': 'yt_nordic_curl'
+  };
+  Object.keys(expectId).forEach(function (q) {
+    const rows = TH.filterCatalog({ q: q });
+    assert.ok(rows.some(function (row) { return row.id === expectId[q]; }), q + ' -> ' + rows.map(function (row) { return row.id; }).join(','));
+    assert.equal(TH.matchCatalog(q).id, expectId[q], q);
+  });
+  ['yt_one_arm_pushup', 'yt_pistol_squat', 'yt_wall_handstand', 'yt_l_sit', 'yt_nordic_curl'].forEach(function (id) {
+    assert.equal(merged[id].level, 'advanced', id);
+    assert.equal(merged[id].source, 'youtube', id);
+  });
+  assert.deepEqual(merged.yt_wall_handstand.equipment, ['wall']);
+  assert.deepEqual(merged.yt_l_sit.equipment, ['none']);
+  assert.deepEqual(merged.yt_l_sit.muscles, ['core']);
+  assert.deepEqual(merged.yt_nordic_curl.equipment, ['none']);
+  assert.equal(Object.prototype.hasOwnProperty.call(merged.yt_nordic_curl, 'notes'), false);
+});
+
 test('youtubeIds are 11-character ids and unique across both catalogs', function () {
   const ids = [];
   Object.keys(catalog).forEach(function (id) {
@@ -89,13 +116,16 @@ test('thin-group embeds join the library merge and the session builder', functio
   });
   assert.deepEqual(counts, {
     'מתיחות וגמישות': 6,
-    'כתפיים': 6,
+    'כתפיים': 7,
     'חימום': 6,
     'יד קדמית': 5,
     'יד אחורית': 6,
-    'רגליים': 5,
-    'קרדיו': 5
+    'רגליים': 7,
+    'קרדיו': 5,
+    'ידיים': 1,
+    'בטן': 1
   });
+  assert.equal(youtube.items.length, 44);
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
   assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length);
   youtube.items.forEach(function (item) {

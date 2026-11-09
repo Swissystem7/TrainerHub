@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 39
+    "count": 44
   },
   "items": [
     {
@@ -590,6 +590,97 @@
       "youtubeId": "KeBeea7QZ2w",
       "folder": "קרדיו",
       "available": true
+    },
+    {
+      "id": "yt_one_arm_pushup",
+      "he": "שכיבת סמיכה ביד אחת",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "xp1tgjT_3k0",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "one arm push up"
+      ]
+    },
+    {
+      "id": "yt_pistol_squat",
+      "he": "פיסטול סקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "vq5-vdgJc0I",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "pistol squat"
+      ]
+    },
+    {
+      "id": "yt_wall_handstand",
+      "he": "עמידת ידיים לקיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "8Fdyew622mg",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "handstand"
+      ]
+    },
+    {
+      "id": "yt_l_sit",
+      "he": "L-sit",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "16a529mtX68",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "אל סיט",
+        "l sit"
+      ]
+    },
+    {
+      "id": "yt_nordic_curl",
+      "he": "נורדיק",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "htyDuCI8cm8",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "nordic hamstring curl"
+      ]
     }
   ]
 }
