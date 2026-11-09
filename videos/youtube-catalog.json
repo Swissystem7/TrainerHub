@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 44
+    "count": 64
   },
   "items": [
     {
@@ -680,6 +680,378 @@
       "available": true,
       "aliases": [
         "nordic hamstring curl"
+      ]
+    },
+    {
+      "id": "yt_pull_up",
+      "he": "מתח",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "9yVGh3XbJ34",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "pull up"
+      ]
+    },
+    {
+      "id": "yt_chin_up",
+      "he": "מתח סנטר (Chin-up)",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "BjlOw-pcstg",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "chin up"
+      ]
+    },
+    {
+      "id": "yt_inverted_row",
+      "he": "מתח אוסטרלי / חתירה הפוכה",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Fl0UMfdEzsE",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "inverted row"
+      ]
+    },
+    {
+      "id": "yt_hanging_leg_raise",
+      "he": "הרמת רגליים בתלייה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Pr1ieGZ5atk",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hanging leg raise"
+      ]
+    },
+    {
+      "id": "yt_one_arm_pull_up",
+      "he": "מתח ביד אחת (התקדמויות)",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "mTJHClMQPM8",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "one arm pull up"
+      ]
+    },
+    {
+      "id": "yt_turkish_get_up",
+      "he": "קימה טורקית (Turkish Get-Up)",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "0bWRPC49-KI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "turkish get up"
+      ]
+    },
+    {
+      "id": "yt_kb_snatch",
+      "he": "סנאץ' קטלבל",
+      "muscles": [
+        "shoulders",
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "AR6E01ABoHk",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "kettlebell snatch"
+      ]
+    },
+    {
+      "id": "yt_kb_clean",
+      "he": "קלין קטלבל",
+      "muscles": [
+        "back",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "hIMwYnpgB90",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "kettlebell clean"
+      ]
+    },
+    {
+      "id": "yt_kb_windmill",
+      "he": "ווינדמיל קטלבל",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "ITSmgn_BQgY",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "kettlebell windmill"
+      ]
+    },
+    {
+      "id": "yt_kb_front_squat",
+      "he": "סקוואט קדמי עם קטלבל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "tolV0jzQIAY",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell front squat"
+      ]
+    },
+    {
+      "id": "yt_incline_curl",
+      "he": "כפיפת מרפקים בשיפוע",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "soxrZlIl35U",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "incline dumbbell curl"
+      ]
+    },
+    {
+      "id": "yt_preacher_curl",
+      "he": "כפיפת מרפקים על ספסל כומר (Preacher)",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "5u9qWmE7c2Y",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "preacher curl"
+      ]
+    },
+    {
+      "id": "yt_bayesian_curl",
+      "he": "כפיפת בייסאן בכבל (Bayesian Curl)",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "paM4Yo8fo8g",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "bayesian curl"
+      ]
+    },
+    {
+      "id": "yt_spider_curl",
+      "he": "ספיידר קירל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "NJnmRX4Od6c",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "spider curl"
+      ]
+    },
+    {
+      "id": "yt_weighted_chin_up",
+      "he": "מתח סנטר עם משקל",
+      "muscles": [
+        "biceps",
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "bZ6Ysk9jf6E",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "weighted chin up"
+      ]
+    },
+    {
+      "id": "yt_military_press",
+      "he": "לחיצה צבאית מעל הראש (Military Press)",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "2yjwXTZQDDI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "military press"
+      ]
+    },
+    {
+      "id": "yt_db_shoulder_press",
+      "he": "לחיצת כתפיים עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "qEwKCR5JCog",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "dumbbell shoulder press"
+      ]
+    },
+    {
+      "id": "yt_pike_push_up",
+      "he": "שכיבת סמיכה בפייק (Pike Push-Up)",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "18mNeuH4D1k",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "pike push up"
+      ]
+    },
+    {
+      "id": "yt_rear_delt_fly",
+      "he": "הרמת דלתא אחורית עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "lPt0GqwaqEw",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "rear delt fly"
+      ]
+    },
+    {
+      "id": "yt_cable_face_pull",
+      "he": "פייס פול בכבל",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ljgqer1ZpXg",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "cable face pull"
       ]
     }
   ]
