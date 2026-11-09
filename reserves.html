@@ -49,6 +49,8 @@
       outline-offset: 2px;
     }
     .unverified { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .demo-media { margin: 8px 0 12px; }
+    .demo-media .ex-media { width: 100%; max-width: 100%; height: auto; aspect-ratio: 16 / 9; }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
@@ -276,6 +278,7 @@
       wrap.appendChild(label);
       wrap.appendChild(input);
       wrap.appendChild(eq);
+      appendEmbeds(wrap, t);
       host.appendChild(wrap);
     });
   }
@@ -305,6 +308,29 @@
     });
   }
 
+  function videoIdsOf(row) {
+    var ids = [];
+    if (row && row.youtubeId) ids.push(row.youtubeId);
+    (row && row.youtubeIds || []).forEach((id) => {
+      if (id && ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+
+  function appendEmbeds(host, row) {
+    if (!window.TH || !TH.mediaMarkup) return;
+    videoIdsOf(row).forEach((id) => {
+      var slot = document.createElement('div');
+      slot.className = 'demo-media';
+      slot.innerHTML = TH.mediaMarkup({
+        he: row.name_he || 'סרטון',
+        youtubeId: id,
+        available: true
+      }, { className: 'ex-media' });
+      host.appendChild(slot);
+    });
+  }
+
   function renderDemos() {
     var host = el('demosOut');
     host.innerHTML = '';
@@ -320,6 +346,9 @@
       var focus = document.createElement('p');
       focus.className = 'muted';
       focus.textContent = d.focus_he || '';
+      card.appendChild(h);
+      card.appendChild(focus);
+      appendEmbeds(card, d);
       if (d.technique_he?.length) {
         th = document.createElement('h4');
         th.textContent = 'טכניקה';
@@ -341,8 +370,6 @@
         li.textContent = s;
         ol.appendChild(li);
       });
-      card.appendChild(h);
-      card.appendChild(focus);
       card.appendChild(ol);
       if (d.cues_he?.length) {
         ul = document.createElement('ul');
