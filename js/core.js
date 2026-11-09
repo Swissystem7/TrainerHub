@@ -256,8 +256,9 @@
   }
 
   function storeGet(key, fallback) {
+    var raw;
     try {
-      var raw = localStorage.getItem(key);
+      raw = localStorage.getItem(key);
       if (raw == null || raw === '') return fallback;
       return JSON.parse(raw);
     } catch (e) {
@@ -266,8 +267,9 @@
   }
 
   function storeSet(key, val) {
+    var serialized;
     try {
-      var serialized = JSON.stringify(val);
+      serialized = JSON.stringify(val);
       localStorage.setItem(key, serialized);
       return localStorage.getItem(key) === serialized;
     } catch (e) { return false; }
@@ -359,22 +361,25 @@
 
   function bytesToB64(bytes) {
     var bin = '';
-    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    var i;
+    for (i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
     return typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
   }
 
   function b64ToBytes(b64) {
     var bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary');
     var out = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    var i;
+    for (i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
     return out;
   }
 
   function backupKeyNames() {
     var names = Object.keys(KEYS).map(function (k) { return KEYS[k]; });
+    var i, k;
     try {
-      for (var i = 0; i < localStorage.length; i++) {
-        var k = localStorage.key(i);
+      for (i = 0; i < localStorage.length; i++) {
+        k = localStorage.key(i);
         if (k && k.indexOf('trainerhub_') === 0 && names.indexOf(k) === -1) names.push(k);
       }
     } catch (e) {}
@@ -385,8 +390,9 @@
   function collectBackup() {
     var data = {};
     backupKeyNames().forEach(function (k) {
+      var v;
       try {
-        var v = localStorage.getItem(k);
+        v = localStorage.getItem(k);
         if (v != null) data[k] = v;
       } catch (e) {}
     });
@@ -481,12 +487,13 @@
     win = win || root;
     var synth = win && win.speechSynthesis;
     var Utter = win && win.SpeechSynthesisUtterance;
+    var u, voices, he;
     if (!text || !synth || !Utter) return false;
     try {
-      var u = new Utter(String(text));
+      u = new Utter(String(text));
       u.lang = 'he-IL';
-      var voices = synth.getVoices ? synth.getVoices() : [];
-      var he = (voices || []).filter(function (v) { return /^he|^iw/i.test(v.lang || ''); })[0];
+      voices = synth.getVoices ? synth.getVoices() : [];
+      he = (voices || []).filter(function (v) { return /^he|^iw/i.test(v.lang || ''); })[0];
       if (he) u.voice = he;
       synth.cancel();
       synth.speak(u);
@@ -500,17 +507,18 @@
     win = win || root;
     opts = opts || {};
     var out = { vibrated: false, beeped: false };
+    var nav, AC, t;
     try {
-      var nav = win.navigator;
+      nav = win.navigator;
       if (nav && typeof nav.vibrate === 'function') out.vibrated = !!nav.vibrate([200, 100, 200]);
     } catch (e) {}
     if (opts.sound === false) return out;
     try {
-      var AC = win.AudioContext || win.webkitAudioContext;
+      AC = win.AudioContext || win.webkitAudioContext;
       if (!AC) return out;
       cueAudio = cueAudio || new AC();
       if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
-      var t = cueAudio.currentTime;
+      t = cueAudio.currentTime;
       [0, 0.25].forEach(function (offset) {
         var osc = cueAudio.createOscillator();
         var gain = cueAudio.createGain();
@@ -532,8 +540,9 @@
   /** Unlocks audio on a user gesture (iOS/Chrome autoplay rules). */
   function primeAudio(win) {
     win = win || root;
+    var AC;
     try {
-      var AC = win.AudioContext || win.webkitAudioContext;
+      AC = win.AudioContext || win.webkitAudioContext;
       if (!AC) return false;
       cueAudio = cueAudio || new AC();
       if (cueAudio.state === 'suspended' && cueAudio.resume) cueAudio.resume();
@@ -782,8 +791,9 @@
     if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
     var name = step.name;
     var keys = Object.keys(catalog);
-    for (var i = 0; i < keys.length; i++) {
-      var entry = catalog[keys[i]];
+    var i, entry;
+    for (i = 0; i < keys.length; i++) {
+      entry = catalog[keys[i]];
       if (!entry || !isPlayable(entry)) continue;
       if (id && (entry.id === id || keys[i] === id)) return entry;
       if (name && (entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)) return entry;
@@ -866,8 +876,9 @@
   function workoutVolume(sets) {
     if (!Array.isArray(sets)) return 0;
     var total = 0;
-    for (var i = 0; i < sets.length; i++) {
-      var set = sets[i];
+    var i, set;
+    for (i = 0; i < sets.length; i++) {
+      set = sets[i];
       if (!set || typeof set !== 'object') continue;
       if (typeof set.reps !== 'number' || typeof set.weightKg !== 'number') continue;
       if (!(set.reps > 0) || !(set.weightKg > 0)) continue;
@@ -879,7 +890,8 @@
   function utf8ToB64url(str) {
     var bytes = new TextEncoder().encode(String(str));
     var bin = '';
-    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    var i;
+    for (i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
     return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
 
@@ -888,7 +900,8 @@
     while (t.length % 4) t += '=';
     var bin = atob(t);
     var bytes = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    var i;
+    for (i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     return new TextDecoder().decode(bytes);
   }
 
@@ -988,9 +1001,10 @@
   // Copy text to the clipboard. Resolves {ok:true} only after a real copy.
   function copyText(text) {
     return new Promise(function (resolve) {
+      var nav, clip;
       try {
-        var nav = typeof navigator !== 'undefined' ? navigator : root.navigator;
-        var clip = nav && nav.clipboard;
+        nav = typeof navigator !== 'undefined' ? navigator : root.navigator;
+        clip = nav && nav.clipboard;
         if (!clip || typeof clip.writeText !== 'function') { resolve({ ok: false }); return; }
         clip.writeText(String(text)).then(function () { resolve({ ok: true }); }, function () { resolve({ ok: false }); });
       } catch (e) { resolve({ ok: false }); }
@@ -1039,11 +1053,12 @@
     var raw = String(hash || location.hash || '').replace(/^#/, '');
     if (!raw) return null;
     var token = raw;
+    var data;
     if (raw.indexOf('TH.') === 0) token = raw.slice(3);
     else if (raw.indexOf('p=') === 0) token = raw.slice(2);
     else return null;
     try {
-      var data = JSON.parse(b64urlToUtf8(token));
+      data = JSON.parse(b64urlToUtf8(token));
       if (!data || !data.p) return null;
       return {
         workout: expandPlan(data.p),
@@ -1069,8 +1084,9 @@
   };
   function qrRawModules(ver) {
     var r = (16 * ver + 128) * ver + 64;
+    var n;
     if (ver >= 2) {
-      var n = Math.floor(ver / 7) + 2;
+      n = Math.floor(ver / 7) + 2;
       r -= (25 * n - 10) * n - 55;
       if (ver >= 7) r -= 36;
     }
@@ -1081,7 +1097,8 @@
   }
   function gfMul(x, y) {
     var z = 0;
-    for (var i = 7; i >= 0; i--) {
+    var i;
+    for (i = 7; i >= 0; i--) {
       z = (z << 1) ^ ((z >>> 7) * 0x11D);
       z ^= ((y >>> i) & 1) * x;
     }
@@ -1089,11 +1106,12 @@
   }
   function rsDivisor(degree) {
     var res = [];
-    for (var i = 0; i < degree - 1; i++) res.push(0);
+    var i, j;
+    for (i = 0; i < degree - 1; i++) res.push(0);
     res.push(1);
     var root = 1;
     for (i = 0; i < degree; i++) {
-      for (var j = 0; j < res.length; j++) {
+      for (j = 0; j < res.length; j++) {
         res[j] = gfMul(res[j], root);
         if (j + 1 < res.length) res[j] ^= res[j + 1];
       }
@@ -1115,22 +1133,26 @@
     var n = Math.floor(ver / 7) + 2;
     var step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (n * 2 - 2)) * 2;
     var res = [6];
-    for (var pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
+    var pos;
+    for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
     return res;
   }
   function qrPenalty(m, size) {
-    var p = 0, x, y, dark = 0;
+    var p = 0, x, y, dark = 0, c;
     function lines(get) {
-      for (var a = 0; a < size; a++) {
-        var run = 1, s = '';
-        for (var b = 0; b < size; b++) {
-          var v = get(a, b);
+      var a, b, run, s, v, pad, k;
+      for (a = 0; a < size; a++) {
+        run = 1;
+        s = '';
+        for (b = 0; b < size; b++) {
+          v = get(a, b);
           s += v ? '1' : '0';
           if (b > 0 && v === get(a, b - 1)) run++;
           else { if (run >= 5) p += run - 2; run = 1; }
         }
         if (run >= 5) p += run - 2;
-        var pad = '0000' + s + '0000', k = -1;
+        pad = '0000' + s + '0000';
+        k = -1;
         while ((k = pad.indexOf('10111010000', k + 1)) !== -1) p += 40;
         k = -1;
         while ((k = pad.indexOf('00001011101', k + 1)) !== -1) p += 40;
@@ -1142,7 +1164,7 @@
       for (x = 0; x < size; x++) {
         if (m[y][x]) dark++;
         if (x < size - 1 && y < size - 1) {
-          var c = m[y][x];
+          c = m[y][x];
           if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) p += 3;
         }
       }
@@ -1157,11 +1179,13 @@
   function qrMatrix(text) {
     var bytes = [];
     var utf = unescape(encodeURIComponent(String(text || '')));
-    for (var i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
+    var i, j, pad, byte, dat, ecc, ay, ax, r, vb, on, a, b, right, vert, x, up, y, mk, pen;
+    for (i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
     var ver = 0, ecl = null;
     ['M', 'L'].some(function (e) {
-      for (var v = 1; v <= 40; v++) {
-        var bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
+      var v, bits;
+      for (v = 1; v <= 40; v++) {
+        bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
         if (bits <= qrDataCodewords(v, e) * 8) { ver = v; ecl = e; return true; }
       }
       return false;
@@ -1169,17 +1193,20 @@
     if (!ver) return null;
     var cap = qrDataCodewords(ver, ecl) * 8;
     var bb = [];
-    function put(val, len) { for (var k = len - 1; k >= 0; k--) bb.push((val >>> k) & 1); }
+    function put(val, len) {
+      var k;
+      for (k = len - 1; k >= 0; k--) bb.push((val >>> k) & 1);
+    }
     put(4, 4);
     put(bytes.length, ver < 10 ? 8 : 16);
     bytes.forEach(function (b) { put(b, 8); });
     put(0, Math.min(4, cap - bb.length));
     put(0, (8 - bb.length % 8) % 8);
-    for (var pad = 0xEC; bb.length < cap; pad ^= 0xEC ^ 0x11) put(pad, 8);
+    for (pad = 0xEC; bb.length < cap; pad ^= 0xEC ^ 0x11) put(pad, 8);
     var data = [];
     for (i = 0; i < bb.length; i += 8) {
-      var byte = 0;
-      for (var j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
+      byte = 0;
+      for (j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
       data.push(byte);
     }
     // Split into blocks, add Reed-Solomon, interleave.
@@ -1188,9 +1215,9 @@
     var nShort = nb - raw % nb, shortLen = Math.floor(raw / nb);
     var div = rsDivisor(eccLen), blocks = [], k = 0;
     for (i = 0; i < nb; i++) {
-      var dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
+      dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
       k += dat.length;
-      var ecc = rsRemainder(dat, div);
+      ecc = rsRemainder(dat, div);
       if (i < nShort) dat.push(0);
       blocks.push(dat.concat(ecc));
     }
@@ -1208,9 +1235,12 @@
     function setFn(x, y, d) { mod[y][x] = d; fn[y][x] = true; }
     for (i = 0; i < size; i++) { setFn(6, i, i % 2 === 0); setFn(i, 6, i % 2 === 0); }
     [[3, 3], [size - 4, 3], [3, size - 4]].forEach(function (c) {
-      for (var dy = -4; dy <= 4; dy++) {
-        for (var dx = -4; dx <= 4; dx++) {
-          var d = Math.max(Math.abs(dx), Math.abs(dy)), xx = c[0] + dx, yy = c[1] + dy;
+      var dy, dx, d, xx, yy;
+      for (dy = -4; dy <= 4; dy++) {
+        for (dx = -4; dx <= 4; dx++) {
+          d = Math.max(Math.abs(dx), Math.abs(dy));
+          xx = c[0] + dx;
+          yy = c[1] + dy;
           if (xx >= 0 && xx < size && yy >= 0 && yy < size) setFn(xx, yy, d !== 2 && d !== 4);
         }
       }
@@ -1219,14 +1249,14 @@
     for (i = 0; i < na; i++) {
       for (j = 0; j < na; j++) {
         if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue;
-        for (var ay = -2; ay <= 2; ay++) {
-          for (var ax = -2; ax <= 2; ax++) setFn(al[i] + ax, al[j] + ay, Math.max(Math.abs(ax), Math.abs(ay)) !== 1);
+        for (ay = -2; ay <= 2; ay++) {
+          for (ax = -2; ax <= 2; ax++) setFn(al[i] + ax, al[j] + ay, Math.max(Math.abs(ax), Math.abs(ay)) !== 1);
         }
       }
     }
     function formatBits(mask) {
-      var d = ((ecl === 'L' ? 1 : 0) << 3) | mask, r = d;
-      for (var q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      var d = ((ecl === 'L' ? 1 : 0) << 3) | mask, r = d, q;
+      for (q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
       var bits = ((d << 10) | r) ^ 0x5412;
       function bit(n) { return ((bits >>> n) & 1) !== 0; }
       for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
@@ -1238,20 +1268,24 @@
     }
     formatBits(0);
     if (ver >= 7) {
-      var r = ver;
+      r = ver;
       for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25);
-      var vb = (ver << 12) | r;
+      vb = (ver << 12) | r;
       for (i = 0; i < 18; i++) {
-        var on = ((vb >>> i) & 1) !== 0, a = size - 11 + i % 3, b = Math.floor(i / 3);
+        on = ((vb >>> i) & 1) !== 0;
+        a = size - 11 + i % 3;
+        b = Math.floor(i / 3);
         setFn(a, b, on); setFn(b, a, on);
       }
     }
     var bi = 0;
-    for (var right = size - 1; right >= 1; right -= 2) {
+    for (right = size - 1; right >= 1; right -= 2) {
       if (right === 6) right = 5;
-      for (var vert = 0; vert < size; vert++) {
+      for (vert = 0; vert < size; vert++) {
         for (j = 0; j < 2; j++) {
-          var x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+          x = right - j;
+          up = ((right + 1) & 2) === 0;
+          y = up ? size - 1 - vert : vert;
           if (!fn[y][x] && bi < words.length * 8) {
             mod[y][x] = ((words[bi >>> 3] >>> (7 - (bi & 7))) & 1) !== 0;
             bi++;
@@ -1260,9 +1294,9 @@
       }
     }
     function applyMask(mask) {
-      for (var yy = 0; yy < size; yy++) {
-        for (var xx = 0; xx < size; xx++) {
-          var inv;
+      var yy, xx, inv;
+      for (yy = 0; yy < size; yy++) {
+        for (xx = 0; xx < size; xx++) {
           switch (mask) {
             case 0: inv = (xx + yy) % 2 === 0; break;
             case 1: inv = yy % 2 === 0; break;
@@ -1278,9 +1312,9 @@
       }
     }
     var best = 0, bestP = Infinity;
-    for (var mk = 0; mk < 8; mk++) {
+    for (mk = 0; mk < 8; mk++) {
       applyMask(mk); formatBits(mk);
-      var pen = qrPenalty(mod, size);
+      pen = qrPenalty(mod, size);
       if (pen < bestP) { bestP = pen; best = mk; }
       applyMask(mk);
     }
@@ -1294,8 +1328,9 @@
     var q = qrMatrix(text);
     if (!q) return '';
     var n = q.size + 8, d = '';
-    for (var y = 0; y < q.size; y++) {
-      for (var x = 0; x < q.size; x++) if (q.modules[y][x]) d += 'M' + (x + 4) + ' ' + (y + 4) + 'h1v1h-1z';
+    var y, x;
+    for (y = 0; y < q.size; y++) {
+      for (x = 0; x < q.size; x++) if (q.modules[y][x]) d += 'M' + (x + 4) + ' ' + (y + 4) + 'h1v1h-1z';
     }
     var px = opts.size || 220;
     return '<svg xmlns="http://www.w3.org/2000/svg" class="th-qr" role="img" aria-label="' + esc(opts.label || 'קוד QR לקישור') +
@@ -1388,9 +1423,10 @@
 
   function decodeResult(text) {
     var m = String(text || '').match(/TH1\.[A-Za-z0-9_-]+/);
+    var obj;
     if (!m) {
       try {
-        var obj = JSON.parse(String(text || '').trim());
+        obj = JSON.parse(String(text || '').trim());
         if (obj && (obj.v === 1 || obj.at || obj.t)) return normalizeResult(obj);
       } catch (e) {}
       return null;
@@ -1467,6 +1503,7 @@
     opts = opts || {};
     var audience = opts.audience === 'kids' || opts.audience === 'sport' ? opts.audience : '';
     var reservedTags = ['kids', 'sport', 'partner'];
+    var tagged, equipped, builtins, clipped;
     var list = candidates.filter(function (ex) {
       var tags = ex.tags || [];
       return !reservedTags.some(function (tag) {
@@ -1476,7 +1513,7 @@
     // Audience first: a kids plan with dumbbells or bands must keep its kids drills, and only
     // then prefer the ones that use the chosen equipment.
     if (audience) {
-      var tagged = list.filter(function (ex) {
+      tagged = list.filter(function (ex) {
         return (ex.tags || []).indexOf(audience) !== -1;
       });
       if (tagged.length) list = tagged;
@@ -1485,7 +1522,7 @@
       return eq && eq !== 'none';
     });
     if (requestedEquipment.length) {
-      var equipped = list.filter(function (ex) {
+      equipped = list.filter(function (ex) {
         return (ex.equipment || []).some(function (eq) {
           return requestedEquipment.indexOf(eq) !== -1;
         });
@@ -1498,8 +1535,8 @@
       // candidates were all catalog drills tagged legs («מסירות דיוק», «תרגיל תגובה»,
       // «פסים»): a bodyweight «רגליים» program had no squat at all. When none of the
       // slot's built-in exercises has a clip, they come first and the drills fill in.
-      var builtins = list.filter(function (ex) { return ex.builtin; });
-      var clipped = list.filter(function (ex) { return ex.hasClip; });
+      builtins = list.filter(function (ex) { return ex.builtin; });
+      clipped = list.filter(function (ex) { return ex.hasClip; });
       if (builtins.length && !builtins.some(function (ex) { return ex.hasClip; })) list = builtins;
       else if (clipped.length) list = clipped;
     }
@@ -1525,6 +1562,7 @@
   function pickExercises(dayIndex, muscles, pool, count, rx, notes, opts) {
     opts = opts || {};
     var used = {};
+    var t, tier, slot, misses, muscle, candidates, primary, pick, hold;
     // Two catalog entries can play the same video (the «ילדים קונוסים אחד על אחד» clip
     // is filed under two ids), so a day marks the clip as used too and the trainee
     // never watches the same drill twice under two names.
@@ -1548,14 +1586,14 @@
     // program still never turns into squats. Before this the fallback added a single
     // drill, and only to a day with no exercise at all.
     var tiers = [muscles, relatedMuscles(muscles)];
-    for (var t = 0; t < tiers.length && exercises.length < count; t++) {
-      var tier = tiers[t];
+    for (t = 0; t < tiers.length && exercises.length < count; t++) {
+      tier = tiers[t];
       if (tier && !tier.length) continue;
-      var slot = 0;
-      var misses = 0;
+      slot = 0;
+      misses = 0;
       while (exercises.length < count && misses < (tier ? tier.length : 1)) {
-        var muscle = tier ? tier[slot % tier.length] : null;
-        var candidates = rankCandidates(pool.filter(function (ex) {
+        muscle = tier ? tier[slot % tier.length] : null;
+        candidates = rankCandidates(pool.filter(function (ex) {
           return !used[ex.id] && !usedClips[clipOf(ex.id)] &&
             (!muscle || ex.muscles.indexOf(muscle) !== -1);
         }), opts);
@@ -1565,13 +1603,13 @@
         // them and none of «גומיות ארבע ראשי» / «גומיות ירכיים», and a band «ליבה» day
         // never got «גומיות בטן». The full-body clips still fill in when those run out.
         if (muscle) {
-          var primary = candidates.filter(function (ex) { return ex.muscles[0] === muscle; });
+          primary = candidates.filter(function (ex) { return ex.muscles[0] === muscle; });
           if (primary.length) candidates = primary;
         }
         if (candidates.length) {
-          var pick = candidates[(dayIndex + slot) % candidates.length];
+          pick = candidates[(dayIndex + slot) % candidates.length];
           markUsed(pick.id);
-          var hold = isHoldExercise(pick.id);
+          hold = isHoldExercise(pick.id);
           exercises.push({
             name: pick.id, sets: rx.sets, reps: hold ? null : rx.reps,
             duration_seconds: hold ? rx.hold : null,
@@ -1653,14 +1691,15 @@
     };
     var dailyWorkouts = [];
     var pickOpts = { preferClips: preferClips, audience: audience, equipment: equipment };
-    for (var d = 0; d < totalDays; d++) {
-      var split = splitNameForDay(d, daysPerWeek);
-      var muscles = musclesForDay(d, daysPerWeek, targetMuscles, injuredParts);
-      var warmUp = WARM_UPS[d % WARM_UPS.length];
-      var coolDown = COOL_DOWNS[d % COOL_DOWNS.length];
-      var dayOpts = Object.assign({ exclude: [warmUp, coolDown] }, pickOpts);
-      var exercises = pickExercises(d, muscles, pool, numExercises, rx, notes, dayOpts);
-      var day = {
+    var d, split, muscles, warmUp, coolDown, dayOpts, exercises, day;
+    for (d = 0; d < totalDays; d++) {
+      split = splitNameForDay(d, daysPerWeek);
+      muscles = musclesForDay(d, daysPerWeek, targetMuscles, injuredParts);
+      warmUp = WARM_UPS[d % WARM_UPS.length];
+      coolDown = COOL_DOWNS[d % COOL_DOWNS.length];
+      dayOpts = Object.assign({ exclude: [warmUp, coolDown] }, pickOpts);
+      exercises = pickExercises(d, muscles, pool, numExercises, rx, notes, dayOpts);
+      day = {
         day: d + 1,
         split: targetMuscles.length ? 'focus' : split,
         warmUp: warmUp,
@@ -1861,11 +1900,11 @@
     var aliasId = NAME_ALIASES[n] || NAME_ALIASES[folded];
     if (aliasId && catalog[aliasId]) hits.push(catalog[aliasId]);
     var keys = Object.keys(catalog);
-    var i;
+    var i, e, he, e2, he2, nameInQuery, queryInName, dist, better;
     for (i = 0; i < keys.length; i++) {
-      var e = catalog[keys[i]];
+      e = catalog[keys[i]];
       if (!e) continue;
-      var he = normalizeName(e.he);
+      he = normalizeName(e.he);
       if (he === n || foldHe(keys[i]) === folded || foldHe(e.id) === folded || foldHe(e.he) === folded) {
         hits.push(e);
       } else if (HE_NAMES[keys[i]] && normalizeName(HE_NAMES[keys[i]]) === n) {
@@ -1880,17 +1919,17 @@
     var bestLen = 0;
     var bestDist = Infinity;
     for (i = 0; i < keys.length; i++) {
-      var e2 = catalog[keys[i]];
+      e2 = catalog[keys[i]];
       if (!e2) continue;
-      var he2 = normalizeName(e2.he);
+      he2 = normalizeName(e2.he);
       if (he2.length < 3) continue;
-      var nameInQuery = n.indexOf(he2) !== -1;
-      var queryInName = he2.indexOf(n) !== -1;
+      nameInQuery = n.indexOf(he2) !== -1;
+      queryInName = he2.indexOf(n) !== -1;
       if (!nameInQuery && !queryInName) continue;
       // Short free-text like "שכיבות" must prefer the closest catalog title,
       // not the longest name that happens to contain the query.
-      var dist = Math.abs(he2.length - n.length);
-      var better = false;
+      dist = Math.abs(he2.length - n.length);
+      better = false;
       if (!best) better = true;
       else if (dist < bestDist) better = true;
       else if (dist === bestDist && sourcePref(e2) > sourcePref(best)) better = true;
@@ -1930,13 +1969,13 @@
     var he = foldHe(entry.he);
     if (!he) return entry;
     var keys = Object.keys(catalog);
-    var i;
+    var i, hosted, e;
     for (i = 0; i < keys.length; i++) {
-      var hosted = catalog[keys[i]];
+      hosted = catalog[keys[i]];
       if (hosted && hosted.available !== false && hosted.file && /^https?:\/\//i.test(hosted.file) && foldHe(hosted.he) === he) return hosted;
     }
     for (i = 0; i < keys.length; i++) {
-      var e = catalog[keys[i]];
+      e = catalog[keys[i]];
       if (e && e.driveId && foldHe(e.he) === he) return e;
     }
     return entry;
@@ -1975,8 +2014,9 @@
 
   function loadLazyVideos(host) {
     var list = host.querySelectorAll ? host.querySelectorAll('video[' + LAZY_SRC + ']') : [];
-    for (var i = 0; i < list.length; i++) {
-      var src = list[i].getAttribute(LAZY_SRC);
+    var i, src;
+    for (i = 0; i < list.length; i++) {
+      src = list[i].getAttribute(LAZY_SRC);
       list[i].removeAttribute(LAZY_SRC);
       if (src) list[i].setAttribute('src', src);
     }
@@ -1995,8 +2035,9 @@
     function scan() {
       queued = false;
       var list = document.querySelectorAll('video[' + LAZY_SRC + ']');
-      for (var i = 0; i < list.length; i++) {
-        var v = list[i];
+      var i, v;
+      for (i = 0; i < list.length; i++) {
+        v = list[i];
         if (v.__thLazyWatched) continue;
         v.__thLazyWatched = true;
         // The video stays hidden until it has data, so watch its wrapper.
@@ -2020,6 +2061,7 @@
   function mediaMarkup(entry, opts) {
     opts = opts || {};
     var cls = esc(opts.className || 'ex-media');
+    var poster, posterAttr, segNote;
     if (!entry) return '';
     entry = bestMedia(entry) || entry;
     var fallback = '<div class="' + cls + '-fallback" role="note">' +
@@ -2040,8 +2082,8 @@
       return fallback;
     }
     if (hasRemoteFile(entry) || (entry.file && !entry.youtubeId && !entry.driveId)) {
-      var poster = posterUrl(entry);
-      var posterAttr = poster ? ' poster="' + esc(poster) + '"' : '';
+      poster = posterUrl(entry);
+      posterAttr = poster ? ' poster="' + esc(poster) + '"' : '';
       return '<div class="' + cls + '-wrap">' +
         '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" ' +
         videoSrcAttr(catalogSrc(entry.file)) + posterAttr +
@@ -2050,7 +2092,7 @@
         ' — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>';
     }
     if (entry.driveId) {
-      var segNote = '';
+      segNote = '';
       if (entry.startSec != null && entry.endSec != null) {
         segNote = '<p class="' + cls + '-segment" role="note">מקטע ' +
           esc(formatClock(entry.startSec)) + '–' + esc(formatClock(entry.endSec)) +
@@ -2098,8 +2140,9 @@
   function poolEntry(step) {
     var id = step.id || step.name;
     var name = step.name;
-    for (var i = 0; i < PROGRAM_POOL.length; i++) {
-      var p = PROGRAM_POOL[i];
+    var i, p;
+    for (i = 0; i < PROGRAM_POOL.length; i++) {
+      p = PROGRAM_POOL[i];
       if (p.id === id || (name && HE_NAMES[p.id] === name)) return p;
     }
     return null;
@@ -2207,9 +2250,10 @@
 
   function decodeClipHash(hash) {
     var raw = String(hash || (typeof location !== 'undefined' ? location.hash : '') || '').replace(/^#/, '');
+    var data;
     if (raw.indexOf('CLIP.') !== 0) return null;
     try {
-      var data = JSON.parse(b64urlToUtf8(raw.slice(5)));
+      data = JSON.parse(b64urlToUtf8(raw.slice(5)));
       if (!data || !data.id) return null;
       return data;
     } catch (e) {
@@ -2282,8 +2326,9 @@
     var name = client.name || 'מתאמן';
     var days = daysSinceLast(client);
     var lastTitle = '';
+    var last;
     if (Array.isArray(client.logs) && client.logs.length) {
-      var last = client.logs.slice().sort(function (a, b) {
+      last = client.logs.slice().sort(function (a, b) {
         return String(b.at || b.doneAt || '').localeCompare(String(a.at || a.doneAt || ''));
       })[0];
       lastTitle = last.title || '';
@@ -2320,12 +2365,13 @@
   function draftExerciseSeconds(ex) {
     var sets = Math.max(1, Number(ex.sets) || 1);
     var work = Number(ex.duration_seconds) || 0;
+    var m, reps, rest;
     if (!work) {
-      var m = String(ex.reps == null ? '' : ex.reps).match(/(\d+)(?:\s*-\s*(\d+))?/);
-      var reps = m ? (Number(m[1]) + Number(m[2] || m[1])) / 2 : 0;
+      m = String(ex.reps == null ? '' : ex.reps).match(/(\d+)(?:\s*-\s*(\d+))?/);
+      reps = m ? (Number(m[1]) + Number(m[2] || m[1])) / 2 : 0;
       work = reps ? reps * 3 : 30;
     }
-    var rest = Number(ex.rest_seconds) || 0;
+    rest = Number(ex.rest_seconds) || 0;
     return sets * work + (sets - 1) * rest;
   }
 
@@ -2594,9 +2640,10 @@
     var today = opts.now ? new Date(opts.now) : new Date();
     var planned = 0;
     var wd = Array.isArray(client.days) ? client.days.map(Number) : [];
+    var d, dt;
     if (wd.length) {
-      for (var d = 1; d <= daysInMonth; d++) {
-        var dt = new Date(y, mo - 1, d);
+      for (d = 1; d <= daysInMonth; d++) {
+        dt = new Date(y, mo - 1, d);
         if (dt > today) break;
         if (wd.indexOf(dt.getDay()) !== -1) planned++;
       }
@@ -2847,15 +2894,16 @@
 
   function movementOf(ex) {
     var id = ex && (ex.id || ex.name);
+    var i, ms, j, t;
     if (!id) return 'other';
-    for (var i = 0; i < PROGRAM_POOL.length; i++) {
+    for (i = 0; i < PROGRAM_POOL.length; i++) {
       if (PROGRAM_POOL[i].id === id) {
-        var ms = PROGRAM_POOL[i].muscles || [];
-        for (var j = 0; j < ms.length; j++) if (MOVE_OF_MUSCLE[ms[j]]) return MOVE_OF_MUSCLE[ms[j]];
+        ms = PROGRAM_POOL[i].muscles || [];
+        for (j = 0; j < ms.length; j++) if (MOVE_OF_MUSCLE[ms[j]]) return MOVE_OF_MUSCLE[ms[j]];
         return 'other';
       }
     }
-    var t = String(id) + ' ' + String((ex && ex.name) || '');
+    t = String(id) + ' ' + String((ex && ex.name) || '');
     if (/squat|lunge|deadlift|leg|calf|glute|step|סקוואט|לאנג|רגל|ישבן|דדליפט/i.test(t)) return 'legs';
     if (/row|pull|chin|curl|חתיר|משיכ|מתח|כפיפ/i.test(t)) return 'pull';
     if (/push|press|bench|dip|fly|לחיצ|שכיב|מקבילים/i.test(t)) return 'push';
@@ -2897,14 +2945,15 @@
     var step = opts.goal === 'endurance' ? 2.5 : 5;
     var out = [];
     var level = 100;
-    for (var n = 1; n <= weeks; n++) {
-      var inBlock = (n - 1) % 4; // 0,1,2 load · 3 deload
+    var n, inBlock, extra;
+    for (n = 1; n <= weeks; n++) {
+      inBlock = (n - 1) % 4; // 0,1,2 load · 3 deload
       if (inBlock === 3) {
         out.push(planWeek(n, 'deload', 60, -0.4, 'שבוע פריקה: 60% עומס ו-40% פחות סטים — התאוששות אחרי 3 שבועות העמסה.'));
         continue;
       }
       if (n > 1) level += step;
-      var extra = inBlock === 2 ? 1 : 0;
+      extra = inBlock === 2 ? 1 : 0;
       out.push(planWeek(n, 'load', level, extra, n === 1
         ? 'שבוע בסיס: 100% עומס — מודדים את נקודת הפתיחה.'
         : 'העמסה הדרגתית: +' + step + '% עומס' + (extra ? ' וסט נוסף — שבוע שיא לפני פריקה.' : ' לעומת השבוע הקודם.')));
@@ -2923,7 +2972,7 @@
     var pain = painOf(actual);
     var skipped = Number(actual.skipped) || 0;
     var rpe = actual.rpe != null && actual.rpe !== '' ? Number(actual.rpe) : null;
-    var shift = 0;
+    var shift = 0, i;
     if (pain) {
       next.kind = 'deload'; next.loadPct = 60; next.setsDelta = -0.4;
       next.why = 'דווח על כאב בשבוע ' + week + ' — הוקדם שבוע פריקה (60%) ומומלץ לבדוק את מקור הכאב לפני שחוזרים להעמיס.';
@@ -2943,7 +2992,7 @@
     }
     next.adjusted = true;
     if (shift) {
-      for (var i = idx + 1; i < p.weeks.length; i++) {
+      for (i = idx + 1; i < p.weeks.length; i++) {
         if (p.weeks[i].kind === 'deload') break; // the block's deload resets the shift
         p.weeks[i].loadPct = Math.max(60, p.weeks[i].loadPct + shift);
       }
