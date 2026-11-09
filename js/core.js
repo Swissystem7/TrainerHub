@@ -3041,6 +3041,65 @@
     return mod ? mod.rulesMarkup(input, opts) : '';
   }
 
+  // The finish screen used to leave the session only in the copy-paste code.
+  // This writes the same client log the journal import writes, once.
+  function recordFinishedWorkout(result) {
+    result = result || {};
+    var clients = storeGet(KEYS.clients, []);
+    if (!Array.isArray(clients)) clients = [];
+    var tid = String(result.tid || '');
+    var name = String(result.name || '').trim();
+    var title = String(result.title || 'אימון').trim() || 'אימון';
+    var doneAt = String(result.doneAt || new Date().toISOString());
+    var c = null;
+    var i;
+    if (tid) {
+      for (i = 0; i < clients.length; i++) if (clients[i] && clients[i].id === tid) c = clients[i];
+    }
+    if (!c && name) {
+      for (i = 0; i < clients.length; i++) if (clients[i] && clients[i].name === name) c = clients[i];
+    }
+    if (!c && !tid) {
+      for (i = 0; i < clients.length; i++) if (clients[i] && clients[i].id === 't_device') c = clients[i];
+    }
+    if (!c) {
+      c = { id: tid || 't_device', name: name || 'אימון אישי', phone: '', plan: title, logs: [] };
+      clients.unshift(c);
+    }
+    if (!Array.isArray(c.logs)) c.logs = [];
+    var known = null;
+    for (i = 0; i < c.logs.length; i++) {
+      if (c.logs[i] && c.logs[i].at === doneAt && c.logs[i].title === title) known = c.logs[i];
+    }
+    var loggedExercises = Number(result.exercises) || 0;
+    var loggedSets = Number(result.sets) || 0;
+    if (!known) {
+      var log = {
+        at: doneAt,
+        title: title,
+        minutes: Number(result.minutes) || 0,
+        exercises: loggedExercises,
+        sets: loggedSets,
+        skipped: Number(result.skipped) || 0,
+        rpe: result.rpe != null ? result.rpe : null
+      };
+      if (Array.isArray(result.log) && result.log.length) log.ex = result.log;
+      c.logs.push(log);
+    } else {
+      known.exercises = loggedExercises;
+      known.sets = loggedSets;
+      if (Array.isArray(result.log) && result.log.length) known.ex = result.log;
+      if (result.rpe != null) known.rpe = result.rpe;
+    }
+    if (result.plan) {
+      c.lastPlan = result.plan;
+      c.lastWorkout = expandPlan(result.plan);
+      c.plan = (c.lastWorkout && c.lastWorkout.title) || title;
+    }
+    storeSet(KEYS.clients, clients);
+    return c;
+  }
+
   var api = {
     KEYS: KEYS,
     PHASE_LABELS: PHASE_LABELS,
@@ -3059,6 +3118,7 @@
     workoutVolume: workoutVolume,
     compactPlan: compactPlan,
     expandPlan: expandPlan,
+    recordFinishedWorkout: recordFinishedWorkout,
     encodeLink: encodeLink,
     shareToClient: shareToClient,
     gateMarkup: gateMarkup,
