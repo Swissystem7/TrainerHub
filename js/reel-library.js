@@ -178,15 +178,56 @@
     return { ok: errors.length === 0, errors: errors };
   }
 
+  // Hebrew vowel marks and cantillation, plus the maqaf/paseq punctuation in that block.
+  var NIQQUD = /[\u0591-\u05C7]/g;
+  var SEARCH_PUNCT = /["״'`׳.,!?;:()[\]{}<>/\\|@#$%^&*+=~_\-־–—]/g;
+  // Names that exist in both languages. Either form should find the row.
+  var SEARCH_PAIRS = [
+    ['סופרמן', 'superman'],
+    ['פלאנק', 'plank'],
+    ['פלנק', 'plank']
+  ];
+
+  function searchFold(s) {
+    return String(s || '')
+      .replace(NIQQUD, '')
+      .toLowerCase()
+      .replace(SEARCH_PUNCT, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function searchHit(blob, q) {
+    if (!q) return true;
+    if (blob.indexOf(q) !== -1) return true;
+    var tightQ = q.replace(/\s+/g, '');
+    if (!tightQ) return true;
+    return blob.replace(/\s+/g, '').indexOf(tightQ) !== -1;
+  }
+
+  function withLanguageAliases(folded) {
+    var extra = [];
+    var tight = folded.replace(/\s+/g, '');
+    SEARCH_PAIRS.forEach(function (pair) {
+      var a = searchFold(pair[0]);
+      var b = searchFold(pair[1]);
+      if (!a || !b) return;
+      if (folded.indexOf(a) !== -1 || tight.indexOf(a.replace(/\s+/g, '')) !== -1) extra.push(b);
+      if (folded.indexOf(b) !== -1 || tight.indexOf(b.replace(/\s+/g, '')) !== -1) extra.push(a);
+    });
+    return extra.length ? folded + ' ' + extra.join(' ') : folded;
+  }
+
   function normalizeQuery(q) {
-    return String(q || '').trim().toLowerCase();
+    return searchFold(q);
   }
 
   function haystack(ex) {
-    return [
-      ex.name_he, ex.creator, ex.id, ex.folder, ex.file_id, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
+    var folded = searchFold([
+      ex.name_he, ex.name, ex.creator, ex.id, ex.folder, ex.file_id, ex.file, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
       ex.equipment, ex.sets_reps, ex.source_title, ex.source_notes, (ex.steps_he || []).join(' ')
-    ].join(' ').toLowerCase();
+    ].join(' '));
+    return withLanguageAliases(folded);
   }
 
   function filterExercises(exercises, opts) {
@@ -196,7 +237,7 @@
     return (exercises || []).filter(function (ex) {
       if (!ex) return false;
       if (muscle && ex.muscle_group !== muscle && String(ex.secondary_group || '').split(' · ').indexOf(muscle) === -1) return false;
-      if (q && haystack(ex).indexOf(q) === -1) return false;
+      if (q && !searchHit(haystack(ex), q)) return false;
       return true;
     });
   }
@@ -317,26 +358,56 @@
     return match ? match[1] : '';
   }
 
-  // Drop a file at assets/posters/<reel_id>.png or .jpg and the card picks it up.
-  // An explicit poster field wins when it is set.
-  function posterSources(ex) {
+  function youtubeVideoId(ex) {
     ex = ex || {};
-    if (ex.poster) return { primary: ex.poster, secondary: '' };
-    var code = reelCode(ex);
-    if (!code) return { primary: '', secondary: '' };
-    return {
-      primary: 'assets/posters/' + code + '.png',
-      secondary: 'assets/posters/' + code + '.jpg'
-    };
+    var id = ex.youtubeId || ex.youtube_id || '';
+    if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+    var src = String(ex.source_url || ex.externalUrl || ex.file || '');
+    var match = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(src);
+    return match ? match[1] : '';
+  }
+
+  function drivePosterId(ex) {
+    ex = ex || {};
+    // legacyDriveId is a dead Drive id kept on the row for history. It is not
+    // a poster source. driveId is also skipped when the row has a real file.
+    if (ex.file_id && driveFileIdOk(ex.file_id)) return ex.file_id;
+    if (ex.driveId && driveFileIdOk(ex.driveId)) return ex.driveId;
+    var id = String(ex.id || ex.exerciseId || '');
+    var match = /^drive-(.+)$/.exec(id);
+    if (match && driveFileIdOk(match[1])) return match[1];
+    return '';
+  }
+
+  // A relative poster is trusted only when the catalog recorded it. Guessing
+  // assets/posters/<reel>.png then .jpg asked for files that are not in the
+  // repo (two 404s per card). A row with `file` plays that file and must not
+  // pick up a Drive thumbnail from driveId or legacyDriveId (those ids 404).
+  function posterUrl(ex) {
+    ex = ex || {};
+    var local = typeof ex.poster === 'string' ? ex.poster.trim() : '';
+    if (local && local.indexOf('..') === -1 && !/^([a-z]+:|\/)/i.test(local)) return local;
+    var file = typeof ex.file === 'string' ? ex.file.trim() : '';
+    if (file) return '';
+    var yt = youtubeVideoId(ex);
+    if (yt) return 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg';
+    var drive = drivePosterId(ex);
+    if (drive) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(drive) + '&sz=w480';
+    return '';
+  }
+
+  function posterSources(ex) {
+    var url = posterUrl(ex);
+    return { primary: url, secondary: '' };
   }
 
   function posterFrameHtml(ex, esc, thumb) {
     esc = esc || function (s) { return String(s == null ? '' : s); };
     var muscle = (ex && ex.muscle_group) || UNKNOWN_MUSCLE;
     var src = posterSources(ex || {});
+    // onerror hides a thumbnail the host no longer serves; the fallback stays.
     var img = src.primary
-      ? '<img class="poster" alt="" src="' + esc(src.primary) + '"' +
-        (src.secondary ? ' data-jpg="' + esc(src.secondary) + '"' : '') + '>'
+      ? '<img class="poster" alt="" src="' + esc(src.primary) + '" onerror="this.classList.add(\'is-broken\')">'
       : '';
     var badge = thumb ? '' : '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>';
     var indexNo = (!thumb && ex && ex._index) ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
@@ -805,6 +876,7 @@
     exerciseCardHtml: exerciseCardHtml,
     toneName: toneName,
     muscleIcon: muscleIcon,
+    posterUrl: posterUrl,
     posterSources: posterSources,
     posterFrameHtml: posterFrameHtml,
     DRIVE_FOLDER_GROUPS: DRIVE_FOLDER_GROUPS,
