@@ -1,0 +1,686 @@
+{
+  "_meta": {
+    "source": "youtube",
+    "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
+    "count": 44
+  },
+  "items": [
+    {
+      "id": "yt_hamstring_lunge",
+      "he": "מתיחת המסטרינג דינמית בלאנג'",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "FLDeOadsIsM",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_hip_flexor_stretch",
+      "he": "מתיחת כופפי ירך בברך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "wX2dHWNiy9E",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_cat_cow",
+      "he": "חתול-פרה לניידות עמוד שדרה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "os2P4a1uQQw",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_pigeon",
+      "he": "תנוחת יונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "UlyMK4MJ1v4",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_child_pose",
+      "he": "תנוחת הילד",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "VH-Ws3K-x7k",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_calf_stretch",
+      "he": "מתיחת תאומים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Y9NsupDRFzw",
+      "folder": "מתיחות וגמישות",
+      "available": true
+    },
+    {
+      "id": "yt_lateral_raise",
+      "he": "הרמות צד עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WPAOe6yBONA",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_arnold_press",
+      "he": "ארנולד פרס עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "2YoSBg15a5M",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_kb_press",
+      "he": "לחיצת קטלבל",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WYnuAhpDK5Y",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_face_pull",
+      "he": "פייס פול עם גומייה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "fZCpv4VG92E",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_band_pull_apart",
+      "he": "משיכת גומייה לצדדים",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "MxQlSph7Zug",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_wall_angels",
+      "he": "מלאכי קיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "y2ZUHmx-IFY",
+      "folder": "כתפיים",
+      "available": true
+    },
+    {
+      "id": "yt_arm_circles",
+      "he": "סיבובי ידיים",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "oLB8i4bC3Zk",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_high_knees",
+      "he": "ברכיים גבוהות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Rhj4DwKky_k",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_hip_circles",
+      "he": "סיבובי ירך בעמידה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "OqR7Tl6SPLQ",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_torso_twist",
+      "he": "סיבובי גו",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "RZA-z_dn2D8",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_leg_swings",
+      "he": "נדנודי רגלים לניידות ירך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "7coRsjuylVY",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_agility_ladder",
+      "he": "תרגיל זריזות בסולם קואורדינציה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Z7pSU_Oj7kY",
+      "folder": "חימום",
+      "available": true
+    },
+    {
+      "id": "yt_hammer_curl",
+      "he": "פטישים עם משקולות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "SGolzLoGutg",
+      "folder": "יד קדמית",
+      "available": true
+    },
+    {
+      "id": "yt_hammer_curl_alt",
+      "he": "פטישים לסירוגין עם משקולות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "G6wBw5QLDDg",
+      "folder": "יד קדמית",
+      "available": true
+    },
+    {
+      "id": "yt_concentration_curl",
+      "he": "כפיפת ריכוז",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "cHxRJdSVIkA",
+      "folder": "יד קדמית",
+      "available": true
+    },
+    {
+      "id": "yt_band_curl",
+      "he": "כפיפת מרפקים עם גומייה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "0sVUQxp-l7k",
+      "folder": "יד קדמית",
+      "available": true
+    },
+    {
+      "id": "yt_band_curl_demo",
+      "he": "כפיפת מרפקים עם גומיית התנגדות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "nAQu69thHQg",
+      "folder": "יד קדמית",
+      "available": true
+    },
+    {
+      "id": "yt_tricep_pushdown",
+      "he": "לחיצת טרייספס בכבל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "UKsqwz1OSWw",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_diamond_pushup",
+      "he": "שכיבות סמיכה יהלום",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "nOIcUZMwzgM",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_skull_crusher",
+      "he": "סקאל קרשרס עם משקולות",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WLQizQXoeIg",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_tricep_kickback",
+      "he": "קיקבק טרייספס עם משקולת",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "yoyw-GdmZWM",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_overhead_extension",
+      "he": "פשיטת מרפק מעל הראש עם משקולת",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "b_r_LW4HEcM",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_single_arm_pushdown",
+      "he": "פשיטת מרפק ביד אחת בכבל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "0GRwxjYDmoY",
+      "folder": "יד אחורית",
+      "available": true
+    },
+    {
+      "id": "yt_goblet_squat",
+      "he": "סקוואט גביע עם משקולת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Wr-f4vy8wTs",
+      "folder": "רגליים",
+      "available": true
+    },
+    {
+      "id": "yt_rdl_db",
+      "he": "דדליפט רומני עם משקולות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "vnEANU7BqqY",
+      "folder": "רגליים",
+      "available": true
+    },
+    {
+      "id": "yt_walking_lunge",
+      "he": "לאנג'ים בהליכה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ucvLqXxOEOs",
+      "folder": "רגליים",
+      "available": true
+    },
+    {
+      "id": "yt_kb_swing",
+      "he": "סווינג קטלבל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Bacq2IKq4BA",
+      "folder": "רגליים",
+      "available": true
+    },
+    {
+      "id": "yt_quad_stretch",
+      "he": "מתיחת ארבע-ראשי בעמידה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ZKMYmIqnzrU",
+      "folder": "רגליים",
+      "available": true
+    },
+    {
+      "id": "yt_burpee",
+      "he": "ברפי",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "zYBkodZ1SRU",
+      "folder": "קרדיו",
+      "available": true
+    },
+    {
+      "id": "yt_mountain_climber",
+      "he": "מטפסי הרים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "wrn1Cm_yfEU",
+      "folder": "קרדיו",
+      "available": true
+    },
+    {
+      "id": "yt_jump_rope",
+      "he": "קפיצה בחבל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "pcOkhja6wug",
+      "folder": "קרדיו",
+      "available": true
+    },
+    {
+      "id": "yt_jumping_jacks",
+      "he": "ג'מפינג ג'קס",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "s76m4rFdKDY",
+      "folder": "קרדיו",
+      "available": true
+    },
+    {
+      "id": "yt_quick_feet",
+      "he": "תרגיל זריזות עם קונוסים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "KeBeea7QZ2w",
+      "folder": "קרדיו",
+      "available": true
+    },
+    {
+      "id": "yt_one_arm_pushup",
+      "he": "שכיבת סמיכה ביד אחת",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "xp1tgjT_3k0",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "one arm push up"
+      ]
+    },
+    {
+      "id": "yt_pistol_squat",
+      "he": "פיסטול סקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "vq5-vdgJc0I",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "pistol squat"
+      ]
+    },
+    {
+      "id": "yt_wall_handstand",
+      "he": "עמידת ידיים לקיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "8Fdyew622mg",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "handstand"
+      ]
+    },
+    {
+      "id": "yt_l_sit",
+      "he": "L-sit",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "16a529mtX68",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "אל סיט",
+        "l sit"
+      ]
+    },
+    {
+      "id": "yt_nordic_curl",
+      "he": "נורדיק",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "htyDuCI8cm8",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "nordic hamstring curl"
+      ]
+    }
+  ]
+}

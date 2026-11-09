@@ -486,3 +486,17 @@ test("SessionTracker.saveSession input and storage error handling", () => {
 		assert.equal(loaded, null);
 	});
 });
+
+test("loadSession returns null (no throw) for corrupted JSON", () => {
+	mem[SessionTracker.STORAGE_KEY] = "{corrupted_workout";
+	assert.doesNotThrow(() => {
+		assert.equal(SessionTracker.loadSession(), null);
+	});
+});
+
+test("loadSession returns null for empty string storage value", () => {
+	mem[SessionTracker.STORAGE_KEY] = "";
+	assert.doesNotThrow(() => {
+		assert.equal(SessionTracker.loadSession(), null);
+	});
+});

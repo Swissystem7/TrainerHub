@@ -1,9 +1,10 @@
 # ספריית סרטוני תרגיל
 
-קובצי הווידאו **לא נשמרים בהיסטוריית Git** בגלל הגודל. 68 קובצי מקור אותרו בתיקיית הכושר ב־OneDrive, נבדקו לקודק נתמך, וקובצי HEVC הומרו ל־H.264. הם מוגשים כנכסי `trainerhub-media-v1` ב־GitHub Releases. יש שתי רשימות מאחורי שכבת lookup אחת ב־`js/core.js`:
+קובצי הווידאו **לא נשמרים בהיסטוריית Git** בגלל הגודל. 68 קובצי מקור אותרו בתיקיית הכושר ב־OneDrive, נבדקו לקודק נתמך, וקובצי HEVC הומרו ל־H.264. הם מוגשים כנכסי `trainerhub-media-v1` ב־GitHub Releases. יש שלוש רשימות מאחורי שכבת lookup אחת ב־`js/core.js`:
 
-- ראשי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"onedrive", available}`.
+- ראשי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"onedrive", available}`. שבע רשומות בלי קובץ מאוחסן נושאות `youtubeId` ומנגנות כהטמעה.
 - רשימת ייבוא היסטורית: [`drive-catalog.json`](./drive-catalog.json) — שומרת גם את מזהי Google Drive הישנים לצורכי עקיבות, אך הנגן משתמש בקובץ המאומת מ־OneDrive דרך כתובת ה־release.
+- הטמעות יוטיוב לקבוצות דלות: [`youtube-catalog.json`](./youtube-catalog.json) — `youtubeId` בלבד, בלי הורדה ובלי העלאה מחדש.
 
 רשומה עם `available:false` נשארת גלויה כתרגיל טקסטואלי, אך אינה נבחרת אוטומטית לאימון ואינה יוצרת נגן שבור.
 

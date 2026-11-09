@@ -97,6 +97,7 @@
   <a href="./scan.html">סריקת סביבה</a>
   <a href="./booklet.html">תיק בטיחות</a>
   <a href="./reserves.html">מדדי מילואים</a>
+  <a href="reserves.html">מסלול כושר למילואים</a>
 
   <a href="./journal.html">יומן ביצוע</a>
   <a href="./offer.html">הצעה למאמנים</a>
@@ -159,6 +160,7 @@
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
     </form>
+    <!-- biome-ignore lint/a11y/useSemanticElements: example fill buttons group -->
     <div class="examples" role="group" aria-label="דוגמאות אימון למילוי מהיר">
       <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד" aria-label="מלא דוגמה: אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
       <button type="button" data-fill="פול בודי עם גומיות, מתחיל" aria-label="מלא דוגמה: פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
@@ -209,6 +211,7 @@
     </form>
   </div>
 
+  <!-- biome-ignore lint/a11y/useSemanticElements: live result region -->
   <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
 </main>
 <script src="./js/core.js"></script>
@@ -220,12 +223,12 @@
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
 <script>
-(function () {
-  var $ = function (id) { return document.getElementById(id); };
+(() => {
+  var $ = (id) => document.getElementById(id);
   var trackStartedAt = 0;
 
   function muscleList(ids) {
-    return (ids || []).map(function (m) { return TH.muscleLabel(m); }).join(', ') || '—';
+    return (ids || []).map((m) => TH.muscleLabel(m)).join(', ') || '—';
   }
 
   // The equipment select value for a parsed equipment list: exactly one id that the
@@ -233,14 +236,15 @@
   function equipmentOption(list) {
     if (!Array.isArray(list) || list.length !== 1) return 'auto';
     var options = $('equipmentInput').options || [];
-    for (var i = 0; i < options.length; i++) {
+    var i;
+    for (i = 0; i < options.length; i++) {
       if (options[i].value === list[0]) return list[0];
     }
     return 'auto';
   }
 
   function switchTab(id) {
-    ['prompt', 'ingest', 'seg'].forEach(function (key) {
+    ['prompt', 'ingest', 'seg'].forEach((key) => {
       var tab = $('tab-' + key);
       var panel = $('panel-' + key);
       var on = key === id;
@@ -252,14 +256,14 @@
   }
 
   function bindWorkoutActions(w) {
-    $('startBtn').addEventListener('click', function () {
+    $('startBtn').addEventListener('click', () => {
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
     });
-    $('previewBtn').addEventListener('click', function () {
+    $('previewBtn').addEventListener('click', () => {
       location.href = TH.encodeLink(w, {});
     });
-    $('copyBtn').addEventListener('click', function () {
+    $('copyBtn').addEventListener('click', () => {
       var shared = TH.shareToClient(w, {});
       var host = $('copyBtn').parentNode;
       var old = host.parentNode.querySelector('.th-gate');
@@ -271,12 +275,12 @@
       var oldQr = host.parentNode.querySelector('[data-role="share-qr"]');
       if (oldQr) oldQr.parentNode.removeChild(oldQr);
       if (TH.shareQrMarkup) host.insertAdjacentHTML('afterend', TH.shareQrMarkup(shared.url));
-      TH.copyOrShow(shared.url, host, function () {
+      TH.copyOrShow(shared.url, host, () => {
         $('copyBtn').textContent = 'הועתק';
-        setTimeout(function () { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
+        setTimeout(() => { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });
     });
-    $('pdfBtn').addEventListener('click', function () {
+    $('pdfBtn').addEventListener('click', () => {
       TH.preparePrint(w, {});
       location.href = TH.printUrl();
     });
@@ -294,7 +298,7 @@
     else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
     else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
-    String(ex.notes || '').split(' · ').forEach(function (note) {
+    String(ex.notes || '').split(' · ').forEach((note) => {
       note = note.trim();
       if (note && note !== 'חסר סרטון') bits.push(note);
     });
@@ -314,15 +318,13 @@
       ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
       : '';
     var flags = (exp.flags || []).length
-      ? '<ul class="flags">' + exp.flags.map(function (f) {
-          return '<li>' + TH.esc(f.he) + '</li>';
-        }).join('') + '</ul>'
+      ? '<ul class="flags">' + exp.flags.map((f) => '<li>' + TH.esc(f.he) + '</li>').join('') + '</ul>'
       : '';
-    var phases = (w.phases || []).map(function (ph) {
+    var phases = (w.phases || []).map((ph) => {
       if (!(ph.exercises || []).length) return '';
       var label = TH.phaseLabel(ph.name);
-      var rows = (ph.exercises || []).map(function (ex) {
-        var reason = (exp.reasons || []).filter(function (r) { return r.id === ex.id; })[0];
+      var rows = (ph.exercises || []).map((ex) => {
+        var reason = (exp.reasons || []).filter((r) => r.id === ex.id)[0];
         var bits = exerciseBits(ex);
         var clip = ex.id ? TH.findExercise(ex) : null;
         var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
@@ -377,18 +379,14 @@
     var w = ingested.workout;
     var analysis = w.analysis || (typeof THAnalyzer !== 'undefined' ? THAnalyzer.analyzeSession(w) : null);
     var unmatched = ingested.unmatched || [];
-    var wish = (ingested.wishlist || []).map(function (item) {
-      return '<li>' + TH.esc(item.he) + '</li>';
-    }).join('');
+    var wish = (ingested.wishlist || []).map((item) => '<li>' + TH.esc(item.he) + '</li>').join('');
     var notice = unmatched.length
       ? '<div class="card notice" role="status"><p>' +
         // One missing clip read «1 תרגילים בלי סרטון במאגר. הם מוצגים…».
         TH.esc(unmatched.length === 1
           ? 'תרגיל אחד בלי סרטון במאגר. הוא מוצג כטקסט ונוסף לרשימת «סרטונים שכדאי לצלם».'
           : unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
-        '</p><ul class="flags">' + unmatched.map(function (n) {
-          return '<li>' + TH.esc(n) + '</li>';
-        }).join('') + '</ul></div>'
+        '</p><ul class="flags">' + unmatched.map((n) => '<li>' + TH.esc(n) + '</li>').join('') + '</ul></div>'
       : '';
     render({
       workout: w,
@@ -438,8 +436,9 @@
 
   function currentDriveId() {
     var sel = $('segSource').value;
+    var entry;
     if (sel) {
-      var entry = TH.catalog[sel];
+      entry = TH.catalog[sel];
       return (entry && entry.driveId) || '';
     }
     return THInfer.parseDriveId($('segUrl').value.trim()) || '';
@@ -466,17 +465,17 @@
   function fillSegSelect() {
     var sel = $('segSource');
     var opts = ['<option value="">בחרו סרטון מהמאגר…</option>'];
-    TH.catalogList().filter(function (e) { return e.driveId && e.startSec == null; }).forEach(function (e) {
+    TH.catalogList().filter((e) => e.driveId && e.startSec == null).forEach((e) => {
       opts.push('<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (e.folder ? ' · ' + TH.esc(e.folder) : '') + '</option>');
     });
     sel.innerHTML = opts.join('');
   }
 
-  document.querySelectorAll('[role="tab"]').forEach(function (tab) {
-    tab.addEventListener('click', function () {
+  document.querySelectorAll('[role="tab"]').forEach((tab) => {
+    tab.addEventListener('click', () => {
       switchTab(tab.id.replace('tab-', ''));
     });
-    tab.addEventListener('keydown', function (e) {
+    tab.addEventListener('keydown', (e) => {
       var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
       var i = tabs.indexOf(tab);
       var next = -1;
@@ -493,8 +492,8 @@
 
   $('prompt').addEventListener('input', syncFieldsFromPrompt);
   $('form').addEventListener('submit', run);
-  document.querySelectorAll('[data-fill]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
+  document.querySelectorAll('[data-fill]').forEach((btn) => {
+    btn.addEventListener('click', () => {
       switchTab('prompt');
       var example = btn.getAttribute('data-fill');
       var parsed = THPrompt.parsePrompt(example);
@@ -511,7 +510,7 @@
     });
   });
 
-  $('ingestForm').addEventListener('submit', function (e) {
+  $('ingestForm').addEventListener('submit', (e) => {
     e.preventDefault();
     var text = $('ingestText').value.trim();
     if (!text) {
@@ -522,21 +521,21 @@
   });
 
   $('segWatch').addEventListener('click', showSegPlayer);
-  $('segTrack').addEventListener('click', function () {
+  $('segTrack').addEventListener('click', () => {
     trackStartedAt = Date.now();
     $('segStatus').textContent = 'מעקב רץ. סמנו התחלה וסוף לפי מה שאתם רואים בנגן.';
   });
-  $('segMarkStart').addEventListener('click', function () {
+  $('segMarkStart').addEventListener('click', () => {
     if (!trackStartedAt) trackStartedAt = Date.now();
     $('segStart').value = elapsedSec();
     $('segStatus').textContent = 'התחלה ב־' + $('segStart').value + ' שנ׳';
   });
-  $('segMarkEnd').addEventListener('click', function () {
+  $('segMarkEnd').addEventListener('click', () => {
     if (!trackStartedAt) trackStartedAt = Date.now();
     $('segEnd').value = Math.max(Number($('segStart').value || 0) + 1, elapsedSec());
     $('segStatus').textContent = 'סוף ב־' + $('segEnd').value + ' שנ׳';
   });
-  $('segForm').addEventListener('submit', function (e) {
+  $('segForm').addEventListener('submit', (e) => {
     e.preventDefault();
     var saved = THIngest.saveSegment({
       driveId: currentDriveId(),
@@ -554,7 +553,7 @@
     $('segName').value = '';
   });
 
-  TH.ready(function () {
+  TH.ready(() => {
     fillSegSelect();
     if ($('prompt').value.trim()) {
       syncFieldsFromPrompt();
@@ -566,3 +565,4 @@
 <script src="./js/th-nav.js"></script>
 </body>
 </html>
+
