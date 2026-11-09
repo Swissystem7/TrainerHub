@@ -25,7 +25,12 @@ const ADVANCED_IDS = [
   ['drive', 'drive_מטפס_הרים_עם_פלאנק'],
   ['youtube', 'yt_mountain_climber'],
   ['youtube', 'yt_arnold_press'],
-  ['youtube', 'yt_burpee']
+  ['youtube', 'yt_burpee'],
+  ['youtube', 'yt_one_arm_pushup'],
+  ['youtube', 'yt_pistol_squat'],
+  ['youtube', 'yt_wall_handstand'],
+  ['youtube', 'yt_l_sit'],
+  ['youtube', 'yt_nordic_curl']
 ];
 
 const INTERMEDIATE_IDS = [

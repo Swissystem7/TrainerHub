@@ -633,6 +633,21 @@
     return { ok: true, entitlement: ent };
   }
 
+  function aliasList(raw) {
+    if (!raw || !Array.isArray(raw.aliases)) return [];
+    return raw.aliases.filter(function (a) { return a && String(a).trim(); }).map(function (a) { return String(a).trim(); });
+  }
+
+  function aliasHit(entry, normalized, folded) {
+    var list = entry && entry.aliases;
+    var i;
+    if (!list || !list.length) return false;
+    for (i = 0; i < list.length; i++) {
+      if (normalizeName(list[i]) === normalized || foldHe(list[i]) === folded) return true;
+    }
+    return false;
+  }
+
   function normalizeEntry(id, raw, defaultSource) {
     var e = raw && typeof raw === 'object' ? raw : {};
     return {
@@ -641,6 +656,7 @@
       muscles: Array.isArray(e.muscles) && e.muscles.length ? e.muscles.slice() : ['core'],
       equipment: Array.isArray(e.equipment) && e.equipment.length ? e.equipment.slice() : ['none'],
       level: e.level || 'beginner',
+      aliases: aliasList(e),
       source: e.source || defaultSource || 'local',
       file: e.file || '',
       driveId: e.driveId || '',
@@ -764,6 +780,7 @@
         muscles: e.muscles || [],
         equipment: e.equipment || ['none'],
         level: e.level || 'beginner',
+        aliases: e.aliases || [],
         file: e.file || '',
         source: e.source || 'local',
         driveId: e.driveId || '',
@@ -1842,7 +1859,7 @@
   function searchBlob(e) {
     var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
     var primary = muscleLabel((e.muscles || [])[0] || '');
-    var aliases = (searchAliases()[e.id] || []).join(' ');
+    var aliases = (searchAliases()[e.id] || []).concat(e.aliases || []).join(' ');
     return searchFold([
       e.he, e.id, aliases, primary, gear, fileSearchText(e.file), e.folder || '', e.youtubeId || ''
     ].join(' '));
@@ -1905,7 +1922,7 @@
       e = catalog[keys[i]];
       if (!e) continue;
       he = normalizeName(e.he);
-      if (he === n || foldHe(keys[i]) === folded || foldHe(e.id) === folded || foldHe(e.he) === folded) {
+      if (he === n || foldHe(keys[i]) === folded || foldHe(e.id) === folded || foldHe(e.he) === folded || aliasHit(e, n, folded)) {
         hits.push(e);
       } else if (HE_NAMES[keys[i]] && normalizeName(HE_NAMES[keys[i]]) === n) {
         hits.push(e);
