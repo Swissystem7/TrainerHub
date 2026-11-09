@@ -649,11 +649,19 @@
     return !!(e && e.available !== false && (e.file || e.driveId || e.youtubeId));
   }
 
+  // A catalog row can keep a local filename ("עבודה עם יד אחת.mp4") and also
+  // carry a YouTube id. That filename is not a hosted file, so the embed is
+  // what plays. A real https file still wins: the OneDrive mirror stays a video.
+  function hasRemoteFile(entry) {
+    return !!(entry && entry.file && /^https?:\/\//i.test(entry.file));
+  }
+
   function playableKind(e) {
     if (!e || e.available === false) return null;
-    if (e.file) return 'file';
+    if (hasRemoteFile(e)) return 'file';
     if (e.driveId) return 'drive';
     if (e.youtubeId) return 'youtube';
+    if (e.file) return 'file';
     if (e.externalUrl) return 'link';
     return null;
   }
@@ -1963,7 +1971,7 @@
       }
       return fallback;
     }
-    if (entry.file) {
+    if (hasRemoteFile(entry) || (entry.file && !entry.youtubeId && !entry.driveId)) {
       return '<div class="' + cls + '-wrap">' +
         '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" ' +
         videoSrcAttr(catalogSrc(entry.file)) +
@@ -2379,11 +2387,14 @@
     if (catalogReady) return Promise.resolve(catalog);
     return Promise.all([
       loadJson('js/catalog.json'),
-      loadJson('videos/drive-catalog.json')
-    ]).then(function (pair) {
-      var local = pair[0] && typeof pair[0] === 'object' ? pair[0] : {};
-      var drive = pair[1] || [];
-      setCatalog(mergeCatalogs(local, drive, userCatalogList()));
+      loadJson('videos/drive-catalog.json'),
+      loadJson('videos/youtube-catalog.json')
+    ]).then(function (parts) {
+      var local = parts[0] && typeof parts[0] === 'object' ? parts[0] : {};
+      var drive = parts[1] || [];
+      var youtube = parts[2] || [];
+      var merged = mergeCatalogs(local, drive, []);
+      setCatalog(mergeCatalogs(merged, youtube, userCatalogList()));
       return catalog;
     }).catch(function () {
       setCatalog({});
