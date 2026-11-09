@@ -238,16 +238,25 @@
     });
   }
 
-  function showPreview(fileOrUrl) {
+  // Only canvas-encoded raster data URLs may reach img.src (CodeQL js/xss-through-dom #8).
+  var SAFE_DATA_URL = /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/;
+
+  function showPreviewDataUrl(dataUrl) {
     var img = $('preview');
-    if (typeof fileOrUrl === 'string') {
-      img.onload = () => { detect(img); };
-      img.hidden = false;
-      img.src = fileOrUrl;
-      $('cam').hidden = true;
+    if (typeof dataUrl !== 'string' || !SAFE_DATA_URL.test(dataUrl)) {
+      img.removeAttribute?.('src');
+      img.hidden = true;
+      setStatus('לא הצלחתי לקרוא את התמונה. נסו קובץ JPEG או PNG.');
       return;
     }
-    var file = fileOrUrl;
+    img.onload = () => { detect(img); };
+    img.hidden = false;
+    img.src = dataUrl;
+    $('cam').hidden = true;
+  }
+
+  function showPreviewFile(file) {
+    var img = $('preview');
     if (!(file && ALLOWED_TYPES.includes(file.type))) {
       img.removeAttribute?.('src');
       img.hidden = true;
@@ -262,10 +271,7 @@
       canvas.height = bmp.height;
       canvas.getContext('2d').drawImage(bmp, 0, 0);
       bmp.close?.();
-      img.onload = () => { detect(img); };
-      img.hidden = false;
-      img.src = canvas.toDataURL('image/jpeg', 0.85);
-      $('cam').hidden = true;
+      showPreviewDataUrl(canvas.toDataURL('image/jpeg', 0.85));
     }).catch(() => {
       img.removeAttribute?.('src');
       img.hidden = true;
@@ -299,7 +305,7 @@
     var img;
     if (!file) return;
     if (file && ALLOWED_TYPES.includes(file.type)) {
-      showPreview(file);
+      showPreviewFile(file);
     } else {
       img = $('preview');
       img.removeAttribute?.('src');
@@ -329,7 +335,7 @@
     canvas.height = video.videoHeight || 480;
     canvas.getContext('2d').drawImage(video, 0, 0);
     stopCam();
-    showPreview(canvas.toDataURL('image/jpeg', 0.85));
+    showPreviewDataUrl(canvas.toDataURL('image/jpeg', 0.85));
   });
   $('closeCam').addEventListener('click', stopCam);
 
