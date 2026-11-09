@@ -101,8 +101,10 @@
   <section class="card" aria-labelledby="gearHeading">
     <h2 id="gearHeading">ציוד שזיהינו</h2>
     <p id="envLine">עדיין אין תמונה. אפשר לסמן ציוד גם בלי צילום.</p>
+    <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: detected tags container -->
     <div class="tags" id="detected" aria-label="תגיות שזוהו"></div>
     <h3>מה יש במקום</h3>
+    <!-- biome-ignore lint/a11y/useSemanticElements: chips group -->
     <div class="chips" id="equipChips" role="group" aria-label="בחירת ציוד ידנית"></div>
   </section>
 
@@ -167,8 +169,10 @@
     var byCode = {};
     library.forEach(function (ex) { byCode[ex.id.replace(/^ig-/, '')] = ex; });
     var html = '';
-    for (var i = 1; i <= plan.days; i++) {
-      var day = plan['day_' + i];
+    var i;
+    var day;
+    for (i = 1; i <= plan.days; i++) {
+      day = plan['day_' + i];
       if (!day) continue;
       html += '<section class="day"><h3>יום ' + i + ' · ' + TH.esc(day.focus) + '</h3>';
       day.exercises.forEach(function (code) {
@@ -232,11 +236,18 @@
     });
   }
 
+  function safeImageSrc(u) {
+    var s = String(u || '');
+    return (s.indexOf('blob:') === 0 || s.indexOf('data:image/') === 0) ? s : '';
+  }
+
   function showPreview(src) {
+    var safe = safeImageSrc(src);
+    if (!safe) return;
     var img = $('preview');
     img.onload = function () { detect(img); };
     img.hidden = false;
-    img.src = src;
+    img.src = safe;
     $('cam').hidden = true;
   }
 

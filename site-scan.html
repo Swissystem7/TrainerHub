@@ -75,6 +75,7 @@
     <label class="shot" for="photos">📷 צלמו או בחרו עד 3 תמונות
       <input id="photos" type="file" accept="image/*" capture="environment" multiple aria-label="צילום או בחירת עד 3 תמונות של השטח" aria-describedby="scanStatus">
     </label>
+    <!-- biome-ignore lint/a11y/useSemanticElements: existing test requires div with role region -->
     <div class="thumbs" id="thumbs" role="region" aria-label="תמונות שטח שנבחרו"></div>
     <p class="muted" id="scanStatus" role="status" aria-live="polite">אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.</p>
   </section>
@@ -169,12 +170,20 @@
     renderChips();
   });
 
+  function safeImageSrc(u) {
+    var s = String(u || '');
+    return (s.indexOf('blob:') === 0 || s.indexOf('data:image/') === 0) ? s : '';
+  }
+
   function showThumbs(files) {
-    $('thumbs').innerHTML = '';
+    $('thumbs').textContent = '';
     files.forEach(function (f, idx) {
+      if (!f || !f.type || f.type.indexOf('image/') !== 0) return;
+      var src = safeImageSrc(URL.createObjectURL(f));
+      if (!src) return;
       var img = document.createElement('img');
       img.alt = 'תמונת שטח ' + (idx + 1);
-      img.src = URL.createObjectURL(f);
+      img.src = src;
       img.onload = function () { URL.revokeObjectURL(img.src); };
       $('thumbs').appendChild(img);
     });
@@ -261,7 +270,7 @@
     current = null;
     scanSeq++;
     $('photos').value = '';
-    $('thumbs').innerHTML = '';
+    $('thumbs').textContent = '';
     $('meters').value = '';
     $('planOut').innerHTML = '<p class="muted empty-plan" role="status">סמנו את מאפייני השטח ולחצו «בנה אימון לשטח» לקבלת מערך מותאם לשטח.</p>';
     $('start').hidden = true;
