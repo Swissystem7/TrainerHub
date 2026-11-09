@@ -159,6 +159,7 @@
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
     </form>
+    <!-- biome-ignore lint/a11y/useSemanticElements: example fill buttons group -->
     <div class="examples" role="group" aria-label="דוגמאות אימון למילוי מהיר">
       <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד" aria-label="מלא דוגמה: אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
       <button type="button" data-fill="פול בודי עם גומיות, מתחיל" aria-label="מלא דוגמה: פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
@@ -209,6 +210,7 @@
     </form>
   </div>
 
+  <!-- biome-ignore lint/a11y/useSemanticElements: live result region -->
   <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
 </main>
 <script src="./js/core.js"></script>
@@ -233,7 +235,8 @@
   function equipmentOption(list) {
     if (!Array.isArray(list) || list.length !== 1) return 'auto';
     var options = $('equipmentInput').options || [];
-    for (var i = 0; i < options.length; i++) {
+    var i;
+    for (i = 0; i < options.length; i++) {
       if (options[i].value === list[0]) return list[0];
     }
     return 'auto';
@@ -438,8 +441,9 @@
 
   function currentDriveId() {
     var sel = $('segSource').value;
+    var entry;
     if (sel) {
-      var entry = TH.catalog[sel];
+      entry = TH.catalog[sel];
       return (entry && entry.driveId) || '';
     }
     return THInfer.parseDriveId($('segUrl').value.trim()) || '';
