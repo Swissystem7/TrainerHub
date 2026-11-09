@@ -169,3 +169,12 @@ test('index.html <html> element has lang="he" and dir="rtl"', () => {
 	assert.match(html, /<html\b[^>]*\blang=["']he["'][^>]*>/i);
 	assert.match(html, /<html\b[^>]*\bdir=["']rtl["'][^>]*>/i);
 });
+
+test("index.html links to reserves.html for miluim fitness track", () => {
+	const html = fs.readFileSync(
+		path.join(__dirname, "..", "index.html"),
+		"utf8",
+	);
+	assert.ok(html.includes('href="reserves.html"'));
+	assert.ok(html.includes("מסלול כושר למילואים"));
+});
