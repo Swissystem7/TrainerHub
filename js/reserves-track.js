@@ -95,8 +95,14 @@
 	}
 
 	function formatClock(seconds) {
-		if (!Number.isFinite(seconds) || seconds < 0) return "";
-		var s = Math.round(seconds);
+		if (
+			seconds == null ||
+			(typeof seconds === "string" && seconds.trim() === "")
+		)
+			return "";
+		const num = Number(seconds);
+		if (!Number.isFinite(num) || num < 0) return "";
+		var s = Math.round(num);
 		var m = Math.floor(s / 60);
 		var r = s % 60;
 		return `${m}:${r < 10 ? "0" : ""}${r}`;
