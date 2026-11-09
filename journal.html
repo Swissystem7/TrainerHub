@@ -758,9 +758,11 @@
     }
     save();
     $('importCode').value = '';
-    setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.')
-      : (dup ? 'הרשומה כבר קיימת ביומן.' : ('יובא ביצוע של ' + (parsed.name || c.name) + '.' +
-        ((parsed.log || []).length ? ' כולל פירוט ל-' + parsed.log.length + ' תרגילים (סטים/משקל/קושי).' : ''))));
+    var detail = (parsed.log && parsed.log.length)
+      ? (' כולל פירוט ל-' + parsed.log.length + ' תרגילים (סטים/משקל/קושי).')
+      : '';
+    setStatus($('importStatus'), rpeAdded ? ('עודכן הקושי בביצוע של ' + (parsed.name || c.name) + ': ' + parsed.rpe + '/5.' + detail)
+      : (dup ? ('הרשומה כבר קיימת ביומן.' + detail) : ('יובא ביצוע של ' + (parsed.name || c.name) + '.' + detail)));
     render(c.id);
   });
 

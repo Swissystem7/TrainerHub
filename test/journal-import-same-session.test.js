@@ -70,8 +70,8 @@ function workout() {
   };
 }
 
-function loadPage() {
-  Object.keys(mem).forEach(function (k) { delete mem[k]; });
+function loadPage(opts) {
+  if (!opts || !opts.keep) Object.keys(mem).forEach(function (k) { delete mem[k]; });
   const byId = {};
   const $ = function (id) {
     if (!byId[id]) byId[id] = el(id);
@@ -142,6 +142,35 @@ test('importing a code the finish screen already saved keeps one 1kg set and cou
   assert.match(p.$('importStatus').textContent, /פירוט ל-1 תרגילים/);
   assert.match(p.$('insBody').innerHTML, /היום תועדו 1\/3 תרגילים/);
   assert.equal(c.lastPlan.p.length, 3);
+});
+
+test('pasting the finish code after autosave does not add a second session and still names the exercise count', function () {
+  const doneAt = new Date().toISOString();
+  Object.keys(mem).forEach(function (k) { delete mem[k]; });
+  const code = resultCode({
+    name: '',
+    tid: '',
+    doneAt: doneAt,
+    exercises: 1,
+    sets: 1,
+    rpe: null,
+    log: [{ id: 'push_up', sets: [{ reps: 1, weightKg: 1 }] }]
+  });
+  TH.recordFinishedWorkout(TH.decodeResult(code));
+  Journal.saveEntry({
+    clientId: 't_device',
+    title: 'אימון 1',
+    doneAt: doneAt,
+    sets: [{ exerciseId: 'push_up', reps: 1, weightKg: 1 }]
+  });
+  const p = loadPage({ keep: true });
+  p.importCode(code);
+  const clients = TH.store.get(TH.KEYS.clients, []);
+  assert.equal(clients.length, 1);
+  assert.equal(clients[0].logs.length, 1);
+  assert.match(p.$('importStatus').textContent, /כבר קיימת/);
+  assert.match(p.$('importStatus').textContent, /פירוט ל-1 תרגילים/);
+  assert.equal(Journal.listEntries().filter(function (e) { return e.clientId === 't_device'; }).length, 1);
 });
 
 test('a code pasted on a device that has not finished the workout is stored once', function () {
