@@ -30,8 +30,8 @@ test('catalog keeps its source rows while verified videos live outside Git histo
   assert.equal(Object.keys(catalog).length, 78);
   assert.equal(drive.items.length, 44);
   assert.equal(mp4s.length, 0);
-  assert.equal(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).length, 70);
-  assert.equal(new Set(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).map(function (entry) { return entry.file; })).size, 68);
+  assert.equal(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).length, 77);
+  assert.equal(new Set(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).map(function (entry) { return entry.file; })).size, 75);
   assert.match(read('README.md'), /70 רשומות/);
   assert.match(read('README.md'), /68 קובצי OneDrive/);
   assert.match(read('README.md'), /GitHub Releases/);
