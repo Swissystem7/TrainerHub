@@ -42,7 +42,7 @@
 
 `verified` ברירת המחדל היא `false`. הפירוט הנוכחי הגיע ממיפוי צפייה אוטומטי ולא נבדק מול הסרטון. אחרי בדיקה מול הווידאו מותר להפוך רשומה ל־`true`, ובתנאי שיש לה שם ו־`source_title`.
 
-איור לכרטיס: שמים קובץ ב־`assets/posters/<reel_id>.png` או `.jpg` (ה־shortcode, בלי הקידומת `ig-`). אם הקובץ חסר, הכרטיס והבונה מציגים מציין מקום בצבע קבוצת השריר. שדה `poster` דורס את הנתיב הזה כשהוא מלא. `poster_uncertain: true` מסמן איור שההתאמה לריל לא ודאית — הכרטיס מציג «איור לא ודאי».
+איור לכרטיס: שדה `poster` הוא נתיב יחסי לקובץ שקיים ב־`assets/posters/`. אם הוא ריק, סרטון Drive מקבל `https://drive.google.com/thumbnail?id=<fileId>&sz=w480` ויוטיוב מקבל `https://i.ytimg.com/vi/<id>/hqdefault.jpg`. בלי אף אחד מאלה הכרטיס מציג מציין מקום בצבע קבוצת השריר ולא מבקש `assets/posters/<reel_id>.png` או `.jpg` שאינם במאגר. `poster_uncertain: true` מסמן איור שההתאמה לריל לא ודאית — הכרטיס מציג «איור לא ודאי».
 
 `equipment_tags` היא רשימת תגיות מהרשימה הסטנדרטית (משקל גוף, מזרן, ספסל, קיר…). קבוצת `השראה` היא טיפים שאינם תרגיל (תזונה, שינה, מוטיבציה, לימפה) והם לא נכנסים לבונה. סריקת סביבה (`scan.html` + `js/scan-match.js`) בוחרת תרגילים שכל הציוד שלהם זוהה, או משקל גוף, ובונה ימים קבועים. מודל ראייה אופציונלי: `TH_VISION_ENDPOINT` ב־`POST /api/environment-scan`. בלי מפתח הדפדפן מזהה עם COCO-SSD או לפי צ'יפים.
 
@@ -65,7 +65,7 @@
 | `alternatives` | string[] | אופציונלי. עד 2 מזהים מהספרייה מאותה `muscle_group`. |
 | `source_url` | string | `https://www.instagram.com/reel/<shortcode>/` או `/p/<shortcode>/`. |
 | `creator` | string | שם משתמש בלי `@`. |
-| `poster` | string | נתיב יחסי אופציונלי. ריק משאיר את ברירת המחדל `assets/posters/<reel_id>.png` (או `.jpg`). לא כתובת חיצונית. |
+| `poster` | string | נתיב יחסי אופציונלי לקובץ קיים. ריק לא מנחש `assets/posters/<reel_id>.png`. לא כתובת חיצונית (תמונת Drive או יוטיוב נבנית מהמזהה). |
 | `poster_uncertain` | boolean | `true` רק כשהאיור הותאם לריל בלי ודאות. ברירת מחדל `false`. |
 | `verified` | boolean | `false` עד בדיקה מול הסרטון. |
 | `source_title` | string | השם המלא מהמיפוי, או ריק. |

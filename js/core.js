@@ -680,6 +680,24 @@
     return q.length ? (url + '?' + q.join('&')) : url;
   }
 
+  // Poster for a library card. A row that already has `file` plays that file;
+  // its driveId / legacyDriveId point at Drive objects that 404, so they are
+  // never turned into a thumbnail. legacyDriveId stays in the catalog data
+  // and is not read here. With no file, a YouTube id or a live Drive id can
+  // still supply a poster. Anything else is omitted.
+  function posterUrl(entry) {
+    if (!entry) return '';
+    var local = typeof entry.poster === 'string' ? entry.poster.trim() : '';
+    if (local && local.indexOf('..') === -1 && !/^([a-z]+:|\/)/i.test(local)) return local;
+    var file = typeof entry.file === 'string' ? entry.file.trim() : '';
+    if (file) return '';
+    var yt = entry.youtubeId || '';
+    if (/^[A-Za-z0-9_-]{11}$/.test(yt)) return 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg';
+    var drive = entry.driveId || entry.file_id || '';
+    if (drive) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(drive) + '&sz=w480';
+    return '';
+  }
+
   function isOnline() {
     if (typeof navigator === 'undefined') return true;
     return navigator.onLine !== false;
@@ -1749,9 +1767,59 @@
     };
   }
 
+  var SEARCH_NIQQUD = /[\u0591-\u05C7]/g;
+  var SEARCH_PUNCT = /["״'`׳.,!?;:()[\]{}<>/\\|@#$%^&*+=~_\-־–—]/g;
+  var aliasesById = null;
+
+  function searchFold(s) {
+    return String(s || '')
+      .replace(SEARCH_NIQQUD, '')
+      .toLowerCase()
+      .replace(SEARCH_PUNCT, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function searchAliases() {
+    if (aliasesById) return aliasesById;
+    aliasesById = {};
+    function add(id, text) {
+      if (!id || !text) return;
+      if (!aliasesById[id]) aliasesById[id] = [];
+      aliasesById[id].push(text);
+    }
+    Object.keys(NAME_ALIASES).forEach(function (key) { add(NAME_ALIASES[key], key); });
+    Object.keys(HE_NAMES).forEach(function (id) { add(id, HE_NAMES[id]); });
+    return aliasesById;
+  }
+
+  function fileSearchText(file) {
+    if (!file) return '';
+    var name = String(file).split('?')[0].split('/').pop();
+    try { name = decodeURIComponent(name); } catch (err) { /* keep the raw name */ }
+    return name.replace(/\.(mp4|webm|mov)$/i, '');
+  }
+
+  function searchBlob(e) {
+    var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
+    var primary = muscleLabel((e.muscles || [])[0] || '');
+    var aliases = (searchAliases()[e.id] || []).join(' ');
+    return searchFold([
+      e.he, e.id, aliases, primary, gear, fileSearchText(e.file), e.folder || '', e.youtubeId || ''
+    ].join(' '));
+  }
+
+  function searchHit(blob, q) {
+    if (!q) return true;
+    if (blob.indexOf(q) !== -1) return true;
+    var tightQ = q.replace(/\s+/g, '');
+    if (!tightQ) return true;
+    return blob.replace(/\s+/g, '').indexOf(tightQ) !== -1;
+  }
+
   function filterCatalog(opts) {
     opts = opts || {};
-    var q = foldHe(opts.q || '');
+    var q = searchFold(opts.q || '');
     return catalogList().filter(function (e) {
       if (opts.muscle && (e.muscles || []).indexOf(opts.muscle) === -1) return false;
       if (opts.equipment && (e.equipment || []).indexOf(opts.equipment) === -1) return false;
@@ -1760,9 +1828,9 @@
       if (q) {
         // The gear words count too, as the «גומיות» chip does: two band clips are
         // not named «גומיות» («עבודה עם גומייה»), so typing the word missed them.
-        var gear = (e.equipment || []).map(function (eq) { return EQ_LABELS[eq] || ''; }).join(' ');
-        var blob = foldHe((e.he || '') + ' ' + (e.id || '') + ' ' + muscleLabel((e.muscles || [])[0] || '') + ' ' + gear);
-        if (blob.indexOf(q) === -1) return false;
+        // Aliases and the filename count as well: the Superman clip is stored as
+        // «גב תחתון» / id superman, so «סופרמן» has to hit HE_NAMES and NAME_ALIASES.
+        if (!searchHit(searchBlob(e), q)) return false;
       }
       return true;
     });
@@ -1972,9 +2040,11 @@
       return fallback;
     }
     if (hasRemoteFile(entry) || (entry.file && !entry.youtubeId && !entry.driveId)) {
+      var poster = posterUrl(entry);
+      var posterAttr = poster ? ' poster="' + esc(poster) + '"' : '';
       return '<div class="' + cls + '-wrap">' +
         '<video class="' + cls + '" hidden playsinline controls muted preload="metadata" ' +
-        videoSrcAttr(catalogSrc(entry.file)) +
+        videoSrcAttr(catalogSrc(entry.file)) + posterAttr +
         ' onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
         '<div class="' + cls + '-fallback" hidden role="note">' + esc(mediaFallbackText(entry)) +
         ' — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>';
@@ -3015,6 +3085,7 @@
     isPlayable: isPlayable,
     playableKind: playableKind,
     drivePreviewUrl: drivePreviewUrl,
+    posterUrl: posterUrl,
     youtubeEmbedUrl: youtubeEmbedUrl,
     isOnline: isOnline,
     mediaMarkup: mediaMarkup,
