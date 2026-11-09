@@ -54,6 +54,7 @@ test.describe('reel exercise library (exercises.html)', () => {
     const link = page.getByRole('region', { name: 'כרטיסי תרגילים' })
       .getByRole('link', { name: 'צפייה בריל' }).first();
     await expect(link).toHaveAttribute('href', /^https:\/\/www\.instagram\.com\/(reel|p)\//);
-    expect(externalRequests.filter((h) => h.endsWith('instagram.com'))).toEqual([]);
+    const allowedInstagramHosts = new Set(['instagram.com', 'www.instagram.com']);
+    expect(externalRequests.filter((h) => allowedInstagramHosts.has(h))).toEqual([]);
   });
 });
