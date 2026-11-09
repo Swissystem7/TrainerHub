@@ -396,12 +396,9 @@
     root.addEventListener('error', function (e) {
       var img = e.target;
       if (!img || !img.classList || !img.classList.contains('poster')) return;
-      var jpg = img.getAttribute('data-jpg');
-      if (jpg) {
-        img.removeAttribute('data-jpg');
-        img.setAttribute('src', jpg);
-        return;
-      }
+      // No .jpg fallback from a data-jpg attribute: nothing renders it anymore
+      // (posterUrl() uses catalog posters only), and copying DOM text into src
+      // was CodeQL js/xss-through-dom #7.
       img.classList.add('is-broken');
     }, true);
     root.addEventListener('load', function (e) {
