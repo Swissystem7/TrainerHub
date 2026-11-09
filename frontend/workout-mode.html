@@ -556,7 +556,10 @@ function recordSet(step) {
   const weightEl = document.getElementById('logWeight');
   const weightKg = Number(String(weightEl ? weightEl.value : '').replace(',', '.')) || 0;
   if (!(reps > 0)) return null;
-  const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0 };
+  const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0, stepIdx: stepIdx };
+  for (let i = 0; i < setLog.length; i++) {
+    if (setLog[i].stepIdx === stepIdx) { setLog[i] = item; return item; }
+  }
   setLog.push(item);
   return item;
 }
@@ -592,14 +595,14 @@ function exerciseRpeMarkup() {
     }).join('');
 }
 
-function saveSetLog(doneAt) {
+function saveSetLog(doneAt, clientId) {
   if (setsSavedOnce || !setLog.length) return null;
   const J = window.THJournalStorage;
   if (!J) return null;
   setsSavedOnce = true;
   const before = J.getPersonalRecords();
   const saved = J.saveEntry({
-    clientId: linkMeta.tid || '',
+    clientId: clientId || linkMeta.tid || '',
     title: (workout && workout.title) || 'אימון',
     doneAt,
     sets: setLog.slice()
@@ -1067,6 +1070,9 @@ function goBack() {
     if (completedStepIds.has(stepIdx)) {
       const step = steps[stepIdx];
       completedStepIds.delete(stepIdx);
+      if (typeof setLog !== 'undefined' && Array.isArray(setLog)) {
+        setLog = setLog.filter(function (s) { return s.stepIdx !== stepIdx; });
+      }
       if (step && step.type === 'exercise') {
         if (completedSets > 0) completedSets--;
         if (!hasDoneSet(step.exercise) && completedExercises > 0) completedExercises--;
@@ -1107,31 +1113,37 @@ function finishWorkout() {
 
   let reportRpe = null;
   const finishedAt = new Date().toISOString();
-  const savedSets = typeof saveSetLog === 'function' ? saveSetLog(finishedAt) : null;
+  let savedSets = null;
   const savedEl = document.getElementById('setsSaved');
+  function buildResult() {
+    const log = typeof exerciseLogForReport === 'function' ? exerciseLogForReport() : [];
+    const loggedSets = setLog.length;
+    const loggedExercises = log.length;
+    return {
+      name: linkMeta.name || '',
+      title: (workout && workout.title) || 'אימון',
+      doneAt: finishedAt,
+      minutes: Math.round(elapsedSeconds / 60),
+      exercises: loggedSets ? loggedExercises : completedExercises,
+      sets: loggedSets ? loggedSets : completedSets,
+      skipped: skippedSets,
+      tid: linkMeta.tid || '',
+      rpe: reportRpe,
+      plan: TH.compactPlan(workout),
+      log: log
+    };
+  }
+  const finishedClient = TH.recordFinishedWorkout ? TH.recordFinishedWorkout(buildResult()) : null;
+  savedSets = typeof saveSetLog === 'function' ? saveSetLog(finishedAt, finishedClient && finishedClient.id) : null;
   if (savedEl) {
     savedEl.textContent = savedSets
       ? ('נשמרו ' + savedSets.sets + ' סטים ביומן במכשיר' + (savedSets.volume ? ' · נפח ' + savedSets.volume + ' ק״ג' : '') +
          (savedSets.prs.length ? ' · 🏆 שיא חדש: ' + savedSets.prs.join(', ') : ''))
       : '';
   }
-  function buildResult() {
-    return {
-      name: linkMeta.name || '',
-      title: (workout && workout.title) || 'אימון',
-      doneAt: finishedAt,
-      minutes: Math.round(elapsedSeconds / 60),
-      exercises: completedExercises,
-      sets: completedSets,
-      skipped: skippedSets,
-      tid: linkMeta.tid || '',
-      rpe: reportRpe,
-      plan: TH.compactPlan(workout),
-      log: typeof exerciseLogForReport === 'function' ? exerciseLogForReport() : []
-    };
-  }
   function refreshReport() {
     const result = buildResult();
+    if (TH.recordFinishedWorkout) TH.recordFinishedWorkout(result);
     const code = (typeof ThLink === 'object' && ThLink.encodeResult) ? ThLink.encodeResult(result) : JSON.stringify(result);
     const codeEl = document.getElementById('resultCode');
     if (codeEl) codeEl.value = code;
