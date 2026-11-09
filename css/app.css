@@ -266,16 +266,28 @@ body.th-ds {
   color: var(--th-ink);
   font-family: var(--th-font);
   -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 body.th-ds a { color: var(--th-teal); }
 body.th-ds a:hover { color: var(--th-teal-ink); }
 body.th-ds :focus-visible { outline-color: var(--th-teal); }
 
-/* Nav: one horizontally scrolling row of 44px chips, current page in teal */
+/* Nav: one horizontally scrolling row of 44px chips, current page in teal.
+   min-width:0 and width:100% keep the row inside the phone instead of
+   growing the page and clipping the last chips. */
 body.th-ds .th-nav {
   flex-wrap: nowrap;
   justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: 16px;
   scrollbar-width: none;
   gap: 8px;
   padding: 12px 16px 8px;
