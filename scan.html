@@ -42,6 +42,7 @@
     button.primary { background: var(--th-teal); color: var(--th-on-teal); border: 0; }
     button:focus-visible, .file:focus-within { outline: 2px solid var(--cyan); outline-offset: 2px; }
     video, img.preview, canvas { width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px; background: var(--th-hero); margin-top: 12px; }
+    /* biome-ignore lint/complexity/noImportantStyles: hidden override */
     video[hidden], img[hidden], canvas[hidden], [hidden] { display: none !important; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip {
@@ -101,8 +102,10 @@
   <section class="card" aria-labelledby="gearHeading">
     <h2 id="gearHeading">ציוד שזיהינו</h2>
     <p id="envLine">עדיין אין תמונה. אפשר לסמן ציוד גם בלי צילום.</p>
+    <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: detected tags -->
     <div class="tags" id="detected" aria-label="תגיות שזוהו"></div>
     <h3>מה יש במקום</h3>
+    <!-- biome-ignore lint/a11y/useSemanticElements: equip chips group -->
     <div class="chips" id="equipChips" role="group" aria-label="בחירת ציוד ידנית"></div>
   </section>
 
@@ -117,17 +120,18 @@
 <script src="./js/reel-library.js"></script>
 <script src="./js/scan-match.js"></script>
 <script>
-(function () {
+(() => {
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   var library = [];
   var last = null;
   var stream = null;
-  var $ = function (id) { return document.getElementById(id); };
+  var $ = (id) => document.getElementById(id);
 
   function setStatus(text) { $('status').textContent = text || ''; }
 
   function selectedTags() {
     var tags = ['bodyweight'];
-    document.querySelectorAll('#equipChips .chip').forEach(function (btn) {
+    document.querySelectorAll('#equipChips .chip').forEach((btn) => {
       if (btn.getAttribute('aria-pressed') === 'true') tags.push(btn.getAttribute('data-tag'));
     });
     return tags;
@@ -135,8 +139,8 @@
 
   function syncChips(tags) {
     var have = {};
-    (tags || []).forEach(function (tag) { have[tag] = true; });
-    document.querySelectorAll('#equipChips .chip').forEach(function (btn) {
+    (tags || []).forEach((tag) => { have[tag] = true; });
+    document.querySelectorAll('#equipChips .chip').forEach((btn) => {
       var tag = btn.getAttribute('data-tag');
       if (tag === 'bodyweight') {
         btn.setAttribute('aria-pressed', 'true');
@@ -149,10 +153,10 @@
   }
 
   function renderPlan() {
-    var env = (last && last.detected_environment) || THScan.manualEnvironment();
-    var detected = (last && last.detected_equipment) || [];
+    var env = last?.detected_environment || THScan.manualEnvironment();
+    var detected = last?.detected_equipment || [];
     $('envLine').textContent = env.description_he + ' · ' + env.type + ' · ' + env.space;
-    $('detected').innerHTML = detected.map(function (row) {
+    $('detected').innerHTML = detected.map((row) => {
       var label = THScan.TAG_LABELS[row.tag] || row.tag;
       return '<span class="tag">' + TH.esc(label) + ' ' + Math.round((row.confidence || 0) * 100) + '%</span>';
     }).join('') || '<span class="tag">משקל גוף</span>';
@@ -165,13 +169,15 @@
     $('notes').textContent = result.notes_he;
     var plan = result.suggested_weekly_plan;
     var byCode = {};
-    library.forEach(function (ex) { byCode[ex.id.replace(/^ig-/, '')] = ex; });
+    library.forEach((ex) => { byCode[ex.id.replace(/^ig-/, '')] = ex; });
     var html = '';
-    for (var i = 1; i <= plan.days; i++) {
-      var day = plan['day_' + i];
+    var i;
+    var day;
+    for (i = 1; i <= plan.days; i++) {
+      day = plan['day_' + i];
       if (!day) continue;
       html += '<section class="day"><h3>יום ' + i + ' · ' + TH.esc(day.focus) + '</h3>';
-      day.exercises.forEach(function (code) {
+      day.exercises.forEach((code) => {
         var ex = byCode[code];
         if (!ex) return;
         html += '<div class="ex"><b>' + TH.esc(ex.name_he) + '</b><span>' + TH.esc(ex.muscle_group) + ' · ' + TH.esc(ex.sets_reps) + '</span></div>';
@@ -184,7 +190,7 @@
 
   function applyDetection(detected, env, note) {
     last = { detected_equipment: detected, detected_environment: env };
-    syncChips((detected || []).map(function (row) { return row.tag; }));
+    syncChips((detected || []).map((row) => row.tag));
     setStatus(note || '');
     renderPlan();
   }
@@ -192,7 +198,7 @@
   function loadCoco() {
     if (window.cocoSsd) return Promise.resolve(window.cocoSsd);
     function add(src) {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         var s = document.createElement('script');
         s.src = src;
         s.onload = resolve;
@@ -200,88 +206,110 @@
         document.head.appendChild(s);
       });
     }
-    return add('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js').then(function () {
+    return add('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js').then(() => {
       return add('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');
-    }).then(function () { return window.cocoSsd; });
+    }).then(() => window.cocoSsd);
   }
 
   function detect(img) {
     var endpoint = window.TH_SCAN_ENDPOINT || '';
     var remote = endpoint
-      ? fetch(img.src).then(function (r) { return r.blob(); }).then(function (blob) {
+      ? fetch(img.src).then((r) => r.blob()).then((blob) => {
           return fetch(endpoint, { method: 'POST', body: blob, headers: { 'content-type': blob.type || 'image/jpeg' } });
-        }).then(function (res) { return res.ok ? res.json() : null; }).catch(function () { return null; })
+        }).then((res) => (res.ok ? res.json() : null)).catch(() => null)
       : Promise.resolve(null);
     setStatus('מזהה ציוד…');
-    remote.then(function (payload) {
-      if (payload && payload.detected_environment) {
+    remote.then((payload) => {
+      if (payload?.detected_environment) {
         applyDetection(payload.detected_equipment || [], payload.detected_environment, 'זיהוי ממודל הראייה. אפשר לתקן את הצ׳יפים.');
         return;
       }
-      loadCoco().then(function (coco) { return coco.load(); }).then(function (model) {
+      loadCoco().then((coco) => coco.load()).then((model) => {
         return model.detect(img);
-      }).then(function (preds) {
+      }).then((preds) => {
         applyDetection(
           THScan.tagsFromCoco(preds, img.naturalWidth || img.width, img.naturalHeight || img.height),
           THScan.environmentFromCoco(preds),
           'זיהוי מקומי בדפדפן. אפשר לתקן את הצ׳יפים.'
         );
-      }).catch(function () {
+      }).catch(() => {
         applyDetection([], THScan.manualEnvironment(), 'הזיהוי האוטומטי לא נטען. סמנו את הציוד שיש לכם.');
       });
     });
   }
 
-  function showPreview(src) {
+  function showPreview(fileOrUrl) {
     var img = $('preview');
-    img.onload = function () { detect(img); };
-    img.hidden = false;
-    img.src = src;
-    $('cam').hidden = true;
+    if (typeof fileOrUrl === 'string') {
+      img.onload = () => { detect(img); };
+      img.hidden = false;
+      img.src = fileOrUrl;
+      $('cam').hidden = true;
+      return;
+    }
+    var file = fileOrUrl;
+    if (file && ALLOWED_TYPES.includes(file.type)) {
+      img.onload = () => { detect(img); };
+      img.hidden = false;
+      img.src = URL.createObjectURL(file);
+      $('cam').hidden = true;
+    } else {
+      img.removeAttribute?.('src');
+      img.hidden = true;
+      setStatus('אפשר להעלות רק תמונה מסוג JPEG, PNG, WebP או GIF');
+    }
   }
 
   function stopCam() {
-    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (stream) stream.getTracks().forEach((t) => { t.stop(); });
     stream = null;
     $('cam').hidden = true;
     $('snap').hidden = true;
     $('closeCam').hidden = true;
   }
 
-  $('equipChips').innerHTML = THScan.EQUIPMENT_TAGS.map(function (tag) {
+  $('equipChips').innerHTML = THScan.EQUIPMENT_TAGS.map((tag) => {
     var pressed = tag === 'bodyweight' ? 'true' : 'false';
     var dis = tag === 'bodyweight' ? ' disabled' : '';
     return '<button type="button" class="chip" data-tag="' + tag + '" aria-pressed="' + pressed + '"' + dis + '>' +
       TH.esc(THScan.TAG_LABELS[tag] || tag) + '</button>';
   }).join('');
-  $('equipChips').addEventListener('click', function (e) {
+  $('equipChips').addEventListener('click', (e) => {
     var btn = e.target.closest('.chip');
     if (!btn || btn.disabled) return;
     btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
     renderPlan();
   });
 
-  $('photo').addEventListener('change', function () {
-    var file = $('photo').files && $('photo').files[0];
+  $('photo').addEventListener('change', () => {
+    var file = $('photo').files?.[0];
+    var img;
     if (!file) return;
-    showPreview(URL.createObjectURL(file));
+    if (file && ALLOWED_TYPES.includes(file.type)) {
+      showPreview(file);
+    } else {
+      img = $('preview');
+      img.removeAttribute?.('src');
+      img.hidden = true;
+      setStatus('אפשר להעלות רק תמונה מסוג JPEG, PNG, WebP או GIF');
+    }
   });
-  $('openCam').addEventListener('click', function () {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+  $('openCam').addEventListener('click', () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
       setStatus('הדפדפן לא פתח מצלמה. אפשר להעלות תמונה.');
       return;
     }
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function (media) {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then((media) => {
       stream = media;
       $('cam').srcObject = media;
       $('cam').hidden = false;
       $('snap').hidden = false;
       $('closeCam').hidden = false;
-    }).catch(function () {
+    }).catch(() => {
       setStatus('אין גישה למצלמה. אפשר להעלות תמונה.');
     });
   });
-  $('snap').addEventListener('click', function () {
+  $('snap').addEventListener('click', () => {
     var video = $('cam');
     var canvas = $('frame');
     canvas.width = video.videoWidth || 640;
@@ -292,8 +320,8 @@
   });
   $('closeCam').addEventListener('click', stopCam);
 
-  $('loadPlan').addEventListener('click', function () {
-    if (!last || !last.suggested_weekly_plan || !last.suggested_weekly_plan.days) {
+  $('loadPlan').addEventListener('click', () => {
+    if (!last?.suggested_weekly_plan?.days) {
       setStatus('אין אימון לטעינה. סמנו ציוד קודם.');
       return;
     }
@@ -305,10 +333,10 @@
     window.location.href = './exercises.html';
   });
 
-  fetch('./data/exercises.json', { cache: 'no-cache' }).then(function (res) { return res.json(); }).then(function (data) {
+  fetch('./data/exercises.json', { cache: 'no-cache' }).then((res) => res.json()).then((data) => {
     library = data.exercises || [];
     renderPlan();
-  }).catch(function () {
+  }).catch(() => {
     $('notes').textContent = 'ספריית התרגילים לא נטענה.';
   });
 })();
