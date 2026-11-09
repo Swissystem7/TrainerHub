@@ -2,68 +2,75 @@
  * Ready-made workout library — Hebrew paste text + title search.
  * Classic script. Namespace: window.THReadyWorkouts
  */
-(function (root) {
-  'use strict';
+((root) => {
+	var THIngest = root.THIngest;
+	var seed = [];
 
-  var THIngest = root.THIngest;
-  var seed = [];
+	if (typeof module === "object" && module.exports) {
+		THIngest = require("./ingest.js");
+		seed = require("./ready-workouts.json");
+	}
 
-  if (typeof module === 'object' && module.exports) {
-    THIngest = require('./ingest.js');
-    seed = require('./ready-workouts.json');
-  }
+	function createReadyWorkouts(entries) {
+		var all = Array.isArray(entries) ? entries.slice() : [];
 
-  function createReadyWorkouts(entries) {
-    var all = Array.isArray(entries) ? entries.slice() : [];
+		function search(query) {
+			if (query === undefined || query === null || typeof query !== "string") {
+				return all.slice();
+			}
+			var q = query.trim().toLowerCase();
+			if (!q) {
+				return all.slice();
+			}
+			return all.filter(
+				(entry) =>
+					entry &&
+					typeof entry.title === "string" &&
+					entry.title.toLowerCase().indexOf(q) !== -1,
+			);
+		}
 
-    function search(query) {
-      if (query === undefined || query === null || typeof query !== 'string') {
-        return all.slice();
-      }
-      var q = query.trim().toLowerCase();
-      if (!q) {
-        return all.slice();
-      }
-      return all.filter(function (entry) {
-        return entry && typeof entry.title === 'string' && entry.title.toLowerCase().indexOf(q) !== -1;
-      });
-    }
+		function emptyWorkout() {
+			return {
+				title: "",
+				duration_minutes: 0,
+				participants: 0,
+				equipment: [],
+				phases: [],
+				intensity: "",
+				tags: [],
+			};
+		}
 
-    function emptyWorkout() {
-      return {
-        title: '',
-        duration_minutes: 0,
-        participants: 0,
-        equipment: [],
-        phases: [],
-        intensity: '',
-        tags: []
-      };
-    }
+		function toWorkout(entry) {
+			if (!entry) {
+				return emptyWorkout();
+			}
+			var text = typeof entry === "string" ? entry : entry.text;
+			if (!text || !THIngest || typeof THIngest.ingestText !== "function") {
+				return emptyWorkout();
+			}
+			return THIngest.ingestText(text);
+		}
 
-    function toWorkout(entry) {
-      if (!entry) {
-        return emptyWorkout();
-      }
-      var text = typeof entry === 'string' ? entry : entry.text;
-      if (!text || !THIngest || typeof THIngest.ingestText !== 'function') {
-        return emptyWorkout();
-      }
-      return THIngest.ingestText(text);
-    }
+		return {
+			all: all,
+			search: search,
+			toWorkout: toWorkout,
+		};
+	}
 
-    return {
-      all: all,
-      search: search,
-      toWorkout: toWorkout
-    };
-  }
+	var api = createReadyWorkouts(seed);
+	api.createReadyWorkouts = createReadyWorkouts;
 
-  var api = createReadyWorkouts(seed);
-  api.createReadyWorkouts = createReadyWorkouts;
-
-  root.THReadyWorkouts = api;
-  if (typeof module === 'object' && module.exports) {
-    module.exports = api;
-  }
-})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
+	root.THReadyWorkouts = api;
+	if (typeof module === "object" && module.exports) {
+		module.exports = api;
+	}
+})(
+	typeof window !== "undefined"
+		? window
+		: typeof globalThis !== "undefined"
+			? globalThis
+			: this,
+);
