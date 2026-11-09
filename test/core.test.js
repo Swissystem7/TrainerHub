@@ -103,6 +103,35 @@ test("blocked storage: store get, set and remove never throw", () => {
 	}
 });
 
+test("corrupted JSON string: store.get and getProfile return defaults", () => {
+	mem.clear();
+	mem.set("trainerhub_client_profiles", "{bad:json");
+	mem.set("test_key", "{not-json");
+	assert.equal(TH.store.get("test_key", "fallback"), "fallback");
+	assert.deepEqual(THClientProfile.getProfile("client_x"), {
+		equipment: [],
+		limitations: [],
+	});
+});
+
+test("empty or null storage: getProfile returns default profile", () => {
+	mem.clear();
+	assert.deepEqual(THClientProfile.getProfile("client_x"), {
+		equipment: [],
+		limitations: [],
+	});
+	mem.set("trainerhub_client_profiles", "");
+	assert.deepEqual(THClientProfile.getProfile("client_x"), {
+		equipment: [],
+		limitations: [],
+	});
+	mem.set("trainerhub_client_profiles", "null");
+	assert.deepEqual(THClientProfile.getProfile("client_x"), {
+		equipment: [],
+		limitations: [],
+	});
+});
+
 test("restored storage: save then load works again", () => {
 	mem.clear();
 	const originalStorage = global.localStorage;
