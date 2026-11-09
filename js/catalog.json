@@ -199,7 +199,7 @@
     "equipment": [
       "none"
     ],
-    "level": "beginner",
+    "level": "advanced",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-009.mp4",
     "source": "onedrive",
     "available": true
@@ -213,7 +213,7 @@
     "equipment": [
       "none"
     ],
-    "level": "beginner",
+    "level": "advanced",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-008.mp4",
     "source": "onedrive",
     "available": true
@@ -673,7 +673,7 @@
     "equipment": [
       "none"
     ],
-    "level": "beginner",
+    "level": "intermediate",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-039.mp4",
     "source": "onedrive",
     "available": true
