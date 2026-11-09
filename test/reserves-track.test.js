@@ -445,3 +445,29 @@ test("strength plans expose duration and deload guidance by level", () => {
 		assert.equal(p.verified, false);
 	});
 });
+
+test("DATA_PATH and STORE_KEY exports are stable non-empty strings", () => {
+	assert.equal(typeof R.DATA_PATH, "string");
+	assert.ok(R.DATA_PATH.length > 0);
+	assert.match(R.DATA_PATH, /miluim|reserves/i);
+	assert.equal(typeof R.STORE_KEY, "string");
+	assert.ok(R.STORE_KEY.length > 0);
+	assert.match(R.STORE_KEY, /miluim|trainerhub/i);
+});
+
+test("testById returns known test and null for missing id", () => {
+	R.setData(track);
+	const pull = R.testById("pullups");
+	assert.ok(pull);
+	assert.equal(pull.id, "pullups");
+	assert.equal(pull.threshold, 3);
+	assert.equal(R.testById("no-such-test"), null);
+	assert.equal(R.testById(""), null);
+});
+
+test("overallLabelHe distinguishes pass / fail / incomplete", () => {
+	assert.equal(R.overallLabelHe("pass"), "עובר — כל המדדים");
+	assert.equal(R.overallLabelHe("fail"), "לא עובר — יש מדד שלא עמד בסף");
+	assert.match(R.overallLabelHe("incomplete"), /חסר/);
+	assert.match(R.overallLabelHe(null), /חסר/);
+});
