@@ -177,13 +177,24 @@
     files.forEach((f, idx) => {
       var img = document.createElement('img');
       img.alt = 'תמונת שטח ' + (idx + 1);
-      if (f && ALLOWED_TYPES.includes(f.type)) {
-        img.src = URL.createObjectURL(f);
-        img.onload = () => { URL.revokeObjectURL(img.src); };
-      } else {
+      if (!(f && ALLOWED_TYPES.includes(f.type))) {
         img.removeAttribute?.('src');
         $('scanStatus').textContent = 'אפשר להעלות רק תמונה מסוג JPEG, PNG, WebP או GIF';
+        $('thumbs').appendChild(img);
+        return;
       }
+      // Decode File -> canvas JPEG data URL (same sanitizer as the camera path).
+      createImageBitmap(f).then((bmp) => {
+        var canvas = document.createElement('canvas');
+        canvas.width = bmp.width;
+        canvas.height = bmp.height;
+        canvas.getContext('2d').drawImage(bmp, 0, 0);
+        bmp.close?.();
+        img.src = canvas.toDataURL('image/jpeg', 0.85);
+      }).catch(() => {
+        img.removeAttribute?.('src');
+        $('scanStatus').textContent = 'לא הצלחתי לקרוא את התמונה. נסו קובץ JPEG או PNG.';
+      });
       $('thumbs').appendChild(img);
     });
   }

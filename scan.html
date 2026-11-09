@@ -248,16 +248,29 @@
       return;
     }
     var file = fileOrUrl;
-    if (file && ALLOWED_TYPES.includes(file.type)) {
-      img.onload = () => { detect(img); };
-      img.hidden = false;
-      img.src = URL.createObjectURL(file);
-      $('cam').hidden = true;
-    } else {
+    if (!(file && ALLOWED_TYPES.includes(file.type))) {
       img.removeAttribute?.('src');
       img.hidden = true;
       setStatus('אפשר להעלות רק תמונה מסוג JPEG, PNG, WebP או GIF');
+      return;
     }
+    // Decode the File via createImageBitmap and re-encode as JPEG data URL so
+    // img.src is never fed a blob: URL from the user file (CodeQL xss-through-dom).
+    createImageBitmap(file).then((bmp) => {
+      var canvas = $('frame');
+      canvas.width = bmp.width;
+      canvas.height = bmp.height;
+      canvas.getContext('2d').drawImage(bmp, 0, 0);
+      bmp.close?.();
+      img.onload = () => { detect(img); };
+      img.hidden = false;
+      img.src = canvas.toDataURL('image/jpeg', 0.85);
+      $('cam').hidden = true;
+    }).catch(() => {
+      img.removeAttribute?.('src');
+      img.hidden = true;
+      setStatus('לא הצלחתי לקרוא את התמונה. נסו קובץ JPEG או PNG.');
+    });
   }
 
   function stopCam() {
