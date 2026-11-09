@@ -64,6 +64,8 @@
       "placeholder": "17:30",
       "equipment_he": "מסלול ריצה או הליכון",
       "exercise_id": "miluim-run-3000",
+      "youtubeId": "bMeXQfQJ36E",
+      "youtubeIds": ["bMeXQfQJ36E", "vdnzLRfbRK8"],
       "verified": false,
       "target_pending_confirmation": true,
       "threshold_label_he": "יעד"
@@ -80,6 +82,8 @@
       "placeholder": "3",
       "equipment_he": "מתח",
       "exercise_id": "miluim-pullups",
+      "youtubeId": "9yVGh3XbJ34",
+      "youtubeIds": ["9yVGh3XbJ34", "gTZRADe8cN8", "EkpJkHpJXmM"],
       "verified": false,
       "target_pending_confirmation": true,
       "threshold_label_he": "יעד"
@@ -96,6 +100,8 @@
       "placeholder": "5",
       "equipment_he": "מקבילים",
       "exercise_id": "miluim-dips",
+      "youtubeId": "UiirN9zI-lw",
+      "youtubeIds": ["UiirN9zI-lw", "VgnRwQcDsuA"],
       "verified": false,
       "target_pending_confirmation": true,
       "threshold_label_he": "יעד"
@@ -112,6 +118,8 @@
       "placeholder": "15",
       "equipment_he": "ללא / מזרן",
       "exercise_id": "miluim-hr-pushups",
+      "youtubeId": "dFI0VWMqxIk",
+      "youtubeIds": ["dFI0VWMqxIk"],
       "verified": false,
       "target_pending_confirmation": true,
       "threshold_label_he": "יעד"
@@ -121,6 +129,8 @@
     {
       "id": "demo-hr-pushups",
       "exercise_id": "miluim-hr-pushups",
+      "youtubeId": "dFI0VWMqxIk",
+      "youtubeIds": ["dFI0VWMqxIk"],
       "name_he": "שכיבת סמיכה עם ניתוק ידיים",
       "priority": 1,
       "focus_he": "קו ישר, נעילת מרפקים, חזה וירכיים לרצפה, ידיים ל־T",
@@ -148,6 +158,8 @@
     {
       "id": "demo-pullups",
       "exercise_id": "miluim-pullups",
+      "youtubeId": "9yVGh3XbJ34",
+      "youtubeIds": ["9yVGh3XbJ34", "gTZRADe8cN8", "EkpJkHpJXmM"],
       "name_he": "עליות מתח",
       "priority": 2,
       "focus_he": "תלייה מתה, משיכות שכמות, חתירות, עזרה או ירידות איטיות, ואז מתח מלא — שלוש פעמים בשבוע",
@@ -172,6 +184,8 @@
     {
       "id": "demo-dips",
       "exercise_id": "miluim-dips",
+      "youtubeId": "UiirN9zI-lw",
+      "youtubeIds": ["UiirN9zI-lw", "VgnRwQcDsuA"],
       "name_he": "מקבילים",
       "priority": 3,
       "focus_he": "החזקה למעלה, עזרת רגליים, גומייה, ירידות איטיות, ואז מלא; יעד 3×5–8",
@@ -195,6 +209,8 @@
     {
       "id": "demo-run3000",
       "exercise_id": "miluim-run-3000",
+      "youtubeId": "bMeXQfQJ36E",
+      "youtubeIds": ["bMeXQfQJ36E", "vdnzLRfbRK8"],
       "name_he": "ריצת 3000 מ׳",
       "priority": 4,
       "focus_he": "קצב יעד כ־6:00 לדקה לק״מ ל־18:00",
