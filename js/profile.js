@@ -26,6 +26,9 @@
   function saveProfile(clientId, profile) {
     var id = String(clientId || '').trim();
     if (!id) return false;
+    if (profile === null || profile === undefined || typeof profile !== 'object' || Array.isArray(profile)) {
+      return false;
+    }
     var map = allProfiles();
     map[id] = normalizeProfile(profile);
     return TH.store.set(TH.KEYS.clientProfiles, map);

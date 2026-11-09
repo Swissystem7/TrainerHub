@@ -166,3 +166,17 @@ test("restored storage: save then load works again", () => {
 	assert.equal(TH.store.set("test_key", { ok: true }), true);
 	assert.deepEqual(TH.store.get("test_key", null), { ok: true });
 });
+
+test("saveProfile returns false for null profile without throwing", () => {
+	assert.equal(THClientProfile.saveProfile("client_null", null), false);
+	assert.deepEqual(THClientProfile.getProfile("client_null"), {
+		equipment: [],
+		limitations: [],
+	});
+});
+
+test("saveProfile returns false for undefined and primitive profile", () => {
+	assert.equal(THClientProfile.saveProfile("client_undef", undefined), false);
+	assert.equal(THClientProfile.saveProfile("client_str", "not-an-object"), false);
+	assert.equal(THClientProfile.saveProfile("client_num", 42), false);
+});
