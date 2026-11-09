@@ -89,8 +89,16 @@
   // exercises (about 45 minutes) into an 85-minute Main phase and «אימון כוח
   // 90 דקות» ran 48 minutes. A longer session gets one more exercise for every
   // 4.5 minutes of Main phase (the duration less the 5-minute warm-up).
+  // Invalid / zero / negative / non-finite requested minutes fall back to the
+  // documented 20-minute default so labels and plan fields never show -15 or 0.
+  function normalizeDurationMinutes(duration) {
+    var d = Number(duration);
+    if (!Number.isFinite(d) || d <= 0) return 20;
+    return d;
+  }
+
   function wantedCount(duration, rx) {
-    var d = Number(duration) || 20;
+    var d = normalizeDurationMinutes(duration);
     var base = d <= 10 ? 3 : d <= 20 ? 5 : d <= 30 ? 6 : d <= 45 ? 8
       : Math.max(10, Math.floor((d - 5) * 60 / exerciseSeconds(RX.hypertrophy)));
     if (!rx) return base;
@@ -500,6 +508,7 @@
     opts = opts || {};
     var prefer = preferMap(opts.prefer);
     var req = typeof text === 'string' ? Prompt.parsePrompt(text) : (text || Prompt.parsePrompt(''));
+    req.duration = normalizeDurationMinutes(req.duration);
     var list = catalogList(catalogOrList);
     var rx = prescription(req);
     var need = wantedCount(req.duration, rx);
@@ -556,7 +565,7 @@
     // warm-up clip fits), the Main phase gets the rest. Before this the plan
     // was Warm-up 5 + Main (duration - 10) + Cool-down 0, which left 5 minutes
     // unaccounted for and showed a 5-minute warm-up block with no clip in it.
-    var totalMinutes = Math.max(1, Math.floor(Number(req.duration) || 20));
+    var totalMinutes = Math.max(1, Math.floor(normalizeDurationMinutes(req.duration)));
     var warmMinutes = Math.min(5, Math.floor(totalMinutes / 2));
     var warmEx = [];
     if (warmup && isPlayable(warmup) && warmMinutes >= 3) {
@@ -634,7 +643,8 @@
     groupPlan: groupPlan,
     prescription: prescription,
     coreOnly: coreOnly,
-    wantedCount: wantedCount
+    wantedCount: wantedCount,
+    normalizeDurationMinutes: normalizeDurationMinutes
   };
   root.THEngine = api;
   if (typeof module === 'object' && module.exports) {
