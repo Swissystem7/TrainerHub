@@ -375,9 +375,16 @@
         var flag = document.createElement('p');
         flag.className = 'unverified';
         flag.textContent = s.verified ? '' : 'verified: false';
+        var start = document.createElement('button');
+        start.type = 'button';
+        start.className = 'ghost';
+        start.textContent = 'התחל אימון';
+        start.setAttribute('aria-label', 'התחל ' + (s.day_he || 'אימון') + ' במצב אימון חי');
+        start.addEventListener('click', () => { startReserveSession(s.id); });
         card.appendChild(title);
         card.appendChild(ul);
         card.appendChild(flag);
+        card.appendChild(start);
         sessions.appendChild(card);
       });
     });
@@ -503,13 +510,65 @@
     if (strBtn) strBtn.addEventListener('click', renderStrength);
   }
 
+  function sessionToWorkout(s) {
+    var exercises = (s.items_he || []).map((line, idx) => {
+      var sets = (s.load && s.load.sets) || 1;
+      var reps = null;
+      var m = String(line).match(/(\d+)\s*[×x]\s*(\d+)/);
+      if (m) { sets = Number(m[1]); reps = m[2]; }
+      return {
+        name: line,
+        id: 'miluim-' + s.id + '-' + idx,
+        sets: sets,
+        reps: reps,
+        rest_seconds: 45,
+        notes: s.focus_he || ''
+      };
+    });
+    return {
+      title: 'מילואים · שבוע ' + s.week + ' · ' + (s.day_he || ''),
+      duration_minutes: 30,
+      phases: [{ name: 'Main', exercises: exercises }]
+    };
+  }
+
+  function startReserveSession(sessionId) {
+    var sessions = (R.plan() && R.plan().sessions) || [];
+    var s = null;
+    sessions.forEach((row) => { if (row.id === sessionId) s = row; });
+    if (!s || !window.TH || !TH.store) return;
+    var workout = sessionToWorkout(s);
+    if (!TH.store.set(TH.KEYS.active, workout)) return;
+    window.location.href = './frontend/workout-mode.html';
+  }
+
+  function saveMetricsToJournal(summary) {
+    if (!window.TH || !TH.recordFinishedWorkout) return;
+    var done = (summary.tests || []).filter((t) => !t.incomplete);
+    var exercises = done.map((t) => ({ name: t.name_he, id: t.id, sets: 1, reps: t.pass_when === 'gte' ? String(t.value) : null }));
+    TH.recordFinishedWorkout({
+      title: 'מדדי מילואים',
+      doneAt: new Date().toISOString(),
+      exercises: done.length,
+      sets: done.length,
+      skipped: (summary.tests || []).length - done.length,
+      plan: TH.compactPlan({ title: 'מדדי מילואים', phases: [{ name: 'Main', exercises: exercises }] }),
+      log: done.filter((t) => t.pass_when === 'gte' && t.value > 0).map((t) => ({
+        id: t.id,
+        sets: [{ reps: t.value, weightKg: 0 }]
+      }))
+    });
+  }
+
   el('saveBtn').addEventListener('click', () => {
     var map = readInputs();
     var cp = el('checkpoint').value;
     Object.keys(map).forEach((id) => {
       if (map[id] !== '') R.logResult(id, map[id], cp);
     });
-    renderStatus(R.currentSummary());
+    var summary = R.currentSummary();
+    renderStatus(summary);
+    saveMetricsToJournal(summary);
   });
   el('evalBtn').addEventListener('click', () => {
     renderStatus(R.evaluateAll(readInputs()));
