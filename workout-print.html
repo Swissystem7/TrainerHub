@@ -27,6 +27,8 @@
     .th-btn[disabled], .th-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; pointer-events: none; }
     @media print {
       body { background: #fff; color: #111; }
+      /* biome-ignore lint/complexity/noImportantStyles: print override */
+      .no-print, .th-nav, .toolbar, button { display: none !important; }
       .print-sheet { color: #111; }
       .print-sheet th, .print-sheet td { border-bottom-color: #ccc; color: #111; }
     }
@@ -59,12 +61,13 @@
     <a class="th-btn ghost" href="./offer.html" aria-label="מעבר למידע על מסלול מאמן">מסלול מאמן</a>
   </form>
   <p class="honest no-print" id="hint" role="status" aria-live="polite" style="color:#a7b1ab;font-size:.88rem;line-height:1.5"></p>
+  <!-- biome-ignore lint/a11y/useSemanticElements: printable sheet region -->
   <div id="sheet" role="region" aria-label="תצוגת דף אימון להדפסה"></div>
 </main>
 <script src="./js/core.js"></script>
 <script>
-(function () {
-  var $ = function (id) { return document.getElementById(id); };
+(() => {
+  var $ = (id) => document.getElementById(id);
 
   // A stored entry counts as a workout only when it has phases to print;
   // {} (saved by «עדכן שם» before any workout existed) must not shadow
@@ -75,7 +78,7 @@
 
   function savedBrand() {
     var packed = TH.store.get(TH.KEYS.print, null);
-    return packed && packed.brand ? String(packed.brand) : '';
+    return packed?.brand ? String(packed.brand) : '';
   }
 
   function currentWorkout() {
@@ -104,7 +107,7 @@
   function render() {
     var box = $('sheet');
     var raw = TH.store.get(TH.KEYS.print, null);
-    if (raw && raw.report && raw.report.kind === 'monthly' && TH.monthlyReportHtml) {
+    if (raw?.report && raw.report.kind === 'monthly' && TH.monthlyReportHtml) {
       updatePrintBtn(true);
       box.innerHTML = TH.monthlyReportHtml(raw.report, { brand: $('brand').value.trim() });
       $('hint').textContent = 'דוח חודשי מהיומן. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
@@ -129,20 +132,20 @@
     }
   }
 
-  TH.ready(function () {
+  TH.ready(() => {
     var ent = TH.entitlement();
     var packed = currentWorkout();
     if (ent.brand) $('brand').value = ent.brand;
-    else if (packed && packed.brand) $('brand').value = packed.brand;
+    else if (packed?.brand) $('brand').value = packed.brand;
     else $('brand').value = savedBrand();
     render();
   });
 
-  $('brandForm').addEventListener('submit', function (e) {
+  $('brandForm').addEventListener('submit', (e) => {
     e.preventDefault();
     var packed = currentWorkout();
     var brand = $('brand').value.trim();
-    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: brand, client: (packed && packed.client) || '' });
+    TH.store.set(TH.KEYS.print, { workout: packed ? packed.workout : null, brand: brand, client: (packed?.client) || '' });
     // On the trainer tier the entitlement brand is read first on load and is
     // the fallback for an empty field, so it has to follow the new name too.
     var ent = TH.entitlement();
