@@ -6,7 +6,7 @@ function memoryStore(initial) {
   let value = initial || [];
   return {
     get: () => structuredClone(value),
-    set: (k, v) => { value = structuredClone(v); return true; },
+    set: (_k, v) => { value = structuredClone(v); return true; },
     read: () => value
   };
 }
