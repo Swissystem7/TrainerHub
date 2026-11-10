@@ -59,8 +59,9 @@ test("weekly.html root <html> has lang='he' and dir='rtl', and has valid non-emp
 
 	const h1Match = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
 	assert.ok(h1Match, "document must contain an <h1> heading");
-	const h1Text = h1Match[1].replace(/<[^>]+>/g, "").trim();
-	assert.ok(h1Text.length > 0, "<h1> heading must not be empty");
+	// Do not strip tags with a single multi-character replace (CodeQL js/incomplete-multi-character-sanitization).
+	// Visible text is any non-tag, non-whitespace character inside the heading.
+	assert.ok(/[^<>\s]/.test(h1Match[1]), "<h1> heading must not be empty");
 });
 
 test("weekly.html daily workout template contains accessible action buttons with descriptive aria-label referencing esc(dayName)", () => {
