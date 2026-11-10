@@ -3,368 +3,448 @@
  * Stimulus is phrased as training stimulus, never as a promised outcome.
  * Classic script. Namespace: window.THAnalyzer
  */
-(function (root) {
-  'use strict';
+((root) => {
+	var Infer = root.THInfer;
+	if (typeof module === "object" && module.exports) {
+		Infer = require("./infer.js");
+	}
 
-  var Infer = root.THInfer;
-  if (typeof module === 'object' && module.exports) {
-    Infer = require('./infer.js');
-  }
+	var STIMULUS = {
+		endurance: {
+			key: "endurance",
+			he: "סבולת שריר",
+			detail:
+				"גירוי לסבולת שריר — חזרות גבוהות או זמן תחת עומס, ומנוחות קצרות.",
+		},
+		hypertrophy: {
+			key: "hypertrophy",
+			he: "היפרטרופיה",
+			detail: "גירוי להיפרטרופיה — טווח חזרות בינוני ומנוחה בינונית.",
+		},
+		strength: {
+			key: "strength",
+			he: "כוח",
+			detail: "גירוי לכוח — מעט חזרות כבדות ומנוחות ארוכות.",
+		},
+		core: {
+			key: "core",
+			he: "ליבה",
+			detail:
+				"גירוי לייצוב ליבה — החזקות וזמן תחת עומס על שרירי הגוף המרכזיים.",
+		},
+	};
 
-  var STIMULUS = {
-    endurance: {
-      key: 'endurance',
-      he: 'סבולת שריר',
-      detail: 'גירוי לסבולת שריר — חזרות גבוהות או זמן תחת עומס, ומנוחות קצרות.'
-    },
-    hypertrophy: {
-      key: 'hypertrophy',
-      he: 'היפרטרופיה',
-      detail: 'גירוי להיפרטרופיה — טווח חזרות בינוני ומנוחה בינונית.'
-    },
-    strength: {
-      key: 'strength',
-      he: 'כוח',
-      detail: 'גירוי לכוח — מעט חזרות כבדות ומנוחות ארוכות.'
-    },
-    core: {
-      key: 'core',
-      he: 'ליבה',
-      detail: 'גירוי לייצוב ליבה — החזקות וזמן תחת עומס על שרירי הגוף המרכזיים.'
-    }
-  };
+	// A weight in kilograms on its own («משקולות 5 ק"ג») is a load, not a promise; kilos
+	// only count next to losing them («לרדת 5 קילו»).
+	var FORBIDDEN_RX =
+		/תרזה|תרדי|תרד במשקל|תרז[הי]|הרזי[הי]|(ירידה|הורדה|לרדת|להוריד)\s+במשקל|(תרד|תרדי|לרדת|להוריד|תוריד|תורידי|ירידה של|הורדה של)\s+\d+(\.\d+)?\s*(קילוגרם|קילו|ק״ג|ק"ג)|מובטח|תוצאות מובטחות|קוביות בטן מובטח|תעלה במסה|שריפת שומן|שורף שומן|(שריפת|שורף|שורפת|שורפי|שורפים|שורפות|לשרוף)[\s-]+(את[\s-]+)?ה?(שומן|שומנים)/i;
 
-  // A weight in kilograms on its own («משקולות 5 ק"ג») is a load, not a promise; kilos
-  // only count next to losing them («לרדת 5 קילו»).
-  var FORBIDDEN_RX = /תרזה|תרדי|תרד במשקל|תרז[הי]|הרזי[הי]|(ירידה|הורדה|לרדת|להוריד)\s+במשקל|(תרד|תרדי|לרדת|להוריד|תוריד|תורידי|ירידה של|הורדה של)\s+\d+(\.\d+)?\s*(קילוגרם|קילו|ק״ג|ק"ג)|מובטח|תוצאות מובטחות|קוביות בטן מובטח|תעלה במסה|שריפת שומן|שורף שומן|(שריפת|שורף|שורפת|שורפי|שורפים|שורפות|לשרוף)[\s-]+(את[\s-]+)?ה?(שומן|שומנים)/i;
+	function muscleLabel(id) {
+		return Infer.MUSCLE_LABELS?.[id] || id;
+	}
 
-  function muscleLabel(id) {
-    return (Infer.MUSCLE_LABELS && Infer.MUSCLE_LABELS[id]) || id;
-  }
+	function resolveEntry(input) {
+		var fromCat;
+		var hit;
+		var name;
+		var entry;
+		if (!input)
+			return { he: "", muscles: [], equipment: ["none"], level: "beginner" };
+		if (typeof input === "string") {
+			fromCat =
+				root.TH && typeof root.TH.matchCatalog === "function"
+					? root.TH.matchCatalog(input)
+					: null;
+			if (fromCat) return fromCat;
+			return { he: input, name: input, muscles: [], equipment: ["none"] };
+		}
+		name = input.he || input.name || "";
+		entry = input;
+		if (root.TH && typeof root.TH.findExercise === "function") {
+			hit =
+				root.TH.findExercise(input) ||
+				(input.id && root.TH.catalog?.[input.id]);
+			if (hit) entry = Object.assign({}, hit, input);
+		} else if (input.id && root.TH?.catalog?.[input.id]) {
+			entry = Object.assign({}, root.TH.catalog[input.id], input);
+		}
+		if (!entry.he) entry.he = name;
+		return entry;
+	}
 
-  function resolveEntry(input) {
-    if (!input) return { he: '', muscles: [], equipment: ['none'], level: 'beginner' };
-    if (typeof input === 'string') {
-      var fromCat = root.TH && typeof root.TH.matchCatalog === 'function'
-        ? root.TH.matchCatalog(input)
-        : null;
-      if (fromCat) return fromCat;
-      return { he: input, name: input, muscles: [], equipment: ['none'] };
-    }
-    var name = input.he || input.name || '';
-    var entry = input;
-    if (root.TH && typeof root.TH.findExercise === 'function') {
-      var hit = root.TH.findExercise(input) || (input.id && root.TH.catalog && root.TH.catalog[input.id]);
-      if (hit) entry = Object.assign({}, hit, input);
-    } else if (input.id && root.TH && root.TH.catalog && root.TH.catalog[input.id]) {
-      entry = Object.assign({}, root.TH.catalog[input.id], input);
-    }
-    if (!entry.he) entry.he = name;
-    return entry;
-  }
+	function analyzeExercise(input) {
+		var entry = resolveEntry(input);
+		var inferred = Infer.inferFromName(entry.he || entry.name || "", {
+			folder: entry.folder || "",
+			hint: (entry.muscles || []).join(" "),
+		});
+		var muscles = entry.muscles?.length
+			? entry.muscles.slice()
+			: inferred.muscles.slice();
+		var primary = muscles[0] || inferred.muscles[0] || "core";
+		var secondary = Infer.uniq(
+			(inferred.secondary || []).concat(muscles.slice(1)),
+		);
+		secondary = secondary.filter((m) => m !== primary);
+		var pattern = inferred.pattern;
+		var load = inferred.load;
+		if (entry.duration_seconds && !entry.reps) load = "time";
+		if (entry.reps && !entry.duration_seconds) load = "reps";
+		return {
+			id: entry.id || null,
+			he: entry.he || entry.name || "",
+			primary: primary,
+			secondary: secondary,
+			muscles: muscles,
+			pattern: pattern,
+			load: load,
+			difficulty: entry.level || inferred.level,
+			equipment: entry.equipment?.length ? entry.equipment : inferred.equipment,
+		};
+	}
 
-  function analyzeExercise(input) {
-    var entry = resolveEntry(input);
-    var inferred = Infer.inferFromName(entry.he || entry.name || '', {
-      folder: entry.folder || '',
-      hint: (entry.muscles || []).join(' ')
-    });
-    var muscles = (entry.muscles && entry.muscles.length) ? entry.muscles.slice() : inferred.muscles.slice();
-    var primary = muscles[0] || inferred.muscles[0] || 'core';
-    var secondary = Infer.uniq((inferred.secondary || []).concat(muscles.slice(1)));
-    secondary = secondary.filter(function (m) { return m !== primary; });
-    var pattern = inferred.pattern;
-    var load = inferred.load;
-    if (entry.duration_seconds && !entry.reps) load = 'time';
-    if (entry.reps && !entry.duration_seconds) load = 'reps';
-    return {
-      id: entry.id || null,
-      he: entry.he || entry.name || '',
-      primary: primary,
-      secondary: secondary,
-      muscles: muscles,
-      pattern: pattern,
-      load: load,
-      difficulty: entry.level || inferred.level,
-      equipment: (entry.equipment && entry.equipment.length) ? entry.equipment : inferred.equipment
-    };
-  }
+	function flattenWorkout(workout) {
+		if (!workout) return [];
+		if (Array.isArray(workout)) return workout;
+		if (Array.isArray(workout.exercises) && !workout.phases)
+			return workout.exercises;
+		var out = [];
+		(workout.phases || []).forEach((ph) => {
+			(ph.exercises || []).forEach((ex) => {
+				if (!ex) return;
+				out.push(Object.assign({ _phase: ph.name }, ex));
+			});
+		});
+		return out;
+	}
 
-  function flattenWorkout(workout) {
-    if (!workout) return [];
-    if (Array.isArray(workout)) return workout;
-    if (Array.isArray(workout.exercises) && !workout.phases) return workout.exercises;
-    var out = [];
-    (workout.phases || []).forEach(function (ph) {
-      (ph.exercises || []).forEach(function (ex) {
-        if (!ex) return;
-        out.push(Object.assign({ _phase: ph.name }, ex));
-      });
-    });
-    return out;
-  }
+	function parseRepMid(reps) {
+		var str;
+		var dashes;
+		var m;
+		var mid;
+		var n;
+		if (reps == null) return null;
+		if (typeof reps === "number") {
+			return Number.isFinite(reps) && reps >= 0 ? reps : null;
+		}
+		str = String(reps).trim();
+		dashes = (str.match(/[-–—−]/g) || []).length;
+		if (dashes > 1) return null;
+		if (dashes === 1) {
+			if (/^[-–—−]/.test(str)) return null;
+			m = str.match(/(\d+)\s*[-–—−]\s*(\d+)/);
+			if (m) {
+				mid = (Number(m[1]) + Number(m[2])) / 2;
+				return Number.isFinite(mid) && mid >= 0 ? mid : null;
+			}
+			return null;
+		}
+		n = parseInt(str, 10);
+		return !Number.isNaN(n) && Number.isFinite(n) && n >= 0 ? n : null;
+	}
 
-  function parseRepMid(reps) {
-    if (reps == null) return null;
-    if (typeof reps === 'number' && isFinite(reps)) return reps;
-    var m = String(reps).match(/(\d+)\s*[-–]\s*(\d+)/);
-    if (m) return (Number(m[1]) + Number(m[2])) / 2;
-    var n = parseInt(reps, 10);
-    return isNaN(n) ? null : n;
-  }
+	/**
+	 * The rest an exercise states, in seconds, or null when it states none.
+	 * An explicit 0 ("ללא מנוחה", a circuit) is a stated rest of zero, not a
+	 * missing one.
+	 */
+	function statedRest(ex) {
+		if (!ex) return null;
+		var raw = ex.rest_seconds != null ? ex.rest_seconds : ex.restSeconds;
+		if (raw == null || raw === "") return null;
+		var n = Number(raw);
+		return Number.isFinite(n) && n >= 0 ? n : null;
+	}
 
-  /**
-   * The rest an exercise states, in seconds, or null when it states none.
-   * An explicit 0 ("ללא מנוחה", a circuit) is a stated rest of zero, not a
-   * missing one.
-   */
-  function statedRest(ex) {
-    if (!ex) return null;
-    var raw = ex.rest_seconds != null ? ex.rest_seconds : ex.restSeconds;
-    if (raw == null || raw === '') return null;
-    var n = Number(raw);
-    return isFinite(n) && n >= 0 ? n : null;
-  }
+	var DEFAULT_REST_SECONDS = 45;
 
-  var DEFAULT_REST_SECONDS = 45;
+	function estimateDuration(workout, exercises) {
+		var statedMinutes;
+		var seconds;
+		if (workout && workout.duration_minutes != null) {
+			statedMinutes = Number(workout.duration_minutes);
+			if (Number.isFinite(statedMinutes) && statedMinutes > 0) {
+				return statedMinutes;
+			}
+		}
+		if (!exercises?.length) return 0;
+		seconds = 0;
+		exercises.forEach((ex) => {
+			var setsRaw = Number(ex?.sets);
+			var sets = Number.isFinite(setsRaw) && setsRaw > 0 ? setsRaw : 1;
+			var rawDur = Number(ex?.duration_seconds);
+			var work = Number.isFinite(rawDur) && rawDur > 0 ? rawDur : 0;
+			var reps;
+			var rest;
+			if (!work) {
+				reps = parseRepMid(ex?.reps);
+				work = reps ? reps * 3 : 30;
+			}
+			rest = statedRest(ex);
+			if (rest == null) rest = DEFAULT_REST_SECONDS;
+			seconds += sets * work + Math.max(0, sets - 1) * rest;
+		});
+		return Math.max(0, Math.round(seconds / 60));
+	}
 
-  function estimateDuration(workout, exercises) {
-    if (workout && workout.duration_minutes) return Number(workout.duration_minutes) || 0;
-    if (!exercises || !exercises.length) return 0;
-    var seconds = 0;
-    exercises.forEach(function (ex) {
-      var sets = Number(ex.sets) || 1;
-      var work = Number(ex.duration_seconds) || 0;
-      if (!work) {
-        var reps = parseRepMid(ex.reps);
-        work = reps ? reps * 3 : 30;
-      }
-      var rest = statedRest(ex);
-      if (rest == null) rest = DEFAULT_REST_SECONDS;
-      seconds += sets * work + Math.max(0, sets - 1) * rest;
-    });
-    return Math.max(1, Math.round(seconds / 60));
-  }
+	function estimateIntensity(workout, analyses) {
+		if (workout?.intensity) return workout.intensity;
+		var plyo = 0;
+		var hard = 0;
+		analyses.forEach((a) => {
+			if (a.pattern === "plyo") plyo++;
+			if (a.difficulty === "advanced") hard++;
+			if (a.difficulty === "intermediate") hard += 0.4;
+		});
+		if (plyo >= 2 || hard >= 3) return "high";
+		if (analyses.every((a) => a.difficulty === "beginner") && plyo === 0)
+			return "low";
+		return "medium";
+	}
 
-  function estimateIntensity(workout, analyses) {
-    if (workout && workout.intensity) return workout.intensity;
-    var plyo = 0;
-    var hard = 0;
-    analyses.forEach(function (a) {
-      if (a.pattern === 'plyo') plyo++;
-      if (a.difficulty === 'advanced') hard++;
-      if (a.difficulty === 'intermediate') hard += 0.4;
-    });
-    if (plyo >= 2 || hard >= 3) return 'high';
-    if (analyses.every(function (a) { return a.difficulty === 'beginner'; }) && plyo === 0) return 'low';
-    return 'medium';
-  }
+	function estimateStimulus(workout, analyses, exercises) {
+		var coreShare = 0;
+		var timeShare = 0;
+		analyses.forEach((a) => {
+			if (a.primary === "core" || a.pattern === "core") coreShare++;
+			if (a.load === "time") timeShare++;
+		});
+		var n = analyses.length || 1;
+		var avgReps = 0;
+		var avgRest = 0;
+		var counted = 0;
+		var restCounted = 0;
+		exercises.forEach((ex) => {
+			var r = parseRepMid(ex.reps);
+			if (r != null) {
+				avgReps += r;
+				counted++;
+			}
+			// Only exercises that state a rest take part in the average: a pasted
+			// workout names the rest once, so lines without one must not pull the
+			// average toward zero and turn a 3x5 strength session into hypertrophy.
+			var rest = statedRest(ex);
+			if (rest != null) {
+				avgRest += rest;
+				restCounted++;
+			}
+		});
+		if (counted) avgReps = avgReps / counted;
+		if (restCounted) avgRest = avgRest / restCounted;
 
-  function estimateStimulus(workout, analyses, exercises) {
-    var coreShare = 0;
-    var timeShare = 0;
-    analyses.forEach(function (a) {
-      if (a.primary === 'core' || a.pattern === 'core') coreShare++;
-      if (a.load === 'time') timeShare++;
-    });
-    var n = analyses.length || 1;
-    var avgReps = 0;
-    var avgRest = 0;
-    var counted = 0;
-    var restCounted = 0;
-    exercises.forEach(function (ex) {
-      var r = parseRepMid(ex.reps);
-      if (r != null) {
-        avgReps += r;
-        counted++;
-      }
-      // Only exercises that state a rest take part in the average: a pasted
-      // workout names the rest once, so lines without one must not pull the
-      // average toward zero and turn a 3x5 strength session into hypertrophy.
-      var rest = statedRest(ex);
-      if (rest != null) {
-        avgRest += rest;
-        restCounted++;
-      }
-    });
-    if (counted) avgReps = avgReps / counted;
-    if (restCounted) avgRest = avgRest / restCounted;
+		var goal = workout && (workout.goal || workout.tags?.[0]);
+		if (goal === "strength") return STIMULUS.strength;
+		if (goal === "hypertrophy" || goal === "muscle_gain")
+			return STIMULUS.hypertrophy;
+		if (goal === "endurance") return STIMULUS.endurance;
+		if (goal === "core") return STIMULUS.core;
 
-    var goal = workout && (workout.goal || (workout.tags && workout.tags[0]));
-    if (goal === 'strength') return STIMULUS.strength;
-    if (goal === 'hypertrophy' || goal === 'muscle_gain') return STIMULUS.hypertrophy;
-    if (goal === 'endurance') return STIMULUS.endurance;
-    if (goal === 'core') return STIMULUS.core;
+		if (coreShare / n >= 0.6 && timeShare / n >= 0.4) return STIMULUS.core;
+		if (avgReps && avgReps <= 6 && avgRest >= 90) return STIMULUS.strength;
+		if (avgReps && avgReps >= 12) return STIMULUS.endurance;
+		if (timeShare / n >= 0.5) return STIMULUS.endurance;
+		if (avgReps && avgReps >= 8 && avgReps <= 12) return STIMULUS.hypertrophy;
+		if (coreShare / n >= 0.7) return STIMULUS.core;
+		return STIMULUS.hypertrophy;
+	}
 
-    if (coreShare / n >= 0.6 && timeShare / n >= 0.4) return STIMULUS.core;
-    if (avgReps && avgReps <= 6 && avgRest >= 90) return STIMULUS.strength;
-    if (avgReps && avgReps >= 12) return STIMULUS.endurance;
-    if (timeShare / n >= 0.5) return STIMULUS.endurance;
-    if (avgReps && avgReps >= 8 && avgReps <= 12) return STIMULUS.hypertrophy;
-    if (coreShare / n >= 0.7) return STIMULUS.core;
-    return STIMULUS.hypertrophy;
-  }
+	/**
+	 * A warm-up exercise wherever it sits: the catalog clip (id 'warmup') or a
+	 * line whose name is / starts with "חימום" (pasted workouts put it in Main).
+	 */
+	function isWarmupExercise(ex) {
+		if (!ex) return false;
+		if (ex.id === "warmup" || ex.name === "warmup") return true;
+		var label = Infer.fold(ex.he || ex.name || "");
+		return label === "חימום" || label.indexOf("חימום ") === 0;
+	}
 
-  /**
-   * A warm-up exercise wherever it sits: the catalog clip (id 'warmup') or a
-   * line whose name is / starts with "חימום" (pasted workouts put it in Main).
-   */
-  function isWarmupExercise(ex) {
-    if (!ex) return false;
-    if (ex.id === 'warmup' || ex.name === 'warmup') return true;
-    var label = Infer.fold(ex.he || ex.name || '');
-    return label === 'חימום' || label.indexOf('חימום ') === 0;
-  }
+	/**
+	 * A cool-down line a pasted workout leaves in Main: «שחרור 5 דקות»,
+	 * «מתיחות», «קירור». It is unloaded stretching, not core work.
+	 */
+	function isCooldownExercise(ex) {
+		if (!ex) return false;
+		var label = Infer.fold(ex.he || ex.name || "");
+		return /^(שחרור|מתיחות|מתיחה|קירור)( |$)/.test(label);
+	}
 
-  /**
-   * A cool-down line a pasted workout leaves in Main: «שחרור 5 דקות»,
-   * «מתיחות», «קירור». It is unloaded stretching, not core work.
-   */
-  function isCooldownExercise(ex) {
-    if (!ex) return false;
-    var label = Infer.fold(ex.he || ex.name || '');
-    return /^(שחרור|מתיחות|מתיחה|קירור)( |$)/.test(label);
-  }
+	function hasWarmup(workout, exercises) {
+		var phases = workout?.phases || [];
+		var i;
+		for (i = 0; i < phases.length; i++) {
+			if (
+				phases[i].name === "Warm-up" &&
+				phases[i].exercises &&
+				phases[i].exercises.length
+			)
+				return true;
+		}
+		return (exercises || []).some(isWarmupExercise);
+	}
 
-  function hasWarmup(workout, exercises) {
-    var phases = (workout && workout.phases) || [];
-    for (var i = 0; i < phases.length; i++) {
-      if (phases[i].name === 'Warm-up' && phases[i].exercises && phases[i].exercises.length) return true;
-    }
-    return (exercises || []).some(isWarmupExercise);
-  }
+	function qualityFlags(workout, analyses, volumePct, push, pull, exercises) {
+		var flags = [];
+		var corePct = volumePct.core || 0;
+		if (corePct >= 70 && !volumePct.back) {
+			flags.push({
+				key: "core-heavy-no-back",
+				he: `האימון הזה ${corePct}% ליבה, אין עבודת גב`,
+			});
+		} else if (corePct >= 80) {
+			flags.push({
+				key: "core-heavy",
+				he: `האימון הזה ${corePct}% ליבה`,
+			});
+		}
+		if (pull === 0 && analyses.length) {
+			flags.push({ key: "no-pull", he: "אין תרגילי משיכה" });
+		}
+		if (push === 0 && pull > 0) {
+			flags.push({ key: "no-push", he: "אין תרגילי דחיפה" });
+		}
+		if (!hasWarmup(workout, exercises)) {
+			flags.push({ key: "no-warmup", he: "חסר חימום" });
+		}
+		var used = {};
+		analyses.forEach((a) => {
+			used[a.primary] = true;
+		});
+		if (!used.back && !used.legs && used.chest) {
+			flags.push({ key: "no-posterior", he: "אין עבודת שרשרת אחורית" });
+		}
+		return flags;
+	}
 
-  function qualityFlags(workout, analyses, volumePct, push, pull, exercises) {
-    var flags = [];
-    var corePct = volumePct.core || 0;
-    if (corePct >= 70 && !volumePct.back) {
-      flags.push({
-        key: 'core-heavy-no-back',
-        he: 'האימון הזה ' + corePct + '% ליבה, אין עבודת גב'
-      });
-    } else if (corePct >= 80) {
-      flags.push({
-        key: 'core-heavy',
-        he: 'האימון הזה ' + corePct + '% ליבה'
-      });
-    }
-    if (pull === 0 && analyses.length) {
-      flags.push({ key: 'no-pull', he: 'אין תרגילי משיכה' });
-    }
-    if (push === 0 && pull > 0) {
-      flags.push({ key: 'no-push', he: 'אין תרגילי דחיפה' });
-    }
-    if (!hasWarmup(workout, exercises)) {
-      flags.push({ key: 'no-warmup', he: 'חסר חימום' });
-    }
-    var used = {};
-    analyses.forEach(function (a) { used[a.primary] = true; });
-    if (!used.back && !used.legs && used.chest) {
-      flags.push({ key: 'no-posterior', he: 'אין עבודת שרשרת אחורית' });
-    }
-    return flags;
-  }
+	/**
+	 * The exercises that make up the training itself: the warm-up and
+	 * cool-down phases and a «חימום» or «שחרור» line are left out, so the
+	 * warm-up clip (tagged core) does not show up as a primary muscle of a legs
+	 * session. A workout that is nothing but warm-up keeps everything.
+	 */
+	function isWorkingExercise(ex) {
+		if (ex._phase === "Warm-up" || ex._phase === "Cool-down") return false;
+		return !isWarmupExercise(ex) && !isCooldownExercise(ex);
+	}
 
-  /**
-   * The exercises that make up the training itself: the warm-up and
-   * cool-down phases and a «חימום» or «שחרור» line are left out, so the
-   * warm-up clip (tagged core) does not show up as a primary muscle of a legs
-   * session. A workout that is nothing but warm-up keeps everything.
-   */
-  function isWorkingExercise(ex) {
-    if (ex._phase === 'Warm-up' || ex._phase === 'Cool-down') return false;
-    return !isWarmupExercise(ex) && !isCooldownExercise(ex);
-  }
+	function analyzeSession(workout) {
+		var all = flattenWorkout(workout);
+		var exercises = all.filter(isWorkingExercise);
+		if (!exercises.length) exercises = all;
+		var analyses = exercises.map(analyzeExercise);
+		var volume = {};
+		analyses.forEach((a, i) => {
+			var m = a.primary || "core";
+			var rawSets = Number(exercises[i]?.sets);
+			var setCount = Number.isFinite(rawSets) && rawSets >= 1 ? rawSets : 1;
+			volume[m] = (volume[m] || 0) + setCount;
+		});
+		var total = 0;
+		Object.keys(volume).forEach((k) => {
+			total += volume[k];
+		});
+		if (!total) total = 1;
+		var volumePct = {};
+		Object.keys(volume).forEach((k) => {
+			volumePct[k] = Math.round((100 * volume[k]) / total);
+		});
+		var push = 0;
+		var pull = 0;
+		analyses.forEach((a) => {
+			if (a.pattern === "push") push++;
+			if (a.pattern === "pull") pull++;
+		});
+		var durationMinutes = estimateDuration(workout, all);
+		var intensity = estimateIntensity(workout, analyses);
+		var stimulus = estimateStimulus(workout, analyses, exercises);
+		var flags = qualityFlags(workout, analyses, volumePct, push, pull, all);
 
-  function analyzeSession(workout) {
-    var all = flattenWorkout(workout);
-    var exercises = all.filter(isWorkingExercise);
-    if (!exercises.length) exercises = all;
-    var analyses = exercises.map(analyzeExercise);
-    var volume = {};
-    analyses.forEach(function (a, i) {
-      var m = a.primary || 'core';
-      var setCount = Number(exercises[i] && exercises[i].sets) || 1;
-      volume[m] = (volume[m] || 0) + setCount;
-    });
-    var total = 0;
-    Object.keys(volume).forEach(function (k) { total += volume[k]; });
-    if (!total) total = 1;
-    var volumePct = {};
-    Object.keys(volume).forEach(function (k) {
-      volumePct[k] = Math.round((100 * volume[k]) / total);
-    });
-    var push = 0;
-    var pull = 0;
-    analyses.forEach(function (a) {
-      if (a.pattern === 'push') push++;
-      if (a.pattern === 'pull') pull++;
-    });
-    var durationMinutes = estimateDuration(workout, all);
-    var intensity = estimateIntensity(workout, analyses);
-    var stimulus = estimateStimulus(workout, analyses, exercises);
-    var flags = qualityFlags(workout, analyses, volumePct, push, pull, all);
+		var primarySet = Infer.uniq(analyses.map((a) => a.primary));
+		var secondarySet = Infer.uniq(
+			analyses
+				.reduce((acc, a) => acc.concat(a.secondary || []), [])
+				.filter((m) => primarySet.indexOf(m) === -1),
+		);
 
-    var primarySet = Infer.uniq(analyses.map(function (a) { return a.primary; }));
-    var secondarySet = Infer.uniq(analyses.reduce(function (acc, a) {
-      return acc.concat(a.secondary || []);
-    }, []).filter(function (m) { return primarySet.indexOf(m) === -1; }));
+		return {
+			exercises: analyses,
+			volume: volumePct,
+			pushPull: { push: push, pull: pull },
+			durationMinutes: durationMinutes,
+			intensity: intensity,
+			stimulus: stimulus,
+			flags: flags,
+			primary: primarySet,
+			secondary: secondarySet,
+		};
+	}
 
-    return {
-      exercises: analyses,
-      volume: volumePct,
-      pushPull: { push: push, pull: pull },
-      durationMinutes: durationMinutes,
-      intensity: intensity,
-      stimulus: stimulus,
-      flags: flags,
-      primary: primarySet,
-      secondary: secondarySet
-    };
-  }
+	function claimsOutcome(text) {
+		return FORBIDDEN_RX.test(String(text || ""));
+	}
 
-  function claimsOutcome(text) {
-    return FORBIDDEN_RX.test(String(text || ''));
-  }
+	function enrichJournalEntry(entry) {
+		entry = entry && typeof entry === "object" ? entry : {};
+		var sets = Array.isArray(entry.sets) ? entry.sets : [];
+		var TH = root.TH;
+		var rawTonnage =
+			typeof TH !== "undefined" && TH && typeof TH.workoutVolume === "function"
+				? TH.workoutVolume(sets)
+				: 0;
+		var tonnage =
+			Number.isFinite(rawTonnage) && rawTonnage >= 0 ? rawTonnage : 0;
+		var bestByExercise = {};
+		var volume;
+		var numVol;
+		sets.forEach((set) => {
+			if (!set?.exerciseId) return;
+			var reps = Number(set.reps);
+			var w = Number(set.weightKg);
+			if (!(reps > 0) || !(w > 0)) return;
+			var load = Math.round(reps * w * 10) / 10;
+			if (
+				!bestByExercise[set.exerciseId] ||
+				load > bestByExercise[set.exerciseId]
+			) {
+				bestByExercise[set.exerciseId] = load;
+			}
+		});
+		volume = tonnage;
+		if (entry.volume != null) {
+			numVol = Number(entry.volume);
+			if (Number.isFinite(numVol) && numVol >= 0) {
+				volume = numVol;
+			}
+		}
+		return Object.assign({}, entry, {
+			volume: volume,
+			bestSetTonnageByExercise: bestByExercise,
+		});
+	}
 
-  function enrichJournalEntry(entry) {
-    entry = entry && typeof entry === 'object' ? entry : {};
-    var sets = Array.isArray(entry.sets) ? entry.sets : [];
-    var TH = root.TH;
-    var tonnage = typeof TH !== 'undefined' && TH && typeof TH.workoutVolume === 'function'
-      ? TH.workoutVolume(sets)
-      : 0;
-    var bestByExercise = {};
-    sets.forEach(function (set) {
-      if (!set || !set.exerciseId) return;
-      var reps = Number(set.reps);
-      var w = Number(set.weightKg);
-      if (!(reps > 0) || !(w > 0)) return;
-      var load = Math.round(reps * w * 10) / 10;
-      if (!bestByExercise[set.exerciseId] || load > bestByExercise[set.exerciseId]) {
-        bestByExercise[set.exerciseId] = load;
-      }
-    });
-    return Object.assign({}, entry, {
-      volume: entry.volume != null ? entry.volume : tonnage,
-      bestSetTonnageByExercise: bestByExercise
-    });
-  }
+	var api = {
+		STIMULUS: STIMULUS,
+		analyzeExercise: analyzeExercise,
+		analyzeSession: analyzeSession,
+		estimateDuration: estimateDuration,
+		flattenWorkout: flattenWorkout,
+		hasWarmup: hasWarmup,
+		isWarmupExercise: isWarmupExercise,
+		claimsOutcome: claimsOutcome,
+		enrichJournalEntry: enrichJournalEntry,
+		muscleLabel: muscleLabel,
+		parseRepMid: parseRepMid,
+	};
 
-  var api = {
-    STIMULUS: STIMULUS,
-    analyzeExercise: analyzeExercise,
-    analyzeSession: analyzeSession,
-    flattenWorkout: flattenWorkout,
-    hasWarmup: hasWarmup,
-    isWarmupExercise: isWarmupExercise,
-    claimsOutcome: claimsOutcome,
-    enrichJournalEntry: enrichJournalEntry,
-    muscleLabel: muscleLabel
-  };
-
-  root.THAnalyzer = api;
-  if (typeof module === 'object' && module.exports) {
-    module.exports = api;
-  }
-})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
+	root.THAnalyzer = api;
+	if (typeof module === "object" && module.exports) {
+		module.exports = api;
+	}
+})(
+	typeof window !== "undefined"
+		? window
+		: typeof globalThis !== "undefined"
+			? globalThis
+			: this,
+);
