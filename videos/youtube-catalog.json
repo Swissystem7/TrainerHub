@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 114
+    "count": 117
   },
   "items": [
     {
@@ -235,7 +235,12 @@
       "source": "youtube",
       "youtubeId": "Rhj4DwKky_k",
       "folder": "חימום",
-      "available": true
+      "available": true,
+      "aliases": [
+        "ריצה מהירה",
+        "sprint",
+        "high knees"
+      ]
     },
     {
       "id": "yt_hip_circles",
@@ -430,7 +435,9 @@
         "שכיבות טרייספס",
         "tricep push-up",
         "close-grip push-up",
-        "tricep_push_up"
+        "tricep_push_up",
+        "תרגיל יד אחורית",
+        "יד אחורית"
       ]
     },
     {
@@ -557,7 +564,12 @@
       "source": "youtube",
       "youtubeId": "ucvLqXxOEOs",
       "folder": "רגליים",
-      "available": true
+      "available": true,
+      "aliases": [
+        "לאנצ'ים בהתקדמות",
+        "לאנץ'ים בהתקדמות",
+        "walking lunge"
+      ]
     },
     {
       "id": "yt_kb_swing",
@@ -789,7 +801,14 @@
       "available": true,
       "aliases": [
         "pull up",
-        "pull_up"
+        "pull_up",
+        "פיק-אפים",
+        "פיק־אפים",
+        "עליות מתח",
+        "מתח בסיוע",
+        "שליליות מתח",
+        "pull-up",
+        "מעגל עליון"
       ]
     },
     {
@@ -1115,9 +1134,10 @@
         "pike push up",
         "שכיבות פאייק",
         "שכיבות סמיכה במצב אוהל",
-        "פיק-אפים",
         "pike push-up",
-        "pike_push_up"
+        "pike_push_up",
+        "פייק־פוש־אפ",
+        "פייק-פוש-אפ"
       ]
     },
     {
@@ -1177,7 +1197,9 @@
         "Bodyweight squat",
         "סקוואט משקל גוף",
         "bodyweight_squat",
-        "air squat"
+        "air squat",
+        "סקוואטים",
+        "סקוואט חופשי"
       ]
     },
     {
@@ -1223,7 +1245,12 @@
         "מכרעים",
         "lunges",
         "lunge",
-        "forward lunge"
+        "forward lunge",
+        "לאנצ'ים",
+        "לאנץ'ים",
+        "לאנצ׳ים",
+        "לאנג' במקום",
+        "לאנג׳ במקום"
       ]
     },
     {
@@ -1381,7 +1408,11 @@
         "push-up",
         "push up",
         "pushups",
-        "push ups"
+        "push ups",
+        "שכיבות סמיכה רגילות",
+        "שכיבות סמיכה מלאות",
+        "שכיבות סמיכה עם עצירה בתחתית",
+        "שכיבות סמיכה לפי שלבי ההדגמה"
       ]
     },
     {
@@ -1865,7 +1896,9 @@
         "dips",
         "dip",
         "parallel-bar dips",
-        "parallel bar dips"
+        "parallel bar dips",
+        "מקבילים בסיוע",
+        "לחיצות ספסל למקבילים"
       ]
     },
     {
@@ -1887,7 +1920,9 @@
         "מתיחת מיתר",
         "hamstring_stretch",
         "hamstring stretch",
-        "standing hamstring stretch"
+        "standing hamstring stretch",
+        "מתיחות",
+        "שחרור"
       ]
     },
     {
@@ -2204,7 +2239,9 @@
         "תנועה לפנים",
         "תנועה לאחור ונגיעה",
         "תנועה לפנים ונגיעה",
-        "agility_5_10_5"
+        "agility_5_10_5",
+        "תנועה הצידה ונגיעה",
+        "נגיעה"
       ]
     },
     {
@@ -2270,6 +2307,81 @@
         "hot feet",
         "אדמה בוערת",
         "fast_feet"
+      ]
+    },
+    {
+      "id": "kneeling_jump",
+      "he": "ניתורים בכריעת ברך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "4qK55avGyy4",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "kneeling jump",
+        "kneeling jump squat",
+        "ניתורים בכריעת ברך",
+        "kneeling_jump"
+      ]
+    },
+    {
+      "id": "dead_hang",
+      "he": "תלייה פסיבית",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "3CEmHJXbNpc",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "passive dead hang",
+        "dead hang",
+        "How to dead hang",
+        "תלייה פסיבית",
+        "תלייה",
+        "dead_hang"
+      ]
+    },
+    {
+      "id": "run_3000",
+      "he": "ריצת 3000 מ׳",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "bMeXQfQJ36E",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "ריצה קלה",
+        "ריצה רצופה",
+        "אינטרוולים",
+        "ריצת 3000",
+        "ריצת 3000 מ׳",
+        "ריצת קצב",
+        "ריצה",
+        "הליכה/ריצה קלה",
+        "הליכה לשחרור",
+        "שחרור והליכה",
+        "3000m run",
+        "run_3000",
+        "ריצה בקצב יעד",
+        "ריצת בקצב יעד"
       ]
     }
   ]

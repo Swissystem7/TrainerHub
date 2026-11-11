@@ -11,7 +11,11 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-037.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "aliases": [
+      "חימום ארוך",
+      "חימום קל"
+    ]
   },
   "מעגל_מעגל": {
     "id": "מעגל_מעגל",
@@ -300,7 +304,13 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-014.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "aliases": [
+      "צד־פלאנק",
+      "צד-פלאנק",
+      "צד פלאנק",
+      "סייד פלאנק"
+    ]
   },
   "פלאנק_שעון": {
     "id": "פלאנק_שעון",
