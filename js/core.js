@@ -240,20 +240,44 @@
 		סופרמן: "superman",
 		"גב תחתון": "superman",
 		"מטפס הרים": "mountain_climber",
-		"שכיבות סמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבות שמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבת שמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבת סמיכה": "אתגר_שכיבות_שמיכה",
-		שכיבות: "אתגר_שכיבות_שמיכה",
+		"שכיבות סמיכה": "push_up",
+		"שכיבות שמיכה": "push_up",
+		"שכיבת שמיכה": "push_up",
+		"שכיבת סמיכה": "push_up",
+		שכיבות: "push_up",
 		פלנק: "plank",
 		plank: "plank",
 		"סייד פלאנק": "פלאנק_צידי",
 		"פלאנק צד": "פלאנק_צידי",
-		"פוש אפ": "אתגר_שכיבות_שמיכה",
-		פושאפ: "אתגר_שכיבות_שמיכה",
-		"push up": "אתגר_שכיבות_שמיכה",
-		pushups: "אתגר_שכיבות_שמיכה",
-		"push ups": "אתגר_שכיבות_שמיכה",
+		"פוש אפ": "push_up",
+		פושאפ: "push_up",
+		"push up": "push_up",
+		pushups: "push_up",
+		"push ups": "push_up",
+		סקוואט: "squat",
+		דדליפט: "deadlift",
+		חתירה: "barbell_row",
+		"כפיפת מרפק": "bicep_curl",
+		"פשיטת מרפק": "yt_tricep_pushdown",
+		"הרמת רגליים": "leg_raise",
+		"אדמה בוערת": "fast_feet",
+		"שכיבות סמיכה בהתקדמות": "walking_push_up",
+		"ניתורים במקום עם ברכיים לחזה": "tuck_jump",
+		"הליכה על הידיים": "hand_walk_out",
+		"ניתור לאדמה וגלגול": "sprawl",
+		"ניתור לאדמה": "sprawl",
+		גלגול: "sprawl",
+		"זריקות כדור כוח מעל הראש": "med_ball_overhead_throw",
+		"זריקות כדור כוח": "med_ball_overhead_throw",
+		"מסירות כדור כוח": "med_ball_overhead_throw",
+		"צעדי איילה": "agility_5_10_5",
+		"תנועה הצידה": "agility_5_10_5",
+		"תנועה לפנים": "agility_5_10_5",
+		"תנועה לאחור": "agility_5_10_5",
+		"פרפר הפוך משקל גוף": "bodyweight_reverse_fly",
+		"australian pull-up": "bodyweight_row",
+		"australian pull up": "bodyweight_row",
+		"australian pullup": "bodyweight_row",
 	};
 
 	var SOURCE_LABELS = {
@@ -1033,13 +1057,38 @@
 		return String(id).replace(/_/g, " ");
 	}
 
+	function mappedAlias(key) {
+		if (!key) return null;
+		var mapped =
+			NAME_ALIASES[key] ||
+			NAME_ALIASES[normalizeName(key)] ||
+			NAME_ALIASES[foldHe(key)];
+		if (mapped && catalog[mapped] && isPlayable(catalog[mapped]))
+			return catalog[mapped];
+		return null;
+	}
+
+	function aliasListHas(entry, key) {
+		var list = entry && entry.aliases;
+		var folded, i;
+		if (!key || !list || !list.length) return false;
+		folded = foldHe(key);
+		for (i = 0; i < list.length; i++) {
+			if (list[i] === key || foldHe(list[i]) === folded) return true;
+		}
+		return false;
+	}
+
+	// A program step links by exact catalog id, then exact Hebrew title
+	// (including HE_NAMES), then the explicit NAME_ALIASES map, then a row's
+	// own aliases. Fuzzy contains-matching stays in matchCatalog.
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
 		var name = step.name;
 		var keys = Object.keys(catalog);
-		var i, entry;
+		var i, entry, viaMap;
 		for (i = 0; i < keys.length; i++) {
 			entry = catalog[keys[i]];
 			if (!entry || !isPlayable(entry)) continue;
@@ -1049,6 +1098,16 @@
 				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
 			)
 				return entry;
+		}
+		viaMap = mappedAlias(id);
+		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
+		if (viaMap) return viaMap;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (!entry || !isPlayable(entry)) continue;
+			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
+				return entry;
+			if (name && foldHe(entry.he) === foldHe(name)) return entry;
 		}
 		return null;
 	}
@@ -2250,15 +2309,25 @@
 				builtin: true,
 			};
 			seenIds[ex.id] = true;
-			var clip = catalog[ex.id];
+			var direct = catalog[ex.id];
+			var clip =
+				direct && isPlayable(direct)
+					? direct
+					: findExercise({ id: ex.id, name: HE_NAMES[ex.id] });
 			if (clip && isPlayable(clip)) {
 				copy.hasClip = true;
 				copy.tags = catalogTags(clip);
-				// The trainee gets the catalog clip, so its equipment decides what the exercise
-				// needs: bodyweight_row plays «מתח אוסטרלי» on a bar, not a bodyweight row, and
-				// must not land in a «משקל גוף» program just because the built-in list says 'none'.
-				if (Array.isArray(clip.equipment) && clip.equipment.length)
-					copy.equipment = clip.equipment;
+				// The trainee gets the catalog clip stored under this program id, so its
+				// equipment decides what the exercise needs: bodyweight_row plays «מתח אוסטרלי»
+				// on a bar, not a bodyweight row. An aliased YouTube row (goblet_squat →
+				// yt_goblet_squat) keeps the pool's equipment.
+				if (
+					direct &&
+					isPlayable(direct) &&
+					Array.isArray(direct.equipment) &&
+					direct.equipment.length
+				)
+					copy.equipment = direct.equipment;
 			}
 			return copy;
 		});
