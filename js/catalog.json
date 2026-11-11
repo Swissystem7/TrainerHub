@@ -851,7 +851,8 @@
       "core"
     ],
     "equipment": [
-      "cones"
+      "cones",
+      "ball"
     ],
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-048.mp4",

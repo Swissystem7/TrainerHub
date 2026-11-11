@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 117
+    "count": 157
   },
   "items": [
     {
@@ -1281,7 +1281,8 @@
         "legs"
       ],
       "equipment": [
-        "none"
+        "none",
+        "wall"
       ],
       "level": "beginner",
       "source": "youtube",
@@ -1685,7 +1686,8 @@
         "legs"
       ],
       "equipment": [
-        "dumbbells"
+        "dumbbells",
+        "stairs"
       ],
       "level": "beginner",
       "source": "youtube",
@@ -2040,7 +2042,9 @@
       "id": "wall_push_up",
       "he": "שכיבות סמיכה לקיר",
       "muscles": [
-        "chest"
+        "chest",
+        "triceps",
+        "shoulders"
       ],
       "equipment": [
         "wall"
@@ -2382,6 +2386,821 @@
         "run_3000",
         "ריצה בקצב יעד",
         "ריצת בקצב יעד"
+      ]
+    },
+    {
+      "id": "yt_kids_basketball_passing",
+      "he": "ילדים מסירות כדורסל בזוגות ובקבוצה",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "AWVgKM_9Yq4",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "basketball passing drills for kids",
+        "מסירות כדורסל לילדים"
+      ]
+    },
+    {
+      "id": "yt_basketball_cone_shuffle_pass",
+      "he": "מסירות כדורסל בין 4 קונוסים עם בן זוג מוסר",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "basketball",
+        "cones",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "lVIvCLNZAnk",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "4 cone shuffle pass",
+        "basketball cone shuffle pass"
+      ]
+    },
+    {
+      "id": "yt_basketball_shot_fake_rebound",
+      "he": "כדורסל: הטעיית זריקה, סיומת וריבאונד",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "_fTiRodznP0",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "shot fake finish rebounding drill"
+      ]
+    },
+    {
+      "id": "yt_basketball_figure8_dribble",
+      "he": "כדרור שמינייה בכדורסל",
+      "muscles": [
+        "legs",
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ZPhiBKqDXEQ",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "figure 8 dribbling",
+        "כדרור שמינייה"
+      ]
+    },
+    {
+      "id": "yt_kids_soccer_dribbling",
+      "he": "ילדים כדרור כדורגל למתחילים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "O-njByyCFk4",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "dribbling drills for young soccer players",
+        "כדרור כדורגל לילדים"
+      ]
+    },
+    {
+      "id": "yt_soccer_cone_weave",
+      "he": "כדרור כדורגל בזיגזג בין קונוסים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "vnngDOCy9C8",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "cone weave dribbling",
+        "כדרור בין קונוסים"
+      ]
+    },
+    {
+      "id": "yt_partner_soccer_passing",
+      "he": "זוגות מסירות כדורגל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "2TVbVAT1XfA",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "simple passing drill",
+        "מסירות כדורגל בזוגות"
+      ]
+    },
+    {
+      "id": "yt_soccer_diamond_rondo",
+      "he": "רונדו יהלום: מסירות כדורגל קבוצתיות",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "rLMQOZ2S3ko",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "diamond rondo",
+        "רונדו"
+      ]
+    },
+    {
+      "id": "yt_soccer_throw_in",
+      "he": "זריקת חוץ בכדורגל",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "PVd-ZTfPBiI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "throw-in",
+        "throw in",
+        "זריקת חוץ"
+      ]
+    },
+    {
+      "id": "yt_soccer_4cone_agility",
+      "he": "זריזות כדורגל ב-4 קונוסים עם גומיות רגליים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "cones",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "6W4ZFdtlRVA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "soccer 4 cone drill",
+        "kbands soccer"
+      ]
+    },
+    {
+      "id": "yt_soccer_ladder_passing",
+      "he": "סולם זריזות עם מסירות וסיומת בכדורגל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "ladder"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "rspFRO0U-NM",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "soccer agility ladder passing and finishing"
+      ]
+    },
+    {
+      "id": "yt_kids_partner_tennis_catch",
+      "he": "ילדים וזוגות: תפיסת כדור טניס לקואורדינציה",
+      "muscles": [
+        "shoulders",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "C517fq9-DpE",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "tennis hand-eye coordination kids"
+      ]
+    },
+    {
+      "id": "yt_partner_tennis_ball_drop",
+      "he": "זוגות: תפיסת כדור טניס נופל (תגובה)",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "-pudLqL4GdA",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "tennis ball drop",
+        "ball drop reaction drill"
+      ]
+    },
+    {
+      "id": "yt_partner_tennis_return",
+      "he": "זוגות: החזרת הגשה בטניס לזמן תגובה",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "mY0j4CgxgIQ",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "return of serve drills",
+        "החזרת הגשה"
+      ]
+    },
+    {
+      "id": "yt_partner_superband",
+      "he": "זוגות אימון גומייה לכל הגוף",
+      "muscles": [
+        "chest",
+        "back",
+        "shoulders",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "sUIX2XTkQ7I",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "partner superband workout",
+        "גומייה בזוגות"
+      ]
+    },
+    {
+      "id": "yt_mini_band_upper",
+      "he": "גומייה קטנה לפלג גוף עליון",
+      "muscles": [
+        "shoulders",
+        "back",
+        "biceps",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "bgyd3SeZFtA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "mini band upper body workout"
+      ]
+    },
+    {
+      "id": "yt_band_face_pull",
+      "he": "פייס פול עם גומייה",
+      "muscles": [
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "jF5CK2nk0p8",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "banded face pull",
+        "face pull band"
+      ]
+    },
+    {
+      "id": "yt_band_assisted_pull_up",
+      "he": "מתח בסיוע גומייה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar",
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "023lBUV3Q9E",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "band assisted pull up",
+        "מתח עם גומייה"
+      ]
+    },
+    {
+      "id": "yt_kids_partner_kettlebell",
+      "he": "ילדים וזוגות: אימון קטלבל משפחתי קל",
+      "muscles": [
+        "legs",
+        "back",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "YVgoabOknrA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell kids workout",
+        "קטלבל לילדים"
+      ]
+    },
+    {
+      "id": "yt_kb_floor_press",
+      "he": "לחיצת קטלבל בשכיבה על הרצפה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "eDQ0IVCooKo",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kettlebell floor press"
+      ]
+    },
+    {
+      "id": "yt_kb_curl",
+      "he": "כפיפת מרפקים עם קטלבל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "u5eS2ns5cek",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "kettlebell curl"
+      ]
+    },
+    {
+      "id": "yt_banded_kb_swing",
+      "he": "סווינג קטלבל עם גומייה",
+      "muscles": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "UqpiMY9GktA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "banded kettlebell swing"
+      ]
+    },
+    {
+      "id": "yt_barbell_curl",
+      "he": "כפיפת מרפקים עם מוט",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "JnLFSFurrqQ",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "barbell curl"
+      ]
+    },
+    {
+      "id": "yt_barbell_skull_crusher",
+      "he": "סקאל קראשר עם מוט",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "z0A01lCHKk8",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "skull crusher",
+        "lying triceps extension"
+      ]
+    },
+    {
+      "id": "yt_banded_barbell_squat",
+      "he": "סקוואט מוט עם גומיות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "barbell",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Mt7R8RvWkzc",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "banded barbell squat"
+      ]
+    },
+    {
+      "id": "yt_power_clean",
+      "he": "פאוור קלין (הנפת מוט לכתפיים)",
+      "muscles": [
+        "legs",
+        "back",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "E2z5zK5V-MM",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "power clean",
+        "פאוור קלין"
+      ]
+    },
+    {
+      "id": "yt_machine_chest_press",
+      "he": "לחיצת חזה במכונה",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ZPteUPefxEg",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "machine chest press"
+      ]
+    },
+    {
+      "id": "yt_hack_squat_machine",
+      "he": "האק סקוואט במכונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "sw-5KcVZVk8",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "hack squat"
+      ]
+    },
+    {
+      "id": "yt_cable_woodchop",
+      "he": "חטיבת עצים בכבל (וודצ'ופ)",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "N-_CloFzrNA",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "cable woodchop",
+        "woodchop"
+      ]
+    },
+    {
+      "id": "yt_kids_jackpot_ball_game",
+      "he": "ילדים משחק ג'קפוט: זריקה ותפיסה בכדור",
+      "muscles": [
+        "shoulders",
+        "chest",
+        "legs"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "QuayentSsKQ",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "jackpot game",
+        "throwing and catching game"
+      ]
+    },
+    {
+      "id": "yt_swiss_ball_curl",
+      "he": "כפיפת מרפקים בישיבה על כדור פיזיו",
+      "muscles": [
+        "biceps",
+        "core"
+      ],
+      "equipment": [
+        "ball",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "vlZxROzhH34",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "swiss ball seated curl"
+      ]
+    },
+    {
+      "id": "yt_swiss_ball_pike",
+      "he": "פייק על כדור פיזיו",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "vo3csqN6rpo",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "swiss ball pike",
+        "stability ball pike"
+      ]
+    },
+    {
+      "id": "yt_partner_med_ball",
+      "he": "זוגות אימון כדור כוח",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "IjJsHWoCKxs",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "partner med ball workout",
+        "כדור כוח בזוגות"
+      ]
+    },
+    {
+      "id": "yt_wall_squat_angels",
+      "he": "ישיבה על קיר עם מלאכי קיר",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "VamQSMBCmEA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall squat with wall angels",
+        "מלאכי קיר"
+      ]
+    },
+    {
+      "id": "yt_stairs_full_workout",
+      "he": "אימון כושר על מדרגות",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "GQV8mJaTvtA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "stairs workout"
+      ]
+    },
+    {
+      "id": "yt_stairs_plyo_power",
+      "he": "אימון פליאומטרי במדרגות לכוח מתפרץ",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "swKfVF81dmY",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "plyometric stair workout",
+        "stair sprints"
+      ]
+    },
+    {
+      "id": "yt_agility_ladder_30",
+      "he": "סולם זריזות: 30 תרגילים עד רמה מתקדמת",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "67XP-AekUoA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "30 agility ladder drills"
+      ]
+    },
+    {
+      "id": "yt_hula_hoop_cardio",
+      "he": "חישוק: אימון קרדיו",
+      "muscles": [
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "XMdmcWp4om8",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "hula hoop cardio",
+        "הולה הופ"
+      ]
+    },
+    {
+      "id": "yt_cone_agility_advanced",
+      "he": "5 תרגילי זריזות מאתגרים עם קונוסים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "FRWMRZ_64co",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "challenging agility cone drills",
+        "3 cone drill"
+      ]
+    },
+    {
+      "id": "yt_stairs_incline_push_up",
+      "he": "שכיבות סמיכה בשיפוע על מדרגות",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "5IICgggYJjw",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "incline push-up off stairs",
+        "stair push up"
       ]
     }
   ]
