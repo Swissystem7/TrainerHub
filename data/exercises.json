@@ -300,27 +300,38 @@
     },
     {
       "id": "ig-DfBRl7Ksmyt",
-      "name_he": "סקוואט עמוק + הרמת ברך",
+      "name_he": "סקוואט עמוק עם ידיים מאחורי הראש + הרמת ברך גבוהה",
       "muscle_group": "רגליים/ישבן",
-      "secondary_group": "",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "20 X 6",
-      "equipment": "מזרן כחול, דלת חומה",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "ירך קדמית, ישבן, כופפי ירך",
+      "sets": 6,
+      "reps": "20",
+      "sets_reps": "20x6 (כתוב בסרטון)",
+      "equipment": "ללא ציוד",
+      "steps_he": [
+        "עומדים ברגליים רחבות, ידיים מאחורי הראש",
+        "יורדים לסקוואט עמוק וקמים",
+        "מרימים ברך גבוהה לכיוון החזה",
+        "ממשיכים בקצב קבוע"
+      ],
       "source_url": "https://www.instagram.com/reel/DfBRl7Ksmyt/",
       "creator": "martin.fithub",
       "poster": "assets/posters/DfBRl7Ksmyt.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Squat Deeper Stand Taller - סקוואט עמוק + הרמת ברך",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן",
       "source_sets_reps": "20 X 6",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "mat"
+        "bodyweight"
+      ],
+      "safety_he": "ברכיים בכיוון האצבעות ועקבים על הרצפה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-De4nsvDTBkL",
+        "ig-Deemlz3juAA"
       ]
     },
     {
@@ -504,34 +515,38 @@
     },
     {
       "id": "ig-De4nsvDTBkL",
-      "name_he": "סקוואט רחב, ירידה צדדית, לאנג' על קופסה, ברך גבוהה",
+      "name_he": "אימון רגליים על קופסאות: סקוואט רחב בין קופסאות, ירידה צדדית, לאנג׳ אחורי עם רגל על קופסה וברך גבוהה",
       "muscle_group": "רגליים/ישבן",
       "secondary_group": "",
-      "muscle_detail": "",
+      "muscle_detail": "ירך קדמית, ישבן, מקרבים",
       "sets": 3,
-      "reps": "30 שנ׳",
-      "sets_reps": "30s X 3",
-      "equipment": "2 קופסאות עץ, מזרן כתום",
+      "reps": "30 שניות",
+      "sets_reps": "30 שניות × 3 (כתוב בסרטון)",
+      "equipment": "2 קופסאות עץ",
       "steps_he": [
-        "סקוואט רחב",
-        "ירידה צדדית",
-        "לאנג' על קופסה",
-        "ברך גבוהה"
+        "עומדים עם רגל על כל קופסה ויורדים לסקוואט",
+        "יורדים לצד ועולים חזרה",
+        "רגל אחורית על הקופסה ויורדים ללאנג׳",
+        "30 שניות לכל תרגיל, 3 סבבים"
       ],
       "source_url": "https://www.instagram.com/reel/De4nsvDTBkL/",
       "creator": "vianney.fit",
       "poster": "assets/posters/De4nsvDTBkL.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "Lower Body Box - סקוואט רחב, ירידה צדדית, לאנג' על קופסה, ברך גבוהה",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן",
       "source_sets_reps": "30s X 3",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "wooden_box",
-        "mat",
-        "plyo_box"
+        "wooden_box"
+      ],
+      "safety_he": "קופסאות יציבות שלא מחליקות",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-Deemlz3juAA"
       ]
     },
     {
@@ -735,31 +750,40 @@
     },
     {
       "id": "ig-DeuHcU9o8A1",
-      "name_he": "9 תרגילי יציבות מפרקים",
+      "name_he": "9 תרגילים ליציבות מפרקים: גשר, עמידה על רגל, הרמת רגל בשכיבה, הינג׳ עם כיסא ועוד",
       "muscle_group": "מוביליטי",
       "secondary_group": "ליבה",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "9 תרגילים - ללא ציון מדויק",
-      "equipment": "כיסא לבן, פום רולר, גומייה ורודה/לבנה, קוביות כחולות, מזרן",
-      "steps_he": [],
+      "muscle_detail": "אגן, ברכיים, קרסוליים, ליבה",
+      "sets": 2,
+      "reps": "10",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 2x10 לכל תרגיל",
+      "equipment": "כיסא, גומייה, פום רולר, מזרן",
+      "steps_he": [
+        "עושים את התרגילים לפי המספור 1–9",
+        "תנועה איטית ושליטה באגן",
+        "נעזרים בכיסא לשיווי משקל",
+        "מבצעים לשני הצדדים"
+      ],
       "source_url": "https://www.instagram.com/reel/DeuHcU9o8A1/",
       "creator": "romavelych",
       "poster": "assets/posters/DeuHcU9o8A1.jpg",
-      "verified": false,
+      "verified": true,
       "source_title": "9 Exercises Joint Stability - 9 תרגילי יציבות מפרקים",
       "source_muscle_group": "בטן ו-Core",
       "source_muscle_label": "מוביליטי / ליבה",
       "source_sets_reps": "9 תרגילים - ללא ציון מדויק",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "chair",
-        "foam_roller",
         "resistance_band",
-        "yoga_blocks",
+        "foam_roller",
         "mat"
+      ],
+      "safety_he": "כיסא יציב שלא זז",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeAGCs_sc-e"
       ]
     },
     {
@@ -870,34 +894,39 @@
     },
     {
       "id": "ig-Deemlz3juAA",
-      "name_he": "5 תרגילי ירכיים: סטפ-אפ, סווינג, 90-90, הרחקה/קירוב, Hip Airplane",
+      "name_he": "5 תנועות ירכיים במשקל גוף: מתיחת כופף ירך, 90-90, הרמת רגל בשכיבה צד, הינג׳ על רגל אחת (היפ איירפליין) ועלייה על קופסה",
       "muscle_group": "רגליים/ישבן",
       "secondary_group": "מוביליטי",
-      "muscle_detail": "",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "1 סט, 2 דקות לכל צד",
-      "equipment": "קופסת פליאו 18 אינץ', מזרן, שטיח ביתי",
+      "muscle_detail": "ישבן, כופפי ירך, מקרבים, מרחיקים",
+      "sets": 1,
+      "reps": "2 דקות לכל צד",
+      "sets_reps": "2 דקות לכל תנועה לכל צד, 2-3 פעמים בשבוע (לפי הכיתוב)",
+      "equipment": "קופסה, מזרן",
       "steps_he": [
-        "סטפ-אפ",
-        "סווינג",
-        "90-90",
-        "הרחקה/קירוב",
-        "Hip Airplane"
+        "מבצעים כל תנועה לאט",
+        "שתי דקות לכל צד – מותר לנוח באמצע",
+        "עובדים בטווח שלא כואב",
+        "עוברים לתנועה הבאה"
       ],
       "source_url": "https://www.instagram.com/reel/Deemlz3juAA/",
       "creator": "tomdahan._",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Hip Mobility - 5 תרגילי ירכיים: סטפ-אפ, סווינג, 90-90, הרחקה/קירוב, Hip Airplane",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן / מוביליטי",
       "source_sets_reps": "1 סט, 2 דקות לכל צד",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "plyo_box",
         "mat"
+      ],
+      "safety_he": "לא דוחפים לטווח כואב – מתקדמים בהדרגה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-De4nsvDTBkL"
       ]
     },
     {
@@ -1092,33 +1121,37 @@
     },
     {
       "id": "ig-DeAGCs_sc-e",
-      "name_he": "5 תרגילי מוביליטי: היפ סירקלס, רוטציית רגל בישיבה, knee drops, גשר, cat-cow",
+      "name_he": "5 תרגילי מוביליטי לירכיים ולגב התחתון: סיבובי ירך בשש, סיבוב רגל בישיבה, הפלת ברכיים, גשר וחתול-פרה",
       "muscle_group": "מוביליטי",
-      "secondary_group": "גב",
-      "muscle_detail": "גב תחתון",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "8 reps each, 10 reps each, 2x15 reps",
-      "equipment": "מזרן שחור, דשא סינטטי, מראות",
+      "secondary_group": "",
+      "muscle_detail": "ירכיים, גב תחתון",
+      "sets": 2,
+      "reps": "8-15",
+      "sets_reps": "8 ו-10 חזרות לכל צד, 2x15 (כתוב בסרטון)",
+      "equipment": "מזרן",
       "steps_he": [
-        "היפ סירקלס",
-        "רוטציית רגל בישיבה",
-        "knee drops",
-        "גשר",
-        "cat-cow"
+        "על הידיים והברכיים – מסובבים ירך במעגל",
+        "בישיבה מסובבים רגל פנימה והחוצה",
+        "בשכיבה מעלים אגן לגשר",
+        "מבצעים לאט ולפי מספר החזרות"
       ],
       "source_url": "https://www.instagram.com/reel/DeAGCs_sc-e/",
       "creator": "flexibility_zone",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Hip & Lower Back Mobility - 5 תרגילי מוביליטי: היפ סירקלס, רוטציית רגל בישיבה, knee drops, גשר, cat-cow",
       "source_muscle_group": "גב",
       "source_muscle_label": "מוביליטי / גב תחתון",
       "source_sets_reps": "8 reps each, 10 reps each, 2x15 reps",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "mat"
+      ],
+      "safety_he": "תנועה עדינה בלי כאב",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-DeuHcU9o8A1"
       ]
     },
     {
@@ -1607,27 +1640,38 @@
     },
     {
       "id": "ig-Dc_BOIkotw1",
-      "name_he": "תרגיל זריזות כדורסל עם קונוסים צהובים",
+      "name_he": "תנועות צד בין קונוסים וספרינט לסיום (כדורסל)",
       "muscle_group": "רגליים/ישבן",
-      "secondary_group": "",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "5 סטים x 30 שניות ספרינט צדדי + נגיעה בקונוס",
-      "equipment": "קונוסים צהובים קטנים, מגרש כדורסל",
-      "steps_he": [],
+      "secondary_group": "גוף מלא/HIIT",
+      "muscle_detail": "רגליים, זריזות, מהירות",
+      "sets": 5,
+      "reps": "30 שניות",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 5x30 שניות",
+      "equipment": "קונוסים",
+      "steps_he": [
+        "עומדים בעמידה נמוכה ליד הקונוסים",
+        "זזים בצעדי צד בין הקונוסים",
+        "בסוף פורצים בספרינט קדימה",
+        "חוזרים בהליכה ומתחילים שוב"
+      ],
       "source_url": "https://www.instagram.com/reel/Dc_BOIkotw1/",
       "creator": "_babinofficial_",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Lateral Agility Cone Drill - תרגיל זריזות כדורסל עם קונוסים צהובים",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "רגליים וזריזות - Agility",
       "source_sets_reps": "5 סטים x 30 שניות ספרינט צדדי + נגיעה בקונוס",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "cones"
+      ],
+      "safety_he": "נעליים טובות ומשטח לא חלק",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-De4nsvDTBkL"
       ]
     },
     {
@@ -1738,27 +1782,38 @@
     },
     {
       "id": "ig-Dcv4lAKitq9",
-      "name_he": "9 תרגילי ברכיים עם גומייה צהובה אחת",
+      "name_he": "9 תרגילי ברכיים עם גומייה אחת (שיקום ACL): הרמות צד, הרמת רגל, החזקות צעידה ועוד",
       "muscle_group": "רגליים/ישבן",
       "secondary_group": "",
-      "muscle_detail": "ברכיים",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "9 תרגילים: LATERAL RAISE, LEG LIFT, MARCH HOLDS וכו'",
-      "equipment": "גומייה צהובה אחת",
-      "steps_he": [],
+      "muscle_detail": "ירך קדמית, ישבן צדדי, יציבות ברך",
+      "sets": 2,
+      "reps": "12",
+      "sets_reps": "20 דקות, 9 תרגילים (לפי הכיתוב); מומלץ: 2x12 לכל תרגיל",
+      "equipment": "גומייה",
+      "steps_he": [
+        "שמים גומייה סביב הרגליים",
+        "עושים כל תרגיל לפי הכותרת בסרטון",
+        "תנועה איטית ובשליטה",
+        "עוברים בין 9 התרגילים"
+      ],
       "source_url": "https://www.instagram.com/reel/Dcv4lAKitq9/",
       "creator": "_richmotion",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "9 Knee Exercises One Band - 9 תרגילי ברכיים עם גומייה צהובה אחת",
       "source_muscle_group": "רגליים וישבן",
       "source_muscle_label": "רגליים וישבן / ברכיים",
       "source_sets_reps": "9 תרגילים: LATERAL RAISE, LEG LIFT, MARCH HOLDS וכו'",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "resistance_band"
+        "loop_band"
+      ],
+      "safety_he": "אחרי פציעה – רק באישור פיזיותרפיסט",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Db_lH-pykzO",
+        "ig-DZkEztOv9CD"
       ]
     },
     {
@@ -1799,28 +1854,39 @@
     },
     {
       "id": "ig-DclexQGAeqK",
-      "name_he": "רגליים מהירות על BOSU ופלטות משקל",
+      "name_he": "רגליים מהירות (קוויק פיט): קפיצות קטנות על בוסו ועל פלטות משקל",
       "muscle_group": "רגליים/ישבן",
-      "secondary_group": "",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4 סטים x 20 שניות עבודה / 15 שניות מנוחה - קפיצות על פלטות ו-BOSU",
-      "equipment": "BOSU כחול, פלטות משקל שחורות, חדר כושר ביתי",
-      "steps_he": [],
+      "secondary_group": "גוף מלא/HIIT",
+      "muscle_detail": "שוקיים, מהירות, שינוי כיוון",
+      "sets": 4,
+      "reps": "20 שניות",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 4x20 שניות עבודה / 15 מנוחה",
+      "equipment": "בוסו, פלטות משקל",
+      "steps_he": [
+        "עומדים מול הפלטות על כריות כפות הרגליים",
+        "קופצים קפיצות קטנות ומהירות על הפלטה וממנה",
+        "מחליפים כיוון וצד",
+        "עובדים 20 שניות ונחים"
+      ],
       "source_url": "https://www.instagram.com/reel/DclexQGAeqK/",
       "creator": "_flokiss_",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Quick Feet Plyo Drills Ferran Torres - רגליים מהירות על BOSU ופלטות משקל",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "זריזות רגליים - פליאומטרי",
       "source_sets_reps": "4 סטים x 20 שניות עבודה / 15 שניות מנוחה - קפיצות על פלטות ו-BOSU",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "bosu",
         "weight_plate"
+      ],
+      "safety_he": "פלטות יציבות ושטוחות; מתחילים לאט",
+      "difficulty": 3,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-De4nsvDTBkL"
       ]
     },
     {
@@ -2070,28 +2136,39 @@
     },
     {
       "id": "ig-Db_lH-pykzO",
-      "name_he": "ילד קטן קופץ בחישוקים ובועט קונוסים",
+      "name_he": "מסלול שיווי משקל לפעוטות: קפיצה בתוך חישוקים ובעיטה בקונוסים",
       "muscle_group": "רגליים/ישבן",
       "secondary_group": "",
-      "muscle_detail": "ילדים · זריזות · קואורדינציה",
+      "muscle_detail": "שיווי משקל, קואורדינציה",
       "sets": null,
-      "reps": "",
-      "sets_reps": "5 מסלולים: כניסה/יציאה מ-3 חישוקים + בעיטת קונוסים",
-      "equipment": "3 חישוקים (2 אדום 1 כחול), קונוסים אדומים/כתומים קטנים, חדר משחקים",
-      "steps_he": [],
+      "reps": "5",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 5 מעברים במסלול",
+      "equipment": "חישוקים, קונוסים",
+      "steps_he": [
+        "מניחים חישוקים בשורה וקונוסים בצד",
+        "קופצים או צועדים לתוך כל חישוק",
+        "בועטים קונוס בסוף",
+        "חוזרים להתחלה"
+      ],
       "source_url": "https://www.instagram.com/reel/Db_lH-pykzO/",
       "creator": "senna_henrique_usa",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Kids Agility Hoops & Cones - ילד קטן קופץ בחישוקים ובועט קונוסים",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "זריזות וקואורדינציה - ילדים",
       "source_sets_reps": "5 מסלולים: כניסה/יציאה מ-3 חישוקים + בעיטת קונוסים",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "hoops",
         "cones"
+      ],
+      "safety_he": "משטח רך ומבוגר ליד הפעוט",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Dcv4lAKitq9",
+        "ig-DZkEztOv9CD"
       ]
     },
     {
@@ -2170,29 +2247,39 @@
     },
     {
       "id": "ig-Dbpb8X1s51t",
-      "name_he": "איזון על קופסה קטנה והחלפת קונוסים מהרצפה",
+      "name_he": "איזון על רגל אחת על מדרגה והעברת קונוסים מהרצפה",
       "muscle_group": "רגליים/ישבן",
-      "secondary_group": "",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "3x5 החלפות קונוסים בעמידה על קופסה קטנה בלי לרדת",
-      "equipment": "קופסת עץ / מדרגת אירובי אפורה/ורודה, קונוסים צהובים/אדומים/כתומים/ירוקים",
-      "steps_he": [],
+      "secondary_group": "ליבה",
+      "muscle_detail": "יציבות קרסול וברך, ישבן",
+      "sets": 3,
+      "reps": "5",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 3x5 לכל רגל",
+      "equipment": "מדרגה/קופסה קטנה, קונוסים",
+      "steps_he": [
+        "עומדים ברגל אחת על מדרגה נמוכה",
+        "מתכופפים ומרימים קונוס מהרצפה",
+        "מעבירים אותו לצד השני בלי לרדת",
+        "מחליפים רגל"
+      ],
       "source_url": "https://www.instagram.com/reel/Dbpb8X1s51t/",
       "creator": "izmaylov_91",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Box Balance Cone Swap - איזון על קופסה קטנה והחלפת קונוסים מהרצפה",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "שיווי משקל וזריזות",
       "source_sets_reps": "3x5 החלפות קונוסים בעמידה על קופסה קטנה בלי לרדת",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "wooden_box",
-        "plyo_box",
         "cones"
+      ],
+      "safety_he": "מדרגה נמוכה ויציבה; אפשר להתחיל על הרצפה",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-De4nsvDTBkL"
       ]
     },
     {
@@ -2233,28 +2320,39 @@
     },
     {
       "id": "ig-DbRtKjLuRAp",
-      "name_he": "תחרות זריזות עם דיסקים אדומים",
+      "name_he": "משחק תחרות לפני אימון: קפיצה לרוחק וספרינט לחטוף דיסק",
       "muscle_group": "רגליים/ישבן",
-      "secondary_group": "",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "4x30 שניות משחק תחרות עם דיסקים אדומים לפני אימון",
-      "equipment": "דיסקים/קונוסים אדומים קטנים, דשא סינטטי ירוק",
-      "steps_he": [],
+      "secondary_group": "גוף מלא/HIIT",
+      "muscle_detail": "כוח מתפרץ, מהירות",
+      "sets": 4,
+      "reps": "1",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 4 סבבים",
+      "equipment": "דיסקים/קונוסים",
+      "steps_he": [
+        "שני ילדים עומדים בקו",
+        "קופצים קפיצה לרוחק",
+        "רצים לחטוף את הדיסק ראשונים",
+        "חוזרים ומתחילים שוב"
+      ],
       "source_url": "https://www.instagram.com/reel/DbRtKjLuRAp/",
       "creator": "4vpowerspeed",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Agility Discs Game Before Workout - תחרות זריזות עם דיסקים אדומים",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "זריזות - Agility",
       "source_sets_reps": "4x30 שניות משחק תחרות עם דיסקים אדומים לפני אימון",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
-        "cones",
-        "discs"
+        "discs",
+        "cones"
+      ],
+      "safety_he": "נוחתים על שתי רגליים עם ברכיים כפופות",
+      "difficulty": 2,
+      "alternatives": [
+        "ig-DfBRl7Ksmyt",
+        "ig-De4nsvDTBkL"
       ]
     },
     {
@@ -2482,27 +2580,38 @@
     },
     {
       "id": "ig-DZkEztOv9CD",
-      "name_he": "תרגיל תגובה עם קונוסים צבעוניים",
+      "name_he": "תרגיל תגובה בזוגות: לפי הצבע שנקרא – אחד בורח והשני תופס",
       "muscle_group": "רגליים/ישבן",
       "secondary_group": "",
-      "muscle_detail": "זריזות",
-      "sets": null,
-      "reps": "",
-      "sets_reps": "6x הפלת קונוס וספרינט לטאג - תרגיל תגובה",
-      "equipment": "קונוסים אדומים/כחולים קטנים, מגרש טניס כחול",
-      "steps_he": [],
+      "muscle_detail": "זמן תגובה, האצה",
+      "sets": 6,
+      "reps": "1",
+      "sets_reps": "לא מצוין בסרטון; מומלץ: 6 חזרות",
+      "equipment": "קונוסים צבעוניים",
+      "steps_he": [
+        "כל אחד מחזיק קונוס בצבע אחר",
+        "המאמן קורא צבע",
+        "מי שמחזיק את הצבע בורח, השני רודף לגעת",
+        "מתחלפים"
+      ],
       "source_url": "https://www.instagram.com/reel/DZkEztOv9CD/",
       "creator": "vmperformancelab",
       "poster": "",
-      "verified": false,
+      "verified": true,
       "source_title": "Tennis Reaction Cones Drop Sprint Tag - תרגיל תגובה עם קונוסים צבעוניים",
       "source_muscle_group": "פול באדי ו-HIIT",
       "source_muscle_label": "זריזות ותגובה - טניס",
       "source_sets_reps": "6x הפלת קונוס וספרינט לטאג - תרגיל תגובה",
-      "source_notes": "מיפוי Meta AI, לא אומת מול הסרטון תיקון מיפוי, לא אומת מול הסרטון.",
+      "source_notes": "אומת מול הסרטון 5.11 (עדי)",
       "poster_uncertain": false,
       "equipment_tags": [
         "cones"
+      ],
+      "safety_he": "רצים במגרש פנוי ונוגעים בעדינות",
+      "difficulty": 1,
+      "alternatives": [
+        "ig-Dcv4lAKitq9",
+        "ig-Db_lH-pykzO"
       ]
     },
     {
