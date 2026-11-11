@@ -178,11 +178,11 @@
     #saveToast.visible { display: block; }
     .equipment-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
     button:focus-visible, a:focus-visible, textarea:focus-visible, .history-item:focus-visible {
-      outline: 2px solid #a78bfa;
+      outline: 2px solid var(--teal);
       outline-offset: 2px;
     }
     .action-btn:focus-visible, .example-btn:focus-visible, .parse-btn:focus-visible {
-      outline: 2px solid #c4b5fd;
+      outline: 2px solid var(--teal);
       outline-offset: 2px;
     }
     .example-btn.ghost {
@@ -205,7 +205,7 @@
   </style>
 <script src="../js/sentry-init.js"></script>
 </head>
-<body>
+<body class="th-ds" data-theme="dark">
 <a class="skip-link" href="#workoutInput">דלג לעורך האימון</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
