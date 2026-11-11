@@ -25,12 +25,15 @@
     .empty { color: var(--muted); padding: 24px 0; }
     button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
     .th-btn[disabled], .th-btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; pointer-events: none; }
+    .print-sheet table { width: 100%; border-collapse: collapse; }
+    .print-sheet th, .print-sheet td { overflow-wrap: break-word; word-break: break-word; }
     @media print {
       body { background: #fff; color: #111; }
       /* biome-ignore lint/complexity/noImportantStyles: print override */
       .no-print, .th-nav, .toolbar, button { display: none !important; }
       .print-sheet { color: #111; }
       .print-sheet th, .print-sheet td { border-bottom-color: #ccc; color: #111; }
+      .print-phase, .print-sheet tr, .print-sheet table { break-inside: avoid; page-break-inside: avoid; }
     }
   </style>
 </head>

@@ -170,6 +170,33 @@ test("workout-print.html CSS: @media print hides toolbar, control buttons, and n
 	);
 });
 
+test("workout-print.html CSS: table responsiveness and text overflow prevention are declared", () => {
+	assert.match(html, /(?:\.print-sheet\s+)?table\s*\{[^}]*width:\s*100%;/);
+	assert.match(
+		html,
+		/(?:\.print-sheet\s+)?table\s*\{[^}]*border-collapse:\s*collapse;/,
+	);
+	assert.match(
+		html,
+		/(?:\.print-sheet\s+)?th,\s*(?:\.print-sheet\s+)?td\s*\{[^}]*overflow-wrap:\s*break-word;/,
+	);
+	assert.match(
+		html,
+		/(?:\.print-sheet\s+)?th,\s*(?:\.print-sheet\s+)?td\s*\{[^}]*word-break:\s*break-word;/,
+	);
+});
+
+test("workout-print.html CSS: @media print declares page break avoidance for printable phases, rows, and tables", () => {
+	assert.match(
+		html,
+		/@media print\s*\{[\s\S]*?(?:\.print-phase,\s*\.print-sheet tr,\s*\.print-sheet table|\.print-phase,\s*tr,\s*table)[^{]*\{[^}]*break-inside:\s*avoid;/,
+	);
+	assert.match(
+		html,
+		/@media print\s*\{[\s\S]*?(?:\.print-phase,\s*\.print-sheet tr,\s*\.print-sheet table|\.print-phase,\s*tr,\s*table)[^{]*\{[^}]*page-break-inside:\s*avoid;/,
+	);
+});
+
 test("workout-print.html dynamic: empty state disables print button and renders accessible message with call-to-action", () => {
 	reset();
 	const page = mountPage();
