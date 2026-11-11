@@ -188,7 +188,12 @@ test('typing in the search box or changing a filter releases the pin into a norm
   assert.deepEqual(state.cardIds(), [found.alt.id]);
   state.api.filter();
   assert.equal(state.api.state().pinned, '');
-  assert.deepEqual(state.cardIds(), found.shown.map(function (e) { return e.id; }),
+  // The grid groups a mixed-muscle name search into muscle rails, so the
+  // released pin has to match a fresh search, not the flat catalog order.
+  const plain = pageState({});
+  plain.els.q.value = found.alt.he;
+  plain.api.filter();
+  assert.deepEqual(state.cardIds(), plain.cardIds(),
     'after the pin is released the grid is the plain name search again');
   assert.doesNotMatch(state.els.stats.innerHTML, /data-unpin/);
 });

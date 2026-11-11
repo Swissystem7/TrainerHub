@@ -115,18 +115,19 @@ test('thin-group embeds join the library merge and the session builder', functio
     counts[item.folder] = (counts[item.folder] || 0) + 1;
   });
   assert.deepEqual(counts, {
-    'מתיחות וגמישות': 6,
-    'כתפיים': 15,
+    'מתיחות וגמישות': 8,
+    'כתפיים': 21,
     'חימום': 6,
-    'יד קדמית': 10,
-    'יד אחורית': 6,
-    'רגליים': 8,
-    'קרדיו': 5,
+    'יד קדמית': 13,
+    'יד אחורית': 8,
+    'רגליים': 21,
+    'קרדיו': 11,
     'ידיים': 1,
-    'בטן': 2,
-    'גב': 5
+    'בטן': 5,
+    'גב': 8,
+    'חזה': 12
   });
-  assert.equal(youtube.items.length, 64);
+  assert.equal(youtube.items.length, 114);
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
   assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length);
   youtube.items.forEach(function (item) {
@@ -153,4 +154,79 @@ test('thin-group embeds join the library merge and the session builder', functio
   assert.equal(driveRaw.indexOf('youtube.com'), -1);
   assert.equal(driveRaw.indexOf('youtubeId'), -1);
   assert.match(fs.readFileSync(path.join(root, 'js', 'core.js'), 'utf8'), /videos\/youtube-catalog\.json/);
+});
+
+test('each program-pool name with a video resolves through findExercise', function () {
+  const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
+  TH.setCatalog(merged);
+  const byYoutube = {
+    bodyweight_squat: 'PlDqgNcJJ2U',
+    lunges: 'M6DZ0Dca17w',
+    glute_bridge: 'SKOMwg1JLrU',
+    step_up: 'nhVyTCGGvS0',
+    wall_sit: 'y-wV4Venusw',
+    calf_raise: '3UWi44yN-wM',
+    goblet_squat: 'Wr-f4vy8wTs',
+    dumbbell_lunge: '3TM-vVWuLYE',
+    romanian_deadlift_db: 'vnEANU7BqqY',
+    squat: '-bJIpOq-LWk',
+    deadlift: 'yPqv3ejnZvc',
+    leg_press: 'oujca3_Shgw',
+    push_up: 'WDIpL0pjun0',
+    wide_push_up: 'rr6eFNNDQdU',
+    dumbbell_bench: 'VmB1G1K7v94',
+    dumbbell_fly: 'eozdVDA78K0',
+    bench_press: 'rT7DgCr-3pg',
+    dumbbell_row: '-koP10y1qZI',
+    barbell_row: '9efgcAjQe7E',
+    pull_up: '9yVGh3XbJ34',
+    lat_pulldown: 'GL3h256d6JM',
+    pike_push_up: '18mNeuH4D1k',
+    arm_circles: 'oLB8i4bC3Zk',
+    dumbbell_ohp: 'qEwKCR5JCog',
+    lateral_raise: 'WPAOe6yBONA',
+    overhead_press: '2yjwXTZQDDI',
+    bodyweight_curl: 'F5hCRqcDOMI',
+    bicep_curl: 'uO_CNYidOw0',
+    hammer_curl: 'SGolzLoGutg',
+    bench_dips: 'c3ZGl4pAwZ4',
+    tricep_push_up: 'nOIcUZMwzgM',
+    overhead_extension: 'b_r_LW4HEcM',
+    tricep_pushdown: 'UKsqwz1OSWw',
+    russian_twist: 'wkD8rjkodUI',
+    leg_raise: '0tzBVqiDwSs'
+  };
+  const byFile = ['superman', 'bodyweight_row', 'plank', 'crunches', 'mountain_climber'];
+  Object.keys(byYoutube).concat(byFile).forEach(function (id) {
+    const he = TH.heName(id);
+    const hit = TH.findExercise({ id: id, name: he });
+    assert.ok(hit && TH.isPlayable(hit), id + ' / ' + he);
+    const byId = TH.findExercise({ id: id });
+    assert.equal(byId && byId.id, hit.id, id);
+    if (byYoutube[id]) assert.equal(hit.youtubeId, byYoutube[id], id);
+  });
+  assert.equal(TH.findExercise({ id: 'step_up' }).id, 'step_up');
+  assert.equal(TH.findExercise({ id: 'step_up' }).youtubeId, 'nhVyTCGGvS0');
+  assert.equal(TH.findExercise({ id: 'dumbbell_step_up' }).youtubeId, 'DxUNi119Qzs');
+  assert.equal(TH.matchCatalog('שכיבות סמיכה').youtubeId, 'WDIpL0pjun0');
+  assert.equal(TH.matchCatalog('סקוואט').id, 'squat');
+  assert.notEqual(TH.matchCatalog('סקוואט').id, 'yt_pistol_squat');
+  assert.equal(TH.matchCatalog('דדליפט').id, 'deadlift');
+  assert.notEqual(TH.matchCatalog('דדליפט').id, 'yt_rdl_db');
+  assert.equal(TH.matchCatalog('פרפר הפוך').id, 'yt_rear_delt_fly');
+  assert.equal(TH.findExercise({ id: 'reverse_fly_bw', name: 'פרפר הפוך משקל גוף' }).youtubeId, 'BpbZC_Pd4XU');
+  assert.equal(TH.matchCatalog('אדמה בוערת').id, 'fast_feet');
+  assert.equal(TH.matchCatalog('אדמה בוערת').youtubeId, 'eT5M1goPDhY');
+  assert.notEqual(TH.matchCatalog('אדמה בוערת').id, 'mountain_climber');
+  assert.equal(TH.matchCatalog('שכיבות סמיכה בהתקדמות').youtubeId, 'l7ZmX1eaXLo');
+  assert.equal(TH.matchCatalog('ניתורים במקום עם ברכיים לחזה').id, 'tuck_jump');
+  assert.equal(TH.matchCatalog('הליכה על הידיים').id, 'hand_walk_out');
+  assert.equal(TH.matchCatalog('ניתור לאדמה וגלגול').id, 'sprawl');
+  assert.equal(TH.matchCatalog('זריקות כדור כוח מעל הראש').id, 'med_ball_overhead_throw');
+  assert.equal(TH.matchCatalog('צעדי איילה').id, 'agility_5_10_5');
+  assert.equal(TH.matchCatalog('australian pull-up').id, 'bodyweight_row');
+  assert.equal(merged.yt_hand_release_push_up.youtubeId, 'dFI0VWMqxIk');
+  assert.equal(youtube.items.some(function (item) { return item.youtubeId === 'BsZnGeTL1Sc'; }), false);
+  assert.equal(youtube.items.some(function (item) { return item.youtubeId === '9mO6ygDS7y4'; }), false);
+  assert.equal(TH.findExercise({ id: 'אתגר_שתייה' }), null);
 });

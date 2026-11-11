@@ -329,7 +329,12 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-016.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "aliases": [
+      "הרמות גוף בשכיבה על הבטן",
+      "סופרמן",
+      "superman"
+    ]
   },
   "כתפיים_וגב": {
     "id": "כתפיים_וגב",
@@ -361,7 +366,12 @@
     "warningHe": "מתח על מוט — סיכון לכתפיים בלי ניסיון קודם; מומלץ פיקוח.",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-018.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "aliases": [
+      "australian pull-up",
+      "australian pull up",
+      "australian pullup"
+    ]
   },
   "קונוסים_גב": {
     "id": "קונוסים_גב",
