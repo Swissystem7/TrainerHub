@@ -66,6 +66,10 @@
   border-radius: 8px;
   font-weight: 700;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 .skip-link:focus,
 .skip-link:focus-visible {
@@ -357,7 +361,7 @@ body.th-ds .th-btn.ghost {
 body.th-ds .th-btn.ghost:hover { border-color: var(--th-teal); filter: none; }
 body.th-ds .th-btn:disabled { background: var(--th-surface2); color: var(--th-muted); cursor: not-allowed; filter: none; }
 
-body.th-ds .skip-link { background: var(--th-teal); color: var(--th-on-teal); }
+body.th-ds .skip-link { background: var(--th-teal); color: var(--th-on-teal); display: inline-flex; align-items: center; min-height: var(--th-tap); box-sizing: border-box; }
 body.th-ds .kbd-hint { color: var(--th-muted); }
 
 body.th-ds .th-steps li {
