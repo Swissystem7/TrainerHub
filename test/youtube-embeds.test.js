@@ -121,13 +121,13 @@ test('thin-group embeds join the library merge and the session builder', functio
     'יד קדמית': 13,
     'יד אחורית': 8,
     'רגליים': 21,
-    'קרדיו': 11,
+    'קרדיו': 13,
     'ידיים': 1,
     'בטן': 5,
-    'גב': 8,
+    'גב': 9,
     'חזה': 12
   });
-  assert.equal(youtube.items.length, 114);
+  assert.equal(youtube.items.length, 117);
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
   assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length);
   youtube.items.forEach(function (item) {
@@ -229,4 +229,68 @@ test('each program-pool name with a video resolves through findExercise', functi
   assert.equal(youtube.items.some(function (item) { return item.youtubeId === 'BsZnGeTL1Sc'; }), false);
   assert.equal(youtube.items.some(function (item) { return item.youtubeId === '9mO6ygDS7y4'; }), false);
   assert.equal(TH.findExercise({ id: 'אתגר_שתייה' }), null);
+  assert.equal(TH.findExercise({ name: 'תלייה פסיבית 3×20–30 שנ׳' }).youtubeId, '3CEmHJXbNpc');
+  assert.equal(merged.dead_hang.youtubeId, '3CEmHJXbNpc');
+});
+
+test('every ready-workout exercise and reserves session drill resolves to a video', function () {
+  const Ingest = require('../js/ingest.js');
+  const ready = require('../js/ready-workouts.json');
+  const track = JSON.parse(fs.readFileSync(path.join(root, 'content', 'reserves', 'miluim-track.json'), 'utf8'));
+  const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
+  TH.setCatalog(merged);
+  assert.match(fs.readFileSync(path.join(root, 'reserves.html'), 'utf8'), /name:\s*line/);
+  const readyMiss = [];
+  ready.forEach(function (workout) {
+    const parsed = Ingest.ingestText(workout.text);
+    (parsed.workout.phases || []).forEach(function (phase) {
+      (phase.exercises || []).forEach(function (ex) {
+        if (ex.name === 'אתגר שתייה') return;
+        const hit = TH.findExercise({ name: ex.name, id: ex.id });
+        if (!hit || !TH.isPlayable(hit)) readyMiss.push(workout.title + ': ' + ex.name);
+      });
+    });
+  });
+  assert.deepEqual(readyMiss, []);
+  // Session notes that are not a named drill. Everything else in items_he is an exercise.
+  const notes = {
+    'נפח כוח מופחת (−40%)': true,
+    'סימולציה קלה של המדדים (לא עד כישלון)': true,
+    'עבודה ממוקדת על המדד החלש ביותר': true,
+    'שני מדדים נוספים בנפח בינוני': true,
+    'ניסיון כמעט-מלא לכל מדד': true,
+    'מנוחות מלאות בין מדדים': true,
+    'נפח קל־בינוני בכל ארבעת התרגילים': true,
+    'בלי להגיע לתשישות': true,
+    'סטים קצרים באיכות גבוהה בלבד': true,
+    'בלי תשישות': true,
+    'שינה ומנוחה': true,
+    'מבחן סיום ביום נפרד כשאפשר': true,
+    'מנוחה 60–90 שנ׳ בין סיבובים': true,
+    'מנוחה 90 שנ׳ בין מעגלים': true,
+    'סימולציה מלאה של ארבעת המדדים עם מנוחות': true
+  };
+  const reserveMiss = [];
+  function walk(node) {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      node.forEach(walk);
+      return;
+    }
+    (node.items_he || []).forEach(function (line) {
+      if (notes[line] || line === 'אתגר שתייה') return;
+      const hit = TH.findExercise({ name: line, id: 'miluim-line' });
+      if (!hit || !TH.isPlayable(hit)) reserveMiss.push(line);
+    });
+    Object.keys(node).forEach(function (key) {
+      if (key !== 'items_he') walk(node[key]);
+    });
+  }
+  walk(track);
+  assert.deepEqual(reserveMiss, []);
+  assert.equal(TH.findExercise({ name: 'פלאנק 3×20 שנ׳', id: 'miluim-line' }).id, 'plank');
+  assert.equal(TH.findExercise({ name: "לאנג׳ במקום 3×8 לכל רגל", id: 'miluim-line' }).id, 'lunges');
+  assert.equal(TH.findExercise({ name: 'פיק־אפים / כתפיים 3×8', id: 'miluim-line' }).id, 'yt_pull_up');
+  assert.equal(TH.findExercise({ name: 'ריצה קלה 15 דק׳', id: 'miluim-line' }).youtubeId, 'bMeXQfQJ36E');
+  assert.equal(TH.findExercise({ name: '8×200 מ׳ או 4×400 מ׳', id: 'miluim-line' }).id, 'run_3000');
 });

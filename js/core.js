@@ -236,6 +236,8 @@
 		בטן: "crunches",
 		"מתח אוסטרלי": "bodyweight_row",
 		חימום: "warmup",
+		"חימום ארוך": "warmup",
+		"חימום קל": "warmup",
 		מדרגות: "step_up",
 		סופרמן: "superman",
 		"גב תחתון": "superman",
@@ -274,10 +276,32 @@
 		"תנועה הצידה": "agility_5_10_5",
 		"תנועה לפנים": "agility_5_10_5",
 		"תנועה לאחור": "agility_5_10_5",
+		"תנועה הצידה ונגיעה": "agility_5_10_5",
+		נגיעה: "agility_5_10_5",
 		"פרפר הפוך משקל גוף": "bodyweight_reverse_fly",
 		"australian pull-up": "bodyweight_row",
 		"australian pull up": "bodyweight_row",
 		"australian pullup": "bodyweight_row",
+		"לאנצ'ים": "lunges",
+		"לאנץ'ים": "lunges",
+		"לאנג' במקום": "lunges",
+		"לאנג׳ במקום": "lunges",
+		"לאנצ'ים בהתקדמות": "yt_walking_lunge",
+		"תרגיל יד אחורית": "yt_diamond_pushup",
+		"ריצה מהירה": "yt_high_knees",
+		"פיק-אפים": "yt_pull_up",
+		"פיק־אפים": "yt_pull_up",
+		"עליות מתח": "yt_pull_up",
+		"תלייה פסיבית": "dead_hang",
+		תלייה: "dead_hang",
+		"ריצה קלה": "run_3000",
+		"ריצה רצופה": "run_3000",
+		אינטרוולים: "run_3000",
+		"ריצת 3000": "run_3000",
+		"ריצת 3000 מ׳": "run_3000",
+		"ניתורים בכריעת ברך": "kneeling_jump",
+		סקוואטים: "bodyweight_squat",
+		"שכיבות סמיכה רגילות": "push_up",
 	};
 
 	var SOURCE_LABELS = {
@@ -1079,16 +1103,87 @@
 		return false;
 	}
 
+	// Reserves lines keep their dosage in the visible name («פלאנק 3×20 שנ׳»).
+	// Lookup ignores the dose, then the pieces around «/», «או», and commas.
+	function stripDosage(raw) {
+		var s = String(raw || "");
+		s = s.replace(/\([^)]*\)/g, " ");
+		s = s.replace(/[−\-]\s*\d+\s*%/g, " ");
+		s = s.replace(/\d+\s*[×xX]\s*\d+(?:\s*[–\-־]\s*\d+)?\s*\+?/g, " ");
+		s = s.replace(/\d+\s*[×xX](?=\s|$)/g, " ");
+		s = s.replace(/[×xX]\s*\d+/g, " ");
+		s = s.replace(
+			/\d+\s*[–\-־]\s*\d+\s*(?:דק׳?|דקות|שנ׳?|שניות|מ׳|מטר|ק״מ|ק"מ)/g,
+			" ",
+		);
+		s = s.replace(/\d+\s*(?:דק׳|דקות|שנ׳|שניות|מ׳|מטר|ק״מ|ק"מ)/g, " ");
+		s = s.replace(/\d+\s*סטים/g, " ");
+		s = s.replace(/לכל\s+רגל/g, " ");
+		s = s.replace(/לכל\s+צד/g, " ");
+		s = s.replace(/(?:^|\s)(?:מ׳|מטר|ק״מ|ק"מ|דק׳|שנ׳)(?=\s|$)/g, " ");
+		s = s.replace(/^(?:חזרות|מטר)\s+/, "");
+		s = s.replace(/\s+/g, " ").trim();
+		return s.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "");
+	}
+
+	function nameCandidates(raw) {
+		var stripped = stripDosage(raw);
+		var out = [];
+		function add(part) {
+			var x = String(part || "")
+				.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "")
+				.trim();
+			if (!x || x.length < 2 || out.indexOf(x) !== -1) return;
+			out.push(x);
+		}
+		add(stripped);
+		String(stripped)
+			.split(/\s*(?:\/|,| או )\s*/)
+			.forEach(function (part) {
+				add(part);
+				var bits = part.split(":");
+				if (bits.length > 1) bits.slice(1).forEach(add);
+			});
+		if (!out.length && /(?:מ׳|ק״מ|ק"מ|דק׳)/.test(String(raw || "")))
+			add("ריצת 3000");
+		var meaningful = out.filter(function (x) {
+			return x.length >= 3 && x !== "או";
+		});
+		if (!meaningful.length && /(?:מ׳|ק״מ|ק"מ)/.test(String(raw || "")))
+			add("אינטרוולים");
+		return out.filter(function (x) {
+			return x.length >= 3 && x !== "או";
+		});
+	}
+
+	function matchPlayableName(name) {
+		if (!name) return null;
+		var viaMap = mappedAlias(name);
+		if (viaMap) return viaMap;
+		var keys = Object.keys(catalog);
+		var i, entry;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (!entry || !isPlayable(entry)) continue;
+			if (entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
+				return entry;
+			if (aliasListHas(entry, name)) return entry;
+			if (foldHe(entry.he) === foldHe(name)) return entry;
+		}
+		return null;
+	}
+
 	// A program step links by exact catalog id, then exact Hebrew title
 	// (including HE_NAMES), then the explicit NAME_ALIASES map, then a row's
-	// own aliases. Fuzzy contains-matching stays in matchCatalog.
+	// own aliases. A reserves line still shows its dosage; the dose is stripped
+	// only for this lookup. Fuzzy contains-matching stays in matchCatalog.
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
 		var name = step.name;
 		var keys = Object.keys(catalog);
-		var i, entry, viaMap;
+		var i, entry, viaMap, candidates, c, hit;
 		for (i = 0; i < keys.length; i++) {
 			entry = catalog[keys[i]];
 			if (!entry || !isPlayable(entry)) continue;
@@ -1108,6 +1203,18 @@
 			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
 				return entry;
 			if (name && foldHe(entry.he) === foldHe(name)) return entry;
+		}
+		if (!name) return null;
+		candidates = nameCandidates(name);
+		for (c = 0; c < candidates.length; c++) {
+			if (candidates[c] === name) continue;
+			hit = matchPlayableName(candidates[c]);
+			if (hit) return hit;
+		}
+		for (c = 0; c < candidates.length; c++) {
+			if (candidates[c] === name || candidates[c].length < 3) continue;
+			hit = matchCatalog(candidates[c]);
+			if (hit && isPlayable(hit)) return hit;
 		}
 		return null;
 	}
