@@ -37,8 +37,11 @@ test('release rows render the Drive player, never a blocked release <video>', fu
     const html = TH.mediaMarkup(e, { className: 'ex-media' });
     assert.doesNotMatch(html, /<video/, e.id);
     assert.doesNotMatch(html, /releases\/download/, e.id);
-    assert.ok(html.indexOf('src="https://drive.google.com/file/d/' + e.drivePlayId + '/preview"') !== -1, e.id);
-    assert.match(html, /<iframe class="ex-media"/);
+    assert.ok(html.indexOf('data-th-frame="https://drive.google.com/file/d/' + e.drivePlayId + '/preview"') !== -1, e.id);
+    assert.match(html, /<button type="button" class="ex-media ex-media-facade"/);
+    const eager = TH.mediaMarkup(e, { className: 'ex-media', eager: true });
+    assert.ok(eager.indexOf('src="https://drive.google.com/file/d/' + e.drivePlayId + '/preview"') !== -1, e.id);
+    assert.match(eager, /<iframe class="ex-media"/);
   });
 });
 

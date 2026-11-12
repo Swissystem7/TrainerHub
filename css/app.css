@@ -403,3 +403,55 @@ body.th-ds .th-tag.warm { background: var(--th-orange-soft); color: var(--th-ora
 @media (max-width: 700px) {
   body.th-ds .th-steps { gap: 8px; }
 }
+
+/* Load-on-click player (js/core.js frameFacadeMarkup): the clip's thumbnail in
+   the same box the iframe used, with a play button. Clicking swaps in the iframe. */
+button.ex-media-facade,
+button.drive-frame-facade {
+  display: block;
+  background: #000;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+/* .drive-frame (exercises.html) is already absolutely positioned. */
+button.ex-media-facade { position: relative; }
+.th-facade-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.th-facade-thumb.is-cover { object-fit: cover; }
+.th-facade-thumb[hidden] { display: none; }
+.ex-media-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.62);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+.ex-media-play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -11px 0 0 -6px;
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent #fff;
+}
+button.ex-media-facade:hover .ex-media-play,
+button.ex-media-facade:focus-visible .ex-media-play,
+button.drive-frame-facade:hover .ex-media-play,
+button.drive-frame-facade:focus-visible .ex-media-play { background: rgba(0, 0, 0, 0.8); }

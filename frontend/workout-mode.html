@@ -676,7 +676,7 @@ function renderExercise(step) {
 
   const notes = step.notes ? `<div class="ex-notes" role="note" aria-label="דגשי ביצוע">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
-  const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+  const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
 
   stage.innerHTML = `
     <div class="phase-label">${esc(step.phase)}</div>
@@ -1229,7 +1229,7 @@ function refreshStepMedia() {
   const slot = document.getElementById('exMediaSlot');
   if (!slot) return;
   const clip = TH.findExercise(step);
-  slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+  slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
 }
 window.addEventListener('offline', refreshStepMedia);
 window.addEventListener('online', refreshStepMedia);
