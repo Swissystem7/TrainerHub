@@ -789,6 +789,9 @@
     var view = ex.source_url || driveViewUrl(ex.file_id);
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
+    // js/core.js opens only players it was told about (load-on-click).
+    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
+    if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       '<div class="poster-frame tone-' + toneName(muscle) + '">' +

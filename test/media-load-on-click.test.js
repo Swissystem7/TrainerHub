@@ -59,6 +59,8 @@ test('list pages do not ask for eager players', function () {
 });
 
 test('clicking a facade swaps in the iframe, with autoplay for YouTube', function () {
+  TH.registerFrameSrc('https://www.youtube.com/embed/PlDqgNcJJ2U?start=5');
+  TH.registerFrameSrc('https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview');
   const yt = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5', 'data-th-frame-title': 'סקוואט',
     'data-th-frame-allow': 'autoplay; encrypted-media', class: 'ex-media ex-media-facade' });
   const f = TH.activateMediaFrame(yt.btn);
@@ -81,6 +83,15 @@ test('clicking a facade swaps in the iframe, with autoplay for YouTube', functio
   assert.equal(TH.activateMediaFrame({ getAttribute: function () { return null; } }), null);
 });
 
+function bad_register_check() {
+  ['javascript:alert(1)', 'https://evil.example/preview', 'data:text/html,hi'].forEach(function (bad) {
+    assert.equal(TH.registerFrameSrc(bad), false, bad);
+  });
+  // A well-formed URL that this page never rendered is not opened either.
+  const unknown = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/AAAAAAAAAAA', class: 'ex-media ex-media-facade' });
+  assert.equal(TH.activateMediaFrame(unknown.btn), null);
+}
+
 test('a facade only ever loads a Drive preview or a YouTube embed rebuilt from its id', function () {
   ['javascript:alert(1)', 'https://evil.example/preview', 'https://drive.google.com/file/d/abc"><script>/preview',
     'https://www.youtube.com/embed/PlDqgNcJJ2U?start=1&x=javascript:', 'data:text/html,hi', 'https://drive.google.com.evil.io/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview']
@@ -89,6 +100,8 @@ test('a facade only ever loads a Drive preview or a YouTube embed rebuilt from i
       assert.equal(TH.activateMediaFrame(fb.btn), null, bad);
       assert.equal(fb.parent.replaced, null, bad);
     });
+  bad_register_check();
+  assert.equal(TH.registerFrameSrc('https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30'), true);
   const ok = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30', class: 'ex-media ex-media-facade x"y' });
   const f = TH.activateMediaFrame(ok.btn);
   assert.equal(f.attrs.src, 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30&autoplay=1');
@@ -105,6 +118,14 @@ test('every facade the app renders passes the allowlist', function () {
     const fb = fakeButton({ 'data-th-frame': u, class: 'ex-media ex-media-facade' });
     assert.ok(TH.activateMediaFrame(fb.btn), u);
   });
+});
+
+test('reels page Drive cards register their player with core', function () {
+  const ex = THReels.driveVideosToExercises([{ fileId: '1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ', name: 'א - X.mp4', folder: 'כושר/חזה', muscleGroup: 'חזה' }])[0];
+  globalThis.TH = TH;
+  try { THReels.exerciseCardHtml(ex, TH.esc); } finally { delete globalThis.TH; }
+  const fb = fakeButton({ 'data-th-frame': 'https://drive.google.com/file/d/1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ/preview', class: 'drive-frame drive-frame-facade' });
+  assert.ok(TH.activateMediaFrame(fb.btn));
 });
 
 test('reels page Drive cards use the same play button', function () {
