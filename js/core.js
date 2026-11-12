@@ -2978,6 +2978,7 @@
 	// The thumbnail is a lazy <img> (not a CSS background) so only cards near the
 	// viewport fetch one; a burst of ~150 Drive thumbnails gets refused.
 	function frameFacadeMarkup(o) {
+		registerFrameSrc(o.src);
 		return (
 			'<button type="button" class="' +
 			o.cls +
@@ -3035,10 +3036,23 @@
 		return { kind: "youtube", src: withAutoplay(youtubeEmbedUrl(m[1], start, end)) };
 	}
 
+	// Players this page rendered itself, keyed by the facade's data-th-frame.
+	// A click only looks its attribute up here, so the iframe src always comes
+	// from our own markup code, never from DOM text.
+	var frameSources = Object.create(null);
+	function registerFrameSrc(raw) {
+		var safe = safeFrameSrc(raw);
+		if (safe) frameSources[String(raw)] = safe;
+		return !!safe;
+	}
+
 	// Swap one facade for its real player. Returns the iframe (or null).
 	function activateMediaFrame(btn) {
 		if (!btn || !btn.getAttribute) return null;
-		var safe = safeFrameSrc(btn.getAttribute(FRAME_ATTR));
+		var key = btn.getAttribute(FRAME_ATTR);
+		var safe = Object.prototype.hasOwnProperty.call(frameSources, key)
+			? frameSources[key]
+			: null;
 		if (!safe) return null;
 		var doc = btn.ownerDocument || (typeof document !== "undefined" ? document : null);
 		if (!doc || !btn.parentNode) return null;
@@ -4772,6 +4786,7 @@
 		isOnline: isOnline,
 		mediaMarkup: mediaMarkup,
 		activateMediaFrame: activateMediaFrame,
+		registerFrameSrc: registerFrameSrc,
 		frameFacadeMarkup: frameFacadeMarkup,
 		driveThumbUrl: driveThumbUrl,
 		mediaFallbackText: mediaFallbackText,
