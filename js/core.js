@@ -259,6 +259,14 @@
 		"מתיחת תאומים על מדרגה": "yt_calf_stretch",
 		"תלייה למתיחת גב": "dead_hang",
 		"מתיחת כתף בתלייה": "dead_hang",
+		// Instagram reels hosted on Drive (videos/drive-catalog.json), checked frame by frame.
+		"ריצות עלייה בשיפוע": "drive_ספרינט_בעלייה",
+		"שכיבת פרקדן ומשיכת צוואר לחזה.": "drive_מתיחת_צוואר_-_משיכת_סנטר_לחזה",
+		"מתיחת חזה בפתח": "drive_מתיחת_חזה_בפתח_דלת",
+		"מתיחת ירך על מדרגה": "drive_שחרור_כופפי_ירך_בעמידה_על_מדרגה",
+		"כפיפת מרפקים בזוגות": "drive_כפיפת_מרפקים_בזוגות",
+		"חלק א' – מרוץ שליחים": "drive_מרוץ_שליחים_קבוצתי_עם_קונוסים",
+		"תופסת": "drive_תופסת_קבוצתית_-_חציית_המגרש",
 		"שכיבות סמיכה בזוגות": "push_up",
 		"ריצה עם דלגית": "yt_jump_rope",
 		"שכיבות סמיכה לאחור על ספסל (דיפס)": "bench_dips",
@@ -957,6 +965,7 @@
 			startSec: e.startSec != null ? Number(e.startSec) : null,
 			endSec: e.endSec != null ? Number(e.endSec) : null,
 			segmentOf: e.segmentOf || "",
+			poster: typeof e.poster === "string" ? e.poster : "",
 		};
 	}
 
