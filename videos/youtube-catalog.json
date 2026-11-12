@@ -453,7 +453,8 @@
       "source": "youtube",
       "youtubeId": "WLQizQXoeIg",
       "folder": "יד אחורית",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-WLQizQXoeIg.jpg"
     },
     {
       "id": "yt_tricep_kickback",
@@ -626,7 +627,8 @@
         "סמוך-קום",
         "ברפיז",
         "burpee"
-      ]
+      ],
+      "poster": "assets/posters/ill-zYBkodZ1SRU.jpg"
     },
     {
       "id": "yt_mountain_climber",
@@ -765,7 +767,8 @@
       "aliases": [
         "אל סיט",
         "l sit"
-      ]
+      ],
+      "poster": "assets/posters/ill-16a529mtX68.jpg"
     },
     {
       "id": "yt_nordic_curl",
@@ -828,7 +831,8 @@
       "available": true,
       "aliases": [
         "chin up"
-      ]
+      ],
+      "poster": "assets/posters/ill-BjlOw-pcstg.jpg"
     },
     {
       "id": "yt_inverted_row",
@@ -923,7 +927,8 @@
       "available": true,
       "aliases": [
         "kettlebell snatch"
-      ]
+      ],
+      "poster": "assets/posters/ill-AR6E01ABoHk.jpg"
     },
     {
       "id": "yt_kb_clean",
@@ -943,7 +948,8 @@
       "available": true,
       "aliases": [
         "kettlebell clean"
-      ]
+      ],
+      "poster": "assets/posters/ill-hIMwYnpgB90.jpg"
     },
     {
       "id": "yt_kb_windmill",
@@ -1200,7 +1206,8 @@
         "air squat",
         "סקוואטים",
         "סקוואט חופשי"
-      ]
+      ],
+      "poster": "assets/posters/ill-PlDqgNcJJ2U.jpg"
     },
     {
       "id": "squat",
@@ -1809,7 +1816,8 @@
         "front_raise",
         "front raise",
         "dumbbell front raise"
-      ]
+      ],
+      "poster": "assets/posters/ill--t7fuZ0KhDA.jpg"
     },
     {
       "id": "upright_row",
@@ -1925,7 +1933,8 @@
         "standing hamstring stretch",
         "מתיחות",
         "שחרור"
-      ]
+      ],
+      "poster": "assets/posters/ill-5f5aHVj-f9Q.jpg"
     },
     {
       "id": "jump_squat",
@@ -1947,7 +1956,8 @@
         "jump_squat",
         "jump squat",
         "squat jump"
-      ]
+      ],
+      "poster": "assets/posters/ill-U4s4mEQ5VqU.jpg"
     },
     {
       "id": "side_lunge",
@@ -2147,7 +2157,8 @@
         "tuck jumps",
         "ניתורים במקום עם ברכיים לחזה",
         "tuck_jump"
-      ]
+      ],
+      "poster": "assets/posters/ill-r7oBejx1PHM.jpg"
     },
     {
       "id": "hand_walk_out",
@@ -2170,7 +2181,8 @@
         "inchworm",
         "הליכה על הידיים",
         "hand_walk_out"
-      ]
+      ],
+      "poster": "assets/posters/ill-3hcMM8pQWZ0.jpg"
     },
     {
       "id": "sprawl",
@@ -2267,7 +2279,8 @@
         "פרפר הפוך משקל גוף",
         "reverse_fly_bw",
         "bodyweight_reverse_fly"
-      ]
+      ],
+      "poster": "assets/posters/ill-BpbZC_Pd4XU.jpg"
     },
     {
       "id": "walking_push_up",
@@ -2386,7 +2399,8 @@
         "run_3000",
         "ריצה בקצב יעד",
         "ריצת בקצב יעד"
-      ]
+      ],
+      "poster": "assets/posters/ill-bMeXQfQJ36E.jpg"
     },
     {
       "id": "yt_kids_basketball_passing",
@@ -2616,7 +2630,8 @@
       "available": true,
       "aliases": [
         "soccer agility ladder passing and finishing"
-      ]
+      ],
+      "poster": "assets/posters/ill-rspFRO0U-NM.jpg"
     },
     {
       "id": "yt_kids_partner_tennis_catch",
@@ -2822,7 +2837,8 @@
       "available": true,
       "aliases": [
         "kettlebell curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-u5eS2ns5cek.jpg"
     },
     {
       "id": "yt_banded_kb_swing",
@@ -3000,7 +3016,8 @@
       "aliases": [
         "jackpot game",
         "throwing and catching game"
-      ]
+      ],
+      "poster": "assets/posters/ill-QuayentSsKQ.jpg"
     },
     {
       "id": "yt_swiss_ball_curl",
@@ -3061,7 +3078,8 @@
       "aliases": [
         "partner med ball workout",
         "כדור כוח בזוגות"
-      ]
+      ],
+      "poster": "assets/posters/ill-IjJsHWoCKxs.jpg"
     },
     {
       "id": "yt_wall_squat_angels",
@@ -3082,7 +3100,8 @@
       "aliases": [
         "wall squat with wall angels",
         "מלאכי קיר"
-      ]
+      ],
+      "poster": "assets/posters/ill-VamQSMBCmEA.jpg"
     },
     {
       "id": "yt_stairs_full_workout",
@@ -3240,7 +3259,8 @@
       "aliases": [
         "basketball close grip push ups",
         "שכיבות סמיכה צמודות בכדורסל"
-      ]
+      ],
+      "poster": "assets/posters/ill-Qyz-i83vqCQ.jpg"
     },
     {
       "id": "yt_kids_floor_tricep_dips",
