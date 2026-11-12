@@ -3062,6 +3062,14 @@
 		);
 	}
 
+	// A row's own illustration (assets/posters/<code>.jpg) is preferred over
+	// the Drive thumbnail; only a relative path inside the site is accepted.
+	function localPosterUrl(entry) {
+		var p = entry && typeof entry.poster === "string" ? entry.poster.trim() : "";
+		if (!p || p.indexOf("..") !== -1 || /^([a-z]+:|\/)/i.test(p)) return "";
+		return assetUrl(p);
+	}
+
 	function youtubeThumbUrl(id) {
 		if (!/^[A-Za-z0-9_-]{11}$/.test(id || "")) return "";
 		return "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
@@ -3210,7 +3218,7 @@
 			title: entry.he || "סרטון דרייב",
 			src: drivePreviewUrl(driveId),
 			allow: DRIVE_ALLOW,
-			thumb: driveThumbUrl(driveId),
+			thumb: localPosterUrl(entry) || driveThumbUrl(driveId),
 			referrer: "no-referrer-when-downgrade",
 		};
 		return (

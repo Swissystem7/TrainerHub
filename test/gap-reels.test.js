@@ -65,3 +65,12 @@ test('stretches stay out of the Main phase', function () {
     });
   });
 });
+
+test('the Drive player card shows the reel poster before it loads', function () {
+  TH.setCatalog(merged);
+  const e = row('DQRgIA8DC_V');
+  const html = TH.mediaMarkup(merged[e.id], { className: 'ex-media' });
+  assert.match(html, /<img class="th-facade-thumb" src="(\.\/)?assets\/posters\/DQRgIA8DC_V\.jpg"/);
+  const plain = drive.items.find(function (x) { return x.source === 'drive' && x.driveId && !x.poster && merged[x.id]; });
+  assert.match(TH.mediaMarkup(merged[plain.id], { className: 'ex-media' }), /drive\.google\.com\/thumbnail\?id=/);
+});
