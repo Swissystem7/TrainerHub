@@ -3019,26 +3019,50 @@
 		);
 	}
 
+	// Rebuild a player URL from a facade attribute. Only a Drive preview or a
+	// YouTube embed with a well-formed id (and numeric start/end) is accepted, and
+	// the URL is rebuilt from those parts, so DOM text never becomes a src as is.
+	var DRIVE_PREVIEW_RX = /^https:\/\/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]{8,})\/preview$/;
+	var YOUTUBE_EMBED_RX =
+		/^https:\/\/www\.youtube\.com\/embed\/([A-Za-z0-9_-]{11})(?:\?(start=\d+)?(?:&?(end=\d+))?)?$/;
+	function safeFrameSrc(raw) {
+		var m = DRIVE_PREVIEW_RX.exec(String(raw || ""));
+		if (m) return { kind: "drive", src: drivePreviewUrl(m[1]) };
+		m = YOUTUBE_EMBED_RX.exec(String(raw || ""));
+		if (!m) return null;
+		var start = m[2] ? Number(m[2].slice(6)) : null;
+		var end = m[3] ? Number(m[3].slice(4)) : null;
+		return { kind: "youtube", src: withAutoplay(youtubeEmbedUrl(m[1], start, end)) };
+	}
+
 	// Swap one facade for its real player. Returns the iframe (or null).
 	function activateMediaFrame(btn) {
-		if (!btn || !btn.getAttribute || !btn.getAttribute(FRAME_ATTR)) return null;
+		if (!btn || !btn.getAttribute) return null;
+		var safe = safeFrameSrc(btn.getAttribute(FRAME_ATTR));
+		if (!safe) return null;
 		var doc = btn.ownerDocument || (typeof document !== "undefined" ? document : null);
 		if (!doc || !btn.parentNode) return null;
-		var src = btn.getAttribute(FRAME_ATTR);
 		var frame = doc.createElement("iframe");
 		var cls = String(btn.getAttribute("class") || "")
 			.split(/\s+/)
 			.filter(function (c) {
-				return c && !/-facade$/.test(c);
+				return /^[A-Za-z][A-Za-z0-9_-]*$/.test(c) && !/-facade$/.test(c);
 			})
 			.join(" ");
 		frame.setAttribute("class", cls);
-		frame.setAttribute("title", btn.getAttribute("data-th-frame-title") || "");
-		frame.setAttribute("allow", btn.getAttribute("data-th-frame-allow") || "autoplay");
+		frame.setAttribute("title", String(btn.getAttribute("data-th-frame-title") || ""));
+		frame.setAttribute(
+			"allow",
+			safe.kind === "youtube"
+				? YOUTUBE_ALLOW
+				: /fullscreen/.test(btn.getAttribute("data-th-frame-allow") || "")
+					? "autoplay; fullscreen"
+					: DRIVE_ALLOW,
+		);
 		frame.setAttribute("allowfullscreen", "");
-		if (/drive\.google\.com/.test(src))
+		if (safe.kind === "drive")
 			frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
-		frame.setAttribute("src", /youtube\.com\/embed/.test(src) ? withAutoplay(src) : src);
+		frame.setAttribute("src", safe.src);
 		btn.parentNode.replaceChild(frame, btn);
 		if (typeof frame.focus === "function") frame.focus();
 		return frame;

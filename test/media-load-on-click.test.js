@@ -66,7 +66,7 @@ test('clicking a facade swaps in the iframe, with autoplay for YouTube', functio
   assert.equal(f.attrs.src, 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&autoplay=1');
   assert.equal(f.attrs.class, 'ex-media');
   assert.equal(f.attrs.title, 'סקוואט');
-  assert.equal(f.attrs.allow, 'autoplay; encrypted-media');
+  assert.equal(f.attrs.allow, 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
   assert.equal(f.attrs.allowfullscreen, '');
   assert.equal(yt.parent.replaced[0], f);
   assert.equal(yt.parent.replaced[1], yt.btn);
@@ -77,7 +77,34 @@ test('clicking a facade swaps in the iframe, with autoplay for YouTube', functio
   assert.equal(g.attrs.src, 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview');
   assert.equal(g.attrs.class, 'drive-frame');
   assert.equal(g.attrs.referrerpolicy, 'no-referrer-when-downgrade');
+  assert.equal(g.attrs.allow, 'autoplay; fullscreen');
   assert.equal(TH.activateMediaFrame({ getAttribute: function () { return null; } }), null);
+});
+
+test('a facade only ever loads a Drive preview or a YouTube embed rebuilt from its id', function () {
+  ['javascript:alert(1)', 'https://evil.example/preview', 'https://drive.google.com/file/d/abc"><script>/preview',
+    'https://www.youtube.com/embed/PlDqgNcJJ2U?start=1&x=javascript:', 'data:text/html,hi', 'https://drive.google.com.evil.io/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview']
+    .forEach(function (bad) {
+      const fb = fakeButton({ 'data-th-frame': bad, class: 'ex-media ex-media-facade' });
+      assert.equal(TH.activateMediaFrame(fb.btn), null, bad);
+      assert.equal(fb.parent.replaced, null, bad);
+    });
+  const ok = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30', class: 'ex-media ex-media-facade x"y' });
+  const f = TH.activateMediaFrame(ok.btn);
+  assert.equal(f.attrs.src, 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30&autoplay=1');
+  assert.equal(f.attrs.class, 'ex-media');
+});
+
+test('every facade the app renders passes the allowlist', function () {
+  const urls = [
+    TH.mediaMarkup({ he: 'א', driveId: '1tLFxcQifJQgGYRZD20YQticZ0S4psv2r', source: 'drive' }),
+    TH.mediaMarkup({ he: 'ב', youtubeId: 'PlDqgNcJJ2U', startSec: 12, endSec: 40 }),
+    TH.mediaMarkup({ he: 'ג', youtubeId: 'PlDqgNcJJ2U' })
+  ].map(function (h) { return h.match(/data-th-frame="([^"]+)"/)[1].replace(/&amp;/g, '&'); });
+  urls.forEach(function (u) {
+    const fb = fakeButton({ 'data-th-frame': u, class: 'ex-media ex-media-facade' });
+    assert.ok(TH.activateMediaFrame(fb.btn), u);
+  });
 });
 
 test('reels page Drive cards use the same play button', function () {
