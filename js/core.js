@@ -1221,10 +1221,64 @@
 	// (including HE_NAMES), then the explicit NAME_ALIASES map, then a row's
 	// own aliases. A reserves line still shows its dosage; the dose is stripped
 	// only for this lookup. Fuzzy contains-matching stays in matchCatalog.
+	// Workouts built in the reel library (exercises.html → «התחל אימון», the
+	// weekly «#reel-plan») carry the reel's own id: «drive-<fileId>» or
+	// «ig-<shortcode>». Those are not catalog keys, so the steps opened with no
+	// video, or with another clip that only shared the name. data/drive_videos.json
+	// is the Drive copy of every reel; its file names end in « - <shortcode>.mp4».
+	var reelDrive = {};
+	var reelDriveIds = {};
+	var reelEntries = {};
+
+	function setReelDriveVideos(list) {
+		reelDrive = {};
+		reelDriveIds = {};
+		reelEntries = {};
+		(Array.isArray(list) ? list : []).forEach(function (row) {
+			var fileId = row && typeof row.fileId === "string" ? row.fileId : "";
+			var m;
+			if (!/^[A-Za-z0-9_-]{20,}$/.test(fileId)) return;
+			reelDriveIds[fileId] = true;
+			m = String(row.name || "").match(/ - ([A-Za-z0-9_-]{6,})\.mp4$/i);
+			if (m && !reelDrive[m[1]]) reelDrive[m[1]] = fileId;
+		});
+	}
+
+	function reelClip(step) {
+		var id = step && typeof step.id === "string" ? step.id : "";
+		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
+		var fileId, keys, i, entry;
+		if (!m) return null;
+		fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
+		if (!fileId || !reelDriveIds[fileId]) return null;
+		keys = Object.keys(catalog);
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (
+				entry &&
+				isPlayable(entry) &&
+				(entry.driveId === fileId ||
+					entry.drivePlayId === fileId ||
+					entry.legacyDriveId === fileId)
+			)
+				return entry;
+		}
+		if (!reelEntries[id])
+			reelEntries[id] = {
+				id: id,
+				he: step.name || "",
+				driveId: fileId,
+				source: "drive-reel",
+			};
+		return reelEntries[id];
+	}
+
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
+		var reel = reelClip(step);
+		if (reel) return reel;
 		var name = step.name;
 		var keys = Object.keys(catalog);
 		var i, entry, viaMap, candidates, c, hit;
@@ -3751,8 +3805,10 @@
 			loadJson("js/catalog.json"),
 			loadJson("videos/drive-catalog.json"),
 			loadJson("videos/youtube-catalog.json"),
+			loadJson("data/drive_videos.json"),
 		])
 			.then(function (parts) {
+				setReelDriveVideos(parts[3]);
 				var local = parts[0] && typeof parts[0] === "object" ? parts[0] : {};
 				var drive = parts[1] || [];
 				var youtube = parts[2] || [];
@@ -4733,6 +4789,7 @@
 		assetUrl: assetUrl,
 		heName: heName,
 		findExercise: findExercise,
+		setReelDriveVideos: setReelDriveVideos,
 		catalogSrc: catalogSrc,
 		phaseLabel: phaseLabel,
 		toPhasesWorkout: toPhasesWorkout,
