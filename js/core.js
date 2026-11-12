@@ -1123,6 +1123,7 @@
 				startSec: e.startSec != null ? e.startSec : null,
 				endSec: e.endSec != null ? e.endSec : null,
 				segmentOf: e.segmentOf || "",
+				poster: e.poster || "",
 			};
 		});
 	}

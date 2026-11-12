@@ -74,3 +74,11 @@ test('the Drive player card shows the reel poster before it loads', function () 
   const plain = drive.items.find(function (x) { return x.source === 'drive' && x.driveId && !x.poster && merged[x.id]; });
   assert.match(TH.mediaMarkup(merged[plain.id], { className: 'ex-media' }), /drive\.google\.com\/thumbnail\?id=/);
 });
+
+test('library cards (catalogList rows) keep the reel poster', function () {
+  TH.setCatalog(merged);
+  const e = row('DQRgIA8DC_V');
+  const listed = TH.catalogList().find(function (x) { return x.id === e.id; });
+  assert.equal(listed.poster, e.poster);
+  assert.match(TH.mediaMarkup(listed, { className: 'ex-media' }), /assets\/posters\/DQRgIA8DC_V\.jpg/);
+});
