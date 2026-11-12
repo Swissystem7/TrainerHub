@@ -2,9 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 47,
+    "count": 72,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
-    "matchedCount": 43
+    "matchedCount": 43,
+    "driveReelCount": 25
   },
   "items": [
     {
@@ -880,6 +881,458 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DV5gi5aiDuS/",
       "drivePlayId": "1qSJGdny04QFla6H4elLLjXFn-h3UoLpc"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_מהברכיים_-_שלב_אחר_שלב",
+      "driveId": "1eBUfeGJR4avzGbV7rxj1folksTnKZNZq",
+      "he": "שכיבות סמיכה מהברכיים - שלב אחר שלב",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Dcdvw-zx4ll/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בטכניקה_נכונה",
+      "driveId": "1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ",
+      "he": "שכיבות סמיכה בטכניקה נכונה",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DcWN0zEIvGK/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_הפעלת_חזה",
+      "driveId": "1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9",
+      "he": "שכיבות סמיכה עם הפעלת חזה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DYcpLzaKb0N/"
+    },
+    {
+      "id": "drive_התקדמות_שכיבות_סמיכה_ב־4_שלבים",
+      "driveId": "1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr",
+      "he": "התקדמות שכיבות סמיכה ב־4 שלבים",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Dah3eKkT01y/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בשיפוע_על_מוט",
+      "driveId": "1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs",
+      "he": "שכיבות סמיכה בשיפוע על מוט",
+      "muscles": [
+        "chest",
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DXUywlAj_iT/"
+    },
+    {
+      "id": "drive_פרפר_חזה_עם_גומייה",
+      "driveId": "14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b",
+      "he": "פרפר חזה עם גומייה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DcjQxgwotKZ/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_הברכיים_-_3_וריאציות",
+      "driveId": "1vgVUSnKJ8eb8bh4O4lfqfpkBcePuXP2G",
+      "he": "שכיבות סמיכה על הברכיים - 3 וריאציות",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DdTlDfjOqjP/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_-_מיקומי_ידיים",
+      "driveId": "1EwdqwshrpQfEVyBy_sIu2oYUrE469xbZ",
+      "he": "שכיבות סמיכה - מיקומי ידיים",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DdQWo6MJQHY/"
+    },
+    {
+      "id": "drive_אתגר_שכיבות_סמיכה_ביד_אחת_בזוג",
+      "driveId": "1K31mCs4F-a1jr-K1_0rK6_NA8UDtQmTu",
+      "he": "אתגר שכיבות סמיכה ביד אחת בזוג",
+      "muscles": [
+        "chest",
+        "triceps",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DbdlCvpohpF/"
+    },
+    {
+      "id": "drive_מתח_מושלם_-_טכניקה",
+      "driveId": "1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB",
+      "he": "מתח מושלם - טכניקה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DVJjBPBgZr9/"
+    },
+    {
+      "id": "drive_מתח_עם_משקל_נוסף",
+      "driveId": "1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN",
+      "he": "מתח עם משקל נוסף",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Dd4A1BxNpmR/"
+    },
+    {
+      "id": "drive_חתירה_ביד_אחת_עם_משקולת",
+      "driveId": "1pxXtGGUMNFCxFUmL3rjJzOqqLcKBgUq1",
+      "he": "חתירה ביד אחת עם משקולת",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DXCQmuJvH7b/"
+    },
+    {
+      "id": "drive_חתירה_כפולה_ביד_אחת_עם_גומייה",
+      "driveId": "11L8DLfkD26gP5o4aY5uGpQDXa8_XAKHP",
+      "he": "חתירה כפולה ביד אחת עם גומייה",
+      "muscles": [
+        "back",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWKwmB_kTKl/"
+    },
+    {
+      "id": "drive_סופרמן_-_החזקה",
+      "driveId": "1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua",
+      "he": "סופרמן - החזקה",
+      "muscles": [
+        "back",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DT0RhRjk80n/"
+    },
+    {
+      "id": "drive_חתירה_ביד_אחת_עם_גומייה",
+      "driveId": "1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt",
+      "he": "חתירה ביד אחת עם גומייה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DblbSnjNF9z/"
+    },
+    {
+      "id": "drive_משיכות_סופרמן_בשכיבה_עם_משקולות",
+      "driveId": "1I1n09EzOgn7672IQbdgUrdFTZlrSRDfc",
+      "he": "משיכות סופרמן בשכיבה עם משקולות",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWH8acmEZKi/"
+    },
+    {
+      "id": "drive_הרחקה_צידית_-_סט_מורחב_עם_משקולות_וגומייה",
+      "driveId": "1KtOyzLm2rd95BhRB0yV-Bn3l9-W71Iak",
+      "he": "הרחקה צידית - סט מורחב עם משקולות וגומייה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Decz_vAt366/"
+    },
+    {
+      "id": "drive_הרחקה_צידית_עם_גומייה_וקטלבל",
+      "driveId": "11McYv17HvWF22sdBgDegr5O-00MNEV9-",
+      "he": "הרחקה צידית עם גומייה וקטלבל",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band",
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DW3uis2DIn6/"
+    },
+    {
+      "id": "drive_לחיצת_כתפיים_בישיבה_עם_גומייה",
+      "driveId": "1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt",
+      "he": "לחיצת כתפיים בישיבה עם גומייה",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DZbGqTGPGqP/"
+    },
+    {
+      "id": "drive_הרמת_V_עם_גומייה",
+      "driveId": "1jKuyw-Dy5XGLJviWEkb9V3DRzpIB2rLy",
+      "he": "הרמת V עם גומייה",
+      "muscles": [
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Db84DANBThW/"
+    },
+    {
+      "id": "drive_הרחקה_צידית_ארצ׳ר_עם_גומייה",
+      "driveId": "1ZsmSobl9hg8XXeDswfzA2jZSp8Hr99ib",
+      "he": "הרחקה צידית ארצ׳ר עם גומייה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band",
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DXGE2xBCGgE/"
+    },
+    {
+      "id": "drive_לחיצה_קובנית",
+      "driveId": "1NAefqPANwQpxhr6nLtNhwiwAxu6F3lOF",
+      "he": "לחיצה קובנית",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DUlsgbVknpB/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פייק_-_מיקום_ידיים",
+      "driveId": "1rYuXwGMBroJl2TgY3kH2_cnveHpmqwxw",
+      "he": "שכיבות סמיכה פייק - מיקום ידיים",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWOx39VFDw_/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פייק_-_הדרכה_מונפשת",
+      "driveId": "1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe",
+      "he": "שכיבות סמיכה פייק - הדרכה מונפשת",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DUEBGSUlPPV/"
+    },
+    {
+      "id": "drive_לחיצת_כתפיים_בעמידה_עם_גומייה",
+      "driveId": "11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV",
+      "he": "לחיצת כתפיים בעמידה עם גומייה",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DZY0p8gKCWM/"
     }
   ]
 }
