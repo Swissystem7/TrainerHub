@@ -115,10 +115,11 @@ test('mediaMarkup degrades to exercise text when offline and never embeds an exc
   });
 });
 
-test('verified OneDrive media renders as a browser video, not a stale Drive iframe', function () {
-  const entry = items.find(function (item) { return item.available && item.source === 'onedrive'; });
+test('verified OneDrive media plays from its live Drive copy, not the blocked release file or a stale id', function () {
+  const entry = items.find(function (item) { return item.available && item.source === 'onedrive' && item.legacyDriveId; });
   const html = TH.mediaMarkup(entry, { className: 'ex-media' });
-  assert.match(html, /<video/);
-  assert.match(html, /trainerhub-media-v1\/thv-\d{3}\.mp4/);
-  assert.doesNotMatch(html, /drive\.google\.com/);
+  assert.doesNotMatch(html, /<video/);
+  assert.doesNotMatch(html, /trainerhub-media-v1/);
+  assert.match(html, new RegExp('drive\\.google\\.com/file/d/' + entry.drivePlayId + '/preview'));
+  assert.equal(html.includes(entry.legacyDriveId), false);
 });
