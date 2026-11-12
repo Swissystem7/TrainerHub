@@ -605,7 +605,13 @@
 		// The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
 		// חימום») stay out of Main too: «אימון חזה» prescribed the cone warm-up as
 		// 3 x 8-12 next to the push-ups. Only a catalog with nothing else keeps them.
-		var notWarmups = mainList.filter((e) => !/חימום/.test(foldName(e)));
+		// Rows filed under the stretching folder (doorway, neck and hip-flexor
+		// stretches) are not Main-phase work either.
+		var notWarmups = mainList.filter(
+			(e) =>
+				!/חימום/.test(foldName(e)) &&
+				(e.folder || "") !== "מתיחות וגמישות",
+		);
 		if (notWarmups.length) mainList = notWarmups;
 		var pool = filterPool(mainList, req, relax);
 		if (pool.length < 2 && req.level) {

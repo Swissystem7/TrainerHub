@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 103,
+    "count": 122,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 56
+    "driveReelCount": 75
   },
   "items": [
     {
@@ -1867,6 +1867,393 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DWs_HOQD2nu/"
+    },
+    {
+      "id": "drive_ספרינט_בעלייה",
+      "driveId": "1WrYaSWg8UHTA3ndaqYKswxIx8U_UvMHt",
+      "he": "ספרינט בעלייה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "ריצות עלייה",
+        "hill sprints"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dcvx6G3gBl3/",
+      "poster": "assets/posters/Dcvx6G3gBl3.jpg"
+    },
+    {
+      "id": "drive_ספרינט_בעלייה_עם_שינוי_כיוון",
+      "driveId": "1N9f_KYPfybVNXum50EnAMAsRtcwZHHCQ",
+      "he": "ספרינט בעלייה עם שינוי כיוון",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "uphill change of direction"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYcrXu7uqtz/",
+      "poster": "assets/posters/DYcrXu7uqtz.jpg"
+    },
+    {
+      "id": "drive_מתיחת_צוואר_-_משיכת_סנטר_לחזה",
+      "driveId": "1Vh8QjOoR99jKRsre169c-Wq-Ef3gO4E_",
+      "he": "מתיחת צוואר - משיכת סנטר לחזה",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "מתיחת צוואר",
+        "chin to chest stretch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dc35kyVOgs-/",
+      "poster": "assets/posters/Dc35kyVOgs-.jpg"
+    },
+    {
+      "id": "drive_מתיחת_חזה_בפתח_דלת",
+      "driveId": "1RpVTmvHMdNPg4pamt0eQDB4mMkWvVIla",
+      "he": "מתיחת חזה בפתח דלת",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "doorway chest stretch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DY51NRARnRU/",
+      "poster": "assets/posters/DY51NRARnRU.jpg"
+    },
+    {
+      "id": "drive_מתיחת_חזה_במשקוף_הדלת",
+      "driveId": "1V-DPBMkokMKFOuKNvOsT3fwGrSdeQYN3",
+      "he": "מתיחת חזה במשקוף הדלת",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "door frame chest stretch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeIx0eEB1S2/",
+      "poster": "assets/posters/DeIx0eEB1S2.jpg"
+    },
+    {
+      "id": "drive_שחרור_כופפי_ירך_בעמידה_על_מדרגה",
+      "driveId": "14szTfmEH1HQhvtslKqcV_zkT_UJ2hB11",
+      "he": "שחרור כופפי ירך בעמידה על מדרגה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "hip flexor release on a step"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYR_eAcuJqa/",
+      "poster": "assets/posters/DYR_eAcuJqa.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_בזוגות",
+      "driveId": "11HrTbVcWF1ydb-TfbpYv84sU5OH5RQsz",
+      "he": "כפיפת מרפקים בזוגות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "partner bicep curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da80H-5BIL5/",
+      "poster": "assets/posters/Da80H-5BIL5.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_במוט_בזוגות_לסירוגין",
+      "driveId": "1NB2BLCrRxipZQM71RgXFqi98rLrx2UpU",
+      "he": "כפיפת מרפקים במוט בזוגות לסירוגין",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "duo set barbell curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DWcOcaqEtOw/",
+      "poster": "assets/posters/DWcOcaqEtOw.jpg"
+    },
+    {
+      "id": "drive_מרוץ_שליחים_קבוצתי_עם_קונוסים",
+      "driveId": "1gjhaeWhovCaWY5HroIYss04O2-SRScA3",
+      "he": "מרוץ שליחים קבוצתי עם קונוסים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "relay race"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeeC8qEoYyZ/",
+      "poster": "assets/posters/DeeC8qEoYyZ.jpg"
+    },
+    {
+      "id": "drive_מרוץ_שליחים_-_תרגול_העברת_מקל",
+      "driveId": "136NX1sfcCuAq58CBJhDeO_Hk6KEhpuCl",
+      "he": "מרוץ שליחים - תרגול העברת מקל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "relay chase drill"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVuBFwQkvZn/",
+      "poster": "assets/posters/DVuBFwQkvZn.jpg"
+    },
+    {
+      "id": "drive_תופסת_בזוגות_לחימום",
+      "driveId": "1YgGlj3jHNJU5czH12-1blxY8FYu_fOHh",
+      "he": "תופסת בזוגות לחימום",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "partner tag"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVrw6Hnk4Dx/",
+      "poster": "assets/posters/DVrw6Hnk4Dx.jpg"
+    },
+    {
+      "id": "drive_תופסת_קבוצתית_-_חציית_המגרש",
+      "driveId": "13XWM4KSQPC-klqjEL7sk18vInmDC12H-",
+      "he": "תופסת קבוצתית - חציית המגרש",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "crossy road tag"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbTkKIEobxw/",
+      "poster": "assets/posters/DbTkKIEobxw.jpg"
+    },
+    {
+      "id": "drive_שחרור_חזה_עם_כדור_טניס",
+      "driveId": "17hix9tbNpiEkJc-nmL6s64PHVvj_YEij",
+      "he": "שחרור חזה עם כדור טניס",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "tennis ball chest release"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeCJKWUMaR3/",
+      "poster": "assets/posters/DeCJKWUMaR3.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_כדורגל_-_3_רמות",
+      "driveId": "13cS1166ZcK1ZzvmLr0L__sNXhFE5oMfI",
+      "he": "שכיבות סמיכה על כדורגל - 3 רמות",
+      "muscles": [
+        "chest",
+        "core",
+        "triceps"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "ball press ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DQRgIA8DC_V/",
+      "poster": "assets/posters/DQRgIA8DC_V.jpg"
+    },
+    {
+      "id": "drive_סופרמן_עם_העברת_כדור",
+      "driveId": "1sqc5WRlWPQyI9Crp9ywDK4ZDGOB5HIhC",
+      "he": "סופרמן עם העברת כדור",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "superman ball pass"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfSwgZbyXZU/",
+      "poster": "assets/posters/DfSwgZbyXZU.jpg"
+    },
+    {
+      "id": "drive_פשיטת_גב_על_כדור_פיזיו_מברכיים",
+      "driveId": "1tP0dn7i6lYVq41tudmLL3vFJJisaWCde",
+      "he": "פשיטת גב על כדור פיזיו מברכיים",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "stability ball back extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DX5AVmXvjeQ/",
+      "poster": "assets/posters/DX5AVmXvjeQ.jpg"
+    },
+    {
+      "id": "drive_חיזוק_כתפיים_עם_גומייה_וקונוסים",
+      "driveId": "1rKU78LDZV37JBoj_tvzYooTkNS_rGF-X",
+      "he": "חיזוק כתפיים עם גומייה וקונוסים",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band",
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "band shoulder cone drill"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Ddn1lCtP4Wn/",
+      "poster": "assets/posters/Ddn1lCtP4Wn.jpg"
+    },
+    {
+      "id": "drive_הרמות_ידיים_בשכיבה_מעל_קונוסים",
+      "driveId": "15yk1Gap5UBmXl16lLXvVe0Uc8Nflt0yA",
+      "he": "הרמות ידיים בשכיבה מעל קונוסים",
+      "muscles": [
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "prone Y T raises over cones"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeP5OSUoSTb/",
+      "poster": "assets/posters/DeP5OSUoSTb.jpg"
+    },
+    {
+      "id": "drive_דיפס_על_מדרגות",
+      "driveId": "1__bv5fX4ZldNwF0-Fj490iPeRVqYK1uf",
+      "he": "דיפס על מדרגות",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "stair dips"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJkOTWcsz0b/",
+      "poster": "assets/posters/DJkOTWcsz0b.jpg"
     }
   ]
 }

@@ -14,10 +14,11 @@ const read = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
 TH.setCatalog(TH.mergeCatalogs(TH.mergeCatalogs(read('js/catalog.json'), read('videos/drive-catalog.json'), []), read('videos/youtube-catalog.json'), []));
 
 // No clip of the same movement in the catalog yet (reported, not faked).
+// No verified reel shows these movements yet (the candidates were dance
+// footwork, rotating hops and Copenhagen strength work, not these drills).
 const NO_CLIP = new Set([
   'ריצה צידית.', 'מקרבי ירך ישיבת כף אל כף (מעוין)', 'מקרבי ירך בשכיבת פרקדן (על הגב)',
-  'שכיבת פרקדן ומשיכת צוואר לחזה.', 'מתיחת חזה בפתח', 'מתיחת ירך על מדרגה', 'מתיחה עם מגבת',
-  'ריצות עלייה בשיפוע', 'כפיפת מרפקים בזוגות', "חלק א' – מרוץ שליחים", 'תופסת'
+  'מתיחה עם מגבת'
 ]);
 
 const F = ['stairs', 'bench', 'wall', 'railing', 'pole', 'slope', 'grass', 'court', 'playground'];
@@ -53,7 +54,14 @@ test('site drills get the clip of the same movement', () => {
     'סקווט': 'bodyweight_squat', 'לאנג׳': 'lunges', 'ג׳אמפינג ג׳ק': 'yt_jumping_jacks',
     'ישיבה על הקיר': 'wall_sit', 'שכיבות סמיכה בשעינה על קיר': 'wall_push_up',
     'שכיבות סמיכה לאחור על ספסל (דיפס)': 'bench_dips', 'תלייה למתיחת גב': 'dead_hang',
-    'ברכיים לחזה': 'tuck_jump', 'עליות בטן בזוגות': 'בטן_זוגות'
+    'ברכיים לחזה': 'tuck_jump', 'עליות בטן בזוגות': 'בטן_זוגות',
+    'ריצות עלייה בשיפוע': 'drive_ספרינט_בעלייה',
+    'שכיבת פרקדן ומשיכת צוואר לחזה.': 'drive_מתיחת_צוואר_-_משיכת_סנטר_לחזה',
+    'מתיחת חזה בפתח': 'drive_מתיחת_חזה_בפתח_דלת',
+    'מתיחת ירך על מדרגה': 'drive_שחרור_כופפי_ירך_בעמידה_על_מדרגה',
+    'כפיפת מרפקים בזוגות': 'drive_כפיפת_מרפקים_בזוגות',
+    "חלק א' – מרוץ שליחים": 'drive_מרוץ_שליחים_קבוצתי_עם_קונוסים',
+    'תופסת': 'drive_תופסת_קבוצתית_-_חציית_המגרש'
   };
   Object.keys(want).forEach((name) => {
     const hit = TH.findExercise({ name });
