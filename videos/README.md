@@ -4,6 +4,7 @@
 
 - ראשי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"onedrive", available}`. שבע רשומות בלי קובץ מאוחסן נושאות `youtubeId` ומנגנות כהטמעה.
 - רשימת ייבוא היסטורית: [`drive-catalog.json`](./drive-catalog.json) — שומרת גם את מזהי Google Drive הישנים לצורכי עקיבות, אך הנגן משתמש בקובץ המאומת מ־OneDrive דרך כתובת ה־release.
+  רילסים מאינסטגרם שהועלו לתיקיות «כושר» בדרייב נרשמים בה עם `source:"drive"`, `driveId` ו־`sourceUrl`, בלי `file`: הכרטיס מנגן את העותק החי דרך נגן הדרייב, ולכן אין להם נכס ב־GitHub Releases. כל רילס כזה רשום גם ב־`data/drive_videos.json`.
 - הטמעות יוטיוב לקבוצות דלות: [`youtube-catalog.json`](./youtube-catalog.json) — `youtubeId` בלבד, בלי הורדה ובלי העלאה מחדש.
 
 רשומה עם `available:false` נשארת גלויה כתרגיל טקסטואלי, אך אינה נבחרת אוטומטית לאימון ואינה יוצרת נגן שבור.

@@ -28,8 +28,10 @@ test('catalog keeps its source rows while verified videos live outside Git histo
     return /\.mp4$/i.test(f);
   });
   assert.equal(Object.keys(catalog).length, 78);
-  // 44 OneDrive source rows + 3 Instagram reels (thv-069..071).
-  assert.equal(drive.items.length, 47);
+  // 44 OneDrive source rows + 3 Instagram reels (thv-069..071) + reels hosted only on Drive.
+  const driveReels = drive.items.filter(function (e) { return e.source === 'drive' && e.available && e.sourceUrl; });
+  assert.equal(drive.items.length, 47 + driveReels.length);
+  driveReels.forEach(function (e) { assert.equal(e.file, undefined, e.id); });
   assert.equal(mp4s.length, 0);
   assert.equal(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).length, 77);
   assert.equal(new Set(Object.values(catalog).filter(function (entry) { return entry.available !== false; }).map(function (entry) { return entry.file; })).size, 75);
