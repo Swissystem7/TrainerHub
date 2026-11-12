@@ -15,7 +15,8 @@
     "aliases": [
       "חימום ארוך",
       "חימום קל"
-    ]
+    ],
+    "drivePlayId": "1TfN0SC_fkYQRozH_a1DL_yiR-9A5RM21"
   },
   "מעגל_מעגל": {
     "id": "מעגל_מעגל",
@@ -32,7 +33,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-001.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1bQ1GHdZ-EdTpD_HGxLs1b6LpgLHUPEZK"
   },
   "עבודה_עם_יד_אחת": {
     "id": "עבודה_עם_יד_אחת",
@@ -77,7 +79,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-007.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1W0zAChAMRar6mUGGhe89DznIWbAQ-7Rr"
   },
   "בטן_גומיות": {
     "id": "בטן_גומיות",
@@ -106,7 +109,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-002.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1OP9DR-9r8RRGhKEaHpPu2xvLVGaBy7al"
   },
   "בטן_זוגות": {
     "id": "בטן_זוגות",
@@ -120,7 +124,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-003.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1d9SogCH-DiT949JG3qMjYnHgawBteLFJ"
   },
   "בטן_זוגות_2": {
     "id": "בטן_זוגות_2",
@@ -149,7 +154,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-004.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1CrZXXuJDDVvB-4fuDtg-0ZN6oTGa1EQN"
   },
   "בטן_סט": {
     "id": "בטן_סט",
@@ -163,7 +169,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-005.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1bZN_qEUUUD6-bhzQ920EO159GPSViMpq"
   },
   "בטן_עם_כדור": {
     "id": "בטן_עם_כדור",
@@ -192,7 +199,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-006.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Lg-r5qa9197f612j4UXYpxYD2SwxcO7z"
   },
   "mountain_climber": {
     "id": "mountain_climber",
@@ -206,7 +214,8 @@
     "level": "advanced",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-009.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3"
   },
   "מטפס_הרים_עם_פלאנק": {
     "id": "מטפס_הרים_עם_פלאנק",
@@ -220,7 +229,8 @@
     "level": "advanced",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-008.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1ypdsQOSm46T_94w6f660G_97bQ2Hurfz"
   },
   "סט_בטן": {
     "id": "סט_בטן",
@@ -234,7 +244,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-010.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1b6Nn2xKhUH5gUJXuihe0hZGJQ-8ULQpS"
   },
   "plank": {
     "id": "plank",
@@ -248,7 +259,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-015.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o"
   },
   "פלאנק_ברכיים": {
     "id": "פלאנק_ברכיים",
@@ -262,7 +274,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-011.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ"
   },
   "פלאנק_גבוה": {
     "id": "פלאנק_גבוה",
@@ -276,7 +289,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-012.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1w60rxHerVffMFuVSsATiIR9MDXThTDI9"
   },
   "פלאנק_מצד_לצד": {
     "id": "פלאנק_מצד_לצד",
@@ -290,7 +304,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-013.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1DoKdHeHtvKhDyZH7jbSv9XpycEiO-R75"
   },
   "פלאנק_צידי": {
     "id": "פלאנק_צידי",
@@ -310,7 +325,8 @@
       "צד-פלאנק",
       "צד פלאנק",
       "סייד פלאנק"
-    ]
+    ],
+    "drivePlayId": "1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T"
   },
   "פלאנק_שעון": {
     "id": "פלאנק_שעון",
@@ -344,7 +360,8 @@
       "הרמות גוף בשכיבה על הבטן",
       "סופרמן",
       "superman"
-    ]
+    ],
+    "drivePlayId": "1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m"
   },
   "כתפיים_וגב": {
     "id": "כתפיים_וגב",
@@ -358,7 +375,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-017.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1iLfmJWQa8t-xY96su47X5aPJGyaVzevh"
   },
   "bodyweight_row": {
     "id": "bodyweight_row",
@@ -381,7 +399,8 @@
       "australian pull-up",
       "australian pull up",
       "australian pullup"
-    ]
+    ],
+    "drivePlayId": "1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm"
   },
   "קונוסים_גב": {
     "id": "קונוסים_גב",
@@ -395,7 +414,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-019.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "13m16UDTLl_lKMCCx4nbZEdys4Hh0A3mL"
   },
   "בישיבה_אחד_נגד_השני": {
     "id": "בישיבה_אחד_נגד_השני",
@@ -412,7 +432,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-020.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Z0YUDDWaam468k_MVHME5qA6DQvnKur-"
   },
   "גומיות_ארבע_ראשי": {
     "id": "גומיות_ארבע_ראשי",
@@ -426,7 +447,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-021.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1cDQEEef5Uh4loMwKHltBcPxZ9NK1R-Zw"
   },
   "גומיות_בטן": {
     "id": "גומיות_בטן",
@@ -440,7 +462,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-022.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1rsRu0axX1XNAPkoVZyVwVqoUxxcqN12p"
   },
   "גומיות_במקום_מכון": {
     "id": "גומיות_במקום_מכון",
@@ -457,7 +480,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-023.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1F14aeNUBd3zxmpR9xA5JhzPAzZHwNguG"
   },
   "גומיות_ברכיים": {
     "id": "גומיות_ברכיים",
@@ -471,7 +495,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-024.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1P8P3RAwEH7-juSCDLxSzCK64Yd2PZ8Oq"
   },
   "גומיות_התנגדות": {
     "id": "גומיות_התנגדות",
@@ -488,7 +513,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-025.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1GBhedP3ELdyac4VP3fQdq5VHIt7OnLIS"
   },
   "גומיות_ירכיים": {
     "id": "גומיות_ירכיים",
@@ -502,7 +528,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-026.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1uWKzSf3KS_cMIaMc4_1tjjwNzWcDaZni"
   },
   "גומיות_רגליים": {
     "id": "גומיות_רגליים",
@@ -516,7 +543,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-028.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1yIoF82iGPWJSVH4qlQ7x3nXIG9gSrzaX"
   },
   "גומיות_רגליים_2": {
     "id": "גומיות_רגליים_2",
@@ -530,7 +558,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-027.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1bcQ-htUNfyxjW8bSQTjKwiBquad_ZzGh"
   },
   "עבודה_עם_גומייה": {
     "id": "עבודה_עם_גומייה",
@@ -547,7 +576,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-029.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "168pXPiyHFa9nOE7s-00I9HpfYb6flFTN"
   },
   "crunches_2": {
     "id": "crunches_2",
@@ -561,7 +591,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-007.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1W0zAChAMRar6mUGGhe89DznIWbAQ-7Rr"
   },
   "זוגות_בטן": {
     "id": "זוגות_בטן",
@@ -575,7 +606,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-031.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1yzXKMzSN5dvGsouyxsja3gODfRbr-ZAl"
   },
   "זוגות_בטן_שתיים": {
     "id": "זוגות_בטן_שתיים",
@@ -589,7 +621,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-030.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1WtUvCGL0dtGwm77AcqXcZF03DDTLeOUI"
   },
   "זוגות_התנגדות": {
     "id": "זוגות_התנגדות",
@@ -606,7 +639,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-032.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1czOq6QUjJMzVsF6ZnkN05MJVCBlKXpt-"
   },
   "זוגות_ידיים": {
     "id": "זוגות_ידיים",
@@ -621,7 +655,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-033.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1zfK3m5VGO2Jm9I4vC749KxA-2gR02_vK"
   },
   "כדורסל_זמן_תגובה": {
     "id": "כדורסל_זמן_תגובה",
@@ -636,7 +671,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-034.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1DFRhNv8csB94xXttY1cAYOXLkychvYm4"
   },
   "קורדינאציה": {
     "id": "קורדינאציה",
@@ -651,7 +687,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-035.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1SwlHwsmfYUqhnaSwGQsPHBbCppdzjRqH"
   },
   "תרגיל_תגובה": {
     "id": "תרגיל_תגובה",
@@ -666,7 +703,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-036.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1UulIYGhoericoDHJFgt_EynxGVmWUCBW"
   },
   "אתגר_שכיבות_שמיכה": {
     "id": "אתגר_שכיבות_שמיכה",
@@ -681,7 +719,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-038.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Bu_xV38QneoC8Zwue-sJzNO6iwwbe7fp"
   },
   "הליכת_חיות_לחיזוק_ידיים": {
     "id": "הליכת_חיות_לחיזוק_ידיים",
@@ -696,7 +735,8 @@
     "level": "intermediate",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-039.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1qENJSLOeHRXrMtYUrkfw2YyKv6Lc6yMF"
   },
   "חימום_שכיבות_שמיכה_קונוסים_על_הגב": {
     "id": "חימום_שכיבות_שמיכה_קונוסים_על_הגב",
@@ -711,7 +751,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-040.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1h2qXEixD5EW8ecIrzcW7ybqnjJLJINVD"
   },
   "ידיים_סוחבות_גוף": {
     "id": "ידיים_סוחבות_גוף",
@@ -726,7 +767,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-041.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1vLeX24kbxbr8otTSI7orq8WxXQodoAd0"
   },
   "סט_כוח_ידיים": {
     "id": "סט_כוח_ידיים",
@@ -741,7 +783,8 @@
     "level": "intermediate",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-042.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1l0a832BTZfrf7o0b67Yk3HxJU0tG2Sqq"
   },
   "שכיבות_שמיכה_ובעיטות": {
     "id": "שכיבות_שמיכה_ובעיטות",
@@ -756,7 +799,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-043.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM"
   },
   "ילדים_הוקי_נעליים": {
     "id": "ילדים_הוקי_נעליים",
@@ -770,7 +814,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-044.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1jq0Tm3ZNPj2Vhifb41A_gjtbmWp7HkFa"
   },
   "ילדים_חישוק_קונוסים": {
     "id": "ילדים_חישוק_קונוסים",
@@ -788,7 +833,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-045.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1B5BsschpxGokswHmNMpM3LgcAGIwp-PW"
   },
   "ילדים_משחק_עם_קונוסים": {
     "id": "ילדים_משחק_עם_קונוסים",
@@ -805,7 +851,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-046.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1UIwPMjYyHarX5BdWveIltNSXwIJPFf-Y"
   },
   "ילדים_קונוסים": {
     "id": "ילדים_קונוסים",
@@ -822,7 +869,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-049.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Q0gOiub8uXUxRJqkJ1a4F0rGeDxEprLP"
   },
   "ילדים_קונוסים_אחד_על_אחד": {
     "id": "ילדים_קונוסים_אחד_על_אחד",
@@ -839,7 +887,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-047.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1oJSINXDxT0yn-ZkRIf_oifoIogfcUhoa"
   },
   "ילדים_קונוסים_וכדור": {
     "id": "ילדים_קונוסים_וכדור",
@@ -857,7 +906,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-048.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1DMEjyIK40gIYxqhiHfjR2wjvo0wZ0jGw"
   },
   "יציאה_מהמקום": {
     "id": "יציאה_מהמקום",
@@ -871,7 +921,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-050.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "15sad24OOaQYmnbCVAcXz-Y6Ku48WxqIS"
   },
   "יציאה_מהמקום_2": {
     "id": "יציאה_מהמקום_2",
@@ -900,7 +951,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-051.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1PO8gQiSuq679vQ0xxvL72oUNXr8oMmUb"
   },
   "כדורגל_חימום": {
     "id": "כדורגל_חימום",
@@ -914,7 +966,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-052.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1I8YCh21AawQMPbuB7eYvG5ynL2n59clK"
   },
   "כדורגל_תוקף_מגן": {
     "id": "כדורגל_תוקף_מגן",
@@ -928,7 +981,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-053.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "114L-f_A8iFfgxILtf_-BR5AMuilaXS7p"
   },
   "מסירות_דיוק": {
     "id": "מסירות_דיוק",
@@ -942,7 +996,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-054.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "18B3OI1RHOS3jldfqLET9Kol4heiM6wR4"
   },
   "פסים": {
     "id": "פסים",
@@ -956,7 +1011,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-055.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1y_ia48beF8C6aoCRH0d4ltHGh5f0lFQZ"
   },
   "שליטה_בכדור": {
     "id": "שליטה_בכדור",
@@ -970,7 +1026,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-057.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1c65GJOCyLkfFr8yrzol7YvcHN7MA4e5N"
   },
   "שליטה_בכדור_זוגות": {
     "id": "שליטה_בכדור_זוגות",
@@ -984,7 +1041,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-056.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1ZJvTHaR0yKVuX-Aq0Uvnw8Og6jj2Ls4L"
   },
   "טניס_נגיעה_בגוף": {
     "id": "טניס_נגיעה_בגוף",
@@ -998,7 +1056,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-058.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1sTX9sfNl2r4KerifBVxYSWpUszc6MU_-"
   },
   "עבודה_עם_כדור_טניס": {
     "id": "עבודה_עם_כדור_טניס",
@@ -1012,7 +1071,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-060.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Dk_VthqnWH5pmg6WZsqinzwGz46C1NwW"
   },
   "עבודה_עם_כדור_טניס_2": {
     "id": "עבודה_עם_כדור_טניס_2",
@@ -1026,7 +1086,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-059.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "12jwpWRvTVdYyMfMiQe8P3eacFWgRAzmA"
   },
   "אימון_קונוסים_תגובה_וכוח": {
     "id": "אימון_קונוסים_תגובה_וכוח",
@@ -1041,7 +1102,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-061.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "198VOJ0tIC2QtUj-A_N9CNFxKvi_B2OJU"
   },
   "ילדים_קונוסים_אחד_על_אחד_2": {
     "id": "ילדים_קונוסים_אחד_על_אחד_2",
@@ -1056,7 +1118,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-047.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1oJSINXDxT0yn-ZkRIf_oifoIogfcUhoa"
   },
   "משחקים_עם_קונוסים": {
     "id": "משחקים_עם_קונוסים",
@@ -1071,7 +1134,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-062.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1YXvWBKTdZ2rv2HD3msTzhRF_SCzD4-3b"
   },
   "קונוסים_אחד_על_אחד": {
     "id": "קונוסים_אחד_על_אחד",
@@ -1086,7 +1150,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-063.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Bq1F3W-xpZQddVTDz9IyieDWjU3flkql"
   },
   "קונוסים_ידיים_וכדורי_טניס": {
     "id": "קונוסים_ידיים_וכדורי_טניס",
@@ -1102,7 +1167,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-064.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1HtJ9ViyomZ8Wi-1akKMzmdP0yujUgvCO"
   },
   "קונוסים_עבודת_צוות": {
     "id": "קונוסים_עבודת_צוות",
@@ -1117,7 +1183,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-065.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Q7b6grVI3Wt6KwJ2iIuXFprLP6L_T5_C"
   },
   "קונוסים_תחנות": {
     "id": "קונוסים_תחנות",
@@ -1132,7 +1199,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-066.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1Y9S3RRh-qAdl-pv0l4zU0dNSORJGGBgR"
   },
   "step_up": {
     "id": "step_up",
@@ -1161,7 +1229,8 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-067.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1r_PvxDnjNTnXroCp7BdYaMVjvr0Qt352"
   },
   "שכיבות_סמיכה_ורגליים": {
     "id": "שכיבות_סמיכה_ורגליים",
@@ -1177,6 +1246,7 @@
     "level": "beginner",
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-068.mp4",
     "source": "onedrive",
-    "available": true
+    "available": true,
+    "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd"
   }
 }

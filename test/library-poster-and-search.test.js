@@ -28,8 +28,9 @@ test('a hosted file never gets a Drive poster from driveId or legacyDriveId', fu
     const html = TH.mediaMarkup(item, { className: 'ex-media' });
     assert.doesNotMatch(html, /drive\.google\.com\/thumbnail/);
     assert.doesNotMatch(html, /\sposter=/);
-    if (item.driveId) assert.equal(html.includes(item.driveId), false, item.id);
-    if (item.legacyDriveId) assert.equal(html.includes(item.legacyDriveId), false, item.id);
+    // Only the verified live copy (drivePlayId) may appear; a stale driveId never does.
+    if (item.driveId && item.driveId !== item.drivePlayId) assert.equal(html.includes(item.driveId), false, item.id);
+    if (item.legacyDriveId && item.legacyDriveId !== item.drivePlayId) assert.equal(html.includes(item.legacyDriveId), false, item.id);
   });
   // The ids stay in the catalog file.
   assert.match(fs.readFileSync(path.join(root, 'videos', 'drive-catalog.json'), 'utf8'), /legacyDriveId/);

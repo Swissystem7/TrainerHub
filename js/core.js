@@ -915,6 +915,7 @@
 			source: e.source || defaultSource || "local",
 			file: e.file || "",
 			driveId: e.driveId || "",
+			drivePlayId: drivePlayIdOk(e.drivePlayId) ? e.drivePlayId : "",
 			youtubeId: e.youtubeId || "",
 			folder: e.folder || "",
 			externalUrl: e.externalUrl || "",
@@ -936,6 +937,14 @@
 	// A catalog row can keep a local filename ("עבודה עם יד אחת.mp4") and also
 	// carry a YouTube id. That filename is not a hosted file, so the embed is
 	// what plays. A real https file still wins: the OneDrive mirror stays a video.
+	// GitHub release files arrive as application/octet-stream behind a
+	// github.com redirect, and browsers block them (ORB) when the page is on
+	// github.io. drivePlayId is a live, link-shared Drive copy of the same clip
+	// whose preview was checked; when present the card plays that copy.
+	function drivePlayIdOk(id) {
+		return typeof id === "string" && /^[A-Za-z0-9_-]{20,}$/.test(id);
+	}
+
 	function hasRemoteFile(entry) {
 		return !!(entry && entry.file && /^https?:\/\//i.test(entry.file));
 	}
@@ -1063,6 +1072,7 @@
 				file: e.file || "",
 				source: e.source || "local",
 				driveId: e.driveId || "",
+				drivePlayId: e.drivePlayId || "",
 				youtubeId: e.youtubeId || "",
 				folder: e.folder || "",
 				externalUrl: e.externalUrl || "",
@@ -2937,6 +2947,39 @@
 		return (setupLazyMedia() ? LAZY_SRC : "src") + '="' + esc(url) + '"';
 	}
 
+	function driveFrameMarkup(entry, driveId, cls) {
+		var segNote = "";
+		if (entry.startSec != null && entry.endSec != null) {
+			segNote =
+				'<p class="' +
+				cls +
+				'-segment" role="note">מקטע ' +
+				esc(formatClock(entry.startSec)) +
+				"–" +
+				esc(formatClock(entry.endSec)) +
+				" — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>";
+		}
+		return (
+			'<div class="' +
+			cls +
+			'-wrap">' +
+			'<div class="' +
+			cls +
+			'-fallback" hidden>' +
+			esc(mediaFallbackText(entry)) +
+			"</div>" +
+			'<iframe class="' +
+			cls +
+			'" title="' +
+			esc(entry.he || "סרטון דרייב") +
+			'" src="' +
+			esc(drivePreviewUrl(driveId)) +
+			'" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+			segNote +
+			"</div>"
+		);
+	}
+
 	function mediaMarkup(entry, opts) {
 		opts = opts || {};
 		var cls = esc(opts.className || "ex-media");
@@ -2975,6 +3018,8 @@
 			}
 			return fallback;
 		}
+		if (hasRemoteFile(entry) && drivePlayIdOk(entry.drivePlayId))
+			return driveFrameMarkup(entry, entry.drivePlayId, cls);
 		if (
 			hasRemoteFile(entry) ||
 			(entry.file && !entry.youtubeId && !entry.driveId)
@@ -2998,38 +3043,7 @@
 				" — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>"
 			);
 		}
-		if (entry.driveId) {
-			segNote = "";
-			if (entry.startSec != null && entry.endSec != null) {
-				segNote =
-					'<p class="' +
-					cls +
-					'-segment" role="note">מקטע ' +
-					esc(formatClock(entry.startSec)) +
-					"–" +
-					esc(formatClock(entry.endSec)) +
-					" — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>";
-			}
-			return (
-				'<div class="' +
-				cls +
-				'-wrap">' +
-				'<div class="' +
-				cls +
-				'-fallback" hidden>' +
-				esc(mediaFallbackText(entry)) +
-				"</div>" +
-				'<iframe class="' +
-				cls +
-				'" title="' +
-				esc(entry.he || "סרטון דרייב") +
-				'" src="' +
-				esc(drivePreviewUrl(entry.driveId)) +
-				'" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-				segNote +
-				"</div>"
-			);
-		}
+		if (entry.driveId) return driveFrameMarkup(entry, entry.driveId, cls);
 		if (entry.youtubeId) {
 			return (
 				'<div class="' +
