@@ -3307,7 +3307,7 @@
 				title: entry.he || "סרטון יוטיוב",
 				src: youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec),
 				allow: YOUTUBE_ALLOW,
-				thumb: youtubeThumbUrl(entry.youtubeId),
+				thumb: localPosterUrl(entry) || youtubeThumbUrl(entry.youtubeId),
 			};
 			return (
 				'<div class="' +

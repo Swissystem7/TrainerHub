@@ -776,11 +776,18 @@
         source_url: driveViewUrl(fileId),
         preview_url: drivePreviewUrl(fileId),
         creator: '',
-        poster: '',
+        poster: drivePosterPath(row.poster),
         verified: false
       });
     });
     return out;
+  }
+
+  // A row's own illustration (assets/posters/...) replaces the Drive thumbnail.
+  function drivePosterPath(value) {
+    var p = typeof value === 'string' ? value.trim() : '';
+    if (!p || p.indexOf('..') !== -1 || /^([a-z]+:|\/)/i.test(p)) return '';
+    return p;
   }
 
   function driveCardHtml(ex, esc) {
@@ -800,7 +807,7 @@
         '<button type="button" class="drive-frame drive-frame-facade" data-th-frame="' + esc(preview) + '"' +
           ' data-th-frame-allow="autoplay; fullscreen" data-th-frame-title="' + esc(displayName(ex)) + '"' +
           ' aria-label="' + esc('הפעלת סרטון: ' + displayName(ex)) + '">' +
-          '<img class="th-facade-thumb is-cover" src="' + esc(driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
+          '<img class="th-facade-thumb is-cover" src="' + esc(drivePosterPath(ex.poster) || driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
           '<span class="ex-media-play" aria-hidden="true"></span></button>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +
