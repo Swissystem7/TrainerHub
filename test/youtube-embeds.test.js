@@ -129,7 +129,8 @@ test('thin-group embeds join the library merge and the session builder', functio
   });
   assert.equal(youtube.items.length, 176);
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
-  assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length);
+  // + 3 Instagram reels from drive-catalog.json that have no local twin.
+  assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length + 3);
   youtube.items.forEach(function (item) {
     assert.equal(merged[item.id].youtubeId, item.youtubeId, item.id);
     assert.equal(TH.isPlayable(merged[item.id]), true, item.id);

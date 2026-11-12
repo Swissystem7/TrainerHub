@@ -26,12 +26,12 @@ const REQUIRED = ['id', 'driveId', 'he', 'muscles', 'equipment', 'level', 'sourc
 
 const items = Array.isArray(drive.items) ? drive.items : [];
 
-test('drive-catalog.json preserves 44 source rows and marks 40 verified OneDrive matches', function () {
+test('drive-catalog.json preserves 47 source rows and marks 43 verified OneDrive matches', function () {
   assert.ok(drive && typeof drive === 'object');
   assert.ok(Array.isArray(drive.items));
-  assert.equal(items.length, 44);
-  assert.equal(drive._meta && drive._meta.count, 44);
-  assert.equal(drive._meta && drive._meta.matchedCount, 40);
+  assert.equal(items.length, 47);
+  assert.equal(drive._meta && drive._meta.count, 47);
+  assert.equal(drive._meta && drive._meta.matchedCount, 43);
 });
 
 test('every drive item has the published schema and valid enums', function () {
@@ -59,7 +59,7 @@ test('every drive item has the published schema and valid enums', function () {
     driveIds.add(entry.driveId);
   }
   assert.deepEqual(missing, []);
-  assert.equal(items.filter(function (entry) { return entry.available; }).length, 40);
+  assert.equal(items.filter(function (entry) { return entry.available; }).length, 43);
 });
 
 test('anonymous VID_* clips and personal names stay out of the drive catalog', function () {
@@ -70,13 +70,14 @@ test('anonymous VID_* clips and personal names stay out of the drive catalog', f
     if (PERSONAL.test(blob)) hits.push(blob);
   }
   assert.deepEqual(hits, []);
-  assert.equal(items.length, 44);
+  assert.equal(items.length, 47);
 });
 
 test('mergeCatalogs unifies local + drive behind one lookup, each with source', function () {
   const merged = TH.mergeCatalogs(local, drive, []);
   const keys = Object.keys(merged);
-  assert.equal(keys.length, Object.keys(local).length);
+  // Three Instagram reels (thv-069..071) have no local twin and add their own rows.
+  assert.equal(keys.length, Object.keys(local).length + 3);
   keys.forEach(function (id) {
     const e = merged[id];
     assert.ok(e.source, id + ' missing source');
