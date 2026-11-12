@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 72,
+    "count": 103,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 25
+    "driveReelCount": 56
   },
   "items": [
     {
@@ -1333,6 +1333,540 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DZY0p8gKCWM/"
+    },
+    {
+      "id": "drive_כפיפת_פטיש_לסירוגין",
+      "driveId": "1SIV0a_cy_Z_YPdrKOKuJIfiDY_vXfOlc",
+      "he": "כפיפת פטיש לסירוגין",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Dbq3bVEh0Wo/"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_במשקל_קל_ובשליטה",
+      "driveId": "1fMiT3qM_M-WiqZPdKEI9toTCqVsu1QKq",
+      "he": "כפיפת מרפקים במשקל קל ובשליטה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Da254hXNJgY/"
+    },
+    {
+      "id": "drive_כפיפת_מרפק_ביד_אחת_בהטיה_קדימה",
+      "driveId": "1HDUfPsMi9VPYyti3odRtDZCqataqujTK",
+      "he": "כפיפת מרפק ביד אחת בהטיה קדימה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DdbhjKqRY-L/"
+    },
+    {
+      "id": "drive_כפיפת_מרפק_עם_גומייה_בעמידה",
+      "driveId": "1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF",
+      "he": "כפיפת מרפק עם גומייה בעמידה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DcbiITZtExG/"
+    },
+    {
+      "id": "drive_כפיפה_עם_גומייה_מאחורי_הגוף",
+      "driveId": "1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd",
+      "he": "כפיפה עם גומייה מאחורי הגוף",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DbVwC50ox3N/"
+    },
+    {
+      "id": "drive_כפיפה_באחיזה_צמודה_עם_גומייה",
+      "driveId": "1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8",
+      "he": "כפיפה באחיזה צמודה עם גומייה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DeOMzxIslEp/"
+    },
+    {
+      "id": "drive_דיפס_על_ספסל_-_הדרכה_מונפשת",
+      "driveId": "122AQtBlz4QmitNnxoUgMqhVYsKh8R4Ot",
+      "he": "דיפס על ספסל - הדרכה מונפשת",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DQcQNhLCBNe/"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_עם_גומייה",
+      "driveId": "172TPCVgDlaBGTxMrjWIeagpiDUfFoEEr",
+      "he": "פשיטת מרפקים עם גומייה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DaaKwo0NEK9/"
+    },
+    {
+      "id": "drive_פשיטה_סופית_עם_גומייה_(TTE)",
+      "driveId": "1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu",
+      "he": "פשיטה סופית עם גומייה (TTE)",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DQ9ene_EaLz/"
+    },
+    {
+      "id": "drive_התקדמות_שכיבות_סמיכה_יהלום",
+      "driveId": "1bfeh_zAtVQ1RQNSz7-hSWP_O9nYvEhD8",
+      "he": "התקדמות שכיבות סמיכה יהלום",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DcsX3XmoD6s/"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_בשיפוע_עם_גומייה",
+      "driveId": "1fzis0Gg-mh_8IL1J7ohsxgdjc_tqCE51",
+      "he": "פשיטת מרפקים בשיפוע עם גומייה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Da8cvXDhKSi/"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_יהלום_-_הדרכה",
+      "driveId": "1ryXeMNhrX9rn6ZJy2OdDu8diaYOcO1zA",
+      "he": "שכיבות סמיכה יהלום - הדרכה",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Da5nQueSxFK/"
+    },
+    {
+      "id": "drive_סקוואט_רגל_אחת_-_3_רמות",
+      "driveId": "1IzB1u3XdeY8ZRiKIPCE58ii2LCQ8O8Rf",
+      "he": "סקוואט רגל אחת - 3 רמות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DQRr0R8Dtx8/"
+    },
+    {
+      "id": "drive_סקוואט_שרימפ",
+      "driveId": "12vWcLgxeC857wxKrV9ni1Y5EDWnPkjzc",
+      "he": "סקוואט שרימפ",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DYM0f49hs9q/"
+    },
+    {
+      "id": "drive_לאנג׳_עם_לחיצה_מעל_הראש",
+      "driveId": "1GCtaG_k3oyIz8vtZi2Q1FzxDbMJPz_uU",
+      "he": "לאנג׳ עם לחיצה מעל הראש",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DaKnslxtmCk/"
+    },
+    {
+      "id": "drive_לאנג׳_זומבי_בהליכה",
+      "driveId": "1b858C-EG20t4VwKTfq00qhTOkPUZoRvI",
+      "he": "לאנג׳ זומבי בהליכה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWjf83HDn5G/"
+    },
+    {
+      "id": "drive_עלייה_למדרגה_עם_הנעת_ברך",
+      "driveId": "1chGM5rtSAr7BOTrRrcxjsns-C6M70d1b",
+      "he": "עלייה למדרגה עם הנעת ברך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DY-Jb87opzN/"
+    },
+    {
+      "id": "drive_סקוואט_מפוצל_עם_רגל_קדמית_מוגבהת",
+      "driveId": "1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU",
+      "he": "סקוואט מפוצל עם רגל קדמית מוגבהת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs",
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DffAMV0AKa2/"
+    },
+    {
+      "id": "drive_עלייה_למדרגה_למתחילים",
+      "driveId": "1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1",
+      "he": "עלייה למדרגה למתחילים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DfexPA_zSTN/"
+    },
+    {
+      "id": "drive_סקוואט_בלי_כאבי_ברכיים",
+      "driveId": "1EntvQrLECwXs83YIUPm4fEv_SaV770U8",
+      "he": "סקוואט בלי כאבי ברכיים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DcpIjc6PEoG/"
+    },
+    {
+      "id": "drive_סקוואט_אחורי_עם_מוט_-_טכניקה",
+      "driveId": "1SSC1Bnr97JEAQePBCZ3n_GuFj26trfO0",
+      "he": "סקוואט אחורי עם מוט - טכניקה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DGa3xyHiY18/"
+    },
+    {
+      "id": "drive_פלאנק_על_האמות_-_טכניקה",
+      "driveId": "1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox",
+      "he": "פלאנק על האמות - טכניקה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWwRxG_jLOo/"
+    },
+    {
+      "id": "drive_פלאנק_ברך_לחזה",
+      "driveId": "12RqRE41V_a_wm6v8E5czzrI9bb6WFMaK",
+      "he": "פלאנק ברך לחזה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DDRM1wEoq6A/"
+    },
+    {
+      "id": "drive_הרמת_רגליים_בתלייה_עם_הטיית_אגן",
+      "driveId": "1hgyBWQVi3EXhUQZn-MB05OktU8jHrUJi",
+      "he": "הרמת רגליים בתלייה עם הטיית אגן",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DalvurhTUhD/"
+    },
+    {
+      "id": "drive_הרמת_ברכיים_בתלייה",
+      "driveId": "1Ex9DzvmKnwDaf15l5HIwsPbc4fWZGqUQ",
+      "he": "הרמת ברכיים בתלייה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWkeiMbj-fa/"
+    },
+    {
+      "id": "drive_אתגר_הרמת_רגליים_בתלייה_ממוט_דלת",
+      "driveId": "1Cut1-yr2BcMI3KzsTDku_8DdC7bkeLBJ",
+      "he": "אתגר הרמת רגליים בתלייה ממוט דלת",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DeYqgTbAf0y/"
+    },
+    {
+      "id": "drive_דד_באג",
+      "driveId": "1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF",
+      "he": "דד באג",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/Dap79yBOnSF/"
+    },
+    {
+      "id": "drive_כפיפת_V_בישיבה",
+      "driveId": "1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_",
+      "he": "כפיפת V בישיבה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/De-vCS7x6cn/"
+    },
+    {
+      "id": "drive_אתגר_פלאנק_משפחתי_לילדים_ולזוגות",
+      "driveId": "1Et8DxIhy12i8fjnEnp2SGr7xYXly4rB4",
+      "he": "אתגר פלאנק משפחתי לילדים ולזוגות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/De6lEiQNfdg/"
+    },
+    {
+      "id": "drive_פלאנק_על_כדור",
+      "driveId": "1EfWN4pNYvQyKFk35JIf7PQ8kOXrqqHcK",
+      "he": "פלאנק על כדור",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DZaFB_GKfYW/"
+    },
+    {
+      "id": "drive_הרמת_רגליים_לילדים",
+      "driveId": "1C8yWc9iTbuHKjBcnBxVDyqFZgRrcJGK6",
+      "he": "הרמת רגליים לילדים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [],
+      "sourceUrl": "https://www.instagram.com/reel/DWs_HOQD2nu/"
     }
   ]
 }
