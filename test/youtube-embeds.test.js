@@ -116,18 +116,18 @@ test('thin-group embeds join the library merge and the session builder', functio
   });
   assert.deepEqual(counts, {
     'מתיחות וגמישות': 8,
-    'כתפיים': 24,
+    'כתפיים': 25,
     'חימום': 14,
-    'יד קדמית': 16,
-    'יד אחורית': 9,
-    'רגליים': 27,
-    'קרדיו': 24,
+    'יד קדמית': 17,
+    'יד אחורית': 14,
+    'רגליים': 28,
+    'קרדיו': 25,
     'ידיים': 1,
-    'בטן': 7,
-    'גב': 11,
-    'חזה': 16
+    'בטן': 8,
+    'גב': 16,
+    'חזה': 18
   });
-  assert.equal(youtube.items.length, 157);
+  assert.equal(youtube.items.length, 174);
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(catalog, drive, []), youtube, []);
   assert.equal(Object.keys(merged).length, Object.keys(catalog).length + youtube.items.length);
   youtube.items.forEach(function (item) {
