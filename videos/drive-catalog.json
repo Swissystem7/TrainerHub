@@ -2,9 +2,9 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 44,
+    "count": 47,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
-    "matchedCount": 40
+    "matchedCount": 43
   },
   "items": [
     {
@@ -773,6 +773,70 @@
       "source": "drive",
       "folder": "רגליים",
       "available": false
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_כדורי_טניס",
+      "driveId": "1_F3xM_XRgQWBALb_G3rqN98uHgRmsB5M",
+      "he": "שכיבות סמיכה על כדורי טניס",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "onedrive",
+      "folder": "חזה",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-069.mp4",
+      "available": true,
+      "aliases": [
+        "tennis ball push-up",
+        "שכיבות סמיכה על כדור טניס"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DRiX3AEjJgz/"
+    },
+    {
+      "id": "drive_כפיפת_מרפק_עם_כדורגל",
+      "driveId": "1z8Gth3pUaJbGefXSA44GabrjNGRri-R6",
+      "he": "כפיפת מרפק עם כדורגל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "onedrive",
+      "folder": "ידיים",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-070.mp4",
+      "available": true,
+      "aliases": [
+        "football bicep curl",
+        "כפיפת מרפק עם כדור"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfcjXIZRiuW/"
+    },
+    {
+      "id": "drive_כפיפת_מרפק_לילדים",
+      "driveId": "1qSJGdny04QFla6H4elLLjXFn-h3UoLpc",
+      "he": "כפיפת מרפק לילדים",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "onedrive",
+      "folder": "ידיים",
+      "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-071.mp4",
+      "available": true,
+      "aliases": [
+        "kids bicep curl",
+        "כפיפת מרפק עם משקולות קלות לילדים"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DV5gi5aiDuS/"
     }
   ]
 }
