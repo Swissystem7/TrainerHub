@@ -122,3 +122,8 @@ test('the play button style ships in css/app.css', function () {
   assert.match(css, /\.ex-media-play \{/);
   assert.match(css, /\.ex-media-play::after \{/);
 });
+
+test('library search box does not re-render the grid again on blur (it would drop an opened player)', function () {
+  const html = read('library.html');
+  assert.match(html, /if \(e && e\.type === 'change' && e\.target && e\.target\.id === 'q'\) return;/);
+});
