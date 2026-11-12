@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 174
+    "count": 176
   },
   "items": [
     {
@@ -3532,6 +3532,48 @@
       "aliases": [
         "tennis ball pull-ups",
         "tennis ball pullups"
+      ]
+    },
+    {
+      "id": "elevated_pike_pushup",
+      "he": "שכיבות סמיכה פייק עם רגליים מוגבהות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "T5tjopRuWHA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "elevated pike push up",
+        "elevated pike push-up",
+        "pike push up with elevated feet",
+        "פייק פוש אפ עם רגליים מוגבהות"
+      ]
+    },
+    {
+      "id": "inverted_table_row",
+      "he": "חתירה הפוכה מתחת לשולחן עם רגליים על כיסא",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "OYUxXMGVuuU",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "inverted table row",
+        "table inverted row feet on chair",
+        "חתירה הפוכה מתחת לשולחן"
       ]
     }
   ]
