@@ -2,7 +2,7 @@
   "_meta": {
     "source": "youtube",
     "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
-    "count": 157
+    "count": 174
   },
   "items": [
     {
@@ -3201,6 +3201,337 @@
       "aliases": [
         "incline push-up off stairs",
         "stair push up"
+      ]
+    },
+    {
+      "id": "yt_overhead_ball_tricep_extension",
+      "he": "פשיטת מרפקים מעל הראש עם כדור",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "EyS4DpiureM",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "medicine ball tricep extension",
+        "overhead ball tricep extension",
+        "פשיטת מרפקים עם כדור"
+      ]
+    },
+    {
+      "id": "yt_basketball_close_grip_pushup",
+      "he": "שכיבות סמיכה צמודות על כדורסל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Qyz-i83vqCQ",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "basketball close grip push ups",
+        "שכיבות סמיכה צמודות בכדורסל"
+      ]
+    },
+    {
+      "id": "yt_kids_floor_tricep_dips",
+      "he": "מקבילים בישיבה על הרצפה לילדים",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "IIG_9I97cIA",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "exercise for kids triceps dips",
+        "מקבילים לילדים",
+        "kids floor tricep dips"
+      ]
+    },
+    {
+      "id": "yt_tiger_bend_pushups",
+      "he": "שכיבות סמיכה טייגר בנד",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "71XcAgEGQzY",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "tiger bend push-ups",
+        "tiger bend pushups"
+      ]
+    },
+    {
+      "id": "yt_kids_pull_ups",
+      "he": "עליות מתח לילדים",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "eSPO3E7Qoy4",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "how to pull up active moves for kids",
+        "מתח לילדים",
+        "kids pull ups"
+      ]
+    },
+    {
+      "id": "yt_partner_assisted_pull_ups",
+      "he": "מתח בעזרת בן זוג",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "GCpVLHjHHmc",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "partner assisted pull-up",
+        "מתח בסיוע בן זוג"
+      ]
+    },
+    {
+      "id": "yt_kids_stair_jumps",
+      "he": "קפיצות מדרגות לילדים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "OB04mv3yzMY",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "stair jumps",
+        "קפיצות מדרגות",
+        "kids stair jumps"
+      ]
+    },
+    {
+      "id": "yt_partner_stair_workout",
+      "he": "אימון מדרגות בזוגות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "AJn_U3dWC7M",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "partner stair workout",
+        "אימון מדרגות עם בן זוג"
+      ]
+    },
+    {
+      "id": "yt_resistance_band_pushups",
+      "he": "שכיבות סמיכה עם גומייה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Hzhyjhq9tQo",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "resistance band push ups",
+        "שכיבות סמיכה עם גומיית התנגדות"
+      ]
+    },
+    {
+      "id": "yt_soccer_ball_back_pushup",
+      "he": "שכיבות סמיכה עם כדורגל על הגב",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "1S7DX4UmqWg",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "soccer ball on back push up",
+        "שכיבות סמיכה עם כדורגל"
+      ]
+    },
+    {
+      "id": "yt_kids_burpees",
+      "he": "ברפי לילדים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Y8TIp7s38gw",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "burpee fitness for kids",
+        "ברפיז לילדים",
+        "kids burpees"
+      ]
+    },
+    {
+      "id": "yt_archer_pull_ups",
+      "he": "מתח קשת",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Z7GdTkOEe5Y",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "archer pull-up",
+        "archer pull ups"
+      ]
+    },
+    {
+      "id": "yt_wall_handstand_pushups",
+      "he": "שכיבות סמיכה בעמידת ידיים מול קיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "WxgJS48wf1M",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "wall facing handstand push up",
+        "שכיבות סמיכה בעמידת ידיים"
+      ]
+    },
+    {
+      "id": "yt_pelican_curls",
+      "he": "כפיפות פליקן לדו־ראשי",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "ElJAjY8kZc4",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "pelican curls",
+        "calisthenics bodyweight bicep pelican curls"
+      ]
+    },
+    {
+      "id": "yt_bodyweight_skull_crushers",
+      "he": "סקאל קראשרס במשקל גוף",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "TMp6cr2oV74",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "bodyweight skull crushers",
+        "סקאל קראשר משקל גוף"
+      ]
+    },
+    {
+      "id": "yt_swiss_ball_back_extension",
+      "he": "פשיטת גב על כדור פיזיו",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ZvKCgtHZam0",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "stability ball back extension",
+        "swiss ball hyperextension",
+        "פשיטת גב על כדור יציבות"
+      ]
+    },
+    {
+      "id": "yt_tennis_ball_pull_ups",
+      "he": "מתח עם כדורי טניס",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar",
+        "tennis-ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "jt7he-sC1LY",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "tennis ball pull-ups",
+        "tennis ball pullups"
       ]
     }
   ]
