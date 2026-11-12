@@ -318,7 +318,11 @@
     render();
   }
 
-  function onFilter() {
+  function onFilter(e) {
+    // The search box already re-rendered on «input». Its «change» fires again on
+    // blur, e.g. when a card's play button is pressed, and re-rendering then
+    // threw away the player the click had just opened.
+    if (e && e.type === 'change' && e.target && e.target.id === 'q') return;
     pinned = '';
     render();
   }
