@@ -2947,7 +2947,118 @@
 		return (setupLazyMedia() ? LAZY_SRC : "src") + '="' + esc(url) + '"';
 	}
 
-	function driveFrameMarkup(entry, driveId, cls) {
+	// Load-on-click (click-to-play facade). Each Drive/YouTube player is a full
+	// page with its own scripts, so a library of ~300 cards that created every
+	// iframe up front ran browsers out of memory. A card now shows the clip's
+	// thumbnail with a play button in the same box; the iframe is created only
+	// when the user clicks it (activateMediaFrame). opts.eager keeps the old
+	// immediate iframe for single-player views (workout mode, the segment tool).
+	var FRAME_ATTR = "data-th-frame";
+	var DRIVE_ALLOW = "autoplay";
+	var YOUTUBE_ALLOW =
+		"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+
+	function driveThumbUrl(id) {
+		if (!id) return "";
+		return (
+			"https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w480"
+		);
+	}
+
+	function youtubeThumbUrl(id) {
+		if (!/^[A-Za-z0-9_-]{11}$/.test(id || "")) return "";
+		return "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+	}
+
+	function withAutoplay(url) {
+		if (!url) return "";
+		return url + (url.indexOf("?") === -1 ? "?" : "&") + "autoplay=1";
+	}
+
+	// The thumbnail is a lazy <img> (not a CSS background) so only cards near the
+	// viewport fetch one; a burst of ~150 Drive thumbnails gets refused.
+	function frameFacadeMarkup(o) {
+		return (
+			'<button type="button" class="' +
+			o.cls +
+			" " +
+			o.cls +
+			'-facade" ' +
+			FRAME_ATTR +
+			'="' +
+			esc(o.src) +
+			'" data-th-frame-allow="' +
+			esc(o.allow) +
+			'" data-th-frame-title="' +
+			esc(o.title) +
+			'" aria-label="' +
+			esc("הפעלת סרטון: " + o.title) +
+			'">' +
+			(o.thumb
+				? '<img class="th-facade-thumb" src="' +
+					esc(o.thumb) +
+					'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">'
+				: "") +
+			'<span class="ex-media-play" aria-hidden="true"></span></button>'
+		);
+	}
+
+	function frameTag(o) {
+		return (
+			'<iframe class="' +
+			o.cls +
+			'" title="' +
+			esc(o.title) +
+			'" src="' +
+			esc(o.src) +
+			'" allow="' +
+			esc(o.allow) +
+			'" allowfullscreen loading="lazy"' +
+			(o.referrer ? ' referrerpolicy="' + o.referrer + '"' : "") +
+			"></iframe>"
+		);
+	}
+
+	// Swap one facade for its real player. Returns the iframe (or null).
+	function activateMediaFrame(btn) {
+		if (!btn || !btn.getAttribute || !btn.getAttribute(FRAME_ATTR)) return null;
+		var doc = btn.ownerDocument || (typeof document !== "undefined" ? document : null);
+		if (!doc || !btn.parentNode) return null;
+		var src = btn.getAttribute(FRAME_ATTR);
+		var frame = doc.createElement("iframe");
+		var cls = String(btn.getAttribute("class") || "")
+			.split(/\s+/)
+			.filter(function (c) {
+				return c && !/-facade$/.test(c);
+			})
+			.join(" ");
+		frame.setAttribute("class", cls);
+		frame.setAttribute("title", btn.getAttribute("data-th-frame-title") || "");
+		frame.setAttribute("allow", btn.getAttribute("data-th-frame-allow") || "autoplay");
+		frame.setAttribute("allowfullscreen", "");
+		if (/drive\.google\.com/.test(src))
+			frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
+		frame.setAttribute("src", /youtube\.com\/embed/.test(src) ? withAutoplay(src) : src);
+		btn.parentNode.replaceChild(frame, btn);
+		if (typeof frame.focus === "function") frame.focus();
+		return frame;
+	}
+
+	var facadeClicksBound = false;
+	function bindFacadeClicks() {
+		if (facadeClicksBound || typeof document === "undefined" || !document.addEventListener)
+			return;
+		facadeClicksBound = true;
+		document.addEventListener("click", function (ev) {
+			var t = ev.target;
+			var btn = t && t.closest ? t.closest("[" + FRAME_ATTR + "]") : null;
+			if (!btn) return;
+			ev.preventDefault();
+			activateMediaFrame(btn);
+		});
+	}
+
+	function driveFrameMarkup(entry, driveId, cls, eager) {
 		var segNote = "";
 		if (entry.startSec != null && entry.endSec != null) {
 			segNote =
@@ -2959,6 +3070,14 @@
 				esc(formatClock(entry.endSec)) +
 				" — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>";
 		}
+		var o = {
+			cls: cls,
+			title: entry.he || "סרטון דרייב",
+			src: drivePreviewUrl(driveId),
+			allow: DRIVE_ALLOW,
+			thumb: driveThumbUrl(driveId),
+			referrer: "no-referrer-when-downgrade",
+		};
 		return (
 			'<div class="' +
 			cls +
@@ -2968,13 +3087,7 @@
 			'-fallback" hidden>' +
 			esc(mediaFallbackText(entry)) +
 			"</div>" +
-			'<iframe class="' +
-			cls +
-			'" title="' +
-			esc(entry.he || "סרטון דרייב") +
-			'" src="' +
-			esc(drivePreviewUrl(driveId)) +
-			'" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+			(eager ? frameTag(o) : frameFacadeMarkup(o)) +
 			segNote +
 			"</div>"
 		);
@@ -3019,7 +3132,7 @@
 			return fallback;
 		}
 		if (hasRemoteFile(entry) && drivePlayIdOk(entry.drivePlayId))
-			return driveFrameMarkup(entry, entry.drivePlayId, cls);
+			return driveFrameMarkup(entry, entry.drivePlayId, cls, opts.eager);
 		if (
 			hasRemoteFile(entry) ||
 			(entry.file && !entry.youtubeId && !entry.driveId)
@@ -3043,19 +3156,20 @@
 				" — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>"
 			);
 		}
-		if (entry.driveId) return driveFrameMarkup(entry, entry.driveId, cls);
+		if (entry.driveId) return driveFrameMarkup(entry, entry.driveId, cls, opts.eager);
 		if (entry.youtubeId) {
+			var yt = {
+				cls: cls,
+				title: entry.he || "סרטון יוטיוב",
+				src: youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec),
+				allow: YOUTUBE_ALLOW,
+				thumb: youtubeThumbUrl(entry.youtubeId),
+			};
 			return (
 				'<div class="' +
 				cls +
 				'-wrap">' +
-				'<iframe class="' +
-				cls +
-				'" title="' +
-				esc(entry.he || "סרטון יוטיוב") +
-				'" src="' +
-				esc(youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec)) +
-				'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>' +
+				(opts.eager ? frameTag(yt) : frameFacadeMarkup(yt)) +
 				"</div>"
 			);
 		}
@@ -4633,6 +4747,9 @@
 		youtubeEmbedUrl: youtubeEmbedUrl,
 		isOnline: isOnline,
 		mediaMarkup: mediaMarkup,
+		activateMediaFrame: activateMediaFrame,
+		frameFacadeMarkup: frameFacadeMarkup,
+		driveThumbUrl: driveThumbUrl,
 		mediaFallbackText: mediaFallbackText,
 		bestMedia: bestMedia,
 		mergeCatalogs: mergeCatalogs,
@@ -4704,6 +4821,7 @@
 	}
 
 	if (typeof document !== "undefined") loadCatalog();
+	bindFacadeClicks();
 })(
 	typeof window !== "undefined"
 		? window

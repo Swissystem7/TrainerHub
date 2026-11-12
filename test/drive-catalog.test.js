@@ -112,7 +112,10 @@ test('mediaMarkup degrades to exercise text when offline and never embeds an exc
   };
   const online = TH.mediaMarkup(entry, { className: 'ex-media' });
   assert.match(online, /drive\.google\.com\/file\/d\/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r\/preview/);
-  assert.match(online, /<iframe/);
+  // Load-on-click: a play button until clicked; the single-player view still embeds directly.
+  assert.doesNotMatch(online, /<iframe/);
+  assert.match(online, /data-th-frame="https:\/\/drive\.google\.com\/file\/d\/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r\/preview"/);
+  assert.match(TH.mediaMarkup(entry, { className: 'ex-media', eager: true }), /<iframe/);
   const offline = TH.mediaMarkup(entry, { className: 'ex-media', offline: true });
   assert.doesNotMatch(offline, /<iframe/);
   assert.match(offline, /פלאנק/);

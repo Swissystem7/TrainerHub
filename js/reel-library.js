@@ -674,6 +674,10 @@
     return 'https://drive.google.com/file/d/' + fileId + '/preview';
   }
 
+  function driveThumbUrl(fileId) {
+    return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(fileId || '') + '&sz=w480';
+  }
+
   function driveViewUrl(fileId) {
     return 'https://drive.google.com/file/d/' + fileId + '/view';
   }
@@ -788,7 +792,13 @@
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       '<div class="poster-frame tone-' + toneName(muscle) + '">' +
-        '<iframe class="drive-frame" title="' + esc(displayName(ex)) + '" src="' + esc(preview) + '" loading="lazy" allow="fullscreen" allowfullscreen></iframe>' +
+        // Load-on-click: the Drive thumbnail with a play button; js/core.js swaps
+        // in the preview iframe on click, so 179 Drive players do not load at once.
+        '<button type="button" class="drive-frame drive-frame-facade" data-th-frame="' + esc(preview) + '"' +
+          ' data-th-frame-allow="autoplay; fullscreen" data-th-frame-title="' + esc(displayName(ex)) + '"' +
+          ' aria-label="' + esc('הפעלת סרטון: ' + displayName(ex)) + '">' +
+          '<img class="th-facade-thumb is-cover" src="' + esc(driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
+          '<span class="ex-media-play" aria-hidden="true"></span></button>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +
       '</div>' +

@@ -454,7 +454,7 @@
       return;
     }
     box.hidden = false;
-    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media' });
+    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media', eager: true });
   }
 
   function elapsedSec() {

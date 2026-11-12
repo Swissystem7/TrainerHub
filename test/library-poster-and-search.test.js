@@ -26,7 +26,10 @@ test('a hosted file never gets a Drive poster from driveId or legacyDriveId', fu
     assert.equal(TH.posterUrl(item), '', item.id);
     assert.equal(THReels.posterUrl(item), '', item.id);
     const html = TH.mediaMarkup(item, { className: 'ex-media' });
-    assert.doesNotMatch(html, /drive\.google\.com\/thumbnail/);
+    // The play button may show the live copy's thumbnail (drivePlayId), never a stale id's.
+    (html.match(/drive\.google\.com\/thumbnail\?id=([A-Za-z0-9_-]+)/g) || []).forEach(function (u) {
+      assert.equal(u, 'drive.google.com/thumbnail?id=' + item.drivePlayId, item.id);
+    });
     assert.doesNotMatch(html, /\sposter=/);
     // Only the verified live copy (drivePlayId) may appear; a stale driveId never does.
     if (item.driveId && item.driveId !== item.drivePlayId) assert.equal(html.includes(item.driveId), false, item.id);
