@@ -1,0 +1,22 @@
+[
+  {
+    "name": "index.html",
+    "path": "index.html",
+    "limit": "10 kB"
+  },
+  {
+    "name": "All HTML pages (*.html)",
+    "path": "*.html",
+    "limit": "84 kB"
+  },
+  {
+    "name": "Browser scripts (js/*.js)",
+    "path": "js/*.js",
+    "limit": "175 kB"
+  },
+  {
+    "name": "Styles (css/*)",
+    "path": "css/*",
+    "limit": "4 kB"
+  }
+]

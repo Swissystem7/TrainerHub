@@ -5,10 +5,17 @@
   "scripts": {
     "test": "node --test test/*.js",
     "validate:exercises": "node scripts/validate-exercises.js",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:deadcode": "knip",
+    "check:size": "size-limit",
+    "check:style": "biome check"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
-    "@playwright/test": "^1.64.1"
+    "@biomejs/biome": "2.6.7",
+    "@playwright/test": "^1.64.1",
+    "@size-limit/file": "14.3.0",
+    "knip": "6.45.1",
+    "size-limit": "14.3.0"
   }
 }
