@@ -17,7 +17,7 @@ const driveVideos = read('data/drive_videos.json');
 const reels = read('data/exercises.json').exercises;
 
 const REELS = drive.items.filter(function (e) { return e.source === 'drive' && e.available && e.sourceUrl; });
-const FOLDERS = new Set(['חזה', 'גב', 'כתפיים', 'ידיים', 'רגליים', 'בטן', 'חימום', 'מתיחות וגמישות', 'קרדיו']);
+const FOLDERS = new Set(['חזה', 'גב', 'כתפיים', 'ידיים', 'רגליים', 'בטן', 'חימום', 'מתיחות וגמישות', 'קרדיו', 'גוף מלא HIIT']);
 const EQUIPMENT = new Set(['none', 'band', 'cones', 'ball', 'football', 'basketball', 'tennis-ball', 'bar', 'stairs', 'dumbbells', 'kettlebell', 'barbell']);
 
 test('Drive-hosted reels are registered', function () {
