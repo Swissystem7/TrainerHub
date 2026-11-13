@@ -2382,9 +2382,20 @@
 		// is filed under two ids), so a day marks the clip as used too and the trainee
 		// never watches the same drill twice under two names.
 		var usedClips = {};
+		// A built-in id plays the catalog row its Hebrew name resolves to
+		// («romanian_deadlift_db» → yt_rdl_db), and a YouTube row has no file: keyed
+		// on the file alone, one day held «דדליפט רומני משקולות» and «דדליפט רומני עם
+		// משקולות», and the arm-circles warm-up came back in Main as «סיבובי ידיים».
 		function clipOf(id) {
 			var clip = catalog[id];
-			return clip && isPlayable(clip) && clip.file ? clip.file : "";
+			if (!(clip && isPlayable(clip)))
+				clip = findExercise({ id: id, name: HE_NAMES[id] });
+			if (!(clip && isPlayable(clip))) return "";
+			if (clip.file) return clip.file;
+			if (clip.youtubeId) return "yt:" + clip.youtubeId;
+			if (clip.drivePlayId || clip.driveId)
+				return "drive:" + (clip.drivePlayId || clip.driveId);
+			return "id:" + clip.id;
 		}
 		function markUsed(id) {
 			used[id] = true;
