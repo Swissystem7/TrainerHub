@@ -600,14 +600,14 @@
     return g || null;
   }
 
-  function browserStore() {
-    var ls = null;
+  function globalLocalStorage() {
     var g = globalObj();
-    try {
-      ls = g && g.localStorage ? g.localStorage : null;
-    } catch (e) {
-      ls = null;
-    }
+    if (!g) return null;
+    try { return g.localStorage || null; } catch (e) { return null; }
+  }
+
+  function browserStore() {
+    var ls = globalLocalStorage();
     if (!ls) return memoryFallback();
     return {
       get: function (key, fallback) {
@@ -628,8 +628,8 @@
 
   function storeOf(store) {
     if (store && typeof store.get === 'function' && typeof store.set === 'function') return store;
-    var g = globalObj();
-    if (g && g.TH && g.TH.store) return g.TH.store;
+    var th = (globalObj() || {}).TH;
+    if (th && th.store) return th.store;
     return browserStore();
   }
 
