@@ -21,6 +21,9 @@
 		core: { sets: 3, reps: null, rest: 30, duration: 40 },
 	};
 
+	var GUIDANCE_NOTE =
+		"האימון מותאם ליכולת הנוכחית ומתמקד בחיזוק השריר והתמדה, ללא הבטחה להורדת שומן מקומית";
+
 	function catalogList(explicit) {
 		if (Array.isArray(explicit)) return explicit;
 		if (explicit && typeof explicit === "object" && !explicit.id) {
@@ -94,6 +97,7 @@
 	function normalizeDurationMinutes(duration) {
 		var d = Number(duration);
 		if (!Number.isFinite(d) || d <= 0) return 20;
+		if (d > 120) return 120;
 		return d;
 	}
 
@@ -609,8 +613,7 @@
 		// stretches) are not Main-phase work either.
 		var notWarmups = mainList.filter(
 			(e) =>
-				!/חימום/.test(foldName(e)) &&
-				(e.folder || "") !== "מתיחות וגמישות",
+				!/חימום/.test(foldName(e)) && (e.folder || "") !== "מתיחות וגמישות",
 		);
 		if (notWarmups.length) mainList = notWarmups;
 		var pool = filterPool(mainList, req, relax);
@@ -648,6 +651,7 @@
 				workout: null,
 				explanation: null,
 				analysis: null,
+				guidanceNote: GUIDANCE_NOTE,
 			};
 		}
 
@@ -687,6 +691,7 @@
 		var workout = {
 			title: title,
 			duration_minutes: req.duration,
+			guidanceNote: GUIDANCE_NOTE,
 			participants: Math.max(1, Math.floor(Number(req.participants) || 1)),
 			equipment: (relax.equipment
 				? usedEquipment(picked)
@@ -736,6 +741,7 @@
 			workout: workout,
 			explanation: explanation,
 			analysis: analysis,
+			guidanceNote: GUIDANCE_NOTE,
 		};
 	}
 

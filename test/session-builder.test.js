@@ -261,3 +261,62 @@ test("buildSession treats synonymous folded names as duplicates", () => {
 		"only one squat variant should be selected",
 	);
 });
+
+test("buildSession returns valid and non-empty guidanceNote", () => {
+	const built = Engine.buildSession(
+		{
+			duration: 30,
+			muscles: ["legs"],
+			equipment: ["none"],
+			level: "beginner",
+			goal: null,
+		},
+		CATALOG,
+	);
+	const expected =
+		"האימון מותאם ליכולת הנוכחית ומתמקד בחיזוק השריר והתמדה, ללא הבטחה להורדת שומן מקומית";
+	assert.ok(built.guidanceNote, "guidanceNote should be non-empty");
+	assert.equal(built.guidanceNote, expected);
+	assert.ok(
+		built.workout.guidanceNote,
+		"workout.guidanceNote should be non-empty",
+	);
+	assert.equal(built.workout.guidanceNote, expected);
+});
+
+test("buildSession limits duration of 240 minutes to 120 minutes", () => {
+	const built = Engine.buildSession(
+		{
+			duration: 240,
+			durationSpecified: true,
+			muscles: ["legs"],
+			equipment: ["none"],
+			level: "beginner",
+			goal: null,
+		},
+		CATALOG,
+	);
+	assert.equal(built.workout.duration_minutes, 120);
+	assert.equal(built.request.duration, 120);
+	assert.equal(Engine.normalizeDurationMinutes(240), 120);
+});
+
+test("buildSession keeps valid duration of 45 minutes and includes guidanceNote", () => {
+	const built = Engine.buildSession(
+		{
+			duration: 45,
+			durationSpecified: true,
+			muscles: ["legs"],
+			equipment: ["none"],
+			level: "beginner",
+			goal: null,
+		},
+		CATALOG,
+	);
+	const expected =
+		"האימון מותאם ליכולת הנוכחית ומתמקד בחיזוק השריר והתמדה, ללא הבטחה להורדת שומן מקומית";
+	assert.equal(built.workout.duration_minutes, 45);
+	assert.equal(built.request.duration, 45);
+	assert.equal(built.guidanceNote, expected);
+	assert.equal(built.workout.guidanceNote, expected);
+});
