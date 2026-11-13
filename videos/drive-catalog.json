@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 138,
+    "count": 143,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 91
+    "driveReelCount": 96
   },
   "items": [
     {
@@ -2524,7 +2524,7 @@
         "single leg romanian deadlift"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfZFgYmtAlg/",
-      "poster": "assets/posters/DfZFgYmtAlg.jpg"
+      "poster": "assets/posters/ill-1laF7IRYdYgPDReq13M1e56AI5szHYSUa.jpg"
     },
     {
       "id": "drive_דיפס_בסיוע_גומייה_על_מקבילים",
@@ -2547,7 +2547,7 @@
         "band assisted dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DewMmR1g_fK/",
-      "poster": "assets/posters/DewMmR1g_fK.jpg"
+      "poster": "assets/posters/ill-1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_בקבוקי_מים_לילדים",
@@ -2609,6 +2609,114 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbiJde7xSvd/",
       "poster": "assets/posters/ill-1fMpLUzChIYmUSFQKSn5s-nTvnKRwdip4.jpg"
+    },
+    {
+      "id": "drive_סקוואט_בולגרי_עם_גומייה",
+      "driveId": "1Hv_-TT0weqdZxuCgFjB7k7ugNchmNtLt",
+      "he": "סקוואט בולגרי עם גומייה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "בולגרי עם גומייה",
+        "banded bulgarian split squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Db_KYjmOcgn/",
+      "poster": "assets/posters/Db_KYjmOcgn.jpg"
+    },
+    {
+      "id": "drive_חתירה_כבדה_ביד_אחת_עם_משקולת",
+      "driveId": "1epTFYthoK96hoxF8IfR7ANsFpurZD5ib",
+      "he": "חתירה כבדה ביד אחת עם משקולת",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "heavy single arm dumbbell row"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DP2AwGxkfbt/",
+      "poster": "assets/posters/DP2AwGxkfbt.jpg"
+    },
+    {
+      "id": "drive_לחיצת_שיפוע_ביד_אחת_עם_משקולת",
+      "driveId": "13UbcBXS4O4djh-exBEVW_wR9PQx8kMmB",
+      "he": "לחיצת שיפוע ביד אחת עם משקולת",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "לחיצת שיפוע ביד אחת",
+        "single arm incline dumbbell press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdwNbDRMmiR/",
+      "poster": "assets/posters/DdwNbDRMmiR.jpg"
+    },
+    {
+      "id": "drive_סקוואט_סומו_עם_קטלבל_לילדים",
+      "driveId": "1JHShZYn9Bu4YAowhX81W7iCFjW8jDnrN",
+      "he": "סקוואט סומו עם קטלבל לילדים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "סקוואט רחב עם קטלבל לילדים",
+        "kids kettlebell sumo squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcquXdnhkvV/",
+      "poster": "assets/posters/DcquXdnhkvV.jpg"
+    },
+    {
+      "id": "drive_חתירה_עם_מגבת_סביב_עמוד",
+      "driveId": "13gf9EAe3mle-mMVHqxm6TVbhKB4vuNd-",
+      "he": "חתירה עם מגבת סביב עמוד",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "חתירה עם מגבת",
+        "towel row"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcSRPSEN4Q4/",
+      "poster": "assets/posters/DcSRPSEN4Q4.jpg"
     }
   ]
 }
