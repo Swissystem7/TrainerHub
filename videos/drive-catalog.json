@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 122,
+    "count": 132,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 75
+    "driveReelCount": 85
   },
   "items": [
     {
@@ -2261,6 +2261,225 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DJkOTWcsz0b/",
       "poster": "assets/posters/DJkOTWcsz0b.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_צמודות_על_כדור_כוח",
+      "driveId": "1sz4EE6nrghs3UArdb_SYIW-W85HO7zIu",
+      "he": "שכיבות סמיכה צמודות על כדור כוח",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "שכיבות סמיכה צמודות על כדור",
+        "close grip push up on medicine ball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfN1a-ixAEh/",
+      "poster": "assets/posters/DfN1a-ixAEh.jpg"
+    },
+    {
+      "id": "drive_מסירות_כדורסל_לקיר",
+      "driveId": "1sR021G6-wSv9IYZ2GHIKGHEdrJIxOxhu",
+      "he": "מסירות כדורסל לקיר",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "מסירות לקיר עם כדורסל",
+        "basketball wall passes"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DEdnZTDyOR4/",
+      "poster": "assets/posters/ill-1sR021G6-wSv9IYZ2GHIKGHEdrJIxOxhu.jpg"
+    },
+    {
+      "id": "drive_זריקת_חוץ_לקיר_עם_כדורגל",
+      "driveId": "1IqigYRqrEn-B_oNG0ths4RHWlwDUUAbW",
+      "he": "זריקת חוץ לקיר עם כדורגל",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "זריקות חוץ לקיר",
+        "throw-in wall training"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeFxnTUMAdl/",
+      "poster": "assets/posters/ill-1IqigYRqrEn-B_oNG0ths4RHWlwDUUAbW.jpg"
+    },
+    {
+      "id": "drive_דיפס_על_מוט_ישר",
+      "driveId": "12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f",
+      "he": "דיפס על מוט ישר",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "straight bar dips",
+        "דיפס מוט ישר"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DOITmPRjLeZ/",
+      "poster": "assets/posters/ill-12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f.jpg"
+    },
+    {
+      "id": "drive_פיסטול_סקוואט_באחיזה_במוט",
+      "driveId": "1SKWuYqpISlklstc9x05XWmLisCxx-007",
+      "he": "פיסטול סקוואט באחיזה במוט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "סקוואט רגל אחת באחיזה במוט",
+        "assisted pistol squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfkGcnTtKwQ/",
+      "poster": "assets/posters/ill-1SKWuYqpISlklstc9x05XWmLisCxx-007.jpg"
+    },
+    {
+      "id": "drive_משיכת_שכמות_בתלייה_והתקדמות_למתח",
+      "driveId": "1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl",
+      "he": "משיכת שכמות בתלייה והתקדמות למתח",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "משיכת שכמות",
+        "scap pull-ups",
+        "התקדמות למתח"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVSSS7dCZmF/",
+      "poster": "assets/posters/ill-1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בירידה_על_מדרגות",
+      "driveId": "1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB",
+      "he": "שכיבות סמיכה בירידה על מדרגות",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "decline push ups on stairs",
+        "שכיבות סמיכה רגליים על מדרגה"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DatSixZpEoY/",
+      "poster": "assets/posters/ill-1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פייק_עם_רגליים_על_המדרגות",
+      "driveId": "1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf",
+      "he": "שכיבות סמיכה פייק עם רגליים על המדרגות",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "פייק על מדרגות",
+        "elevated pike push ups on stairs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbYGBdJp_-Z/",
+      "poster": "assets/posters/ill-1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf.jpg"
+    },
+    {
+      "id": "drive_סדרת_HIIT_ג'אמפינג_ג'קס,_ברך_גבוהה,_מטפס_הרים_וסקוואט_קפיצה",
+      "driveId": "1hYvG6xfwQSJQT3fciteplc-EvZxY3xxN",
+      "he": "סדרת HIIT ג'אמפינג ג'קס, ברך גבוהה, מטפס הרים וסקוואט קפיצה",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גוף מלא HIIT",
+      "available": true,
+      "aliases": [
+        "סדרת HIIT בלי ציוד"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dd2uFubv0A8/",
+      "poster": "assets/posters/Dd2uFubv0A8.jpg"
+    },
+    {
+      "id": "drive_מטפס_הרים_מוצלב",
+      "driveId": "1jAtCx4PRwl0QKos2mrLgSNTCOGnmONnb",
+      "he": "מטפס הרים מוצלב",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "מטפס הרים אלכסוני",
+        "ברך למרפק נגדי מפלאנק",
+        "cross body mountain climber"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZs_ftUBacO/",
+      "poster": "assets/posters/DZs_ftUBacO.jpg"
     }
   ]
 }
