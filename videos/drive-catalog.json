@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 132,
+    "count": 138,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 85
+    "driveReelCount": 91
   },
   "items": [
     {
@@ -2457,7 +2457,7 @@
         "סדרת HIIT בלי ציוד"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dd2uFubv0A8/",
-      "poster": "assets/posters/Dd2uFubv0A8.jpg"
+      "poster": "assets/posters/ill-1hYvG6xfwQSJQT3fciteplc-EvZxY3xxN.jpg"
     },
     {
       "id": "drive_מטפס_הרים_מוצלב",
@@ -2480,6 +2480,135 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZs_ftUBacO/",
       "poster": "assets/posters/DZs_ftUBacO.jpg"
+    },
+    {
+      "id": "drive_חתירה_מתחת_לשולחן_עם_רגליים_על_הרצפה",
+      "driveId": "1TDtibRiQr91z0ydTpjC5QdhFx0gW8eKc",
+      "he": "חתירה מתחת לשולחן עם רגליים על הרצפה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "חתירה מתחת לשולחן",
+        "table rows",
+        "inverted table row bent knees"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeO1UALpOcl/",
+      "poster": "assets/posters/DeO1UALpOcl.jpg"
+    },
+    {
+      "id": "drive_דדליפט_רומני_על_רגל_אחת_עם_משקולות",
+      "driveId": "1laF7IRYdYgPDReq13M1e56AI5szHYSUa",
+      "he": "דדליפט רומני על רגל אחת עם משקולות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "דדליפט רגל אחת",
+        "single leg RDL",
+        "single leg romanian deadlift"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfZFgYmtAlg/",
+      "poster": "assets/posters/DfZFgYmtAlg.jpg"
+    },
+    {
+      "id": "drive_דיפס_בסיוע_גומייה_על_מקבילים",
+      "driveId": "1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm",
+      "he": "דיפס בסיוע גומייה על מקבילים",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "bar",
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "דיפס עם גומייה",
+        "band assisted dips"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DewMmR1g_fK/",
+      "poster": "assets/posters/DewMmR1g_fK.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_עם_בקבוקי_מים_לילדים",
+      "driveId": "1HMdAkVpqLqqs-bKtfoxKHdTqCDJ_T5gA",
+      "he": "כפיפת מרפקים עם בקבוקי מים לילדים",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "כפיפת מרפקים עם בקבוקים לילדים",
+        "kids water bottle curls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbnMZxVzczS/",
+      "poster": "assets/posters/ill-1HMdAkVpqLqqs-bKtfoxKHdTqCDJ_T5gA.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_עם_גומייה_לילדים",
+      "driveId": "1npA1ukBJVXUWcai_2IAkO7hzgtSdk0se",
+      "he": "כפיפת מרפקים עם גומייה לילדים",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "kids band curls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dbncde-TxFh/",
+      "poster": "assets/posters/Dbncde-TxFh.jpg"
+    },
+    {
+      "id": "drive_דיפס_על_ספסל_לילדים",
+      "driveId": "1fMpLUzChIYmUSFQKSn5s-nTvnKRwdip4",
+      "he": "דיפס על ספסל לילדים",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "kids bench dips"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbiJde7xSvd/",
+      "poster": "assets/posters/ill-1fMpLUzChIYmUSFQKSn5s-nTvnKRwdip4.jpg"
     }
   ]
 }
