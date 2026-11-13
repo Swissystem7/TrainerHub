@@ -108,6 +108,7 @@
     <p>חיפוש במאגר המאוחד — סרטוני OneDrive שאומתו ותרגילים שנשמרו בקטלוג. שליחה בוואטסאפ כלינק בודד, בלי הרשמה. שמות קבצים ושמות אנשים לא מוצגים.</p>
   </header>
 
+  <!-- biome-ignore lint/a11y/noRedundantRoles: draft region role needed for accessibility tests -->
   <section class="draft" id="draftBox" role="region" aria-label="אימון שנבנה מהספרייה" hidden>
     <h2>אימון שנבנה מהספרייה</h2>
     <div id="draftList"></div>
@@ -120,6 +121,7 @@
     </div>
   </section>
 
+  <!-- biome-ignore lint/a11y/useSemanticElements: filters search form -->
   <form class="filters" id="filters" role="search" aria-label="סינון תרגילים בספרייה">
     <div>
       <label for="q">חיפוש תרגיל</label>
@@ -163,6 +165,7 @@
       </select>
     </div>
   </form>
+  <!-- biome-ignore lint/a11y/useSemanticElements: chips group -->
   <div class="chips" role="group" aria-label="סינון לפי סוג">
     <button type="button" class="chip" data-tag="" aria-pressed="true">הכל</button>
     <button type="button" class="chip" data-tag="kids" aria-pressed="false">ילדים</button>
@@ -173,7 +176,16 @@
     <button type="button" class="chip reset-chip" id="resetFiltersBtn" aria-label="איפוס כל המסננים והצגת כל התרגילים">נקה סינון</button>
   </div>
   <p class="stats" id="stats" aria-live="polite"></p>
+  <!-- biome-ignore lint/a11y/useSemanticElements: grid region -->
   <div class="grid" id="grid" role="region" aria-label="ספריית תרגילים"></div>
+
+  <!-- biome-ignore lint/a11y/noRedundantRoles: guidance region role required for accessibility tests -->
+  <section class="card" id="library-spot-reduction-guidance" role="region" aria-labelledby="libraryGuidanceHeading">
+    <h2 id="libraryGuidanceHeading">מיקוד תרגילים ובחירת ציוד</h2>
+    <p>1. תרגילי ההתנגדות בספרייה מכוונים לחיזוק ובניית השריר המאומן ולא להורדת שומן מקומית מאזור מסוים.</p>
+    <p>2. בחירת ציוד (מכונות, משקולות, גומיות או משקל גוף) נקבעת לפי זמינות, נוחות ושליטה ולא לפי תווית גוף.</p>
+    <p>3. יש לשמור על טכניקה מבוקרת ובמקרה של כאב חדש לעצור ולהתייעץ עם איש מקצוע.</p>
+  </section>
 </main>
 <script src="./js/th-nav.js"></script>
 <script src="./js/core.js"></script>
@@ -249,7 +261,8 @@
     var MUSCLE_RAIL_ORDER = ['legs', 'core', 'chest', 'back', 'shoulders', 'biceps', 'triceps'];
     function primaryMuscle(e) {
       var ms = e.muscles || [];
-      for (var i = 0; i < MUSCLE_RAIL_ORDER.length; i++) {
+      var i;
+      for (i = 0; i < MUSCLE_RAIL_ORDER.length; i++) {
         if (ms.indexOf(MUSCLE_RAIL_ORDER[i]) !== -1) return MUSCLE_RAIL_ORDER[i];
       }
       return ms[0] || 'other';
@@ -395,9 +408,12 @@
     var card = e.target.closest('.card');
     if (!card) return;
     var id = card.getAttribute('data-id');
+    var url;
+    var btn;
+    var already;
     if (act === 'copy') {
-      var url = TH.encodeClip(id, {});
-      var btn = e.target;
+      url = TH.encodeClip(id, {});
+      btn = e.target;
       TH.copyOrShow(url, btn.parentNode, function () {
         btn.textContent = 'הועתק';
         setTimeout(function () { btn.textContent = 'העתק לינק'; }, 1400);
@@ -405,7 +421,7 @@
     } else if (act === 'wa') {
       window.open(TH.waShareUrl('', TH.clipShareMessage(id, '')), '_blank');
     } else if (act === 'add') {
-      var already = TH.draftHas(id);
+      already = TH.draftHas(id);
       TH.draftAdd(id);
       renderDraft();
       e.target.textContent = already ? 'כבר באימון' : 'נוסף';
