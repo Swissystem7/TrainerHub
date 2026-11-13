@@ -1,380 +1,684 @@
-'use strict';
+"use strict";
 
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const TH = require('../js/core.js');
-const { WorkoutLibrary } = require('../frontend/saved-workouts.js');
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const TH = require("../js/core.js");
+const { WorkoutLibrary } = require("../frontend/saved-workouts.js");
 
-const catalog = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'js', 'catalog.json'), 'utf8'));
+const catalog = JSON.parse(
+	fs.readFileSync(path.join(__dirname, "..", "js", "catalog.json"), "utf8"),
+);
 
 const FIXTURE = {
-  plank: { id: 'plank', he: 'פלאנק', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'פלאנק.mp4' },
-  פלאנק_ברכיים: { id: 'פלאנק_ברכיים', he: 'פלאנק ברכיים', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'פלאנק ברכיים.mp4' },
-  פלאנק_צידי: { id: 'פלאנק_צידי', he: 'פלאנק צידי', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'פלאנק צידי.mp4' },
-  גומיות_בטן: { id: 'גומיות_בטן', he: 'גומיות בטן', muscles: ['core'], equipment: ['band'], level: 'beginner', file: 'גומיות בטן.mp4' },
-  ילדים_קונוסים: { id: 'ילדים_קונוסים', he: 'ילדים קונוסים', muscles: ['chest', 'back', 'legs', 'core'], equipment: ['cones'], level: 'beginner', file: 'ילדים קונוסים.mp4' },
-  כדורגל_אחד_על_אחד: { id: 'כדורגל_אחד_על_אחד', he: 'כדורגל אחד על אחד', muscles: ['legs'], equipment: ['football'], level: 'beginner', file: 'כדורגל אחד על אחד.mp4' },
-  step_up: { id: 'step_up', he: 'מדרגות', muscles: ['legs'], equipment: ['stairs'], level: 'beginner', file: 'מדרגות.mp4' },
-  warmup: { id: 'warmup', he: 'חימום', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'חימום.mp4' }
+	plank: {
+		id: "plank",
+		he: "פלאנק",
+		muscles: ["core"],
+		equipment: ["none"],
+		level: "beginner",
+		file: "פלאנק.mp4",
+	},
+	פלאנק_ברכיים: {
+		id: "פלאנק_ברכיים",
+		he: "פלאנק ברכיים",
+		muscles: ["core"],
+		equipment: ["none"],
+		level: "beginner",
+		file: "פלאנק ברכיים.mp4",
+	},
+	פלאנק_צידי: {
+		id: "פלאנק_צידי",
+		he: "פלאנק צידי",
+		muscles: ["core"],
+		equipment: ["none"],
+		level: "beginner",
+		file: "פלאנק צידי.mp4",
+	},
+	גומיות_בטן: {
+		id: "גומיות_בטן",
+		he: "גומיות בטן",
+		muscles: ["core"],
+		equipment: ["band"],
+		level: "beginner",
+		file: "גומיות בטן.mp4",
+	},
+	ילדים_קונוסים: {
+		id: "ילדים_קונוסים",
+		he: "ילדים קונוסים",
+		muscles: ["chest", "back", "legs", "core"],
+		equipment: ["cones"],
+		level: "beginner",
+		file: "ילדים קונוסים.mp4",
+	},
+	כדורגל_אחד_על_אחד: {
+		id: "כדורגל_אחד_על_אחד",
+		he: "כדורגל אחד על אחד",
+		muscles: ["legs"],
+		equipment: ["football"],
+		level: "beginner",
+		file: "כדורגל אחד על אחד.mp4",
+	},
+	step_up: {
+		id: "step_up",
+		he: "מדרגות",
+		muscles: ["legs"],
+		equipment: ["stairs"],
+		level: "beginner",
+		file: "מדרגות.mp4",
+	},
+	warmup: {
+		id: "warmup",
+		he: "חימום",
+		muscles: ["core"],
+		equipment: ["none"],
+		level: "beginner",
+		file: "חימום.mp4",
+	},
 };
 
 function useFixture() {
-  TH.setCatalog(FIXTURE);
+	TH.setCatalog(FIXTURE);
 }
 
-test('saveWorkouts rejects duplicate saved_id values in the input batch', function () {
-  const store = { get: function () { return []; }, set: function () { return true; } };
-  assert.throws(
-    function () {
-      WorkoutLibrary.save(store, 'trainerhub_workouts', [
-        { title: 'Test', saved_id: 'abc' },
-        { title: 'Test2', saved_id: 'abc' }
-      ]);
-    },
-    /saved_id זהים/
-  );
+test("saveWorkouts rejects duplicate saved_id values in the input batch", function () {
+	const store = {
+		get: function () {
+			return [];
+		},
+		set: function () {
+			return true;
+		},
+	};
+	assert.throws(function () {
+		WorkoutLibrary.save(store, "trainerhub_workouts", [
+			{ title: "Test", saved_id: "abc" },
+			{ title: "Test2", saved_id: "abc" },
+		]);
+	}, /saved_id זהים/);
 });
 
-test('filterCatalog searches Hebrew names and respects muscle / equipment / tag', function () {
-  useFixture();
-  assert.equal(TH.filterCatalog({ q: 'פלאנק' }).length, 3);
-  assert.equal(TH.filterCatalog({ muscle: 'core', equipment: 'band' })[0].id, 'גומיות_בטן');
-  assert.equal(TH.filterCatalog({ tag: 'kids' })[0].id, 'ילדים_קונוסים');
-  assert.equal(TH.filterCatalog({ tag: 'sport' })[0].id, 'כדורגל_אחד_על_אחד');
-  assert.equal(TH.filterCatalog({ q: 'אין_תרגיל_כזה' }).length, 0);
+test("filterCatalog searches Hebrew names and respects muscle / equipment / tag", function () {
+	useFixture();
+	assert.equal(TH.filterCatalog({ q: "פלאנק" }).length, 3);
+	assert.equal(
+		TH.filterCatalog({ muscle: "core", equipment: "band" })[0].id,
+		"גומיות_בטן",
+	);
+	assert.equal(TH.filterCatalog({ tag: "kids" })[0].id, "ילדים_קונוסים");
+	assert.equal(TH.filterCatalog({ tag: "sport" })[0].id, "כדורגל_אחד_על_אחד");
+	assert.equal(TH.filterCatalog({ q: "אין_תרגיל_כזה" }).length, 0);
 });
 
-test('catalogTags derive kids / partner / sport without storing filenames', function () {
-  useFixture();
-  assert.deepEqual(TH.catalogTags(FIXTURE.ילדים_קונוסים).sort(), ['cones', 'kids']);
-  assert.deepEqual(TH.catalogTags(FIXTURE.כדורגל_אחד_על_אחד), ['sport']);
-  assert.ok(TH.catalogTags(FIXTURE.plank).indexOf('kids') === -1);
+test("catalogTags derive kids / partner / sport without storing filenames", function () {
+	useFixture();
+	assert.deepEqual(TH.catalogTags(FIXTURE.ילדים_קונוסים).sort(), [
+		"cones",
+		"kids",
+	]);
+	assert.deepEqual(TH.catalogTags(FIXTURE.כדורגל_אחד_על_אחד), ["sport"]);
+	assert.ok(TH.catalogTags(FIXTURE.plank).indexOf("kids") === -1);
 });
 
-test('catalogStats counts the real library and every muscle bucket', function () {
-  TH.setCatalog(catalog);
-  const stats = TH.catalogStats();
-  assert.ok(stats.total >= 70, 'expected the real clip library, got ' + stats.total);
-  assert.equal(stats.withFile, stats.total);
-  assert.equal(stats.playable, 77);
-  assert.ok(stats.byMuscle.core > 0);
-  assert.ok(stats.byMuscle.legs > 0);
-  assert.ok(stats.byTag.kids > 0);
-  assert.ok(stats.byEquipment.band > 0);
-  assert.ok(stats.byEquipment.cones > 0);
+test("catalogStats counts the real library and every muscle bucket", function () {
+	TH.setCatalog(catalog);
+	const stats = TH.catalogStats();
+	assert.ok(
+		stats.total >= 70,
+		"expected the real clip library, got " + stats.total,
+	);
+	assert.equal(stats.withFile, stats.total);
+	assert.equal(stats.playable, 77);
+	assert.ok(stats.byMuscle.core > 0);
+	assert.ok(stats.byMuscle.legs > 0);
+	assert.ok(stats.byTag.kids > 0);
+	assert.ok(stats.byEquipment.band > 0);
+	assert.ok(stats.byEquipment.cones > 0);
 });
 
-test('matchCatalog maps free-text Hebrew (and aliases) onto catalog ids', function () {
-  useFixture();
-  assert.equal(TH.matchCatalog('פלאנק').id, 'plank');
-  assert.equal(TH.matchCatalog('מאונטיין קליימר'), null);
-  TH.setCatalog(Object.assign({}, FIXTURE, {
-    mountain_climber: { id: 'mountain_climber', he: 'מטפס הרים', muscles: ['core'], equipment: ['none'], level: 'beginner', file: 'מטפס הרים.mp4' }
-  }));
-  assert.equal(TH.matchCatalog('מאונטיין קליימר').id, 'mountain_climber');
-  assert.equal(TH.matchCatalog('חימום כללי').id, 'warmup');
-  assert.equal(TH.matchCatalog('פלאנק ברכיים').id, 'פלאנק_ברכיים');
-  assert.equal(TH.matchCatalog('תרגיל שלא קיים'), null);
+test("matchCatalog maps free-text Hebrew (and aliases) onto catalog ids", function () {
+	useFixture();
+	assert.equal(TH.matchCatalog("פלאנק").id, "plank");
+	assert.equal(TH.matchCatalog("מאונטיין קליימר"), null);
+	TH.setCatalog(
+		Object.assign({}, FIXTURE, {
+			mountain_climber: {
+				id: "mountain_climber",
+				he: "מטפס הרים",
+				muscles: ["core"],
+				equipment: ["none"],
+				level: "beginner",
+				file: "מטפס הרים.mp4",
+			},
+		}),
+	);
+	assert.equal(TH.matchCatalog("מאונטיין קליימר").id, "mountain_climber");
+	assert.equal(TH.matchCatalog("חימום כללי").id, "warmup");
+	assert.equal(TH.matchCatalog("פלאנק ברכיים").id, "פלאנק_ברכיים");
+	assert.equal(TH.matchCatalog("תרגיל שלא קיים"), null);
 });
 
-test('matchCatalog prefers the closest title for a short Hebrew query', function () {
-  TH.setCatalog({
-    short_pull: {
-      id: 'short_pull', he: 'מתח צבאי', muscles: ['back'], equipment: ['bar'],
-      level: 'intermediate', file: 'a.mp4', source: 'local'
-    },
-    long_pull: {
-      id: 'long_pull', he: 'חימום מתח צבאי על מתקן גבוה עם קונוסים', muscles: ['back'],
-      equipment: ['bar', 'cones'], level: 'beginner', file: 'b.mp4', source: 'onedrive'
-    }
-  });
-  assert.equal(TH.matchCatalog('מתח').id, 'short_pull');
-  TH.setCatalog(catalog);
-  assert.equal(TH.matchCatalog('שכיבות').id, 'אתגר_שכיבות_שמיכה');
+test("matchCatalog prefers the closest title for a short Hebrew query", function () {
+	TH.setCatalog({
+		short_pull: {
+			id: "short_pull",
+			he: "מתח צבאי",
+			muscles: ["back"],
+			equipment: ["bar"],
+			level: "intermediate",
+			file: "a.mp4",
+			source: "local",
+		},
+		long_pull: {
+			id: "long_pull",
+			he: "חימום מתח צבאי על מתקן גבוה עם קונוסים",
+			muscles: ["back"],
+			equipment: ["bar", "cones"],
+			level: "beginner",
+			file: "b.mp4",
+			source: "onedrive",
+		},
+	});
+	assert.equal(TH.matchCatalog("מתח").id, "short_pull");
+	TH.setCatalog(catalog);
+	assert.equal(TH.matchCatalog("שכיבות").id, "אתגר_שכיבות_שמיכה");
 });
 
-test('attachCatalogIds writes ids onto parsed phases without inventing files', function () {
-  useFixture();
-  const workout = {
-    phases: [
-      { name: 'Warm-up', exercises: [{ name: 'חימום כללי', sets: 1 }] },
-      { name: 'Main', exercises: [{ name: 'פלאנק', sets: 3, reps: 10 }, { name: 'משהו שלא בקטלוג', sets: 2 }] }
-    ]
-  };
-  TH.attachCatalogIds(workout);
-  assert.equal(workout.phases[0].exercises[0].id, 'warmup');
-  assert.equal(workout.phases[1].exercises[0].id, 'plank');
-  assert.equal(workout.phases[1].exercises[1].id, undefined);
+test("attachCatalogIds writes ids onto parsed phases without inventing files", function () {
+	useFixture();
+	const workout = {
+		phases: [
+			{ name: "Warm-up", exercises: [{ name: "חימום כללי", sets: 1 }] },
+			{
+				name: "Main",
+				exercises: [
+					{ name: "פלאנק", sets: 3, reps: 10 },
+					{ name: "משהו שלא בקטלוג", sets: 2 },
+				],
+			},
+		],
+	};
+	TH.attachCatalogIds(workout);
+	assert.equal(workout.phases[0].exercises[0].id, "warmup");
+	assert.equal(workout.phases[1].exercises[0].id, "plank");
+	assert.equal(workout.phases[1].exercises[1].id, undefined);
 });
 
-test('substitutesFor returns same-muscle clips and never the original id', function () {
-  useFixture();
-  const alts = TH.substitutesFor({ id: 'plank' }, { limit: 5 });
-  assert.ok(alts.length >= 2);
-  assert.ok(alts.every(function (e) { return e.id !== 'plank'; }));
-  assert.ok(alts.every(function (e) { return e.muscles.indexOf('core') !== -1; }));
-  const bandOnly = TH.substitutesFor({ id: 'plank' }, { equipment: ['band'], limit: 5 });
-  assert.ok(bandOnly.every(function (e) {
-    return e.equipment.indexOf('none') !== -1 || e.equipment.indexOf('band') !== -1;
-  }));
+test("substitutesFor returns same-muscle clips and never the original id", function () {
+	useFixture();
+	const alts = TH.substitutesFor({ id: "plank" }, { limit: 5 });
+	assert.ok(alts.length >= 2);
+	assert.ok(
+		alts.every(function (e) {
+			return e.id !== "plank";
+		}),
+	);
+	assert.ok(
+		alts.every(function (e) {
+			return e.muscles.indexOf("core") !== -1;
+		}),
+	);
+	const bandOnly = TH.substitutesFor(
+		{ id: "plank" },
+		{ equipment: ["band"], limit: 5 },
+	);
+	assert.ok(
+		bandOnly.every(function (e) {
+			return (
+				e.equipment.indexOf("none") !== -1 || e.equipment.indexOf("band") !== -1
+			);
+		}),
+	);
 });
 
-test('swapExercise keeps sets/rest, rewrites name+id from the catalog and holds a plank in seconds', function () {
-  useFixture();
-  const workout = {
-    phases: [
-      { name: 'Warm-up', exercises: [] },
-      { name: 'Main', exercises: [{ name: 'פלאנק', id: 'plank', sets: 4, reps: '4-6', rest_seconds: 120, notes: 'form' }] }
-    ]
-  };
-  TH.swapExercise(workout, 1, 0, 'פלאנק_ברכיים');
-  const ex = workout.phases[1].exercises[0];
-  assert.equal(ex.id, 'פלאנק_ברכיים');
-  assert.equal(ex.name, 'פלאנק ברכיים');
-  assert.equal(ex.sets, 4);
-  assert.equal(ex.reps, null);
-  assert.equal(ex.duration_seconds, 30);
-  assert.equal(ex.rest_seconds, 120);
-  assert.equal(ex.notes, 'form');
+test("swapExercise keeps sets/rest, rewrites name+id from the catalog and holds a plank in seconds", function () {
+	useFixture();
+	const workout = {
+		phases: [
+			{ name: "Warm-up", exercises: [] },
+			{
+				name: "Main",
+				exercises: [
+					{
+						name: "פלאנק",
+						id: "plank",
+						sets: 4,
+						reps: "4-6",
+						rest_seconds: 120,
+						notes: "form",
+					},
+				],
+			},
+		],
+	};
+	TH.swapExercise(workout, 1, 0, "פלאנק_ברכיים");
+	const ex = workout.phases[1].exercises[0];
+	assert.equal(ex.id, "פלאנק_ברכיים");
+	assert.equal(ex.name, "פלאנק ברכיים");
+	assert.equal(ex.sets, 4);
+	assert.equal(ex.reps, null);
+	assert.equal(ex.duration_seconds, 30);
+	assert.equal(ex.rest_seconds, 120);
+	assert.equal(ex.notes, "form");
 });
 
-test('encodeClip / decodeClipHash never put a filename in the share payload', function () {
-  useFixture();
-  const prev = global.location;
-  global.location = {
-    href: 'https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html',
-    pathname: '/TrainerHub/frontend/workout-mode.html',
-    hash: ''
-  };
-  try {
-    const url = TH.encodeClip('plank', { name: 'יוסי', wa: '0501112222' });
-    assert.match(url, /workout-mode\.html#CLIP\./);
-    assert.equal(url.includes('פלאנק.mp4'), false);
-    assert.equal(url.toLowerCase().includes('file'), false);
-    const decoded = TH.decodeClipHash(url.slice(url.indexOf('#')));
-    assert.equal(decoded.id, 'plank');
-    assert.equal(decoded.he, 'פלאנק');
-    assert.equal(decoded.n, 'יוסי');
-    assert.equal('file' in decoded, false);
-    const msg = TH.clipShareMessage('plank', 'יוסי');
-    assert.match(msg, /פלאנק/);
-    assert.equal(msg.includes('פלאנק.mp4'), false);
-    const asWorkout = TH.clipToWorkout(decoded);
-    assert.equal(asWorkout.phases[1].exercises[0].id, 'plank');
-    assert.equal(asWorkout.phases[1].exercises[0].name, 'פלאנק');
-    assert.equal(asWorkout.phases.length, 3);
-  } finally {
-    if (prev === undefined) delete global.location;
-    else global.location = prev;
-  }
+test("encodeClip / decodeClipHash never put a filename in the share payload", function () {
+	useFixture();
+	const prev = global.location;
+	global.location = {
+		href: "https://swissystem7.github.io/TrainerHub/frontend/workout-mode.html",
+		pathname: "/TrainerHub/frontend/workout-mode.html",
+		hash: "",
+	};
+	try {
+		const url = TH.encodeClip("plank", { name: "יוסי", wa: "0501112222" });
+		assert.match(url, /workout-mode\.html#CLIP\./);
+		assert.equal(url.includes("פלאנק.mp4"), false);
+		assert.equal(url.toLowerCase().includes("file"), false);
+		const decoded = TH.decodeClipHash(url.slice(url.indexOf("#")));
+		assert.equal(decoded.id, "plank");
+		assert.equal(decoded.he, "פלאנק");
+		assert.equal(decoded.n, "יוסי");
+		assert.equal("file" in decoded, false);
+		const msg = TH.clipShareMessage("plank", "יוסי");
+		assert.match(msg, /פלאנק/);
+		assert.equal(msg.includes("פלאנק.mp4"), false);
+		const asWorkout = TH.clipToWorkout(decoded);
+		assert.equal(asWorkout.phases[1].exercises[0].id, "plank");
+		assert.equal(asWorkout.phases[1].exercises[0].name, "פלאנק");
+		assert.equal(asWorkout.phases.length, 3);
+	} finally {
+		if (prev === undefined) delete global.location;
+		else global.location = prev;
+	}
 });
 
-test('plan engine prefers real catalog clips when the catalog is loaded', function () {
-  useFixture();
-  const program = TH.generateWorkoutProgram({
-    age: 31,
-    fitnessLevel: 'intermediate',
-    goals: ['hypertrophy'],
-    availableEquipment: ['none'],
-    targetMuscles: ['core'],
-    injuries: [],
-    previousWorkouts: 8,
-    preferCatalog: true
-  }, 1, 1);
-  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-  assert.ok(names.length > 0);
-  assert.ok(names.some(function (id) { return FIXTURE[id] && FIXTURE[id].file; }),
-    'expected at least one catalog clip, got ' + names.join(','));
-  names.forEach(function (id) {
-    if (FIXTURE[id]) assert.ok(TH.hasClip({ id: id }));
-  });
+test("plan engine prefers real catalog clips when the catalog is loaded", function () {
+	useFixture();
+	const program = TH.generateWorkoutProgram(
+		{
+			age: 31,
+			fitnessLevel: "intermediate",
+			goals: ["hypertrophy"],
+			availableEquipment: ["none"],
+			targetMuscles: ["core"],
+			injuries: [],
+			previousWorkouts: 8,
+			preferCatalog: true,
+		},
+		1,
+		1,
+	);
+	const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+		return ex.name;
+	});
+	assert.ok(names.length > 0);
+	assert.ok(
+		names.some(function (id) {
+			return FIXTURE[id] && FIXTURE[id].file;
+		}),
+		"expected at least one catalog clip, got " + names.join(","),
+	);
+	names.forEach(function (id) {
+		if (FIXTURE[id]) assert.ok(TH.hasClip({ id: id }));
+	});
 });
 
-test('kids audience + cones picks tagged kids drills from the catalog', function () {
-  useFixture();
-  const program = TH.generateWorkoutProgram({
-    age: 12,
-    fitnessLevel: 'beginner',
-    goals: ['general_fitness'],
-    availableEquipment: ['cones'],
-    targetMuscles: [],
-    injuries: [],
-    previousWorkouts: 8,
-    audience: 'kids',
-    preferCatalog: true
-  }, 1, 1);
-  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-  assert.ok(names.indexOf('ילדים_קונוסים') !== -1, 'got ' + names.join(','));
+test("kids audience + cones picks tagged kids drills from the catalog", function () {
+	useFixture();
+	const program = TH.generateWorkoutProgram(
+		{
+			age: 12,
+			fitnessLevel: "beginner",
+			goals: ["general_fitness"],
+			availableEquipment: ["cones"],
+			targetMuscles: [],
+			injuries: [],
+			previousWorkouts: 8,
+			audience: "kids",
+			preferCatalog: true,
+		},
+		1,
+		1,
+	);
+	const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+		return ex.name;
+	});
+	assert.ok(names.indexOf("ילדים_קונוסים") !== -1, "got " + names.join(","));
 });
 
-test('general audience excludes drills reserved for kids or sport', function () {
-  useFixture();
-  const program = TH.generateWorkoutProgram({
-    age: 31,
-    fitnessLevel: 'intermediate',
-    goals: ['hypertrophy'],
-    availableEquipment: ['cones', 'football'],
-    targetMuscles: ['legs'],
-    injuries: [],
-    previousWorkouts: 8,
-    audience: '',
-    preferCatalog: true
-  }, 1, 1);
-  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-  assert.ok(names.length > 0);
-  assert.equal(names.indexOf('ילדים_קונוסים'), -1, 'kids drill leaked into ' + names.join(','));
-  assert.equal(names.indexOf('כדורגל_אחד_על_אחד'), -1, 'sport drill leaked into ' + names.join(','));
+test("general audience excludes drills reserved for kids or sport", function () {
+	useFixture();
+	const program = TH.generateWorkoutProgram(
+		{
+			age: 31,
+			fitnessLevel: "intermediate",
+			goals: ["hypertrophy"],
+			availableEquipment: ["cones", "football"],
+			targetMuscles: ["legs"],
+			injuries: [],
+			previousWorkouts: 8,
+			audience: "",
+			preferCatalog: true,
+		},
+		1,
+		1,
+	);
+	const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+		return ex.name;
+	});
+	assert.ok(names.length > 0);
+	assert.equal(
+		names.indexOf("ילדים_קונוסים"),
+		-1,
+		"kids drill leaked into " + names.join(","),
+	);
+	assert.equal(
+		names.indexOf("כדורגל_אחד_על_אחד"),
+		-1,
+		"sport drill leaked into " + names.join(","),
+	);
 });
 
-test('explicit dumbbell choice outranks unrelated bodyweight catalog clips', function () {
-  useFixture();
-  const program = TH.generateWorkoutProgram({
-    age: 31,
-    fitnessLevel: 'intermediate',
-    goals: ['hypertrophy'],
-    availableEquipment: ['dumbbells'],
-    targetMuscles: ['legs'],
-    injuries: [],
-    previousWorkouts: 8,
-    audience: '',
-    preferCatalog: true
-  }, 1, 1);
-  const dumbbellLegMoves = new Set([
-    'lunges', 'step_up', 'calf_raise', 'goblet_squat', 'dumbbell_lunge', 'romanian_deadlift_db'
-  ]);
-  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-  assert.ok(names.length > 0);
-  names.forEach(function (name) {
-    assert.equal(dumbbellLegMoves.has(name), true, 'non-dumbbell leg move: ' + name);
-  });
+test("explicit dumbbell choice outranks unrelated bodyweight catalog clips", function () {
+	useFixture();
+	const program = TH.generateWorkoutProgram(
+		{
+			age: 31,
+			fitnessLevel: "intermediate",
+			goals: ["hypertrophy"],
+			availableEquipment: ["dumbbells"],
+			targetMuscles: ["legs"],
+			injuries: [],
+			previousWorkouts: 8,
+			audience: "",
+			preferCatalog: true,
+		},
+		1,
+		1,
+	);
+	const dumbbellLegMoves = new Set([
+		"lunges",
+		"step_up",
+		"calf_raise",
+		"goblet_squat",
+		"dumbbell_lunge",
+		"romanian_deadlift_db",
+	]);
+	const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+		return ex.name;
+	});
+	assert.ok(names.length > 0);
+	names.forEach(function (name) {
+		assert.equal(
+			dumbbellLegMoves.has(name),
+			true,
+			"non-dumbbell leg move: " + name,
+		);
+	});
 });
 
-test('empty catalog keeps the generic pool (no invented clip files)', function () {
-  TH.setCatalog({});
-  const program = TH.generateWorkoutProgram({
-    age: 31,
-    fitnessLevel: 'intermediate',
-    goals: ['hypertrophy'],
-    availableEquipment: ['none'],
-    targetMuscles: ['legs'],
-    injuries: [],
-    previousWorkouts: 8
-  }, 1, 1);
-  const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-  assert.ok(names.length > 0);
-  names.forEach(function (id) {
-    assert.equal(TH.findExercise({ id: id }), null);
-  });
+test("empty catalog keeps the generic pool (no invented clip files)", function () {
+	TH.setCatalog({});
+	const program = TH.generateWorkoutProgram(
+		{
+			age: 31,
+			fitnessLevel: "intermediate",
+			goals: ["hypertrophy"],
+			availableEquipment: ["none"],
+			targetMuscles: ["legs"],
+			injuries: [],
+			previousWorkouts: 8,
+		},
+		1,
+		1,
+	);
+	const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+		return ex.name;
+	});
+	assert.ok(names.length > 0);
+	names.forEach(function (id) {
+		assert.equal(TH.findExercise({ id: id }), null);
+	});
 });
 
-test('nudgeMessage stays honest and does not invent a last session', function () {
-  const fresh = TH.nudgeMessage({ name: 'נועה', logs: [] });
-  assert.match(fresh, /נועה/);
-  assert.match(fresh, /עדיין לא ראיתי ביצוע/);
-  assert.doesNotMatch(fresh, /95 סרטונים|Pro|Marketplace/);
-  const dated = TH.nudgeMessage({
-    name: 'יוסי',
-    logs: [{ at: '2026-08-01T10:00:00.000Z', title: 'אימון 2' }]
-  });
-  assert.match(dated, /יוסי/);
-  assert.match(dated, /אימון 2/);
-  assert.equal(TH.daysSinceLast({ logs: [] }), null);
+test("nudgeMessage stays honest and does not invent a last session", function () {
+	const fresh = TH.nudgeMessage({ name: "נועה", logs: [] });
+	assert.match(fresh, /נועה/);
+	assert.match(fresh, /עדיין לא ראיתי ביצוע/);
+	assert.doesNotMatch(fresh, /95 סרטונים|Pro|Marketplace/);
+	const dated = TH.nudgeMessage({
+		name: "יוסי",
+		logs: [{ at: "2026-08-01T10:00:00.000Z", title: "אימון 2" }],
+	});
+	assert.match(dated, /יוסי/);
+	assert.match(dated, /אימון 2/);
+	assert.equal(TH.daysSinceLast({ logs: [] }), null);
 });
 
-test('daysSinceLast counts calendar days, so last night is one day ago this morning', function () {
-  const realNow = Date.now;
-  const morning = new Date();
-  morning.setHours(9, 0, 0, 0);
-  Date.now = function () { return morning.getTime(); };
-  try {
-    const lastNight = new Date(morning);
-    lastNight.setDate(lastNight.getDate() - 1);
-    lastNight.setHours(22, 0, 0, 0);
-    assert.equal(TH.daysSinceLast({ logs: [{ at: lastNight.toISOString() }] }), 1);
-    const yesterdayNudge = TH.nudgeMessage({ name: 'דנה', logs: [{ at: lastNight.toISOString() }] });
-    assert.match(yesterdayNudge, /עבר יום בלי ביצוע מיובא/);
-    assert.doesNotMatch(yesterdayNudge, /1 ימים/);
-    const twoNightsAgo = new Date(morning);
-    twoNightsAgo.setDate(twoNightsAgo.getDate() - 2);
-    twoNightsAgo.setHours(20, 0, 0, 0);
-    assert.match(TH.nudgeMessage({ name: 'דנה', logs: [{ at: twoNightsAgo.toISOString() }] }), /עברו יומיים בלי ביצוע מיובא/);
-    const fiveNightsAgo = new Date(morning);
-    fiveNightsAgo.setDate(fiveNightsAgo.getDate() - 5);
-    fiveNightsAgo.setHours(23, 30, 0, 0);
-    assert.equal(TH.daysSinceLast({ logs: [{ at: fiveNightsAgo.toISOString() }] }), 5);
-    assert.match(TH.nudgeMessage({ name: 'דנה', logs: [{ at: fiveNightsAgo.toISOString() }] }), /עברו 5 ימים בלי ביצוע מיובא/);
-    const earlier = new Date(morning);
-    earlier.setHours(7, 0, 0, 0);
-    assert.equal(TH.daysSinceLast({ logs: [{ at: earlier.toISOString() }] }), 0);
-    assert.match(TH.nudgeMessage({ name: 'דנה', logs: [{ at: earlier.toISOString() }] }), /ראיתי ביצוע היום/);
-  } finally {
-    Date.now = realNow;
-  }
+test("daysSinceLast counts calendar days, so last night is one day ago this morning", function () {
+	const realNow = Date.now;
+	const morning = new Date();
+	morning.setHours(9, 0, 0, 0);
+	Date.now = function () {
+		return morning.getTime();
+	};
+	try {
+		const lastNight = new Date(morning);
+		lastNight.setDate(lastNight.getDate() - 1);
+		lastNight.setHours(22, 0, 0, 0);
+		assert.equal(
+			TH.daysSinceLast({ logs: [{ at: lastNight.toISOString() }] }),
+			1,
+		);
+		const yesterdayNudge = TH.nudgeMessage({
+			name: "דנה",
+			logs: [{ at: lastNight.toISOString() }],
+		});
+		assert.match(yesterdayNudge, /עבר יום בלי ביצוע מיובא/);
+		assert.doesNotMatch(yesterdayNudge, /1 ימים/);
+		const twoNightsAgo = new Date(morning);
+		twoNightsAgo.setDate(twoNightsAgo.getDate() - 2);
+		twoNightsAgo.setHours(20, 0, 0, 0);
+		assert.match(
+			TH.nudgeMessage({
+				name: "דנה",
+				logs: [{ at: twoNightsAgo.toISOString() }],
+			}),
+			/עברו יומיים בלי ביצוע מיובא/,
+		);
+		const fiveNightsAgo = new Date(morning);
+		fiveNightsAgo.setDate(fiveNightsAgo.getDate() - 5);
+		fiveNightsAgo.setHours(23, 30, 0, 0);
+		assert.equal(
+			TH.daysSinceLast({ logs: [{ at: fiveNightsAgo.toISOString() }] }),
+			5,
+		);
+		assert.match(
+			TH.nudgeMessage({
+				name: "דנה",
+				logs: [{ at: fiveNightsAgo.toISOString() }],
+			}),
+			/עברו 5 ימים בלי ביצוע מיובא/,
+		);
+		const earlier = new Date(morning);
+		earlier.setHours(7, 0, 0, 0);
+		assert.equal(
+			TH.daysSinceLast({ logs: [{ at: earlier.toISOString() }] }),
+			0,
+		);
+		assert.match(
+			TH.nudgeMessage({ name: "דנה", logs: [{ at: earlier.toISOString() }] }),
+			/ראיתי ביצוע היום/,
+		);
+	} finally {
+		Date.now = realNow;
+	}
 });
 
-test('filterCatalog and clip payloads never leak a personal name from a filename', function () {
-  TH.setCatalog(catalog);
-  const PERSONAL = /aviran|swissa|אבירן|סוויסה|סויסה|avi[\s_-]?ran/i;
-  TH.filterCatalog({}).forEach(function (e) {
-    assert.equal(PERSONAL.test(e.he), false, e.he);
-    assert.equal(PERSONAL.test(e.id), false, e.id);
-  });
-  const prev = global.location;
-  global.location = {
-    href: 'https://swissystem7.github.io/TrainerHub/library.html',
-    pathname: '/TrainerHub/library.html',
-    hash: ''
-  };
-  try {
-    Object.keys(catalog).forEach(function (id) {
-      const url = TH.encodeClip(id, {});
-      if (!url) return;
-      assert.equal(PERSONAL.test(url), false, id);
-      assert.equal(/\.mp4/i.test(url), false, 'clip url leaked a filename for ' + id);
-    });
-  } finally {
-    if (prev === undefined) delete global.location;
-    else global.location = prev;
-  }
+test("filterCatalog and clip payloads never leak a personal name from a filename", function () {
+	TH.setCatalog(catalog);
+	const PERSONAL = /aviran|swissa|אבירן|סוויסה|סויסה|avi[\s_-]?ran/i;
+	TH.filterCatalog({}).forEach(function (e) {
+		assert.equal(PERSONAL.test(e.he), false, e.he);
+		assert.equal(PERSONAL.test(e.id), false, e.id);
+	});
+	const prev = global.location;
+	global.location = {
+		href: "https://swissystem7.github.io/TrainerHub/library.html",
+		pathname: "/TrainerHub/library.html",
+		hash: "",
+	};
+	try {
+		Object.keys(catalog).forEach(function (id) {
+			const url = TH.encodeClip(id, {});
+			if (!url) return;
+			assert.equal(PERSONAL.test(url), false, id);
+			assert.equal(
+				/\.mp4/i.test(url),
+				false,
+				"clip url leaked a filename for " + id,
+			);
+		});
+	} finally {
+		if (prev === undefined) delete global.location;
+		else global.location = prev;
+	}
 });
 
-test('kids + dumbbells or band still gets the kids drills (audience before equipment)', function () {
-  // a kids drill that needs no equipment, so a dumbbell or band plan can use it
-  TH.setCatalog(Object.assign({}, FIXTURE, {
-    ילדים_הוקי_נעליים: { id: 'ילדים_הוקי_נעליים', he: 'ילדים הוקי נעליים', muscles: ['legs', 'core'], equipment: ['none'], level: 'beginner', file: 'ילדים הוקי נעליים.mp4' }
-  }));
-  ['dumbbells', 'band'].forEach(function (eq) {
-    const program = TH.generateWorkoutProgram({
-      age: 12,
-      fitnessLevel: 'beginner',
-      goals: ['general_fitness'],
-      availableEquipment: [eq],
-      targetMuscles: [],
-      injuries: [],
-      previousWorkouts: 8,
-      audience: 'kids',
-      preferCatalog: true
-    }, 1, 1);
-    const names = program.dailyWorkouts[0].exercises.map(function (ex) { return ex.name; });
-    assert.ok(names.indexOf('ילדים_הוקי_נעליים') !== -1, eq + ': kids drill lost, got ' + names.join(','));
-  });
+test("kids + dumbbells or band still gets the kids drills (audience before equipment)", function () {
+	// a kids drill that needs no equipment, so a dumbbell or band plan can use it
+	TH.setCatalog(
+		Object.assign({}, FIXTURE, {
+			ילדים_הוקי_נעליים: {
+				id: "ילדים_הוקי_נעליים",
+				he: "ילדים הוקי נעליים",
+				muscles: ["legs", "core"],
+				equipment: ["none"],
+				level: "beginner",
+				file: "ילדים הוקי נעליים.mp4",
+			},
+		}),
+	);
+	["dumbbells", "band"].forEach(function (eq) {
+		const program = TH.generateWorkoutProgram(
+			{
+				age: 12,
+				fitnessLevel: "beginner",
+				goals: ["general_fitness"],
+				availableEquipment: [eq],
+				targetMuscles: [],
+				injuries: [],
+				previousWorkouts: 8,
+				audience: "kids",
+				preferCatalog: true,
+			},
+			1,
+			1,
+		);
+		const names = program.dailyWorkouts[0].exercises.map(function (ex) {
+			return ex.name;
+		});
+		assert.ok(
+			names.indexOf("ילדים_הוקי_נעליים") !== -1,
+			eq + ": kids drill lost, got " + names.join(","),
+		);
+	});
 });
 
-test('kids plans keep kids drills with every equipment choice on the real catalog', function () {
-  TH.setCatalog(catalog);
-  const kidsIds = new Set(TH.filterCatalog({ tag: 'kids' }).map(function (e) { return e.id; }));
-  ['dumbbells', 'band'].forEach(function (eq) {
-    let kids = 0;
-    ['full', 'legs', 'chest', 'back', 'core'].forEach(function (muscle) {
-      const program = TH.generateWorkoutProgram({
-        age: 12, fitnessLevel: 'beginner', goals: ['general_fitness'], availableEquipment: [eq],
-        targetMuscles: muscle === 'full' ? [] : [muscle], injuries: [], previousWorkouts: 8,
-        audience: 'kids', preferCatalog: true
-      }, 1, 1);
-      program.dailyWorkouts[0].exercises.forEach(function (ex) { if (kidsIds.has(ex.name)) kids += 1; });
-    });
-    assert.ok(kids > 0, eq + ': a kids plan with no kids drill at all');
-  });
+test("kids plans keep kids drills with every equipment choice on the real catalog", function () {
+	TH.setCatalog(catalog);
+	const kidsIds = new Set(
+		TH.filterCatalog({ tag: "kids" }).map(function (e) {
+			return e.id;
+		}),
+	);
+	["dumbbells", "band"].forEach(function (eq) {
+		let kids = 0;
+		["full", "legs", "chest", "back", "core"].forEach(function (muscle) {
+			const program = TH.generateWorkoutProgram(
+				{
+					age: 12,
+					fitnessLevel: "beginner",
+					goals: ["general_fitness"],
+					availableEquipment: [eq],
+					targetMuscles: muscle === "full" ? [] : [muscle],
+					injuries: [],
+					previousWorkouts: 8,
+					audience: "kids",
+					preferCatalog: true,
+				},
+				1,
+				1,
+			);
+			program.dailyWorkouts[0].exercises.forEach(function (ex) {
+				if (kidsIds.has(ex.name)) kids += 1;
+			});
+		});
+		assert.ok(kids > 0, eq + ": a kids plan with no kids drill at all");
+	});
+});
+
+test('library.html contains accessible guidance section id="library-spot-reduction-guidance"', function () {
+	const libraryHtml = fs.readFileSync(
+		path.join(__dirname, "..", "library.html"),
+		"utf8",
+	);
+	const sectionMatch = libraryHtml.match(
+		/<section\b[^>]*id=["']library-spot-reduction-guidance["'][^>]*>/i,
+	);
+	assert.ok(
+		sectionMatch,
+		'library.html must contain a section with id="library-spot-reduction-guidance"',
+	);
+	assert.match(
+		sectionMatch[0],
+		/\bclass=["'][^"']*\bcard\b[^"']*["']/i,
+		'guidance section must have class="card"',
+	);
+	assert.match(
+		sectionMatch[0],
+		/\brole=["']region["']/i,
+		'guidance section must have role="region"',
+	);
+	assert.match(
+		sectionMatch[0],
+		/\baria-labelledby=["']libraryGuidanceHeading["']/i,
+		'guidance section must have aria-labelledby="libraryGuidanceHeading"',
+	);
+	assert.match(
+		libraryHtml,
+		/<h2\b[^>]*id=["']libraryGuidanceHeading["'][^>]*>\s*מיקוד תרגילים ובחירת ציוד\s*<\/h2>/i,
+		'guidance section must have h2 heading with id="libraryGuidanceHeading" and text "מיקוד תרגילים ובחירת ציוד"',
+	);
+});
+
+test("library.html guidance clarifies resistance training purpose and equipment choice criteria", function () {
+	const libraryHtml = fs.readFileSync(
+		path.join(__dirname, "..", "library.html"),
+		"utf8",
+	);
+	assert.match(
+		libraryHtml,
+		/תרגילי ההתנגדות בספרייה מכוונים לחיזוק ובניית השריר המאומן ולא להורדת שומן מקומית מאזור מסוים/i,
+		"guidance must clarify resistance training builds muscle rather than local spot fat reduction",
+	);
+	assert.match(
+		libraryHtml,
+		/בחירת ציוד\s*\((?:מכונות,\s*משקולות,\s*גומיות או משקל גוף|[^)]+)\)\s*נקבעת לפי זמינות,\s*נוחות ושליטה ולא לפי תווית גוף/i,
+		"guidance must clarify equipment is chosen by availability, comfort, and control, not body label",
+	);
+});
+
+test("library.html guidance contains safety instructions for controlled technique and pain", function () {
+	const libraryHtml = fs.readFileSync(
+		path.join(__dirname, "..", "library.html"),
+		"utf8",
+	);
+	assert.match(
+		libraryHtml,
+		/יש לשמור על טכניקה מבוקרת ובמקרה של כאב חדש לעצור ולהתייעץ עם איש מקצוע/i,
+		"guidance must instruct keeping controlled technique and consulting a professional if new pain occurs",
+	);
 });
