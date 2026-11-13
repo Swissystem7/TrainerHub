@@ -320,3 +320,68 @@ test("buildSession keeps valid duration of 45 minutes and includes guidanceNote"
 	assert.equal(built.guidanceNote, expected);
 	assert.equal(built.workout.guidanceNote, expected);
 });
+
+test("buildSession returns full adaptationReport with all 8 fields and weekly volume budget", () => {
+	const built = Engine.buildSession(
+		{
+			duration: 30,
+			muscles: ["chest"],
+			equipment: ["none"],
+			level: "beginner",
+			goal: "בניית שריר",
+		},
+		CATALOG,
+	);
+	assert.ok(built.adaptationReport, "built should have adaptationReport");
+	assert.ok(
+		built.workout.adaptationReport,
+		"workout should have adaptationReport",
+	);
+
+	const report = built.adaptationReport;
+	const requiredFields = [
+		"goal",
+		"basedOn",
+		"todayFocus",
+		"personalAdaptation",
+		"howToProgress",
+		"howToMeasure",
+		"promiseLimits",
+		"whenToStop",
+	];
+
+	for (const field of requiredFields) {
+		assert.ok(report[field], `field ${field} must exist`);
+		assert.notEqual(
+			report[field],
+			"לא ידוע",
+			`field ${field} should have resolved value`,
+		);
+	}
+
+	assert.ok(report.weeklyVolumeBudget, "weeklyVolumeBudget must be present");
+	assert.equal(report.weeklyVolumeBudget.anchor, 10);
+	assert.ok(typeof report.weeklyVolumeBudget.chest.direct === "number");
+});
+
+test("buildSession adaptationReport calculates direct and indirect sets for built workout", () => {
+	const built = Engine.buildSession(
+		{
+			duration: 20,
+			muscles: ["chest"],
+			equipment: ["none"],
+			level: "intermediate",
+			goal: "שימור שריר בירידה בשומן",
+		},
+		CATALOG,
+	);
+	const budget = built.adaptationReport.weeklyVolumeBudget;
+	assert.ok(budget, "weeklyVolumeBudget should exist");
+	assert.ok(budget.chest.direct > 0, "chest direct sets should be > 0");
+	assert.ok(
+		budget.triceps.indirect > 0,
+		"triceps indirect sets should be > 0 from chest exercises",
+	);
+	assert.equal(budget.triceps.indirect, 0.5 * budget.chest.direct);
+	assert.ok(built.adaptationReport.promiseLimits.includes("שומן"));
+});

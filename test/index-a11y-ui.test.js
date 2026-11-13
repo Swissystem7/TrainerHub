@@ -66,7 +66,12 @@ function makeElement(id) {
     set innerHTML(v) { this._innerHTML = String(v); },
     hidden: false,
     tabIndex: 0,
-    addEventListener: function (type, fn) { (handlers[type] = handlers[type] || []).push(fn); },
+    children: [],
+    appendChild: function (child) { this.children.push(child); return child; },
+    addEventListener: function (type, fn) {
+      if (!handlers[type]) handlers[type] = [];
+      handlers[type].push(fn);
+    },
     fire: function (type, ev) { (handlers[type] || []).forEach(function (fn) { fn(ev || { target: el, preventDefault: function () {} }); }); },
     click: function () { this.fire('click'); },
     getAttribute: function (k) { return attrs[k] != null ? attrs[k] : null; },
@@ -91,6 +96,9 @@ function createHarness() {
     getElementById: function (id) {
       if (!elements[id]) elements[id] = makeElement(id);
       return elements[id];
+    },
+    createElement: function (tag) {
+      return makeElement(tag);
     },
     querySelectorAll: function () { return []; }
   };

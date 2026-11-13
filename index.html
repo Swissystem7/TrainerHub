@@ -21,10 +21,16 @@
     .top p { color: var(--th-on-hero); opacity: .85; font-size: 1rem; line-height: 1.6; max-width: 38rem; margin: 0; }
     .top .th-btn { background: var(--th-orange); color: var(--th-on-orange); min-height: 56px; font-size: 17px; font-weight: 800; padding: 0 24px; }
     form.prompt { margin: 20px 0 12px; }
-    .input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
-    .input-grid label { margin-top: 0; }
-    .field-help { color: var(--muted); font-size: 13px; line-height: 1.4; margin: 8px 0 0; }
     label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
+    .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 12px; }
+    .input-grid label { margin-top: 0; }
+    .adaptation-card { margin-top: 16px; border-top: 2px solid var(--th-orange, #f97316); }
+    .adaptation-fields { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+    .adaptation-row { margin: 0; line-height: 1.5; font-size: 14px; }
+    .adaptation-row strong { color: var(--ink); }
+    .volume-budget-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .volume-budget-list { list-style: disc; margin: 8px 24px; padding: 0; font-size: 14px; line-height: 1.6; }
+    .field-help { color: var(--muted); font-size: 13px; line-height: 1.4; margin: 8px 0 0; }
     #prompt, #ingestText {
       width: 100%; min-height: 110px; resize: vertical;
       padding: 16px; border-radius: var(--th-r-md); border: 1.5px solid var(--line);
@@ -156,6 +162,14 @@
           <label for="participantsInput">כמות חניכים</label>
           <input id="participantsInput" name="participants" type="number" min="1" max="500" step="1" value="1" inputmode="numeric">
         </div>
+        <div>
+          <label for="goalSelect">מטרת אימון</label>
+          <select id="goalSelect" name="goal">
+            <option value="בניית שריר">בניית שריר</option>
+            <option value="שימור שריר בירידה בשומן">שימור שריר בירידה בשומן</option>
+            <option value="כוח ותפקוד">כוח ותפקוד</option>
+          </select>
+        </div>
       </div>
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
@@ -219,6 +233,7 @@
 <script src="./js/infer.js"></script>
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
+<script src="./js/adaptation-engine.js"></script>
 <script src="./js/session-builder.js"></script>
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
@@ -373,6 +388,104 @@
       '</article>';
 
     bindWorkoutActions(w);
+    var report = built.adaptationReport || (w && w.adaptationReport);
+    if (!report && typeof THAdaptation !== 'undefined') {
+      report = THAdaptation.buildAdaptationReport(built.request || {}, w);
+    }
+    if (report) {
+      renderAdaptationCard(report, box);
+    }
+  }
+
+  function renderAdaptationCard(report, container) {
+    if (!report || !container || typeof document.createElement !== 'function' || typeof container.appendChild !== 'function') return;
+
+    const card = document.createElement('section');
+    card.className = 'card adaptation-card';
+    card.id = 'adaptationCard';
+    card.setAttribute('role', 'region');
+    card.setAttribute('aria-label', 'התאמה להרכב הגוף וליכולת שלך');
+
+    const heading = document.createElement('h2');
+    heading.textContent = 'התאמה להרכב הגוף וליכולת שלך';
+    card.appendChild(heading);
+
+    const fieldMap = [
+      { key: 'goal', label: 'מטרת התאמה' },
+      { key: 'basedOn', label: 'מבוסס על' },
+      { key: 'todayFocus', label: 'דגש להיום' },
+      { key: 'personalAdaptation', label: 'התאמה אישית' },
+      { key: 'howToProgress', label: 'איך להתקדם' },
+      { key: 'howToMeasure', label: 'איך למדוד' },
+      { key: 'promiseLimits', label: 'גבולות הבטחה' },
+      { key: 'whenToStop', label: 'מתי לעצור' }
+    ];
+
+    const list = document.createElement('div');
+    list.className = 'adaptation-fields';
+
+    const tpl = report.template || report;
+    for (const item of fieldMap) {
+      const val = tpl[item.key] || report[item.key] || 'לא ידוע';
+      const row = document.createElement('p');
+      row.className = 'adaptation-row';
+      row.setAttribute('data-field', item.key);
+
+      const strong = document.createElement('strong');
+      strong.textContent = `${item.label}: `;
+      row.appendChild(strong);
+
+      const span = document.createElement('span');
+      span.textContent = val;
+      row.appendChild(span);
+
+      list.appendChild(row);
+    }
+    card.appendChild(list);
+
+    const budget = report.weeklyVolumeBudget || report.volumeBudget;
+    if (budget) {
+      const budgetSection = document.createElement('div');
+      budgetSection.className = 'volume-budget-section';
+
+      const budgetHeading = document.createElement('h3');
+      budgetHeading.textContent = 'אומדן נפח שבועי מול עוגן 10 סטים';
+      budgetSection.appendChild(budgetHeading);
+
+      const budgetList = document.createElement('ul');
+      budgetList.className = 'volume-budget-list';
+
+      const musclesMap = [
+        { id: 'chest', label: 'חזה' },
+        { id: 'back', label: 'גב' },
+        { id: 'legs', label: 'רגליים' },
+        { id: 'shoulders', label: 'כתפיים' },
+        { id: 'arms', label: 'זרועות' },
+        { id: 'biceps', label: 'דו-ראשי' },
+        { id: 'triceps', label: 'תלת-ראשי' },
+        { id: 'core', label: 'ליבה ובטן' }
+      ];
+
+      const byMuscle = budget.byMuscle || budget.muscles || budget;
+      for (const mInfo of musclesMap) {
+        const mData = byMuscle[mInfo.id];
+        if (!mData) continue;
+        const direct = typeof mData.direct === 'number' ? mData.direct : 0;
+        const indirect = typeof mData.indirect === 'number' ? mData.indirect : 0;
+        const total = typeof mData.total === 'number' ? mData.total : direct + indirect;
+        const anchor = typeof mData.anchor === 'number' ? mData.anchor : 10;
+        const status = mData.status || (total >= anchor ? 'עמד ביעד' : 'בבנייה');
+
+        const li = document.createElement('li');
+        li.setAttribute('data-muscle', mInfo.id);
+        li.textContent = `${mInfo.label}: ${direct} ישירים + ${indirect} עקיפים = ${total} סטים (עוגן שבועי: ${anchor}) — ${status}`;
+        budgetList.appendChild(li);
+      }
+      budgetSection.appendChild(budgetList);
+      card.appendChild(budgetSection);
+    }
+
+    container.appendChild(card);
   }
 
   function renderIngest(ingested) {
@@ -419,6 +532,11 @@
     var parsed = THPrompt.parsePrompt(text);
     if (parsed.durationSpecified) $('durationInput').value = Math.max(5, Math.min(180, parsed.duration));
     if (parsed.participantsSpecified) $('participantsInput').value = Math.max(1, Math.min(500, parsed.participants));
+    if (parsed.goal && $('goalSelect')) {
+      if (parsed.goal === 'strength' || /כוח/.test(text)) $('goalSelect').value = 'כוח ותפקוד';
+      else if (/שימור|שומן|חיטוב/.test(text)) $('goalSelect').value = 'שימור שריר בירידה בשומן';
+      else if (/שריר|מסה|היפרטרופיה/.test(text)) $('goalSelect').value = 'בניית שריר';
+    }
   }
 
   function run(e) {
@@ -431,6 +549,8 @@
     req.participantsSpecified = true;
     var equipment = $('equipmentInput').value;
     if (equipment !== 'auto') req.equipment = [equipment];
+    var goalVal = $('goalSelect') ? $('goalSelect').value : null;
+    if (goalVal) req.goal = goalVal;
     render(THEngine.buildSession(req));
   }
 
