@@ -8,10 +8,12 @@
 	var Infer = root.THInfer;
 	var Prompt = root.THPrompt;
 	var Analyzer = root.THAnalyzer;
+	var Adaptation = root.THAdaptation || root.THAdaptationEngine;
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 		Prompt = require("./prompt-parser.js");
 		Analyzer = require("./analyzer.js");
+		Adaptation = require("./adaptation-engine.js");
 	}
 
 	var RX = {
@@ -61,6 +63,9 @@
 
 	function prescription(req) {
 		if (req.goal && RX[req.goal]) return RX[req.goal];
+		if (req.goal === "כוח ותפקוד") return RX.strength;
+		if (req.goal === "שימור שריר בירידה בשומן") return RX.endurance;
+		if (req.goal === "בניית שריר") return RX.hypertrophy;
 		if (coreOnly(req)) return RX.core;
 		return RX.hypertrophy;
 	}
@@ -597,6 +602,7 @@
 		var rx = prescription(req);
 		var need = wantedCount(req.duration, rx);
 		var relax = { muscle: false, equipment: false, level: false };
+		var emptyAdaptationReport = null;
 		// The designated warm-up clip belongs to the Warm-up phase only. Without
 		// this it scored into the Main phase of full-body / unfocused prompts as
 		// 3 sets x 8-12 reps of "warm-up", and the Warm-up phase came out empty.
@@ -642,6 +648,14 @@
 		var relaxed = relax.muscle || relax.equipment || relax.level;
 		var satisfied = !relaxed && picked.length >= Math.min(3, need);
 		if (picked.length === 0) {
+			emptyAdaptationReport =
+				Adaptation && typeof Adaptation.buildAdaptationReport === "function"
+					? Adaptation.buildAdaptationReport(
+							opts.profile || req,
+							null,
+							opts.weeklySessions,
+						)
+					: null;
 			return {
 				request: req,
 				satisfied: false,
@@ -652,6 +666,7 @@
 				explanation: null,
 				analysis: null,
 				guidanceNote: GUIDANCE_NOTE,
+				adaptationReport: emptyAdaptationReport,
 			};
 		}
 
@@ -698,7 +713,7 @@
 				: req.equipment || []
 			).map((e) => Infer.EQ_LABELS[e] || e),
 			intensity:
-				req.goal === "strength"
+				req.goal === "strength" || req.goal === "כוח ותפקוד"
 					? "high"
 					: req.level === "beginner"
 						? "low"
@@ -713,6 +728,16 @@
 			source: "prompt-engine",
 		};
 		workout.group_plan = groupPlan(workout.participants, mainEx.length);
+
+		var adaptationReport =
+			Adaptation && typeof Adaptation.buildAdaptationReport === "function"
+				? Adaptation.buildAdaptationReport(
+						opts.profile || req,
+						workout,
+						opts.weeklySessions,
+					)
+				: null;
+		workout.adaptationReport = adaptationReport;
 
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
@@ -742,6 +767,7 @@
 			explanation: explanation,
 			analysis: analysis,
 			guidanceNote: GUIDANCE_NOTE,
+			adaptationReport: adaptationReport,
 		};
 	}
 

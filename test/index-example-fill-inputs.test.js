@@ -50,6 +50,8 @@ function el(id, attrs) {
     hidden: false,
     tabIndex: 0,
     listeners: {},
+    children: [],
+    appendChild: function (child) { this.children.push(child); return child; },
     addEventListener: function (type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); },
     getAttribute: function (n) { return this.attrs[n] == null ? null : this.attrs[n]; },
     setAttribute: function (n, v) { this.attrs[n] = String(v); },
@@ -81,6 +83,7 @@ function loadPage(extraExamples) {
   const tabs = ['prompt', 'ingest', 'seg'].map(function (k) { return $('tab-' + k); });
   const document = {
     getElementById: $,
+    createElement: function (tag) { return el(tag); },
     querySelectorAll: function (sel) {
       if (sel === '[data-fill]') return examples;
       if (sel === '[role="tab"]') return tabs;
