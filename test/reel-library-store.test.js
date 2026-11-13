@@ -87,3 +87,91 @@ test('working localStorage round-trips', () => {
   assert.strictEqual(loaded.length, 1);
   assert.strictEqual(loaded[0].id, 'w1');
 });
+
+test('require: no TH and no localStorage uses the memory fallback', () => {
+  const reels = require('../js/reel-library.js');
+  const oldTH = Object.getOwnPropertyDescriptor(globalThis, 'TH');
+  const oldLS = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  try {
+    delete globalThis.TH;
+    delete globalThis.localStorage;
+    assert.ok(Array.isArray(reels.loadWorkouts()));
+    assert.doesNotThrow(() => reels.saveDraft(reels.emptyDraft()));
+    assert.doesNotThrow(() => reels.clearDraft());
+  } finally {
+    if (oldTH) Object.defineProperty(globalThis, 'TH', oldTH);
+    if (oldLS) Object.defineProperty(globalThis, 'localStorage', oldLS);
+  }
+});
+
+test('require: globalThis.TH.store is used', () => {
+  const reels = require('../js/reel-library.js');
+  const oldTH = Object.getOwnPropertyDescriptor(globalThis, 'TH');
+  const calls = [];
+  try {
+    globalThis.TH = {
+      store: {
+        get(k, f) {
+          calls.push(k);
+          return [];
+        },
+        set() {
+          return true;
+        }
+      }
+    };
+    reels.loadWorkouts();
+    assert.ok(calls.includes('trainerhub_reel_workouts'));
+  } finally {
+    if (oldTH) Object.defineProperty(globalThis, 'TH', oldTH);
+    else delete globalThis.TH;
+  }
+});
+
+test('require: a localStorage getter that throws falls back', () => {
+  const reels = require('../js/reel-library.js');
+  const oldLS = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  try {
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      get() { throw new Error('denied'); }
+    });
+    assert.strictEqual(JSON.stringify(reels.loadWorkouts()), '[]');
+  } finally {
+    if (oldLS) Object.defineProperty(globalThis, 'localStorage', oldLS);
+    else delete globalThis.localStorage;
+  }
+});
+
+test('require: working localStorage round-trips', () => {
+  const reels = require('../js/reel-library.js');
+  const oldLS = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  const m = new Map();
+  try {
+    globalThis.localStorage = {
+      getItem(k) { return m.has(k) ? m.get(k) : null; },
+      setItem(k, v) { m.set(k, String(v)); }
+    };
+    reels.saveWorkouts([{ id: 'w2', exercises: [] }]);
+    assert.strictEqual(reels.loadWorkouts()[0].id, 'w2');
+  } finally {
+    if (oldLS) Object.defineProperty(globalThis, 'localStorage', oldLS);
+    else delete globalThis.localStorage;
+  }
+});
+
+test('require: throwing getItem/setItem fall back', () => {
+  const reels = require('../js/reel-library.js');
+  const oldLS = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  try {
+    globalThis.localStorage = {
+      getItem() { throw new Error('x'); },
+      setItem() { throw new Error('x'); }
+    };
+    assert.strictEqual(JSON.stringify(reels.loadWorkouts()), '[]');
+    assert.doesNotThrow(() => reels.saveWorkouts([]));
+  } finally {
+    if (oldLS) Object.defineProperty(globalThis, 'localStorage', oldLS);
+    else delete globalThis.localStorage;
+  }
+});
