@@ -170,13 +170,17 @@
     .pill.ok { color: var(--th-teal-ink); background: var(--th-teal-soft); }
     .steps { margin: 0; padding-inline-start: 1.15rem; color: var(--muted); font-size: .82rem; line-height: 1.5; }
     .actions, .builder-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-    .actions button, .actions a.reel, .builder-actions button {
+    .actions button, .actions a.reel, .actions a.play-live, .builder-actions button, .builder-actions a.play-live {
       flex: 1; min-width: 108px; min-height: 44px; margin: 0; padding: 10px 12px;
       border-radius: 14px; border: 0; background: var(--th-teal); color: var(--th-on-teal);
       font: inherit; font-weight: 700; text-align: center; text-decoration: none; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
     }
     .actions a.reel, .builder-actions button.ghost {
       background: var(--th-surface); color: var(--ink); border: 1.5px solid var(--line);
+    }
+    .actions a.play-live, .builder-actions a.play-live {
+      background: var(--th-teal); color: var(--th-on-teal);
     }
     .actions button[aria-pressed="true"] { background: var(--th-teal-soft); color: var(--ok); }
     .builder {
@@ -313,6 +317,7 @@
           <button type="button" class="th-btn" id="saveWorkout">שמור אימון</button>
           <button type="button" class="th-btn" id="useInWeekly">הצג בבונה השבועי</button>
           <button type="button" class="ghost" id="startWorkout">התחל אימון</button>
+          <a class="th-btn play-live" id="playLiveLink" href="./frontend/workout-mode.html">הפעל במצב אימון חי</a>
           <button type="button" class="ghost" id="clearDraft">נקה</button>
         </div>
         <h3>אימונים שמורים</h3>
@@ -368,6 +373,7 @@
 </main>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
+<script src="./js/live-media-panel.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
@@ -465,6 +471,9 @@
               '</div></div>' +
               '<div><label for="' + repsId + '">חזרות</label>' +
                 '<' + 'input id="' + repsId + '" data-reps="' + TH.esc(item.exerciseId) + '" type="text" value="' + TH.esc(item.reps || '') + '" placeholder="למשל 20"></div>' +
+            '</div>' +
+            '<div class="actions" style="margin-top:6px">' +
+              '<a class="play-live" href="./frontend/workout-mode.html" data-play-live="' + TH.esc(item.exerciseId) + '">הפעל במצב אימון חי</a>' +
             '</div>' +
           '</div></li>';
       }).join('');
@@ -573,6 +582,21 @@
       renderGrid();
       return;
     }
+    var playLink = e.target.closest('[data-play-live]');
+    if (playLink) {
+      var playId = playLink.getAttribute('data-play-live');
+      var chosenEx = null;
+      for (var p = 0; p < library.length; p++) {
+        if (library[p].id === playId) { chosenEx = library[p]; break; }
+      }
+      var exName = chosenEx ? THReels.displayName(chosenEx) : 'תרגיל';
+      var singleWorkout = THReels.draftToWorkout({
+        title: exName,
+        items: [{ exerciseId: playId, name_he: exName, sets: 3, reps: '10' }]
+      }, { title: exName });
+      TH.store.set(TH.KEYS.active, THReels.toPhasesWorkout(singleWorkout));
+      return;
+    }
     var btn = e.target.closest('[data-add]');
     if (!btn) return;
     addExerciseById(btn.getAttribute('data-add'));
@@ -603,6 +627,21 @@
   });
 
   $('draftList').addEventListener('click', function (e) {
+    var playLink = e.target.closest('[data-play-live]');
+    if (playLink) {
+      var playId = playLink.getAttribute('data-play-live');
+      var item = null;
+      for (var d = 0; d < draft.items.length; d++) {
+        if (draft.items[d].exerciseId === playId) { item = draft.items[d]; break; }
+      }
+      var exName = item ? THReels.displayName(item) : 'תרגיל';
+      var singleWorkout = THReels.draftToWorkout({
+        title: exName,
+        items: [{ exerciseId: playId, name_he: exName, sets: item ? item.sets || 3 : 3, reps: item ? item.reps || '10' : '10' }]
+      }, { title: exName });
+      TH.store.set(TH.KEYS.active, THReels.toPhasesWorkout(singleWorkout));
+      return;
+    }
     var remove = e.target.closest('[data-remove]');
     var move = e.target.closest('[data-move]');
     var step = e.target.closest('[data-step]');
@@ -701,6 +740,19 @@
     TH.store.set(TH.KEYS.active, THReels.toPhasesWorkout(workout));
     window.location.href = './frontend/workout-mode.html';
   });
+  var playLiveLink = $('playLiveLink');
+  if (playLiveLink) {
+    playLiveLink.addEventListener('click', function (e) {
+      if (!draft.items.length) {
+        setStatus('בחרו לפחות תרגיל אחד כדי להפעיל במצב אימון חי.');
+        e.preventDefault();
+        return;
+      }
+      persistDraft();
+      var workout = THReels.draftToWorkout(draft, { title: draft.title || 'אימון תרגילים' });
+      TH.store.set(TH.KEYS.active, THReels.toPhasesWorkout(workout));
+    });
+  }
 
   renderDraft();
   renderSaved();

@@ -145,6 +145,74 @@
     .ex-media-wrap { width: min(340px, 90vw); }
     .ex-media-segment, .ex-media-fallback { color: #9ca3af; font-size: 0.8rem; margin-top: 6px; }
 
+    /* Live Media Panel */
+    #liveMediaPanel {
+      width: min(340px, 90vw);
+      background: #12211E;
+      border: 1px solid #28423C;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 8px auto;
+      text-align: right;
+    }
+    .live-media-poster-wrap {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .live-media-poster {
+      width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+      background: #000;
+    }
+    .live-media-action-wrap {
+      margin: 8px 0;
+      display: flex;
+      justify-content: center;
+    }
+    .live-media-video-btn {
+      background: #00756A;
+      color: #fff;
+      border: 1px solid #2DD4BF;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      width: 100%;
+      min-height: 40px;
+    }
+    .live-media-video-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .live-media-cues {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+    .live-media-cues-title {
+      color: #7FE9D9;
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+    .live-media-cues-list {
+      padding-inline-start: 16px;
+      margin: 0;
+    }
+    .live-media-cue-item {
+      margin-bottom: 3px;
+    }
+    .live-media-safety {
+      font-size: 0.78rem;
+      color: #f87171;
+      margin-top: 4px;
+    }
+
     /* ── Controls ── */
     .controls {
       flex-shrink: 0;
@@ -263,6 +331,7 @@
 
 <!-- Stage (main exercise display) -->
 <main class="stage" id="stage">
+  <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה" style="display:none"></div>
   <div class="empty-state" id="emptyState" role="status" aria-live="polite">
     <div class="big" aria-hidden="true">🏋️</div>
     <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור למסך בניית האימון.</p>
@@ -338,6 +407,8 @@
 <script src="../js/core.js"></script>
 <script src="../js/journal-storage.js"></script>
 <script src="../js/live-workout.js"></script>
+<script src="../js/reel-library.js"></script>
+<script src="../js/live-media-panel.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -366,6 +437,13 @@ function loadWorkout() {
     if (fromHash && fromHash.workout && (fromHash.workout.phases || []).length) {
       linkMeta = { wa: fromHash.wa || '', name: fromHash.name || '', tid: fromHash.tid || '' };
       return fromHash.workout;
+    }
+  }
+  if (typeof location !== 'undefined') {
+    const params = new URLSearchParams(location.search);
+    const exId = params.get('exercise') || params.get('ex') || params.get('id');
+    if (exId && typeof TH !== 'undefined' && typeof TH.clipToWorkout === 'function') {
+      return TH.clipToWorkout({ id: exId });
     }
   }
   loadedFromActive = true;
@@ -902,11 +980,22 @@ function renderExercise(step) {
     <div class="exercise-name">${esc(step.name)}</div>
     ${setInfo}
     <div class="ex-media-slot" id="exMediaSlot">${videoHtml}</div>
+    <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה"></div>
     ${repsOrTime}
     ${typeof setLogMarkup === 'function' ? setLogMarkup(step) : ''}
     ${notes}
   `;
   announceStatus(step.name + (step.totalSets > 1 ? (', סט ' + step.set + ' מתוך ' + step.totalSets) : ''));
+
+  const livePanel = document.getElementById('liveMediaPanel');
+  if (livePanel && typeof LiveMediaPanel !== 'undefined' && typeof LiveMediaPanel.renderMediaPanel === 'function') {
+    const catalogData = (typeof THReels !== 'undefined' && THReels.catalog) ||
+      (typeof TH !== 'undefined' && (typeof TH.catalogList === 'function' ? TH.catalogList() : TH.catalog)) || null;
+    const media = LiveMediaPanel.resolveExerciseMedia(step, catalogData);
+    if (media) {
+      LiveMediaPanel.renderMediaPanel(livePanel, media);
+    }
+  }
 
   // Update done button label
   const btnDone = document.getElementById('btnDone');
@@ -1496,9 +1585,19 @@ function refreshStepMedia() {
   const step = steps[stepIdx];
   if (!step || step.type !== 'exercise') return;
   const slot = document.getElementById('exMediaSlot');
-  if (!slot) return;
-  const clip = TH.findExercise(step);
-  slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
+  if (slot) {
+    const clip = TH.findExercise(step);
+    slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
+  }
+  const livePanel = document.getElementById('liveMediaPanel');
+  if (livePanel && typeof LiveMediaPanel !== 'undefined' && typeof LiveMediaPanel.renderMediaPanel === 'function') {
+    const catalogData = (typeof THReels !== 'undefined' && THReels.catalog) ||
+      (typeof TH !== 'undefined' && (typeof TH.catalogList === 'function' ? TH.catalogList() : TH.catalog)) || null;
+    const media = LiveMediaPanel.resolveExerciseMedia(step, catalogData);
+    if (media) {
+      LiveMediaPanel.renderMediaPanel(livePanel, media);
+    }
+  }
 }
 window.addEventListener('offline', refreshStepMedia);
 window.addEventListener('online', refreshStepMedia);
