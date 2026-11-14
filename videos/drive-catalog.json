@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 452,
+    "count": 465,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 405
+    "driveReelCount": 418
   },
   "items": [
     {
@@ -9588,6 +9588,318 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DUoOdJUAaAk/",
       "poster": "assets/posters/DUoOdJUAaAk.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_ידיים_על_ספסל_וחישוק_מסתובב",
+      "driveId": "1Nb_-APWO-Co1EiFFQAysIAVh3MlZM20D",
+      "he": "שכיבות סמיכה עם ידיים על ספסל וחישוק מסתובב",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups with hula hoop spinning"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYauTtSCi8M/",
+      "poster": "assets/posters/DYauTtSCi8M.jpg"
+    },
+    {
+      "id": "drive_היפר_הפוך_על_ספסל_עם_חישוק_סביב_הרגליים",
+      "driveId": "1EZ9Mwwk0qMfmLksmqiRcnCvsMi7-1oRY",
+      "he": "היפר הפוך על ספסל עם חישוק סביב הרגליים",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "reverse hyperextension on bench with hula hoop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVeiT9qgR8_/",
+      "poster": "assets/posters/DVeiT9qgR8_.jpg"
+    },
+    {
+      "id": "drive_כפיפות_מרפקים_עם_משקולות_תוך_כדי_חישוק",
+      "driveId": "1sticrp0mIvEAk_IN2IhFH-r0xi5jGO-d",
+      "he": "כפיפות מרפקים עם משקולות תוך כדי חישוק",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "dumbbell curls while hula hooping"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdSqI4UzWYk/",
+      "poster": "assets/posters/DdSqI4UzWYk-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        10.0,
+        20.0
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_משקולות_תוך_כדי_חישוק",
+      "driveId": "1n3SfsA_xq8EaQVTQmU5NKEk37ldfkiBm",
+      "he": "פשיטת מרפקים מעל הראש עם משקולות תוך כדי חישוק",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "overhead dumbbell triceps extension while hula hooping"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdSqI4UzWYk/",
+      "poster": "assets/posters/DdSqI4UzWYk-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        28.3,
+        36.3
+      ]
+    },
+    {
+      "id": "drive_כפיפות_פטיש_לרוחב_הגוף_תוך_כדי_חישוק",
+      "driveId": "1J641Uz5sgvPJSGqriQMufLZ755f0lXNp",
+      "he": "כפיפות פטיש לרוחב הגוף תוך כדי חישוק",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "cross body hammer curls while hula hooping"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De8Uc_CheDU/",
+      "poster": "assets/posters/De8Uc_CheDU-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        30.0,
+        40.0
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_בשתי_ידיים_תוך_כדי_חישוק",
+      "driveId": "1T_z9nSZqI2q3j5NRFpqJoqNN9kJTWU8B",
+      "he": "פשיטת מרפקים מעל הראש בשתי ידיים תוך כדי חישוק",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "two hand overhead triceps extension while hula hooping"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De8Uc_CheDU/",
+      "poster": "assets/posters/De8Uc_CheDU-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        57.0,
+        65.0
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_שתי_משקולות_תוך_כדי_חישוק",
+      "driveId": "1vryKoihTPT69UmiRicmUEXnFD51xAV8S",
+      "he": "פשיטת מרפקים מעל הראש עם שתי משקולות תוך כדי חישוק",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "overhead triceps extension with two dumbbells while hula hooping"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Ddp12D7B3rK/",
+      "poster": "assets/posters/Ddp12D7B3rK-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        25.2,
+        37.5
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_משקולת_וחישוק_משוקלל",
+      "driveId": "1vUTHdMDWMJ5P-jiBMotWnFrB2nrYJbe-",
+      "he": "פשיטת מרפקים מעל הראש עם משקולת וחישוק משוקלל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "weighted hula hoop overhead triceps extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dblb_cbjB6y/",
+      "poster": "assets/posters/Dblb_cbjB6y-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        1.0,
+        21.0
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_משקולת_בחישוק_בסלון",
+      "driveId": "198utcqVcz_ZXYLzvlSHHfJa7ksHBkZmm",
+      "he": "פשיטת מרפקים מעל הראש עם משקולת בחישוק בסלון",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "hula hoop dumbbell overhead extension at home"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De_1JIAAt0U/",
+      "poster": "assets/posters/De_1JIAAt0U-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        1.0,
+        21.0
+      ]
+    },
+    {
+      "id": "drive_כפיפות_מרפקים_עם_כדור_סלאם",
+      "driveId": "1bi7CJri7Pble5YbL1sd9FazioIXHpvFs",
+      "he": "כפיפות מרפקים עם כדור סלאם",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "slam ball biceps curls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbWo9xeuShK/",
+      "poster": "assets/posters/DbWo9xeuShK-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        26.5
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_כדור_כוח_וצעד_צידי",
+      "driveId": "1HYWMBGXz4WTZDvgXOyor7jVxDR3MmG3G",
+      "he": "פשיטת מרפקים מעל הראש עם כדור כוח וצעד צידי",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "medicine ball overhead triceps extension lateral step"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DagghMDRZ-g/",
+      "poster": "assets/posters/DagghMDRZ-g-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.6,
+        7.8
+      ]
+    },
+    {
+      "id": "drive_מקבילים_נמוכים_עם_עזרת_רגליים",
+      "driveId": "16wE48c4twgUTCbV1WWfXHxiRN9oAipGp",
+      "he": "מקבילים נמוכים עם עזרת רגליים",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "assisted low parallel bar dips feet on floor"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DXo3b1aCWmK/",
+      "poster": "assets/posters/DXo3b1aCWmK.jpg"
+    },
+    {
+      "id": "drive_פלאנק_בשיפוע_על_המדרגות_עם_טפיחות_כתפיים_וברך_לאף",
+      "driveId": "1L8CIOlbIRnQj2bNa-lYlhdpZQL-cswVO",
+      "he": "פלאנק בשיפוע על המדרגות עם טפיחות כתפיים וברך לאף",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "incline plank on stairs shoulder taps knee to nose"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfsEZpMBDpj/",
+      "poster": "assets/posters/DfsEZpMBDpj-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.2,
+        7.3
+      ]
     }
   ]
 }
