@@ -110,6 +110,7 @@
     <div class="actions" role="toolbar" aria-label="פעולות מדדי מילואים">
       <button type="button" id="saveBtn" aria-label="שמור תוצאות מדדים">שמור תוצאות</button>
       <button type="button" class="ghost" id="evalBtn" aria-label="בדוק עובר או לא עובר בלי לשמור">בדיקה בלי שמירה</button>
+      <button type="button" class="ghost" id="shareReservesWhatsappBtn" aria-label="שתף סיכום מדדים בוואטסאפ">שתף בוואטסאפ</button>
       <button type="button" class="ghost" id="resetBtn" aria-label="נקה תוצאות שמורות">נקה שמורים</button>
     </div>
   </section>
@@ -191,6 +192,7 @@
 
 <script src="./js/core.js"></script>
 <script src="./js/reserves-track.js"></script>
+<script src="./js/whatsapp-share.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -647,6 +649,42 @@
   el('evalBtn').addEventListener('click', () => {
     renderStatus(R.evaluateAll(readInputs()));
   });
+  var shareReservesBtn = el('shareReservesWhatsappBtn');
+  if (shareReservesBtn) {
+    shareReservesBtn.addEventListener('click', () => {
+      var shareMod = window.THWhatsAppShare || window.TH || {};
+      var formatFn = shareMod.formatReservesResultText;
+      var buildUrlFn = shareMod.buildWhatsAppShareUrl;
+      var inputs;
+      var hasInputs;
+      var summary;
+      var text;
+      var url;
+      var opened = false;
+      var win;
+      if (!formatFn || !buildUrlFn) return;
+
+      inputs = readInputs();
+      hasInputs = Object.keys(inputs).some((k) => inputs[k] !== '');
+      summary = hasInputs && R.evaluateAll ? R.evaluateAll(inputs) : (R.currentSummary ? R.currentSummary() : null);
+      text = formatFn(summary);
+      if (!text) return;
+      url = buildUrlFn(text);
+      try {
+        if (url && typeof window.open === 'function') {
+          win = window.open(url, '_blank', 'noopener,noreferrer');
+          if (win) opened = true;
+        }
+      } catch (err) {
+        opened = false;
+      }
+      if (!opened) {
+        if (window.TH && typeof window.TH.copyOrShow === 'function') {
+          window.TH.copyOrShow(text, shareReservesBtn.parentNode);
+        }
+      }
+    });
+  }
   el('resetBtn').addEventListener('click', () => {
     R.clearResults();
     R.tests().forEach((t) => {
