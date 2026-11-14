@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 284,
+    "count": 292,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 237
+    "driveReelCount": 245
   },
   "items": [
     {
@@ -5617,6 +5617,169 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dc6O7EcxNOV/",
       "poster": "assets/posters/Dc6O7EcxNOV.jpg"
+    },
+    {
+      "id": "drive_סקוואט_עם_חישוק_מוחזק_קדימה",
+      "driveId": "1Ki7pYNm5Rp9My_Q67C1RywrRQfpx-K1P",
+      "he": "סקוואט עם חישוק מוחזק קדימה",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "weighted hoop squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DSeQ9R3iOFS/",
+      "poster": "assets/posters/DSeQ9R3iOFS.jpg"
+    },
+    {
+      "id": "drive_זחילת_דוב_מוגבהת_בסולם_קואורדינציה",
+      "driveId": "1i6roBb9ykNJ0n7gLDxOgaeHMjTTrMxxK",
+      "he": "זחילת דוב מוגבהת בסולם קואורדינציה",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "elevated bear crawl agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcCCsiWPMYn/",
+      "poster": "assets/posters/DcCCsiWPMYn.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בתזוזה_לאורך_סולם_קואורדינציה",
+      "driveId": "1kZ5MI-yW-li9wIwN5trMALCTaVtvhVph",
+      "he": "שכיבות סמיכה בתזוזה לאורך סולם קואורדינציה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "lateral shuffle push ups agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DDUTZ7iM5HL/",
+      "poster": "assets/posters/DDUTZ7iM5HL.jpg"
+    },
+    {
+      "id": "drive_כפיפת_באייזיאן_בכבל_ביד_אחת",
+      "driveId": "1Acs_tpZlW65fosCsjIzqDyduXkGPvLAb",
+      "he": "כפיפת באייזיאן בכבל ביד אחת",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "single arm bayesian cable curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbnrxhEthLB/",
+      "poster": "assets/posters/DbnrxhEthLB.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_בכבל_תחתון_בישיבה",
+      "driveId": "1nX6TKUe7dIxJCShETqzgNJZ5RUrQlgJN",
+      "he": "כפיפת מרפקים בכבל תחתון בישיבה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "seated low cable curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZAydnxJIMY/",
+      "poster": "assets/posters/DZAydnxJIMY.jpg"
+    },
+    {
+      "id": "drive_קרוסאובר_בכבלים_בעמידה",
+      "driveId": "1g2wN27E26-TEMa6cyl3CmESC6kNljyq3",
+      "he": "קרוסאובר בכבלים בעמידה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "standing cable crossover"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DSWSfx1Cp72/",
+      "poster": "assets/posters/DSWSfx1Cp72.jpg"
+    },
+    {
+      "id": "drive_קרוסאובר_בכבל_בכריעה",
+      "driveId": "1ViZCOABQ9VSMZunEDTmxEZYcK9ztkGFq",
+      "he": "קרוסאובר בכבל בכריעה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kneeling cable crossover"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DINiIDSM1r4/",
+      "poster": "assets/posters/DINiIDSM1r4.jpg"
+    },
+    {
+      "id": "drive_חטיבת_עץ_בכבל_בצעד_צד",
+      "driveId": "1lf2aAvlzdwgi944fE-1cNCBcvpKNam1V",
+      "he": "חטיבת עץ בכבל בצעד צד",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "lateral lunge cable woodchop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DN0jXsR4rhO/",
+      "poster": "assets/posters/DN0jXsR4rhO.jpg"
     }
   ]
 }
