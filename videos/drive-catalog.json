@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 334,
+    "count": 339,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 287
+    "driveReelCount": 292
   },
   "items": [
     {
@@ -6647,6 +6647,107 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcZFnGeMmR3/",
       "poster": "assets/posters/DcZFnGeMmR3.jpg"
+    },
+    {
+      "id": "drive_כפיפות_בטן_בכבל_בכריעה_מול_מכונה",
+      "driveId": "1eDX7jbVN2H5TDHpOKCg7_Fx_CmzZpv9v",
+      "he": "כפיפות בטן בכבל בכריעה מול מכונה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "kneeling cable crunch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DXc7FxeIzR5/",
+      "poster": "assets/posters/DXc7FxeIzR5.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רגליים_חד-רגלית_במכונת_לחיצה_משופעת",
+      "driveId": "1JDkKS9EpTh0xIm6eaBKdp17OZEDFqTWG",
+      "he": "לחיצת רגליים חד-רגלית במכונת לחיצה משופעת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "single leg leg press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdJoHoxz7OL/",
+      "poster": "assets/posters/DdJoHoxz7OL.jpg"
+    },
+    {
+      "id": "drive_ישיבה_על_קיר_עם_הסבר",
+      "driveId": "1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G",
+      "he": "ישיבה על קיר עם הסבר",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall sit hold explained"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfsP2ihhceW/",
+      "poster": "assets/posters/DfsP2ihhceW.jpg"
+    },
+    {
+      "id": "drive_החזקת_ישיבה_על_קיר",
+      "driveId": "1Sq3gAoO8_Wucvdx3nbDpbY6uAnwd_45u",
+      "he": "החזקת ישיבה על קיר",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall sit isometric hold"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfFgDc_MicM/",
+      "poster": "assets/posters/DfFgDc_MicM.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_צמודות_בקיר",
+      "driveId": "1TW0Gk5nWnUkIlDuErE4xra9MNwcORM_Z",
+      "he": "שכיבות סמיכה צמודות בקיר",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "close grip wall push up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DChKPJsJDUs/",
+      "poster": "assets/posters/DChKPJsJDUs.jpg"
     }
   ]
 }
