@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
   <meta name="description" content="כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה.">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>TrainerHub | בנה אימון</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,6 +114,10 @@
 </nav>
 <div class="th-banner">
   האימון נבנה בדפדפן מהמאגר האמיתי — בלי שרת, בלי מפתח, בלי המתנה. זה לא מבטיח תוצאה גופנית.
+</div>
+<div id="pwa-update-notice" class="th-banner" role="alert" aria-live="polite" style="display:none;">
+  <span>גרסה חדשה זמינה.</span>
+  <button type="button" id="pwa-refresh-btn" class="th-btn" style="min-height:32px;padding:2px 10px;font-size:13px;margin-inline-start:8px;cursor:pointer;">רענון</button>
 </div>
 <main class="wrap">
   <header class="top">
@@ -719,6 +724,43 @@
       run();
     }
   });
+
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        const showUpdateNotice = () => {
+          const banner = document.getElementById('pwa-update-notice');
+          if (banner) banner.style.display = 'block';
+        };
+
+        if (reg.waiting) {
+          showUpdateNotice();
+        }
+
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateNotice();
+            }
+          });
+        });
+
+        const refreshBtn = document.getElementById('pwa-refresh-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            if (reg.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+          });
+        }
+      }).catch((err) => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
 })();
 </script>
 <script src="./js/th-nav.js"></script>
