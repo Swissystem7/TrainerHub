@@ -9,11 +9,17 @@
 	var Prompt = root.THPrompt;
 	var Analyzer = root.THAnalyzer;
 	var Adaptation = root.THAdaptation || root.THAdaptationEngine;
+	var Progression = root.THProgression || root.THProgressionEngine;
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 		Prompt = require("./prompt-parser.js");
 		Analyzer = require("./analyzer.js");
 		Adaptation = require("./adaptation-engine.js");
+		try {
+			Progression = require("./progression-engine.js");
+		} catch (_e) {
+			Progression = root.THProgression || root.THProgressionEngine;
+		}
 	}
 
 	var RX = {
@@ -667,6 +673,7 @@
 				analysis: null,
 				guidanceNote: GUIDANCE_NOTE,
 				adaptationReport: emptyAdaptationReport,
+				progressionHints: [],
 			};
 		}
 
@@ -739,6 +746,55 @@
 				: null;
 		workout.adaptationReport = adaptationReport;
 
+		const rawHistory =
+			opts.sessions ||
+			opts.history ||
+			opts.weeklySessions ||
+			(opts.profile &&
+				(opts.profile.sessions || opts.profile.logs || opts.profile.history)) ||
+			[];
+		const progressionHints = [];
+		if (
+			Progression &&
+			typeof Progression.analyzeExerciseHistory === "function" &&
+			Array.isArray(rawHistory) &&
+			rawHistory.length > 0
+		) {
+			for (let hIdx = 0; hIdx < mainEx.length; hIdx++) {
+				const targetEx = mainEx[hIdx];
+				const exHistory = Progression.analyzeExerciseHistory(
+					rawHistory,
+					targetEx.id,
+				);
+				const targetRange = targetEx.reps || rx.reps || "8-12";
+				const recommendation = Progression.recommendNextLoad(
+					exHistory,
+					targetRange,
+				);
+				progressionHints.push(
+					Object.assign(
+						{
+							exerciseId: targetEx.id,
+							exerciseName: targetEx.name || targetEx.id,
+						},
+						recommendation,
+					),
+				);
+			}
+			progressionHints.byExercise = {};
+			for (let pIdx = 0; pIdx < progressionHints.length; pIdx++) {
+				const hintItem = progressionHints[pIdx];
+				if (hintItem?.exerciseId) {
+					progressionHints.byExercise[hintItem.exerciseId] = hintItem;
+				}
+			}
+			if (typeof Progression.computeWeeklyTrend === "function") {
+				progressionHints.weeklyTrend =
+					Progression.computeWeeklyTrend(rawHistory);
+			}
+		}
+		workout.progressionHints = progressionHints;
+
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
 		var reasons = picked.map((e) => ({
@@ -768,6 +824,7 @@
 			analysis: analysis,
 			guidanceNote: GUIDANCE_NOTE,
 			adaptationReport: adaptationReport,
+			progressionHints: progressionHints,
 		};
 	}
 

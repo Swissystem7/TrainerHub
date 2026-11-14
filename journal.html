@@ -233,6 +233,8 @@
     <p class="honest">3. במקרה של כאב חדש או פציעה יש לעצור ולהתייעץ עם איש מקצוע.</p>
   </section>
 
+  <section class="card" id="progression-trends-card" aria-labelledby="progressionTrendsHeading"></section>
+
   <section class="card" id="insights" role="region" aria-labelledby="insightsHeading">
     <h2 id="insightsHeading">תובנות מתאמן</h2>
     <label for="insClient">מתאמן</label>
@@ -263,6 +265,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/session-tracker.js"></script>
 <script src="./js/journal-storage.js"></script>
+<script src="./js/progression-engine.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -516,6 +519,158 @@
     return ST.createSession(plan);
   }
 
+  function renderProgressionTrends(selectedClient) {
+    var card = $('progression-trends-card');
+    if (!card || typeof document.createElement !== 'function' || typeof card.appendChild !== 'function') return;
+    card.textContent = '';
+
+    var h2 = document.createElement('h2');
+    h2.id = 'progressionTrendsHeading';
+    h2.textContent = 'מגמות והמלצות התקדמות';
+    card.appendChild(h2);
+
+    var PE = window.THProgressionEngine || window.THProgression;
+    var msg = null;
+    var emptyP = null;
+    var noteP = null;
+    var noExP = null;
+    var label1 = null;
+    var label2 = null;
+    var label3 = null;
+    if (!PE) {
+      msg = document.createElement('p');
+      msg.className = 'honest';
+      msg.textContent = 'מנוע ההתקדמות אינו זמין כעת.';
+      card.appendChild(msg);
+      return;
+    }
+
+    var c = selectedClient || insightsClient();
+    var entries = [];
+    var snap = null;
+    if (c) {
+      if (JS && typeof JS.getClientSnapshot === 'function') {
+        snap = JS.getClientSnapshot(c.id);
+        if (snap && Array.isArray(snap.entries)) entries = snap.entries;
+      }
+      if ((!entries || entries.length === 0) && Array.isArray(c.logs)) {
+        entries = c.logs;
+      }
+    } else if (JS && typeof JS.listEntries === 'function') {
+      entries = JS.listEntries();
+    }
+
+    if (!entries || entries.length === 0) {
+      emptyP = document.createElement('p');
+      emptyP.className = 'empty';
+      emptyP.setAttribute('role', 'status');
+      emptyP.textContent = 'אין עדיין נתוני ביצוע לחישוב מגמות והמלצות התקדמות. תעדו סטים או ייבאו קוד TH1 כדי לקבל המלצות.';
+      card.appendChild(emptyP);
+      return;
+    }
+
+    var trend = PE.computeWeeklyTrend(entries);
+    var statsBox = document.createElement('div');
+    statsBox.className = 'stats';
+
+    var stat1 = document.createElement('div');
+    stat1.className = 'stat';
+    var b1 = document.createElement('b');
+    b1.textContent = String(trend.weeklyVolume || trend.totalVolume || 0) + ' ק״ג';
+    stat1.appendChild(b1);
+    label1 = document.createElement('span');
+    label1.textContent = 'נפח שבועי';
+    stat1.appendChild(label1);
+    statsBox.appendChild(stat1);
+
+    var stat2 = document.createElement('div');
+    stat2.className = 'stat';
+    var b2 = document.createElement('b');
+    b2.textContent = String(trend.adherenceRate || 0) + '%';
+    stat2.appendChild(b2);
+    label2 = document.createElement('span');
+    label2.textContent = 'התמדה שבועית';
+    stat2.appendChild(label2);
+    statsBox.appendChild(stat2);
+
+    var stat3 = document.createElement('div');
+    stat3.className = 'stat';
+    var b3 = document.createElement('b');
+    var trendLabel = trend.trend === 'increasing' ? 'עלייה' : (trend.trend === 'decreasing' ? 'ירידה' : 'יציב');
+    b3.textContent = trendLabel;
+    stat3.appendChild(b3);
+    label3 = document.createElement('span');
+    label3.textContent = 'מגמת עומס';
+    stat3.appendChild(label3);
+    statsBox.appendChild(stat3);
+
+    card.appendChild(statsBox);
+
+    if (trend.message) {
+      noteP = document.createElement('p');
+      noteP.className = 'honest';
+      noteP.textContent = trend.message;
+      card.appendChild(noteP);
+    }
+
+    var h3 = document.createElement('h3');
+    h3.textContent = 'המלצות עומס לתרגילים שבוצעו';
+    card.appendChild(h3);
+
+    var exMap = {};
+    var i = 0;
+    var j = 0;
+    var eSets = null;
+    var eid = '';
+    for (i = 0; i < entries.length; i++) {
+      eSets = entries[i].sets;
+      if (Array.isArray(eSets)) {
+        for (j = 0; j < eSets.length; j++) {
+          eid = eSets[j].exerciseId || eSets[j].id;
+          if (eid) exMap[eid] = true;
+        }
+      }
+    }
+
+    var exIds = Object.keys(exMap);
+    if (exIds.length === 0) {
+      noExP = document.createElement('p');
+      noExP.className = 'honest';
+      noExP.textContent = 'לא תועדו תרגילים ספציפיים.';
+      card.appendChild(noExP);
+      return;
+    }
+
+    var ul = document.createElement('ul');
+    ul.setAttribute('data-role', 'progression-recommendations');
+    var k = 0;
+    var exerciseId = '';
+    var exHistory = null;
+    var recommendation = null;
+    var li = null;
+    var bEx = null;
+    var spanRec = null;
+    var actionHebrew = '';
+    for (k = 0; k < exIds.length; k++) {
+      exerciseId = exIds[k];
+      exHistory = PE.analyzeExerciseHistory(entries, exerciseId);
+      recommendation = PE.recommendNextLoad(exHistory, '8-12');
+      li = document.createElement('li');
+      bEx = document.createElement('b');
+      bEx.textContent = exerciseId + ': ';
+      li.appendChild(bEx);
+
+      spanRec = document.createElement('span');
+      actionHebrew = recommendation.action === 'increase'
+        ? 'העלאת עומס'
+        : (recommendation.action === 'decrease' ? 'הפחתת עומס' : 'שמירת עומס');
+      spanRec.textContent = actionHebrew + ' — ' + recommendation.message;
+      li.appendChild(spanRec);
+      ul.appendChild(li);
+    }
+    card.appendChild(ul);
+  }
+
   function renderInsights() {
     var sel = $('insClient');
     var prev = sel.value;
@@ -524,6 +679,7 @@
     }).join('');
     if (prev && clients.some(function (c) { return c.id === prev; })) sel.value = prev;
     var c = insightsClient();
+    renderProgressionTrends(c);
     $('insights').hidden = !c || !JS;
     if (!c || !JS) return;
     var d = TH.normalizeClientDetails(c);
