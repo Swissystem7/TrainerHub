@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 301,
+    "count": 334,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 254
+    "driveReelCount": 287
   },
   "items": [
     {
@@ -5963,6 +5963,690 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DSLUGyIk9CA/",
       "poster": "assets/posters/DSLUGyIk9CA.jpg"
+    },
+    {
+      "id": "drive_עליות_מתח_עם_כדורי_טניס_תלויים",
+      "driveId": "1fqbkzhMCLQQw8em_KEKlAa3cFIeSyHGb",
+      "he": "עליות מתח עם כדורי טניס תלויים",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "pull ups hanging tennis balls grip"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVCd08TDznc/",
+      "poster": "assets/posters/DVCd08TDznc.jpg"
+    },
+    {
+      "id": "drive_עליות_מתח_רצופות_של_ילד_בבית",
+      "driveId": "1iYeuyiSWb8Sid_YI1UgNbIY-UZA7Wihp",
+      "he": "עליות מתח רצופות של ילד בבית",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "kid consecutive pull ups at home"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DEsYPKvucBQ/",
+      "poster": "assets/posters/DEsYPKvucBQ.jpg"
+    },
+    {
+      "id": "drive_עליות_סנטר_בסיוע_גומייה_של_ילדה",
+      "driveId": "1ztcgRj0FZQ7Z4WbylY_nTXCiQ9heiI6l",
+      "he": "עליות סנטר בסיוע גומייה של ילדה",
+      "muscles": [
+        "biceps",
+        "back"
+      ],
+      "equipment": [
+        "bar",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "kid band assisted chin ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De5iILkiiL-/",
+      "poster": "assets/posters/De5iILkiiL-.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_מתחלפות_על_כדור_כוח",
+      "driveId": "14skrClnkAR7ybNKUYtE_rs3NakbvpIDA",
+      "he": "שכיבות סמיכה מתחלפות על כדור כוח",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "alternating medicine ball push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DRsB_LWjGX6/",
+      "poster": "assets/posters/DRsB_LWjGX6.jpg"
+    },
+    {
+      "id": "drive_פייק_פוש_אפ_עם_רגליים_על_כדור_פיזיו",
+      "driveId": "185uIzkeRa0Zai3ZHKOhetm0LVTB73H3r",
+      "he": "פייק פוש אפ עם רגליים על כדור פיזיו",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "pike push up feet on stability ball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DQaZ2NdDJlM/",
+      "poster": "assets/posters/DQaZ2NdDJlM.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פליומטריות_עם_גומייה",
+      "driveId": "1bWB1x3aco1MdtBWKL8-VbqM6dAC-5puY",
+      "he": "שכיבות סמיכה פליומטריות עם גומייה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "banded plyometric push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbFBVwiO5J-/",
+      "poster": "assets/posters/DbFBVwiO5J-.jpg"
+    },
+    {
+      "id": "drive_דדליפט_רומני_רגל_אחת_עם_גומייה",
+      "driveId": "1gTyCNVQIf4GDDlV6H8dnzV8bXaFegfTy",
+      "he": "דדליפט רומני רגל אחת עם גומייה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "banded single leg romanian deadlift"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DOtlXZSkaTH/",
+      "poster": "assets/posters/DOtlXZSkaTH.jpg"
+    },
+    {
+      "id": "drive_סקין_דה_קאט_מלא_על_מוט_מתח",
+      "driveId": "1roK3h1kOSGK957IqtmBPWZyiNmJnfH7Z",
+      "he": "סקין דה קאט מלא על מוט מתח",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "skin the cat pull up bar"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DclYeRtzdlI/",
+      "poster": "assets/posters/DclYeRtzdlI.jpg"
+    },
+    {
+      "id": "drive_סקין_דה_קאט_בתלייה_על_מוט",
+      "driveId": "1tLBbdtQBYldhFdG54QKLNRUh9_WqSNEu",
+      "he": "סקין דה קאט בתלייה על מוט",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "skin the cat hanging bar"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeVRqPcRsfi/",
+      "poster": "assets/posters/DeVRqPcRsfi.jpg"
+    },
+    {
+      "id": "drive_לחיצת_סקוויז_עם_משקולות_על_ספסל",
+      "driveId": "1pKEqOgjwLFFRcseWpmpyNY2uXVPPjsxn",
+      "he": "לחיצת סקוויז עם משקולות על ספסל",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "dumbbell squeeze press bench"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DWJo1h5jRC_/",
+      "poster": "assets/posters/DWJo1h5jRC_.jpg"
+    },
+    {
+      "id": "drive_לחיצת_חזה_ביד_אחת_עם_משקולת",
+      "driveId": "18Z6D5Dsgzy16bj8LXJBUuICeFqmHBGOx",
+      "he": "לחיצת חזה ביד אחת עם משקולת",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "single arm dumbbell bench press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De2ulfWsWsU/",
+      "poster": "assets/posters/De2ulfWsWsU.jpg"
+    },
+    {
+      "id": "drive_לחיצת_Z_עם_משקולות",
+      "driveId": "1gYvQeL74cjVEAd4hPYmsYZVwK6VlHRCF",
+      "he": "לחיצת Z עם משקולות",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "dumbbell Z press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Db37HekSpax/",
+      "poster": "assets/posters/Db37HekSpax.jpg"
+    },
+    {
+      "id": "drive_סקאל_קראשר_עם_משקולות_בשכיבה",
+      "driveId": "19IaipgOghLKZ5aEOJWInMu-W1jrAt3Y5",
+      "he": "סקאל קראשר עם משקולות בשכיבה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "dumbbell skull crusher"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DKDGYJeSood/",
+      "poster": "assets/posters/DKDGYJeSood.jpg"
+    },
+    {
+      "id": "drive_משיכת_מגבת_על_הרצפה_בשכיבה_על_הבטן",
+      "driveId": "17alfM02plOyPqbbrRk-oGjYldBnoETPk",
+      "he": "משיכת מגבת על הרצפה בשכיבה על הבטן",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "prone towel pull"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdOxeCZNX0L/",
+      "poster": "assets/posters/DdOxeCZNX0L.jpg"
+    },
+    {
+      "id": "drive_לחיצת_מוט_בספסל_בשיפוע_חיובי",
+      "driveId": "11iCRvziv8EWFAHxTdJA9AxROEXqKT2Tw",
+      "he": "לחיצת מוט בספסל בשיפוע חיובי",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "incline barbell bench press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYx4nQkxpKk/",
+      "poster": "assets/posters/DYx4nQkxpKk.jpg"
+    },
+    {
+      "id": "drive_פוש_פרס_על_לוח_איזון",
+      "driveId": "1Wi9zOxNt8RC8Q6XaOQMkv-7omwyXW3tU",
+      "he": "פוש פרס על לוח איזון",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "push press on balance board"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DGIen6kMPjh/",
+      "poster": "assets/posters/DGIen6kMPjh.jpg"
+    },
+    {
+      "id": "drive_ג'יי-אם_פרס_במכונת_סמית'",
+      "driveId": "1BsVO_Z0vb5w4Ufg1O-8WZ0LayDg-SgoP",
+      "he": "ג'יי-אם פרס במכונת סמית'",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "smith machine JM press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdTgTSbR9Gc/",
+      "poster": "assets/posters/DdTgTSbR9Gc.jpg"
+    },
+    {
+      "id": "drive_ג'יי-אם_פרס_עם_מוט_על_ספסל",
+      "driveId": "1umIH9QhXYT_ordjGRFeqLPyfd9BiCQsm",
+      "he": "ג'יי-אם פרס עם מוט על ספסל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "barbell JM press bench"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcTeRODIjwN/",
+      "poster": "assets/posters/DcTeRODIjwN.jpg"
+    },
+    {
+      "id": "drive_גובלט_סקוואט_עם_קטלבל",
+      "driveId": "12w-w0KeGQ28Dyzp8C3WqTzBEUxApOEVp",
+      "he": "גובלט סקוואט עם קטלבל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell goblet squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DTTGcifgn6Z/",
+      "poster": "assets/posters/DTTGcifgn6Z.jpg"
+    },
+    {
+      "id": "drive_לחיצת_קטלבל_מעל_הראש_בישיבה_על_הרצפה",
+      "driveId": "11vPqLacXHvjAcevXZuV7_ts2u1tgTBnF",
+      "he": "לחיצת קטלבל מעל הראש בישיבה על הרצפה",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "seated floor kettlebell overhead press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfIe8rVvsUv/",
+      "poster": "assets/posters/DfIe8rVvsUv.jpg"
+    },
+    {
+      "id": "drive_היפראקסטנציה_הפוכה_על_כדור_פיזיו_עם_כתוביות",
+      "driveId": "1VQ_MopzqFvmw9YzkMO3LPydPqazjX9yv",
+      "he": "היפראקסטנציה הפוכה על כדור פיזיו עם כתוביות",
+      "muscles": [
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "reverse hyperextension stability ball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DewjKZwTmGE/",
+      "poster": "assets/posters/DewjKZwTmGE.jpg"
+    },
+    {
+      "id": "drive_חתירה_עם_גומייה_בעמידת_מכרע",
+      "driveId": "1JTc9kBeQzkCCto20gblWK9yFxpuiYc7_",
+      "he": "חתירה עם גומייה בעמידת מכרע",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "split stance banded row"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdRYl9jwk2F/",
+      "poster": "assets/posters/DdRYl9jwk2F.jpg"
+    },
+    {
+      "id": "drive_הטחת_כדור_כוח_מעל_הראש",
+      "driveId": "1xNMuIRzVLsk4PUqX-51bxPhBN6DMoFOG",
+      "he": "הטחת כדור כוח מעל הראש",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "medicine ball overhead slam"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfbHOQxAUp-/",
+      "poster": "assets/posters/DfbHOQxAUp-.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_גומייה_על_מקבילונים",
+      "driveId": "1GhInbjcanTJsyC4tcGQ1Zh7Ucu2lPnVD",
+      "he": "שכיבות סמיכה עם גומייה על מקבילונים",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "banded push ups on parallettes"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbYYX2BoZQd/",
+      "poster": "assets/posters/DbYYX2BoZQd.jpg"
+    },
+    {
+      "id": "drive_הולה_הופ_במותניים_ליד_חלון",
+      "driveId": "1qKNJsQWLsqvfSPFjqyOI2miSTXMLdYmP",
+      "he": "הולה הופ במותניים ליד חלון",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hula hoop waist by window"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dch-n7txttB/",
+      "poster": "assets/posters/Dch-n7txttB.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_עם_גומייה_בגב_לקיר",
+      "driveId": "1Gj0JNANqYT9FCSd4ONhVNQEJsqhHw760",
+      "he": "כפיפת מרפקים עם גומייה בגב לקיר",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "wall",
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "banded curl back against wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DanwDjiI3ou/",
+      "poster": "assets/posters/DanwDjiI3ou.jpg"
+    },
+    {
+      "id": "drive_הליכת_פלאנק_צידית_בסולם_עם_משקולת",
+      "driveId": "1jRgHfOqdT6DNNN2UgpUQ8JBamYOF-BhU",
+      "he": "הליכת פלאנק צידית בסולם עם משקולת",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "weighted lateral plank walk agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dbx2o8YKSfq/",
+      "poster": "assets/posters/Dbx2o8YKSfq.jpg"
+    },
+    {
+      "id": "drive_סיבוב_חישוק_על_האמה",
+      "driveId": "1MRa99a0Q4Q3slqYxH-tCUVMdLfcawBEj",
+      "he": "סיבוב חישוק על האמה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "forearm hoop spin"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DaK_WlHRPZB/",
+      "poster": "assets/posters/DaK_WlHRPZB.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_במכונת_כומר",
+      "driveId": "1lLdgq1xuqskNPSmUgLa3lrKRpPW2TsRl",
+      "he": "כפיפת מרפקים במכונת כומר",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "preacher curl machine"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DUWbUWMEYP3/",
+      "poster": "assets/posters/DUWbUWMEYP3.jpg"
+    },
+    {
+      "id": "drive_הרחקה_צידית_בכבל_נמוך_ביד_אחת",
+      "driveId": "1UzOQ4vDmVfAqb2uDDcEJd1m9jt5CjeFU",
+      "he": "הרחקה צידית בכבל נמוך ביד אחת",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "single arm low cable lateral raise"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DMNLq3lTMGQ/",
+      "poster": "assets/posters/DMNLq3lTMGQ.jpg"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_בכבל_בעמידה",
+      "driveId": "1HBflmCgsi8_yrurFDLqm22KyGxwHS27r",
+      "he": "פשיטת מרפקים מעל הראש בכבל בעמידה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "standing overhead cable triceps extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdlcL88Jw77/",
+      "poster": "assets/posters/DdlcL88Jw77.jpg"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_בכבל_עם_גב_למכונה",
+      "driveId": "1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW",
+      "he": "פשיטת מרפקים מעל הראש בכבל עם גב למכונה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "overhead cable triceps extension facing away"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dfc2wBKRxEQ/",
+      "poster": "assets/posters/Dfc2wBKRxEQ.jpg"
+    },
+    {
+      "id": "drive_החלקות_ידיים_על_הקיר",
+      "driveId": "1ruBaY-B9Ci-i38slPQxTXmKn4K-lM2EL",
+      "he": "החלקות ידיים על הקיר",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "wall slides"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcZFnGeMmR3/",
+      "poster": "assets/posters/DcZFnGeMmR3.jpg"
     }
   ]
 }
