@@ -275,6 +275,13 @@
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
     });
+    var startLiveBtn = $('startLiveWorkoutBtn');
+    if (startLiveBtn) {
+      startLiveBtn.addEventListener('click', () => {
+        TH.store.set('trainerhub_active_workout', w);
+        location.href = './frontend/workout-mode.html';
+      });
+    }
     $('previewBtn').addEventListener('click', () => {
       location.href = TH.encodeLink(w, {});
     });
@@ -381,6 +388,7 @@
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
           '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
           '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
           '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
