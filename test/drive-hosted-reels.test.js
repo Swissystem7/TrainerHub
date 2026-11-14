@@ -33,8 +33,15 @@ test('each Drive-hosted reel has one Instagram code, one Drive file and a Hebrew
   REELS.forEach(function (e) {
     const m = e.sourceUrl.match(/^https:\/\/www\.instagram\.com\/reel\/([A-Za-z0-9_-]+)\/$/);
     assert.ok(m, e.id + ' sourceUrl');
-    assert.equal(codes.has(m[1]), false, 'duplicate reel ' + m[1]);
-    codes.add(m[1]);
+    // A trimmed single-exercise segment of a multi-exercise reel shares the reel
+    // code with its sibling segments; code + segment number stays unique.
+    const key = e.segment ? m[1] + '#' + e.segment : m[1];
+    if (e.segment) {
+      assert.ok(Number.isInteger(e.segment) && e.segment > 0, e.id + ' segment');
+      assert.ok(Array.isArray(e.segmentRange) && e.segmentRange.length === 2 && e.segmentRange[1] > e.segmentRange[0], e.id + ' segmentRange');
+    }
+    assert.equal(codes.has(key), false, 'duplicate reel ' + key);
+    codes.add(key);
     assert.equal(otherReelCodes.has(m[1]), false, m[1] + ' already in data/exercises.json');
     assert.equal(names.has(e.he), false, 'duplicate name ' + e.he);
     names.add(e.he);
@@ -49,7 +56,7 @@ test('each Drive-hosted reel has one Instagram code, one Drive file and a Hebrew
     const dv = driveVideos.filter(function (v) { return v.fileId === e.driveId; });
     assert.equal(dv.length, 1, e.id + ' missing from data/drive_videos.json');
     assert.equal(dv[0].folder, 'כושר/' + e.folder);
-    assert.equal(dv[0].name, e.he + ' - ' + m[1] + '.mp4');
+    assert.equal(dv[0].name, e.he + ' - ' + m[1] + (e.segment ? '-קטע' + e.segment : '') + '.mp4');
   });
 });
 

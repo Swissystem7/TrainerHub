@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 339,
+    "count": 361,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 292
+    "driveReelCount": 314
   },
   "items": [
     {
@@ -6748,6 +6748,570 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DChKPJsJDUs/",
       "poster": "assets/posters/DChKPJsJDUs.jpg"
+    },
+    {
+      "id": "drive_קפיצות_בשתי_רגליים_בין_חישוקים",
+      "driveId": "1Gwt-oh0WeCRsBLqOWFxUvJVjh9GUSUpL",
+      "he": "קפיצות בשתי רגליים בין חישוקים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "hoop hops in out"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJgxsgIyTij/",
+      "poster": "assets/posters/DJgxsgIyTij-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        2.2,
+        11.6
+      ]
+    },
+    {
+      "id": "drive_קרוסאובר_בכבלים_בהטיה_קדימה",
+      "driveId": "1ADIcs5arItIHU__Ci9hacTNr62LWJdqQ",
+      "he": "קרוסאובר בכבלים בהטיה קדימה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "cable crossover"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DRKNr5kEV_H/",
+      "poster": "assets/posters/DRKNr5kEV_H-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        3.8
+      ]
+    },
+    {
+      "id": "drive_פרפר_בכבלים_בישיבה",
+      "driveId": "10HKIr5wciviC1KrDDv7L1aNwg5ov4-OY",
+      "he": "פרפר בכבלים בישיבה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "seated cable fly"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DY7NW9Syy9d/",
+      "poster": "assets/posters/DY7NW9Syy9d-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        17.0,
+        21.0
+      ]
+    },
+    {
+      "id": "drive_הליכת_קיר_עד_עמידת_ידיים",
+      "driveId": "15UF7H6IS0hRSDTH8Q4kuotSGXvOizHBM",
+      "he": "הליכת קיר עד עמידת ידיים",
+      "muscles": [
+        "core",
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "wall walk"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYNistgBZ3M/",
+      "poster": "assets/posters/DYNistgBZ3M-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        19.9
+      ]
+    },
+    {
+      "id": "drive_ישיבה_על_קיר_עם_משקולת",
+      "driveId": "1HwIf8TsUbBOYjkEQWJwSysSB_8UxGbVZ",
+      "he": "ישיבה על קיר עם משקולת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall",
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "weighted wall sit"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYR8I20P9Pv/",
+      "poster": "assets/posters/DYR8I20P9Pv-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        30.4,
+        35.2
+      ]
+    },
+    {
+      "id": "drive_לחיצת_רגליים_במכונה",
+      "driveId": "1yDj4_NENkdumerxZW_4XKMUHMr4zKXEP",
+      "he": "לחיצת רגליים במכונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "leg press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYhrVOXxCql/",
+      "poster": "assets/posters/DYhrVOXxCql-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        31.0,
+        40.0
+      ]
+    },
+    {
+      "id": "drive_ישיבה_על_קיר_עם_הרמת_ברך_לסירוגין",
+      "driveId": "1Y4sXWg72nmhdxi9XRi1kFGfgvHRYVjsh",
+      "he": "ישיבה על קיר עם הרמת ברך לסירוגין",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall",
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall sit march"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYuavsgOyeA/",
+      "poster": "assets/posters/DYuavsgOyeA-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        5.2,
+        9.5
+      ]
+    },
+    {
+      "id": "drive_ישיבה_על_קיר_עם_פתיחת_ברכיים_בגומייה",
+      "driveId": "1ds0mnTP9iPZf7wadkodW4KAn623vXedu",
+      "he": "ישיבה על קיר עם פתיחת ברכיים בגומייה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall",
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall sit band abduction pulses"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYuavsgOyeA/",
+      "poster": "assets/posters/DYuavsgOyeA-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        9.6,
+        15.0
+      ]
+    },
+    {
+      "id": "drive_הליכת_עמידת_ידיים_לאורך_סולם",
+      "driveId": "1dKmvsWV6V0__QuMnB-A2sv64gqpIKEWN",
+      "he": "הליכת עמידת ידיים לאורך סולם",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "ladder handstand walk"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da21m6ZO4QI/",
+      "poster": "assets/posters/Da21m6ZO4QI-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        9.45,
+        13.6
+      ]
+    },
+    {
+      "id": "drive_הליכה_בעמידת_ידיים_על_סולם_קואורדינציה",
+      "driveId": "1CziUjat9KaM87gJ8d3mPMnuLWX7jsO6f",
+      "he": "הליכה בעמידת ידיים על סולם קואורדינציה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "handstand walk agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfDb6FCRX87/",
+      "poster": "assets/posters/DfDb6FCRX87-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.7,
+        11.5
+      ]
+    },
+    {
+      "id": "drive_פולאובר_בכבל_בזרועות_ישרות",
+      "driveId": "1HKCCXxJN_Zluts3f7dyWEHWLYFqMVjBf",
+      "he": "פולאובר בכבל בזרועות ישרות",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "straight arm cable pulldown"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DaN325sq5ou/",
+      "poster": "assets/posters/DaN325sq5ou-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        16.6,
+        25.0
+      ]
+    },
+    {
+      "id": "drive_פרפר_במכונת_פק_דק",
+      "driveId": "145Q4jCpKWozz4Pb7g1n9cfTPbN0hdEbs",
+      "he": "פרפר במכונת פק דק",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "pec deck fly"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DasnSwwsgOw/",
+      "poster": "assets/posters/DasnSwwsgOw-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.5,
+        8.6
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_קדימה_בסולם",
+      "driveId": "1U6wwd1ajZCRA66E9rlXFd28C1xm6xUjE",
+      "he": "זחילת דוב קדימה בסולם",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "ladder bear crawl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DazhoutChDR/",
+      "poster": "assets/posters/DazhoutChDR-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        6.8
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_לאורך_סולם_קואורדינציה",
+      "driveId": "1QYs4SLKEyOMMe1l1_OHf0iyufsH75dvd",
+      "he": "זחילת דוב לאורך סולם קואורדינציה",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "bear crawl agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeYd6-HBw9i/",
+      "poster": "assets/posters/DeYd6-HBw9i-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        14.1,
+        21.5
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_לצד_לאורך_סולם",
+      "driveId": "1QjtjxZPHWAkJBS2-4iWN6dUZnIhIJ1GM",
+      "he": "זחילת דוב לצד לאורך סולם",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "lateral bear crawl ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeYd6-HBw9i/",
+      "poster": "assets/posters/DeYd6-HBw9i-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        5.9,
+        13.0
+      ]
+    },
+    {
+      "id": "drive_הליכת_פלאנק_לצד_לאורך_סולם",
+      "driveId": "1TQ9N4L_NsoT5Kb02XWHEriXSBC9usv41",
+      "he": "הליכת פלאנק לצד לאורך סולם",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "ladder plank walk"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dciy6f7RXAo/",
+      "poster": "assets/posters/Dciy6f7RXAo-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        8.2,
+        12.39
+      ]
+    },
+    {
+      "id": "drive_חטיבת_עץ_בכבל_מלמעלה_למטה",
+      "driveId": "1S4gcT19zXYcIRt5PnZLXLqmJbJhnNwIV",
+      "he": "חטיבת עץ בכבל מלמעלה למטה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "cable woodchop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcvUHe8tDDm/",
+      "poster": "assets/posters/DcvUHe8tDDm-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        4.6
+      ]
+    },
+    {
+      "id": "drive_פשיטת_ברכיים_במכונה",
+      "driveId": "1joB95LyKK_OcUKU6AdSe8ArJ0Mdfeq4j",
+      "he": "פשיטת ברכיים במכונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "leg extension machine"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdEpGvERfbd/",
+      "poster": "assets/posters/DdEpGvERfbd-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        60.0,
+        70.0
+      ]
+    },
+    {
+      "id": "drive_כפיפת_מרפק_באייזיאן_בכבל",
+      "driveId": "1dcdyApqMZYeVuML9WQD6a6nRLJweo05F",
+      "he": "כפיפת מרפק באייזיאן בכבל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "bayesian cable curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeZfw9Gs6JL/",
+      "poster": "assets/posters/DeZfw9Gs6JL-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        11.1,
+        15.7
+      ]
+    },
+    {
+      "id": "drive_הליכת_קיר_עם_הסבר",
+      "driveId": "1jzyBoCaX-8y5K7M1V1lV1PbXtvqE4VF1",
+      "he": "הליכת קיר עם הסבר",
+      "muscles": [
+        "core",
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "wall walk up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DefI4SKx1Xn/",
+      "poster": "assets/posters/DefI4SKx1Xn-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        32.0,
+        37.6
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_קיר",
+      "driveId": "1l3THD0RKF45wh61c3tkjSKG9S_S5TgzS",
+      "he": "שכיבות סמיכה על קיר",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "wall push up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfH95gAvkwb/",
+      "poster": "assets/posters/DfH95gAvkwb-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        24.5,
+        33.5
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בהתקדמות_לאורך_סולם",
+      "driveId": "1g34cbCbr4BSL9NlqTZr6gZJZmbe8-78k",
+      "he": "שכיבות סמיכה בהתקדמות לאורך סולם",
+      "muscles": [
+        "chest",
+        "triceps",
+        "core"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "ladder push up walk"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfUR1y6At02/",
+      "poster": "assets/posters/DfUR1y6At02-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        6.5
+      ]
     }
   ]
 }
