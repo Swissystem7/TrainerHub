@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 298,
+    "count": 301,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 251
+    "driveReelCount": 254
   },
   "items": [
     {
@@ -5903,6 +5903,66 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DHUSPLNPBY_/",
       "poster": "assets/posters/DHUSPLNPBY_.jpg"
+    },
+    {
+      "id": "drive_הולה_הופ_סביב_המותניים",
+      "driveId": "1bvKMP7rvgpyAGmB_v6_-hddgW-17PWz7",
+      "he": "הולה הופ סביב המותניים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hula hoop waist"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DGh07aRIxkr/",
+      "poster": "assets/posters/DGh07aRIxkr.jpg"
+    },
+    {
+      "id": "drive_סיבוב_חישוק_משוקלל_סביב_המותניים",
+      "driveId": "1vWUJBpYs8cS0S5SHiMgXuYgxu9siucPa",
+      "he": "סיבוב חישוק משוקלל סביב המותניים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "weighted hula hoop waist"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcKX85Ux7Sj/",
+      "poster": "assets/posters/DcKX85Ux7Sj.jpg"
+    },
+    {
+      "id": "drive_הרחקה_צידית_בכבל_בעמידה_ביד_אחת",
+      "driveId": "1khFGn6vErfI6ukeu84197h0akk0l5gB6",
+      "he": "הרחקה צידית בכבל בעמידה ביד אחת",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "standing single arm cable lateral raise"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DSLUGyIk9CA/",
+      "poster": "assets/posters/DSLUGyIk9CA.jpg"
     }
   ]
 }
