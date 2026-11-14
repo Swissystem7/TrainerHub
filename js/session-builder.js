@@ -612,7 +612,6 @@
 		"triceps|cones|advanced",
 		"biceps|football|advanced",
 		"back|tennis-ball|beginner",
-		"triceps|basketball|advanced",
 		"legs|football|advanced",
 		"triceps|football|advanced",
 	];
