@@ -238,7 +238,6 @@
     HAZARDS: HAZARDS,
     normalize: normalize,
     emptyProfile: emptyProfile,
-    extractJson: extractJson,
     parseAiResponse: parseAiResponse,
     toggle: toggle,
     chips: chips,

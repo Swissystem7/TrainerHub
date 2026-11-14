@@ -1957,7 +1957,6 @@
     wishlistAdd: wishlistAdd,
     wishlistRemove: wishlistRemove,
     wishlistPrune: wishlistPrune,
-    learnFromWorkout: learnFromWorkout,
     patternScore: patternScore,
     saveSegment: saveSegment,
     isRestToken: isRestToken

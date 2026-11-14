@@ -595,9 +595,6 @@
 		selectAdaptationTemplate: selectAdaptationTemplate,
 		calculateWeeklyVolumeBudget: calculateWeeklyVolumeBudget,
 		buildAdaptationReport: buildAdaptationReport,
-		ADAPTATION_FIELDS: ADAPTATION_FIELDS,
-		WEEKLY_ANCHOR_SETS: WEEKLY_ANCHOR_SETS,
-		DEFAULT_TEMPLATES: DEFAULT_TEMPLATES,
 		normalizeMuscle: normalizeMuscle,
 	};
 
