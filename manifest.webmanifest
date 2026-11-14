@@ -1,0 +1,11 @@
+{
+	"name": "TrainerHub",
+	"short_name": "TrainerHub",
+	"start_url": "./index.html",
+	"display": "standalone",
+	"background_color": "#0d100f",
+	"theme_color": "#111827",
+	"dir": "rtl",
+	"lang": "he",
+	"description": "כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה."
+}
