@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 378,
+    "count": 435,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 331
+    "driveReelCount": 388
   },
   "items": [
     {
@@ -7734,6 +7734,1432 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DebrnDvTKcc/",
       "poster": "assets/posters/DebrnDvTKcc.jpg"
+    },
+    {
+      "id": "drive_העברת_כדור_טניס_מתחת_לרגליים_בישיבת_V",
+      "driveId": "1CzLvoBad1Cla3SznYIVBdU1sq3jjnmPQ",
+      "he": "העברת כדור טניס מתחת לרגליים בישיבת V",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "v sit tennis ball pass under legs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcjOBHLAitu/",
+      "poster": "assets/posters/DcjOBHLAitu-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        13.7,
+        21.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_ידיים_ורגליים_על_כדורי_טניס",
+      "driveId": "1J_zVN96YJrpzu3KhatsCpNt3bvp4Mh7Z",
+      "he": "שכיבות סמיכה עם ידיים ורגליים על כדורי טניס",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups on tennis balls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfPm7qWKtwz/",
+      "poster": "assets/posters/DfPm7qWKtwz-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        17.8,
+        25.5
+      ]
+    },
+    {
+      "id": "drive_גלגול_כדור_טניס_בין_הידיים_בפלאנק",
+      "driveId": "1yPyE0lTYMcyy8q1-et8-MtWRj5zFPa7X",
+      "he": "גלגול כדור טניס בין הידיים בפלאנק",
+      "muscles": [
+        "chest",
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "plank tennis ball roll"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYhQusJxDIP/",
+      "poster": "assets/posters/DYhQusJxDIP-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        12.5
+      ]
+    },
+    {
+      "id": "drive_הרמות_T_בשכיבה_על_הבטן_עם_כדורי_טניס",
+      "driveId": "1e328c697QspY2GQFKEKvUcwh8xu2XysU",
+      "he": "הרמות T בשכיבה על הבטן עם כדורי טניס",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "prone T raise with tennis balls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DDZ-u3CtGPe/",
+      "poster": "assets/posters/DDZ-u3CtGPe.jpg"
+    },
+    {
+      "id": "drive_זריקת_כדור_טניס_לקיר_ותפיסה_בסקוואט",
+      "driveId": "1QgSoQrTT32V8u4F_Qoky6zJBBtBlRKLf",
+      "he": "זריקת כדור טניס לקיר ותפיסה בסקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "squat tennis ball wall toss catch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DegQ-ZVjKN0/",
+      "poster": "assets/posters/DegQ-ZVjKN0-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        22.5
+      ]
+    },
+    {
+      "id": "drive_סקוואט_עם_הקפצת_כדור_טניס_ותפיסה",
+      "driveId": "1qdSOiFsukA7Ctw6jsldFwdSpzK-9O5j_",
+      "he": "סקוואט עם הקפצת כדור טניס ותפיסה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "squat tennis ball bounce catch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfO7NLkodaT/",
+      "poster": "assets/posters/DfO7NLkodaT-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        15.4
+      ]
+    },
+    {
+      "id": "drive_לאנג'_עם_זריקת_כדור_טניס_לקיר_ותפיסה",
+      "driveId": "1q1QQB2dAzCG8U8Wr7E5fyqXRKswV5GvZ",
+      "he": "לאנג' עם זריקת כדור טניס לקיר ותפיסה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "lunge tennis ball toss catch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Db4Y4wjo0_G/",
+      "poster": "assets/posters/Db4Y4wjo0_G-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        14.0,
+        18.8
+      ]
+    },
+    {
+      "id": "drive_זריקות_כדור_טניס_לקיר_מעל_הראש",
+      "driveId": "1LsuYuvkE6Kogu0gp-jAIVPXaIbw0-icL",
+      "he": "זריקות כדור טניס לקיר מעל הראש",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "overhead tennis ball wall throws"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DczK8XshnDf/",
+      "poster": "assets/posters/DczK8XshnDf-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        12.9,
+        20.3
+      ]
+    },
+    {
+      "id": "drive_זריקת_כדור_טניס_לדלת_ותפיסה_מעל_הראש",
+      "driveId": "1U36FGZK3A8eBKM069EggxRUb05539xsh",
+      "he": "זריקת כדור טניס לדלת ותפיסה מעל הראש",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "overhead tennis ball door throws"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfUvmnWt2cN/",
+      "poster": "assets/posters/DfUvmnWt2cN-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        2.4,
+        15.0
+      ]
+    },
+    {
+      "id": "drive_עליות_מתח_עם_כדורי_טניס_בידיים",
+      "driveId": "1DfQ0rs6JJsZGWVIWuylBiKdxcC_EdM71",
+      "he": "עליות מתח עם כדורי טניס בידיים",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "tennis-ball",
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "tennis ball grip pull ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dd40IOtOE0y/",
+      "poster": "assets/posters/Dd40IOtOE0y-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.5,
+        14.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_קצות_האצבעות_על_כדורי_טניס",
+      "driveId": "18JDHqfL2zmos-hEhjDmS5UBForsctUQR",
+      "he": "שכיבות סמיכה על קצות האצבעות על כדורי טניס",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "fingertip push ups on tennis balls"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJCn2gBNxf3/",
+      "poster": "assets/posters/DJCn2gBNxf3-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        52.0,
+        59.6
+      ]
+    },
+    {
+      "id": "drive_מטפס_הרים_עם_ידיים_על_מדרגה",
+      "driveId": "1GKRpQctEsqx31hu250XUhY3m__bQ9-DC",
+      "he": "מטפס הרים עם ידיים על מדרגה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "incline mountain climbers on stairs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZNDNX8xfV0/",
+      "poster": "assets/posters/DZNDNX8xfV0-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        14.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בשיפוע_עם_ידיים_על_המדרגות",
+      "driveId": "1K_PNum55tnHUiwD0ffsM2l7Otov1NmNy",
+      "he": "שכיבות סמיכה בשיפוע עם ידיים על המדרגות",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "incline push ups on stairs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZvC9M0R5JF/",
+      "poster": "assets/posters/DZvC9M0R5JF-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        28.0,
+        42.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בשיפוע_שלילי_בעלייה_במדרגות",
+      "driveId": "17kDwavZRJGS9Z_3PST0JjrnT1YFhZWCX",
+      "he": "שכיבות סמיכה בשיפוע שלילי בעלייה במדרגות",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "decline push ups going up stairs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcRriknOvJu/",
+      "poster": "assets/posters/DcRriknOvJu-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.5,
+        20.0
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_בירידה_במדרגות",
+      "driveId": "1zrT0z1DYhJDD_vAT3o_qrdu9dN59K87W",
+      "he": "זחילת דוב בירידה במדרגות",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "bear crawl down stairs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdkPHVLNBVs/",
+      "poster": "assets/posters/DdkPHVLNBVs-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        13.6,
+        21.4
+      ]
+    },
+    {
+      "id": "drive_דיפס_בעלייה_במדרגות",
+      "driveId": "1XLxFItEmSFoon4m8IZ-x8qclvB1IemxJ",
+      "he": "דיפס בעלייה במדרגות",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "stair dips walking up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfkaCsMpPRA/",
+      "poster": "assets/posters/DfkaCsMpPRA-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        30.0,
+        42.0
+      ]
+    },
+    {
+      "id": "drive_הרמות_ברכיים_בתלייה_על_מוט_מתח",
+      "driveId": "1RJzCNtbMXX9neDVISfq2XsngOuZuhqTX",
+      "he": "הרמות ברכיים בתלייה על מוט מתח",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hanging knee raises"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DWrA8z4jnNa/",
+      "poster": "assets/posters/DWrA8z4jnNa-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        16.4
+      ]
+    },
+    {
+      "id": "drive_עליות_סנטר_שליליות",
+      "driveId": "1oye0XJqN610TroI5iSZNm_BONINuecSX",
+      "he": "עליות סנטר שליליות",
+      "muscles": [
+        "biceps",
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "negative chin ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dcgv5CuyVAM/",
+      "poster": "assets/posters/Dcgv5CuyVAM-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        95.0,
+        107.0
+      ]
+    },
+    {
+      "id": "drive_הרמות_ברכיים_בישיבת_קיר_עם_גומייה",
+      "driveId": "1EgWhiy1pItyOYYvD88V8TUwVrNp0Y2Cl",
+      "he": "הרמות ברכיים בישיבת קיר עם גומייה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "wall",
+        "band"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "wall sit alternating knee raise with band"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dd2Ch-jhA4l/",
+      "poster": "assets/posters/Dd2Ch-jhA4l-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        28.4,
+        41.0
+      ]
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_עם_מוט_וגב_לקיר",
+      "driveId": "1MLqctoWiatoFZaQ0_VP1-mMIn5Uam5Ml",
+      "he": "כפיפת מרפקים עם מוט וגב לקיר",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "wall",
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "barbell wall curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbHwXBVKZ0-/",
+      "poster": "assets/posters/DbHwXBVKZ0-.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_קפדנית_עם_מוט_צמוד_לקיר",
+      "driveId": "1MorgBHzAGQ9F8XPWj2LbpliWxaYux-u6",
+      "he": "כפיפת מרפקים קפדנית עם מוט צמוד לקיר",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "wall",
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "strict barbell curl against wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DGUjn9ntXE9/",
+      "poster": "assets/posters/DGUjn9ntXE9-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        23.0
+      ]
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_עם_מוט_EZ_וגב_לקיר",
+      "driveId": "1v42sg60v41kUx9AILrC1NCwkgZtNjTo6",
+      "he": "כפיפת מרפקים עם מוט EZ וגב לקיר",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "wall",
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "ez bar curl back against wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DDzsSGeylGq/",
+      "poster": "assets/posters/DDzsSGeylGq-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.0,
+        28.9
+      ]
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_בעמידת_ידיים_על_הקיר",
+      "driveId": "1BSOo5O-QQ0iUWRyvf-MOyJ7kBwrvUrRT",
+      "he": "פשיטת מרפקים בעמידת ידיים על הקיר",
+      "muscles": [
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "handstand triceps extension on wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJuUN1rq7F6/",
+      "poster": "assets/posters/DJuUN1rq7F6-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.0,
+        11.3
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_בעמידת_ידיים_צמודה_לקיר",
+      "driveId": "1cC_EmmYosfTuxpCrWuSd2mqv1hfjqB0v",
+      "he": "שכיבות סמיכה בעמידת ידיים צמודה לקיר",
+      "muscles": [
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "wall handstand push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DKbGlmcI-da/",
+      "poster": "assets/posters/DKbGlmcI-da.jpg"
+    },
+    {
+      "id": "drive_מסירת_חזה_עם_כדור_כוח_לקיר_בכריעה",
+      "driveId": "17DVci1EOfx0NTIoSYnGZiZhprSqAhyOU",
+      "he": "מסירת חזה עם כדור כוח לקיר בכריעה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "tall kneeling medicine ball chest pass"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeHOKWcN9qS/",
+      "poster": "assets/posters/DeHOKWcN9qS-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        6.9
+      ]
+    },
+    {
+      "id": "drive_סיבובי_לנדמיין",
+      "driveId": "1dPFQTLlZZzBq70SofS1IHXpUQ8OmC9US",
+      "he": "סיבובי לנדמיין",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "landmine rotation"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da3pxVSuEM4/",
+      "poster": "assets/posters/Da3pxVSuEM4.jpg"
+    },
+    {
+      "id": "drive_לחיצת_כתפיים_עם_מוט_בעמידה",
+      "driveId": "1ekbD444lGwX1xXG7SRwvuLjvBXvgZra3",
+      "he": "לחיצת כתפיים עם מוט בעמידה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "standing barbell overhead press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbZdriBTZcv/",
+      "poster": "assets/posters/DbZdriBTZcv-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        17.0
+      ]
+    },
+    {
+      "id": "drive_לחיצת_כתפיים_עם_מוט_באחיזה_רחבה",
+      "driveId": "1H9C3Dl70Pa6yeDwP2fksiFtU7G2vkHEi",
+      "he": "לחיצת כתפיים עם מוט באחיזה רחבה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "wide grip barbell overhead press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYIga9rSq8C/",
+      "poster": "assets/posters/DYIga9rSq8C-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        17.2,
+        24.9
+      ]
+    },
+    {
+      "id": "drive_לחיצת_קטלבל_הפוך_ביד_אחת_בשכיבה",
+      "driveId": "1XT7AD2lLANIsoeCHaRTimFB6_QPTdKII",
+      "he": "לחיצת קטלבל הפוך ביד אחת בשכיבה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "bottoms up kettlebell floor press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbK6VJoBtHH/",
+      "poster": "assets/posters/DbK6VJoBtHH-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        9.3,
+        15.0
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_בין_חישוקים_במעגל",
+      "driveId": "1UJOk7NXN5ZPE1VhyTC364SgSprhxtNEI",
+      "he": "זחילת דוב בין חישוקים במעגל",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "bear crawl through hoops"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZtaaflinTu/",
+      "poster": "assets/posters/DZtaaflinTu-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        5.4
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_מחישוק_לחישוק",
+      "driveId": "1jsiAqN2e7uFJuaDtyzhBI-rivTTMeEGS",
+      "he": "זחילת דוב מחישוק לחישוק",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "bear crawl hoop to hoop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De-sNi4CKzI/",
+      "poster": "assets/posters/De-sNi4CKzI-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        8.0
+      ]
+    },
+    {
+      "id": "drive_קפיצה_לתוך_חישוקים_וסקוואט",
+      "driveId": "1pkExOQgKzIxt9fh96EuZCP2dzT2lNsRS",
+      "he": "קפיצה לתוך חישוקים וסקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "jump into hoops and squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfGeA0PiI8k/",
+      "poster": "assets/posters/DfGeA0PiI8k-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        4.5
+      ]
+    },
+    {
+      "id": "drive_פלאנק_והעברת_כדור_בין_חישוקים",
+      "driveId": "1_whgQo380HSv-QuVCqaut8XQFa2s3ULy",
+      "he": "פלאנק והעברת כדור בין חישוקים",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "plank and place ball between hoops"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbroaSMo1c6/",
+      "poster": "assets/posters/DbroaSMo1c6-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        8.0
+      ]
+    },
+    {
+      "id": "drive_סיבוב_חישוק_על_היד_בעמידה",
+      "driveId": "19nZsLptWKpTo9jQ0EzKELQ8Em7gK2t-1",
+      "he": "סיבוב חישוק על היד בעמידה",
+      "muscles": [
+        "biceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "standing hand hoop spin"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfiD6wWx8Z3/",
+      "poster": "assets/posters/DfiD6wWx8Z3-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        119.5,
+        132.5
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_ידיים_בתוך_חישוקים",
+      "driveId": "1GogoOs8iQUSqJkX4EvxhJ0IWCvqMtbJC",
+      "he": "שכיבות סמיכה עם ידיים בתוך חישוקים",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "push ups hands inside hoops"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dbw3HzxN_9g/",
+      "poster": "assets/posters/Dbw3HzxN_9g.jpg"
+    },
+    {
+      "id": "drive_טוויסט_רוסי_עם_כדורסל",
+      "driveId": "1Ry7InkuvnM8Id_AVFm6s8aRQAmRTWj4x",
+      "he": "טוויסט רוסי עם כדורסל",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "basketball russian twist"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJ7EtZMsr_0/",
+      "poster": "assets/posters/DJ7EtZMsr_0-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        22.1,
+        26.2
+      ]
+    },
+    {
+      "id": "drive_העברת_כדורסל_בין_הרגליים_בישיבה",
+      "driveId": "1RaVVx2bV1vQ2gmDohYV0B6oHXFdT2eOY",
+      "he": "העברת כדורסל בין הרגליים בישיבה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "seated basketball pass between legs"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJ7EtZMsr_0/",
+      "poster": "assets/posters/DJ7EtZMsr_0-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        6.8,
+        11.0
+      ]
+    },
+    {
+      "id": "drive_מסירות_חזה_עם_כדורסל_לקיר",
+      "driveId": "1NjGlGqQnNFdNjhYcYgilj1Dn5EqM9Jp_",
+      "he": "מסירות חזה עם כדורסל לקיר",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "basketball chest pass off wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdHI7c-uZkM/",
+      "poster": "assets/posters/DdHI7c-uZkM-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        12.0
+      ]
+    },
+    {
+      "id": "drive_מסירות_סנאפ_ביד_אחת_עם_כדורסל_לקיר",
+      "driveId": "1Pszxh8aHH7lY96KXAOTIw_lI6GhkkVmN",
+      "he": "מסירות סנאפ ביד אחת עם כדורסל לקיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "one arm basketball snap pass wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZ-qVmjJeKu/",
+      "poster": "assets/posters/DZ-qVmjJeKu-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        10.2,
+        26.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_יד_אחת_על_כדורסל",
+      "driveId": "14ivbf4vfTDieRaXxuO_T_UiOhvqj8ZJK",
+      "he": "שכיבות סמיכה עם יד אחת על כדורסל",
+      "muscles": [
+        "shoulders",
+        "chest"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "one hand on basketball push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbYaro8oJM1/",
+      "poster": "assets/posters/DbYaro8oJM1-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.3,
+        13.0
+      ]
+    },
+    {
+      "id": "drive_כדרור_חזק_במקום",
+      "driveId": "1qmhurQmnjpIBh7toU8uIfn3wPoMmqwU2",
+      "he": "כדרור חזק במקום",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "basketball pound dribble"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdJvHn5B4CA/",
+      "poster": "assets/posters/DdJvHn5B4CA-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.7,
+        12.5
+      ]
+    },
+    {
+      "id": "drive_כדרור_בשני_כדורסלים",
+      "driveId": "1XhbLGPzczfyHvtKkmiLzMzzAwLGljFPB",
+      "he": "כדרור בשני כדורסלים",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "two ball dribble"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVctzcTjF9z/",
+      "poster": "assets/posters/DVctzcTjF9z-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        9.0
+      ]
+    },
+    {
+      "id": "drive_כדרור_גבוה-נמוך_בשני_כדורסלים",
+      "driveId": "1miaBUKSl2I2TjXnEszW2_3r1MR3gN4Pc",
+      "he": "כדרור גבוה-נמוך בשני כדורסלים",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "two ball high low dribble"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DV62o0hgJ8o/",
+      "poster": "assets/posters/DV62o0hgJ8o-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        10.0,
+        16.6
+      ]
+    },
+    {
+      "id": "drive_העברת_כדורסל_מעל_הראש_מצד_לצד",
+      "driveId": "1CeobEoDx9ZXfNjBF8WwnEHFoJOGj-lXw",
+      "he": "העברת כדורסל מעל הראש מצד לצד",
+      "muscles": [
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "overhead basketball transfer"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DexMFG7IuTT/",
+      "poster": "assets/posters/DexMFG7IuTT-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        16.0
+      ]
+    },
+    {
+      "id": "drive_V-אפ_עם_העברת_כדורגל",
+      "driveId": "1GEsg_5a6qVmxIMhTaly-JUq5_xKQWef2",
+      "he": "V-אפ עם העברת כדורגל",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "soccer ball v up pass"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYiJyEXJlsl/",
+      "poster": "assets/posters/DYiJyEXJlsl-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        6.0,
+        11.5
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_הזזת_כדורגל",
+      "driveId": "1t3xhpi257WlljKMajDhXaA1V4bXLFMlE",
+      "he": "שכיבות סמיכה עם הזזת כדורגל",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push up combination with soccer ball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dd6X9QsN-Hh/",
+      "poster": "assets/posters/Dd6X9QsN-Hh-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        8.0,
+        15.6
+      ]
+    },
+    {
+      "id": "drive_מסירות_כדורגל_לקיר_בשתי_ידיים",
+      "driveId": "1ytdP51XTgSkhOeCx7sHS3dxh1pqN_5ix",
+      "he": "מסירות כדורגל לקיר בשתי ידיים",
+      "muscles": [
+        "chest",
+        "shoulders"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "two hand soccer ball wall pass"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Daxy-ZToZaL/",
+      "poster": "assets/posters/Daxy-ZToZaL-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        5.5
+      ]
+    },
+    {
+      "id": "drive_זריקות_חוץ_לקיר_עם_כדורגל",
+      "driveId": "15ziK6Yaw7Mo-8dSwInjfbR8FQJPOuBvq",
+      "he": "זריקות חוץ לקיר עם כדורגל",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "soccer throw in against wall"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Daxy-ZToZaL/",
+      "poster": "assets/posters/Daxy-ZToZaL-2.jpg",
+      "segment": 2,
+      "segmentRange": [
+        6.6,
+        14.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_העברת_כדורגל_מצד_לצד",
+      "driveId": "1BKh0NTbr5c0goCEY6kjGZ_ndo8zUy8Uj",
+      "he": "שכיבות סמיכה עם העברת כדורגל מצד לצד",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups passing soccer ball side to side"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da0ifwjNvx5/",
+      "poster": "assets/posters/Da0ifwjNvx5-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        13.5,
+        26.5
+      ]
+    },
+    {
+      "id": "drive_פלאנק_אמות_עם_הזזת_קונוסים",
+      "driveId": "1QTIJ-EPzFaR_Yh-3D4L_Y72oYbJWg7KM",
+      "he": "פלאנק אמות עם הזזת קונוסים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "forearm plank cone taps"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfPSnACswJW/",
+      "poster": "assets/posters/DfPSnACswJW.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_והעברת_קונוס_לבוסו",
+      "driveId": "1NIoHPJesdpoAb0novRxh2xM6jMCt-bCo",
+      "he": "שכיבות סמיכה והעברת קונוס לבוסו",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push up and move cone to bosu"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da8Br-sCXz-/",
+      "poster": "assets/posters/Da8Br-sCXz--1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        6.4
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_נגיעה_בקונוסים",
+      "driveId": "1ixr3co9-HAwO3PX0492Aifl117-bnMRZ",
+      "he": "שכיבות סמיכה עם נגיעה בקונוסים",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups touching cones"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/De0gWsYgPNg/",
+      "poster": "assets/posters/De0gWsYgPNg-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        16.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_קונוסים_על_הגב",
+      "driveId": "1SyotNa8UzvKC3VCQRZehTNUhRUk96Ea4",
+      "he": "שכיבות סמיכה עם קונוסים על הגב",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups balancing cones on back"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdxG5xFtCoA/",
+      "poster": "assets/posters/DdxG5xFtCoA-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        12.0
+      ]
+    },
+    {
+      "id": "drive_דדליפט_רומני_ברגל_אחת_עם_הרמת_קונוס",
+      "driveId": "1B1JLE3WUCaJgemy7CvqOYMa6BUBi4A-1",
+      "he": "דדליפט רומני ברגל אחת עם הרמת קונוס",
+      "muscles": [
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "single leg rdl cone pick up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DchgyxSNjAP/",
+      "poster": "assets/posters/DchgyxSNjAP-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.0,
+        20.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_לאורך_סולם_הקואורדינציה",
+      "driveId": "1EBPDnPxM3CXjemOcOMZmTDqYQGCwM6Ow",
+      "he": "שכיבות סמיכה לאורך סולם הקואורדינציה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups along agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcEHu2eRWHn/",
+      "poster": "assets/posters/DcEHu2eRWHn-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        3.0,
+        18.0
+      ]
+    },
+    {
+      "id": "drive_זחילת_דוב_קדימה_בסולם_הקואורדינציה",
+      "driveId": "1HM-3wTY12LkmNT2MiBNGQ5cdn9zoyY86",
+      "he": "זחילת דוב קדימה בסולם הקואורדינציה",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "agility ladder bear crawl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbBGxyMHMBr/",
+      "poster": "assets/posters/DbBGxyMHMBr-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        1.7,
+        14.6
+      ]
+    },
+    {
+      "id": "drive_הליכת_סרטן_עם_רגליים_בתוך_הסולם",
+      "driveId": "1Hep6wVLsBItS0duLTKDBJ-IUS4moyPtk",
+      "he": "הליכת סרטן עם רגליים בתוך הסולם",
+      "muscles": [
+        "triceps",
+        "core"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "crab position feet in and out of ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJX7lsDxERe/",
+      "poster": "assets/posters/DJX7lsDxERe-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        9.5
+      ]
     }
   ]
 }

@@ -612,11 +612,9 @@
 		"triceps|cones|advanced",
 		"biceps|football|advanced",
 		"back|tennis-ball|beginner",
-		"chest|basketball|advanced",
 		"triceps|basketball|advanced",
 		"legs|football|advanced",
 		"triceps|football|advanced",
-		"core|stairs|beginner",
 	];
 	var NO_REEL_SET = {};
 	NO_REEL_COMBOS.forEach((k) => {
