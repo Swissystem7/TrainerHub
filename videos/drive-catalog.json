@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 465,
+    "count": 467,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 418
+    "driveReelCount": 420
   },
   "items": [
     {
@@ -9899,6 +9899,58 @@
       "segmentRange": [
         0.2,
         7.3
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_הזזת_קונוסים_מצד_לצד",
+      "driveId": "18TqB3rDKgc323YcmsltWMsnxfiJoUZiU",
+      "he": "שכיבות סמיכה עם הזזת קונוסים מצד לצד",
+      "muscles": [
+        "shoulders",
+        "chest"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "push ups moving cones side to side"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DQ-d58PErhV/",
+      "poster": "assets/posters/DQ-d58PErhV-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        20.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_ספסל_עם_חישוק_מסתובב_סביב_פלג_הגוף_העליון",
+      "driveId": "1zw1iZinhHHbdcSsijaYLtqnd90x2F76P",
+      "he": "שכיבות סמיכה על ספסל עם חישוק מסתובב סביב פלג הגוף העליון",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "bench push ups with hula hoop spinning around upper body"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJejWNKMaIV/",
+      "poster": "assets/posters/DJejWNKMaIV-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.0,
+        21.5
       ]
     }
   ]
