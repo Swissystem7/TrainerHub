@@ -400,7 +400,6 @@
 
   var api = {
     SITE_DRILLS: SITE_DRILLS,
-    CAPACITY: CAPACITY,
     STRETCH_BANK: STRETCH_BANK,
     TAG_GAME: TAG_GAME,
     build: build,

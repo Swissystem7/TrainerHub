@@ -78,8 +78,6 @@
   }
 
   var api = {
-    MAX_IMAGES: MAX_IMAGES,
-    MAX_SIDE: MAX_SIDE,
     resizeImage: resizeImage,
     analyzeSitePhotos: analyzeSitePhotos,
     siteScanSecurity: siteScanSecurity
