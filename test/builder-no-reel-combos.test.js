@@ -27,7 +27,7 @@ function req(text, equipment) {
 
 test('a no-reel combo returns no workout and a notice', function () {
   [['אימון גב', 'basketball'], ['אימון גב מתקדמים', 'football'], ['אימון גב ביניים', 'stairs'],
-    ['אימון דו ראשי למתחילים', 'stairs'], ['אימון רגליים מתקדמים', 'bar'], ['אימון בטן למתחילים', 'stairs'],
+    ['אימון דו ראשי למתחילים', 'stairs'], ['אימון רגליים מתקדמים', 'bar'], ['אימון תלת ראשי מתקדמים', 'basketball'],
     ['אימון תלת ראשי מתקדמים', 'cones']].forEach(function (p) {
     const s = E.buildSession(req(p[0], p[1]));
     assert.equal(s.workout, null, p.join(' '));
@@ -50,7 +50,7 @@ test('every listed combo has no matching clip in the catalog', function () {
 
 test('combos with clips still build, including other levels of a listed cell', function () {
   [['אימון רגליים ביניים', 'bar'], ['אימון בטן מתקדמים', 'stairs'], ['אימון גב מתקדמים', 'tennis-ball'],
-    ['אימון חזה', 'basketball'], ['אימון ידיים', 'stairs'], ['אימון בטן', 'none'], ['אימון גב', 'bar']].forEach(function (p) {
+    ['אימון חזה', 'basketball'], ['אימון ידיים', 'stairs'], ['אימון בטן', 'none'], ['אימון גב', 'bar'], ['אימון בטן למתחילים', 'stairs']].forEach(function (p) {
     const s = E.buildSession(req(p[0], p[1]));
     assert.ok(s.workout, p.join(' '));
     assert.notEqual(s.unavailable, true, p.join(' '));
