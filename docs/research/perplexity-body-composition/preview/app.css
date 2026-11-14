@@ -1,0 +1,457 @@
+/* Shared surface chrome — weekly builder, Studio, workout-mode */
+.th-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: #0d100f;
+  border-bottom: 1px solid #303834;
+  font: 600 0.78rem system-ui, sans-serif;
+  position: relative;
+  z-index: 9999;
+  direction: rtl;
+}
+.th-nav .brand { color: #b9f24a; }
+.th-nav a, .th-nav .chip {
+  color: #f6f8f6;
+  border: 1px solid #303834;
+  border-radius: 14px;
+  padding: 3px 11px;
+  text-decoration: none;
+}
+.th-nav .chip.on {
+  background: rgba(185, 242, 74, 0.15);
+  border-color: rgba(185, 242, 74, 0.4);
+}
+.th-banner {
+  background: rgba(245, 158, 11, 0.1);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f0b542;
+  font: 600 0.74rem system-ui, sans-serif;
+  padding: 7px 14px;
+  text-align: center;
+  direction: rtl;
+}
+.th-btn {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: #fff;
+  border: 1px solid #7c3aed;
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.th-btn.ghost {
+  background: #1a1a2e;
+  color: #c4b5fd;
+  border-color: #3a3a5a;
+}
+
+/* Shared a11y: visible focus, skip link, live-region helper, reduced motion */
+:focus-visible {
+  outline: 2px solid #c4b5fd;
+  outline-offset: 3px;
+}
+.skip-link {
+  position: absolute;
+  inset-inline-start: 8px;
+  top: -48px;
+  z-index: 10000;
+  background: #b9f24a;
+  color: #101312;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 8px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.kbd-hint {
+  width: 100%;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+.ex-media-wrap { width: 100%; }
+.ex-media {
+  width: 100%;
+  max-height: 240px;
+  border: 0;
+  border-radius: 10px;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+video.ex-media { max-height: 160px; aspect-ratio: auto; }
+.ex-media-fallback {
+  background: #111513;
+  border: 1px solid #303834;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #a7b1ab;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.ex-media-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #b9f24a;
+  font-weight: 700;
+}
+.source-pill { font-size: 0.72rem; }
+
+.th-gate {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  color: #f0b542;
+  line-height: 1.5;
+}
+.th-gate p { margin: 0 0 8px; }
+.th-gate p:last-child { margin-bottom: 0; }
+.th-gate-link { color: #b9f24a; font-weight: 700; }
+.print-sheet { max-width: 720px; margin: 0 auto; }
+.print-sheet h1 { font-size: 1.8rem; margin: 0 0 8px; }
+.print-brand { font-weight: 800; font-size: 1.05rem; margin: 0 0 4px; }
+.print-client { font-weight: 600; margin: 0 0 8px; }
+.print-phase { margin: 18px 0; }
+.print-phase h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.print-sheet table { width: 100%; border-collapse: collapse; }
+.print-sheet th, .print-sheet td {
+  text-align: start;
+  padding: 8px 6px;
+  border-bottom: 1px solid #303834;
+  white-space: pre-line;
+}
+.print-watermark {
+  margin: 20px 0 0;
+  padding: 10px 12px;
+  border: 1px dashed #f0b542;
+  color: #f0b542;
+  font-weight: 700;
+}
+.print-footer { margin-top: 24px; color: #a7b1ab; font-size: 0.85rem; }
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff !important; color: #111 !important; }
+  .print-sheet th, .print-sheet td { border-bottom-color: #ccc; }
+  .print-footer { color: #444; }
+}
+
+.th-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.th-steps li {
+  background: #1a1f1d;
+  border: 1px solid #303834;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #a7b1ab;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+.th-steps b { display: block; color: #f6f8f6; margin-bottom: 4px; }
+@media (max-width: 700px) {
+  .th-steps { grid-template-columns: 1fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   TrainerHub design system (Claude Design project 88687c89, export from #533)
+   Tokens + base components. Opt-in per page with <body class="th-ds"> so
+   pages move to the new look screen by screen without breaking the others.
+   ========================================================================== */
+:root {
+  --th-bg: #F4F7F6;
+  --th-surface: #FFFFFF;
+  --th-surface2: #E9F0EE;
+  --th-ink: #0F1B19;
+  --th-muted: #4B5B57;
+  --th-line: #D6E0DD;
+  --th-teal: #00756A;
+  --th-on-teal: #FFFFFF;
+  --th-teal-soft: #D5F2EC;
+  --th-teal-ink: #00584F;
+  --th-orange: #FF7A2F;
+  --th-on-orange: #1A0E05;
+  --th-orange-ink: #B03F06;
+  --th-orange-soft: #FFE8DA;
+  --th-hero: #0F1B19;
+  --th-on-hero: #FFFFFF;
+  --th-font: 'Heebo', system-ui, 'Segoe UI', Arial, sans-serif;
+  /* radii 12-22, 4px spacing grid, 44px min tap target */
+  --th-r-sm: 12px;
+  --th-r-md: 14px;
+  --th-r-lg: 18px;
+  --th-r-xl: 22px;
+  --th-tap: 44px;
+  --th-shadow: 0 1px 2px rgba(15, 27, 25, .06), 0 8px 24px rgba(15, 27, 25, .06);
+}
+
+/* Claude Design dark set (export 70f21d9 / #538). Opt-in via OS preference or data-theme. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --th-bg: #0A1513;
+    --th-surface: #12211E;
+    --th-surface2: #1A2C28;
+    --th-ink: #E8F1EE;
+    --th-muted: #A3B7B1;
+    --th-line: #28423C;
+    --th-teal: #2DD4BF;
+    --th-on-teal: #03201B;
+    --th-teal-soft: #123C35;
+    --th-teal-ink: #7FE9D9;
+    --th-orange: #FF8A45;
+    --th-on-orange: #1A0E05;
+    --th-orange-ink: #FFA772;
+    --th-orange-soft: #3A2416;
+    --th-hero: #1A2C28;
+    --th-on-hero: #E8F1EE;
+    --th-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .35);
+  }
+}
+[data-theme="dark"] {
+  --th-bg: #0A1513;
+  --th-surface: #12211E;
+  --th-surface2: #1A2C28;
+  --th-ink: #E8F1EE;
+  --th-muted: #A3B7B1;
+  --th-line: #28423C;
+  --th-teal: #2DD4BF;
+  --th-on-teal: #03201B;
+  --th-teal-soft: #123C35;
+  --th-teal-ink: #7FE9D9;
+  --th-orange: #FF8A45;
+  --th-on-orange: #1A0E05;
+  --th-orange-ink: #FFA772;
+  --th-orange-soft: #3A2416;
+  --th-hero: #1A2C28;
+  --th-on-hero: #E8F1EE;
+  --th-shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+body.th-ds {
+  background: var(--th-bg);
+  color: var(--th-ink);
+  font-family: var(--th-font);
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+body.th-ds a { color: var(--th-teal); }
+body.th-ds a:hover { color: var(--th-teal-ink); }
+body.th-ds :focus-visible { outline-color: var(--th-teal); }
+
+/* Nav: one horizontally scrolling row of 44px chips, current page in teal.
+   min-width:0 and width:100% keep the row inside the phone instead of
+   growing the page and clipping the last chips. */
+body.th-ds .th-nav {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-inline: 16px;
+  scrollbar-width: none;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  background: var(--th-bg);
+  border-bottom: 0;
+  font: 500 15px/1 var(--th-font);
+}
+body.th-ds .th-nav::-webkit-scrollbar { display: none; }
+body.th-ds .th-nav .brand {
+  flex: none;
+  color: var(--th-ink);
+  font-weight: 900;
+  font-size: 18px;
+  padding-inline-end: 4px;
+}
+body.th-ds .th-nav a,
+body.th-ds .th-nav .chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--th-tap);
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--th-surface);
+  border: 1.5px solid var(--th-line);
+  color: var(--th-ink);
+  white-space: nowrap;
+}
+body.th-ds .th-nav a:hover { border-color: var(--th-teal); color: var(--th-ink); }
+body.th-ds .th-nav .chip.on {
+  background: var(--th-teal);
+  border-color: var(--th-teal);
+  color: var(--th-on-teal);
+  font-weight: 700;
+}
+
+body.th-ds .th-banner {
+  background: var(--th-orange-soft);
+  border-bottom: 0;
+  color: var(--th-orange-ink);
+  font: 500 13px/1.5 var(--th-font);
+  padding: 8px 16px;
+}
+
+/* Buttons: primary teal, energy orange, secondary outline (48px, radius 14) */
+body.th-ds .th-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--th-r-md);
+  background: var(--th-teal);
+  color: var(--th-on-teal);
+  font: 700 16px/1.2 var(--th-font);
+  text-decoration: none;
+}
+body.th-ds .th-btn:hover { color: var(--th-on-teal); filter: brightness(1.08); }
+body.th-ds .th-btn.energy { background: var(--th-orange); color: var(--th-on-orange); }
+body.th-ds .th-btn.ghost {
+  background: var(--th-surface);
+  color: var(--th-ink);
+  border: 1.5px solid var(--th-line);
+}
+body.th-ds .th-btn.ghost:hover { border-color: var(--th-teal); filter: none; }
+body.th-ds .th-btn:disabled { background: var(--th-surface2); color: var(--th-muted); cursor: not-allowed; filter: none; }
+
+body.th-ds .skip-link { background: var(--th-teal); color: var(--th-on-teal); }
+body.th-ds .kbd-hint { color: var(--th-muted); }
+
+body.th-ds .th-steps li {
+  background: var(--th-surface);
+  border: 1px solid var(--th-line);
+  border-radius: var(--th-r-lg);
+  padding: 12px 16px;
+  color: var(--th-muted);
+  font-size: 14px;
+}
+body.th-ds .th-steps b { color: var(--th-ink); font-size: 15px; }
+
+body.th-ds .th-gate {
+  background: var(--th-orange-soft);
+  border: 0;
+  border-radius: var(--th-r-md);
+  color: var(--th-orange-ink);
+}
+body.th-ds .th-gate-link { color: var(--th-teal-ink); }
+body.th-ds .ex-media-fallback {
+  background: var(--th-surface2);
+  border: 1px solid var(--th-line);
+  border-radius: var(--th-r-sm);
+  color: var(--th-muted);
+}
+body.th-ds .ex-media-link { color: var(--th-teal-ink); }
+
+/* Tags: small 6px-radius labels (level / status) */
+body.th-ds .th-tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--th-teal-soft);
+  color: var(--th-teal-ink);
+}
+body.th-ds .th-tag.warm { background: var(--th-orange-soft); color: var(--th-orange-ink); }
+
+@media (min-width: 1100px) {
+  body.th-ds .th-nav { flex-wrap: wrap; overflow-x: visible; }
+}
+@media (max-width: 700px) {
+  body.th-ds .th-steps { gap: 8px; }
+}
+
+/* Load-on-click player (js/core.js frameFacadeMarkup): the clip's thumbnail in
+   the same box the iframe used, with a play button. Clicking swaps in the iframe. */
+button.ex-media-facade,
+button.drive-frame-facade {
+  display: block;
+  background: #000;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  overflow: hidden;
+}
+/* .drive-frame (exercises.html) is already absolutely positioned. */
+button.ex-media-facade { position: relative; }
+.th-facade-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.th-facade-thumb.is-cover { object-fit: cover; }
+.th-facade-thumb[hidden] { display: none; }
+.ex-media-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.62);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+.ex-media-play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -11px 0 0 -6px;
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent #fff;
+}
+button.ex-media-facade:hover .ex-media-play,
+button.ex-media-facade:focus-visible .ex-media-play,
+button.drive-frame-facade:hover .ex-media-play,
+button.drive-frame-facade:focus-visible .ex-media-play { background: rgba(0, 0, 0, 0.8); }
