@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 265,
+    "count": 284,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 218
+    "driveReelCount": 237
   },
   "items": [
     {
@@ -5227,6 +5227,396 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DKAgajIudiu/",
       "poster": "assets/posters/DKAgajIudiu.jpg"
+    },
+    {
+      "id": "drive_סיבוב_חישוק_סביב_המותניים",
+      "driveId": "1pbNEMgVxWoiUff92FDZWJAx9yJT28pmu",
+      "he": "סיבוב חישוק סביב המותניים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hula hoop waist spin"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdTZblKM1-W/",
+      "poster": "assets/posters/DdTZblKM1-W.jpg"
+    },
+    {
+      "id": "drive_סיבוב_חישוק_בגובה_החזה",
+      "driveId": "15gW6dF3jTE55lhI7wy5QFA7GCuBW_4Vc",
+      "he": "סיבוב חישוק בגובה החזה",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "hula hoop chest level spin"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DGBkzBuSTBs/",
+      "poster": "assets/posters/DGBkzBuSTBs.jpg"
+    },
+    {
+      "id": "drive_זחילת_דוב_בסולם_קואורדינציה",
+      "driveId": "1fHZ0l03RJdR_NzaHGyEhyL-VOe-UYvpl",
+      "he": "זחילת דוב בסולם קואורדינציה",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "bear crawl agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DDlW9H9R5NO/",
+      "poster": "assets/posters/DDlW9H9R5NO.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_מתפרצות_לרוחב_סולם_קואורדינציה",
+      "driveId": "1hHGwEJUVfY9acqepELmQsOpKwc_6q4A6",
+      "he": "שכיבות סמיכה מתפרצות לרוחב סולם קואורדינציה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "lateral explosive push ups agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dcd9peIRKSN/",
+      "poster": "assets/posters/Dcd9peIRKSN.jpg"
+    },
+    {
+      "id": "drive_הליכת_פלאנק_לרוחב_סולם_קואורדינציה",
+      "driveId": "17ZKmMeNTcJgbXbBMUryhsLOTQUOkT7mL",
+      "he": "הליכת פלאנק לרוחב סולם קואורדינציה",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "plank walk through agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da19UsnSQVi/",
+      "poster": "assets/posters/Da19UsnSQVi.jpg"
+    },
+    {
+      "id": "drive_חתירה_בכבל_ביד_אחת_בכריעה",
+      "driveId": "1EDnESzYOKfKtCAWzefGhRrviLFQR1MD4",
+      "he": "חתירה בכבל ביד אחת בכריעה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "kneeling single arm cable row"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZpAkK5yf0n/",
+      "poster": "assets/posters/DZpAkK5yf0n.jpg"
+    },
+    {
+      "id": "drive_פולי_עליון_במכונת_פלטות",
+      "driveId": "1VvANlAnGbalmGx7ZIPGeA1rWqVZ5yI10",
+      "he": "פולי עליון במכונת פלטות",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "plate loaded lat pulldown machine"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfRhTmdsm39/",
+      "poster": "assets/posters/DfRhTmdsm39.jpg"
+    },
+    {
+      "id": "drive_פולי_עליון_בכבל_בישיבה",
+      "driveId": "1Q_Ap3a8mnhvbMbj3whlcsE0mQNCWonx6",
+      "he": "פולי עליון בכבל בישיבה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "seated cable lat pulldown"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdUzpk3hajS/",
+      "poster": "assets/posters/DdUzpk3hajS.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_בכבל_בכריעה",
+      "driveId": "1jQF6QJZkF3CQCsp9tUEk5Xe2a3MY8AcT",
+      "he": "כפיפת מרפקים בכבל בכריעה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "squatting cable curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbIu9xspgtw/",
+      "poster": "assets/posters/DbIu9xspgtw.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_בכבל_בעמידה",
+      "driveId": "1wa_1llOFKPICvIsSTvOdwlPakLPmdHSK",
+      "he": "כפיפת מרפקים בכבל בעמידה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "standing cable curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdMb8mlt0cv/",
+      "poster": "assets/posters/DdMb8mlt0cv.jpg"
+    },
+    {
+      "id": "drive_לחיצת_חזה_במכונה_ביד_אחת",
+      "driveId": "1B8NdT8lRBoSuft-Wz6TCH8tzVsPXjdrz",
+      "he": "לחיצת חזה במכונה ביד אחת",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "single arm machine chest press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZrthEnNWd1/",
+      "poster": "assets/posters/DZrthEnNWd1.jpg"
+    },
+    {
+      "id": "drive_לחיצת_חזה_במכונה_בישיבה",
+      "driveId": "1egYA36s790Jrf7R1WB-yV_xheywp2kGL",
+      "he": "לחיצת חזה במכונה בישיבה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "machine chest press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DclXiIIR974/",
+      "poster": "assets/posters/DclXiIIR974.jpg"
+    },
+    {
+      "id": "drive_חטיבת_עץ_בכבל",
+      "driveId": "196OYbAXQSTmhcYhVRSB5XFKrxAjDKrOg",
+      "he": "חטיבת עץ בכבל",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "cable woodchop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DY-UdQdRjdw/",
+      "poster": "assets/posters/DY-UdQdRjdw.jpg"
+    },
+    {
+      "id": "drive_כפיפות_בטן_במכונת_GHD",
+      "driveId": "19V036Bb8pWx9WxDaNyqFw2bKixx_oWJG",
+      "he": "כפיפות בטן במכונת GHD",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "GHD sit up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbIvUiDNptl/",
+      "poster": "assets/posters/DbIvUiDNptl.jpg"
+    },
+    {
+      "id": "drive_כפיפות_בטן_בכבל_בכריעה",
+      "driveId": "1gjb6h3P7qClumpCsxYLaYWk3LGig-4oO",
+      "he": "כפיפות בטן בכבל בכריעה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "kneeling cable crunch"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DXMj8jgoab5/",
+      "poster": "assets/posters/DXMj8jgoab5.jpg"
+    },
+    {
+      "id": "drive_כפיפות_בטן_בכבל_על_הברכיים",
+      "driveId": "1d7yCUXxWCsiomEhJrFY4vxi4UVYnWd0w",
+      "he": "כפיפות בטן בכבל על הברכיים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "cable crunch on knees"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DaX767CNhXf/",
+      "poster": "assets/posters/DaX767CNhXf.jpg"
+    },
+    {
+      "id": "drive_סקוואט_במכונת_האק",
+      "driveId": "12a9_p5semik2NYmMQ-l5wS29iEXotbZN",
+      "he": "סקוואט במכונת האק",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "hack squat machine"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da0TgxQxwOn/",
+      "poster": "assets/posters/Da0TgxQxwOn.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רגליים_ברגל_אחת_במכונה",
+      "driveId": "1W-ymd3c3GcFNie9kCpM4c9ND5ag2dNH2",
+      "he": "לחיצת רגליים ברגל אחת במכונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "single leg press machine"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbYnVU5JO6a/",
+      "poster": "assets/posters/DbYnVU5JO6a.jpg"
+    },
+    {
+      "id": "drive_מלאכי_קיר_בעמידה",
+      "driveId": "1FdguHLn7GffP7Pa2ca2T81lvQGDZwtfR",
+      "he": "מלאכי קיר בעמידה",
+      "muscles": [
+        "back",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "wall angels"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dc6O7EcxNOV/",
+      "poster": "assets/posters/Dc6O7EcxNOV.jpg"
     }
   ]
 }
