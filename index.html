@@ -237,6 +237,7 @@
 <script src="./js/session-builder.js"></script>
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
+<script src="./js/whatsapp-share.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
@@ -302,6 +303,35 @@
         setTimeout(() => { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });
     });
+    var shareWaBtn = $('shareWorkoutWhatsappBtn');
+    if (shareWaBtn) {
+      shareWaBtn.addEventListener('click', () => {
+        var shareMod = window.THWhatsAppShare || window.TH || {};
+        var formatFn = shareMod.formatWorkoutWhatsAppText;
+        var buildUrlFn = shareMod.buildWhatsAppShareUrl;
+        var text;
+        var url;
+        var opened = false;
+        var win;
+        if (!formatFn || !buildUrlFn) return;
+        text = formatFn(w);
+        if (!text) return;
+        url = buildUrlFn(text);
+        try {
+          if (url && typeof window.open === 'function') {
+            win = window.open(url, '_blank', 'noopener,noreferrer');
+            if (win) opened = true;
+          }
+        } catch (e) {
+          opened = false;
+        }
+        if (!opened) {
+          if (window.TH && typeof window.TH.copyOrShow === 'function') {
+            window.TH.copyOrShow(text, shareWaBtn.parentNode);
+          }
+        }
+      });
+    }
     $('pdfBtn').addEventListener('click', () => {
       TH.preparePrint(w, {});
       location.href = TH.printUrl();
@@ -391,6 +421,7 @@
           '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
           '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
+          '<button type="button" class="th-btn ghost" id="shareWorkoutWhatsappBtn" aria-label="שתף אימון בוואטסאפ">שתף בוואטסאפ</button>' +
           '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
         '</div>' +
       '</article>';
