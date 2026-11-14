@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 236,
+    "count": 248,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 189
+    "driveReelCount": 201
   },
   "items": [
     {
@@ -4638,6 +4638,253 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DY7kG-1KS4V/",
       "poster": "assets/posters/DY7kG-1KS4V.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רצפה_עם_קטלבל_הפוך_ביד_אחת",
+      "driveId": "1Oe-YVHQqFmmnzpAmD0OfSKr9r9yFAe9W",
+      "he": "לחיצת רצפה עם קטלבל הפוך ביד אחת",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "single arm bottoms up kettlebell floor press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DK0LwTbpeLR/",
+      "poster": "assets/posters/DK0LwTbpeLR.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רצפה_עם_קטלבל_הפוך",
+      "driveId": "157UQUV7sSDnmxiPcECsYCo0uKvEArVTS",
+      "he": "לחיצת רצפה עם קטלבל הפוך",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "bottoms up kettlebell floor press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DeZJGicy3uD/",
+      "poster": "assets/posters/DeZJGicy3uD.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רצפה_עם_קטלבלס_בבית",
+      "driveId": "1uNJkr_44wF3E_IbttMglOYmExwQ-66Kh",
+      "he": "לחיצת רצפה עם קטלבלס בבית",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kettlebell floor press at home"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dbbb_hWvkTE/",
+      "poster": "assets/posters/Dbbb_hWvkTE.jpg"
+    },
+    {
+      "id": "drive_לחיצת_רצפה_עם_קטלבל",
+      "driveId": "1BhvsGh9Ft9mmpGWINZesuMk3I5jiVsDO",
+      "he": "לחיצת רצפה עם קטלבל",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kettlebell floor press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DYSefxWyKvM/",
+      "poster": "assets/posters/DYSefxWyKvM.jpg"
+    },
+    {
+      "id": "drive_קימה_טורקית_כבדה_עם_קטלבל",
+      "driveId": "1NwHfmW01IeRb4vMoSEGo3lu6j5r9kOhu",
+      "he": "קימה טורקית כבדה עם קטלבל",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "heavy kettlebell turkish get up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdL_3vLRKHD/",
+      "poster": "assets/posters/DdL_3vLRKHD.jpg"
+    },
+    {
+      "id": "drive_הילה_עם_קטלבל_סביב_הראש",
+      "driveId": "1qkxiujq-ARJJaTjaXGNnPvSxYieCLPl4",
+      "he": "הילה עם קטלבל סביב הראש",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "kettlebell halo"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DT9Ag78DJP8/",
+      "poster": "assets/posters/DT9Ag78DJP8.jpg"
+    },
+    {
+      "id": "drive_דדליפט_עם_קטלבל_בבית",
+      "driveId": "1fyk0PuG4ukD9aesC6AmYjZykVBL5hnSg",
+      "he": "דדליפט עם קטלבל בבית",
+      "muscles": [
+        "legs",
+        "back"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell deadlift at home"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Ddrvpw9qUY9/",
+      "poster": "assets/posters/Ddrvpw9qUY9.jpg"
+    },
+    {
+      "id": "drive_סקאל_קראשר_עם_קטלבלס_על_ספסל",
+      "driveId": "11I2F_TYHja8OrytF1LXZkpnNRnNje_Mi",
+      "he": "סקאל קראשר עם קטלבלס על ספסל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "kettlebell skull crusher on bench"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DOmUPaFClwd/",
+      "poster": "assets/posters/DOmUPaFClwd.jpg"
+    },
+    {
+      "id": "drive_סקאל_קראשר_עם_קטלבל_על_ספסל_במתקן",
+      "driveId": "1yhDhQx1eP3zYxy0K6Fjbmeff72FbxfLC",
+      "he": "סקאל קראשר עם קטלבל על ספסל במתקן",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "kettlebell skull crusher in rack"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdR-glfSSQy/",
+      "poster": "assets/posters/DdR-glfSSQy.jpg"
+    },
+    {
+      "id": "drive_סקאל_קראשר_עם_קטלבל_בשיפוע",
+      "driveId": "14QWHYm9RNKG6nwCD_CVRzMrdgT8ZFTUX",
+      "he": "סקאל קראשר עם קטלבל בשיפוע",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "incline kettlebell skull crusher"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DJOyOQfRCnQ/",
+      "poster": "assets/posters/DJOyOQfRCnQ.jpg"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_קטלבל_בעמידה",
+      "driveId": "1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl",
+      "he": "פשיטת מרפקים מעל הראש עם קטלבל בעמידה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "standing kettlebell overhead triceps extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DWbguFJh4OC/",
+      "poster": "assets/posters/DWbguFJh4OC.jpg"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_קטלבל_בישיבה",
+      "driveId": "1mWgfxFysrjDBxO8EVDYLTwpy2x2eu_qM",
+      "he": "פשיטת מרפקים מעל הראש עם קטלבל בישיבה",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "seated kettlebell overhead triceps extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DK1BMZ1CoxI/",
+      "poster": "assets/posters/DK1BMZ1CoxI.jpg"
     }
   ]
 }
