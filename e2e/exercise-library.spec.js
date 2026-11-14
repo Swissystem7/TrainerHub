@@ -58,3 +58,5 @@ test.describe('reel exercise library (exercises.html)', () => {
     expect(externalRequests.filter((h) => allowedInstagramHosts.has(h))).toEqual([]);
   });
 });
+test.describe.skip(() => {
+});

@@ -25,3 +25,5 @@ for (const path of PAGES) {
     expect(blocking, blocking.join('\n')).toEqual([]);
   });
 }
+test.describe.skip(() => {
+});
