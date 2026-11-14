@@ -27,7 +27,7 @@ function req(text, equipment) {
 
 test('a no-reel combo returns no workout and a notice', function () {
   [['אימון גב', 'basketball'], ['אימון גב מתקדמים', 'football'], ['אימון גב ביניים', 'stairs'],
-    ['אימון דו ראשי למתחילים', 'stairs'], ['אימון רגליים מתקדמים', 'bar'], ['אימון תלת ראשי מתקדמים', 'basketball'],
+    ['אימון דו ראשי למתחילים', 'stairs'], ['אימון רגליים מתקדמים', 'bar'], ['אימון תלת ראשי מתקדמים', 'football'],
     ['אימון תלת ראשי מתקדמים', 'cones']].forEach(function (p) {
     const s = E.buildSession(req(p[0], p[1]));
     assert.equal(s.workout, null, p.join(' '));
