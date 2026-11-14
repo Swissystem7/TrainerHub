@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 143,
+    "count": 167,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 96
+    "driveReelCount": 120
   },
   "items": [
     {
@@ -2717,6 +2717,505 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcSRPSEN4Q4/",
       "poster": "assets/posters/DcSRPSEN4Q4.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפקים_נשענת_על_כדור_פיזיו_עם_משקולות",
+      "driveId": "1-8xIjMz7zrlHYC5MyBztWqcmdZOtLnte",
+      "he": "כפיפת מרפקים נשענת על כדור פיזיו עם משקולות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "ball",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "swiss ball preacher curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DCiDTM4MPki/",
+      "poster": "assets/posters/DCiDTM4MPki.jpg"
+    },
+    {
+      "id": "drive_כפיפת_מרפק_ביד_אחת_נשענת_על_כדור_פיזיו",
+      "driveId": "1BtxMuS1ZTk9xoHNHbiKa6LZIXd_SVlho",
+      "he": "כפיפת מרפק ביד אחת נשענת על כדור פיזיו",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "ball",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "stability ball one arm preacher curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DdehFUAJ-5h/",
+      "poster": "assets/posters/DdehFUAJ-5h.jpg"
+    },
+    {
+      "id": "drive_כדרור_כפול_בשני_כדורסל_לילדים",
+      "driveId": "161PqeSJ5aPV0w-iD6cbvpb5eGEWiBZRH",
+      "he": "כדרור כפול בשני כדורסל לילדים",
+      "muscles": [
+        "biceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "two ball pound dribble"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DUt8So-jbCP/",
+      "poster": "assets/posters/DUt8So-jbCP.jpg"
+    },
+    {
+      "id": "drive_כדרור_חזק_גבוה_במקום_בכדורסל",
+      "driveId": "129KbrtKMtiP1zVwKggdYrXQsOChX3-QL",
+      "he": "כדרור חזק גבוה במקום בכדורסל",
+      "muscles": [
+        "biceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "high pound dribble"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dc8dfEVDKRq/",
+      "poster": "assets/posters/Dc8dfEVDKRq.jpg"
+    },
+    {
+      "id": "drive_עליות_מתח_באחיזת_כדורי_טניס",
+      "driveId": "1bjkP83F3SDqS-4LFdYB2gVQjiMIFduJI",
+      "he": "עליות מתח באחיזת כדורי טניס",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "tennis-ball",
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "tennis ball grip pull ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Danvg5gpuiR/",
+      "poster": "assets/posters/Danvg5gpuiR.jpg"
+    },
+    {
+      "id": "drive_סדרת_עליות_מתח_של_ילד",
+      "driveId": "1jTsoQygPUHW02p4fYfss9qLKkSXVKGYF",
+      "he": "סדרת עליות מתח של ילד",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "kids pull ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DKsss4Jpst6/",
+      "poster": "assets/posters/DKsss4Jpst6.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_יהלום_לילדים",
+      "driveId": "1Jx3VPYdt-f3b_K_3-LGlgD1povnbG1Bc",
+      "he": "שכיבות סמיכה יהלום לילדים",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kids diamond push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfPhR2JofeW/",
+      "poster": "assets/posters/DfPhR2JofeW.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_יהלום_של_ילד",
+      "driveId": "1st9Da9mtIhcG6A7zksVaJLi7WDuaH5On",
+      "he": "שכיבות סמיכה יהלום של ילד",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kid diamond push up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DaAVB_ggN1l/",
+      "poster": "assets/posters/DaAVB_ggN1l.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_של_שני_ילדים",
+      "driveId": "1R2se0bR1Zust7lM9-IRVaGo253-KxIHJ",
+      "he": "שכיבות סמיכה של שני ילדים",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kids push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZ8W6bMJh5V/",
+      "poster": "assets/posters/DZ8W6bMJh5V.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_של_ילד_קטן",
+      "driveId": "1B4GV4H1ttpKGb818HaLKp0njCHKIs0AQ",
+      "he": "שכיבות סמיכה של ילד קטן",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "toddler push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DXlBDVSgPg3/",
+      "poster": "assets/posters/DXlBDVSgPg3.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_של_ילדה",
+      "driveId": "1tMGIT5IyLtwTYWxvS_SCY3haE34m-8X8",
+      "he": "שכיבות סמיכה של ילדה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "girl push ups"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dbvwd2ShYNR/",
+      "poster": "assets/posters/Dbvwd2ShYNR.jpg"
+    },
+    {
+      "id": "drive_מטפס_הרים_של_ילדה",
+      "driveId": "1pbgthYzDfswyLQHgnQAIGYWCk-ciVucr",
+      "he": "מטפס הרים של ילדה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "kids mountain climbers"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfUMp1vziTw/",
+      "poster": "assets/posters/DfUMp1vziTw.jpg"
+    },
+    {
+      "id": "drive_סקוואט_על_רגל_אחת_של_ילד",
+      "driveId": "1oGPdAviuG_9uFNq0N6URqGuJsOD3SUTn",
+      "he": "סקוואט על רגל אחת של ילד",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kids pistol squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DY4S7_yuk5Z/",
+      "poster": "assets/posters/DY4S7_yuk5Z.jpg"
+    },
+    {
+      "id": "drive_סקוואט_קפיצה_בסולם_קואורדינציה_לילדה",
+      "driveId": "1IOyir2XgiTLmz7DLrErCuR6tKnn05Lg1",
+      "he": "סקוואט קפיצה בסולם קואורדינציה לילדה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kids jump squats agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DebGMYjRODK/",
+      "poster": "assets/posters/DebGMYjRODK.jpg"
+    },
+    {
+      "id": "drive_היפראקסטנציה_הפוכה_על_כדור_פיזיו",
+      "driveId": "1yLjbrgTrxC_Wz1WPSL38J_x3WXw54iEP",
+      "he": "היפראקסטנציה הפוכה על כדור פיזיו",
+      "muscles": [
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "stability ball reverse hyperextension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Db_mNBLJecv/",
+      "poster": "assets/posters/Db_mNBLJecv.jpg"
+    },
+    {
+      "id": "drive_הרמת_רגליים_לאחור_בשכיבה_על_כדור_פיזיו",
+      "driveId": "178RkzZ9DYKlR0csU2dHWDvparAqdBx3m",
+      "he": "הרמת רגליים לאחור בשכיבה על כדור פיזיו",
+      "muscles": [
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "swiss ball reverse hyper"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Ddh4G2ihXRk/",
+      "poster": "assets/posters/Ddh4G2ihXRk.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_רגליים_על_כדור_פיזיו",
+      "driveId": "1Fh187VbXGWN_qjaATxn2jGhl7_OFbhTx",
+      "he": "שכיבות סמיכה עם רגליים על כדור פיזיו",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "stability ball decline push up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Da9q3OeJdnr/",
+      "poster": "assets/posters/Da9q3OeJdnr.jpg"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_ידיות_עם_רגליים_על_כדור_פיזיו",
+      "driveId": "1KdZvSm0oBtJpWhhSBHL6TEjUo9YjtXIy",
+      "he": "שכיבות סמיכה על ידיות עם רגליים על כדור פיזיו",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "feet on stability ball handle push up"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Dc4EqUvvv_q/",
+      "poster": "assets/posters/Dc4EqUvvv_q.jpg"
+    },
+    {
+      "id": "drive_ערבוב_סיר_על_כדור_פיזיו",
+      "driveId": "1kbQjTlRjh-YYBfGyM1FByubr_zr2Nuto",
+      "he": "ערבוב סיר על כדור פיזיו",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "stability ball stir the pot"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DciUxhkvyQM/",
+      "poster": "assets/posters/DciUxhkvyQM.jpg"
+    },
+    {
+      "id": "drive_פייק_עם_רגליים_על_כדור_פיזיו",
+      "driveId": "1VmpDKe5yGYamu0G1-ICyNzS9GUtPjhEY",
+      "he": "פייק עם רגליים על כדור פיזיו",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "stability ball pike"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbDQEQPSPar/",
+      "poster": "assets/posters/DbDQEQPSPar.jpg"
+    },
+    {
+      "id": "drive_דיפס_עם_עקבים_על_כדור_פיזיו",
+      "driveId": "1UL_y3EIWlm1g8HGZFWW5VS1TQJqUCO8u",
+      "he": "דיפס עם עקבים על כדור פיזיו",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "stability ball bench dips"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DVeniyskoCm/",
+      "poster": "assets/posters/DVeniyskoCm.jpg"
+    },
+    {
+      "id": "drive_דיפס_במקבילים_עם_רגליים_על_כדור_פיזיו",
+      "driveId": "1Ye119UKyYHvKmNmazZvpmU03Gn6Wu_Jc",
+      "he": "דיפס במקבילים עם רגליים על כדור פיזיו",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "stability ball feet dips"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DaShhJxxY0-/",
+      "poster": "assets/posters/DaShhJxxY0-.jpg"
+    },
+    {
+      "id": "drive_חתירה_ביד_אחת_עם_גומייה_בעמידת_מכרע",
+      "driveId": "1aZAeWGC7kthqXuSxL4XbOnwp43Vynl1X",
+      "he": "חתירה ביד אחת עם גומייה בעמידת מכרע",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "split stance single arm band row"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZLKClvIWdB/",
+      "poster": "assets/posters/DZLKClvIWdB.jpg"
+    },
+    {
+      "id": "drive_כפיפת_ריכוז_ביד_אחת_עם_גומייה",
+      "driveId": "1rV4tlj7YngEokGu3qvMoDzjGJlmITtuu",
+      "he": "כפיפת ריכוז ביד אחת עם גומייה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "single arm band concentration curl"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DEQ2kTJusT4/",
+      "poster": "assets/posters/DEQ2kTJusT4.jpg"
     }
   ]
 }
