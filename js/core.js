@@ -432,40 +432,56 @@
 		return isFinite(n) && n > 0 ? Math.round(n * 10) / 10 : null;
 	}
 
-	function normalizeClientDetails(raw) {
-		raw = raw && typeof raw === "object" ? raw : {};
-		var days = Array.isArray(raw.days) ? raw.days : [];
-		days = days
+	function filterClientDays(days) {
+		if (!Array.isArray(days)) return [];
+		return days
 			.map(Number)
 			.filter(function (d, i, a) {
-				return d >= 0 && d <= 6 && d === Math.floor(d) && a.indexOf(d) === i;
+				if (d < 0 || d > 6) return false;
+				if (d !== Math.floor(d)) return false;
+				return a.indexOf(d) === i;
 			})
 			.sort();
+	}
+
+	function clientMeasurementsList(measurements) {
+		if (!Array.isArray(measurements)) return [];
+		return measurements.map(normalizeMeasurement).filter(Boolean);
+	}
+
+	function normalizeClientDetails(raw) {
+		var r = raw && typeof raw === "object" ? raw : {};
+		var goalKey = r.goal;
+		var levelKey = r.level;
 		return {
-			nickname: String(raw.nickname || "")
+			nickname: String(r.nickname || "")
 				.trim()
 				.slice(0, 40),
-			goal: CLIENT_GOALS[raw.goal] ? raw.goal : "",
-			level: CLIENT_LEVELS[raw.level] ? raw.level : "",
-			days: days,
-			measurements: (Array.isArray(raw.measurements) ? raw.measurements : [])
-				.map(normalizeMeasurement)
-				.filter(Boolean),
+			goal: CLIENT_GOALS[goalKey] ? goalKey : "",
+			level: CLIENT_LEVELS[levelKey] ? levelKey : "",
+			days: filterClientDays(r.days),
+			measurements: clientMeasurementsList(r.measurements),
 		};
 	}
 
+	function hasMeasurementValue(out) {
+		if (out.weightKg != null) return true;
+		if (out.waistCm != null) return true;
+		return !!out.note;
+	}
+
 	function normalizeMeasurement(m) {
-		m = m && typeof m === "object" ? m : {};
+		var src = m && typeof m === "object" ? m : {};
 		var out = {
-			at: String(m.at || "").slice(0, 10),
-			weightKg: numOrNull(m.weightKg),
-			waistCm: numOrNull(m.waistCm),
-			note: String(m.note || "")
+			at: String(src.at || "").slice(0, 10),
+			weightKg: numOrNull(src.weightKg),
+			waistCm: numOrNull(src.waistCm),
+			note: String(src.note || "")
 				.trim()
 				.slice(0, 120),
 		};
 		if (!/^\d{4}-\d{2}-\d{2}$/.test(out.at)) return null;
-		if (out.weightKg == null && out.waistCm == null && !out.note) return null;
+		if (!hasMeasurementValue(out)) return null;
 		return out;
 	}
 
@@ -537,14 +553,25 @@
 	var BACKUP_FORMAT = "trainerhub-backup";
 	var BACKUP_ITER = 210000;
 
-	function subtle() {
-		var c = root.crypto && root.crypto.subtle ? root.crypto : null;
-		if (!c && typeof require === "function") {
-			try {
-				c = require("crypto").webcrypto;
-			} catch (e) {}
+	function nodeWebCrypto() {
+		if (typeof require !== "function") return null;
+		try {
+			return require("crypto").webcrypto || null;
+		} catch (e) {
+			return null;
 		}
-		if (!c || !c.subtle) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
+	}
+
+	function getSubtleCrypto() {
+		var rc = root.crypto;
+		if (rc && rc.subtle) return rc;
+		return nodeWebCrypto();
+	}
+
+	function subtle() {
+		var c = getSubtleCrypto();
+		if (!c) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
+		if (!c.subtle) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
 		return c;
 	}
 
@@ -568,6 +595,12 @@
 		return out;
 	}
 
+	function shouldIncludeBackupKey(k, names) {
+		if (!k) return false;
+		if (k.indexOf("trainerhub_") !== 0) return false;
+		return names.indexOf(k) === -1;
+	}
+
 	function backupKeyNames() {
 		var names = Object.keys(KEYS).map(function (k) {
 			return KEYS[k];
@@ -576,8 +609,7 @@
 		try {
 			for (i = 0; i < localStorage.length; i++) {
 				k = localStorage.key(i);
-				if (k && k.indexOf("trainerhub_") === 0 && names.indexOf(k) === -1)
-					names.push(k);
+				if (shouldIncludeBackupKey(k, names)) names.push(k);
 			}
 		} catch (e) {}
 		return names;
@@ -659,16 +691,33 @@
 			});
 	}
 
-	/** Resolves to { key: rawString } or rejects with a Hebrew message. */
-	function decryptBackup(text, password) {
+	function parseBackupFile(text) {
 		var file;
 		try {
 			file = typeof text === "string" ? JSON.parse(text) : text;
+			if (!file) return null;
+			if (file.format !== BACKUP_FORMAT) return null;
+			if (!file.data) return null;
+			return file;
 		} catch (e) {
+			return null;
+		}
+	}
+
+	function validateDecryptedPayload(buf) {
+		var data = JSON.parse(new TextDecoder().decode(buf));
+		if (!data) throw new Error("bad");
+		if (typeof data !== "object") throw new Error("bad");
+		if (Array.isArray(data)) throw new Error("bad");
+		return data;
+	}
+
+	/** Resolves to { key: rawString } or rejects with a Hebrew message. */
+	function decryptBackup(text, password) {
+		var file = parseBackupFile(text);
+		if (!file) {
 			return Promise.reject(new Error("הקובץ אינו גיבוי של TrainerHub."));
 		}
-		if (!file || file.format !== BACKUP_FORMAT || !file.data)
-			return Promise.reject(new Error("הקובץ אינו גיבוי של TrainerHub."));
 		var c;
 		try {
 			c = subtle();
@@ -684,12 +733,7 @@
 				);
 			})
 			.then(
-				function (buf) {
-					var data = JSON.parse(new TextDecoder().decode(buf));
-					if (!data || typeof data !== "object" || Array.isArray(data))
-						throw new Error("bad");
-					return data;
-				},
+				validateDecryptedPayload,
 				function () {
 					throw new Error("סיסמה שגויה או קובץ פגום.");
 				},
@@ -743,20 +787,31 @@
 		return parts.join(" ");
 	}
 
+	function findHebrewVoice(synth) {
+		if (!synth.getVoices) return null;
+		var voices = synth.getVoices() || [];
+		var i;
+		for (i = 0; i < voices.length; i++) {
+			if (/^he|^iw/i.test(voices[i].lang || "")) {
+				return voices[i];
+			}
+		}
+		return null;
+	}
+
 	/** Speaks Hebrew via the device's speechSynthesis (works offline with a local voice). Returns true if queued. */
 	function speakHebrew(text, win) {
-		win = win || root;
-		var synth = win && win.speechSynthesis;
-		var Utter = win && win.SpeechSynthesisUtterance;
-		var u, voices, he;
-		if (!text || !synth || !Utter) return false;
+		if (!text) return false;
+		var w = win || root;
+		if (!w) return false;
+		var synth = w.speechSynthesis;
+		var Utter = w.SpeechSynthesisUtterance;
+		if (!synth || !Utter) return false;
+		var u, he;
 		try {
 			u = new Utter(String(text));
 			u.lang = "he-IL";
-			voices = synth.getVoices ? synth.getVoices() : [];
-			he = (voices || []).filter(function (v) {
-				return /^he|^iw/i.test(v.lang || "");
-			})[0];
+			he = findHebrewVoice(synth);
 			if (he) u.voice = he;
 			synth.cancel();
 			synth.speak(u);
@@ -767,52 +822,66 @@
 	}
 
 	var cueAudio = null;
-	/** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
-	function restEndCue(win, opts) {
-		win = win || root;
-		opts = opts || {};
-		var out = { vibrated: false, beeped: false };
-		var nav, AC, t;
+
+	function playCueBeeps(ctx) {
+		var t = ctx.currentTime;
+		[0, 0.25].forEach(function (offset) {
+			var osc = ctx.createOscillator();
+			var gain = ctx.createGain();
+			osc.type = "sine";
+			osc.frequency.value = 880;
+			gain.gain.setValueAtTime(0.0001, t + offset);
+			gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
+			gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
+			osc.connect(gain);
+			gain.connect(ctx.destination);
+			osc.start(t + offset);
+			osc.stop(t + offset + 0.2);
+		});
+	}
+
+	function getCueAudio(win) {
+		var AC = win.AudioContext || win.webkitAudioContext;
+		if (!AC) return null;
+		cueAudio = cueAudio || new AC();
+		if (cueAudio.state === "suspended" && cueAudio.resume) {
+			cueAudio.resume();
+		}
+		return cueAudio;
+	}
+
+	function tryVibrate(win) {
+		var nav;
 		try {
 			nav = win.navigator;
-			if (nav && typeof nav.vibrate === "function")
-				out.vibrated = !!nav.vibrate([200, 100, 200]);
+			if (nav && typeof nav.vibrate === "function") {
+				return !!nav.vibrate([200, 100, 200]);
+			}
 		} catch (e) {}
-		if (opts.sound === false) return out;
+		return false;
+	}
+
+	/** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
+	function restEndCue(win, opts) {
+		var w = win || root;
+		var options = opts || {};
+		var out = { vibrated: tryVibrate(w), beeped: false };
+		if (options.sound === false) return out;
+		var ctx;
 		try {
-			AC = win.AudioContext || win.webkitAudioContext;
-			if (!AC) return out;
-			cueAudio = cueAudio || new AC();
-			if (cueAudio.state === "suspended" && cueAudio.resume) cueAudio.resume();
-			t = cueAudio.currentTime;
-			[0, 0.25].forEach(function (offset) {
-				var osc = cueAudio.createOscillator();
-				var gain = cueAudio.createGain();
-				osc.type = "sine";
-				osc.frequency.value = 880;
-				gain.gain.setValueAtTime(0.0001, t + offset);
-				gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
-				gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
-				osc.connect(gain);
-				gain.connect(cueAudio.destination);
-				osc.start(t + offset);
-				osc.stop(t + offset + 0.2);
-			});
-			out.beeped = true;
+			ctx = getCueAudio(w);
+			if (ctx) {
+				playCueBeeps(ctx);
+				out.beeped = true;
+			}
 		} catch (e) {}
 		return out;
 	}
 
 	/** Unlocks audio on a user gesture (iOS/Chrome autoplay rules). */
 	function primeAudio(win) {
-		win = win || root;
-		var AC;
 		try {
-			AC = win.AudioContext || win.webkitAudioContext;
-			if (!AC) return false;
-			cueAudio = cueAudio || new AC();
-			if (cueAudio.state === "suspended" && cueAudio.resume) cueAudio.resume();
-			return true;
+			return !!getCueAudio(win || root);
 		} catch (e) {
 			return false;
 		}
@@ -939,33 +1008,54 @@
 		return false;
 	}
 
+	function entryList(val, fallback) {
+		if (Array.isArray(val) && val.length) return val.slice();
+		return [fallback];
+	}
+
+	function entrySec(val) {
+		return val != null ? Number(val) : null;
+	}
+
+	function entryString(val) {
+		return val ? String(val) : "";
+	}
+
+	function entrySource(e, defaultSource) {
+		if (e.source) return e.source;
+		return defaultSource || "local";
+	}
+
+	function entryTitle(e, id) {
+		if (e.he) return e.he;
+		if (e.id) return e.id;
+		return id;
+	}
+
 	function normalizeEntry(id, raw, defaultSource) {
 		var e = raw && typeof raw === "object" ? raw : {};
+		var entryId = e.id || id;
+		var drivePlay = drivePlayIdOk(e.drivePlayId) ? e.drivePlayId : "";
+		var poster = typeof e.poster === "string" ? e.poster : "";
 		return {
-			id: e.id || id,
-			he: e.he || e.id || id,
-			muscles:
-				Array.isArray(e.muscles) && e.muscles.length
-					? e.muscles.slice()
-					: ["core"],
-			equipment:
-				Array.isArray(e.equipment) && e.equipment.length
-					? e.equipment.slice()
-					: ["none"],
+			id: entryId,
+			he: entryTitle(e, id),
+			muscles: entryList(e.muscles, "core"),
+			equipment: entryList(e.equipment, "none"),
 			level: e.level || "beginner",
 			aliases: aliasList(e),
-			source: e.source || defaultSource || "local",
-			file: e.file || "",
-			driveId: e.driveId || "",
-			drivePlayId: drivePlayIdOk(e.drivePlayId) ? e.drivePlayId : "",
-			youtubeId: e.youtubeId || "",
-			folder: e.folder || "",
-			externalUrl: e.externalUrl || "",
+			source: entrySource(e, defaultSource),
+			file: entryString(e.file),
+			driveId: entryString(e.driveId),
+			drivePlayId: drivePlay,
+			youtubeId: entryString(e.youtubeId),
+			folder: entryString(e.folder),
+			externalUrl: entryString(e.externalUrl),
 			available: e.available !== false,
-			startSec: e.startSec != null ? Number(e.startSec) : null,
-			endSec: e.endSec != null ? Number(e.endSec) : null,
-			segmentOf: e.segmentOf || "",
-			poster: typeof e.poster === "string" ? e.poster : "",
+			startSec: entrySec(e.startSec),
+			endSec: entrySec(e.endSec),
+			segmentOf: entryString(e.segmentOf),
+			poster: poster,
 		};
 	}
 
@@ -1017,6 +1107,28 @@
 		return q.length ? url + "?" + q.join("&") : url;
 	}
 
+	function isValidLocalPoster(str) {
+		if (!str) return false;
+		if (str.indexOf("..") !== -1) return false;
+		return !/^([a-z]+:|\/)/i.test(str);
+	}
+
+	function remotePosterUrl(entry) {
+		var yt = entry.youtubeId || "";
+		if (/^[A-Za-z0-9_-]{11}$/.test(yt)) {
+			return "https://i.ytimg.com/vi/" + yt + "/hqdefault.jpg";
+		}
+		var drive = entry.driveId || entry.file_id || "";
+		if (drive) {
+			return (
+				"https://drive.google.com/thumbnail?id=" +
+				encodeURIComponent(drive) +
+				"&sz=w480"
+			);
+		}
+		return "";
+	}
+
 	// Poster for a library card. A row that already has `file` plays that file;
 	// its driveId / legacyDriveId point at Drive objects that 404, so they are
 	// never turned into a thumbnail. legacyDriveId stays in the catalog data
@@ -1025,21 +1137,10 @@
 	function posterUrl(entry) {
 		if (!entry) return "";
 		var local = typeof entry.poster === "string" ? entry.poster.trim() : "";
-		if (local && local.indexOf("..") === -1 && !/^([a-z]+:|\/)/i.test(local))
-			return local;
+		if (isValidLocalPoster(local)) return local;
 		var file = typeof entry.file === "string" ? entry.file.trim() : "";
 		if (file) return "";
-		var yt = entry.youtubeId || "";
-		if (/^[A-Za-z0-9_-]{11}$/.test(yt))
-			return "https://i.ytimg.com/vi/" + yt + "/hqdefault.jpg";
-		var drive = entry.driveId || entry.file_id || "";
-		if (drive)
-			return (
-				"https://drive.google.com/thumbnail?id=" +
-				encodeURIComponent(drive) +
-				"&sz=w480"
-			);
-		return "";
+		return remotePosterUrl(entry);
 	}
 
 	function isOnline() {
@@ -1064,67 +1165,109 @@
 		return [];
 	}
 
-	function mergeCatalogs(localMap, driveData, userList) {
-		var out = {};
-		if (localMap && typeof localMap === "object" && !Array.isArray(localMap)) {
-			Object.keys(localMap).forEach(function (id) {
-				out[id] = normalizeEntry(
-					id,
-					localMap[id],
-					(localMap[id] && localMap[id].source) || "local",
-				);
-			});
-		}
-		driveItemsFrom(driveData).forEach(function (raw) {
-			if (!raw) return;
-			var defaultSource = raw.source || (raw.file ? "onedrive" : "drive");
-			var e = normalizeEntry(
-				raw.id || raw.driveId || raw.file,
-				raw,
-				defaultSource,
-			);
-			if (!isPlayable(e)) return;
-			var duplicateAsset =
-				e.file &&
-				Object.keys(out).some(function (existingId) {
-					return out[existingId] && out[existingId].file === e.file;
-				});
-			if (duplicateAsset) return;
-			var id = e.id;
-			if (out[id]) id = (e.source || "media") + "_" + id;
-			e.id = id;
-			out[id] = e;
+	function isPlainCatalogMap(obj) {
+		if (!obj) return false;
+		if (typeof obj !== "object") return false;
+		return !Array.isArray(obj);
+	}
+
+	function mergeLocalCatalog(out, localMap) {
+		if (!isPlainCatalogMap(localMap)) return;
+		Object.keys(localMap).forEach(function (id) {
+			var item = localMap[id];
+			var src = item && item.source ? item.source : "local";
+			out[id] = normalizeEntry(id, item, src);
 		});
-		(userList || []).forEach(function (raw) {
+	}
+
+	function hasDuplicateAssetFile(out, file) {
+		if (!file) return false;
+		return Object.keys(out).some(function (existingId) {
+			return out[existingId] && out[existingId].file === file;
+		});
+	}
+
+	function rawItemSource(raw) {
+		if (raw.source) return raw.source;
+		return raw.file ? "onedrive" : "drive";
+	}
+
+	function rawItemId(raw) {
+		return raw.id || raw.driveId || raw.file;
+	}
+
+	function ensureUniqueId(out, e) {
+		var id = e.id;
+		if (out[id]) return (e.source || "media") + "_" + id;
+		return id;
+	}
+
+	function addDriveItemToCatalog(out, raw) {
+		if (!raw) return;
+		var e = normalizeEntry(
+			rawItemId(raw),
+			raw,
+			rawItemSource(raw),
+		);
+		if (!isPlayable(e)) return;
+		if (hasDuplicateAssetFile(out, e.file)) return;
+		e.id = ensureUniqueId(out, e);
+		out[e.id] = e;
+	}
+
+	function mergeUserCatalog(out, userList) {
+		if (!Array.isArray(userList)) return;
+		userList.forEach(function (raw) {
 			if (!raw || !raw.id) return;
 			out[raw.id] = normalizeEntry(raw.id, raw, raw.source || "user");
 		});
+	}
+
+	function mergeCatalogs(localMap, driveData, userList) {
+		var out = {};
+		mergeLocalCatalog(out, localMap);
+		driveItemsFrom(driveData).forEach(function (raw) {
+			addDriveItemToCatalog(out, raw);
+		});
+		mergeUserCatalog(out, userList);
 		return out;
+	}
+
+	function emptyArrayIfNull(arr) {
+		return arr || [];
+	}
+
+	function catalogItemProp(val, fallback) {
+		return val != null ? val : fallback;
+	}
+
+	function formatCatalogEntry(id, e) {
+		var safe = e || {};
+		return {
+			id: id,
+			he: safe.he,
+			muscles: emptyArrayIfNull(safe.muscles),
+			equipment: safe.equipment || ["none"],
+			level: safe.level || "beginner",
+			aliases: emptyArrayIfNull(safe.aliases),
+			file: entryString(safe.file),
+			source: safe.source || "local",
+			driveId: entryString(safe.driveId),
+			drivePlayId: entryString(safe.drivePlayId),
+			youtubeId: entryString(safe.youtubeId),
+			folder: entryString(safe.folder),
+			externalUrl: entryString(safe.externalUrl),
+			available: safe.available !== false,
+			startSec: catalogItemProp(safe.startSec, null),
+			endSec: catalogItemProp(safe.endSec, null),
+			segmentOf: entryString(safe.segmentOf),
+			poster: entryString(safe.poster),
+		};
 	}
 
 	function catalogList() {
 		return Object.keys(catalog).map(function (id) {
-			var e = catalog[id] || {};
-			return {
-				id: id,
-				he: e.he,
-				muscles: e.muscles || [],
-				equipment: e.equipment || ["none"],
-				level: e.level || "beginner",
-				aliases: e.aliases || [],
-				file: e.file || "",
-				source: e.source || "local",
-				driveId: e.driveId || "",
-				drivePlayId: e.drivePlayId || "",
-				youtubeId: e.youtubeId || "",
-				folder: e.folder || "",
-				externalUrl: e.externalUrl || "",
-				available: e.available !== false,
-				startSec: e.startSec != null ? e.startSec : null,
-				endSec: e.endSec != null ? e.endSec : null,
-				segmentOf: e.segmentOf || "",
-				poster: e.poster || "",
-			};
+			return formatCatalogEntry(id, catalog[id]);
 		});
 	}
 
@@ -1141,16 +1284,18 @@
 			NAME_ALIASES[key] ||
 			NAME_ALIASES[normalizeName(key)] ||
 			NAME_ALIASES[foldHe(key)];
-		if (mapped && catalog[mapped] && isPlayable(catalog[mapped]))
-			return catalog[mapped];
+		if (!mapped) return null;
+		var entry = catalog[mapped];
+		if (entry && isPlayable(entry)) return entry;
 		return null;
 	}
 
 	function aliasListHas(entry, key) {
+		if (!key) return false;
 		var list = entry && entry.aliases;
-		var folded, i;
-		if (!key || !list || !list.length) return false;
-		folded = foldHe(key);
+		if (!list || !list.length) return false;
+		var folded = foldHe(key);
+		var i;
 		for (i = 0; i < list.length; i++) {
 			if (list[i] === key || foldHe(list[i]) === folded) return true;
 		}
@@ -1180,34 +1325,58 @@
 		return s.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "");
 	}
 
+	function isMeaningfulCandidate(x) {
+		return x.length >= 3 && x !== "או";
+	}
+
+	function addCleanCandidate(out, part) {
+		var x = String(part || "")
+			.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "")
+			.trim();
+		if (!x || x.length < 2) return;
+		if (out.indexOf(x) === -1) out.push(x);
+	}
+
+	function appendCandidateFallbacks(out, raw) {
+		var s = String(raw || "");
+		if (out.length === 0 && /(?:מ׳|ק״מ|ק"מ|דק׳)/.test(s)) {
+			addCleanCandidate(out, "ריצת 3000");
+		}
+		if (!out.some(isMeaningfulCandidate) && /(?:מ׳|ק״מ|ק"מ)/.test(s)) {
+			addCleanCandidate(out, "אינטרוולים");
+		}
+	}
+
 	function nameCandidates(raw) {
 		var stripped = stripDosage(raw);
 		var out = [];
-		function add(part) {
-			var x = String(part || "")
-				.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "")
-				.trim();
-			if (!x || x.length < 2 || out.indexOf(x) !== -1) return;
-			out.push(x);
-		}
-		add(stripped);
+		addCleanCandidate(out, stripped);
 		String(stripped)
 			.split(/\s*(?:\/|,| או )\s*/)
 			.forEach(function (part) {
-				add(part);
+				addCleanCandidate(out, part);
 				var bits = part.split(":");
-				if (bits.length > 1) bits.slice(1).forEach(add);
+				if (bits.length > 1) {
+					bits.slice(1).forEach(function (b) {
+						addCleanCandidate(out, b);
+					});
+				}
 			});
-		if (!out.length && /(?:מ׳|ק״מ|ק"מ|דק׳)/.test(String(raw || "")))
-			add("ריצת 3000");
-		var meaningful = out.filter(function (x) {
-			return x.length >= 3 && x !== "או";
-		});
-		if (!meaningful.length && /(?:מ׳|ק״מ|ק"מ)/.test(String(raw || "")))
-			add("אינטרוולים");
-		return out.filter(function (x) {
-			return x.length >= 3 && x !== "או";
-		});
+		appendCandidateFallbacks(out, raw);
+		return out.filter(isMeaningfulCandidate);
+	}
+
+	function entryMatchesExactName(entry, key, name) {
+		if (entry.he === name) return true;
+		if (key === name) return true;
+		return HE_NAMES[key] === name;
+	}
+
+	function entryMatchesPlayableName(entry, key, name, folded) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (entryMatchesExactName(entry, key, name)) return true;
+		if (aliasListHas(entry, name)) return true;
+		return foldHe(entry.he) === folded;
 	}
 
 	function matchPlayableName(name) {
@@ -1215,14 +1384,14 @@
 		var viaMap = mappedAlias(name);
 		if (viaMap) return viaMap;
 		var keys = Object.keys(catalog);
-		var i, entry;
+		var folded = foldHe(name);
+		var i, entry, k;
 		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
+			k = keys[i];
+			entry = catalog[k];
+			if (entryMatchesPlayableName(entry, k, name, folded)) {
 				return entry;
-			if (aliasListHas(entry, name)) return entry;
-			if (foldHe(entry.he) === foldHe(name)) return entry;
+			}
 		}
 		return null;
 	}
