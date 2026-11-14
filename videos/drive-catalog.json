@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 292,
+    "count": 298,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 245
+    "driveReelCount": 251
   },
   "items": [
     {
@@ -5780,6 +5780,129 @@
       ],
       "sourceUrl": "https://www.instagram.com/reel/DN0jXsR4rhO/",
       "poster": "assets/posters/DN0jXsR4rhO.jpg"
+    },
+    {
+      "id": "drive_האק_סקוואט_במכונת_פלטות",
+      "driveId": "1L4e5DUAaIcvMUTo29nOWS-s2T3pTd0L3",
+      "he": "האק סקוואט במכונת פלטות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "machine hack squat"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DSNJwLRDLBy/",
+      "poster": "assets/posters/DSNJwLRDLBy.jpg"
+    },
+    {
+      "id": "drive_הרמות_Y_בכבל_על_ספסל_משופע",
+      "driveId": "1ogQv8amxm8WWZ3LXTbJ_l6_XOGgITpAB",
+      "he": "הרמות Y בכבל על ספסל משופע",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "incline bench cable Y raise"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DUqstDEgQui/",
+      "poster": "assets/posters/DUqstDEgQui.jpg"
+    },
+    {
+      "id": "drive_הרחקה_צידית_בכבל_ביד_אחת",
+      "driveId": "1rZLjxFzSQ1h-3CSMkO-U4J-BEuIS57Gp",
+      "he": "הרחקה צידית בכבל ביד אחת",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "single arm cable lateral raise"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/Ddy2XLyz80o/",
+      "poster": "assets/posters/Ddy2XLyz80o.jpg"
+    },
+    {
+      "id": "drive_לחיצת_כתפיים_במכונה",
+      "driveId": "1n4alreyEc29PekuToyGE5g6wKQWsprsB",
+      "he": "לחיצת כתפיים במכונה",
+      "muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "machine shoulder press"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DZNTfhAJuAc/",
+      "poster": "assets/posters/DZNTfhAJuAc.jpg"
+    },
+    {
+      "id": "drive_פשיטת_מרפקים_מעל_הראש_בכבל_ביד_אחת",
+      "driveId": "15sCOsheKiROTnYXhgtT-rrV5DVJtasgp",
+      "he": "פשיטת מרפקים מעל הראש בכבל ביד אחת",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "single arm overhead cable triceps extension"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DbD2JkctvzG/",
+      "poster": "assets/posters/DbD2JkctvzG.jpg"
+    },
+    {
+      "id": "drive_הליכת_קיר_לעמידת_ידיים",
+      "driveId": "19CwU9lZQ9tNb60Hmt37pHMm0Ds94jSNh",
+      "he": "הליכת קיר לעמידת ידיים",
+      "muscles": [
+        "shoulders",
+        "core",
+        "back"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "wall walk"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DHUSPLNPBY_/",
+      "poster": "assets/posters/DHUSPLNPBY_.jpg"
     }
   ]
 }
