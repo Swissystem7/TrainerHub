@@ -1,0 +1,1008 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta name="description" content="כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה.">
+  <title>TrainerHub | בנה אימון</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
+  <link rel="stylesheet" href="./css/app.css">
+  <style>
+    :root { --bg:var(--th-bg); --card:var(--th-surface); --line:var(--th-line); --ink:var(--th-ink); --muted:var(--th-muted); --lime:var(--th-teal); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--th-bg); color: var(--ink); font-family: var(--th-font); min-height: 100vh; }
+    .wrap { max-width: 760px; margin: auto; padding: 16px 16px 72px; }
+    .top { background: var(--th-hero); color: var(--th-on-hero); border-radius: var(--th-r-xl); padding: 24px 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .top small { color: var(--th-orange); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .top h1 { font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 900; margin: 0; line-height: 1.15; }
+    .top p { color: var(--th-on-hero); opacity: .85; font-size: 1rem; line-height: 1.6; max-width: 38rem; margin: 0; }
+    .top .th-btn { background: var(--th-orange); color: var(--th-on-orange); min-height: 56px; font-size: 17px; font-weight: 800; padding: 0 24px; }
+    form.prompt { margin: 20px 0 12px; }
+    .input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+    .input-grid label { margin-top: 0; }
+    .field-help { color: var(--muted); font-size: 13px; line-height: 1.4; margin: 8px 0 0; }
+    label { display: block; color: var(--ink); font-size: 14px; font-weight: 700; margin: 12px 0 8px; }
+    #prompt, #ingestText {
+      width: 100%; min-height: 110px; resize: vertical;
+      padding: 16px; border-radius: var(--th-r-md); border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5;
+    }
+    input, select {
+      width: 100%; min-height: 48px; padding: 0 16px; border-radius: var(--th-r-sm); border: 1.5px solid var(--line);
+      background: var(--th-surface); color: var(--ink); font: inherit; font-size: 16px;
+    }
+    .go { width: 100%; min-height: 56px; margin-top: 16px; padding: 0 24px; border: 0; border-radius: var(--th-r-md); background: var(--th-teal); color: var(--th-on-teal); font-weight: 800; font-size: 17px; cursor: pointer; font-family: inherit; }
+    .go:hover { filter: brightness(1.08); }
+    .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 24px; }
+    .examples button {
+      min-height: var(--th-tap); background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink);
+      border-radius: 999px; padding: 0 16px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    }
+    .examples button:hover { border-color: var(--th-teal); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--th-r-lg); padding: 16px; margin-bottom: 12px; }
+    .card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 800; }
+    .notice { background: var(--th-orange-soft); border-color: transparent; color: var(--th-orange-ink); }
+    .empty { color: var(--muted); text-align: center; padding: 12px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+    .pill { background: var(--th-teal-soft); color: var(--th-teal-ink); border-radius: 6px; padding: 4px 12px; font-size: 13px; font-weight: 700; }
+    .ex { border-top: 1px solid var(--line); padding: 12px 0; }
+    .ex:first-of-type { border-top: 0; }
+    .ex b { display: block; margin-bottom: 4px; font-size: 16px; }
+    .why { color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .actions button { width: auto; margin-top: 0; }
+    .flags { margin: 8px 0 0; padding: 0; list-style: none; }
+    .flags li { color: var(--th-orange-ink); font-size: 14px; margin: 4px 0; }
+    .stim { margin: 8px 0 0; color: var(--ink); line-height: 1.5; }
+    .stim small { display: block; color: var(--muted); margin-top: 4px; }
+    .phase { color: var(--th-orange-ink); font-size: 13px; font-weight: 700; margin: 16px 0 4px; }
+    .status { color: var(--th-teal-ink); font-size: 14px; min-height: 1.2em; margin-top: 8px; }
+    .modes { display: flex; gap: 4px; margin: 20px 0 8px; padding: 4px; background: var(--th-surface2); border-radius: var(--th-r-md); }
+    .modes button {
+      flex: 1; min-height: var(--th-tap); background: transparent; border: 0; color: var(--muted);
+      border-radius: 10px; padding: 0 8px; font: inherit; font-size: 15px; font-weight: 500; white-space: nowrap; cursor: pointer;
+    }
+    .modes button[aria-selected="true"] { background: var(--th-surface); color: var(--ink); font-weight: 700; box-shadow: 0 1px 2px rgba(15,27,25,.08); }
+    .panel[hidden] { display: none !important; }
+    .missing { color: var(--th-orange-ink); font-size: 13px; }
+    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ex-media { width: 100%; min-height: 180px; border: 0; border-radius: var(--th-r-sm); background: var(--th-hero); }
+    .ex-media-segment, .honest { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .rules { margin-top: 16px; }
+    .rules h2 { font-size: 16px; }
+    .rules-for { color: var(--muted); font-size: 13px; line-height: 1.45; margin: 6px 0 0; }
+    .rules-list { margin: 10px 0 0; padding: 0; list-style: none; }
+    .rule { border-top: 1px solid var(--line); padding: 10px 0; }
+    .rule:first-of-type { border-top: 0; }
+    .rule b { display: block; margin-bottom: 4px; }
+    .rule-value { display: block; color: var(--ink); font-size: 15px; line-height: 1.45; }
+    .rule-source { display: inline-block; margin-top: 6px; }
+    .rule-detail { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 4px; }
+    @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } .th-steps { margin-top: 16px; } }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+  </style>
+<script src="./js/sentry-init.js"></script>
+</head>
+<body class="th-ds">
+<a class="skip-link" href="#prompt">דלג לשדה האימון</a>
+<nav class="th-nav" aria-label="ניווט ראשי">
+  <span class="brand">TrainerHub</span>
+  <span class="chip on">בנה אימון</span>
+  <a href="./weekly.html">בונה שבועי</a>
+  <a href="./library.html">ספריית סרטונים</a>
+  <a href="./exercises.html">ספריית תרגילים</a>
+  <a href="./scan.html">סריקת סביבה</a>
+  <a href="./booklet.html">תיק בטיחות</a>
+  <a href="./reserves.html">מדדי מילואים</a>
+  <a href="reserves.html">מסלול כושר למילואים</a>
+
+  <a href="./journal.html">יומן ביצוע</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
+  <a href="./frontend/workout-mode.html">מצב אימון חי</a>
+</nav>
+<div class="th-banner">
+  האימון נבנה בדפדפן מהמאגר האמיתי — בלי שרת, בלי מפתח, בלי המתנה. זה לא מבטיח תוצאה גופנית.
+</div>
+<main class="wrap">
+  <header class="top">
+    <small>TRAINERHUB / מנוע אימון</small>
+    <h1>תגיד איזה אימון אתה רוצה.</h1>
+    <p>בוחרים זמן, ציוד וכמות חניכים, מוסיפים מטרה קצרה — ומקבלים אימון מהמאגר עם הסבר על כל בחירה.</p>
+    <a class="th-btn energy" href="./site-scan.html">📷 סרוק את השטח</a>
+  </header>
+  <ol class="th-steps">
+    <li><b>1. כותבים</b>מה רוצים, או מדביקים אימון קיים.</li>
+    <li><b>2. מקבלים תוכנית</b>מהמאגר, עם הסבר ולמה נבחר כל תרגיל.</li>
+    <li><b>3. מריצים</b>טיימר + סרטון. בלי רשת נשאר שם התרגיל.</li>
+    <li><b>4. פותחים כמתאמן</b>בלי קוד. שיתוף ללקוח ויומן — אחרי זה.</li>
+  </ol>
+
+  <div class="modes" role="tablist" aria-label="מצב בנייה">
+    <button type="button" role="tab" id="tab-prompt" aria-controls="panel-prompt" aria-selected="true" tabindex="0" aria-label="בנייה לפי בקשה">מה אתה רוצה</button>
+    <button type="button" role="tab" id="tab-ingest" aria-controls="panel-ingest" aria-selected="false" tabindex="-1" aria-label="הדבקת אימון קיים">הדבק אימון</button>
+    <button type="button" role="tab" id="tab-seg" aria-controls="panel-seg" aria-selected="false" tabindex="-1" aria-label="פירוק סרטון דרייב למקטעים">פרק סרטון</button>
+  </div>
+
+  <div class="panel" id="panel-prompt" role="tabpanel" aria-labelledby="tab-prompt">
+    <form class="prompt" id="form">
+      <label for="prompt">מה האימון?</label>
+      <textarea id="prompt" name="prompt" rows="3" maxlength="280" placeholder="למשל: אימון בטן למתחילים" autocomplete="off"></textarea>
+      <div class="input-grid">
+        <div>
+          <label for="durationInput">זמן (דקות)</label>
+          <input id="durationInput" name="duration" type="number" min="5" max="180" step="5" value="20" inputmode="numeric">
+        </div>
+        <div>
+          <label for="equipmentInput">ציוד</label>
+          <select id="equipmentInput" name="equipment">
+            <option value="auto">לפי הבקשה</option>
+            <option value="none">ללא ציוד</option>
+            <option value="band">גומיות</option>
+            <option value="cones">קונוסים</option>
+            <option value="ball">כדור</option>
+            <option value="tennis-ball">כדור טניס</option>
+            <option value="basketball">כדורסל</option>
+            <option value="football">כדורגל</option>
+            <option value="bar">מתח</option>
+            <option value="stairs">מדרגות</option>
+          </select>
+        </div>
+        <div>
+          <label for="participantsInput">כמות חניכים</label>
+          <input id="participantsInput" name="participants" type="number" min="1" max="500" step="1" value="1" inputmode="numeric">
+        </div>
+      </div>
+      <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
+      <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
+    </form>
+    <!-- biome-ignore lint/a11y/useSemanticElements: example fill buttons group -->
+    <div class="examples" role="group" aria-label="דוגמאות אימון למילוי מהיר">
+      <button type="button" data-fill="אימון בטן 20 דקות בלי ציוד" aria-label="מלא דוגמה: אימון בטן 20 דקות בלי ציוד">אימון בטן 20 דקות בלי ציוד</button>
+      <button type="button" data-fill="פול בודי עם גומיות, מתחיל" aria-label="מלא דוגמה: פול בודי עם גומיות, מתחיל">פול בודי עם גומיות, מתחיל</button>
+      <button type="button" data-fill="כוח גב 30 דקות" aria-label="מלא דוגמה: כוח גב 30 דקות">כוח גב 30 דקות</button>
+      <button type="button" data-fill="ידיים בלי ציוד, ביניים" aria-label="מלא דוגמה: ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-ingest" role="tabpanel" aria-labelledby="tab-ingest" hidden>
+    <form class="prompt" id="ingestForm">
+      <label for="ingestText">הדביקו אימון בעברית</label>
+      <textarea id="ingestText" name="ingestText" rows="5" placeholder="3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה, 20 מטפס הרים, דקה מנוחה" autocomplete="off"></textarea>
+      <button type="submit" class="go" aria-label="פרק את הטקסט המודבק לתרגילים">פרק לתרגילים</button>
+    </form>
+    <p class="honest">הפרסר מפרק לסטים וחזרות ומתאים כל תרגיל לסרטון במאגר, כולל שגיאות כתיב נפוצות. תרגיל בלי סרטון מוצג כטקסט ונכנס לרשימת «סרטונים שכדאי לצלם».</p>
+  </div>
+
+  <div class="panel" id="panel-seg" role="tabpanel" aria-labelledby="tab-seg" hidden>
+    <form class="prompt" id="segForm">
+      <label for="segSource">סרטון דרייב לפיצול</label>
+      <select id="segSource">
+        <option value="">בחרו סרטון מהמאגר…</option>
+      </select>
+      <label for="segUrl">או הדביקו קישור / מזהה דרייב</label>
+      <input id="segUrl" name="segUrl" type="text" autocomplete="off" placeholder="https://drive.google.com/file/d/…/view">
+      <div id="segPlayer" class="card" hidden></div>
+      <p class="honest">נגן הדרייב לא מוסר זמן מדויק. מתחילים מעקב כשלוחצים «התחל מעקב», או מזינים שניות ידנית. אין זיהוי תרגיל אוטומטי מהווידאו.</p>
+      <div class="actions" role="toolbar" aria-label="פעולות מעקב סרטון">
+        <button type="button" class="th-btn ghost" id="segWatch" aria-label="הצג סרטון בנגן">הצג סרטון</button>
+        <button type="button" class="th-btn ghost" id="segTrack" aria-label="התחל מעקב זמן סרטון">התחל מעקב</button>
+        <button type="button" class="th-btn ghost" id="segMarkStart" aria-label="סמן זמן התחלה של המקטע">סמן התחלה</button>
+        <button type="button" class="th-btn ghost" id="segMarkEnd" aria-label="סמן זמן סיום של המקטע">סמן סוף</button>
+      </div>
+      <div class="seg-grid">
+        <div>
+          <label for="segStart">התחלה (שניות)</label>
+          <input id="segStart" name="segStart" type="number" min="0" step="1" value="0">
+        </div>
+        <div>
+          <label for="segEnd">סוף (שניות)</label>
+          <input id="segEnd" name="segEnd" type="number" min="1" step="1" value="30">
+        </div>
+      </div>
+      <label for="segName">שם התרגיל במקטע</label>
+      <input id="segName" name="segName" type="text" autocomplete="off" placeholder="פלאנק צידי">
+      <button type="submit" class="go" aria-label="שמור מקטע תרגיל במאגר המקומי">שמור מקטע במאגר</button>
+      <p class="status" id="segStatus" role="status"></p>
+    </form>
+  </div>
+
+  <!-- biome-ignore lint/a11y/useSemanticElements: live result region -->
+  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
+</main>
+<script src="./js/core.js"></script>
+<script src="./js/pilot.js"></script>
+<script src="./js/infer.js"></script>
+<script src="./js/analyzer.js"></script>
+<script src="./js/prompt-parser.js"></script>
+<script src="./js/session-builder.js"></script>
+<script src="./js/rules-with-sources.js"></script>
+<script src="./js/ingest.js"></script>
+<script>
+(() => {
+  var $ = (id) => document.getElementById(id);
+  var trackStartedAt = 0;
+
+  function muscleList(ids) {
+    return (ids || []).map((m) => TH.muscleLabel(m)).join(', ') || '—';
+  }
+
+  // The equipment select value for a parsed equipment list: exactly one id that the
+  // select offers, otherwise «לפי הבקשה» so the request text decides.
+  function equipmentOption(list) {
+    if (!Array.isArray(list) || list.length !== 1) return 'auto';
+    var options = $('equipmentInput').options || [];
+    var i;
+    for (i = 0; i < options.length; i++) {
+      if (options[i].value === list[0]) return list[0];
+    }
+    return 'auto';
+  }
+
+  function switchTab(id) {
+    ['prompt', 'ingest', 'seg'].forEach((key) => {
+      var tab = $('tab-' + key);
+      var panel = $('panel-' + key);
+      var on = key === id;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+      if (on) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+    });
+  }
+
+  function bindWorkoutActions(w) {
+    $('startBtn').addEventListener('click', () => {
+      TH.store.set(TH.KEYS.active, w);
+      location.href = './frontend/workout-mode.html';
+    });
+    $('previewBtn').addEventListener('click', () => {
+      location.href = TH.encodeLink(w, {});
+    });
+    $('copyBtn').addEventListener('click', () => {
+      var shared = TH.shareToClient(w, {});
+      var host = $('copyBtn').parentNode;
+      var old = host.parentNode.querySelector('.th-gate');
+      if (old) old.parentNode.removeChild(old);
+      if (!shared.ok) {
+        host.insertAdjacentHTML('afterend', TH.gateMarkup('share'));
+        return;
+      }
+      var oldQr = host.parentNode.querySelector('[data-role="share-qr"]');
+      if (oldQr) oldQr.parentNode.removeChild(oldQr);
+      if (TH.shareQrMarkup) host.insertAdjacentHTML('afterend', TH.shareQrMarkup(shared.url));
+      TH.copyOrShow(shared.url, host, () => {
+        $('copyBtn').textContent = 'הועתק';
+        setTimeout(() => { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
+      });
+    });
+    $('pdfBtn').addEventListener('click', () => {
+      TH.preparePrint(w, {});
+      location.href = TH.printUrl();
+    });
+  }
+
+  // A pasted row keeps what the coach wrote beyond sets × reps: «80 ק"ג»,
+  // «עד כשל», «לכל רגל», «10-12» live in notes, and «מתח 3xמקס» has sets but
+  // no reps. The card showed only sets × reps, so those rows lost the load or
+  // showed a bare «מתח». «חסר סרטון» is left out - the row says it below.
+  // The rest between sets is shown too, like the print sheet and weekly.html:
+  // a pasted «3x10 מנוחה 60 שניות» lost its rest on the card.
+  function exerciseBits(ex) {
+    var bits = [];
+    if (ex.sets && ex.reps) bits.push(ex.sets + ' × ' + ex.reps);
+    else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
+    else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
+    if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
+    String(ex.notes || '').split(' · ').forEach((note) => {
+      note = note.trim();
+      if (note && note !== 'חסר סרטון') bits.push(note);
+    });
+    return bits;
+  }
+
+  function render(built) {
+    var box = $('result');
+    if (!built || !built.workout) {
+      box.innerHTML = '<div class="card notice" role="status"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
+      return;
+    }
+    var w = built.workout;
+    var exp = built.explanation || {};
+    var stim = exp.stimulus || {};
+    var notice = built.notice
+      ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
+      : '';
+    var flags = (exp.flags || []).length
+      ? '<ul class="flags">' + exp.flags.map((f) => '<li>' + TH.esc(f.he) + '</li>').join('') + '</ul>'
+      : '';
+    var phases = (w.phases || []).map((ph) => {
+      if (!(ph.exercises || []).length) return '';
+      var label = TH.phaseLabel(ph.name);
+      var rows = (ph.exercises || []).map((ex) => {
+        var reason = (exp.reasons || []).filter((r) => r.id === ex.id)[0];
+        var bits = exerciseBits(ex);
+        var clip = ex.id ? TH.findExercise(ex) : null;
+        var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+        var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
+        return '<div class="ex"><b>' + TH.esc(ex.name) +
+          (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
+          '</b>' + (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
+          miss + media + '</div>';
+      }).join('');
+      return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
+    }).join('');
+    // Every assumption behind the plan, with its source, so it can be read before «התחל אימון».
+    var rules = built.request
+      ? TH.rulesMarkup(built, { className: 'rules', title: 'הנחות האימון ומקורותיהן' })
+      : '';
+    var equipment = (w.equipment || []).length ? w.equipment.join(', ') : 'לפי המאגר';
+    var groupPlan = w.group_plan && w.group_plan.he
+      ? '<p class="stim"><strong>סידור קבוצה:</strong> ' + TH.esc(w.group_plan.he) + '</p>'
+      : '';
+
+    box.innerHTML = notice +
+      '<article class="card">' +
+        '<h2>' + TH.esc(w.title) + '</h2>' +
+        '<div class="meta">' +
+          (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
+          '<span class="pill">זמן: ' + TH.esc(TH.durationLabel(w.duration_minutes, exp.durationMinutes)) + '</span>' +
+          '<span class="pill">ציוד: ' + TH.esc(equipment) + '</span>' +
+          '<span class="pill">חניכים: ' + TH.esc(w.participants || 1) + '</span>' +
+          '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
+          '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
+        '</div>' +
+        (stim.he
+          ? '<p class="stim"><strong>גירוי צפוי: ' + TH.esc(stim.he) + '</strong>' +
+            '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
+          : '') +
+        flags +
+        groupPlan +
+        phases +
+        rules +
+        '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
+          '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
+          '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
+          '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
+        '</div>' +
+      '</article>';
+
+    bindWorkoutActions(w);
+  }
+
+  function renderIngest(ingested) {
+    var w = ingested.workout;
+    var analysis = w.analysis || (typeof THAnalyzer !== 'undefined' ? THAnalyzer.analyzeSession(w) : null);
+    var unmatched = ingested.unmatched || [];
+    var wish = (ingested.wishlist || []).map((item) => '<li>' + TH.esc(item.he) + '</li>').join('');
+    var notice = unmatched.length
+      ? '<div class="card notice" role="status"><p>' +
+        // One missing clip read «1 תרגילים בלי סרטון במאגר. הם מוצגים…».
+        TH.esc(unmatched.length === 1
+          ? 'תרגיל אחד בלי סרטון במאגר. הוא מוצג כטקסט ונוסף לרשימת «סרטונים שכדאי לצלם».'
+          : unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
+        '</p><ul class="flags">' + unmatched.map((n) => '<li>' + TH.esc(n) + '</li>').join('') + '</ul></div>'
+      : '';
+    render({
+      workout: w,
+      notice: null,
+      explanation: analysis ? {
+        type: 'אימון שנקלט מטקסט',
+        durationMinutes: analysis.durationMinutes,
+        primary: analysis.primary,
+        secondary: analysis.secondary,
+        stimulus: analysis.stimulus,
+        flags: analysis.flags,
+        reasons: []
+      } : { type: 'אימון שנקלט מטקסט', primary: [], secondary: [], stimulus: {}, flags: [], reasons: [] }
+    });
+    if (notice) $('result').insertAdjacentHTML('afterbegin', notice);
+    if (wish) {
+      $('result').insertAdjacentHTML('beforeend',
+        '<div class="card"><h2>סרטונים שכדאי לצלם</h2><ul class="flags">' + wish +
+        '</ul><p class="honest"><a href="./manage.html">ניהול מאגר</a> — הוספת סרטון בלי לגעת בקוד.</p></div>');
+    }
+  }
+
+  // run() reads the duration and head count from the fields, so a typed
+  // «אימון רגליים 45 דקות ל-12 חניכים» used to build 20 minutes for one
+  // trainee. When the text names a length or a head count, the field follows
+  // it; a field the text does not name keeps whatever the coach set.
+  function syncFieldsFromPrompt() {
+    var text = $('prompt').value.trim();
+    if (!text) return;
+    var parsed = THPrompt.parsePrompt(text);
+    if (parsed.durationSpecified) $('durationInput').value = Math.max(5, Math.min(180, parsed.duration));
+    if (parsed.participantsSpecified) $('participantsInput').value = Math.max(1, Math.min(500, parsed.participants));
+  }
+
+  function run(e) {
+    if (e) e.preventDefault();
+    var text = $('prompt').value.trim();
+    var req = THPrompt.parsePrompt(text || 'אימון גוף מלא');
+    req.duration = Math.max(5, Math.min(180, Number($('durationInput').value) || 20));
+    req.durationSpecified = true;
+    req.participants = Math.max(1, Math.min(500, Math.floor(Number($('participantsInput').value) || 1)));
+    req.participantsSpecified = true;
+    var equipment = $('equipmentInput').value;
+    if (equipment !== 'auto') req.equipment = [equipment];
+    render(THEngine.buildSession(req));
+  }
+
+  function currentDriveId() {
+    var sel = $('segSource').value;
+    var entry;
+    if (sel) {
+      entry = TH.catalog[sel];
+      return (entry && entry.driveId) || '';
+    }
+    return THInfer.parseDriveId($('segUrl').value.trim()) || '';
+  }
+
+  function showSegPlayer() {
+    var id = currentDriveId();
+    var box = $('segPlayer');
+    if (!id) {
+      box.hidden = true;
+      box.innerHTML = '';
+      $('segStatus').textContent = 'בחרו סרטון מהמאגר או הדביקו מזהה דרייב.';
+      return;
+    }
+    box.hidden = false;
+    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media', eager: true });
+  }
+
+  function elapsedSec() {
+    if (!trackStartedAt) return 0;
+    return Math.max(0, Math.round((Date.now() - trackStartedAt) / 1000));
+  }
+
+  function fillSegSelect() {
+    var sel = $('segSource');
+    var opts = ['<option value="">בחרו סרטון מהמאגר…</option>'];
+    TH.catalogList().filter((e) => e.driveId && e.startSec == null).forEach((e) => {
+      opts.push('<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (e.folder ? ' · ' + TH.esc(e.folder) : '') + '</option>');
+    });
+    sel.innerHTML = opts.join('');
+  }
+
+  document.querySelectorAll('[role="tab"]').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      switchTab(tab.id.replace('tab-', ''));
+    });
+    tab.addEventListener('keydown', (e) => {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+      var i = tabs.indexOf(tab);
+      var next = -1;
+      if (e.key === 'ArrowLeft') next = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowRight') next = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      if (next < 0) return;
+      e.preventDefault();
+      tabs[next].focus();
+      switchTab(tabs[next].id.replace('tab-', ''));
+    });
+  });
+
+  $('prompt').addEventListener('input', syncFieldsFromPrompt);
+  $('form').addEventListener('submit', run);
+  document.querySelectorAll('[data-fill]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      switchTab('prompt');
+      var example = btn.getAttribute('data-fill');
+      var parsed = THPrompt.parsePrompt(example);
+      $('prompt').value = example;
+      // The example stands on its own: every field follows the example text, so a
+      // group request typed a moment ago (18 חניכים, קונוסים) does not leak into
+      // «אימון בטן 20 דקות בלי ציוד». Fields the example does not name go back to
+      // the parser defaults (20 דקות, מתאמן אחד, ציוד לפי הבקשה).
+      $('durationInput').value = parsed.duration;
+      $('participantsInput').value = parsed.participants;
+      $('equipmentInput').value = equipmentOption(parsed.equipment);
+      $('prompt').focus();
+      run();
+    });
+  });
+
+  $('ingestForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    var text = $('ingestText').value.trim();
+    if (!text) {
+      $('result').innerHTML = '<p class="empty" role="status">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
+      return;
+    }
+    renderIngest(THIngest.ingestText(text));
+  });
+
+  $('segWatch').addEventListener('click', showSegPlayer);
+  $('segTrack').addEventListener('click', () => {
+    trackStartedAt = Date.now();
+    $('segStatus').textContent = 'מעקב רץ. סמנו התחלה וסוף לפי מה שאתם רואים בנגן.';
+  });
+  $('segMarkStart').addEventListener('click', () => {
+    if (!trackStartedAt) trackStartedAt = Date.now();
+    $('segStart').value = elapsedSec();
+    $('segStatus').textContent = 'התחלה ב־' + $('segStart').value + ' שנ׳';
+  });
+  $('segMarkEnd').addEventListener('click', () => {
+    if (!trackStartedAt) trackStartedAt = Date.now();
+    $('segEnd').value = Math.max(Number($('segStart').value || 0) + 1, elapsedSec());
+    $('segStatus').textContent = 'סוף ב־' + $('segEnd').value + ' שנ׳';
+  });
+  $('segForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    var saved = THIngest.saveSegment({
+      driveId: currentDriveId(),
+      url: $('segUrl').value.trim(),
+      he: $('segName').value.trim(),
+      startSec: $('segStart').value,
+      endSec: $('segEnd').value,
+      segmentOf: $('segSource').value || ''
+    });
+    if (saved.error) {
+      $('segStatus').textContent = saved.message;
+      return;
+    }
+    $('segStatus').textContent = 'נשמר מקטע «' + saved.entry.he + '» במאגר המקומי. אפשר לייצא מניהול מאגר.';
+    $('segName').value = '';
+  });
+
+  TH.ready(() => {
+    fillSegSelect();
+    if ($('prompt').value.trim()) {
+      syncFieldsFromPrompt();
+      run();
+    }
+  });
+})();
+</script>
+<script src="./js/th-nav.js"></script>
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_LINE_HEIGHT = 16;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  const PICK_CAPABILITIES = ["pick"];
+  const PICK_CHAIN_LENGTH = 4;
+  const PICK_MAX_TEXT_CHARS = 120;
+  const PICK_MAX_HTML_CHARS = 300;
+
+  function truncate(value, maxChars) {
+    return value.length > maxChars ? value.slice(0, maxChars - 1) + "…" : value;
+  }
+
+  function isPickableElement(element) {
+    return (
+      element instanceof Element &&
+      element !== document.documentElement &&
+      element !== document.body
+    );
+  }
+
+  function resolvePickTarget(x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+    const element = document.elementFromPoint(x, y);
+    return isPickableElement(element) ? element.closest("svg") || element : null;
+  }
+
+  function pickLabel(element) {
+    if (element.id) return element.localName + "#" + element.id;
+    return [element.localName].concat(Array.from(element.classList).slice(0, 2)).join(".");
+  }
+
+  // Only attributes that help find the element in source. data-* values and URL
+  // query strings or fragments can carry tokens.
+  const PICK_ATTRIBUTES = new Set([
+    "id",
+    "class",
+    "name",
+    "type",
+    "role",
+    "alt",
+    "aria-label",
+    "href",
+    "src",
+  ]);
+
+  function pickAttributeValue(attribute) {
+    return attribute.name === "href" || attribute.name === "src"
+      ? attribute.value.split(/[?#]/)[0]
+      : attribute.value;
+  }
+
+  function describePickElement(element) {
+    const chain = [];
+    for (
+      let current = element;
+      isPickableElement(current) && chain.length < PICK_CHAIN_LENGTH;
+      current = current.parentElement
+    ) {
+      chain.unshift(current);
+    }
+    const attributes = Array.from(element.attributes)
+      .filter((attribute) => PICK_ATTRIBUTES.has(attribute.name))
+      .map((attribute) => ` ${attribute.name}="${pickAttributeValue(attribute).replace(/"/g, "&quot;")}"`)
+      .join("");
+    const text = (element.innerText || element.textContent || "").replace(/\s+/g, " ").trim();
+    return {
+      chain: chain.map(pickLabel),
+      html: truncate(`<${element.localName}${attributes}>`, PICK_MAX_HTML_CHARS),
+      text: text ? truncate(text, PICK_MAX_TEXT_CHARS) : undefined,
+    };
+  }
+
+  // Hover asks once per frame, and innerText on a large section forces layout,
+  // so only the rect is re-read while the pointer stays on the same element.
+  // Clicks ask for fresh details since the page may have changed the element.
+  let lastPick = null;
+
+  function describePickTarget(element, fresh) {
+    if (fresh || lastPick?.element !== element) {
+      lastPick = { element, details: describePickElement(element) };
+    }
+    const rect = element.getBoundingClientRect();
+    return {
+      rect: { x: rect.left, y: rect.top, width: rect.width, height: rect.height },
+      ...lastPick.details,
+    };
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+      capabilities: PICK_CAPABILITIES,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_PICK") {
+      const element = resolvePickTarget(event.data.x, event.data.y);
+      postToTrustedTop({
+        type: "INLINE_EDIT_PICK_RESULT",
+        seq: event.data.seq,
+        target: element ? describePickTarget(element, event.data.fresh === true) : null,
+      });
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_BY") {
+      const { deltaX, deltaY, deltaMode } = event.data;
+      if (!scrollForwarding || !Number.isFinite(deltaX) || !Number.isFinite(deltaY)) return;
+      if (deltaMode !== 0 && deltaMode !== 1 && deltaMode !== 2) return;
+      const lineHeight =
+        parseFloat(getComputedStyle(document.documentElement).lineHeight) || DEFAULT_LINE_HEIGHT;
+      const scaleX = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerWidth : 1;
+      const scaleY = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerHeight : 1;
+      // The selection overlay receives the wheel event instead of this iframe.
+      // Instant scrolling preserves trackpad deltas even on smooth-scroll sites.
+      window.scrollBy({ left: deltaX * scaleX, top: deltaY * scaleY, behavior: "instant" });
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>
+
