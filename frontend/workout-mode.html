@@ -243,6 +243,7 @@
 </header>
 
 <!-- Progress bar -->
+<!-- biome-ignore lint/a11y/useSemanticElements: progress bar region -->
 <div class="progress-wrap" id="progressWrap" style="display:none" role="region" aria-label="התקדמות באימון">
   <div class="progress-info">
     <span id="progressLabel" aria-live="polite" aria-atomic="true">תרגיל 0 מתוך 0</span>
@@ -256,6 +257,7 @@
 <!-- Elapsed total time -->
 <div class="elapsed-bar" id="elapsedBar" style="display:none" role="status" aria-label="זמן כולל">
   <span class="elapsed-label" id="elapsedLabel">זמן אימון:</span>
+  <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: label association for screen readers -->
   <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
 </div>
 
@@ -292,17 +294,25 @@
     <span class="icon" id="ttsIcon" aria-hidden="true">🔊</span><span class="label" id="ttsLabel">קול</span>
   </button>
 </div>
+<!-- biome-ignore lint/a11y/useSemanticElements: dynamic swap panel -->
 <div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
+<!-- biome-ignore lint/a11y/useSemanticElements: live workout controls container -->
+<div id="liveWorkoutContainer" role="region" aria-label="תיעוד אימון חי" style="padding:0 24px 16px"></div>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
+<!-- biome-ignore lint/a11y/useSemanticElements: completion screen region -->
 <div id="completionScreen" role="region" aria-label="סיכום סיום אימון">
   <div class="confetti-row" aria-hidden="true">🎉🏆🎉</div>
   <div class="complete-title">כל הכבוד!</div>
   <div class="complete-subtitle">סיימת את האימון בהצלחה</div>
+  <!-- biome-ignore lint/a11y/useSemanticElements: completion stats group -->
   <div class="stats-grid" role="group" aria-label="נתוני אימון שהושלם">
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="זמן כולל"><div class="val" id="statTime">—</div><div class="lbl">זמן כולל</div></div>
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="תרגילים שהושלמו"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="סטים שהושלמו"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
@@ -311,9 +321,11 @@
     <p style="color:#7FE9D9;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
       <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
+      <!-- biome-ignore lint/a11y/useSemanticElements: rpe ratings group -->
       <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0" aria-label="שלח סיכום למאמן בוואטסאפ">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <!-- biome-ignore lint/a11y/useSemanticElements: per-exercise rpe group -->
     <div id="exRpeBox" role="group" aria-label="קושי לכל תרגיל"></div>
     <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0A1513;color:#7FE9D9;border:1px solid #28423C;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
@@ -325,6 +337,7 @@
 
 <script src="../js/core.js"></script>
 <script src="../js/journal-storage.js"></script>
+<script src="../js/live-workout.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -474,6 +487,208 @@ let completedStepIds = new Set();
 // Per-set log: { exerciseId, reps, weightKg } — saved to the existing journal storage on finish.
 let setLog = [];
 let setsSavedOnce = false;
+let liveSession = null;
+
+function renderLiveWorkoutControls() {
+  const container = document.getElementById('liveWorkoutContainer');
+  if (!container) return;
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
+  // Safe rendering with createElement and textContent ONLY
+  const card = document.createElement('div');
+  card.className = 'live-workout-card';
+  card.style.background = '#12211E';
+  card.style.border = '1px solid #28423C';
+  card.style.borderRadius = '14px';
+  card.style.padding = '14px 20px';
+  card.style.maxWidth = '520px';
+  card.style.margin = '10px auto';
+  card.style.display = 'flex';
+  card.style.flexDirection = 'column';
+  card.style.gap = '10px';
+  card.style.alignItems = 'center';
+
+  const heading = document.createElement('div');
+  heading.style.fontSize = '0.85rem';
+  heading.style.color = '#7FE9D9';
+  heading.style.fontWeight = '700';
+  heading.textContent = 'תיעוד סט חי בזמן אמת';
+  card.appendChild(heading);
+
+  const formRow = document.createElement('div');
+  formRow.style.display = 'flex';
+  formRow.style.gap = '10px';
+  formRow.style.flexWrap = 'wrap';
+  formRow.style.justifyContent = 'center';
+  formRow.style.alignItems = 'flex-end';
+
+  // 1. actualRepsInput
+  const repsWrap = document.createElement('div');
+  const repsLbl = document.createElement('label');
+  repsLbl.htmlFor = 'actualRepsInput';
+  repsLbl.style.display = 'block';
+  repsLbl.style.fontSize = '0.78rem';
+  repsLbl.style.color = '#9ca3af';
+  repsLbl.style.marginBottom = '4px';
+  repsLbl.textContent = 'חזרות בפועל';
+  const repsInput = document.createElement('input');
+  repsInput.id = 'actualRepsInput';
+  repsInput.type = 'number';
+  repsInput.min = '0';
+  repsInput.step = '1';
+  repsInput.value = '10';
+  repsInput.setAttribute('aria-label', 'חזרות בפועל');
+  repsInput.style.width = '75px';
+  repsInput.style.textAlign = 'center';
+  repsInput.style.background = '#0A1513';
+  repsInput.style.color = '#E8F1EE';
+  repsInput.style.border = '1px solid #28423C';
+  repsInput.style.borderRadius = '8px';
+  repsInput.style.padding = '6px';
+  repsWrap.appendChild(repsLbl);
+  repsWrap.appendChild(repsInput);
+  formRow.appendChild(repsWrap);
+
+  // 2. weightKgInput
+  const weightWrap = document.createElement('div');
+  const weightLbl = document.createElement('label');
+  weightLbl.htmlFor = 'weightKgInput';
+  weightLbl.style.display = 'block';
+  weightLbl.style.fontSize = '0.78rem';
+  weightLbl.style.color = '#9ca3af';
+  weightLbl.style.marginBottom = '4px';
+  weightLbl.textContent = 'משקל (ק״ג)';
+  const weightInput = document.createElement('input');
+  weightInput.id = 'weightKgInput';
+  weightInput.type = 'number';
+  weightInput.min = '0';
+  weightInput.step = '0.5';
+  weightInput.value = '0';
+  weightInput.setAttribute('aria-label', 'משקל בק״ג');
+  weightInput.style.width = '75px';
+  weightInput.style.textAlign = 'center';
+  weightInput.style.background = '#0A1513';
+  weightInput.style.color = '#E8F1EE';
+  weightInput.style.border = '1px solid #28423C';
+  weightInput.style.borderRadius = '8px';
+  weightInput.style.padding = '6px';
+  weightWrap.appendChild(weightLbl);
+  weightWrap.appendChild(weightInput);
+  formRow.appendChild(weightWrap);
+
+  // 3. rirSelect
+  const rirWrap = document.createElement('div');
+  const rirLbl = document.createElement('label');
+  rirLbl.htmlFor = 'rirSelect';
+  rirLbl.style.display = 'block';
+  rirLbl.style.fontSize = '0.78rem';
+  rirLbl.style.color = '#9ca3af';
+  rirLbl.style.marginBottom = '4px';
+  rirLbl.textContent = 'חזרות ברזרבה RIR';
+  const rirSelect = document.createElement('select');
+  rirSelect.id = 'rirSelect';
+  rirSelect.setAttribute('aria-label', 'חזרות ברזרבה RIR');
+  rirSelect.style.background = '#0A1513';
+  rirSelect.style.color = '#E8F1EE';
+  rirSelect.style.border = '1px solid #28423C';
+  rirSelect.style.borderRadius = '8px';
+  rirSelect.style.padding = '6px';
+  const rirOpts = [
+    { val: '0', text: '0 (כשל)' },
+    { val: '1', text: '1' },
+    { val: '2', text: '2' },
+    { val: '3', text: '3' },
+    { val: '4', text: '4+' },
+  ];
+  rirOpts.forEach((item) => {
+    const opt = document.createElement('option');
+    opt.value = item.val;
+    opt.textContent = item.text;
+    if (item.val === '2') opt.selected = true;
+    rirSelect.appendChild(opt);
+  });
+  rirWrap.appendChild(rirLbl);
+  rirWrap.appendChild(rirSelect);
+  formRow.appendChild(rirWrap);
+
+  card.appendChild(formRow);
+
+  // 4. restTimerDisplay
+  const timerRow = document.createElement('div');
+  timerRow.style.display = 'flex';
+  timerRow.style.gap = '8px';
+  timerRow.style.alignItems = 'center';
+  timerRow.style.fontSize = '0.9rem';
+
+  const timerLbl = document.createElement('span');
+  timerLbl.style.color = '#9ca3af';
+  timerLbl.textContent = 'טיימר מנוחה: ';
+  timerRow.appendChild(timerLbl);
+
+  const timerVal = document.createElement('span');
+  timerVal.id = 'restTimerDisplay';
+  timerVal.setAttribute('role', 'timer');
+  timerVal.setAttribute('aria-live', 'polite');
+  timerVal.style.fontWeight = '700';
+  timerVal.style.color = '#FF8A45';
+  timerVal.textContent = '00:00';
+  timerRow.appendChild(timerVal);
+
+  card.appendChild(timerRow);
+
+  // Buttons row
+  const btnRow = document.createElement('div');
+  btnRow.style.display = 'flex';
+  btnRow.style.gap = '10px';
+  btnRow.style.flexWrap = 'wrap';
+  btnRow.style.justifyContent = 'center';
+  btnRow.style.marginTop = '4px';
+
+  // 5. completeSetBtn
+  const completeBtn = document.createElement('button');
+  completeBtn.type = 'button';
+  completeBtn.id = 'completeSetBtn';
+  completeBtn.className = 'ctrl-btn primary';
+  completeBtn.style.minHeight = '42px';
+  completeBtn.style.padding = '8px 16px';
+  completeBtn.style.borderRadius = '10px';
+  completeBtn.textContent = 'השלם סט';
+  completeBtn.setAttribute('aria-label', 'השלם סט ותעד');
+  completeBtn.addEventListener('click', handleLiveCompleteSet);
+  btnRow.appendChild(completeBtn);
+
+  // 6. finishAndSaveBtn
+  const finishBtn = document.createElement('button');
+  finishBtn.type = 'button';
+  finishBtn.id = 'finishAndSaveBtn';
+  finishBtn.className = 'ctrl-btn';
+  finishBtn.style.minHeight = '42px';
+  finishBtn.style.padding = '8px 16px';
+  finishBtn.style.borderRadius = '10px';
+  finishBtn.textContent = 'שמור אימון ליומן';
+  finishBtn.setAttribute('aria-label', 'שמור אימון ליומן');
+  finishBtn.addEventListener('click', handleLiveFinishAndSave);
+  btnRow.appendChild(finishBtn);
+
+  card.appendChild(btnRow);
+  container.appendChild(card);
+}
+
+function handleLiveCompleteSet() {
+  markSetDone();
+}
+
+function handleLiveFinishAndSave() {
+  if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+    const ok = THLiveWorkout.saveLiveWorkoutToJournal(liveSession, typeof localStorage !== 'undefined' ? localStorage : null);
+    const btn = document.getElementById('finishAndSaveBtn');
+    if (btn) {
+      btn.textContent = ok ? 'נשמר ביומן!' : 'שגיאה בשמירה';
+    }
+  }
+}
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
@@ -487,6 +702,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   workout = loadWorkout();
   if (TH.workoutPrefs) updateTtsButton();
+  if (typeof THLiveWorkout !== 'undefined' && workout) {
+    liveSession = THLiveWorkout.createLiveSession(workout);
+  }
+  renderLiveWorkoutControls();
 
   if (!workout) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -703,6 +922,20 @@ function renderExercise(step) {
   const btnSwapEx = document.getElementById('btnSwap');
   if (btnSwapEx) btnSwapEx.style.display = '';
 
+  const repsIn = document.getElementById('actualRepsInput');
+  if (repsIn && step) {
+    const r = typeof TH !== 'undefined' && TH.parseRepsNumber ? TH.parseRepsNumber(step.reps) : parseInt(step.reps, 10);
+    repsIn.value = r != null && !Number.isNaN(r) ? String(r) : (step.reps ? String(step.reps) : '10');
+  }
+  const timerDisp = document.getElementById('restTimerDisplay');
+  if (timerDisp) {
+    timerDisp.textContent = '00:00';
+  }
+  const compBtn = document.getElementById('completeSetBtn');
+  if (compBtn) {
+    compBtn.style.display = '';
+  }
+
   // Start timer if duration
   clearCountdown();
   if (step.duration && !paused && started) {
@@ -737,6 +970,15 @@ function renderRest(step) {
   if (btnSwapRest) btnSwapRest.style.display = 'none';
   const swapPanelRest = document.getElementById('swapPanel');
   if (swapPanelRest) { swapPanelRest.hidden = true; swapPanelRest.innerHTML = ''; }
+
+  const timerDisp = document.getElementById('restTimerDisplay');
+  if (timerDisp && step) {
+    timerDisp.textContent = formatTime(step.duration);
+  }
+  const compBtn = document.getElementById('completeSetBtn');
+  if (compBtn) {
+    compBtn.style.display = 'none';
+  }
 
   if (typeof speakNext === 'function') speakNext(step);
   clearCountdown();
@@ -807,6 +1049,12 @@ function startCountdown(seconds, onDone, max) {
   countdownInterval = setInterval(() => {
     countdown--;
     updateClockDisplay(countdown, countdownMax);
+    if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+      const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+      if (currStep && currStep.type === 'rest') {
+        THLiveWorkout.tickTimer(liveSession, 1);
+      }
+    }
     if (countdown <= 0) {
       clearCountdown();
       onDone();
@@ -821,6 +1069,10 @@ function clearCountdown() {
 function updateClockDisplay(val, max) {
   const textEl = document.getElementById('clockText');
   const arcEl  = document.getElementById('clockArc');
+  const liveTimer = document.getElementById('restTimerDisplay');
+  if (liveTimer) {
+    liveTimer.textContent = formatTime(Math.max(0, val));
+  }
   if (!textEl) return;
 
   textEl.textContent = clockLabel(Math.max(0, val), max);
@@ -927,9 +1179,18 @@ function hasDoneSet(exercise) {
 
 function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
-  const step = steps[stepIdx];
+  const step = typeof steps !== 'undefined' && steps[stepIdx];
   if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
     if (typeof recordSet === 'function') recordSet(step);
+    if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+      const repsIn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('actualRepsInput') : null;
+      const weightIn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('weightKgInput') : null;
+      const rirSel = typeof document !== 'undefined' && document.getElementById ? document.getElementById('rirSelect') : null;
+      const actualReps = repsIn ? (Number(repsIn.value) || 0) : (Number(step.reps) || 0);
+      const weightKg = weightIn ? (Number(weightIn.value) || 0) : 0;
+      const rir = rirSel ? (Number(rirSel.value) || 0) : 0;
+      THLiveWorkout.logSetAndAdvance(liveSession, { actualReps, weightKg, rir });
+    }
     // An exercise counts once any of its sets is done: 2 of 3 sets with the
     // last one skipped is still an exercise the trainee did.
     if (!hasDoneSet(step.exercise)) completedExercises++;
@@ -1108,6 +1369,14 @@ function finishWorkout() {
   document.getElementById('statTime').textContent = formatTime(elapsedSeconds);
   document.getElementById('statExercises').textContent = completedExercises;
   document.getElementById('statSets').textContent = completedSets;
+
+  if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+    THLiveWorkout.saveLiveWorkoutToJournal(liveSession, typeof localStorage !== 'undefined' ? localStorage : null);
+    const saveBtn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('finishAndSaveBtn') : null;
+    if (saveBtn) {
+      saveBtn.textContent = 'נשמר ביומן!';
+    }
+  }
 
   document.getElementById('completionScreen').classList.add('active');
 

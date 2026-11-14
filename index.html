@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
   <meta name="description" content="כתבו בעברית מה האימון שאתם רוצים — TrainerHub בונה אותו במקום מהמאגר האמיתי, בלי שרת ובלי המתנה.">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>TrainerHub | בנה אימון</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,6 +114,10 @@
 </nav>
 <div class="th-banner">
   האימון נבנה בדפדפן מהמאגר האמיתי — בלי שרת, בלי מפתח, בלי המתנה. זה לא מבטיח תוצאה גופנית.
+</div>
+<div id="pwa-update-notice" class="th-banner" role="alert" aria-live="polite" style="display:none;">
+  <span>גרסה חדשה זמינה.</span>
+  <button type="button" id="pwa-refresh-btn" class="th-btn" style="min-height:32px;padding:2px 10px;font-size:13px;margin-inline-start:8px;cursor:pointer;">רענון</button>
 </div>
 <main class="wrap">
   <header class="top">
@@ -237,6 +242,7 @@
 <script src="./js/session-builder.js"></script>
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
+<script src="./js/whatsapp-share.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
@@ -275,6 +281,13 @@
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
     });
+    var startLiveBtn = $('startLiveWorkoutBtn');
+    if (startLiveBtn) {
+      startLiveBtn.addEventListener('click', () => {
+        TH.store.set('trainerhub_active_workout', w);
+        location.href = './frontend/workout-mode.html';
+      });
+    }
     $('previewBtn').addEventListener('click', () => {
       location.href = TH.encodeLink(w, {});
     });
@@ -295,6 +308,35 @@
         setTimeout(() => { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
       });
     });
+    var shareWaBtn = $('shareWorkoutWhatsappBtn');
+    if (shareWaBtn) {
+      shareWaBtn.addEventListener('click', () => {
+        var shareMod = window.THWhatsAppShare || window.TH || {};
+        var formatFn = shareMod.formatWorkoutWhatsAppText;
+        var buildUrlFn = shareMod.buildWhatsAppShareUrl;
+        var text;
+        var url;
+        var opened = false;
+        var win;
+        if (!formatFn || !buildUrlFn) return;
+        text = formatFn(w);
+        if (!text) return;
+        url = buildUrlFn(text);
+        try {
+          if (url && typeof window.open === 'function') {
+            win = window.open(url, '_blank', 'noopener,noreferrer');
+            if (win) opened = true;
+          }
+        } catch (e) {
+          opened = false;
+        }
+        if (!opened) {
+          if (window.TH && typeof window.TH.copyOrShow === 'function') {
+            window.TH.copyOrShow(text, shareWaBtn.parentNode);
+          }
+        }
+      });
+    }
     $('pdfBtn').addEventListener('click', () => {
       TH.preparePrint(w, {});
       location.href = TH.printUrl();
@@ -381,8 +423,10 @@
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
           '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
+          '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
           '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
+          '<button type="button" class="th-btn ghost" id="shareWorkoutWhatsappBtn" aria-label="שתף אימון בוואטסאפ">שתף בוואטסאפ</button>' +
           '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
         '</div>' +
       '</article>';
@@ -680,6 +724,43 @@
       run();
     }
   });
+
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        const showUpdateNotice = () => {
+          const banner = document.getElementById('pwa-update-notice');
+          if (banner) banner.style.display = 'block';
+        };
+
+        if (reg.waiting) {
+          showUpdateNotice();
+        }
+
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateNotice();
+            }
+          });
+        });
+
+        const refreshBtn = document.getElementById('pwa-refresh-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            if (reg.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+          });
+        }
+      }).catch((err) => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
 })();
 </script>
 <script src="./js/th-nav.js"></script>

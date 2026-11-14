@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
   <meta name="description" content="מדדי מילואים ב-TrainerHub: ארבעה מבחני עובר/לא עובר, תוכנית 6 שבועות ומעקב מהטלפון.">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>TrainerHub | מדדי מילואים</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +75,10 @@
 <div class="th-banner">
   ארבעה מבחני עובר/לא עובר למילואים. בשכיבות הסמיכה עם ניתוק ידיים: קו ישר, חזה וירכיים על הרצפה, וידיים נמתחות לצדדים.
 </div>
+<div id="pwa-update-notice" class="th-banner" role="alert" aria-live="polite" style="display:none;">
+  <span>גרסה חדשה זמינה.</span>
+  <button type="button" id="pwa-refresh-btn" class="th-btn" style="min-height:32px;padding:2px 10px;font-size:13px;margin-inline-start:8px;cursor:pointer;">רענון</button>
+</div>
 <main class="wrap">
   <header class="top">
     <small>TRAINERHUB / מדדי מילואים</small>
@@ -110,6 +115,7 @@
     <div class="actions" role="toolbar" aria-label="פעולות מדדי מילואים">
       <button type="button" id="saveBtn" aria-label="שמור תוצאות מדדים">שמור תוצאות</button>
       <button type="button" class="ghost" id="evalBtn" aria-label="בדוק עובר או לא עובר בלי לשמור">בדיקה בלי שמירה</button>
+      <button type="button" class="ghost" id="shareReservesWhatsappBtn" aria-label="שתף סיכום מדדים בוואטסאפ">שתף בוואטסאפ</button>
       <button type="button" class="ghost" id="resetBtn" aria-label="נקה תוצאות שמורות">נקה שמורים</button>
     </div>
   </section>
@@ -191,6 +197,7 @@
 
 <script src="./js/core.js"></script>
 <script src="./js/reserves-track.js"></script>
+<script src="./js/whatsapp-share.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -647,6 +654,42 @@
   el('evalBtn').addEventListener('click', () => {
     renderStatus(R.evaluateAll(readInputs()));
   });
+  var shareReservesBtn = el('shareReservesWhatsappBtn');
+  if (shareReservesBtn) {
+    shareReservesBtn.addEventListener('click', () => {
+      var shareMod = window.THWhatsAppShare || window.TH || {};
+      var formatFn = shareMod.formatReservesResultText;
+      var buildUrlFn = shareMod.buildWhatsAppShareUrl;
+      var inputs;
+      var hasInputs;
+      var summary;
+      var text;
+      var url;
+      var opened = false;
+      var win;
+      if (!formatFn || !buildUrlFn) return;
+
+      inputs = readInputs();
+      hasInputs = Object.keys(inputs).some((k) => inputs[k] !== '');
+      summary = hasInputs && R.evaluateAll ? R.evaluateAll(inputs) : (R.currentSummary ? R.currentSummary() : null);
+      text = formatFn(summary);
+      if (!text) return;
+      url = buildUrlFn(text);
+      try {
+        if (url && typeof window.open === 'function') {
+          win = window.open(url, '_blank', 'noopener,noreferrer');
+          if (win) opened = true;
+        }
+      } catch (err) {
+        opened = false;
+      }
+      if (!opened) {
+        if (window.TH && typeof window.TH.copyOrShow === 'function') {
+          window.TH.copyOrShow(text, shareReservesBtn.parentNode);
+        }
+      }
+    });
+  }
   el('resetBtn').addEventListener('click', () => {
     R.clearResults();
     R.tests().forEach((t) => {
@@ -660,6 +703,43 @@
     boot(R.data);
   } else {
     R.load().then(() => { boot(R.data); });
+  }
+
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        const showUpdateNotice = () => {
+          const banner = document.getElementById('pwa-update-notice');
+          if (banner) banner.style.display = 'block';
+        };
+
+        if (reg.waiting) {
+          showUpdateNotice();
+        }
+
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateNotice();
+            }
+          });
+        });
+
+        const refreshBtn = document.getElementById('pwa-refresh-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            if (reg.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+          });
+        }
+      }).catch((err) => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
   }
 })();
 </script>
