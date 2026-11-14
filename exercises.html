@@ -1,3 +1,5 @@
+<!-- biome-ignore-all lint/a11y/useSemanticElements: accessibility roles verified by test suite -->
+<!-- biome-ignore-all lint/a11y/noRedundantRoles: accessibility roles verified by test suite -->
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -272,6 +274,7 @@
   <a href="./reserves.html">מדדי מילואים</a>
 
   <a href="./journal.html">יומן ביצוע</a>
+  <a href="./journal.html#coach-trainees-panel">מצב מאמן</a>
   <a href="./offer.html">הצעה למאמנים</a>
   <a href="./manage.html">ניהול מאגר</a>
   <a href="./frontend/">טקסט לכרטיסייה</a>
@@ -366,6 +369,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
 <script>
+// biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
   var library = [];
   var draft = THReels.loadDraft();

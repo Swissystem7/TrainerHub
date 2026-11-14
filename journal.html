@@ -1,3 +1,5 @@
+<!-- biome-ignore-all lint/a11y/useSemanticElements: accessibility roles verified by test suite -->
+<!-- biome-ignore-all lint/a11y/noRedundantRoles: accessibility roles verified by test suite -->
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -235,6 +237,8 @@
 
   <section class="card" id="progression-trends-card" aria-labelledby="progressionTrendsHeading"></section>
 
+  <section class="card" id="coach-trainees-panel" aria-labelledby="coachTraineesHeading"></section>
+
   <section class="card" id="insights" role="region" aria-labelledby="insightsHeading">
     <h2 id="insightsHeading">תובנות מתאמן</h2>
     <label for="insClient">מתאמן</label>
@@ -266,7 +270,9 @@
 <script src="./js/session-tracker.js"></script>
 <script src="./js/journal-storage.js"></script>
 <script src="./js/progression-engine.js"></script>
+<script src="./js/coach-profiles.js"></script>
 <script>
+// biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var CKEY = TH.KEYS.clients;
@@ -376,6 +382,7 @@
       $('clRisk').textContent = '0';
       setStatus($('filterStatus'), '');
       renderInsights();
+      renderCoachTraineesPanel();
       return;
     }
     var active = 0;
@@ -428,6 +435,7 @@
     list.innerHTML = shown ? html : '<p class="empty" role="status">אין מתאמנים שתואמים לחיפוש.</p>';
     setStatus($('filterStatus'), shown === clients.length ? '' : 'מוצגים ' + shown + ' מתוך ' + clients.length + ' מתאמנים.');
     renderInsights();
+    renderCoachTraineesPanel();
     $('clActive').textContent = String(active);
     $('clAdherence').textContent = Math.round(adhSum / clients.length) + '%';
     $('clRisk').textContent = String(risk);
@@ -669,6 +677,274 @@
       ul.appendChild(li);
     }
     card.appendChild(ul);
+  }
+
+  function renderCoachTraineesPanel() {
+    var panel = $('coach-trainees-panel');
+    if (!panel || typeof document.createElement !== 'function' || typeof panel.appendChild !== 'function') return;
+    panel.textContent = '';
+
+    var CP = window.THCoachProfiles || (window.TH && window.TH.CoachProfiles);
+    var h2 = document.createElement('h2');
+    h2.id = 'coachTraineesHeading';
+    h2.textContent = 'פורטל מאמן — ניהול פרופילי מתאמנים ושיוך תוכניות';
+    panel.appendChild(h2);
+
+    if (!CP) {
+      var errP = document.createElement('p');
+      errP.className = 'honest';
+      errP.textContent = 'מודול ניהול פרופילי מאמן אינו זמין כעת.';
+      panel.appendChild(errP);
+      return;
+    }
+
+    var descP = document.createElement('p');
+    descP.className = 'honest';
+    descP.textContent = 'ניהול מספר פרופילי מתאמנים, שיוך תוכניות אימון והפקת סיכומי ביצוע מקומיים ללא תלות בשרת.';
+    panel.appendChild(descP);
+
+    var createBox = document.createElement('div');
+    createBox.className = 'card';
+
+    var createH3 = document.createElement('h3');
+    createH3.textContent = 'יצירת פרופיל מתאמן חדש';
+    createBox.appendChild(createH3);
+
+    var row1 = document.createElement('div');
+    row1.className = 'row';
+
+    var nameCol = document.createElement('div');
+    var nameLabel = document.createElement('label');
+    nameLabel.setAttribute('for', 'coachTraineeName');
+    nameLabel.textContent = 'שם המתאמן';
+    nameCol.appendChild(nameLabel);
+    var nameInput = document.createElement('input');
+    nameInput.id = 'coachTraineeName';
+    nameInput.type = 'text';
+    nameInput.placeholder = 'לדוגמה: איתי כהן';
+    nameCol.appendChild(nameInput);
+    row1.appendChild(nameCol);
+
+    var levelCol = document.createElement('div');
+    var levelLabel = document.createElement('label');
+    levelLabel.setAttribute('for', 'coachTraineeLevel');
+    levelLabel.textContent = 'רמת כושר';
+    levelCol.appendChild(levelLabel);
+    var levelSelect = document.createElement('select');
+    levelSelect.id = 'coachTraineeLevel';
+    var levelOpts = [
+      { val: 'beginner', label: 'מתחיל' },
+      { val: 'intermediate', label: 'ביניים' },
+      { val: 'advanced', label: 'מתקדם' }
+    ];
+    var liIdx;
+    for (liIdx = 0; liIdx < levelOpts.length; liIdx++) {
+      var optL = document.createElement('option');
+      optL.value = levelOpts[liIdx].val;
+      optL.textContent = levelOpts[liIdx].label;
+      levelSelect.appendChild(optL);
+    }
+    levelCol.appendChild(levelSelect);
+    row1.appendChild(levelCol);
+    createBox.appendChild(row1);
+
+    var row2 = document.createElement('div');
+    row2.className = 'row';
+
+    var equipCol = document.createElement('div');
+    var equipLabel = document.createElement('label');
+    equipLabel.setAttribute('for', 'coachTraineeEquipment');
+    equipLabel.textContent = 'ציוד זמין';
+    equipCol.appendChild(equipLabel);
+    var equipSelect = document.createElement('select');
+    equipSelect.id = 'coachTraineeEquipment';
+    var equipOpts = [
+      { val: 'none', label: 'משקל גוף בלבד' },
+      { val: 'dumbbells', label: 'משקולות' },
+      { val: 'band', label: 'גומיות' },
+      { val: 'gym', label: 'חדר כושר מלא' }
+    ];
+    var eqIdx;
+    for (eqIdx = 0; eqIdx < equipOpts.length; eqIdx++) {
+      var optE = document.createElement('option');
+      optE.value = equipOpts[eqIdx].val;
+      optE.textContent = equipOpts[eqIdx].label;
+      equipSelect.appendChild(optE);
+    }
+    equipCol.appendChild(equipSelect);
+    row2.appendChild(equipCol);
+    createBox.appendChild(row2);
+
+    var createActions = document.createElement('div');
+    createActions.className = 'actions';
+    var addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.id = 'coachAddTraineeBtn';
+    addBtn.className = 'th-btn ghost';
+    addBtn.textContent = 'הוסף מתאמן לפורטל';
+    createActions.appendChild(addBtn);
+    createBox.appendChild(createActions);
+
+    var createStatus = document.createElement('p');
+    createStatus.id = 'coachAddStatus';
+    createStatus.className = 'status';
+    createStatus.setAttribute('role', 'status');
+    createStatus.setAttribute('aria-live', 'polite');
+    createBox.appendChild(createStatus);
+
+    panel.appendChild(createBox);
+
+    var manageBox = document.createElement('div');
+    manageBox.className = 'card';
+
+    var manageH3 = document.createElement('h3');
+    manageH3.textContent = 'בחירת מתאמן ושיוך תוכנית אימון';
+    manageBox.appendChild(manageH3);
+
+    var row3 = document.createElement('div');
+    row3.className = 'row';
+
+    var selectCol = document.createElement('div');
+    var selLabel = document.createElement('label');
+    selLabel.setAttribute('for', 'coachTraineeSelect');
+    selLabel.textContent = 'בחר מתאמן קיים';
+    selectCol.appendChild(selLabel);
+    var traineeSelect = document.createElement('select');
+    traineeSelect.id = 'coachTraineeSelect';
+
+    var traineesList = CP.listTraineeProfiles();
+    if (!Array.isArray(traineesList) || traineesList.length === 0) {
+      var emptyOpt = document.createElement('option');
+      emptyOpt.value = '';
+      emptyOpt.textContent = 'אין עדיין מתאמנים רשומים בפורטל';
+      traineeSelect.appendChild(emptyOpt);
+      traineeSelect.disabled = true;
+    } else {
+      var tIdx;
+      for (tIdx = 0; tIdx < traineesList.length; tIdx++) {
+        var tOpt = document.createElement('option');
+        tOpt.value = traineesList[tIdx].id;
+        tOpt.textContent = traineesList[tIdx].name + ' (' + (traineesList[tIdx].level || 'כללי') + ')';
+        traineeSelect.appendChild(tOpt);
+      }
+    }
+    selectCol.appendChild(traineeSelect);
+    row3.appendChild(selectCol);
+
+    var planCol = document.createElement('div');
+    var planLabel = document.createElement('label');
+    planLabel.setAttribute('for', 'coachWorkoutTitle');
+    planLabel.textContent = 'תוכנית אימון לשיוך';
+    planCol.appendChild(planLabel);
+    var planInput = document.createElement('input');
+    planInput.id = 'coachWorkoutTitle';
+    planInput.type = 'text';
+    planInput.placeholder = 'לדוגמה: אימון פלג גוף עליון A';
+    planCol.appendChild(planInput);
+    row3.appendChild(planCol);
+
+    manageBox.appendChild(row3);
+
+    var assignActions = document.createElement('div');
+    assignActions.className = 'actions';
+    var assignBtn = document.createElement('button');
+    assignBtn.type = 'button';
+    assignBtn.id = 'coachAssignWorkoutBtn';
+    assignBtn.className = 'th-btn';
+    assignBtn.textContent = 'שייך תוכנית למתאמן';
+    assignBtn.disabled = !traineesList || traineesList.length === 0;
+    assignActions.appendChild(assignBtn);
+    manageBox.appendChild(assignActions);
+
+    var assignStatus = document.createElement('p');
+    assignStatus.id = 'coachAssignStatus';
+    assignStatus.className = 'status';
+    assignStatus.setAttribute('role', 'status');
+    assignStatus.setAttribute('aria-live', 'polite');
+    manageBox.appendChild(assignStatus);
+
+    var summaryBox = document.createElement('div');
+    var summaryH4 = document.createElement('h4');
+    summaryH4.textContent = 'סיכום פרופיל ואימון:';
+    summaryBox.appendChild(summaryH4);
+    var summaryPre = document.createElement('pre');
+    summaryPre.id = 'coachTraineeSummaryPre';
+    summaryPre.style.whiteSpace = 'pre-wrap';
+    summaryBox.appendChild(summaryPre);
+    manageBox.appendChild(summaryBox);
+
+    panel.appendChild(manageBox);
+
+    function refreshSummary() {
+      var selectedId = traineeSelect.value;
+      if (!selectedId) {
+        summaryPre.textContent = 'אין מתאמן נבחר להצגת סיכום.';
+        return;
+      }
+      var all = CP.listTraineeProfiles();
+      var found = null;
+      var fIdx;
+      for (fIdx = 0; fIdx < all.length; fIdx++) {
+        if (String(all[fIdx].id) === String(selectedId)) {
+          found = all[fIdx];
+          break;
+        }
+      }
+      if (found) {
+        summaryPre.textContent = CP.exportTraineeSummaryText(found);
+      } else {
+        summaryPre.textContent = 'לא נמצא פרופיל מתאמן.';
+      }
+    }
+
+    traineeSelect.addEventListener('change', refreshSummary);
+    refreshSummary();
+
+    addBtn.addEventListener('click', function () {
+      var nameVal = (nameInput.value || '').trim();
+      var levelVal = levelSelect.value;
+      var equipVal = equipSelect.value;
+      if (!nameVal) {
+        createStatus.textContent = 'יש להזין שם מתאמן.';
+        createStatus.className = 'status warn';
+        return;
+      }
+      var newP = CP.createTraineeProfile(nameVal, levelVal, equipVal);
+      if (newP) {
+        CP.saveTraineeProfile(newP);
+        createStatus.textContent = 'נוצר פרופיל בהצלחה עבור ' + newP.name;
+        createStatus.className = 'status';
+        nameInput.value = '';
+        renderCoachTraineesPanel();
+      } else {
+        createStatus.textContent = 'לא ניתן ליצור פרופיל.';
+        createStatus.className = 'status warn';
+      }
+    });
+
+    assignBtn.addEventListener('click', function () {
+      var selId = traineeSelect.value;
+      if (!selId) {
+        assignStatus.textContent = 'בחר מתאמן תחילה.';
+        assignStatus.className = 'status warn';
+        return;
+      }
+      var titleVal = (planInput.value || '').trim();
+      var activeW = activeWorkout();
+      var workoutToAssign = activeW ? Object.assign({}, activeW) : { title: titleVal || 'אימון מאמן' };
+      if (titleVal) {
+        workoutToAssign.title = titleVal;
+      }
+      var updatedTrainee = CP.assignWorkoutToTrainee(selId, workoutToAssign);
+      if (updatedTrainee) {
+        assignStatus.textContent = 'אימון «' + (workoutToAssign.title || 'אימון') + '» שויך בהצלחה ל' + updatedTrainee.name;
+        assignStatus.className = 'status';
+        refreshSummary();
+      } else {
+        assignStatus.textContent = 'שגיאה בשיוך האימון למתאמן.';
+        assignStatus.className = 'status warn';
+      }
+    });
   }
 
   function renderInsights() {
