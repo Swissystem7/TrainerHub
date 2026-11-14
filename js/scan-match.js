@@ -340,12 +340,9 @@
   return {
     EQUIPMENT_TAGS: EQUIPMENT_TAGS,
     TAG_LABELS: TAG_LABELS,
-    FOCUS: FOCUS,
     tagAllowed: tagAllowed,
     withBodyweight: withBodyweight,
     exerciseFits: exerciseFits,
-    matchExercises: matchExercises,
-    buildWeeklyPlan: buildWeeklyPlan,
     tagsFromCoco: tagsFromCoco,
     environmentFromCoco: environmentFromCoco,
     manualEnvironment: manualEnvironment,

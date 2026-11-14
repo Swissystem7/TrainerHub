@@ -427,7 +427,6 @@
 		STIMULUS: STIMULUS,
 		analyzeExercise: analyzeExercise,
 		analyzeSession: analyzeSession,
-		estimateDuration: estimateDuration,
 		flattenWorkout: flattenWorkout,
 		hasWarmup: hasWarmup,
 		isWarmupExercise: isWarmupExercise,
