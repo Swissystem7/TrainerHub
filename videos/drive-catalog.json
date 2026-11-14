@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 479,
+    "count": 480,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 432
+    "driveReelCount": 433
   },
   "items": [
     {
@@ -10253,6 +10253,31 @@
       "segmentRange": [
         2.0,
         14.0
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_יד_על_כדורגל",
+      "driveId": "1NNOLj9oJEEke6LvxAvqDZUzxzbVC_NHt",
+      "he": "שכיבות סמיכה עם יד על כדורגל",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "push ups with one hand on a football"
+      ],
+      "sourceUrl": "https://www.facebook.com/reel/2136581947739068/",
+      "poster": "assets/posters/fb2136581947739068-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        9.7,
+        19.4
       ]
     }
   ]
