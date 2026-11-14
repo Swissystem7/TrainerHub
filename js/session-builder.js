@@ -596,6 +596,47 @@
 		});
 	}
 
+	// Muscle x equipment (x level) combos that have no reel at all in the
+	// library (Meta round 6 found none, and the catalog has no clip at that
+	// level). The builder does not offer them: it returns no workout with a
+	// notice instead of a "closest" session built from other equipment.
+	// "*" = every level, including a request with no level.
+	var NO_REEL_COMBOS = [
+		"back|basketball|*",
+		"back|football|*",
+		"back|stairs|*",
+		"biceps|stairs|*",
+		"legs|bar|beginner",
+		"legs|bar|advanced",
+		"biceps|cones|advanced",
+		"triceps|cones|advanced",
+		"biceps|football|advanced",
+		"back|tennis-ball|beginner",
+		"chest|basketball|advanced",
+		"triceps|basketball|advanced",
+		"legs|football|advanced",
+		"triceps|football|advanced",
+		"core|stairs|beginner",
+	];
+	var NO_REEL_SET = {};
+	NO_REEL_COMBOS.forEach((k) => {
+		NO_REEL_SET[k] = true;
+	});
+	var NO_REEL_NOTICE =
+		"אין במאגר אף סרטון לשילוב הזה של שריר וציוד ברמה הזו, ולכן הוא לא מוצע. אפשר לבחור ציוד אחר או קבוצת שריר אחרת.";
+
+	function isNoReelCombo(req) {
+		var eq = (req && req.equipment) || [];
+		var muscles = (req && req.muscles) || [];
+		if (eq.length !== 1 || !muscles.length) return false;
+		var level = req.level || "";
+		return muscles.every(
+			(m) =>
+				NO_REEL_SET[m + "|" + eq[0] + "|*"] ||
+				(level && NO_REEL_SET[m + "|" + eq[0] + "|" + level]),
+		);
+	}
+
 	function buildSession(text, catalogOrList, opts) {
 		opts = opts || {};
 		var prefer = preferMap(opts.prefer);
@@ -604,6 +645,21 @@
 				? Prompt.parsePrompt(text)
 				: text || Prompt.parsePrompt("");
 		req.duration = normalizeDurationMinutes(req.duration);
+		if (isNoReelCombo(req)) {
+			return {
+				request: req,
+				satisfied: false,
+				closest: false,
+				unavailable: true,
+				notice: NO_REEL_NOTICE,
+				workout: null,
+				explanation: null,
+				analysis: null,
+				guidanceNote: GUIDANCE_NOTE,
+				adaptationReport: null,
+				progressionHints: [],
+			};
+		}
 		var list = catalogList(catalogOrList);
 		var rx = prescription(req);
 		var need = wantedCount(req.duration, rx);
@@ -838,6 +894,8 @@
 		coreOnly: coreOnly,
 		wantedCount: wantedCount,
 		normalizeDurationMinutes: normalizeDurationMinutes,
+		isNoReelCombo: isNoReelCombo,
+		NO_REEL_COMBOS: NO_REEL_COMBOS,
 	};
 	root.THEngine = api;
 	if (typeof module === "object" && module.exports) {
