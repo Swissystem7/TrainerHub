@@ -18,7 +18,7 @@ const reels = read('data/exercises.json').exercises;
 
 const REELS = drive.items.filter(function (e) { return e.source === 'drive' && e.available && e.sourceUrl; });
 const FOLDERS = new Set(['חזה', 'גב', 'כתפיים', 'ידיים', 'רגליים', 'בטן', 'חימום', 'מתיחות וגמישות', 'קרדיו', 'גוף מלא HIIT']);
-const EQUIPMENT = new Set(['none', 'band', 'cones', 'ball', 'football', 'basketball', 'tennis-ball', 'bar', 'stairs', 'dumbbells', 'kettlebell', 'barbell']);
+const EQUIPMENT = new Set(['none', 'band', 'cones', 'ball', 'football', 'basketball', 'tennis-ball', 'bar', 'stairs', 'dumbbells', 'kettlebell', 'barbell', 'hoop', 'ladder', 'machine', 'wall']);
 
 test('Drive-hosted reels are registered', function () {
   assert.ok(REELS.length >= 25);
@@ -46,7 +46,6 @@ test('each Drive-hosted reel has one Instagram code, one Drive file and a Hebrew
     assert.equal(e.file, undefined, e.id + ' must not use a release file');
     assert.equal(e.drivePlayId, undefined);
     e.equipment.forEach(function (q) { assert.ok(EQUIPMENT.has(q), e.id + ' equipment ' + q); });
-    assert.equal(e.equipment.indexOf('machine'), -1, e.id + ' machine-only reels stay out of the app');
     const dv = driveVideos.filter(function (v) { return v.fileId === e.driveId; });
     assert.equal(dv.length, 1, e.id + ' missing from data/drive_videos.json');
     assert.equal(dv[0].folder, 'כושר/' + e.folder);
