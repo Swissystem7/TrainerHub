@@ -2,10 +2,10 @@
   "_meta": {
     "source": "onedrive",
     "generatedFrom": "drive-fitness-videos.json",
-    "count": 467,
+    "count": 475,
     "note": "OneDrive source matched locally; browser-safe public media mirror. Unmatched legacy rows are disabled.",
     "matchedCount": 43,
-    "driveReelCount": 420
+    "driveReelCount": 428
   },
   "items": [
     {
@@ -9950,6 +9950,208 @@
       "segment": 1,
       "segmentRange": [
         0.0,
+        21.5
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_רגליים_מוגבהות_וחישוק_מסתובב",
+      "driveId": "1BAkAsiAEzPeTShGEXjiJp023mfEetaVo",
+      "he": "שכיבות סמיכה עם רגליים מוגבהות וחישוק מסתובב",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "decline push ups with hula hoop spinning"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DO9tEX4jfcR/",
+      "poster": "assets/posters/DO9tEX4jfcR-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.5,
+        24.5
+      ]
+    },
+    {
+      "id": "drive_הרמות_רגליים_בשכיבה_על_ספסל_עם_חישוק_אדום",
+      "driveId": "1277nrykVP5vknqH9xunEEhfmAyfMZU3d",
+      "he": "הרמות רגליים בשכיבה על ספסל עם חישוק אדום",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "prone leg raises on bench with hula hoop"
+      ],
+      "sourceUrl": "https://www.facebook.com/reel/2221196108717725/",
+      "poster": "assets/posters/fb2221196108717725-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        4.8,
+        16.4
+      ]
+    },
+    {
+      "id": "drive_כפיפות_מרפקים_עם_משקולות_תוך_סיבוב_חישוק_במותן",
+      "driveId": "1ox4uM8G51HE94eG50a2vxdkW2PPNEORB",
+      "he": "כפיפות מרפקים עם משקולות תוך סיבוב חישוק במותן",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "dumbbell curls while spinning waist hoop"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DcG3HxOshVW/",
+      "poster": "assets/posters/DcG3HxOshVW-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        0.5,
+        22.5
+      ]
+    },
+    {
+      "id": "drive_תנועת_זריקת_חוץ_עם_כדורגל_מעל_הראש",
+      "driveId": "1i5BVGIOEUfJV7W6SDh9QUtHNVWeUxN3u",
+      "he": "תנועת זריקת חוץ עם כדורגל מעל הראש",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "football throw in motion overhead"
+      ],
+      "sourceUrl": "https://www.facebook.com/reel/1996592637557037/",
+      "poster": "assets/posters/fb1996592637557037-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        5.2,
+        13.8
+      ]
+    },
+    {
+      "id": "drive_קפיצות_סקוואט_עם_כדורסל",
+      "driveId": "15blVOkm7pgKlIB8BH-tGMR8d4lwFrxOE",
+      "he": "קפיצות סקוואט עם כדורסל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "squat jumps holding basketball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DfSeUglvITk/",
+      "poster": "assets/posters/DfSeUglvITk-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        23.9,
+        29.4
+      ]
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_צמודות_עם_הידיים_על_כדורסל",
+      "driveId": "1Pqxh_XiB9klzQi5FP13FaHZ69MzGcFrK",
+      "he": "שכיבות סמיכה צמודות עם הידיים על כדורסל",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "close grip push ups on basketball"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DXuQp6XCLKe/",
+      "poster": "assets/posters/DXuQp6XCLKe-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        31.0,
+        36.8
+      ]
+    },
+    {
+      "id": "drive_הרמת_כדור_כוח_מהחזה_אל_מאחורי_הראש",
+      "driveId": "1mVAQfgXk5CovIZ5xNfHQ1AHqpnyBZ1yh",
+      "he": "הרמת כדור כוח מהחזה אל מאחורי הראש",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "medicine ball overhead triceps extension"
+      ],
+      "sourceUrl": "https://www.facebook.com/reel/4438822906366427/",
+      "poster": "assets/posters/fb4438822906366427-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        7.0,
+        19.0
+      ]
+    },
+    {
+      "id": "drive_כפיפות_מרפקים_עם_משקולות_בעמידה_על_סולם_זריזות",
+      "driveId": "1D__UQHpz9Uwn41xOH6-YjFb_VMnLvC7t",
+      "he": "כפיפות מרפקים עם משקולות בעמידה על סולם זריזות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "drive",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "dumbbell curls standing on agility ladder"
+      ],
+      "sourceUrl": "https://www.instagram.com/reel/DI1liNvOLwz/",
+      "poster": "assets/posters/DI1liNvOLwz-1.jpg",
+      "segment": 1,
+      "segmentRange": [
+        16.0,
         21.5
       ]
     }

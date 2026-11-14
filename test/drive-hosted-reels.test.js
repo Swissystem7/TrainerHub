@@ -25,13 +25,16 @@ test('Drive-hosted reels are registered', function () {
   assert.equal(drive._meta.driveReelCount, REELS.length);
 });
 
-test('each Drive-hosted reel has one Instagram code, one Drive file and a Hebrew name', function () {
+test('each Drive-hosted reel has one Instagram/Facebook code, one Drive file and a Hebrew name', function () {
   const codes = new Set();
   const names = new Set();
   const legacyNames = new Set(drive.items.filter(function (e) { return REELS.indexOf(e) === -1; }).map(function (e) { return e.he; }));
   const otherReelCodes = new Set(reels.map(function (r) { return (String(r.source_url || r.url || '').match(/reel\/([^/]+)/) || [])[1]; }));
   REELS.forEach(function (e) {
-    const m = e.sourceUrl.match(/^https:\/\/www\.instagram\.com\/reel\/([A-Za-z0-9_-]+)\/$/);
+    // Instagram reel code, or a public Facebook reel/video id stored as 'fb' + digits.
+    const ig = e.sourceUrl.match(/^https:\/\/www\.instagram\.com\/reel\/([A-Za-z0-9_-]+)\/$/);
+    const fb = e.sourceUrl.match(/^https:\/\/www\.facebook\.com\/(?:reel\/|watch\/\?v=|[^/]+\/videos\/)(\d+)\/?$/);
+    const m = ig || (fb && [fb[0], 'fb' + fb[1]]);
     assert.ok(m, e.id + ' sourceUrl');
     // A trimmed single-exercise segment of a multi-exercise reel shares the reel
     // code with its sibling segments; code + segment number stays unique.
