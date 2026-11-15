@@ -237,6 +237,8 @@
 
   <section class="card" id="progression-trends-card" aria-labelledby="progressionTrendsHeading"></section>
 
+  <section class="card" id="weeklyMuscleBalanceCard" aria-labelledby="weeklyMuscleBalanceHeading"></section>
+
   <section class="card" id="coach-trainees-panel" aria-labelledby="coachTraineesHeading"></section>
 
   <section class="card" id="insights" role="region" aria-labelledby="insightsHeading">
@@ -270,6 +272,7 @@
 <script src="./js/session-tracker.js"></script>
 <script src="./js/journal-storage.js"></script>
 <script src="./js/progression-engine.js"></script>
+<script src="./js/muscle-balance.js"></script>
 <script src="./js/coach-profiles.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
@@ -679,6 +682,95 @@
     card.appendChild(ul);
   }
 
+  function renderWeeklyMuscleBalance(selectedClient) {
+    var card = $('weeklyMuscleBalanceCard');
+    if (!card || typeof document.createElement !== 'function' || typeof card.appendChild !== 'function') return;
+    card.textContent = '';
+
+    var h2 = document.createElement('h2');
+    h2.id = 'weeklyMuscleBalanceHeading';
+    h2.textContent = 'איזון שרירים שבועי (דחיפה / משיכה / רגליים / ליבה)';
+    card.appendChild(h2);
+
+    var MB = window.THMuscleBalance;
+    if (!MB) {
+      var msg = document.createElement('p');
+      msg.className = 'honest';
+      msg.textContent = 'מנתח איזון השרירים אינו זמין כעת.';
+      card.appendChild(msg);
+      return;
+    }
+
+    var c = selectedClient || insightsClient();
+    var entries = [];
+    var snap = null;
+    if (c) {
+      if (JS && typeof JS.getClientSnapshot === 'function') {
+        snap = JS.getClientSnapshot(c.id);
+        if (snap && Array.isArray(snap.entries)) entries = snap.entries;
+      }
+      if ((!entries || entries.length === 0) && Array.isArray(c.logs)) {
+        entries = c.logs;
+      }
+    } else if (JS && typeof JS.listEntries === 'function') {
+      entries = JS.listEntries();
+    }
+
+    if (!entries || entries.length === 0) {
+      var emptyP = document.createElement('p');
+      emptyP.className = 'empty';
+      emptyP.setAttribute('role', 'status');
+      emptyP.textContent = 'אין עדיין נתוני ביצוע ב-7 הימים האחרונים לחישוב איזון שרירים שבועי.';
+      card.appendChild(emptyP);
+      return;
+    }
+
+    var balance = MB.computeMuscleGroupBalance(entries);
+    var focus = MB.suggestNextFocus(balance);
+
+    var statsBox = document.createElement('div');
+    statsBox.className = 'stats';
+
+    var groupKeys = ['push', 'pull', 'legs', 'core'];
+    var groupLabels = { push: 'דחיפה', pull: 'משיכה', legs: 'רגליים', core: 'ליבה' };
+
+    for (var i = 0; i < groupKeys.length; i++) {
+      var gk = groupKeys[i];
+      var gData = (balance.groups && balance.groups[gk]) || { direct: 0, indirect: 0, total: 0, statusHe: 'חסר' };
+
+      var statDiv = document.createElement('div');
+      statDiv.className = 'stat';
+      statDiv.setAttribute('data-group', gk);
+
+      var bVal = document.createElement('b');
+      bVal.textContent = String(gData.total) + ' סטים';
+      statDiv.appendChild(bVal);
+
+      var labelSpan = document.createElement('span');
+      labelSpan.textContent = groupLabels[gk] + ' (' + gData.statusHe + ')';
+      statDiv.appendChild(labelSpan);
+
+      var detailSmall = document.createElement('small');
+      detailSmall.className = 'field-help';
+      detailSmall.textContent = String(gData.direct) + ' ישירים + ' + String(gData.indirect) + ' עקיפים';
+      statDiv.appendChild(detailSmall);
+
+      statsBox.appendChild(statDiv);
+    }
+    card.appendChild(statsBox);
+
+    var recBox = document.createElement('div');
+    recBox.className = 'insight-box';
+    recBox.style.marginTop = '12px';
+
+    var recP = document.createElement('p');
+    recP.className = 'honest';
+    recP.textContent = 'המלצה לאימון הבא: ' + (focus.label || focus.focus) + ' — ' + (focus.reason || focus.message);
+    recBox.appendChild(recP);
+
+    card.appendChild(recBox);
+  }
+
   function renderCoachTraineesPanel() {
     var panel = $('coach-trainees-panel');
     if (!panel || typeof document.createElement !== 'function' || typeof panel.appendChild !== 'function') return;
@@ -956,6 +1048,7 @@
     if (prev && clients.some(function (c) { return c.id === prev; })) sel.value = prev;
     var c = insightsClient();
     renderProgressionTrends(c);
+    renderWeeklyMuscleBalance(c);
     $('insights').hidden = !c || !JS;
     if (!c || !JS) return;
     var d = TH.normalizeClientDetails(c);

@@ -175,6 +175,20 @@
             <option value="כוח ותפקוד">כוח ותפקוד</option>
           </select>
         </div>
+        <div>
+          <label for="muscleSelect">קבוצת שרירים</label>
+          <select id="muscleSelect" name="muscle">
+            <option value="all">גוף מלא</option>
+            <option value="push">דחיפה (חזה/כתפיים)</option>
+            <option value="pull">משיכה (גב/יד קדמית)</option>
+            <option value="legs">רגליים</option>
+            <option value="core">ליבה ובטן</option>
+          </select>
+        </div>
+      </div>
+      <div class="balanced-focus-container" style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="th-btn ghost" id="applyBalancedFocusBtn" aria-label="החל מיקוד שרירי מומלץ מאיזון שבועי">החל מיקוד שרירי מומלץ</button>
+        <span id="balancedFocusStatus" class="field-help" style="margin: 0;"></span>
       </div>
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
@@ -240,6 +254,8 @@
 <script src="./js/prompt-parser.js"></script>
 <script src="./js/adaptation-engine.js"></script>
 <script src="./js/session-builder.js"></script>
+<script src="./js/journal-storage.js"></script>
+<script src="./js/muscle-balance.js"></script>
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
 <script src="./js/whatsapp-share.js"></script>
@@ -581,6 +597,12 @@
       else if (/שימור|שומן|חיטוב/.test(text)) $('goalSelect').value = 'שימור שריר בירידה בשומן';
       else if (/שריר|מסה|היפרטרופיה/.test(text)) $('goalSelect').value = 'בניית שריר';
     }
+    if ($('muscleSelect')) {
+      if (/דחיפה|חזה|כתפיים|שכיבות סמיכה|מקבילים/.test(text)) $('muscleSelect').value = 'push';
+      else if (/משיכה|גב|מתח|חתירה/.test(text)) $('muscleSelect').value = 'pull';
+      else if (/רגליים|סקוואט|מכרעים|לאנג'|דדליפט/.test(text)) $('muscleSelect').value = 'legs';
+      else if (/בטן|ליבה|פלאנק|קראנץ/.test(text)) $('muscleSelect').value = 'core';
+    }
   }
 
   function run(e) {
@@ -653,6 +675,41 @@
       switchTab(tabs[next].id.replace('tab-', ''));
     });
   });
+
+  function applyBalancedFocus() {
+    var MB = window.THMuscleBalance;
+    if (!MB) return;
+    var sessions = [];
+    var JS = window.THJournalStorage || window.JournalStorage;
+    if (JS && typeof JS.listEntries === 'function') {
+      sessions = JS.listEntries();
+    }
+    var balance = MB.computeMuscleGroupBalance(sessions);
+    var recommendation = MB.suggestNextFocus(balance);
+    var focusGroup = recommendation.group || recommendation.focus || 'all';
+
+    var sel = $('muscleSelect');
+    if (sel) {
+      sel.value = focusGroup;
+      sel.dispatchEvent(new Event('change'));
+    }
+
+    var promptEl = $('prompt');
+    if (promptEl) {
+      var promptText = recommendation.suggestedPrompt || ('אימון ' + (recommendation.shortLabel || focusGroup) + ' 20 דקות');
+      promptEl.value = promptText;
+      syncFieldsFromPrompt();
+    }
+
+    var statusEl = $('balancedFocusStatus');
+    if (statusEl) {
+      statusEl.textContent = 'הוחל מיקוד מומלץ: ' + (recommendation.shortLabel || focusGroup) + ' (' + (recommendation.reason || '') + ')';
+    }
+  }
+
+  if ($('applyBalancedFocusBtn')) {
+    $('applyBalancedFocusBtn').addEventListener('click', applyBalancedFocus);
+  }
 
   $('prompt').addEventListener('input', syncFieldsFromPrompt);
   $('form').addEventListener('submit', run);
