@@ -97,7 +97,8 @@
     "file": "בטן גומיות␠.mp4",
     "source": "youtube",
     "youtubeId": "eVXtFHa1g_c",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-1B-o2xdvYayZZWhN6u9E4_Hv6mEamTnF0.jpg"
   },
   "בטן_הגיע_ברגל_אחורית_ולהחליף": {
     "id": "בטן_הגיע_ברגל_אחורית_ולהחליף",
@@ -112,7 +113,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-002.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1OP9DR-9r8RRGhKEaHpPu2xvLVGaBy7al"
+    "drivePlayId": "1OP9DR-9r8RRGhKEaHpPu2xvLVGaBy7al",
+    "poster": "assets/posters/ill-1OP9DR-9r8RRGhKEaHpPu2xvLVGaBy7al.jpg"
   },
   "בטן_זוגות": {
     "id": "בטן_זוגות",
@@ -127,7 +129,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-003.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1d9SogCH-DiT949JG3qMjYnHgawBteLFJ"
+    "drivePlayId": "1d9SogCH-DiT949JG3qMjYnHgawBteLFJ",
+    "poster": "assets/posters/ill-1d9SogCH-DiT949JG3qMjYnHgawBteLFJ.jpg"
   },
   "בטן_זוגות_2": {
     "id": "בטן_זוגות_2",
@@ -142,7 +145,8 @@
     "file": "בטן זוגות (4.7 MB).mp4",
     "source": "youtube",
     "youtubeId": "6cnP5Xk_RLg",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-1d9SogCH-DiT949JG3qMjYnHgawBteLFJ.jpg"
   },
   "בטן_כדור_כדורסל": {
     "id": "בטן_כדור_כדורסל",
@@ -157,7 +161,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-004.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1CrZXXuJDDVvB-4fuDtg-0ZN6oTGa1EQN"
+    "drivePlayId": "1CrZXXuJDDVvB-4fuDtg-0ZN6oTGa1EQN",
+    "poster": "assets/posters/ill-1CrZXXuJDDVvB-4fuDtg-0ZN6oTGa1EQN.jpg"
   },
   "בטן_סט": {
     "id": "בטן_סט",
@@ -187,7 +192,8 @@
     "file": "בטן עם כדור.mp4",
     "source": "youtube",
     "youtubeId": "ZjkeaLU_gIM",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-1JsibK5z5pxRIVVkt5ftsqZqDn5OHbS4W.jpg"
   },
   "בטן_עם_קיר": {
     "id": "בטן_עם_קיר",
@@ -477,7 +483,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-022.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1rsRu0axX1XNAPkoVZyVwVqoUxxcqN12p"
+    "drivePlayId": "1rsRu0axX1XNAPkoVZyVwVqoUxxcqN12p",
+    "poster": "assets/posters/ill-1rsRu0axX1XNAPkoVZyVwVqoUxxcqN12p.jpg"
   },
   "גומיות_במקום_מכון": {
     "id": "גומיות_במקום_מכון",
