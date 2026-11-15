@@ -71,8 +71,10 @@ test('the Drive player card shows the reel poster before it loads', function () 
   const e = row('DQRgIA8DC_V');
   const html = TH.mediaMarkup(merged[e.id], { className: 'ex-media' });
   assert.match(html, /<img class="th-facade-thumb" src="(\.\/)?assets\/posters\/DQRgIA8DC_V\.jpg"/);
-  const plain = drive.items.find(function (x) { return x.source === 'drive' && x.driveId && !x.poster && merged[x.id]; });
-  assert.match(TH.mediaMarkup(merged[plain.id], { className: 'ex-media' }), /drive\.google\.com\/thumbnail\?id=/);
+  // After every playable Drive-only row has a local illustration, the
+  // thumbnail fallback is checked on a synthetic entry (not a leftover catalog row).
+  const plain = { id: 'drive_plain_fixture', he: 'בדיקה', source: 'drive', driveId: '1AAAAAAAAAAAAAAAAAAAAAAAAAA', available: true };
+  assert.match(TH.mediaMarkup(plain, { className: 'ex-media' }), /drive\.google\.com\/thumbnail\?id=/);
 });
 
 test('library cards (catalogList rows) keep the reel poster', function () {
