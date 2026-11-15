@@ -76,7 +76,7 @@ test('clicking a facade swaps in the iframe, with autoplay for YouTube', functio
   const dr = fakeButton({ 'data-th-frame': 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview',
     'data-th-frame-allow': 'autoplay; fullscreen', class: 'drive-frame drive-frame-facade' });
   const g = TH.activateMediaFrame(dr.btn);
-  assert.equal(g.attrs.src, 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview');
+  assert.equal(g.attrs.src, 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview?autoplay=1');
   assert.equal(g.attrs.class, 'drive-frame');
   assert.equal(g.attrs.referrerpolicy, 'no-referrer-when-downgrade');
   assert.equal(g.attrs.allow, 'autoplay; fullscreen');

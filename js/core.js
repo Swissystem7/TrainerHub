@@ -3314,7 +3314,10 @@
 		/^https:\/\/www\.youtube\.com\/embed\/([A-Za-z0-9_-]{11})(?:\?(start=\d+)?(?:&?(end=\d+))?)?$/;
 	function safeFrameSrc(raw) {
 		var m = DRIVE_PREVIEW_RX.exec(String(raw || ""));
-		if (m) return { kind: "drive", src: drivePreviewUrl(m[1]) };
+		// The click on the facade already counts as the user's tap, so the Drive
+		// player starts at once (?autoplay=1, honored with allow="autoplay")
+		// instead of asking for a second tap on its own play button.
+		if (m) return { kind: "drive", src: withAutoplay(drivePreviewUrl(m[1])) };
 		m = YOUTUBE_EMBED_RX.exec(String(raw || ""));
 		if (!m) return null;
 		var start = m[2] ? Number(m[2].slice(6)) : null;
