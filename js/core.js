@@ -3293,8 +3293,7 @@
 	}
 
 	// The <video> failed on its current host: try the next MP4 host, and after
-	// the last one swap in the Drive player. Also called from the inline
-	// onerror of the workout-mode player (data-th-mp4 holds the Drive id).
+	// the last one swap in the Drive player (data-th-mp4 holds the Drive id).
 	function mediaFallback(v) {
 		if (!v || !v.getAttribute) return null;
 		var id = String(v.getAttribute("data-th-mp4") || "");
@@ -3513,25 +3512,6 @@
 		});
 	}
 
-	// Single-player views (workout mode) get the hosted MP4 straight away; its
-	// onerror walks the same host list and ends on the Drive player.
-	function mp4Markup(o, driveId) {
-		var list = mp4Sources(driveId);
-		return (
-			'<video class="' +
-			o.cls +
-			' th-mp4" aria-label="' +
-			esc(o.title) +
-			'" data-th-mp4="' +
-			esc(driveId) +
-			'" controls playsinline webkit-playsinline preload="metadata" src="' +
-			esc(list[0]) +
-			'"' +
-			(o.thumb ? ' poster="' + esc(o.thumb) + '"' : "") +
-			' onerror="window.TH&&TH.mediaFallback(this)"></video>'
-		);
-	}
-
 	function driveFrameMarkup(entry, driveId, cls, eager) {
 		var segNote = "";
 		if (entry.startSec != null && entry.endSec != null) {
@@ -3561,11 +3541,10 @@
 			'-fallback" hidden>' +
 			esc(mediaFallbackText(entry)) +
 			"</div>" +
-			(eager
-				? mp4Sources(driveId).length
-					? mp4Markup(o, driveId)
-					: frameTag(o)
-				: frameFacadeMarkup(o)) +
+			// A hosted copy gets the tap-to-play facade even in workout mode: on
+			// phones a bare <video controls> needs a tap to show its controls and
+			// another on play, while the facade starts the clip on the first tap.
+			(eager && !mp4Sources(driveId).length ? frameTag(o) : frameFacadeMarkup(o)) +
 			segNote +
 			"</div>"
 		);

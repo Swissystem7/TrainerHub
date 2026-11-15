@@ -99,12 +99,11 @@ test('without a hosted copy the Drive player is used as before', function () {
   assert.equal(f.attrs.src, src + '?autoplay=1');
 });
 
-test('workout mode (eager) renders the hosted <video> with a Drive fallback hook', function () {
+test('workout mode (eager) shows the tap-to-play facade for a hosted copy, the Drive iframe otherwise', function () {
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: { [ID]: 'core/' + ID + '.mp4' } });
   const html = TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true });
   assert.doesNotMatch(html, /<iframe/);
-  assert.match(html, new RegExp('<video class="ex-media th-mp4"[^>]*data-th-mp4="' + ID + '"[^>]*playsinline[^>]*src="' + PAGES.replace(/[./]/g, '\\$&') + 'core/' + ID + '\\.mp4"'));
-  assert.match(html, /onerror="window\.TH&&TH\.mediaFallback\(this\)"/);
+  assert.match(html, new RegExp('<button type="button" class="ex-media ex-media-facade" data-th-frame="https://drive\\.google\\.com/file/d/' + ID + '/preview"'));
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: {} });
   assert.match(TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true }), /<iframe/);
 });
