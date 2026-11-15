@@ -735,7 +735,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-038.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Bu_xV38QneoC8Zwue-sJzNO6iwwbe7fp"
+    "drivePlayId": "1Bu_xV38QneoC8Zwue-sJzNO6iwwbe7fp",
+    "poster": "assets/posters/ill-1Bu_xV38QneoC8Zwue-sJzNO6iwwbe7fp.jpg"
   },
   "הליכת_חיות_לחיזוק_ידיים": {
     "id": "הליכת_חיות_לחיזוק_ידיים",
@@ -767,7 +768,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-040.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1h2qXEixD5EW8ecIrzcW7ybqnjJLJINVD"
+    "drivePlayId": "1h2qXEixD5EW8ecIrzcW7ybqnjJLJINVD",
+    "poster": "assets/posters/ill-1h2qXEixD5EW8ecIrzcW7ybqnjJLJINVD.jpg"
   },
   "ידיים_סוחבות_גוף": {
     "id": "ידיים_סוחבות_גוף",
@@ -849,7 +851,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-045.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1B5BsschpxGokswHmNMpM3LgcAGIwp-PW"
+    "drivePlayId": "1B5BsschpxGokswHmNMpM3LgcAGIwp-PW",
+    "poster": "assets/posters/ill-1B5BsschpxGokswHmNMpM3LgcAGIwp-PW.jpg"
   },
   "ילדים_משחק_עם_קונוסים": {
     "id": "ילדים_משחק_עם_קונוסים",
@@ -867,7 +870,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-046.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1UIwPMjYyHarX5BdWveIltNSXwIJPFf-Y"
+    "drivePlayId": "1UIwPMjYyHarX5BdWveIltNSXwIJPFf-Y",
+    "poster": "assets/posters/ill-1UIwPMjYyHarX5BdWveIltNSXwIJPFf-Y.jpg"
   },
   "ילדים_קונוסים": {
     "id": "ילדים_קונוסים",
@@ -885,7 +889,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-049.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Q0gOiub8uXUxRJqkJ1a4F0rGeDxEprLP"
+    "drivePlayId": "1Q0gOiub8uXUxRJqkJ1a4F0rGeDxEprLP",
+    "poster": "assets/posters/ill-1Q0gOiub8uXUxRJqkJ1a4F0rGeDxEprLP.jpg"
   },
   "ילדים_קונוסים_אחד_על_אחד": {
     "id": "ילדים_קונוסים_אחד_על_אחד",
@@ -923,7 +928,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-048.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1DMEjyIK40gIYxqhiHfjR2wjvo0wZ0jGw"
+    "drivePlayId": "1DMEjyIK40gIYxqhiHfjR2wjvo0wZ0jGw",
+    "poster": "assets/posters/ill-1DMEjyIK40gIYxqhiHfjR2wjvo0wZ0jGw.jpg"
   },
   "יציאה_מהמקום": {
     "id": "יציאה_מהמקום",
@@ -1264,6 +1270,7 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-068.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd"
+    "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd",
+    "poster": "assets/posters/ill-1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd.jpg"
   }
 }

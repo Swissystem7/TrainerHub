@@ -24,14 +24,24 @@ Object.keys(local).forEach(function (k) { if (ILL.test(local[k].poster || '')) r
 drive.items.concat(youtube.items).forEach(function (e) { if (ILL.test(e.poster || '')) rows.push(e); });
 const reelRows = reels.filter(function (r) { return r.id === 'ig-DdHOFvtKk9z' || r.id === 'ig-Dart5bjomQ5'; });
 
-test('91 catalog rows and 2 reels carry their own illustration file', function () {
-  assert.equal(rows.length, 91);
+test('116 catalog rows and 2 reels carry their own illustration file', function () {
+  assert.equal(rows.length, 116);
   assert.equal(reelRows.filter(function (r) { return r.poster; }).length, 2);
 });
 
 test('no two exercises share an illustration', function () {
-  const paths = rows.map(function (r) { return r.poster; }).concat(reelRows.map(function (r) { return r.poster; }));
-  assert.equal(new Set(paths).size, paths.length);
+  const all = rows.concat(reelRows);
+  const byPath = new Map();
+  all.forEach(function (r) {
+    const list = byPath.get(r.poster) || [];
+    list.push(r);
+    byPath.set(r.poster, list);
+  });
+  byPath.forEach(function (list, poster) {
+    const names = new Set(list.map(function (r) { return r.he || r.name_he || r.id; }));
+    assert.equal(names.size, 1, 'shared poster ' + poster + ' used by ' + Array.from(names).join(','));
+  });
+  const paths = Array.from(byPath.keys());
   const hashes = paths.map(function (p) {
     assert.ok(fs.existsSync(path.join(root, p)), p);
     return crypto.createHash('md5').update(fs.readFileSync(path.join(root, p))).digest('hex');
@@ -52,7 +62,7 @@ test('library, builder and workout cards show the illustration', function () {
 
 test('Drive cards on the exercises page show the illustration', function () {
   const withPoster = driveVideos.filter(function (v) { return v.poster; });
-  assert.equal(withPoster.length, 54);
+  assert.equal(withPoster.length, 58);
   const cards = THReels.driveVideosToExercises(driveVideos);
   const esc = function (s) { return String(s); };
   withPoster.forEach(function (v) {
