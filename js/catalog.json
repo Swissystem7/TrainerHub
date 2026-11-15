@@ -1027,7 +1027,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-054.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "18B3OI1RHOS3jldfqLET9Kol4heiM6wR4"
+    "drivePlayId": "18B3OI1RHOS3jldfqLET9Kol4heiM6wR4",
+    "poster": "assets/posters/ill-18B3OI1RHOS3jldfqLET9Kol4heiM6wR4.jpg"
   },
   "פסים": {
     "id": "פסים",
@@ -1169,7 +1170,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-062.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1YXvWBKTdZ2rv2HD3msTzhRF_SCzD4-3b"
+    "drivePlayId": "1YXvWBKTdZ2rv2HD3msTzhRF_SCzD4-3b",
+    "poster": "assets/posters/ill-1YXvWBKTdZ2rv2HD3msTzhRF_SCzD4-3b.jpg"
   },
   "קונוסים_אחד_על_אחד": {
     "id": "קונוסים_אחד_על_אחד",
@@ -1202,7 +1204,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-064.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1HtJ9ViyomZ8Wi-1akKMzmdP0yujUgvCO"
+    "drivePlayId": "1HtJ9ViyomZ8Wi-1akKMzmdP0yujUgvCO",
+    "poster": "assets/posters/ill-1HtJ9ViyomZ8Wi-1akKMzmdP0yujUgvCO.jpg"
   },
   "קונוסים_עבודת_צוות": {
     "id": "קונוסים_עבודת_צוות",
@@ -1264,7 +1267,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-067.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1r_PvxDnjNTnXroCp7BdYaMVjvr0Qt352"
+    "drivePlayId": "1r_PvxDnjNTnXroCp7BdYaMVjvr0Qt352",
+    "poster": "assets/posters/ill-1r_PvxDnjNTnXroCp7BdYaMVjvr0Qt352.jpg"
   },
   "שכיבות_סמיכה_ורגליים": {
     "id": "שכיבות_סמיכה_ורגליים",

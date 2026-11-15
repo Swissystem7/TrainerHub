@@ -18,7 +18,8 @@
       "source": "youtube",
       "youtubeId": "FLDeOadsIsM",
       "folder": "מתיחות וגמישות",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-FLDeOadsIsM.jpg"
     },
     {
       "id": "yt_hip_flexor_stretch",
@@ -33,7 +34,8 @@
       "source": "youtube",
       "youtubeId": "wX2dHWNiy9E",
       "folder": "מתיחות וגמישות",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-wX2dHWNiy9E.jpg"
     },
     {
       "id": "yt_cat_cow",
@@ -105,7 +107,8 @@
       "source": "youtube",
       "youtubeId": "Y9NsupDRFzw",
       "folder": "מתיחות וגמישות",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-Y9NsupDRFzw.jpg"
     },
     {
       "id": "yt_lateral_raise",
@@ -267,7 +270,8 @@
         "מעגלי ירך",
         "hip circles",
         "hip_circles"
-      ]
+      ],
+      "poster": "assets/posters/ill-OqR7Tl6SPLQ.jpg"
     },
     {
       "id": "yt_torso_twist",
@@ -302,7 +306,8 @@
         "נדנוד רגליים",
         "leg swings",
         "leg_swings"
-      ]
+      ],
+      "poster": "assets/posters/ill-7coRsjuylVY.jpg"
     },
     {
       "id": "yt_agility_ladder",
@@ -337,7 +342,8 @@
         "פטישים",
         "hammer curl",
         "hammer_curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-SGolzLoGutg.jpg"
     },
     {
       "id": "yt_hammer_curl_alt",
@@ -352,7 +358,8 @@
       "source": "youtube",
       "youtubeId": "G6wBw5QLDDg",
       "folder": "יד קדמית",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-G6wBw5QLDDg.jpg"
     },
     {
       "id": "yt_concentration_curl",
@@ -372,7 +379,8 @@
         "כפיפה מרוכזת",
         "concentration curl",
         "concentration_curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-cHxRJdSVIkA.jpg"
     },
     {
       "id": "yt_band_curl",
@@ -387,7 +395,8 @@
       "source": "youtube",
       "youtubeId": "0sVUQxp-l7k",
       "folder": "יד קדמית",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-0sVUQxp-l7k.jpg"
     },
     {
       "id": "yt_band_curl_demo",
@@ -402,7 +411,8 @@
       "source": "youtube",
       "youtubeId": "nAQu69thHQg",
       "folder": "יד קדמית",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-nAQu69thHQg.jpg"
     },
     {
       "id": "yt_tricep_pushdown",
@@ -422,7 +432,8 @@
         "פשיטת מרפק",
         "tricep pushdown",
         "tricep_pushdown"
-      ]
+      ],
+      "poster": "assets/posters/ill-UKsqwz1OSWw.jpg"
     },
     {
       "id": "yt_diamond_pushup",
@@ -536,7 +547,8 @@
         "סקוואט גביע",
         "goblet squat",
         "goblet_squat"
-      ]
+      ],
+      "poster": "assets/posters/ill-Wr-f4vy8wTs.jpg"
     },
     {
       "id": "yt_rdl_db",
@@ -594,7 +606,8 @@
       "source": "youtube",
       "youtubeId": "Bacq2IKq4BA",
       "folder": "רגליים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-Bacq2IKq4BA.jpg"
     },
     {
       "id": "yt_quad_stretch",
@@ -614,7 +627,8 @@
         "מתיחת ארבע ראשי",
         "quad stretch",
         "quad_stretch"
-      ]
+      ],
+      "poster": "assets/posters/ill-ZKMYmIqnzrU.jpg"
     },
     {
       "id": "yt_burpee",
@@ -799,7 +813,8 @@
       "available": true,
       "aliases": [
         "nordic hamstring curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-htyDuCI8cm8.jpg"
     },
     {
       "id": "yt_pull_up",
@@ -1006,7 +1021,8 @@
       "available": true,
       "aliases": [
         "kettlebell front squat"
-      ]
+      ],
+      "poster": "assets/posters/ill-tolV0jzQIAY.jpg"
     },
     {
       "id": "yt_incline_curl",
@@ -1024,7 +1040,8 @@
       "available": true,
       "aliases": [
         "incline dumbbell curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-soxrZlIl35U.jpg"
     },
     {
       "id": "yt_preacher_curl",
@@ -1042,7 +1059,8 @@
       "available": true,
       "aliases": [
         "preacher curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-5u9qWmE7c2Y.jpg"
     },
     {
       "id": "yt_bayesian_curl",
@@ -1060,7 +1078,8 @@
       "available": true,
       "aliases": [
         "bayesian curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-paM4Yo8fo8g.jpg"
     },
     {
       "id": "yt_spider_curl",
@@ -1078,7 +1097,8 @@
       "available": true,
       "aliases": [
         "spider curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-NJnmRX4Od6c.jpg"
     },
     {
       "id": "yt_weighted_chin_up",
@@ -1097,7 +1117,8 @@
       "available": true,
       "aliases": [
         "weighted chin up"
-      ]
+      ],
+      "poster": "assets/posters/ill-bZ6Ysk9jf6E.jpg"
     },
     {
       "id": "yt_military_press",
@@ -1253,7 +1274,8 @@
         "back squat",
         "barbell squat",
         "barbell back squat"
-      ]
+      ],
+      "poster": "assets/posters/ill--bJIpOq-LWk.jpg"
     },
     {
       "id": "lunges",
@@ -1281,7 +1303,8 @@
         "לאנצ׳ים",
         "לאנג' במקום",
         "לאנג׳ במקום"
-      ]
+      ],
+      "poster": "assets/posters/ill-M6DZ0Dca17w.jpg"
     },
     {
       "id": "glute_bridge",
@@ -1626,7 +1649,8 @@
         "bodyweight_curl",
         "bodyweight curl",
         "bodyweight biceps curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-F5hCRqcDOMI.jpg"
     },
     {
       "id": "bicep_curl",
@@ -1651,7 +1675,8 @@
         "bicep curl",
         "כפיפות מרפק",
         "כפיפות מרפקים"
-      ]
+      ],
+      "poster": "assets/posters/ill-uO_CNYidOw0.jpg"
     },
     {
       "id": "bench_dips",
@@ -1673,7 +1698,8 @@
         "bench_dips",
         "bench dip",
         "bench dips"
-      ]
+      ],
+      "poster": "assets/posters/ill-c3ZGl4pAwZ4.jpg"
     },
     {
       "id": "russian_twist",
@@ -2040,7 +2066,8 @@
         "ניתורים על ארגז",
         "box_jump",
         "box jump"
-      ]
+      ],
+      "poster": "assets/posters/ill-h1YkVa7mnRU.jpg"
     },
     {
       "id": "bird_dog",
@@ -2134,7 +2161,8 @@
         "chair_squat",
         "chair squat",
         "sit-to-stand"
-      ]
+      ],
+      "poster": "assets/posters/ill-OViE2ghEop0.jpg"
     },
     {
       "id": "hip_thrust",
@@ -2247,7 +2275,8 @@
         "ניתור לאדמה וגלגול",
         "ניתור לאדמה",
         "גלגול"
-      ]
+      ],
+      "poster": "assets/posters/ill-J0kcsLXX1Ms.jpg"
     },
     {
       "id": "med_ball_overhead_throw",
@@ -2390,7 +2419,8 @@
         "kneeling jump squat",
         "ניתורים בכריעת ברך",
         "kneeling_jump"
-      ]
+      ],
+      "poster": "assets/posters/ill-4qK55avGyy4.jpg"
     },
     {
       "id": "dead_hang",
@@ -2913,7 +2943,8 @@
       "available": true,
       "aliases": [
         "banded kettlebell swing"
-      ]
+      ],
+      "poster": "assets/posters/ill-UqpiMY9GktA.jpg"
     },
     {
       "id": "yt_barbell_curl",
@@ -2931,7 +2962,8 @@
       "available": true,
       "aliases": [
         "barbell curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-JnLFSFurrqQ.jpg"
     },
     {
       "id": "yt_barbell_skull_crusher",
@@ -2969,7 +3001,8 @@
       "available": true,
       "aliases": [
         "banded barbell squat"
-      ]
+      ],
+      "poster": "assets/posters/ill-Mt7R8RvWkzc.jpg"
     },
     {
       "id": "yt_power_clean",
@@ -3092,7 +3125,8 @@
       "available": true,
       "aliases": [
         "swiss ball seated curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-vlZxROzhH34.jpg"
     },
     {
       "id": "yt_swiss_ball_pike",
@@ -3555,7 +3589,8 @@
       "aliases": [
         "pelican curls",
         "calisthenics bodyweight bicep pelican curls"
-      ]
+      ],
+      "poster": "assets/posters/ill-ElJAjY8kZc4.jpg"
     },
     {
       "id": "yt_bodyweight_skull_crushers",
@@ -3637,7 +3672,8 @@
         "elevated pike push-up",
         "pike push up with elevated feet",
         "פייק פוש אפ עם רגליים מוגבהות"
-      ]
+      ],
+      "poster": "assets/posters/ill-T5tjopRuWHA.jpg"
     },
     {
       "id": "inverted_table_row",
