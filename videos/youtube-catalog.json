@@ -72,7 +72,8 @@
       "source": "youtube",
       "youtubeId": "UlyMK4MJ1v4",
       "folder": "מתיחות וגמישות",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-UlyMK4MJ1v4.jpg"
     },
     {
       "id": "yt_child_pose",
@@ -326,7 +327,8 @@
       "source": "youtube",
       "youtubeId": "Z7pSU_Oj7kY",
       "folder": "חימום",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-Z7pSU_Oj7kY.jpg"
     },
     {
       "id": "yt_hammer_curl",
@@ -694,7 +696,8 @@
       "source": "youtube",
       "youtubeId": "pcOkhja6wug",
       "folder": "קרדיו",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-pcOkhja6wug.jpg"
     },
     {
       "id": "yt_jumping_jacks",
@@ -731,7 +734,8 @@
       "source": "youtube",
       "youtubeId": "KeBeea7QZ2w",
       "folder": "קרדיו",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-KeBeea7QZ2w.jpg"
     },
     {
       "id": "yt_one_arm_pushup",
@@ -768,7 +772,8 @@
       "available": true,
       "aliases": [
         "pistol squat"
-      ]
+      ],
+      "poster": "assets/posters/ill-vq5-vdgJc0I.jpg"
     },
     {
       "id": "yt_wall_handstand",
@@ -1385,7 +1390,8 @@
         "calf_raise",
         "calf raise",
         "standing calf raise"
-      ]
+      ],
+      "poster": "assets/posters/ill-3UWi44yN-wM.jpg"
     },
     {
       "id": "dumbbell_lunge",
@@ -1786,7 +1792,8 @@
         "dumbbell_step_up",
         "dumbbell step-up",
         "dumbbell step up"
-      ]
+      ],
+      "poster": "assets/posters/ill-DxUNi119Qzs.jpg"
     },
     {
       "id": "decline_push_up",
@@ -2355,7 +2362,8 @@
         "agility_5_10_5",
         "תנועה הצידה ונגיעה",
         "נגיעה"
-      ]
+      ],
+      "poster": "assets/posters/ill-fZoJVVuqY3U.jpg"
     },
     {
       "id": "bodyweight_reverse_fly",
@@ -2673,7 +2681,8 @@
       "aliases": [
         "diamond rondo",
         "רונדו"
-      ]
+      ],
+      "poster": "assets/posters/ill-rLMQOZ2S3ko.jpg"
     },
     {
       "id": "yt_soccer_throw_in",
@@ -3056,7 +3065,8 @@
       "aliases": [
         "power clean",
         "פאוור קלין"
-      ]
+      ],
+      "poster": "assets/posters/ill-E2z5zK5V-MM.jpg"
     },
     {
       "id": "yt_machine_chest_press",
@@ -3488,7 +3498,8 @@
         "stair jumps",
         "קפיצות מדרגות",
         "kids stair jumps"
-      ]
+      ],
+      "poster": "assets/posters/ill-OB04mv3yzMY.jpg"
     },
     {
       "id": "yt_partner_stair_workout",

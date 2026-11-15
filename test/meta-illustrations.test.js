@@ -24,8 +24,8 @@ Object.keys(local).forEach(function (k) { if (ILL.test(local[k].poster || '')) r
 drive.items.concat(youtube.items).forEach(function (e) { if (ILL.test(e.poster || '')) rows.push(e); });
 const reelRows = reels.filter(function (r) { return r.id === 'ig-DdHOFvtKk9z' || r.id === 'ig-Dart5bjomQ5'; });
 
-test('319 catalog rows and 2 reels carry their own illustration file', function () {
-  assert.equal(rows.length, 319);
+test('339 catalog rows and 2 reels carry their own illustration file', function () {
+  assert.equal(rows.length, 339);
   assert.equal(reelRows.filter(function (r) { return r.poster; }).length, 2);
 });
 
@@ -62,7 +62,7 @@ test('library, builder and workout cards show the illustration', function () {
 
 test('Drive cards on the exercises page show the illustration', function () {
   const withPoster = driveVideos.filter(function (v) { return v.poster; });
-  assert.equal(withPoster.length, 103);
+  assert.equal(withPoster.length, 104);
   const cards = THReels.driveVideosToExercises(driveVideos);
   const esc = function (s) { return String(s); };
   withPoster.forEach(function (v) {
