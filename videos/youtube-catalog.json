@@ -1425,7 +1425,8 @@
         "שכיבות סמיכה מלאות",
         "שכיבות סמיכה עם עצירה בתחתית",
         "שכיבות סמיכה לפי שלבי ההדגמה"
-      ]
+      ],
+      "poster": "assets/posters/ill-WDIpL0pjun0.jpg"
     },
     {
       "id": "wide_push_up",
@@ -1469,7 +1470,8 @@
         "dumbbell_bench",
         "dumbbell bench press",
         "dumbbell chest press"
-      ]
+      ],
+      "poster": "assets/posters/ill-VmB1G1K7v94.jpg"
     },
     {
       "id": "dumbbell_fly",
@@ -1491,7 +1493,8 @@
         "dumbbell_fly",
         "dumbbell fly",
         "dumbbell flys"
-      ]
+      ],
+      "poster": "assets/posters/ill-eozdVDA78K0.jpg"
     },
     {
       "id": "bench_press",
@@ -1513,7 +1516,8 @@
         "bench_press",
         "bench press",
         "barbell bench press"
-      ]
+      ],
+      "poster": "assets/posters/ill-rT7DgCr-3pg.jpg"
     },
     {
       "id": "dumbbell_row",
@@ -1757,7 +1761,8 @@
         "dumbbell_incline",
         "dumbbell incline press",
         "incline dumbbell press"
-      ]
+      ],
+      "poster": "assets/posters/ill-8iPEnn-ltC8.jpg"
     },
     {
       "id": "incline_press",
@@ -1779,7 +1784,8 @@
         "incline_press",
         "incline press",
         "incline bench press"
-      ]
+      ],
+      "poster": "assets/posters/ill-BjGLs6KGWUc.jpg"
     },
     {
       "id": "wall_walk",
@@ -2076,7 +2082,8 @@
         "wall_push_up",
         "wall push-up",
         "wall push up"
-      ]
+      ],
+      "poster": "assets/posters/ill-wIPJvBQs7RA.jpg"
     },
     {
       "id": "chair_squat",
@@ -2309,7 +2316,8 @@
         "traveling push-up",
         "שכיבות סמיכה בהתקדמות",
         "walking_push_up"
-      ]
+      ],
+      "poster": "assets/posters/ill-l7ZmX1eaXLo.jpg"
     },
     {
       "id": "fast_feet",
@@ -2427,7 +2435,8 @@
       "aliases": [
         "basketball passing drills for kids",
         "מסירות כדורסל לילדים"
-      ]
+      ],
+      "poster": "assets/posters/ill-AWVgKM_9Yq4.jpg"
     },
     {
       "id": "yt_basketball_cone_shuffle_pass",
@@ -2450,7 +2459,8 @@
       "aliases": [
         "4 cone shuffle pass",
         "basketball cone shuffle pass"
-      ]
+      ],
+      "poster": "assets/posters/ill-lVIvCLNZAnk.jpg"
     },
     {
       "id": "yt_basketball_shot_fake_rebound",
@@ -2594,7 +2604,8 @@
         "throw-in",
         "throw in",
         "זריקת חוץ"
-      ]
+      ],
+      "poster": "assets/posters/ill-PVd-ZTfPBiI.jpg"
     },
     {
       "id": "yt_soccer_4cone_agility",
@@ -2825,7 +2836,8 @@
       "available": true,
       "aliases": [
         "kettlebell floor press"
-      ]
+      ],
+      "poster": "assets/posters/ill-eDQ0IVCooKo.jpg"
     },
     {
       "id": "yt_kb_curl",
@@ -2963,7 +2975,8 @@
       "available": true,
       "aliases": [
         "machine chest press"
-      ]
+      ],
+      "poster": "assets/posters/ill-ZPteUPefxEg.jpg"
     },
     {
       "id": "yt_hack_squat_machine",
@@ -3226,7 +3239,8 @@
       "aliases": [
         "incline push-up off stairs",
         "stair push up"
-      ]
+      ],
+      "poster": "assets/posters/ill-5IICgggYJjw.jpg"
     },
     {
       "id": "yt_overhead_ball_tricep_extension",
