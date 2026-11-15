@@ -587,7 +587,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-027.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1bcQ-htUNfyxjW8bSQTjKwiBquad_ZzGh"
+    "drivePlayId": "1bcQ-htUNfyxjW8bSQTjKwiBquad_ZzGh",
+    "poster": "assets/posters/ill-1bcQ-htUNfyxjW8bSQTjKwiBquad_ZzGh.jpg"
   },
   "עבודה_עם_גומייה": {
     "id": "עבודה_עם_גומייה",
@@ -704,7 +705,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-034.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1DFRhNv8csB94xXttY1cAYOXLkychvYm4"
+    "drivePlayId": "1DFRhNv8csB94xXttY1cAYOXLkychvYm4",
+    "poster": "assets/posters/ill-1DFRhNv8csB94xXttY1cAYOXLkychvYm4.jpg"
   },
   "קורדינאציה": {
     "id": "קורדינאציה",
@@ -852,7 +854,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-044.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1jq0Tm3ZNPj2Vhifb41A_gjtbmWp7HkFa"
+    "drivePlayId": "1jq0Tm3ZNPj2Vhifb41A_gjtbmWp7HkFa",
+    "poster": "assets/posters/ill-1jq0Tm3ZNPj2Vhifb41A_gjtbmWp7HkFa.jpg"
   },
   "ילדים_חישוק_קונוסים": {
     "id": "ילדים_חישוק_קונוסים",
@@ -964,7 +967,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-050.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "15sad24OOaQYmnbCVAcXz-Y6Ku48WxqIS"
+    "drivePlayId": "15sad24OOaQYmnbCVAcXz-Y6Ku48WxqIS",
+    "poster": "assets/posters/ill-15sad24OOaQYmnbCVAcXz-Y6Ku48WxqIS.jpg"
   },
   "יציאה_מהמקום_2": {
     "id": "יציאה_מהמקום_2",
@@ -979,7 +983,8 @@
     "file": "יציאה מהמקום (10.8 MB).mp4",
     "source": "youtube",
     "youtubeId": "pqpiHeNh1OY",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-15sad24OOaQYmnbCVAcXz-Y6Ku48WxqIS.jpg"
   },
   "כדורגל_אחד_על_אחד": {
     "id": "כדורגל_אחד_על_אחד",
@@ -994,7 +999,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-051.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1PO8gQiSuq679vQ0xxvL72oUNXr8oMmUb"
+    "drivePlayId": "1PO8gQiSuq679vQ0xxvL72oUNXr8oMmUb",
+    "poster": "assets/posters/ill-1PO8gQiSuq679vQ0xxvL72oUNXr8oMmUb.jpg"
   },
   "כדורגל_חימום": {
     "id": "כדורגל_חימום",
@@ -1025,7 +1031,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-053.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "114L-f_A8iFfgxILtf_-BR5AMuilaXS7p"
+    "drivePlayId": "114L-f_A8iFfgxILtf_-BR5AMuilaXS7p",
+    "poster": "assets/posters/ill-114L-f_A8iFfgxILtf_-BR5AMuilaXS7p.jpg"
   },
   "מסירות_דיוק": {
     "id": "מסירות_דיוק",
@@ -1266,7 +1273,8 @@
     "file": "מדרגות.mp4",
     "source": "youtube",
     "youtubeId": "nhVyTCGGvS0",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-1AnrHH6jijMwHS7B70MmsKx9V2edFtXzG.jpg"
   },
   "סולם_רגליים": {
     "id": "סולם_רגליים",
