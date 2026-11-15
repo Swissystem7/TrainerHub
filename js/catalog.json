@@ -386,7 +386,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-017.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1iLfmJWQa8t-xY96su47X5aPJGyaVzevh"
+    "drivePlayId": "1iLfmJWQa8t-xY96su47X5aPJGyaVzevh",
+    "poster": "assets/posters/ill-1iLfmJWQa8t-xY96su47X5aPJGyaVzevh.jpg"
   },
   "bodyweight_row": {
     "id": "bodyweight_row",
@@ -426,7 +427,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-019.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "13m16UDTLl_lKMCCx4nbZEdys4Hh0A3mL"
+    "drivePlayId": "13m16UDTLl_lKMCCx4nbZEdys4Hh0A3mL",
+    "poster": "assets/posters/ill-13m16UDTLl_lKMCCx4nbZEdys4Hh0A3mL.jpg"
   },
   "בישיבה_אחד_נגד_השני": {
     "id": "בישיבה_אחד_נגד_השני",

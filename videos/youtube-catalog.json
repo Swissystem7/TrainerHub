@@ -125,7 +125,8 @@
         "הרחקה צידית",
         "lateral raise",
         "lateral_raise"
-      ]
+      ],
+      "poster": "assets/posters/ill-WPAOe6yBONA.jpg"
     },
     {
       "id": "yt_arnold_press",
@@ -140,7 +141,8 @@
       "source": "youtube",
       "youtubeId": "2YoSBg15a5M",
       "folder": "כתפיים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-2YoSBg15a5M.jpg"
     },
     {
       "id": "yt_kb_press",
@@ -977,7 +979,8 @@
       "available": true,
       "aliases": [
         "kettlebell windmill"
-      ]
+      ],
+      "poster": "assets/posters/ill-ITSmgn_BQgY.jpg"
     },
     {
       "id": "yt_kb_front_squat",
@@ -1173,7 +1176,8 @@
         "פרפר הפוך",
         "reverse fly",
         "reverse_fly"
-      ]
+      ],
+      "poster": "assets/posters/ill-lPt0GqwaqEw.jpg"
     },
     {
       "id": "yt_cable_face_pull",
@@ -1588,7 +1592,8 @@
         "פולי עליון",
         "lat_pulldown",
         "lat pulldown"
-      ]
+      ],
+      "poster": "assets/posters/ill-GL3h256d6JM.jpg"
     },
     {
       "id": "bodyweight_curl",
@@ -1814,7 +1819,8 @@
         "הליכה על קיר",
         "wall_walk",
         "wall walk"
-      ]
+      ],
+      "poster": "assets/posters/ill-NK_OcHEm8yM.jpg"
     },
     {
       "id": "front_raise",
@@ -1859,7 +1865,8 @@
         "upright_row",
         "upright row",
         "barbell upright row"
-      ]
+      ],
+      "poster": "assets/posters/ill-amCU-ziHITM.jpg"
     },
     {
       "id": "doorway_curl",
@@ -2252,7 +2259,8 @@
         "מסירות כדור כוח",
         "מסירות כדור כוח בכל יד",
         "med_ball_overhead_throw"
-      ]
+      ],
+      "poster": "assets/posters/ill-2aOV5ZhnRaM.jpg"
     },
     {
       "id": "agility_5_10_5",
@@ -2392,7 +2400,8 @@
         "תלייה פסיבית",
         "תלייה",
         "dead_hang"
-      ]
+      ],
+      "poster": "assets/posters/ill-3CEmHJXbNpc.jpg"
     },
     {
       "id": "run_3000",
@@ -2678,7 +2687,8 @@
       "available": true,
       "aliases": [
         "tennis hand-eye coordination kids"
-      ]
+      ],
+      "poster": "assets/posters/ill-C517fq9-DpE.jpg"
     },
     {
       "id": "yt_partner_tennis_ball_drop",
@@ -2720,7 +2730,8 @@
       "aliases": [
         "return of serve drills",
         "החזרת הגשה"
-      ]
+      ],
+      "poster": "assets/posters/ill-mY0j4CgxgIQ.jpg"
     },
     {
       "id": "yt_partner_superband",
@@ -3350,7 +3361,8 @@
         "how to pull up active moves for kids",
         "מתח לילדים",
         "kids pull ups"
-      ]
+      ],
+      "poster": "assets/posters/ill-eSPO3E7Qoy4.jpg"
     },
     {
       "id": "yt_partner_assisted_pull_ups",
@@ -3369,7 +3381,8 @@
       "aliases": [
         "partner assisted pull-up",
         "מתח בסיוע בן זוג"
-      ]
+      ],
+      "poster": "assets/posters/ill-GCpVLHjHHmc.jpg"
     },
     {
       "id": "yt_kids_stair_jumps",
@@ -3566,7 +3579,8 @@
         "stability ball back extension",
         "swiss ball hyperextension",
         "פשיטת גב על כדור יציבות"
-      ]
+      ],
+      "poster": "assets/posters/ill-ZvKCgtHZam0.jpg"
     },
     {
       "id": "yt_tennis_ball_pull_ups",
@@ -3586,7 +3600,8 @@
       "aliases": [
         "tennis ball pull-ups",
         "tennis ball pullups"
-      ]
+      ],
+      "poster": "assets/posters/ill-jt7he-sC1LY.jpg"
     },
     {
       "id": "elevated_pike_pushup",
