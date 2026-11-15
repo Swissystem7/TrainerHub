@@ -56,7 +56,8 @@
         "cat-cow",
         "cat cow",
         "cat_cow"
-      ]
+      ],
+      "poster": "assets/posters/ill-os2P4a1uQQw.jpg"
     },
     {
       "id": "yt_pigeon",
@@ -92,7 +93,8 @@
         "child's pose",
         "child pose",
         "child_pose"
-      ]
+      ],
+      "poster": "assets/posters/ill-VH-Ws3K-x7k.jpg"
     },
     {
       "id": "yt_calf_stretch",
@@ -250,7 +252,8 @@
         "ריצה מהירה",
         "sprint",
         "high knees"
-      ]
+      ],
+      "poster": "assets/posters/ill-Rhj4DwKky_k.jpg"
     },
     {
       "id": "yt_hip_circles",
@@ -286,7 +289,8 @@
       "source": "youtube",
       "youtubeId": "RZA-z_dn2D8",
       "folder": "חימום",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-RZA-z_dn2D8.jpg"
     },
     {
       "id": "yt_leg_swings",
@@ -672,7 +676,8 @@
       "source": "youtube",
       "youtubeId": "wrn1Cm_yfEU",
       "folder": "קרדיו",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-wrn1Cm_yfEU.jpg"
     },
     {
       "id": "yt_jump_rope",
@@ -708,7 +713,8 @@
         "ג'מפינג ג'קס",
         "jumping jacks",
         "jumping_jacks"
-      ]
+      ],
+      "poster": "assets/posters/ill-s76m4rFdKDY.jpg"
     },
     {
       "id": "yt_quick_feet",
@@ -902,7 +908,8 @@
       "available": true,
       "aliases": [
         "hanging leg raise"
-      ]
+      ],
+      "poster": "assets/posters/ill-Pr1ieGZ5atk.jpg"
     },
     {
       "id": "yt_one_arm_pull_up",
@@ -1725,7 +1732,8 @@
         "טוויסט רוסי",
         "russian_twist",
         "russian twist"
-      ]
+      ],
+      "poster": "assets/posters/ill-wkD8rjkodUI.jpg"
     },
     {
       "id": "leg_raise",
@@ -1747,7 +1755,8 @@
         "leg_raise",
         "lying leg raise",
         "leg raise"
-      ]
+      ],
+      "poster": "assets/posters/ill-0tzBVqiDwSs.jpg"
     },
     {
       "id": "dumbbell_step_up",
@@ -2404,7 +2413,8 @@
         "hot feet",
         "אדמה בוערת",
         "fast_feet"
-      ]
+      ],
+      "poster": "assets/posters/ill-eT5M1goPDhY.jpg"
     },
     {
       "id": "kneeling_jump",
@@ -3090,7 +3100,8 @@
       "aliases": [
         "cable woodchop",
         "woodchop"
-      ]
+      ],
+      "poster": "assets/posters/ill-N-_CloFzrNA.jpg"
     },
     {
       "id": "yt_kids_jackpot_ball_game",
@@ -3153,7 +3164,8 @@
       "aliases": [
         "swiss ball pike",
         "stability ball pike"
-      ]
+      ],
+      "poster": "assets/posters/ill-vo3csqN6rpo.jpg"
     },
     {
       "id": "yt_partner_med_ball",
@@ -3541,7 +3553,8 @@
         "burpee fitness for kids",
         "ברפיז לילדים",
         "kids burpees"
-      ]
+      ],
+      "poster": "assets/posters/ill-Y8TIp7s38gw.jpg"
     },
     {
       "id": "yt_archer_pull_ups",
