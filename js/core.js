@@ -3231,6 +3231,114 @@
 	// thumbnail with a play button in the same box; the iframe is created only
 	// when the user clicks it (activateMediaFrame). opts.eager keeps the old
 	// immediate iframe for single-player views (workout mode, the segment tool).
+	// Hosted MP4 copies of the Drive clips (Swissystem7/TrainerHub-media).
+	// Drive's preview player starts slowly and stalls on mobile data, so a clip
+	// with a copy plays in a native <video> from the media repo's GitHub Pages,
+	// then from jsDelivr (pinned tag) if that fails, and from the Drive player
+	// as the last fallback. Drive stays the source of truth; the copies are
+	// listed in videos/media-manifest.json by Drive id.
+	var MEDIA_MANIFEST = "videos/media-manifest.json";
+	var MEDIA_HOST_RX =
+		/^https:\/\/(?:swissystem7\.github\.io\/TrainerHub-media\/|cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@[A-Za-z0-9._-]+\/)$/;
+	var MEDIA_PATH_RX = /^[a-z0-9_-]+\/[A-Za-z0-9_-]{20,}\.mp4$/;
+	var DRIVE_ID_RX = /^[A-Za-z0-9_-]{20,}$/;
+	var mediaHosts = [];
+	var mediaFiles = Object.create(null);
+	var mediaManifestPromise = null;
+
+	function setMediaManifest(m) {
+		mediaHosts = [];
+		mediaFiles = Object.create(null);
+		if (!m || typeof m !== "object") return 0;
+		(Array.isArray(m.hosts) ? m.hosts : []).forEach(function (h) {
+			if (typeof h === "string" && MEDIA_HOST_RX.test(h)) mediaHosts.push(h);
+		});
+		var files = m.files && typeof m.files === "object" ? m.files : {};
+		var n = 0;
+		Object.keys(files).forEach(function (id) {
+			if (DRIVE_ID_RX.test(id) && typeof files[id] === "string" && MEDIA_PATH_RX.test(files[id])) {
+				mediaFiles[id] = files[id];
+				n++;
+			}
+		});
+		return n;
+	}
+
+	function loadMediaManifest() {
+		if (!mediaManifestPromise)
+			mediaManifestPromise = loadJson(MEDIA_MANIFEST).then(setMediaManifest);
+		return mediaManifestPromise;
+	}
+
+	// Ordered MP4 URLs for a Drive id (empty when there is no hosted copy).
+	function mp4Sources(driveId) {
+		var path = Object.prototype.hasOwnProperty.call(mediaFiles, driveId)
+			? mediaFiles[driveId]
+			: "";
+		if (!path) return [];
+		return mediaHosts.map(function (h) {
+			return h + path;
+		});
+	}
+
+	function driveIframe(doc, driveId, cls, title, allow) {
+		var frame = doc.createElement("iframe");
+		frame.setAttribute("class", cls);
+		frame.setAttribute("title", title || "");
+		frame.setAttribute("allow", allow || DRIVE_ALLOW);
+		frame.setAttribute("allowfullscreen", "");
+		frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
+		frame.setAttribute("src", withAutoplay(drivePreviewUrl(driveId)));
+		return frame;
+	}
+
+	// The <video> failed on its current host: try the next MP4 host, and after
+	// the last one swap in the Drive player. Also called from the inline
+	// onerror of the workout-mode player (data-th-mp4 holds the Drive id).
+	function mediaFallback(v) {
+		if (!v || !v.getAttribute) return null;
+		var id = String(v.getAttribute("data-th-mp4") || "");
+		if (!DRIVE_ID_RX.test(id)) return null;
+		var list = mp4Sources(id);
+		var next = (v.__thHost == null ? 0 : v.__thHost) + 1;
+		if (next < list.length) {
+			v.__thHost = next;
+			v.setAttribute("src", list[next]);
+			if (typeof v.load === "function") v.load();
+			if (v.__thPlay && typeof v.play === "function") {
+				var pr = v.play();
+				if (pr && typeof pr.catch === "function") pr.catch(function () {});
+			}
+			return v;
+		}
+		var doc = v.ownerDocument || (typeof document !== "undefined" ? document : null);
+		if (!doc || !v.parentNode) return null;
+		var cls = String(v.getAttribute("class") || "").replace(/\s*\bth-mp4\b/g, "").trim();
+		var frame = driveIframe(doc, id, cls, v.getAttribute("aria-label") || "");
+		v.parentNode.replaceChild(frame, v);
+		return frame;
+	}
+
+	function mp4Video(doc, driveId, cls, title) {
+		var list = mp4Sources(driveId);
+		var v = doc.createElement("video");
+		v.setAttribute("class", (cls ? cls + " " : "") + "th-mp4");
+		v.setAttribute("aria-label", title || "");
+		v.setAttribute("data-th-mp4", driveId);
+		v.setAttribute("controls", "");
+		v.setAttribute("playsinline", "");
+		v.setAttribute("webkit-playsinline", "");
+		v.setAttribute("preload", "auto");
+		v.__thHost = 0;
+		v.__thPlay = true;
+		if (typeof v.addEventListener === "function")
+			v.addEventListener("error", function () {
+				mediaFallback(v);
+			});
+		v.setAttribute("src", list[0]);
+		return v;
+	}
+
 	var FRAME_ATTR = "data-th-frame";
 	var DRIVE_ALLOW = "autoplay";
 	var YOUTUBE_ALLOW =
@@ -3345,6 +3453,26 @@
 		if (!safe) return null;
 		var doc = btn.ownerDocument || (typeof document !== "undefined" ? document : null);
 		if (!doc || !btn.parentNode) return null;
+		var keyMatch = safe.kind === "drive" ? DRIVE_PREVIEW_RX.exec(String(key)) : null;
+		var mp4Id = keyMatch ? keyMatch[1] : "";
+		if (mp4Id && mp4Sources(mp4Id).length) {
+			var vcls = String(btn.getAttribute("class") || "")
+				.split(/\s+/)
+				.filter(function (c) {
+					return /^[A-Za-z][A-Za-z0-9_-]*$/.test(c) && !/-facade$/.test(c);
+				})
+				.join(" ");
+			var video = mp4Video(doc, mp4Id, vcls, String(btn.getAttribute("data-th-frame-title") || ""));
+			btn.parentNode.replaceChild(video, btn);
+			// The tap on the facade is the user gesture, so playback (with sound)
+			// starts on that single tap.
+			if (typeof video.play === "function") {
+				var pr = video.play();
+				if (pr && typeof pr.catch === "function") pr.catch(function () {});
+			}
+			if (typeof video.focus === "function") video.focus();
+			return video;
+		}
 		var frame = doc.createElement("iframe");
 		var cls = String(btn.getAttribute("class") || "")
 			.split(/\s+/)
@@ -3385,6 +3513,25 @@
 		});
 	}
 
+	// Single-player views (workout mode) get the hosted MP4 straight away; its
+	// onerror walks the same host list and ends on the Drive player.
+	function mp4Markup(o, driveId) {
+		var list = mp4Sources(driveId);
+		return (
+			'<video class="' +
+			o.cls +
+			' th-mp4" aria-label="' +
+			esc(o.title) +
+			'" data-th-mp4="' +
+			esc(driveId) +
+			'" controls playsinline webkit-playsinline preload="metadata" src="' +
+			esc(list[0]) +
+			'"' +
+			(o.thumb ? ' poster="' + esc(o.thumb) + '"' : "") +
+			' onerror="window.TH&&TH.mediaFallback(this)"></video>'
+		);
+	}
+
 	function driveFrameMarkup(entry, driveId, cls, eager) {
 		var segNote = "";
 		if (entry.startSec != null && entry.endSec != null) {
@@ -3414,7 +3561,11 @@
 			'-fallback" hidden>' +
 			esc(mediaFallbackText(entry)) +
 			"</div>" +
-			(eager ? frameTag(o) : frameFacadeMarkup(o)) +
+			(eager
+				? mp4Sources(driveId).length
+					? mp4Markup(o, driveId)
+					: frameTag(o)
+				: frameFacadeMarkup(o)) +
 			segNote +
 			"</div>"
 		);
@@ -4007,6 +4158,7 @@
 			loadJson("videos/drive-catalog.json"),
 			loadJson("videos/youtube-catalog.json"),
 			loadJson("data/drive_videos.json"),
+			loadMediaManifest(),
 		])
 			.then(function (parts) {
 				setReelDriveVideos(parts[3]);
@@ -5075,6 +5227,10 @@
 		mediaMarkup: mediaMarkup,
 		activateMediaFrame: activateMediaFrame,
 		registerFrameSrc: registerFrameSrc,
+		setMediaManifest: setMediaManifest,
+		loadMediaManifest: loadMediaManifest,
+		mp4Sources: mp4Sources,
+		mediaFallback: mediaFallback,
 		driveThumbUrl: driveThumbUrl,
 		mergeCatalogs: mergeCatalogs,
 		normalizeEntry: normalizeEntry,
