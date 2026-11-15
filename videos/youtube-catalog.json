@@ -577,7 +577,8 @@
         "Romanian deadlift with dumbbells",
         "romanian deadlift",
         "romanian_deadlift_db"
-      ]
+      ],
+      "poster": "assets/posters/ill-vnEANU7BqqY.jpg"
     },
     {
       "id": "yt_walking_lunge",
@@ -599,7 +600,8 @@
         "walking lunge",
         "לאנג'ים הליכה",
         "מכרעים בהליכה"
-      ]
+      ],
+      "poster": "assets/posters/ill-ucvLqXxOEOs.jpg"
     },
     {
       "id": "yt_kb_swing",
@@ -1336,7 +1338,8 @@
         "גשר ישבן",
         "glute_bridge",
         "glute bridge"
-      ]
+      ],
+      "poster": "assets/posters/ill-SKOMwg1JLrU.jpg"
     },
     {
       "id": "wall_sit",
@@ -1358,7 +1361,8 @@
         "ישיבה על קיר",
         "wall_sit",
         "wall sit"
-      ]
+      ],
+      "poster": "assets/posters/ill-y-wV4Venusw.jpg"
     },
     {
       "id": "calf_raise",
@@ -1403,7 +1407,8 @@
         "dumbbell_lunge",
         "dumbbell lunge",
         "dumbbell forward lunge"
-      ]
+      ],
+      "poster": "assets/posters/ill-3TM-vVWuLYE.jpg"
     },
     {
       "id": "deadlift",
@@ -1426,7 +1431,8 @@
         "deadlift",
         "conventional deadlift",
         "barbell deadlift"
-      ]
+      ],
+      "poster": "assets/posters/ill-yPqv3ejnZvc.jpg"
     },
     {
       "id": "leg_press",
@@ -1447,7 +1453,8 @@
         "לחיצת רגליים",
         "leg_press",
         "leg press"
-      ]
+      ],
+      "poster": "assets/posters/ill-oujca3_Shgw.jpg"
     },
     {
       "id": "push_up",
@@ -2059,7 +2066,8 @@
         "side_lunge",
         "side lunge",
         "lateral lunge"
-      ]
+      ],
+      "poster": "assets/posters/ill-gwWv7aPcD88.jpg"
     },
     {
       "id": "box_jump",
@@ -2198,7 +2206,8 @@
         "היפ תרסט",
         "hip_thrust",
         "hip thrust"
-      ]
+      ],
+      "poster": "assets/posters/ill-SEdqd1n0cvg.jpg"
     },
     {
       "id": "yt_hand_release_push_up",
@@ -2579,7 +2588,8 @@
       "aliases": [
         "figure 8 dribbling",
         "כדרור שמינייה"
-      ]
+      ],
+      "poster": "assets/posters/ill-ZPhiBKqDXEQ.jpg"
     },
     {
       "id": "yt_kids_soccer_dribbling",
@@ -2599,7 +2609,8 @@
       "aliases": [
         "dribbling drills for young soccer players",
         "כדרור כדורגל לילדים"
-      ]
+      ],
+      "poster": "assets/posters/ill-O-njByyCFk4.jpg"
     },
     {
       "id": "yt_soccer_cone_weave",
@@ -2620,7 +2631,8 @@
       "aliases": [
         "cone weave dribbling",
         "כדרור בין קונוסים"
-      ]
+      ],
+      "poster": "assets/posters/ill-vnngDOCy9C8.jpg"
     },
     {
       "id": "yt_partner_soccer_passing",
@@ -2640,7 +2652,8 @@
       "aliases": [
         "simple passing drill",
         "מסירות כדורגל בזוגות"
-      ]
+      ],
+      "poster": "assets/posters/ill-2TVbVAT1XfA.jpg"
     },
     {
       "id": "yt_soccer_diamond_rondo",
@@ -2705,7 +2718,8 @@
       "aliases": [
         "soccer 4 cone drill",
         "kbands soccer"
-      ]
+      ],
+      "poster": "assets/posters/ill-6W4ZFdtlRVA.jpg"
     },
     {
       "id": "yt_soccer_ladder_passing",
@@ -2768,7 +2782,8 @@
       "aliases": [
         "tennis ball drop",
         "ball drop reaction drill"
-      ]
+      ],
+      "poster": "assets/posters/ill--pudLqL4GdA.jpg"
     },
     {
       "id": "yt_partner_tennis_return",
@@ -3080,7 +3095,8 @@
       "available": true,
       "aliases": [
         "hack squat"
-      ]
+      ],
+      "poster": "assets/posters/ill-sw-5KcVZVk8.jpg"
     },
     {
       "id": "yt_cable_woodchop",
