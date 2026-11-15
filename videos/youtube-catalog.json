@@ -157,7 +157,8 @@
       "source": "youtube",
       "youtubeId": "WYnuAhpDK5Y",
       "folder": "כתפיים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-WYnuAhpDK5Y.jpg"
     },
     {
       "id": "yt_face_pull",
@@ -172,7 +173,8 @@
       "source": "youtube",
       "youtubeId": "fZCpv4VG92E",
       "folder": "כתפיים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-fZCpv4VG92E.jpg"
     },
     {
       "id": "yt_band_pull_apart",
@@ -187,7 +189,8 @@
       "source": "youtube",
       "youtubeId": "MxQlSph7Zug",
       "folder": "כתפיים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-MxQlSph7Zug.jpg"
     },
     {
       "id": "yt_wall_angels",
@@ -202,7 +205,8 @@
       "source": "youtube",
       "youtubeId": "y2ZUHmx-IFY",
       "folder": "כתפיים",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-y2ZUHmx-IFY.jpg"
     },
     {
       "id": "yt_arm_circles",
@@ -222,7 +226,8 @@
         "מעגלי ידיים",
         "arm circles",
         "arm_circles"
-      ]
+      ],
+      "poster": "assets/posters/ill-oLB8i4bC3Zk.jpg"
     },
     {
       "id": "yt_high_knees",
@@ -755,7 +760,8 @@
       "available": true,
       "aliases": [
         "handstand"
-      ]
+      ],
+      "poster": "assets/posters/ill-8Fdyew622mg.jpg"
     },
     {
       "id": "yt_l_sit",
@@ -917,7 +923,8 @@
       "available": true,
       "aliases": [
         "turkish get up"
-      ]
+      ],
+      "poster": "assets/posters/ill-0bWRPC49-KI.jpg"
     },
     {
       "id": "yt_kb_snatch",
@@ -1111,7 +1118,8 @@
         "לחיצת כתפיים",
         "overhead press",
         "overhead_press"
-      ]
+      ],
+      "poster": "assets/posters/ill-2yjwXTZQDDI.jpg"
     },
     {
       "id": "yt_db_shoulder_press",
@@ -1131,7 +1139,8 @@
         "dumbbell shoulder press",
         "לחיצת כתפיים משקולות",
         "dumbbell_ohp"
-      ]
+      ],
+      "poster": "assets/posters/ill-qEwKCR5JCog.jpg"
     },
     {
       "id": "yt_pike_push_up",
@@ -1155,7 +1164,8 @@
         "pike_push_up",
         "פייק־פוש־אפ",
         "פייק-פוש-אפ"
-      ]
+      ],
+      "poster": "assets/posters/ill-18mNeuH4D1k.jpg"
     },
     {
       "id": "yt_rear_delt_fly",
@@ -1195,7 +1205,8 @@
       "available": true,
       "aliases": [
         "cable face pull"
-      ]
+      ],
+      "poster": "assets/posters/ill-ljgqer1ZpXg.jpg"
     },
     {
       "id": "bodyweight_squat",
@@ -1888,7 +1899,8 @@
         "doorway_curl",
         "doorway curl",
         "door frame curl"
-      ]
+      ],
+      "poster": "assets/posters/ill-id5Bp0gSUmk.jpg"
     },
     {
       "id": "shoulder_stretch",
@@ -1910,7 +1922,8 @@
         "shoulder_stretch",
         "shoulder stretch",
         "cross-body shoulder stretch"
-      ]
+      ],
+      "poster": "assets/posters/ill-h_5_0zAzU5Y.jpg"
     },
     {
       "id": "dips",
@@ -2795,7 +2808,8 @@
       "aliases": [
         "banded face pull",
         "face pull band"
-      ]
+      ],
+      "poster": "assets/posters/ill-fZCpv4VG92E.jpg"
     },
     {
       "id": "yt_band_assisted_pull_up",
@@ -3521,7 +3535,8 @@
       "aliases": [
         "wall facing handstand push up",
         "שכיבות סמיכה בעמידת ידיים"
-      ]
+      ],
+      "poster": "assets/posters/ill-WxgJS48wf1M.jpg"
     },
     {
       "id": "yt_pelican_curls",
