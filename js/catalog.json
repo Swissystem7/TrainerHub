@@ -370,7 +370,8 @@
       "סופרמן",
       "superman"
     ],
-    "drivePlayId": "1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m"
+    "drivePlayId": "1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m",
+    "poster": "assets/posters/ill-1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m.jpg"
   },
   "כתפיים_וגב": {
     "id": "כתפיים_וגב",
@@ -409,7 +410,8 @@
       "australian pull up",
       "australian pullup"
     ],
-    "drivePlayId": "1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm"
+    "drivePlayId": "1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm",
+    "poster": "assets/posters/ill-1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm.jpg"
   },
   "קונוסים_גב": {
     "id": "קונוסים_גב",
@@ -817,7 +819,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-043.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM"
+    "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM",
+    "poster": "assets/posters/ill-1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM.jpg"
   },
   "ילדים_הוקי_נעליים": {
     "id": "ילדים_הוקי_נעליים",
