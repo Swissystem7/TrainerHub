@@ -722,7 +722,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-035.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1SwlHwsmfYUqhnaSwGQsPHBbCppdzjRqH"
+    "drivePlayId": "1SwlHwsmfYUqhnaSwGQsPHBbCppdzjRqH",
+    "poster": "assets/posters/ill-1SwlHwsmfYUqhnaSwGQsPHBbCppdzjRqH.jpg"
   },
   "תרגיל_תגובה": {
     "id": "תרגיל_תגובה",
@@ -738,7 +739,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-036.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1UulIYGhoericoDHJFgt_EynxGVmWUCBW"
+    "drivePlayId": "1UulIYGhoericoDHJFgt_EynxGVmWUCBW",
+    "poster": "assets/posters/ill-1UulIYGhoericoDHJFgt_EynxGVmWUCBW.jpg"
   },
   "אתגר_שכיבות_שמיכה": {
     "id": "אתגר_שכיבות_שמיכה",
@@ -1063,7 +1065,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-055.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1y_ia48beF8C6aoCRH0d4ltHGh5f0lFQZ"
+    "drivePlayId": "1y_ia48beF8C6aoCRH0d4ltHGh5f0lFQZ",
+    "poster": "assets/posters/ill-1y_ia48beF8C6aoCRH0d4ltHGh5f0lFQZ.jpg"
   },
   "שליטה_בכדור": {
     "id": "שליטה_בכדור",
@@ -1078,7 +1081,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-057.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1c65GJOCyLkfFr8yrzol7YvcHN7MA4e5N"
+    "drivePlayId": "1c65GJOCyLkfFr8yrzol7YvcHN7MA4e5N",
+    "poster": "assets/posters/ill-1c65GJOCyLkfFr8yrzol7YvcHN7MA4e5N.jpg"
   },
   "שליטה_בכדור_זוגות": {
     "id": "שליטה_בכדור_זוגות",
@@ -1093,7 +1097,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-056.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1ZJvTHaR0yKVuX-Aq0Uvnw8Og6jj2Ls4L"
+    "drivePlayId": "1ZJvTHaR0yKVuX-Aq0Uvnw8Og6jj2Ls4L",
+    "poster": "assets/posters/ill-1ZJvTHaR0yKVuX-Aq0Uvnw8Og6jj2Ls4L.jpg"
   },
   "טניס_נגיעה_בגוף": {
     "id": "טניס_נגיעה_בגוף",
@@ -1208,7 +1213,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-063.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Bq1F3W-xpZQddVTDz9IyieDWjU3flkql"
+    "drivePlayId": "1Bq1F3W-xpZQddVTDz9IyieDWjU3flkql",
+    "poster": "assets/posters/ill-1Bq1F3W-xpZQddVTDz9IyieDWjU3flkql.jpg"
   },
   "קונוסים_ידיים_וכדורי_טניס": {
     "id": "קונוסים_ידיים_וכדורי_טניס",
@@ -1242,7 +1248,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-065.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Q7b6grVI3Wt6KwJ2iIuXFprLP6L_T5_C"
+    "drivePlayId": "1Q7b6grVI3Wt6KwJ2iIuXFprLP6L_T5_C",
+    "poster": "assets/posters/ill-1Q7b6grVI3Wt6KwJ2iIuXFprLP6L_T5_C.jpg"
   },
   "קונוסים_תחנות": {
     "id": "קונוסים_תחנות",
@@ -1258,7 +1265,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-066.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Y9S3RRh-qAdl-pv0l4zU0dNSORJGGBgR"
+    "drivePlayId": "1Y9S3RRh-qAdl-pv0l4zU0dNSORJGGBgR",
+    "poster": "assets/posters/ill-1Y9S3RRh-qAdl-pv0l4zU0dNSORJGGBgR.jpg"
   },
   "step_up": {
     "id": "step_up",
