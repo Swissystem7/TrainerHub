@@ -716,7 +716,8 @@
       "available": true,
       "aliases": [
         "one arm push up"
-      ]
+      ],
+      "poster": "assets/posters/ill-xp1tgjT_3k0.jpg"
     },
     {
       "id": "yt_pistol_squat",
@@ -816,7 +817,8 @@
         "שליליות מתח",
         "pull-up",
         "מעגל עליון"
-      ]
+      ],
+      "poster": "assets/posters/ill-9yVGh3XbJ34.jpg"
     },
     {
       "id": "yt_chin_up",
@@ -854,7 +856,8 @@
       "available": true,
       "aliases": [
         "inverted row"
-      ]
+      ],
+      "poster": "assets/posters/ill-Fl0UMfdEzsE.jpg"
     },
     {
       "id": "yt_hanging_leg_raise",
@@ -891,7 +894,8 @@
       "available": true,
       "aliases": [
         "one arm pull up"
-      ]
+      ],
+      "poster": "assets/posters/ill-mTJHClMQPM8.jpg"
     },
     {
       "id": "yt_turkish_get_up",
@@ -1448,7 +1452,8 @@
         "wide_push_up",
         "wide push-up",
         "wide-grip push-up"
-      ]
+      ],
+      "poster": "assets/posters/ill-rr6eFNNDQdU.jpg"
     },
     {
       "id": "dumbbell_bench",
@@ -1538,7 +1543,8 @@
         "חתירת משקולת",
         "dumbbell_row",
         "dumbbell row"
-      ]
+      ],
+      "poster": "assets/posters/ill--koP10y1qZI.jpg"
     },
     {
       "id": "barbell_row",
@@ -1560,7 +1566,8 @@
         "barbell_row",
         "barbell row",
         "bent-over row"
-      ]
+      ],
+      "poster": "assets/posters/ill-9efgcAjQe7E.jpg"
     },
     {
       "id": "lat_pulldown",
@@ -1739,7 +1746,8 @@
         "decline_push_up",
         "decline push-up",
         "decline push up"
-      ]
+      ],
+      "poster": "assets/posters/ill-SKPab2YC8BE.jpg"
     },
     {
       "id": "dumbbell_incline",
@@ -2058,7 +2066,8 @@
         "knee push-up",
         "knee push up",
         "modified push-up"
-      ]
+      ],
+      "poster": "assets/posters/ill-lFR1GWy1Dcs.jpg"
     },
     {
       "id": "wall_push_up",
@@ -2149,7 +2158,8 @@
         "yt_hand_release_push_up",
         "hand-release push-up",
         "hand release push-up"
-      ]
+      ],
+      "poster": "assets/posters/ill-dFI0VWMqxIk.jpg"
     },
     {
       "id": "tuck_jump",
@@ -2795,7 +2805,8 @@
       "aliases": [
         "band assisted pull up",
         "מתח עם גומייה"
-      ]
+      ],
+      "poster": "assets/posters/ill-023lBUV3Q9E.jpg"
     },
     {
       "id": "yt_kids_partner_kettlebell",
@@ -3416,7 +3427,8 @@
       "aliases": [
         "resistance band push ups",
         "שכיבות סמיכה עם גומיית התנגדות"
-      ]
+      ],
+      "poster": "assets/posters/ill-Hzhyjhq9tQo.jpg"
     },
     {
       "id": "yt_soccer_ball_back_pushup",
@@ -3435,7 +3447,8 @@
       "aliases": [
         "soccer ball on back push up",
         "שכיבות סמיכה עם כדורגל"
-      ]
+      ],
+      "poster": "assets/posters/ill-1S7DX4UmqWg.jpg"
     },
     {
       "id": "yt_kids_burpees",
@@ -3615,7 +3628,8 @@
         "inverted table row",
         "table inverted row feet on chair",
         "חתירה הפוכה מתחת לשולחן"
-      ]
+      ],
+      "poster": "assets/posters/ill-OYUxXMGVuuU.jpg"
     }
   ]
 }
