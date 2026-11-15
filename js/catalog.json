@@ -208,7 +208,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-006.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Lg-r5qa9197f612j4UXYpxYD2SwxcO7z"
+    "drivePlayId": "1Lg-r5qa9197f612j4UXYpxYD2SwxcO7z",
+    "poster": "assets/posters/ill-1Lg-r5qa9197f612j4UXYpxYD2SwxcO7z.jpg"
   },
   "mountain_climber": {
     "id": "mountain_climber",
@@ -319,7 +320,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-013.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1DoKdHeHtvKhDyZH7jbSv9XpycEiO-R75"
+    "drivePlayId": "1DoKdHeHtvKhDyZH7jbSv9XpycEiO-R75",
+    "poster": "assets/posters/ill-1DoKdHeHtvKhDyZH7jbSv9XpycEiO-R75.jpg"
   },
   "פלאנק_צידי": {
     "id": "פלאנק_צידי",
@@ -356,7 +358,8 @@
     "file": "פלאנק שעון.mp4",
     "source": "youtube",
     "youtubeId": "g6i5FokCR-I",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-1yIJ9myR1neU8Qjq587AZp6EwPPGn3UUV.jpg"
   },
   "superman": {
     "id": "superman",
@@ -633,7 +636,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-031.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1yzXKMzSN5dvGsouyxsja3gODfRbr-ZAl"
+    "drivePlayId": "1yzXKMzSN5dvGsouyxsja3gODfRbr-ZAl",
+    "poster": "assets/posters/ill-1yzXKMzSN5dvGsouyxsja3gODfRbr-ZAl.jpg"
   },
   "זוגות_בטן_שתיים": {
     "id": "זוגות_בטן_שתיים",
@@ -648,7 +652,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-030.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1WtUvCGL0dtGwm77AcqXcZF03DDTLeOUI"
+    "drivePlayId": "1WtUvCGL0dtGwm77AcqXcZF03DDTLeOUI",
+    "poster": "assets/posters/ill-1WtUvCGL0dtGwm77AcqXcZF03DDTLeOUI.jpg"
   },
   "זוגות_התנגדות": {
     "id": "זוגות_התנגדות",
@@ -1004,7 +1009,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-052.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1I8YCh21AawQMPbuB7eYvG5ynL2n59clK"
+    "drivePlayId": "1I8YCh21AawQMPbuB7eYvG5ynL2n59clK",
+    "poster": "assets/posters/ill-1I8YCh21AawQMPbuB7eYvG5ynL2n59clK.jpg"
   },
   "כדורגל_תוקף_מגן": {
     "id": "כדורגל_תוקף_מגן",
@@ -1144,7 +1150,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-061.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "198VOJ0tIC2QtUj-A_N9CNFxKvi_B2OJU"
+    "drivePlayId": "198VOJ0tIC2QtUj-A_N9CNFxKvi_B2OJU",
+    "poster": "assets/posters/ill-198VOJ0tIC2QtUj-A_N9CNFxKvi_B2OJU.jpg"
   },
   "ילדים_קונוסים_אחד_על_אחד_2": {
     "id": "ילדים_קונוסים_אחד_על_אחד_2",
