@@ -124,6 +124,7 @@
     <h2 id="status-h">סטטוס כללי</h2>
     <div id="statusOut" class="status-box incomplete" role="status" aria-live="polite">טוען…</div>
     <div id="statusRows" class="grid" style="margin-top:12px"></div>
+    <div id="reservesComparisonOut" style="margin-top:16px"></div>
   </section>
 
   <section id="demos" aria-labelledby="demos-h">
@@ -135,6 +136,7 @@
   <section id="plan" aria-labelledby="plan-h">
     <h2 id="plan-h">תוכנית 6 שבועות</h2>
     <p class="muted" id="planSummary"></p>
+    <div id="reserves6WeekTracker" style="margin-top:16px"></div>
     <div id="checkpointsOut"></div>
     <div id="sessionsOut"></div>
   </section>
@@ -198,6 +200,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
+<script src="./js/reserves-planner.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -412,6 +415,7 @@
       dl.innerHTML = '<h4>דילוד</h4><p class="muted" style="margin:0">' + (p.deload.note_he || '') + ' · ' + (p.deload.volume_reduction_he || '') + '</p>';
       el('checkpointsOut').parentNode.insertBefore(dl, el('checkpointsOut'));
     }
+    render6WeekTracker();
     var cp = el('checkpointsOut');
     cp.innerHTML = '<h3>נקודות מבחן</h3>';
     (p.checkpoints || []).forEach((c) => {
@@ -454,6 +458,214 @@
         sessions.appendChild(card);
       });
     });
+  }
+
+  function render6WeekTracker() {
+    var host = el('reserves6WeekTracker');
+    if (!host) return;
+    host.textContent = '';
+
+    var planner = window.THReservesPlanner;
+    var summary = planner && typeof planner.getReserveProgressSummary === 'function'
+      ? planner.getReserveProgressSummary()
+      : { completedCount: 0, percent: 0, activeWeek: 1, completedSessions: [] };
+
+    var card = document.createElement('article');
+    card.className = 'card';
+    card.setAttribute('aria-label', 'לוח מעקב 6 שבועות');
+
+    var headerRow = document.createElement('div');
+    headerRow.className = 'row';
+    headerRow.style.alignItems = 'center';
+    headerRow.style.justifyContent = 'space-between';
+
+    var title = document.createElement('h3');
+    title.style.margin = '0';
+    title.textContent = 'לוח מעקב והתקדמות 6 שבועות (18 יחידות אימון)';
+    headerRow.appendChild(title);
+
+    var badge = document.createElement('span');
+    badge.className = 'chip';
+    badge.textContent = summary.percent + '% הושלמו (' + summary.completedCount + '/18)';
+    headerRow.appendChild(badge);
+    card.appendChild(headerRow);
+
+    var subInfo = document.createElement('p');
+    subInfo.className = 'muted';
+    subInfo.style.margin = '6px 0 12px';
+    subInfo.textContent = 'שבוע פעיל נוכחי: שבוע ' + summary.activeWeek + ' מתוך 6. לחצו על כל אימון כדי לסמנו כהושלם.';
+    card.appendChild(subInfo);
+
+    var barTrack = document.createElement('div');
+    barTrack.style.width = '100%';
+    barTrack.style.height = '8px';
+    barTrack.style.backgroundColor = 'var(--line, #374151)';
+    barTrack.style.borderRadius = '4px';
+    barTrack.style.overflow = 'hidden';
+    barTrack.style.marginBottom = '16px';
+
+    var barFill = document.createElement('div');
+    barFill.style.height = '100%';
+    barFill.style.width = summary.percent + '%';
+    barFill.style.backgroundColor = 'var(--accent, #4ade80)';
+    barFill.style.transition = 'width 0.3s ease';
+    barTrack.appendChild(barFill);
+    card.appendChild(barTrack);
+
+    var weeksGrid = document.createElement('div');
+    weeksGrid.className = 'grid';
+    weeksGrid.style.display = 'grid';
+    weeksGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+    weeksGrid.style.gap = '12px';
+
+    for (var w = 1; w <= 6; w++) {
+      var weekCard = document.createElement('div');
+      weekCard.className = 'card';
+      weekCard.style.padding = '8px 12px';
+      if (w === summary.activeWeek) {
+        weekCard.style.border = '1px solid var(--accent, #4ade80)';
+      }
+
+      var weekHeading = document.createElement('h4');
+      weekHeading.style.margin = '0 0 6px';
+      weekHeading.textContent = 'שבוע ' + w + (w === summary.activeWeek ? ' (פעיל)' : '');
+      weekCard.appendChild(weekHeading);
+
+      var daysBox = document.createElement('div');
+      daysBox.style.display = 'flex';
+      daysBox.style.gap = '6px';
+      daysBox.style.flexWrap = 'wrap';
+
+      for (var d = 1; d <= 3; d++) {
+        var isDone = summary.completedSessions && summary.completedSessions.indexOf(w + '-' + d) !== -1;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = isDone ? 'chip' : 'chip ghost';
+        btn.setAttribute('data-week', String(w));
+        btn.setAttribute('data-day', String(d));
+        btn.setAttribute('aria-label', 'שבוע ' + w + ' אימון ' + d + (isDone ? ' הושלם' : ' סמן כהושלם'));
+        btn.textContent = 'אימון ' + (d === 1 ? 'א׳' : d === 2 ? 'ב׳' : 'ג׳') + (isDone ? ' ✓' : '');
+
+        ((weekNum, dayNum) => {
+          btn.addEventListener('click', () => {
+            if (planner && typeof planner.toggleReserveSessionDone === 'function') {
+              planner.toggleReserveSessionDone(weekNum, dayNum);
+              render6WeekTracker();
+            }
+          });
+        })(w, d);
+
+        daysBox.appendChild(btn);
+      }
+      weekCard.appendChild(daysBox);
+      weeksGrid.appendChild(weekCard);
+    }
+
+    card.appendChild(weeksGrid);
+    host.appendChild(card);
+  }
+
+  function renderComparison() {
+    var host = el('reservesComparisonOut');
+    if (!host) return;
+    host.textContent = '';
+
+    var planner = window.THReservesPlanner;
+    if (!planner || typeof planner.compareBaselineAndCurrent !== 'function') return;
+
+    var store = R.loadResults ? R.loadResults() : null;
+    var baseline = null;
+    var current = null;
+
+    if (store && Array.isArray(store.history)) {
+      var placementItems = store.history.filter((h) => h.checkpoint === 'placement');
+      if (placementItems.length > 0) {
+        baseline = {};
+        placementItems.forEach((it) => {
+          if (it.testId && it.raw != null) baseline[it.testId] = it.raw;
+        });
+      }
+      var latestItems = store.history.filter((h) => h.checkpoint === 'midpoint' || h.checkpoint === 'final' || h.checkpoint === 'practice');
+      if (latestItems.length > 0) {
+        current = {};
+        latestItems.forEach((it) => {
+          if (it.testId && it.raw != null) current[it.testId] = it.raw;
+        });
+      }
+    }
+
+    var inputMap = readInputs();
+    var hasInputs = Object.keys(inputMap).some((k) => inputMap[k] !== '');
+    if (hasInputs) {
+      if (!current) current = {};
+      Object.keys(inputMap).forEach((k) => {
+        if (inputMap[k] !== '') current[k] = inputMap[k];
+      });
+    }
+
+    var comp = planner.compareBaselineAndCurrent(baseline, current);
+
+    var card = document.createElement('article');
+    card.className = 'card';
+    card.setAttribute('aria-label', 'השוואת מבדקים');
+
+    var title = document.createElement('h3');
+    title.textContent = 'השוואת מבדקים (מבדק פתיחה מול עדכני)';
+    card.appendChild(title);
+
+    if (!comp || !comp.hasComparison) {
+      var note = document.createElement('p');
+      note.className = 'muted';
+      note.textContent = 'כדי לצפות בהשוואת שיפור בריצה ובכוח, שמרו מבדק פתיחה (מבחן מיון) ומבדק נוסף (אמצע, סיום או אימון).';
+      card.appendChild(note);
+    } else {
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      grid.style.display = 'grid';
+      grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(220px, 1fr))';
+      grid.style.gap = '12px';
+      grid.style.marginTop = '8px';
+
+      if (comp.run) {
+        var runCard = document.createElement('div');
+        runCard.className = 'card';
+        var runTitle = document.createElement('h4');
+        runTitle.style.margin = '0 0 4px';
+        runTitle.textContent = 'ריצת 3000 מטר';
+        runCard.appendChild(runTitle);
+
+        var runText = document.createElement('p');
+        runText.style.margin = '0';
+        runText.textContent = comp.run.text;
+        runCard.appendChild(runText);
+        grid.appendChild(runCard);
+      }
+
+      if (comp.pushups) {
+        var pushCard = document.createElement('div');
+        pushCard.className = 'card';
+        var pushTitle = document.createElement('h4');
+        pushTitle.style.margin = '0 0 4px';
+        pushTitle.textContent = 'שכיבות סמיכה (ניתוק ידיים)';
+        pushCard.appendChild(pushTitle);
+
+        var pushText = document.createElement('p');
+        pushText.style.margin = '0';
+        pushText.textContent = comp.pushups.text;
+        pushCard.appendChild(pushText);
+        grid.appendChild(pushCard);
+      }
+
+      card.appendChild(grid);
+
+      var summaryP = document.createElement('p');
+      summaryP.style.marginTop = '12px';
+      summaryP.style.fontWeight = 'bold';
+      summaryP.textContent = 'סיכום מגמה: ' + comp.summaryText;
+      card.appendChild(summaryP);
+    }
+
+    host.appendChild(card);
   }
 
 
@@ -584,6 +796,8 @@
     renderStatus(R.currentSummary());
     renderDemos();
     renderPlan();
+    render6WeekTracker();
+    renderComparison();
     renderAdaptSessions();
     bindFeedback();
     var strBtn = el('strShow');
@@ -650,19 +864,24 @@
     var summary = R.currentSummary();
     renderStatus(summary);
     saveMetricsToJournal(summary);
+    renderComparison();
   });
   el('evalBtn').addEventListener('click', () => {
     renderStatus(R.evaluateAll(readInputs()));
+    renderComparison();
   });
   var shareReservesBtn = el('shareReservesWhatsappBtn');
   if (shareReservesBtn) {
     shareReservesBtn.addEventListener('click', () => {
       var shareMod = window.THWhatsAppShare || window.TH || {};
-      var formatFn = shareMod.formatReservesResultText;
+      var formatFn = (window.THReservesPlanner && typeof window.THReservesPlanner.formatReservesResultText === 'function')
+        ? window.THReservesPlanner.formatReservesResultText
+        : shareMod.formatReservesResultText;
       var buildUrlFn = shareMod.buildWhatsAppShareUrl;
       var inputs;
       var hasInputs;
       var summary;
+      var progress;
       var text;
       var url;
       var opened = false;
@@ -672,7 +891,10 @@
       inputs = readInputs();
       hasInputs = Object.keys(inputs).some((k) => inputs[k] !== '');
       summary = hasInputs && R.evaluateAll ? R.evaluateAll(inputs) : (R.currentSummary ? R.currentSummary() : null);
-      text = formatFn(summary);
+      progress = window.THReservesPlanner && typeof window.THReservesPlanner.getReserveProgressSummary === 'function'
+        ? window.THReservesPlanner.getReserveProgressSummary()
+        : null;
+      text = formatFn(summary, progress);
       if (!text) return;
       url = buildUrlFn(text);
       try {
@@ -697,6 +919,7 @@
       if (input) input.value = '';
     });
     renderStatus(R.currentSummary());
+    renderComparison();
   });
 
   if (R.data) {
