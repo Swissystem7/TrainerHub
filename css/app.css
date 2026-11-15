@@ -99,6 +99,9 @@
   aspect-ratio: 16 / 9;
 }
 video.ex-media { max-height: 160px; aspect-ratio: auto; }
+/* A hosted MP4 swapped in for the Drive player keeps the player's box. */
+video.ex-media.th-mp4 { max-height: 240px; aspect-ratio: 16 / 9; object-fit: contain; }
+video.drive-frame.th-mp4 { object-fit: contain; background: #000; }
 .ex-media-fallback {
   background: #111513;
   border: 1px solid #303834;
