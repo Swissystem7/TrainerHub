@@ -456,7 +456,8 @@
         "tricep_push_up",
         "תרגיל יד אחורית",
         "יד אחורית"
-      ]
+      ],
+      "poster": "assets/posters/ill-nOIcUZMwzgM.jpg"
     },
     {
       "id": "yt_skull_crusher",
@@ -492,7 +493,8 @@
         "בעיטת טרייספס",
         "tricep kickback",
         "tricep_kickback"
-      ]
+      ],
+      "poster": "assets/posters/ill-yoyw-GdmZWM.jpg"
     },
     {
       "id": "yt_overhead_extension",
@@ -512,7 +514,8 @@
         "פשיטה מעל הראש",
         "overhead tricep extension",
         "overhead_extension"
-      ]
+      ],
+      "poster": "assets/posters/ill-b_r_LW4HEcM.jpg"
     },
     {
       "id": "yt_single_arm_pushdown",
@@ -527,7 +530,8 @@
       "source": "youtube",
       "youtubeId": "0GRwxjYDmoY",
       "folder": "יד אחורית",
-      "available": true
+      "available": true,
+      "poster": "assets/posters/ill-0GRwxjYDmoY.jpg"
     },
     {
       "id": "yt_goblet_squat",
@@ -1975,7 +1979,8 @@
         "parallel bar dips",
         "מקבילים בסיוע",
         "לחיצות ספסל למקבילים"
-      ]
+      ],
+      "poster": "assets/posters/ill-UiirN9zI-lw.jpg"
     },
     {
       "id": "hamstring_stretch",
@@ -2090,7 +2095,8 @@
         "bird_dog",
         "bird dog",
         "bird-dog"
-      ]
+      ],
+      "poster": "assets/posters/ill-ZdAHe9_HeEw.jpg"
     },
     {
       "id": "knee_push_up",
@@ -2982,7 +2988,8 @@
       "aliases": [
         "skull crusher",
         "lying triceps extension"
-      ]
+      ],
+      "poster": "assets/posters/ill-z0A01lCHKk8.jpg"
     },
     {
       "id": "yt_banded_barbell_squat",
@@ -3330,7 +3337,8 @@
         "medicine ball tricep extension",
         "overhead ball tricep extension",
         "פשיטת מרפקים עם כדור"
-      ]
+      ],
+      "poster": "assets/posters/ill-EyS4DpiureM.jpg"
     },
     {
       "id": "yt_basketball_close_grip_pushup",
@@ -3370,7 +3378,8 @@
         "exercise for kids triceps dips",
         "מקבילים לילדים",
         "kids floor tricep dips"
-      ]
+      ],
+      "poster": "assets/posters/ill-IIG_9I97cIA.jpg"
     },
     {
       "id": "yt_tiger_bend_pushups",
@@ -3389,7 +3398,8 @@
       "aliases": [
         "tiger bend push-ups",
         "tiger bend pushups"
-      ]
+      ],
+      "poster": "assets/posters/ill-71XcAgEGQzY.jpg"
     },
     {
       "id": "yt_kids_pull_ups",
@@ -3469,7 +3479,8 @@
       "aliases": [
         "partner stair workout",
         "אימון מדרגות עם בן זוג"
-      ]
+      ],
+      "poster": "assets/posters/ill-AJn_U3dWC7M.jpg"
     },
     {
       "id": "yt_resistance_band_pushups",
@@ -3609,7 +3620,8 @@
       "aliases": [
         "bodyweight skull crushers",
         "סקאל קראשר משקל גוף"
-      ]
+      ],
+      "poster": "assets/posters/ill-TMp6cr2oV74.jpg"
     },
     {
       "id": "yt_swiss_ball_back_extension",
