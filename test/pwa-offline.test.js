@@ -211,6 +211,7 @@ test("4) sw.js install event handler opens cache with caches.open and caches app
 
 test("5) sw.js activate event handler cleans up old cache versions", async () => {
 	const harness = createSwSandbox();
+	const CURRENT_CACHE = /const CACHE_NAME = "([^"]+)"/.exec(swCode)[1];
 	assert.ok(
 		typeof harness.listeners.activate === "function",
 		"sw.js must register an 'activate' listener",
@@ -219,7 +220,8 @@ test("5) sw.js activate event handler cleans up old cache versions", async () =>
 	harness.caches._keys = [
 		"trainerhub-old-v0",
 		"legacy-cache",
-		harness.sandbox.CACHE_NAME || "trainerhub-v1",
+		"trainerhub-v1",
+		CURRENT_CACHE,
 	];
 
 	let waitUntilPromise = null;
@@ -242,7 +244,11 @@ test("5) sw.js activate event handler cleans up old cache versions", async () =>
 		"legacy cache legacy-cache must be deleted",
 	);
 	assert.ok(
-		!harness.deletedKeys.includes("trainerhub-v1"),
+		harness.deletedKeys.includes("trainerhub-v1"),
+		"the cache-first v1 cache (frozen code and video catalog) must be dropped",
+	);
+	assert.ok(
+		!harness.deletedKeys.includes(CURRENT_CACHE),
 		"current cache must not be deleted",
 	);
 	assert.ok(harness.getClientsClaimed(), "activate step should claim clients");
@@ -382,4 +388,40 @@ test("9) reserves.html safely registers sw.js and renders new version update not
 		/updatefound/,
 		"reserves.html must listen for updatefound event to detect new versions",
 	);
+});
+
+test("10) sw.js fetch is network-first online, so a deploy replaces stale cached files", async () => {
+	const harness = createSwSandbox({
+		fetch: async () => new (createSwSandbox().sandbox.Response)("fresh catalog"),
+	});
+	const url = "https://swissystem7.github.io/TrainerHub/videos/drive-catalog.json";
+	harness.mockCacheStore.set(url, new harness.sandbox.Response("stale catalog"));
+	let p = null;
+	harness.listeners.fetch({
+		request: { method: "GET", mode: "cors", url },
+		respondWith: (x) => {
+			p = x;
+		},
+	});
+	const res = await p;
+	assert.equal(res.body, "fresh catalog", "online, the network copy wins over the cache");
+	await new Promise((r) => setTimeout(r, 0));
+	assert.equal(harness.mockCacheStore.get(url).body, "fresh catalog", "the cache is refreshed");
+});
+
+test("11) sw.js leaves byte-range (video) requests to the network", () => {
+	const harness = createSwSandbox();
+	let called = false;
+	harness.listeners.fetch({
+		request: {
+			method: "GET",
+			mode: "no-cors",
+			url: "https://example.com/clip.mp4",
+			headers: { get: (h) => (h === "range" ? "bytes=0-" : null) },
+		},
+		respondWith: () => {
+			called = true;
+		},
+	});
+	assert.equal(called, false);
 });
