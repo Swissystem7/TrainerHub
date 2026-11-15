@@ -35,7 +35,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-001.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1bQ1GHdZ-EdTpD_HGxLs1b6LpgLHUPEZK"
+    "drivePlayId": "1bQ1GHdZ-EdTpD_HGxLs1b6LpgLHUPEZK",
+    "poster": "assets/posters/ill-1bQ1GHdZ-EdTpD_HGxLs1b6LpgLHUPEZK.jpg"
   },
   "עבודה_עם_יד_אחת": {
     "id": "עבודה_עם_יד_אחת",
@@ -53,7 +54,8 @@
     "file": "עבודה עם יד אחת.mp4",
     "source": "youtube",
     "youtubeId": "NubSSALIqsU",
-    "available": true
+    "available": true,
+    "poster": "assets/posters/ill-NubSSALIqsU.jpg"
   },
   "אתגר_שתייה": {
     "id": "אתגר_שתייה",
@@ -66,7 +68,8 @@
     ],
     "level": "beginner",
     "file": "אתגר שתייה.mp4",
-    "available": false
+    "available": false,
+    "poster": "assets/posters/ill-אתגר_שתייה.jpg"
   },
   "crunches": {
     "id": "crunches",
@@ -177,7 +180,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-005.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1bZN_qEUUUD6-bhzQ920EO159GPSViMpq"
+    "drivePlayId": "1bZN_qEUUUD6-bhzQ920EO159GPSViMpq",
+    "poster": "assets/posters/ill-1bZN_qEUUUD6-bhzQ920EO159GPSViMpq.jpg"
   },
   "בטן_עם_כדור": {
     "id": "בטן_עם_כדור",
@@ -455,7 +459,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-020.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1Z0YUDDWaam468k_MVHME5qA6DQvnKur-"
+    "drivePlayId": "1Z0YUDDWaam468k_MVHME5qA6DQvnKur-",
+    "poster": "assets/posters/ill-1Z0YUDDWaam468k_MVHME5qA6DQvnKur-.jpg"
   },
   "גומיות_ארבע_ראשי": {
     "id": "גומיות_ארבע_ראשי",
@@ -505,7 +510,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-023.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1F14aeNUBd3zxmpR9xA5JhzPAzZHwNguG"
+    "drivePlayId": "1F14aeNUBd3zxmpR9xA5JhzPAzZHwNguG",
+    "poster": "assets/posters/ill-1F14aeNUBd3zxmpR9xA5JhzPAzZHwNguG.jpg"
   },
   "גומיות_ברכיים": {
     "id": "גומיות_ברכיים",
@@ -606,7 +612,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-029.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "168pXPiyHFa9nOE7s-00I9HpfYb6flFTN"
+    "drivePlayId": "168pXPiyHFa9nOE7s-00I9HpfYb6flFTN",
+    "poster": "assets/posters/ill-168pXPiyHFa9nOE7s-00I9HpfYb6flFTN.jpg"
   },
   "crunches_2": {
     "id": "crunches_2",
@@ -672,7 +679,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-032.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1czOq6QUjJMzVsF6ZnkN05MJVCBlKXpt-"
+    "drivePlayId": "1czOq6QUjJMzVsF6ZnkN05MJVCBlKXpt-",
+    "poster": "assets/posters/ill-1czOq6QUjJMzVsF6ZnkN05MJVCBlKXpt-.jpg"
   },
   "זוגות_ידיים": {
     "id": "זוגות_ידיים",
@@ -824,7 +832,8 @@
     "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-042.mp4",
     "source": "onedrive",
     "available": true,
-    "drivePlayId": "1l0a832BTZfrf7o0b67Yk3HxJU0tG2Sqq"
+    "drivePlayId": "1l0a832BTZfrf7o0b67Yk3HxJU0tG2Sqq",
+    "poster": "assets/posters/ill-1l0a832BTZfrf7o0b67Yk3HxJU0tG2Sqq.jpg"
   },
   "שכיבות_שמיכה_ובעיטות": {
     "id": "שכיבות_שמיכה_ובעיטות",
