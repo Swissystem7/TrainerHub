@@ -3175,9 +3175,16 @@
 	}
 
 	function loadLazyVideos(host) {
-		var list = host.querySelectorAll
-			? host.querySelectorAll("video[" + LAZY_SRC + "]")
-			: [];
+		if (!host) return;
+		var list = [];
+		if (host.matches && host.matches("video[" + LAZY_SRC + "]")) {
+			list.push(host);
+		}
+		if (host.querySelectorAll) {
+			var found = host.querySelectorAll("video[" + LAZY_SRC + "]");
+			var j;
+			for (j = 0; j < found.length; j++) list.push(found[j]);
+		}
 		var i, src;
 		for (i = 0; i < list.length; i++) {
 			src = list[i].getAttribute(LAZY_SRC);
@@ -3588,7 +3595,12 @@
 			}
 			return fallback;
 		}
-		if (hasRemoteFile(entry) && drivePlayIdOk(entry.drivePlayId))
+		if (
+			!opts.preferVideo &&
+			!opts.video &&
+			hasRemoteFile(entry) &&
+			drivePlayIdOk(entry.drivePlayId)
+		)
 			return driveFrameMarkup(entry, entry.drivePlayId, cls, opts.eager);
 		if (
 			hasRemoteFile(entry) ||
