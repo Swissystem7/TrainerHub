@@ -2,6 +2,7 @@
   const exp = factory();
   if (root) {
     root.CustomTemplates = exp;
+    root.STORAGE_KEY = exp.STORAGE_KEY;
     root.saveCustomTemplate = exp.saveCustomTemplate;
     root.listCustomTemplates = exp.listCustomTemplates;
     root.deleteCustomTemplate = exp.deleteCustomTemplate;
@@ -9,7 +10,7 @@
   if (typeof module === 'object' && module.exports) {
     module.exports = exp;
   }
-})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this, () => {
+})(typeof window !== 'undefined' ? window : globalThis, () => {
   const STORAGE_KEY = 'trainerhub_custom_templates';
 
   function resolveStorage(storage) {

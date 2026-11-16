@@ -86,6 +86,17 @@ test('שמירה ושליפת תבנית', () => {
     delete globalThis.localStorage;
   }
 
+  // שמירה עם מזהה שלא קיים ברשימה הקיימת
+  const newWithId = saveCustomTemplate('תבנית עם מזהה חדש', { id: 'tpl_nonexistent', title: 'חדש' }, storage);
+  assert.ok(newWithId);
+  assert.notEqual(newWithId.id, 'tpl_nonexistent');
+
+  // שליפה כאשר storage מחזיר אובייקט שאינו מערך ואינו string
+  const objStore = {
+    getItem: () => ({ not: 'array' })
+  };
+  assert.deepEqual(listCustomTemplates(objStore), []);
+
   // שליפה כאשר storage מחזיר מערך ישירות (לא string)
   const preParsedStore = {
     getItem: () => [{ id: 'tpl_direct', name: 'מערך ישיר' }]
@@ -93,6 +104,14 @@ test('שמירה ושליפת תבנית', () => {
   const preParsedList = listCustomTemplates(preParsedStore);
   assert.equal(preParsedList.length, 1);
   assert.equal(preParsedList[0].name, 'מערך ישיר');
+
+  // טעינת מודול בסביבת דפדפן מדומית עם window (ללא module.exports)
+  const fakeWindow = {};
+  const code = fs.readFileSync(path.join(__dirname, '../js/custom-templates.js'), 'utf8');
+  new Function('window', code)(fakeWindow);
+  assert.ok(fakeWindow.CustomTemplates);
+  assert.equal(fakeWindow.STORAGE_KEY, 'trainerhub_custom_templates');
+  assert.equal(typeof fakeWindow.saveCustomTemplate, 'function');
 });
 
 test('דחיית שם ריק/null', () => {
