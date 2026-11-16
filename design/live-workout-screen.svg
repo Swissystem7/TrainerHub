@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 860" width="100%" height="100%" fill="none" role="img" aria-label="TrainerHub Live Workout Screen Mockup">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="screen-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#071210"/>
+      <stop offset="50%" stop-color="#0A1715"/>
+      <stop offset="100%" stop-color="#060E0C"/>
+    </linearGradient>
+
+    <linearGradient id="card-surface" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142622"/>
+      <stop offset="100%" stop-color="#0D1B18"/>
+    </linearGradient>
+
+    <linearGradient id="card-surface-next" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#101F1C"/>
+      <stop offset="100%" stop-color="#091412"/>
+    </linearGradient>
+
+    <linearGradient id="lime-teal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B9F24A"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+
+    <linearGradient id="timer-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B9F24A"/>
+      <stop offset="60%" stop-color="#2DD4BF"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+
+    <filter id="soft-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <style>
+    .f-heavy { font-family: system-ui, -apple-system, 'Heebo', sans-serif; font-weight: 800; }
+    .f-bold  { font-family: system-ui, -apple-system, 'Heebo', sans-serif; font-weight: 700; }
+    .f-med   { font-family: system-ui, -apple-system, 'Heebo', sans-serif; font-weight: 500; }
+    .f-reg   { font-family: system-ui, -apple-system, 'Heebo', sans-serif; font-weight: 400; }
+  </style>
+
+  <!-- Screen Frame / Mobile Bezel -->
+  <rect x="2" y="2" width="416" height="856" rx="44" fill="#040807" stroke="#223832" stroke-width="4"/>
+  <rect x="8" y="8" width="404" height="844" rx="38" fill="url(#screen-bg)"/>
+
+  <!-- Phone Speaker / Dynamic Island / Status Bar -->
+  <g id="status-bar">
+    <rect x="150" y="16" width="120" height="22" rx="11" fill="#020504"/>
+    <circle cx="250" cy="27" r="4" fill="#1A2E29"/>
+    <!-- Status Elements -->
+    <text x="36" y="32" class="f-bold" font-size="12" fill="#E8F1EE">07:45</text>
+    <g transform="translate(350, 22)">
+      <!-- Battery Icon -->
+      <rect x="0" y="2" width="22" height="11" rx="3" fill="none" stroke="#E8F1EE" stroke-width="1.2"/>
+      <rect x="2" y="4" width="14" height="7" rx="1.5" fill="#B9F24A"/>
+      <path d="M23 5.5 C24 5.5, 24 7.5, 23 7.5" stroke="#E8F1EE" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Navigation / Top Header -->
+  <g id="top-bar" transform="translate(24, 52)">
+    <!-- Exit / Minimize Button -->
+    <rect x="0" y="0" width="38" height="38" rx="19" fill="#122420" stroke="#28423C" stroke-width="1.5"/>
+    <path d="M14 14 L24 24 M24 14 L14 24" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Workout Title & Current Phase -->
+    <text x="210" y="16" class="f-bold" font-size="15" fill="#2DD4BF" text-anchor="middle">אימון מתח וליבה בפארק</text>
+    <text x="210" y="32" class="f-med" font-size="12" fill="#9CA3AF" text-anchor="middle">שלב כוח עיקרי • תרגיל 2 מתוך 5</text>
+
+    <!-- Sound & Screen Lock Badges -->
+    <rect x="334" y="0" width="38" height="38" rx="19" fill="#122420" stroke="#28423C" stroke-width="1.5"/>
+    <path d="M347 19 L351 15 L356 15 L361 11 L361 27 L356 23 L351 23 Z" fill="#7FE9D9"/>
+  </g>
+
+  <!-- Workout Overall Progress Bar -->
+  <g id="progress" transform="translate(24, 102)">
+    <rect x="0" y="0" width="372" height="6" rx="3" fill="#182E29"/>
+    <rect x="0" y="0" width="168" height="6" rx="3" fill="url(#lime-teal-grad)"/>
+  </g>
+
+  <!-- Current Exercise Hero Card -->
+  <g id="current-exercise-card" transform="translate(24, 120)" filter="url(#card-shadow)">
+    <!-- Card Surface -->
+    <rect x="0" y="0" width="372" height="150" rx="24" fill="url(#card-surface)" stroke="#28423C" stroke-width="1.5"/>
+    
+    <!-- Exercise Category Badge -->
+    <rect x="252" y="18" width="102" height="24" rx="12" fill="#1B3830" stroke="#2DD4BF" stroke-width="1"/>
+    <text x="303" y="34" class="f-bold" font-size="11" fill="#7FE9D9" text-anchor="middle">משיכה כנגד מוט</text>
+
+    <!-- Exercise Name -->
+    <text x="354" y="74" class="f-heavy" font-size="28" fill="#F6F8F6" text-anchor="end">עליות מתח</text>
+    <text x="354" y="96" class="f-med" font-size="13" fill="#9CA3AF" text-anchor="end">אחיזה ברוחב כתפיים • עלייה מלאה וסנטר מעל מוט</text>
+
+    <!-- Set Status Badges -->
+    <g transform="translate(140, 110)">
+      <rect x="0" y="0" width="214" height="26" rx="8" fill="#0A1715"/>
+      <circle cx="16" cy="13" r="5" fill="#B9F24A"/>
+      <text x="30" y="17" class="f-bold" font-size="12" fill="#E8F1EE">סט 2 / 4</text>
+      <text x="95" y="17" class="f-med" font-size="12" fill="#7FE9D9">• יעד: 8–10 חזרות</text>
+    </g>
+
+    <!-- Exercise Icon Visual (Left side of card) -->
+    <g transform="translate(18, 22)">
+      <rect x="0" y="0" width="106" height="106" rx="18" fill="#0B1A17" stroke="#25423B" stroke-width="1.2"/>
+      <!-- Scaled pull-up icon inside card -->
+      <g transform="translate(17, 17) scale(1.12)">
+        <line x1="8" y1="18" x2="56" y2="18" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="22" cy="18" r="2.5" fill="#B9F24A"/>
+        <circle cx="42" cy="18" r="2.5" fill="#B9F24A"/>
+        <circle cx="32" cy="11" r="4.5" fill="#F6F8F6"/>
+        <path d="M22 18 L18 26 L27 21" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M42 18 L46 26 L37 21" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M32 20 L32 38" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M32 38 L30 49 L29 58" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M32 38 L34 49 L35 58" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Interactive Rest Timer & Circular Gauge (Center Module) -->
+  <g id="rest-timer-module" transform="translate(24, 286)">
+    <!-- Container Card -->
+    <rect x="0" y="0" width="372" height="236" rx="24" fill="url(#card-surface)" stroke="#28423C" stroke-width="1.5" filter="url(#card-shadow)"/>
+    
+    <!-- Timer Header -->
+    <text x="186" y="28" class="f-bold" font-size="13" fill="#7FE9D9" text-anchor="middle" letter-spacing="1">מנוחה פעילה בין סטים</text>
+
+    <!-- Circular Progress Gauge -->
+    <g transform="translate(186, 114)">
+      <!-- Background Circle Ring -->
+      <circle cx="0" cy="0" r="66" fill="none" stroke="#162C27" stroke-width="9"/>
+      
+      <!-- Active Progress Arc (65% elapsed) -->
+      <circle cx="0" cy="0" r="66" fill="none" stroke="url(#timer-grad)" stroke-width="9"
+              stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="135"
+              transform="rotate(-90)" filter="url(#soft-glow)"/>
+
+      <!-- Timer Digital Readout -->
+      <text x="0" y="8" class="f-heavy" font-size="40" fill="#F6F8F6" text-anchor="middle" letter-spacing="-1">01:15</text>
+      <text x="0" y="28" class="f-med" font-size="12" fill="#B9F24A" text-anchor="middle">שניות מתוך 90</text>
+    </g>
+
+    <!-- Quick Timer Adjustment Pills -->
+    <g transform="translate(24, 192)">
+      <!-- -15s -->
+      <rect x="0" y="0" width="70" height="32" rx="16" fill="#132622" stroke="#28423C" stroke-width="1"/>
+      <text x="35" y="20" class="f-bold" font-size="13" fill="#9CA3AF" text-anchor="middle">-15s</text>
+
+      <!-- Pause / Resume -->
+      <rect x="94" y="0" width="136" height="32" rx="16" fill="#18362E" stroke="#2DD4BF" stroke-width="1"/>
+      <text x="162" y="20" class="f-bold" font-size="13" fill="#2DD4BF" text-anchor="middle">❚❚ השהה מנוחה</text>
+
+      <!-- +30s -->
+      <rect x="254" y="0" width="70" height="32" rx="16" fill="#132622" stroke="#28423C" stroke-width="1"/>
+      <text x="289" y="20" class="f-bold" font-size="13" fill="#9CA3AF" text-anchor="middle">+30s</text>
+    </g>
+  </g>
+
+  <!-- Set & Rep Counter Module -->
+  <g id="reps-counter-module" transform="translate(24, 536)">
+    <rect x="0" y="0" width="372" height="116" rx="20" fill="url(#card-surface)" stroke="#28423C" stroke-width="1.5" filter="url(#card-shadow)"/>
+
+    <!-- Set Progression Visual (4 Circles for Sets) -->
+    <g transform="translate(186, 26)">
+      <!-- Set 1 (Done) -->
+      <circle cx="-60" cy="0" r="13" fill="#2DD4BF"/>
+      <path d="M-64 0 L-61 3 L-56 -3" stroke="#0A1513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Set 2 (Current / Active) -->
+      <circle cx="-20" cy="0" r="14" fill="#B9F24A" filter="url(#soft-glow)"/>
+      <text x="-20" y="5" class="f-heavy" font-size="13" fill="#0A1513" text-anchor="middle">2</text>
+
+      <!-- Set 3 (Upcoming) -->
+      <circle cx="20" cy="0" r="13" fill="#152B26" stroke="#28423C" stroke-width="1.5"/>
+      <text x="20" y="4" class="f-bold" font-size="12" fill="#9CA3AF" text-anchor="middle">3</text>
+
+      <!-- Set 4 (Upcoming) -->
+      <circle cx="60" cy="0" r="13" fill="#152B26" stroke="#28423C" stroke-width="1.5"/>
+      <text x="60" y="4" class="f-bold" font-size="12" fill="#9CA3AF" text-anchor="middle">4</text>
+    </g>
+
+    <!-- Rep Counter Controls -->
+    <g transform="translate(22, 54)">
+      <!-- Rep Decrement Button (-) -->
+      <rect x="0" y="0" width="48" height="48" rx="14" fill="#162D28" stroke="#2D4D44" stroke-width="1.5"/>
+      <line x1="16" y1="24" x2="32" y2="24" stroke="#7FE9D9" stroke-width="3" stroke-linecap="round"/>
+
+      <!-- Rep Number & Label -->
+      <g transform="translate(164, 24)">
+        <text x="0" y="8" class="f-heavy" font-size="34" fill="#F6F8F6" text-anchor="middle">9</text>
+        <text x="0" y="24" class="f-med" font-size="12" fill="#7FE9D9" text-anchor="middle">חזרות שבוצעו</text>
+      </g>
+
+      <!-- Rep Increment Button (+) -->
+      <rect x="280" y="0" width="48" height="48" rx="14" fill="#162D28" stroke="#2D4D44" stroke-width="1.5"/>
+      <path d="M296 24 L312 24 M304 16 L304 32" stroke="#B9F24A" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Next Exercise Preview Card -->
+  <g id="next-exercise-card" transform="translate(24, 666)">
+    <rect x="0" y="0" width="372" height="74" rx="18" fill="url(#card-surface-next)" stroke="#1F3631" stroke-width="1.2"/>
+    
+    <!-- Mini Icon Container -->
+    <g transform="translate(14, 11)">
+      <rect x="0" y="0" width="52" height="52" rx="12" fill="#0C1B18" stroke="#233E37" stroke-width="1"/>
+      <!-- Scaled dip icon -->
+      <g transform="translate(5, 5) scale(0.66)">
+        <line x1="10" y1="36" x2="26" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="38" y1="36" x2="54" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="18" cy="36" r="2.5" fill="#B9F24A"/>
+        <circle cx="46" cy="36" r="2.5" fill="#B9F24A"/>
+        <circle cx="32" cy="14" r="4.5" fill="#F6F8F6"/>
+        <path d="M26 23 L14 27 L18 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M38 23 L50 27 L46 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="32" y1="24" x2="32" y2="40" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M32 40 L28 49 L35 57" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <!-- Next Exercise Metadata -->
+    <text x="354" y="32" class="f-bold" font-size="11" fill="#2DD4BF" text-anchor="end">התרגיל הבא במערכה</text>
+    <text x="354" y="52" class="f-heavy" font-size="17" fill="#E8F1EE" text-anchor="end">מקבילים בפארק (Dips)</text>
+    <text x="76" y="52" class="f-med" font-size="12" fill="#9CA3AF">3 סטים × 10–12 חזרות</text>
+  </g>
+
+  <!-- Bottom Action Footer (Primary Log & Navigation Controls) -->
+  <g id="bottom-bar" transform="translate(24, 754)">
+    <!-- Skip Rest / Exercise Button -->
+    <rect x="0" y="0" width="100" height="56" rx="18" fill="#132420" stroke="#28423C" stroke-width="1.5"/>
+    <text x="50" y="34" class="f-bold" font-size="15" fill="#9CA3AF" text-anchor="middle">דלג מנוחה</text>
+
+    <!-- Primary "Complete Set / Log" CTA -->
+    <g transform="translate(112, 0)">
+      <rect x="0" y="0" width="260" height="56" rx="18" fill="url(#lime-teal-grad)" filter="url(#soft-glow)"/>
+      <path d="M72 28 L80 36 L98 18" stroke="#081412" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="146" y="35" class="f-heavy" font-size="18" fill="#081412" text-anchor="middle">רשום סט והמשך</text>
+    </g>
+  </g>
+
+  <!-- Bottom Home Indicator Bar -->
+  <rect x="140" y="836" width="140" height="5" rx="2.5" fill="#3D5A53"/>
+</svg>

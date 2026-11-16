@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none" role="img" aria-label="TrainerHub App Icon">
+  <defs>
+    <linearGradient id="th-icon-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142622"/>
+      <stop offset="100%" stop-color="#08100E"/>
+    </linearGradient>
+    <linearGradient id="th-icon-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B9F24A"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+    <linearGradient id="th-icon-bar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2DD4BF"/>
+      <stop offset="50%" stop-color="#B9F24A"/>
+      <stop offset="100%" stop-color="#7FE9D9"/>
+    </linearGradient>
+    <filter id="th-icon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Container -->
+  <rect x="6" y="6" width="108" height="108" rx="26" 
+        fill="url(#th-icon-bg)" 
+        stroke="url(#th-icon-accent)" 
+        stroke-width="2.5"/>
+
+  <!-- Calisthenics Street Workout Rig / Bars -->
+  <!-- Overhead Pull-Up Bar -->
+  <line x1="26" y1="36" x2="94" y2="36" 
+        stroke="url(#th-icon-bar)" 
+        stroke-width="6" 
+        stroke-linecap="round"/>
+
+  <!-- Vertical Support Posts -->
+  <line x1="32" y1="36" x2="32" y2="92" 
+        stroke="#2DD4BF" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        opacity="0.35"/>
+  <line x1="88" y1="36" x2="88" y2="92" 
+        stroke="#2DD4BF" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        opacity="0.35"/>
+
+  <!-- Athlete Head (Above / Crossing Bar) -->
+  <circle cx="60" cy="27" r="6" fill="#B9F24A" filter="url(#th-icon-glow)"/>
+
+  <!-- Monogram T + H / Athletic Calisthenics Core & Arms -->
+  <!-- Arms gripping the bar -->
+  <path d="M46 36 L52 46 L60 48 L68 46 L74 36" 
+        stroke="#F6F8F6" 
+        stroke-width="4.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Central T Torso -->
+  <line x1="60" y1="48" x2="60" y2="76" 
+        stroke="#B9F24A" 
+        stroke-width="5" 
+        stroke-linecap="round"/>
+
+  <!-- Parallel Bar / Horizontal H Bridge -->
+  <line x1="42" y1="62" x2="78" y2="62" 
+        stroke="url(#th-icon-accent)" 
+        stroke-width="4.5" 
+        stroke-linecap="round"/>
+
+  <!-- Athletic V Legs / Forward Thrust -->
+  <path d="M48 90 L60 76 L72 90" 
+        stroke="#2DD4BF" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>

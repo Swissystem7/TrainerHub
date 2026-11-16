@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TrainerHub — הדמיית מסך אימון חי (Live Workout Screen Mockup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root {
+      --th-bg: #071210;
+      --th-surface: #0E1D19;
+      --th-surface-card: #132622;
+      --th-surface-card-hover: #19322c;
+      --th-border: #233F38;
+      --th-border-highlight: #2DD4BF;
+      --th-lime: #B9F24A;
+      --th-teal: #2DD4BF;
+      --th-teal-glow: rgba(45, 212, 191, 0.25);
+      --th-lime-glow: rgba(185, 242, 74, 0.25);
+      --th-ink: #F6F8F6;
+      --th-muted: #9CA3AF;
+      --th-danger: #EF4444;
+      --th-font: 'Heebo', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #040908;
+      color: var(--th-ink);
+      font-family: var(--th-font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Outer Mockup Chrome Frame */
+    .mockup-wrapper {
+      width: 100%;
+      max-width: 430px;
+      background: var(--th-bg);
+      border: 3px solid #1E3730;
+      border-radius: 46px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(45, 212, 191, 0.12);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 870px;
+      position: relative;
+    }
+
+    /* Simulated Phone Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 28px 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--th-ink);
+      flex-shrink: 0;
+    }
+
+    .island-notch {
+      width: 110px;
+      height: 22px;
+      background: #020504;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-inline-end: 10px;
+    }
+
+    .island-lens {
+      width: 8px;
+      height: 8px;
+      background: #152622;
+      border-radius: 50%;
+    }
+
+    /* Screen Top Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px 12px;
+      border-bottom: 1px solid var(--th-border);
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--th-surface);
+      border: 1px solid var(--th-border);
+      color: var(--th-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--th-teal);
+      color: var(--th-ink);
+    }
+
+    .header-info {
+      text-align: center;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--th-teal);
+      letter-spacing: -0.2px;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--th-muted);
+      margin-top: 1px;
+    }
+
+    /* Workout Overall Progress */
+    .progress-strip {
+      padding: 10px 20px 0;
+      flex-shrink: 0;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--th-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #172D27;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--th-lime), var(--th-teal));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Scrollable Stage */
+    .workout-stage {
+      flex: 1;
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+    }
+
+    /* Card Component */
+    .card {
+      background: var(--th-surface-card);
+      border: 1px solid var(--th-border);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    /* Current Exercise Hero */
+    .current-exercise-card {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .ex-icon-box {
+      width: 86px;
+      height: 86px;
+      background: #0B1916;
+      border: 1.5px solid var(--th-border);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      flex-shrink: 0;
+    }
+
+    .ex-icon-box svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ex-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(45, 212, 191, 0.12);
+      color: var(--th-teal);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      margin-bottom: 4px;
+    }
+
+    .ex-title {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--th-ink);
+    }
+
+    .ex-cue {
+      font-size: 12px;
+      color: var(--th-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* Rest Timer Circular Ring */
+    .timer-card {
+      text-align: center;
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timer-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--th-teal);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .timer-circle-wrap {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timer-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .timer-bg-circle {
+      fill: none;
+      stroke: #162C27;
+      stroke-width: 10;
+    }
+
+    .timer-bar-circle {
+      fill: none;
+      stroke: url(#timerGrad);
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 452.38; /* 2 * PI * 72 */
+      stroke-dashoffset: 120;
+      transition: stroke-dashoffset 0.8s linear;
+      filter: drop-shadow(0 0 8px var(--th-teal-glow));
+    }
+
+    .timer-text-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timer-digits {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--th-ink);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .timer-status-caption {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--th-lime);
+      margin-top: 6px;
+    }
+
+    /* Timer Controls Row */
+    .timer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .btn-step {
+      background: var(--th-surface);
+      border: 1px solid var(--th-border);
+      color: var(--th-muted);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-step:hover {
+      border-color: var(--th-teal);
+      color: var(--th-ink);
+    }
+
+    .btn-toggle-timer {
+      background: rgba(45, 212, 191, 0.15);
+      border: 1.5px solid var(--th-teal);
+      color: var(--th-teal);
+      border-radius: 999px;
+      padding: 7px 20px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-toggle-timer:hover {
+      background: rgba(45, 212, 191, 0.25);
+    }
+
+    /* Sets and Reps Counter */
+    .counter-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sets-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--th-border);
+    }
+
+    .set-pills {
+      display: flex;
+      gap: 8px;
+    }
+
+    .set-pill {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1.5px solid var(--th-border);
+      color: var(--th-muted);
+      background: var(--th-surface);
+      transition: all 0.2s;
+    }
+
+    .set-pill.done {
+      background: var(--th-teal);
+      border-color: var(--th-teal);
+      color: #071210;
+    }
+
+    .set-pill.active {
+      background: var(--th-lime);
+      border-color: var(--th-lime);
+      color: #071210;
+      box-shadow: 0 0 12px var(--th-lime-glow);
+    }
+
+    .reps-controller {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 10px;
+    }
+
+    .rep-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--th-surface);
+      border: 1.5px solid var(--th-border);
+      color: var(--th-ink);
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .rep-btn:active {
+      transform: scale(0.95);
+      border-color: var(--th-lime);
+    }
+
+    .rep-display {
+      text-align: center;
+    }
+
+    .rep-number {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--th-ink);
+      line-height: 1;
+    }
+
+    .rep-caption {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--th-teal);
+      margin-top: 4px;
+    }
+
+    /* Next Exercise Banner */
+    .next-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0B1916;
+      border: 1px dashed var(--th-border);
+      border-radius: 16px;
+      padding: 10px 14px;
+    }
+
+    .next-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--th-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .next-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .next-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--th-teal);
+    }
+
+    .next-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--th-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .next-target {
+      font-size: 11px;
+      color: var(--th-muted);
+    }
+
+    /* Bottom Action Controls */
+    .app-footer {
+      padding: 14px 20px 24px;
+      display: flex;
+      gap: 10px;
+      background: rgba(7, 18, 16, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--th-border);
+      flex-shrink: 0;
+    }
+
+    .btn-skip {
+      min-height: 52px;
+      padding: 0 16px;
+      border-radius: 14px;
+      background: var(--th-surface);
+      border: 1.5px solid var(--th-border);
+      color: var(--th-muted);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-skip:hover {
+      border-color: #555;
+      color: var(--th-ink);
+    }
+
+    .btn-log-set {
+      flex: 1;
+      min-height: 52px;
+      border-radius: 14px;
+      border: 0;
+      background: linear-gradient(135deg, var(--th-lime), var(--th-teal));
+      color: #071210;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px var(--th-teal-glow);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-log-set:active {
+      transform: scale(0.98);
+      filter: brightness(0.95);
+    }
+
+    /* Mockup Metadata Bar (Outside Phone) */
+    .mockup-controls {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--th-muted);
+      font-size: 13px;
+    }
+
+    .mockup-controls a {
+      color: var(--th-teal);
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Outer Interactive Phone Mockup -->
+  <div class="mockup-wrapper" role="region" aria-label="TrainerHub Live Workout Mockup">
+    
+    <!-- Phone Status Bar -->
+    <div class="status-bar">
+      <span>07:45</span>
+      <div class="island-notch">
+        <div class="island-lens"></div>
+      </div>
+      <span>100% ⚡</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <button class="icon-btn" id="btnExit" title="יציאה מהאימון" aria-label="יציאה מהאימון">✕</button>
+      <div class="header-info">
+        <div class="header-title">אימון מתח וליבה בפארק</div>
+        <div class="header-sub">תרגיל 2 מתוך 5 • זמן כולל: 14:20</div>
+      </div>
+      <button class="icon-btn" id="btnSound" title="קול והתראות" aria-label="קול והתראות">🔔</button>
+    </header>
+
+    <!-- Overall Workout Progress -->
+    <div class="progress-strip">
+      <div class="progress-labels">
+        <span>שלב כוח עיקרי</span>
+        <span>40% הושלם</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Live Stage Content -->
+    <main class="workout-stage">
+
+      <!-- Current Exercise Card -->
+      <section class="card current-exercise-card" aria-labelledby="currentExName">
+        <div class="ex-icon-box">
+          <!-- Pull-Up Icon -->
+          <svg viewBox="0 0 64 64" fill="none" role="img" aria-label="עליות מתח">
+            <line x1="8" y1="18" x2="56" y2="18" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="12" y1="18" x2="12" y2="8" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+            <line x1="52" y1="18" x2="52" y2="8" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+            <circle cx="22" cy="18" r="2.5" fill="#B9F24A"/>
+            <circle cx="42" cy="18" r="2.5" fill="#B9F24A"/>
+            <circle cx="32" cy="11" r="4.5" fill="#F6F8F6"/>
+            <path d="M22 18 L18 26 L27 21" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M42 18 L46 26 L37 21" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 20 L32 38" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M32 38 L30 49 L29 58" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M32 38 L34 49 L35 58" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="ex-meta">
+          <span class="badge-pill">משיכה בפארק</span>
+          <h1 class="ex-title" id="currentExName">עליות מתח</h1>
+          <p class="ex-cue">אחיזה ברוחב כתפיים • עלייה מלאה וסנטר מעל המוט בלי תנופה</p>
+        </div>
+      </section>
+
+      <!-- Rest Timer Circular Countdown Module -->
+      <section class="card timer-card" aria-label="טיימר מנוחה">
+        <div class="timer-badge">⏱️ מנוחה פעילה</div>
+        <div class="timer-circle-wrap">
+          <svg class="timer-svg" viewBox="0 0 160 160">
+            <defs>
+              <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#B9F24A"/>
+                <stop offset="100%" stop-color="#2DD4BF"/>
+              </linearGradient>
+            </defs>
+            <circle class="timer-bg-circle" cx="80" cy="80" r="72"/>
+            <circle class="timer-bar-circle" id="timerBar" cx="80" cy="80" r="72"/>
+          </svg>
+          <div class="timer-text-overlay">
+            <div class="timer-digits" id="timerDigits">01:15</div>
+            <div class="timer-status-caption" id="timerCaption">נשארו 75 שניות</div>
+          </div>
+        </div>
+
+        <!-- Quick timer adjustments -->
+        <div class="timer-actions">
+          <button type="button" class="btn-step" id="btnMinus15">-15s</button>
+          <button type="button" class="btn-toggle-timer" id="btnToggleTimer">
+            <span id="timerIcon">❚❚</span> <span id="timerActionText">השהה</span>
+          </button>
+          <button type="button" class="btn-step" id="btnPlus30">+30s</button>
+        </div>
+      </section>
+
+      <!-- Set and Rep Counter Module -->
+      <section class="card counter-card" aria-label="מונה סטים וחזרות">
+        <div class="sets-row">
+          <div style="font-size: 13px; font-weight: 700; color: var(--th-muted);">התקדמות סטים:</div>
+          <div class="set-pills" id="setPills">
+            <div class="set-pill done" title="סט 1 (הושלם)">✓</div>
+            <div class="set-pill active" title="סט 2 (נוכחי)">2</div>
+            <div class="set-pill" title="סט 3">3</div>
+            <div class="set-pill" title="סט 4">4</div>
+          </div>
+        </div>
+
+        <div class="reps-controller">
+          <button type="button" class="rep-btn" id="btnRepDec" aria-label="הפחת חזרה">-</button>
+          <div class="rep-display">
+            <div class="rep-number" id="repValue">8</div>
+            <div class="rep-caption">חזרות שבוצעו (יעד: 8–10)</div>
+          </div>
+          <button type="button" class="rep-btn" id="btnRepInc" aria-label="הוסף חזרה">+</button>
+        </div>
+      </section>
+
+      <!-- Next Exercise Card Preview -->
+      <section class="next-card" aria-label="התרגיל הבא">
+        <div class="next-thumb">
+          <!-- Dip Icon -->
+          <svg viewBox="0 0 64 64" fill="none" role="img" aria-label="מקבילים">
+            <line x1="10" y1="36" x2="26" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="38" y1="36" x2="54" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="18" cy="36" r="2.5" fill="#B9F24A"/>
+            <circle cx="46" cy="36" r="2.5" fill="#B9F24A"/>
+            <circle cx="32" cy="14" r="4.5" fill="#F6F8F6"/>
+            <path d="M26 23 L14 27 L18 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M38 23 L50 27 L46 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="32" y1="24" x2="32" y2="40" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="next-info">
+          <div class="next-label">התרגיל הבא:</div>
+          <div class="next-name">מקבילים בפארק (Parallel Dips)</div>
+          <div class="next-target">3 סטים × 10–12 חזרות</div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Action Controls -->
+    <footer class="app-footer">
+      <button type="button" class="btn-skip" id="btnSkipRest">דלג מנוחה</button>
+      <button type="button" class="btn-log-set" id="btnLogSet">
+        <span>✓</span>
+        <span>רשום סט והמשך</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <div class="mockup-controls">
+    <p>TrainerHub Live Workout Interface Mockup • מותאם למובייל ולתנאי אימון חוץ</p>
+  </div>
+
+  <script>
+    // Live Workout Mockup Interaction Logic
+    let totalRestSeconds = 90;
+    let remainingSeconds = 75;
+    let timerRunning = true;
+    let timerInterval = null;
+    let currentReps = 8;
+    let currentSetIndex = 1; // 0-based: Set 2 is index 1
+    const totalSets = 4;
+    const circumference = 2 * Math.PI * 72; // ~452.38px
+
+    const timerBar = document.getElementById('timerBar');
+    const timerDigits = document.getElementById('timerDigits');
+    const timerCaption = document.getElementById('timerCaption');
+    const btnToggleTimer = document.getElementById('btnToggleTimer');
+    const timerIcon = document.getElementById('timerIcon');
+    const timerActionText = document.getElementById('timerActionText');
+    const repValue = document.getElementById('repValue');
+    const setPills = document.getElementById('setPills');
+
+    function updateTimerUI() {
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      timerDigits.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      timerCaption.textContent = remainingSeconds > 0 ? `נשארו ${remainingSeconds} שניות` : 'הגיע הזמן לסט!';
+      
+      const ratio = Math.max(0, remainingSeconds / totalRestSeconds);
+      const offset = circumference * (1 - ratio);
+      timerBar.style.strokeDashoffset = offset;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerRunning = true;
+      timerIcon.textContent = '❚❚';
+      timerActionText.textContent = 'השהה';
+      timerInterval = setInterval(() => {
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+          updateTimerUI();
+        } else {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          timerIcon.textContent = '▶';
+          timerActionText.textContent = 'התחל';
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerIcon.textContent = '▶';
+      timerActionText.textContent = 'המשך';
+    }
+
+    btnToggleTimer.addEventListener('click', () => {
+      if (timerRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    document.getElementById('btnPlus30').addEventListener('click', () => {
+      remainingSeconds += 30;
+      totalRestSeconds = Math.max(totalRestSeconds, remainingSeconds);
+      updateTimerUI();
+    });
+
+    document.getElementById('btnMinus15').addEventListener('click', () => {
+      remainingSeconds = Math.max(0, remainingSeconds - 15);
+      updateTimerUI();
+    });
+
+    document.getElementById('btnSkipRest').addEventListener('click', () => {
+      remainingSeconds = 0;
+      updateTimerUI();
+      pauseTimer();
+    });
+
+    // Rep adjustments
+    document.getElementById('btnRepInc').addEventListener('click', () => {
+      currentReps++;
+      repValue.textContent = currentReps;
+    });
+
+    document.getElementById('btnRepDec').addEventListener('click', () => {
+      if (currentReps > 1) {
+        currentReps--;
+        repValue.textContent = currentReps;
+      }
+    });
+
+    // Log set progression
+    document.getElementById('btnLogSet').addEventListener('click', () => {
+      if (currentSetIndex < totalSets - 1) {
+        currentSetIndex++;
+        renderSets();
+        remainingSeconds = 90;
+        totalRestSeconds = 90;
+        updateTimerUI();
+        startTimer();
+      } else {
+        alert('כל הכבוד! סיימת את כל הסטים בתרגיל זה.');
+      }
+    });
+
+    function renderSets() {
+      const pills = setPills.querySelectorAll('.set-pill');
+      pills.forEach((p, idx) => {
+        p.className = 'set-pill';
+        if (idx < currentSetIndex) {
+          p.classList.add('done');
+          p.textContent = '✓';
+        } else if (idx === currentSetIndex) {
+          p.classList.add('active');
+          p.textContent = idx + 1;
+        } else {
+          p.textContent = idx + 1;
+        }
+      });
+    }
+
+    // Init
+    updateTimerUI();
+    startTimer();
+  </script>
+</body>
+</html>

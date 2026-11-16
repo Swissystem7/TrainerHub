@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrainerHub — תיק עיצוב ומערכת אייקונים (Design Assets & Icon System)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root {
+      --bg: #071210;
+      --surface: #0E1D19;
+      --card: #132622;
+      --border: #233F38;
+      --lime: #B9F24A;
+      --teal: #2DD4BF;
+      --ink: #F6F8F6;
+      --muted: #9CA3AF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Heebo', system-ui, sans-serif;
+      padding: 32px 20px 80px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--teal);
+    }
+    p.lead {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--lime);
+      margin: 40px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .icon-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    .icon-card:hover {
+      border-color: var(--teal);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(45, 212, 191, 0.15);
+    }
+    .icon-preview {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 14px;
+      background: #0B1916;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px;
+    }
+    .icon-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .icon-en {
+      font-size: 12px;
+      color: var(--teal);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .icon-file {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-family: monospace;
+    }
+    .logo-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+    .logo-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .links-bar {
+      margin-top: 30px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--lime), var(--teal));
+      color: #071210;
+    }
+    .btn-secondary {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+    }
+    .btn-secondary:hover {
+      border-color: var(--teal);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TrainerHub — מערכת עיצוב ונכסים גרפיים</h1>
+      <p class="lead">לוגו ראשי, סט אייקונים וקטוריים לאימוני רחוב ופארק (Calisthenics), והדמיית מסך אימון חי מלאה.</p>
+      <div class="links-bar">
+        <a href="./live-workout-mockup.html" class="btn btn-primary" target="_blank">📱 פתח הדמיית מסך אימון חי (Interactive Mockup)</a>
+        <a href="./live-workout-screen.svg" class="btn btn-secondary" target="_blank">🖼️ צפה ב-SVG של מסך האימון</a>
+        <a href="../docs/design-notes.md" class="btn btn-secondary">📄 תיעוד עיצובי (Design Notes)</a>
+      </div>
+    </header>
+
+    <h2 class="section-title">לוגו וסמליל TrainerHub</h2>
+    <div class="logo-showcase">
+      <div class="logo-box">
+        <img src="./logo.svg" alt="TrainerHub Logo" style="max-width: 100%; height: auto;">
+      </div>
+      <div class="logo-box" style="flex: 0 0 160px; min-width: 140px;">
+        <img src="./logo-icon.svg" alt="TrainerHub Icon" style="width: 100px; height: 100px;">
+      </div>
+    </div>
+
+    <h2 class="section-title">סט אייקוני תרגילים לאימוני פארק ורחוב (8 תרגילים)</h2>
+    <div class="grid">
+      <!-- 1. Pull-up -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/pull-up.svg" alt="Pull-up" width="100%" height="100%">
+        </div>
+        <div class="icon-title">עליות מתח</div>
+        <div class="icon-en">Pull-Up</div>
+        <div class="icon-file">icons/pull-up.svg</div>
+      </div>
+
+      <!-- 2. Dip -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/dip.svg" alt="Dip" width="100%" height="100%">
+        </div>
+        <div class="icon-title">מקבילים</div>
+        <div class="icon-en">Dip</div>
+        <div class="icon-file">icons/dip.svg</div>
+      </div>
+
+      <!-- 3. Push-up -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/push-up.svg" alt="Push-up" width="100%" height="100%">
+        </div>
+        <div class="icon-title">שכיבות סמיכה</div>
+        <div class="icon-en">Push-Up</div>
+        <div class="icon-file">icons/push-up.svg</div>
+      </div>
+
+      <!-- 4. Muscle-up -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/muscle-up.svg" alt="Muscle-up" width="100%" height="100%">
+        </div>
+        <div class="icon-title">עליות כוח / מאסל-אפ</div>
+        <div class="icon-en">Muscle-Up</div>
+        <div class="icon-file">icons/muscle-up.svg</div>
+      </div>
+
+      <!-- 5. Leg raise -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/leg-raise.svg" alt="Leg raise" width="100%" height="100%">
+        </div>
+        <div class="icon-title">הרמות רגליים במתח</div>
+        <div class="icon-en">Hanging Leg Raise</div>
+        <div class="icon-file">icons/leg-raise.svg</div>
+      </div>
+
+      <!-- 6. Squat -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/squat.svg" alt="Squat" width="100%" height="100%">
+        </div>
+        <div class="icon-title">סקוואט משקל גוף</div>
+        <div class="icon-en">Bodyweight Squat</div>
+        <div class="icon-file">icons/squat.svg</div>
+      </div>
+
+      <!-- 7. Plank -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/plank.svg" alt="Plank" width="100%" height="100%">
+        </div>
+        <div class="icon-title">פלאנק סטטי</div>
+        <div class="icon-en">Plank</div>
+        <div class="icon-file">icons/plank.svg</div>
+      </div>
+
+      <!-- 8. Bar hang -->
+      <div class="icon-card">
+        <div class="icon-preview">
+          <img src="./icons/bar-hang.svg" alt="Bar hang" width="100%" height="100%">
+        </div>
+        <div class="icon-title">תלייה על מתח</div>
+        <div class="icon-en">Bar Hang / Dead Hang</div>
+        <div class="icon-file">icons/bar-hang.svg</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
