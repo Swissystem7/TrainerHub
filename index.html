@@ -88,6 +88,14 @@
     .rule-value { display: block; color: var(--ink); font-size: 15px; line-height: 1.45; }
     .rule-source { display: inline-block; margin-top: 6px; }
     .rule-detail { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 4px; }
+    .warmup-section { margin: 16px 0; padding: 14px 16px; background: var(--th-surface2); border: 1px solid var(--line); border-radius: var(--th-r-md); }
+    .warmup-heading { margin: 0 0 6px; font-size: 16px; color: var(--th-orange-ink); }
+    .warmup-pacing { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+    .warmup-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .warmup-item { padding: 6px 8px; border-radius: var(--th-r-sm); background: var(--th-surface); transition: opacity .2s; }
+    .warmup-item.completed { opacity: 0.6; text-decoration: line-through; }
+    .warmup-label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+    .warmup-checkbox { width: 18px; height: 18px; accent-color: var(--lime); cursor: pointer; }
     @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } .th-steps { margin-top: 16px; } }
     button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
   </style>
@@ -254,7 +262,9 @@
   </div>
 
   <!-- biome-ignore lint/a11y/useSemanticElements: live result region -->
-  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
+  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite">
+    <section id="warmupSection" class="warmup-section card" aria-label="חימום ממוקד ומוביליטי" hidden></section>
+  </div>
 </main>
 <script src="./js/core.js"></script>
 <script src="./js/pilot.js"></script>
@@ -262,6 +272,7 @@
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
 <script src="./js/adaptation-engine.js"></script>
+<script src="./js/warmup-generator.js"></script>
 <script src="./js/session-builder.js"></script>
 <script src="./js/journal-storage.js"></script>
 <script src="./js/muscle-balance.js"></script>
@@ -469,6 +480,7 @@
           : '') +
         flags +
         groupPlan +
+        '<section id="warmupSection" class="warmup-section" aria-label="חימום ממוקד ומוביליטי"></section>' +
         phases +
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
@@ -491,6 +503,15 @@
       '</article>';
 
     bindWorkoutActions(w);
+    var warmupBlock = built.warmupBlock || (w && w.warmupBlock);
+    if (!warmupBlock && typeof THWarmupGenerator !== 'undefined' && typeof THWarmupGenerator.generateTargetedWarmup === 'function') {
+      warmupBlock = THWarmupGenerator.generateTargetedWarmup(w, built.request || {}, TH.catalogList());
+    }
+    var warmupEl = $('warmupSection');
+    if (warmupEl && warmupBlock) {
+      renderWarmupSection(warmupBlock, warmupEl);
+    }
+
     var report = built.adaptationReport || (w && w.adaptationReport);
     if (!report && typeof THAdaptation !== 'undefined') {
       report = THAdaptation.buildAdaptationReport(built.request || {}, w);
@@ -498,6 +519,71 @@
     if (report) {
       renderAdaptationCard(report, box);
     }
+  }
+
+  function renderWarmupSection(warmupBlock, container) {
+    if (!warmupBlock || !container || typeof document.createElement !== 'function') return;
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
+    const heading = document.createElement('h3');
+    heading.className = 'warmup-heading';
+    heading.textContent = 'חימום ממוקד ומוביליטי (' + (warmupBlock.duration_minutes || 6) + ' דקות)';
+    container.appendChild(heading);
+
+    if (warmupBlock.pacingGuidelines || warmupBlock.pacing) {
+      const pacing = document.createElement('p');
+      pacing.className = 'warmup-pacing';
+      pacing.textContent = 'הנחיות קצב: ' + (warmupBlock.pacingGuidelines || warmupBlock.pacing);
+      container.appendChild(pacing);
+    }
+
+    const list = document.createElement('ul');
+    list.className = 'warmup-list';
+    list.setAttribute('role', 'list');
+
+    const exercises = Array.isArray(warmupBlock.exercises) ? warmupBlock.exercises : [];
+    for (const ex of exercises) {
+      const item = document.createElement('li');
+      item.className = 'warmup-item';
+
+      const label = document.createElement('label');
+      label.className = 'warmup-label';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'warmup-checkbox';
+      checkbox.setAttribute('aria-label', 'הושלם: ' + (ex.name || ex.id));
+
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          item.classList.add('completed');
+        } else {
+          item.classList.remove('completed');
+        }
+      });
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'warmup-text';
+      let desc = ex.name || ex.id;
+      if (ex.duration_seconds) {
+        desc += ' (' + Math.round(ex.duration_seconds / 60) + ' דק׳)';
+      }
+      if (ex.instructions) {
+        desc += ' · ' + ex.instructions;
+      }
+      textSpan.textContent = desc;
+
+      label.appendChild(checkbox);
+      label.appendChild(textSpan);
+      item.appendChild(label);
+      list.appendChild(item);
+    }
+
+    container.appendChild(list);
+    container.removeAttribute('hidden');
   }
 
   function renderAdaptationCard(report, container) {
