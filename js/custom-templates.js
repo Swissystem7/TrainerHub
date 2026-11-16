@@ -17,37 +17,23 @@
     try {
       if (typeof localStorage !== 'undefined') return localStorage;
     } catch (_err) {}
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
-    } catch (_err) {}
-    try {
-      if (typeof globalThis !== 'undefined' && globalThis.localStorage) return globalThis.localStorage;
-    } catch (_err) {}
     return null;
   }
 
   function getRaw(storage, key) {
-    if (!storage) return null;
+    if (!storage || typeof storage.getItem !== 'function') return null;
     try {
-      if (typeof storage.getItem === 'function') return storage.getItem(key);
-      if (typeof storage.get === 'function') return storage.get(key);
+      return storage.getItem(key);
     } catch (_err) {
       return null;
     }
-    return null;
   }
 
   function setRaw(storage, key, value) {
-    if (!storage) throw new Error('Storage not available');
-    if (typeof storage.setItem === 'function') {
-      storage.setItem(key, value);
-      return;
+    if (!storage || typeof storage.setItem !== 'function') {
+      throw new Error('Storage not available');
     }
-    if (typeof storage.set === 'function') {
-      storage.set(key, value);
-      return;
-    }
-    throw new Error('Unsupported storage');
+    storage.setItem(key, value);
   }
 
   function listCustomTemplates(storage) {
@@ -71,28 +57,23 @@
     if (!s) return null;
 
     const trimmedName = name.trim();
-    let workoutCopy;
-    if (workout && typeof workout === 'object') {
-      try {
-        workoutCopy = JSON.parse(JSON.stringify(workout));
-      } catch (_err) {
-        workoutCopy = Object.assign({}, workout);
-      }
-    } else {
-      workoutCopy = { title: trimmedName, exercises: [] };
-    }
-
     const now = new Date().toISOString();
     const tplId = `tpl_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    const template = {
-      id: tplId,
-      name: trimmedName,
-      workout: workoutCopy,
-      createdAt: now,
-      updatedAt: now
-    };
 
     try {
+      let workoutCopy;
+      if (workout && typeof workout === 'object') {
+        workoutCopy = JSON.parse(JSON.stringify(workout));
+      } else {
+        workoutCopy = { title: trimmedName, exercises: [] };
+      }
+      const template = {
+        id: tplId,
+        name: trimmedName,
+        workout: workoutCopy,
+        createdAt: now,
+        updatedAt: now
+      };
       const list = listCustomTemplates(s);
       let existingIdx = -1;
       if (workoutCopy?.id) {
@@ -120,7 +101,7 @@
     try {
       const list = listCustomTemplates(s);
       const targetId = String(templateId);
-      const filtered = list.filter((item) => String(item?.id) !== targetId);
+      const filtered = list.filter((item) => item && String(item.id) !== targetId);
       if (filtered.length === list.length) {
         return false;
       }
