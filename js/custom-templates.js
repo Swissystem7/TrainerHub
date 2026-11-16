@@ -20,27 +20,11 @@
     return null;
   }
 
-  function getRaw(storage, key) {
-    if (!storage || typeof storage.getItem !== 'function') return null;
-    try {
-      return storage.getItem(key);
-    } catch (_err) {
-      return null;
-    }
-  }
-
-  function setRaw(storage, key, value) {
-    if (!storage || typeof storage.setItem !== 'function') {
-      throw new Error('Storage not available');
-    }
-    storage.setItem(key, value);
-  }
-
   function listCustomTemplates(storage) {
     const s = resolveStorage(storage);
-    if (!s) return [];
+    if (!s || typeof s.getItem !== 'function') return [];
     try {
-      const raw = getRaw(s, STORAGE_KEY);
+      const raw = s.getItem(STORAGE_KEY);
       if (!raw) return [];
       const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
       return Array.isArray(parsed) ? parsed : [];
@@ -54,7 +38,7 @@
       return null;
     }
     const s = resolveStorage(storage);
-    if (!s) return null;
+    if (!s || typeof s.setItem !== 'function') return null;
 
     const trimmedName = name.trim();
     const now = new Date().toISOString();
@@ -86,7 +70,7 @@
       } else {
         list.unshift(template);
       }
-      setRaw(s, STORAGE_KEY, JSON.stringify(list));
+      s.setItem(STORAGE_KEY, JSON.stringify(list));
       return template;
     } catch (_err) {
       return null;
@@ -96,7 +80,7 @@
   function deleteCustomTemplate(templateId, storage) {
     if (!templateId) return false;
     const s = resolveStorage(storage);
-    if (!s) return false;
+    if (!s || typeof s.setItem !== 'function') return false;
 
     try {
       const list = listCustomTemplates(s);
@@ -105,7 +89,7 @@
       if (filtered.length === list.length) {
         return false;
       }
-      setRaw(s, STORAGE_KEY, JSON.stringify(filtered));
+      s.setItem(STORAGE_KEY, JSON.stringify(filtered));
       return true;
     } catch (_err) {
       return false;
