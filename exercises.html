@@ -363,6 +363,7 @@
         <button type="button" class="chip-btn tone-inspire" data-muscle="השראה" aria-pressed="false">השראה</button>
         <button type="button" class="chip-btn tone-unknown" data-muscle="לא ממוין" aria-pressed="false">לא ממוין</button>
       </div>
+      <button type="button" class="view-btn" id="filterByMyProfileBtn" aria-pressed="false">התאם לפרופיל שלי</button>
       <div class="toolbar">
         <p class="stats" id="stats" aria-live="polite">טוען את הספרייה…</p>
         <div class="view-toggle" role="group" aria-label="תצוגת ספרייה">
@@ -375,6 +376,7 @@
   </div>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/library-profile-filter.js"></script>
 <script src="./js/reel-library.js"></script>
 <script src="./js/live-media-panel.js"></script>
 <script src="./js/custom-templates.js"></script>
@@ -504,9 +506,26 @@
     setStatus(draft.items.length === before ? 'התרגיל כבר ביום האימון.' : 'נוסף «' + THReels.displayName(ex) + '».');
   }
 
+  var filterByProfileOn = false;
+  function decorateProfileBadges(shown) {
+    shown.forEach(function (ex) {
+      if (!ex.matchedProfile) return;
+      var card = document.querySelector('.card[data-id="' + ex.id + '"] .card-kicker');
+      if (!card) return;
+      var badge = document.createElement('span');
+      badge.className = 'pill ok profile-match';
+      badge.textContent = 'מתאים לפרופיל שלך';
+      card.appendChild(badge);
+    });
+  }
   function renderGrid() {
     var muscle = currentMuscle();
     var shown = THReels.filterExercises(library, { query: $('q').value, muscle: muscle });
+    if (filterByProfileOn) {
+      var profile = null;
+      try { profile = TH.getLibraryProfile(); } catch (e) { profile = null; }
+      shown = THReels.filterExercisesForProfile(shown, profile);
+    }
     syncChips(muscle);
     var added = {};
     draft.items.forEach(function (item) { added[item.exerciseId] = true; });
@@ -527,10 +546,12 @@
             '<span class="count">' + section.exercises.length + '</span></h3>' +
           '<div class="grid">' + section.exercises.map(function (ex) { running += 1; return cardHtml(ex, added, running); }).join('') + '</div></section>';
       }).join('');
+      if (filterByProfileOn) decorateProfileBadges(shown);
       return;
     }
     $('grid').className = 'grid';
     $('grid').innerHTML = shown.map(function (ex, i) { return cardHtml(ex, added, i + 1); }).join('');
+    if (filterByProfileOn) decorateProfileBadges(shown);
   }
 
   function persistDraft() {
@@ -564,6 +585,11 @@
     var btn = e.target.closest('.chip-btn');
     if (!btn) return;
     $('muscle').value = btn.getAttribute('data-muscle') || '';
+    renderGrid();
+  });
+  $('filterByMyProfileBtn').addEventListener('click', function () {
+    filterByProfileOn = !filterByProfileOn;
+    $('filterByMyProfileBtn').setAttribute('aria-pressed', filterByProfileOn ? 'true' : 'false');
     renderGrid();
   });
   $('viewGrid').addEventListener('click', function () { viewMode = 'grid'; renderGrid(); });

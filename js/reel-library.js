@@ -13,6 +13,11 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  var ProfileFilter = null;
+  if (typeof module === 'object' && module.exports) {
+    try { ProfileFilter = require('./library-profile-filter.js'); } catch (e) { ProfileFilter = null; }
+  }
+  if (!ProfileFilter && typeof globalThis !== 'undefined') ProfileFilter = globalThis.THLibraryProfileFilter || null;
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
@@ -837,6 +842,7 @@
     var secondary = ex.secondary_group ? '<span class="pill">' + esc(ex.secondary_group) + '</span>' : '';
     var detail = ex.muscle_detail ? '<span class="pill">' + esc(ex.muscle_detail) + '</span>' : '';
     var flag = ex.verified ? '<span class="pill ok">מאומת</span>' : '<span class="pill unverified">לא מאומת</span>';
+    var matchBadge = ex.matchedProfile ? '<span class="pill ok profile-match">מתאים לפרופיל שלך</span>' : '';
     var watchLabel = /\/p\//.test(ex.source_url || '') ? 'צפייה בפוסט' : 'צפייה בריל';
     var trainable = ex.muscle_group !== 'השראה';
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
@@ -847,7 +853,7 @@
     return '<article class="card tone-' + toneName(ex.muscle_group) + '" data-id="' + esc(ex.id) + '"' + (trainable ? ' draggable="true"' : '') + '>' +
       posterFrameHtml(ex, esc, false) +
       '<div class="card-body">' +
-        '<div class="card-kicker">' + flag + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +
+        '<div class="card-kicker">' + flag + matchBadge + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +
         '<h2>' + esc(displayName(ex)) + '</h2>' +
         '<p class="creator"><a href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">@' + esc(ex.creator) + '</a></p>' +
         '<div class="meta">' +
@@ -871,6 +877,10 @@
     MUSCLE_GROUPS: MUSCLE_GROUPS,
     validateLibrary: validateLibrary,
     filterExercises: filterExercises,
+    filterExercisesForProfile: function (list, profile) {
+      var mod = ProfileFilter || (typeof globalThis !== 'undefined' ? globalThis.THLibraryProfileFilter : null);
+      return mod && typeof mod.filterExercisesForProfile === 'function' ? mod.filterExercisesForProfile(list, profile) : (list || []).slice();
+    },
     displayName: displayName,
     emptyDraft: emptyDraft,
     addToDraft: addToDraft,

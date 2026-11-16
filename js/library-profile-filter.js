@@ -1,0 +1,225 @@
+/**
+ * Dynamic exercise-library filter by personal profile.
+ * Classic script, no bundler. Browser: window.THLibraryProfileFilter.
+ * Node: module.exports.
+ *
+ * filterExercisesForProfile(exercises, profile) keeps exercises whose
+ * required equipment is available in the profile and that do not conflict
+ * with the profile movement limitations (knees, back, shoulders). Every
+ * kept exercise is returned as a copy marked with the profile-fit badge
+ * 'מתאים לפרופיל שלך'. Input exercises are never mutated.
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.THLibraryProfileFilter = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  var PROFILE_TAG = 'מתאים לפרופיל שלך';
+
+  var EQUIPMENT_SYNONYMS = {
+    none: 'bodyweight',
+    bodyweight: 'bodyweight',
+    'משקל גוף': 'bodyweight',
+    dumbbells: 'dumbbell',
+    dumbbell: 'dumbbell',
+    משקולות: 'dumbbell',
+    משקולת: 'dumbbell',
+    barbell: 'barbell',
+    מוט: 'barbell',
+    kettlebell: 'kettlebell',
+    קטלבל: 'kettlebell',
+    band: 'resistance_band',
+    bands: 'resistance_band',
+    resistance_band: 'resistance_band',
+    גומיה: 'resistance_band',
+    גומיות: 'resistance_band',
+    mat: 'mat',
+    מזרן: 'mat',
+    bench: 'bench',
+    ספסל: 'bench',
+    chair: 'chair',
+    כיסא: 'chair',
+    wall: 'wall',
+    קיר: 'wall',
+    machine: 'machine',
+    מכונה: 'machine',
+    bar: 'pullup_bar',
+    pullup_bar: 'pullup_bar',
+    מתח: 'pullup_bar'
+  };
+
+  var LIMITATION_SYNONYMS = {
+    knee: 'knees',
+    knees: 'knees',
+    ברך: 'knees',
+    ברכיים: 'knees',
+    back: 'back',
+    גב: 'back',
+    shoulder: 'shoulders',
+    shoulders: 'shoulders',
+    כתף: 'shoulders',
+    כתפיים: 'shoulders'
+  };
+
+  // Movement keywords that conflict with each limitation. Matched against
+  // the exercise name, muscle groups, detail and step/safety text.
+  var LIMITATION_KEYWORDS = {
+    knees: ['ברך', 'סקוואט', 'squat', 'מכרע', 'lunge', 'קפיצ', 'jump', 'בורפי', 'burpee'],
+    back: ['גב תחתון', 'דדליפט', 'deadlift', 'חתירה כבדה', 'כפיפת גב'],
+    shoulders: ['כתף', 'כתפיים', 'shoulder', 'לחיצה מעל הראש', 'overhead', 'מקבילים', 'dips']
+  };
+
+  function asArray(value) {
+    if (Array.isArray(value)) return value.slice();
+    if (value == null || value === '') return [];
+    return [value];
+  }
+
+  function normalizeEquipmentToken(token) {
+    var key = String(token == null ? '' : token).trim().toLowerCase();
+    return EQUIPMENT_SYNONYMS[key] || key;
+  }
+
+  function normalizeEquipmentList(list) {
+    var out = [];
+    asArray(list).forEach(function (token) {
+      var normalized = normalizeEquipmentToken(token);
+      if (normalized && out.indexOf(normalized) === -1) out.push(normalized);
+    });
+    return out;
+  }
+
+  function normalizeLimitationToken(token) {
+    var key = String(token == null ? '' : token).trim().toLowerCase();
+    return LIMITATION_SYNONYMS[key] || key;
+  }
+
+  function normalizeLimitations(list) {
+    var out = [];
+    asArray(list).forEach(function (token) {
+      var normalized = normalizeLimitationToken(token);
+      if (normalized && out.indexOf(normalized) === -1) out.push(normalized);
+    });
+    return out;
+  }
+
+  /**
+   * Normalizes any profile shape into { equipment, limitations }.
+   * Accepts { equipment, limitations } (js/profile.js), the program-engine
+   * { availableEquipment, injuries } shape, and null/empty input.
+   * hasEquipment is true only when the caller actually stated equipment,
+   * which keeps a null/empty profile from filtering anything out.
+   */
+  function normalizeProfile(profile) {
+    if (!profile || typeof profile !== 'object') {
+      return { equipment: [], limitations: [], hasEquipment: false };
+    }
+    var rawEquipment = profile.equipment != null ? profile.equipment : profile.availableEquipment;
+    var rawLimitations = profile.limitations != null
+      ? profile.limitations
+      : profile.restrictions != null
+        ? profile.restrictions
+        : profile.injuries;
+    return {
+      equipment: normalizeEquipmentList(rawEquipment),
+      limitations: normalizeLimitations(rawLimitations),
+      hasEquipment: rawEquipment != null
+    };
+  }
+
+  function requiredEquipment(exercise) {
+    if (!exercise || typeof exercise !== 'object') return [];
+    var raw = [];
+    if (Array.isArray(exercise.equipment_tags) && exercise.equipment_tags.length) {
+      raw = exercise.equipment_tags;
+    } else if (Array.isArray(exercise.equipment) && exercise.equipment.length) {
+      raw = exercise.equipment;
+    } else if (typeof exercise.equipment === 'string' && exercise.equipment.trim()) {
+      raw = exercise.equipment.split(/[,/·]/);
+    }
+    return normalizeEquipmentList(raw);
+  }
+
+  function exerciseText(exercise) {
+    return [
+      exercise.name_he,
+      exercise.name,
+      exercise.he,
+      exercise.muscle_group,
+      exercise.secondary_group,
+      exercise.muscle_detail,
+      exercise.equipment,
+      (exercise.steps_he || []).join(' '),
+      exercise.safety_he || ''
+    ].join(' ').toLowerCase();
+  }
+
+  function explicitLimitations(exercise) {
+    var raw = exercise.limitations || exercise.avoidWith || exercise.contraindications || exercise.avoid_with;
+    return normalizeLimitations(raw);
+  }
+
+  function conflictsWithLimitations(exercise, limitations) {
+    if (!limitations.length) return false;
+    var explicit = explicitLimitations(exercise);
+    if (explicit.some(function (item) { return limitations.indexOf(item) !== -1; })) return true;
+    var text = exerciseText(exercise);
+    return limitations.some(function (limitation) {
+      var keywords = LIMITATION_KEYWORDS[limitation] || [limitation];
+      return keywords.some(function (keyword) {
+        return text.indexOf(String(keyword).toLowerCase()) !== -1;
+      });
+    });
+  }
+
+  function matchesEquipment(exercise, normalizedProfile) {
+    var required = requiredEquipment(exercise);
+    if (!required.length) return true;
+    if (!normalizedProfile.hasEquipment) return true;
+    var available = normalizedProfile.equipment;
+    if (!available.length) available = ['bodyweight'];
+    return required.every(function (token) {
+      return available.indexOf(token) !== -1;
+    });
+  }
+
+  function exerciseMatchesProfile(exercise, profile) {
+    if (!exercise || typeof exercise !== 'object') return false;
+    var normalized = normalizeProfile(profile);
+    if (!matchesEquipment(exercise, normalized)) return false;
+    return !conflictsWithLimitations(exercise, normalized.limitations);
+  }
+
+  /**
+   * Exercises that fit the profile, each copied and marked with
+   * matchedProfile: true and profileTag 'מתאים לפרופיל שלך'.
+   * A null/empty profile states no equipment and no limitations, so it
+   * safely returns every exercise. An empty exercise list returns [].
+   */
+  function filterExercisesForProfile(exercises, profile) {
+    if (!Array.isArray(exercises) || !exercises.length) return [];
+    var normalized = normalizeProfile(profile);
+    return exercises
+      .filter(function (exercise) {
+        if (!exercise || typeof exercise !== 'object') return false;
+        if (!matchesEquipment(exercise, normalized)) return false;
+        return !conflictsWithLimitations(exercise, normalized.limitations);
+      })
+      .map(function (exercise) {
+        return Object.assign({}, exercise, {
+          matchedProfile: true,
+          profileTag: PROFILE_TAG
+        });
+      });
+  }
+
+  return {
+    PROFILE_TAG: PROFILE_TAG,
+    normalizeProfile: normalizeProfile,
+    requiredEquipment: requiredEquipment,
+    exerciseMatchesProfile: exerciseMatchesProfile,
+    filterExercisesForProfile: filterExercisesForProfile
+  };
+});
