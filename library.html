@@ -237,7 +237,7 @@
             local: 'מקומי', onedrive: 'OneDrive מאומת', drive: 'דרייב', youtube: 'יוטיוב', link: 'קישור חיצוני', user: 'נוסף במאגר'
           }[e.source] || e.source) + '</span>'
         : '';
-      var video = TH.mediaMarkup(e, { className: 'ex-media' });
+      var video = TH.mediaMarkup(e, { className: 'ex-media', preferVideo: true });
       if (!video && kind === 'link' && e.externalUrl) {
         video = '<a class="ex-media-link" href="' + TH.esc(e.externalUrl) + '" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני</a>';
       }
