@@ -13,6 +13,11 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  var ProfileFilter = null;
+  if (typeof module === 'object' && module.exports) {
+    try { ProfileFilter = require('./library-profile-filter.js'); } catch (e) { ProfileFilter = null; }
+  }
+  if (!ProfileFilter && typeof globalThis !== 'undefined') ProfileFilter = globalThis.THLibraryProfileFilter || null;
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
@@ -867,10 +872,24 @@
     '</article>';
   }
 
+  function createProfileMatchBadge(doc) {
+    var d = doc || (typeof document !== 'undefined' ? document : null);
+    if (!d || typeof d.createElement !== 'function') return null;
+    var badge = d.createElement('span');
+    badge.className = 'pill ok profile-match';
+    badge.textContent = 'מתאים לפרופיל שלך';
+    return badge;
+  }
+
   return {
     MUSCLE_GROUPS: MUSCLE_GROUPS,
     validateLibrary: validateLibrary,
     filterExercises: filterExercises,
+    filterExercisesForProfile: function (list, profile) {
+      var mod = ProfileFilter || (typeof globalThis !== 'undefined' ? globalThis.THLibraryProfileFilter : null);
+      return mod && typeof mod.filterExercisesForProfile === 'function' ? mod.filterExercisesForProfile(list, profile) : (list || []).slice();
+    },
+    createProfileMatchBadge: createProfileMatchBadge,
     displayName: displayName,
     emptyDraft: emptyDraft,
     addToDraft: addToDraft,
