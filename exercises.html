@@ -511,10 +511,15 @@
     shown.forEach(function (ex) {
       if (!ex.matchedProfile) return;
       var card = document.querySelector('.card[data-id="' + ex.id + '"] .card-kicker');
-      if (!card) return;
-      var badge = document.createElement('span');
-      badge.className = 'pill ok profile-match';
-      badge.textContent = 'מתאים לפרופיל שלך';
+      if (!card || card.querySelector('.profile-match')) return;
+      var badge = typeof THReels !== 'undefined' && typeof THReels.createProfileMatchBadge === 'function'
+        ? THReels.createProfileMatchBadge(document)
+        : null;
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'pill ok profile-match';
+        badge.textContent = 'מתאים לפרופיל שלך';
+      }
       card.appendChild(badge);
     });
   }

@@ -78,7 +78,9 @@
   }
 
   function normalizeEquipmentToken(token) {
-    var key = String(token == null ? '' : token).trim().toLowerCase();
+    var key = String(token == null ? '' : token)
+      .trim()
+      .toLowerCase();
     return EQUIPMENT_SYNONYMS[key] || key;
   }
 
@@ -92,7 +94,9 @@
   }
 
   function normalizeLimitationToken(token) {
-    var key = String(token == null ? '' : token).trim().toLowerCase();
+    var key = String(token == null ? '' : token)
+      .trim()
+      .toLowerCase();
     return LIMITATION_SYNONYMS[key] || key;
   }
 
@@ -117,11 +121,12 @@
       return { equipment: [], limitations: [], hasEquipment: false };
     }
     var rawEquipment = profile.equipment != null ? profile.equipment : profile.availableEquipment;
-    var rawLimitations = profile.limitations != null
-      ? profile.limitations
-      : profile.restrictions != null
-        ? profile.restrictions
-        : profile.injuries;
+    var rawLimitations =
+      profile.limitations != null
+        ? profile.limitations
+        : profile.restrictions != null
+          ? profile.restrictions
+          : profile.injuries;
     return {
       equipment: normalizeEquipmentList(rawEquipment),
       limitations: normalizeLimitations(rawLimitations),
@@ -153,7 +158,9 @@
       exercise.equipment,
       (exercise.steps_he || []).join(' '),
       exercise.safety_he || ''
-    ].join(' ').toLowerCase();
+    ]
+      .join(' ')
+      .toLowerCase();
   }
 
   function explicitLimitations(exercise) {
@@ -164,7 +171,12 @@
   function conflictsWithLimitations(exercise, limitations) {
     if (!limitations.length) return false;
     var explicit = explicitLimitations(exercise);
-    if (explicit.some(function (item) { return limitations.indexOf(item) !== -1; })) return true;
+    if (
+      explicit.some(function (item) {
+        return limitations.indexOf(item) !== -1;
+      })
+    )
+      return true;
     var text = exerciseText(exercise);
     return limitations.some(function (limitation) {
       var keywords = LIMITATION_KEYWORDS[limitation] || [limitation];
