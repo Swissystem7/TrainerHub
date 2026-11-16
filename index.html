@@ -204,7 +204,7 @@
     <section class="card" id="customTemplatesPanel" aria-labelledby="customTemplatesHeading" style="margin-top:16px;">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
         <h3 id="customTemplatesHeading" style="margin:0;font-size:1.05rem;">תבניות אישיות</h3>
-        <button type="button" class="th-btn ghost" id="saveTemplateBtn" aria-label="שמור אימון נוכחי כתבנית אישית">שמור כתבנית אישית</button>
+        <button type="button" class="th-btn ghost" id="saveTemplateBtn" aria-label="שמור כתבנית אישית">שמור כתבנית אישית</button>
       </div>
       <p class="field-help" id="customTemplatesStatus" style="margin:4px 0 8px 0;">טעינה מהירה של תבניות שמורות לבונה האימון.</p>
       <div id="customTemplatesList" role="region" aria-label="רשימת תבניות שמורות"></div>
@@ -878,7 +878,7 @@
       loadBtn.type = 'button';
       loadBtn.className = 'th-btn ghost';
       loadBtn.textContent = 'טען לבונה';
-      loadBtn.setAttribute('aria-label', 'טען ' + tpl.name + ' לבונה האימון');
+      loadBtn.setAttribute('aria-label', 'טען לבונה: ' + tpl.name);
       loadBtn.addEventListener('click', function () {
         var w = tpl.workout;
         if (!w) return;
@@ -911,7 +911,7 @@
       delBtn.type = 'button';
       delBtn.className = 'th-btn ghost';
       delBtn.textContent = 'מחק';
-      delBtn.setAttribute('aria-label', 'מחק תבנית ' + tpl.name);
+      delBtn.setAttribute('aria-label', 'מחק: ' + tpl.name);
       delBtn.addEventListener('click', function () {
         if (CT && typeof CT.deleteCustomTemplate === 'function') {
           CT.deleteCustomTemplate(tpl.id);
