@@ -191,6 +191,7 @@
     </div>
     <div class="actions" role="toolbar" aria-label="פעולות בניית אימון ושיוך למתאמן">
       <button type="submit" class="th-btn" aria-label="בנה ושייך אימון למתאמן">בנה ושייך אימון</button>
+      <button type="button" class="th-btn ghost" id="copyCoachPlanLinkBtn" aria-label="הפק קישור שיתוף למתאמן">הפק קישור שיתוף</button>
     </div>
     <p class="status" id="coachStatus" role="status" aria-live="polite"></p>
   </form>
@@ -274,6 +275,7 @@
 <script src="./js/progression-engine.js"></script>
 <script src="./js/muscle-balance.js"></script>
 <script src="./js/coach-profiles.js"></script>
+<script src="./js/plan-link-codec.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
@@ -1193,6 +1195,59 @@
       }
     });
   });
+
+  var copyCoachPlanBtn = $('copyCoachPlanLinkBtn');
+  if (copyCoachPlanBtn) {
+    copyCoachPlanBtn.addEventListener('click', function () {
+      var clientId = $('coachClient').value;
+      var c = clients.filter(function (x) { return x.id === clientId; })[0];
+      var workout = null;
+      if (c) {
+        var wKey = TH.KEYS.planPrefix + c.id;
+        workout = TH.store.get(wKey);
+        if (!workout && c.plan) {
+          workout = { title: c.plan };
+        }
+      }
+      if (!workout) {
+        workout = activeWorkout();
+      }
+      if (!workout) {
+        setStatus($('coachStatus'), 'יש לבחור מתאמן עם תוכנית משויכת או לבנות אימון תחילה.', true);
+        return;
+      }
+
+      var codec = window.THPlanLinkCodec || (window.TH && window.TH.PlanLinkCodec);
+      var query = codec && typeof codec.encodePlanToQuery === 'function'
+        ? codec.encodePlanToQuery(workout)
+        : '';
+      if (!query) {
+        setStatus($('coachStatus'), 'לא הצלחנו לקודד את קישור השיתוף.', true);
+        return;
+      }
+
+      var baseUrl = (typeof location !== 'undefined' && location.href)
+        ? location.href.split('?')[0].replace(/journal\.html.*$/, 'index.html')
+        : './index.html';
+      var shareUrl = baseUrl + '?' + query;
+
+      if (window.TH && typeof window.TH.copyOrShow === 'function') {
+        TH.copyOrShow(shareUrl, copyCoachPlanBtn.parentNode, function () {
+          setStatus($('coachStatus'), 'קישור שיתוף מקודד הועתק ללוח' + (c && c.name ? ' עבור ' + c.name : '') + '!');
+        });
+      } else if (window.TH && typeof window.TH.copyText === 'function') {
+        TH.copyText(shareUrl).then(function (r) {
+          if (r && r.ok) {
+            setStatus($('coachStatus'), 'קישור שיתוף מקודד הועתק ללוח' + (c && c.name ? ' עבור ' + c.name : '') + '!');
+          } else {
+            setStatus($('coachStatus'), 'קישור שיתוף: ' + shareUrl);
+          }
+        });
+      } else {
+        setStatus($('coachStatus'), 'קישור שיתוף: ' + shareUrl);
+      }
+    });
+  }
 
   // Finish already wrote this session on the same device («פתח כמתאמן»
   // then paste the code here). Importing it must not add the sets again.

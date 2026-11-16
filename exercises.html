@@ -315,6 +315,7 @@
         <p class="status" id="builderStatus" role="status" aria-live="polite"></p>
         <div class="builder-actions">
           <button type="button" class="th-btn" id="saveWorkout">שמור אימון</button>
+          <button type="button" class="th-btn ghost" id="saveSelectionAsTemplateBtn" aria-label="שמור כתבנית אישית">שמור כתבנית אישית</button>
           <button type="button" class="th-btn" id="useInWeekly">הצג בבונה השבועי</button>
           <button type="button" class="ghost" id="startWorkout">התחל אימון</button>
           <a class="th-btn play-live" id="playLiveLink" href="./frontend/workout-mode.html">הפעל במצב אימון חי</a>
@@ -322,6 +323,8 @@
         </div>
         <h3>אימונים שמורים</h3>
         <ul class="saved-list" id="savedList"></ul>
+        <h3 id="customTemplatesExercisesHeading">תבניות אישיות</h3>
+        <ul class="saved-list" id="customTemplatesList" aria-labelledby="customTemplatesExercisesHeading"></ul>
       </div>
     </aside>
 
@@ -360,6 +363,7 @@
         <button type="button" class="chip-btn tone-inspire" data-muscle="השראה" aria-pressed="false">השראה</button>
         <button type="button" class="chip-btn tone-unknown" data-muscle="לא ממוין" aria-pressed="false">לא ממוין</button>
       </div>
+      <button type="button" class="view-btn" id="filterByMyProfileBtn" aria-pressed="false">התאם לפרופיל שלי</button>
       <div class="toolbar">
         <p class="stats" id="stats" aria-live="polite">טוען את הספרייה…</p>
         <div class="view-toggle" role="group" aria-label="תצוגת ספרייה">
@@ -372,8 +376,10 @@
   </div>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/library-profile-filter.js"></script>
 <script src="./js/reel-library.js"></script>
 <script src="./js/live-media-panel.js"></script>
+<script src="./js/custom-templates.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
@@ -500,9 +506,31 @@
     setStatus(draft.items.length === before ? 'התרגיל כבר ביום האימון.' : 'נוסף «' + THReels.displayName(ex) + '».');
   }
 
+  var filterByProfileOn = false;
+  function decorateProfileBadges(shown) {
+    shown.forEach(function (ex) {
+      if (!ex.matchedProfile) return;
+      var card = document.querySelector('.card[data-id="' + ex.id + '"] .card-kicker');
+      if (!card || card.querySelector('.profile-match')) return;
+      var badge = typeof THReels !== 'undefined' && typeof THReels.createProfileMatchBadge === 'function'
+        ? THReels.createProfileMatchBadge(document)
+        : null;
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'pill ok profile-match';
+        badge.textContent = 'מתאים לפרופיל שלך';
+      }
+      card.appendChild(badge);
+    });
+  }
   function renderGrid() {
     var muscle = currentMuscle();
     var shown = THReels.filterExercises(library, { query: $('q').value, muscle: muscle });
+    if (filterByProfileOn) {
+      var profile = null;
+      try { profile = TH.getLibraryProfile(); } catch (e) { profile = null; }
+      shown = THReels.filterExercisesForProfile(shown, profile);
+    }
     syncChips(muscle);
     var added = {};
     draft.items.forEach(function (item) { added[item.exerciseId] = true; });
@@ -523,10 +551,12 @@
             '<span class="count">' + section.exercises.length + '</span></h3>' +
           '<div class="grid">' + section.exercises.map(function (ex) { running += 1; return cardHtml(ex, added, running); }).join('') + '</div></section>';
       }).join('');
+      if (filterByProfileOn) decorateProfileBadges(shown);
       return;
     }
     $('grid').className = 'grid';
     $('grid').innerHTML = shown.map(function (ex, i) { return cardHtml(ex, added, i + 1); }).join('');
+    if (filterByProfileOn) decorateProfileBadges(shown);
   }
 
   function persistDraft() {
@@ -560,6 +590,11 @@
     var btn = e.target.closest('.chip-btn');
     if (!btn) return;
     $('muscle').value = btn.getAttribute('data-muscle') || '';
+    renderGrid();
+  });
+  $('filterByMyProfileBtn').addEventListener('click', function () {
+    filterByProfileOn = !filterByProfileOn;
+    $('filterByMyProfileBtn').setAttribute('aria-pressed', filterByProfileOn ? 'true' : 'false');
     renderGrid();
   });
   $('viewGrid').addEventListener('click', function () { viewMode = 'grid'; renderGrid(); });
@@ -754,8 +789,116 @@
     });
   }
 
+  function saveSelectionAsTemplate() {
+    if (!draft.items.length) {
+      setStatus('בחרו לפחות תרגיל אחד לפני השמירה כתבנית.');
+      return;
+    }
+    persistDraft();
+    var title = $('workoutTitle').value.trim() || 'תבנית מהספרייה';
+    var workout = THReels.draftToWorkout(draft, { title: title });
+    var phasesWorkout = THReels.toPhasesWorkout(workout);
+    phasesWorkout.exercises = draft.items.slice();
+    var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+    if (CT && typeof CT.saveCustomTemplate === 'function') {
+      var saved = CT.saveCustomTemplate(title, phasesWorkout);
+      if (saved) {
+        renderCustomTemplates();
+        setStatus('«' + title + '» נשמר כתבנית אישית.');
+      }
+    }
+  }
+
+  function renderCustomTemplates() {
+    var host = $('customTemplatesList');
+    if (!host) return;
+    while (host.firstChild) host.removeChild(host.firstChild);
+    var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+    var list = (CT && typeof CT.listCustomTemplates === 'function') ? CT.listCustomTemplates() : [];
+    if (!list.length) {
+      var emptyLi = document.createElement('li');
+      emptyLi.className = 'saved-item';
+      var emptySpan = document.createElement('span');
+      emptySpan.textContent = 'אין תבניות אישיות עדיין.';
+      emptyLi.appendChild(emptySpan);
+      host.appendChild(emptyLi);
+      return;
+    }
+    list.forEach(function (tpl) {
+      var li = document.createElement('li');
+      li.className = 'saved-item';
+      var b = document.createElement('b');
+      b.textContent = tpl.name;
+      b.style.cursor = 'pointer';
+      b.setAttribute('title', 'לחצו לטעינת התבנית לבונה האימון');
+      b.addEventListener('click', function () {
+        var items = [];
+        if (tpl.workout && Array.isArray(tpl.workout.exercises) && tpl.workout.exercises.length) {
+          items = tpl.workout.exercises.slice();
+        } else if (tpl.workout && tpl.workout.phases) {
+          tpl.workout.phases.forEach(function (ph) {
+            if (ph && Array.isArray(ph.exercises)) {
+              ph.exercises.forEach(function (ex) {
+                items.push({
+                  exerciseId: ex.id || ex.exerciseId || '',
+                  name_he: ex.name || ex.name_he || '',
+                  muscle_group: ex.muscle_group || ex.muscle || '',
+                  sets: ex.sets || 3,
+                  reps: ex.reps || '10'
+                });
+              });
+            }
+          });
+        }
+        draft = { title: tpl.name, items: items };
+        persistDraft();
+        renderDraft();
+        renderGrid();
+        setStatus('נטענה תבנית «' + tpl.name + '».');
+      });
+      li.appendChild(b);
+
+      var iconRow = document.createElement('span');
+      iconRow.className = 'icon-row';
+
+      var count = 0;
+      if (tpl.workout && Array.isArray(tpl.workout.exercises)) {
+        count = tpl.workout.exercises.length;
+      } else if (tpl.workout && tpl.workout.phases && tpl.workout.phases[0] && Array.isArray(tpl.workout.phases[0].exercises)) {
+        count = tpl.workout.phases[0].exercises.length;
+      }
+
+      var pill = document.createElement('span');
+      pill.className = 'pill';
+      pill.textContent = String(count);
+      iconRow.appendChild(pill);
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.textContent = '×';
+      delBtn.setAttribute('aria-label', 'מחק את ' + tpl.name);
+      delBtn.addEventListener('click', function () {
+        if (CT && typeof CT.deleteCustomTemplate === 'function') {
+          CT.deleteCustomTemplate(tpl.id);
+        }
+        renderCustomTemplates();
+        setStatus('התבנית האישית נמחקה מהמכשיר.');
+      });
+      iconRow.appendChild(delBtn);
+
+      li.appendChild(iconRow);
+      host.appendChild(li);
+    });
+  }
+
+  var saveSelectionAsTemplateBtn = $('saveSelectionAsTemplateBtn');
+  if (saveSelectionAsTemplateBtn) {
+    saveSelectionAsTemplateBtn.addEventListener('click', saveSelectionAsTemplate);
+  }
+
   renderDraft();
   renderSaved();
+  renderCustomTemplates();
   function readJson(res) {
     if (!res.ok) throw new Error('status ' + res.status);
     return res.json();

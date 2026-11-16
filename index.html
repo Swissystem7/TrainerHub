@@ -119,6 +119,7 @@
   <span>גרסה חדשה זמינה.</span>
   <button type="button" id="pwa-refresh-btn" class="th-btn" style="min-height:32px;padding:2px 10px;font-size:13px;margin-inline-start:8px;cursor:pointer;">רענון</button>
 </div>
+<div id="sharedCoachPlanBanner" class="th-banner" role="status" aria-live="polite" style="display:none;">נטענה תוכנית ממאמן</div>
 <main class="wrap">
   <header class="top">
     <small>TRAINERHUB / מנוע אימון</small>
@@ -200,6 +201,14 @@
       <button type="button" data-fill="כוח גב 30 דקות" aria-label="מלא דוגמה: כוח גב 30 דקות">כוח גב 30 דקות</button>
       <button type="button" data-fill="ידיים בלי ציוד, ביניים" aria-label="מלא דוגמה: ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
     </div>
+    <section class="card" id="customTemplatesPanel" aria-labelledby="customTemplatesHeading" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <h3 id="customTemplatesHeading" style="margin:0;font-size:1.05rem;">תבניות אישיות</h3>
+        <button type="button" class="th-btn ghost" id="saveTemplateBtn" aria-label="שמור כתבנית אישית">שמור כתבנית אישית</button>
+      </div>
+      <p class="field-help" id="customTemplatesStatus" style="margin:4px 0 8px 0;">טעינה מהירה של תבניות שמורות לבונה האימון.</p>
+      <div id="customTemplatesList" role="region" aria-label="רשימת תבניות שמורות"></div>
+    </section>
   </div>
 
   <div class="panel" id="panel-ingest" role="tabpanel" aria-labelledby="tab-ingest" hidden>
@@ -259,10 +268,14 @@
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
 <script src="./js/whatsapp-share.js"></script>
+<script src="./js/plan-link-codec.js"></script>
+<script src="./js/live-tempo-cue.js"></script>
+<script src="./js/custom-templates.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
   var trackStartedAt = 0;
+  var activeBuiltWorkout = null;
 
   function muscleList(ids) {
     return (ids || []).map((m) => TH.muscleLabel(m)).join(', ') || '—';
@@ -292,14 +305,34 @@
     });
   }
 
+  function applySelectedTempo(workoutObj) {
+    var tempoSelect = $('liveWorkoutTempoSelect');
+    var selectedTempo = tempoSelect ? tempoSelect.value : null;
+    if (selectedTempo && selectedTempo !== 'none') {
+      workoutObj.tempo = selectedTempo;
+      if (Array.isArray(workoutObj.phases)) {
+        workoutObj.phases.forEach((ph) => {
+          if (ph && Array.isArray(ph.exercises)) {
+            ph.exercises.forEach((ex) => {
+              if (ex && !ex.tempo) ex.tempo = selectedTempo;
+            });
+          }
+        });
+      }
+    }
+  }
+
   function bindWorkoutActions(w) {
     $('startBtn').addEventListener('click', () => {
+      applySelectedTempo(w);
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
     });
     var startLiveBtn = $('startLiveWorkoutBtn');
     if (startLiveBtn) {
       startLiveBtn.addEventListener('click', () => {
+        applySelectedTempo(w);
+        TH.store.set(TH.KEYS.active, w);
         TH.store.set('trainerhub_active_workout', w);
         location.href = './frontend/workout-mode.html';
       });
@@ -385,6 +418,7 @@
       return;
     }
     var w = built.workout;
+    activeBuiltWorkout = w;
     var exp = built.explanation || {};
     var stim = exp.stimulus || {};
     var notice = built.notice
@@ -438,6 +472,15 @@
         phases +
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
+          '<label for="liveWorkoutTempoSelect" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem">' +
+            '<span>קצב מבוקר:</span>' +
+            '<select id="liveWorkoutTempoSelect" aria-label="בחירת קצב ביצוע לפני תחילת אימון חי" style="background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:6px;padding:4px 8px">' +
+              '<option value="none">רגיל (ללא קצב מבוקר)</option>' +
+              '<option value="3-1-1" selected>קצב מבוקר 3-1-1</option>' +
+              '<option value="3-1-2">קצב איטי ומבוקר 3-1-2</option>' +
+              '<option value="4-2-1">אקסצנטרי מודגש 4-2-1</option>' +
+            '</select>' +
+          '</label>' +
           '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
           '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
@@ -774,8 +817,150 @@
     $('segName').value = '';
   });
 
+  function checkSharedCoachPlan() {
+    if (typeof window === 'undefined' || !window.location || !window.location.search) {
+      return;
+    }
+    var codec = window.THPlanLinkCodec || (window.TH && window.TH.PlanLinkCodec);
+    if (!codec || typeof codec.decodePlanFromQuery !== 'function') {
+      return;
+    }
+    var plan = codec.decodePlanFromQuery(window.location.search);
+    if (!plan) {
+      return;
+    }
+    var banner = $('sharedCoachPlanBanner');
+    if (banner) {
+      banner.style.display = 'block';
+      banner.textContent = 'נטענה תוכנית ממאמן';
+    }
+    if (window.TH && window.TH.store) {
+      TH.store.set(TH.KEYS.active, plan);
+    }
+    render({
+      workout: plan,
+      notice: 'נטענה תוכנית ממאמן'
+    });
+  }
+
+  function renderCustomTemplates() {
+    var host = $('customTemplatesList');
+    if (!host) return;
+    host.textContent = '';
+    var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+    var list = (CT && typeof CT.listCustomTemplates === 'function') ? CT.listCustomTemplates() : [];
+    if (!list.length) {
+      if (typeof document.createElement === 'function') {
+        var p = document.createElement('p');
+        p.className = 'field-help';
+        p.textContent = 'אין תבניות אישיות שמורות עדיין.';
+        host.appendChild(p);
+      }
+      return;
+    }
+    if (typeof document.createElement !== 'function') return;
+    var ul = document.createElement('ul');
+    ul.className = 'saved-list';
+
+    list.forEach(function (tpl) {
+      var li = document.createElement('li');
+      li.className = 'saved-item';
+
+      var info = document.createElement('span');
+      var b = document.createElement('strong');
+      b.textContent = tpl.name;
+      info.appendChild(b);
+
+      var actions = document.createElement('span');
+      actions.className = 'icon-row';
+
+      var loadBtn = document.createElement('button');
+      loadBtn.type = 'button';
+      loadBtn.className = 'th-btn ghost';
+      loadBtn.textContent = 'טען לבונה';
+      loadBtn.setAttribute('aria-label', 'טען לבונה: ' + tpl.name);
+      loadBtn.addEventListener('click', function () {
+        var w = tpl.workout;
+        if (!w) return;
+        var planToRender = w.phases ? w : {
+          title: tpl.name,
+          phases: [{ name: 'Main', exercises: Array.isArray(w.exercises) ? w.exercises : [] }]
+        };
+        activeBuiltWorkout = planToRender;
+        if (window.TH && window.TH.store) {
+          TH.store.set(TH.KEYS.active, planToRender);
+        }
+        render({
+          workout: planToRender,
+          notice: 'נטענה תבנית אישית: ' + tpl.name,
+          explanation: {
+            type: 'תבנית אישית שמורה',
+            primary: [],
+            secondary: [],
+            stimulus: {},
+            flags: [],
+            reasons: []
+          }
+        });
+        var status = $('customTemplatesStatus');
+        if (status) status.textContent = 'נטענה תבנית «' + tpl.name + '» לבונה האימון.';
+      });
+      actions.appendChild(loadBtn);
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'th-btn ghost';
+      delBtn.textContent = 'מחק';
+      delBtn.setAttribute('aria-label', 'מחק: ' + tpl.name);
+      delBtn.addEventListener('click', function () {
+        if (CT && typeof CT.deleteCustomTemplate === 'function') {
+          CT.deleteCustomTemplate(tpl.id);
+        }
+        renderCustomTemplates();
+        var status = $('customTemplatesStatus');
+        if (status) status.textContent = 'התבנית «' + tpl.name + '» נמחקה.';
+      });
+      actions.appendChild(delBtn);
+
+      li.appendChild(info);
+      li.appendChild(actions);
+      ul.appendChild(li);
+    });
+
+    host.appendChild(ul);
+  }
+
+  function initCustomTemplates() {
+    var saveBtn = $('saveTemplateBtn');
+    if (saveBtn && saveBtn.addEventListener) {
+      saveBtn.addEventListener('click', function () {
+        var w = activeBuiltWorkout;
+        var promptVal = $('prompt') ? $('prompt').value.trim() : '';
+        var name = (w && w.title && w.title !== 'לא הצלחנו לבנות אימון.') ? w.title : (promptVal || 'תבנית אישית');
+        if (!w) {
+          w = {
+            title: name,
+            phases: [{ name: 'Main', exercises: [] }]
+          };
+        }
+        var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+        if (CT && typeof CT.saveCustomTemplate === 'function') {
+          var saved = CT.saveCustomTemplate(name, w);
+          if (saved) {
+            renderCustomTemplates();
+            var status = $('customTemplatesStatus');
+            if (status) status.textContent = '«' + name + '» נשמר בהצלחה כתבנית אישית.';
+          }
+        }
+      });
+    }
+    renderCustomTemplates();
+  }
+
   TH.ready(() => {
     fillSegSelect();
+    checkSharedCoachPlan();
+    initCustomTemplates();
     if ($('prompt').value.trim()) {
       syncFieldsFromPrompt();
       run();

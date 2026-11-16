@@ -407,6 +407,7 @@
 <script src="../js/core.js"></script>
 <script src="../js/journal-storage.js"></script>
 <script src="../js/live-workout.js"></script>
+<script src="../js/live-tempo-cue.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
 <script>
@@ -506,6 +507,7 @@ function buildSteps(workout) {
         reps: rung ? rung.reps : ex.reps || null,
         duration: rung ? rung.duration : hasDuration ? ex.duration_seconds : null,
         notes: ex.notes || null,
+        tempo: ex.tempo || workout.tempo || null,
         isLastSet: s === sets,
         isLastExercise: item.isLastInPhase,
         exNo: flatIdx + 1,
@@ -566,6 +568,33 @@ let completedStepIds = new Set();
 let setLog = [];
 let setsSavedOnce = false;
 let liveSession = null;
+let restAlertSoundEnabled = true;
+try {
+  if (typeof localStorage !== 'undefined') {
+    const savedSound = localStorage.getItem('trainerhub_rest_sound_preference');
+    if (savedSound !== null) {
+      restAlertSoundEnabled = JSON.parse(savedSound) === true;
+    }
+  }
+} catch (_err) {
+  restAlertSoundEnabled = true;
+}
+
+function updateTempoCue(elapsedMs) {
+  const banner = document.getElementById('tempoCueBanner');
+  if (!banner) return;
+  const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+  if (!currStep) {
+    banner.textContent = '';
+    return;
+  }
+  if (currStep.type === 'exercise') {
+    if (typeof getTempoCueForPhase === 'function') {
+      const cue = getTempoCueForPhase(currStep, elapsedMs || 0);
+      banner.textContent = cue || 'עלייה מבוקרת';
+    }
+  }
+}
 
 function renderLiveWorkoutControls() {
   const container = document.getElementById('liveWorkoutContainer');
@@ -594,6 +623,22 @@ function renderLiveWorkoutControls() {
   heading.style.fontWeight = '700';
   heading.textContent = 'תיעוד סט חי בזמן אמת';
   card.appendChild(heading);
+
+  const tempoBanner = document.createElement('div');
+  tempoBanner.id = 'tempoCueBanner';
+  tempoBanner.setAttribute('role', 'status');
+  tempoBanner.setAttribute('aria-live', 'polite');
+  tempoBanner.style.width = '100%';
+  tempoBanner.style.textAlign = 'center';
+  tempoBanner.style.padding = '6px 12px';
+  tempoBanner.style.borderRadius = '8px';
+  tempoBanner.style.background = '#0A1513';
+  tempoBanner.style.border = '1px solid #28423C';
+  tempoBanner.style.color = '#7FE9D9';
+  tempoBanner.style.fontSize = '0.85rem';
+  tempoBanner.style.fontWeight = '600';
+  tempoBanner.textContent = 'קצב ביצוע: מוכן';
+  card.appendChild(tempoBanner);
 
   const formRow = document.createElement('div');
   formRow.style.display = 'flex';
@@ -749,6 +794,25 @@ function renderLiveWorkoutControls() {
   finishBtn.setAttribute('aria-label', 'שמור אימון ליומן');
   finishBtn.addEventListener('click', handleLiveFinishAndSave);
   btnRow.appendChild(finishBtn);
+
+  // 7. restAlertToggleBtn
+  const restAlertBtn = document.createElement('button');
+  restAlertBtn.type = 'button';
+  restAlertBtn.id = 'restAlertToggleBtn';
+  restAlertBtn.className = 'ctrl-btn';
+  restAlertBtn.style.minHeight = '42px';
+  restAlertBtn.style.padding = '8px 16px';
+  restAlertBtn.style.borderRadius = '10px';
+  restAlertBtn.setAttribute('aria-label', 'מתג התראת סיום מנוחה');
+  restAlertBtn.textContent = restAlertSoundEnabled ? '🔔 התראת מנוחה: פעילה' : '🔕 התראת מנוחה: מושתקת';
+  restAlertBtn.addEventListener('click', () => {
+    restAlertSoundEnabled = !restAlertSoundEnabled;
+    restAlertBtn.textContent = restAlertSoundEnabled ? '🔔 התראת מנוחה: פעילה' : '🔕 התראת מנוחה: מושתקת';
+    if (typeof getRestCountdownAlert === 'function') {
+      getRestCountdownAlert(0, restAlertSoundEnabled);
+    }
+  });
+  btnRow.appendChild(restAlertBtn);
 
   card.appendChild(btnRow);
   container.appendChild(card);
@@ -1024,6 +1088,9 @@ function renderExercise(step) {
   if (compBtn) {
     compBtn.style.display = '';
   }
+  if (typeof updateTempoCue === 'function') {
+    updateTempoCue(0);
+  }
 
   // Start timer if duration
   clearCountdown();
@@ -1173,6 +1240,19 @@ function updateClockDisplay(val, max) {
     const frac = max > 0 ? Math.max(0, val) / max : 0;
     arcEl.style.strokeDashoffset = circ * (1 - frac);
   }
+
+  const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+  if (currStep && currStep.type === 'rest' && typeof getRestCountdownAlert === 'function') {
+    const alertInfo = getRestCountdownAlert(val, restAlertSoundEnabled);
+    const banner = document.getElementById('tempoCueBanner');
+    if (banner) {
+      if (alertInfo && alertInfo.alert) {
+        banner.textContent = alertInfo.text;
+      } else {
+        banner.textContent = `מנוחה: ${formatTime(Math.max(0, val))}`;
+      }
+    }
+  }
 }
 
 function startElapsedTimer() {
@@ -1180,6 +1260,12 @@ function startElapsedTimer() {
     elapsedSeconds++;
     document.getElementById('elapsedVal').textContent = formatTime(elapsedSeconds);
     document.getElementById('totalTimeLabel').textContent = '⏱ ' + formatTime(elapsedSeconds);
+    if (typeof updateTempoCue === 'function') {
+      const activeStep = typeof steps !== 'undefined' && steps[stepIdx];
+      if (activeStep && activeStep.type === 'exercise') {
+        updateTempoCue(elapsedSeconds * 1000);
+      }
+    }
   }, 1000);
 }
 
