@@ -7,10 +7,10 @@
  * «לא מצוין» is stored as «לא ממוין». Reels with no mapping stay unclassified.
  */
 (function (root, factory) {
-  var api = factory();
+  var api = factory(root);
   if (typeof module === 'object' && module.exports) module.exports = api;
-  root.THReels = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  if (root) root.THReels = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
   var ProfileFilter = null;
@@ -599,9 +599,20 @@
     };
   }
 
+  function globalObj() {
+    var g = root;
+    if (!g && typeof globalThis !== 'undefined') g = globalThis;
+    return g || null;
+  }
+
+  function globalLocalStorage() {
+    var g = globalObj();
+    if (!g) return null;
+    try { return g.localStorage || null; } catch (e) { return null; }
+  }
+
   function browserStore() {
-    var ls = null;
-    try { ls = globalThis.localStorage; } catch (e) { ls = null; }
+    var ls = globalLocalStorage();
     if (!ls) return memoryFallback();
     return {
       get: function (key, fallback) {
@@ -622,7 +633,8 @@
 
   function storeOf(store) {
     if (store && typeof store.get === 'function' && typeof store.set === 'function') return store;
-    if (globalThis.TH && globalThis.TH.store) return globalThis.TH.store;
+    var th = (globalObj() || {}).TH;
+    if (th && th.store) return th.store;
     return browserStore();
   }
 
@@ -802,7 +814,7 @@
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
     // js/core.js opens only players it was told about (load-on-click).
-    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
+    var core = (globalObj() || {}).TH || null;
     if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
