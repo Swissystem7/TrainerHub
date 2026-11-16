@@ -180,8 +180,7 @@ test('עמידות לשגיאות storage', () => {
   const readErrorStore = {
     getItem: () => {
       throw new Error('SecurityError: localStorage blocked');
-    },
-    setItem: () => {}
+    }
   };
   assert.deepEqual(listCustomTemplates(readErrorStore), []);
 
@@ -199,15 +198,13 @@ test('עמידות לשגיאות storage', () => {
 
   // JSON לא תקין ב-storage
   const corruptedStore = {
-    getItem: () => '{"invalid json syntax',
-    setItem: () => {}
+    getItem: () => '{"invalid json syntax'
   };
   assert.deepEqual(listCustomTemplates(corruptedStore), []);
 
   // מבנה JSON שאינו מערך (למשל אובייקט או מספר)
   const nonArrayStore = {
-    getItem: () => '{"key": "not an array"}',
-    setItem: () => {}
+    getItem: () => '{"key": "not an array"}'
   };
   assert.deepEqual(listCustomTemplates(nonArrayStore), []);
 
