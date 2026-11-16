@@ -261,6 +261,7 @@
 <script src="./js/ingest.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/plan-link-codec.js"></script>
+<script src="./js/live-tempo-cue.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
@@ -294,14 +295,34 @@
     });
   }
 
+  function applySelectedTempo(workoutObj) {
+    var tempoSelect = $('liveWorkoutTempoSelect');
+    var selectedTempo = tempoSelect ? tempoSelect.value : null;
+    if (selectedTempo && selectedTempo !== 'none') {
+      workoutObj.tempo = selectedTempo;
+      if (Array.isArray(workoutObj.phases)) {
+        workoutObj.phases.forEach((ph) => {
+          if (ph && Array.isArray(ph.exercises)) {
+            ph.exercises.forEach((ex) => {
+              if (ex && !ex.tempo) ex.tempo = selectedTempo;
+            });
+          }
+        });
+      }
+    }
+  }
+
   function bindWorkoutActions(w) {
     $('startBtn').addEventListener('click', () => {
+      applySelectedTempo(w);
       TH.store.set(TH.KEYS.active, w);
       location.href = './frontend/workout-mode.html';
     });
     var startLiveBtn = $('startLiveWorkoutBtn');
     if (startLiveBtn) {
       startLiveBtn.addEventListener('click', () => {
+        applySelectedTempo(w);
+        TH.store.set(TH.KEYS.active, w);
         TH.store.set('trainerhub_active_workout', w);
         location.href = './frontend/workout-mode.html';
       });
@@ -440,6 +461,15 @@
         phases +
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
+          '<label for="liveWorkoutTempoSelect" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem">' +
+            '<span>קצב מבוקר:</span>' +
+            '<select id="liveWorkoutTempoSelect" aria-label="בחירת קצב ביצוע לפני תחילת אימון חי" style="background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:6px;padding:4px 8px">' +
+              '<option value="none">רגיל (ללא קצב מבוקר)</option>' +
+              '<option value="3-1-1" selected>קצב מבוקר 3-1-1</option>' +
+              '<option value="3-1-2">קצב איטי ומבוקר 3-1-2</option>' +
+              '<option value="4-2-1">אקסצנטרי מודגש 4-2-1</option>' +
+            '</select>' +
+          '</label>' +
           '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
           '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
           '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
