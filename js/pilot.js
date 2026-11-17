@@ -188,16 +188,11 @@
   }
 
   var api = {
-    PILOT_KEY: PILOT_KEY,
-    FEEDBACK_KEY: FEEDBACK_KEY,
     MAX_FEEDBACK: MAX_FEEDBACK,
-    pilotFromSearch: pilotFromSearch,
-    pilotFromCode: pilotFromCode,
     current: current,
     isActive: isActive,
     prefersBooklet: prefersBooklet,
     builderOpts: builderOpts,
-    activate: activate,
     redeemCode: redeemCode,
     init: init,
     buildFeedback: buildFeedback,

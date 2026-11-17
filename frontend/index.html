@@ -242,6 +242,12 @@
     </div>
     <button type="button" class="parse-btn" id="parseBtn" aria-label="המר תיאור אימון לכרטיסייה">המר לכרטיסייה</button>
     <p class="honest">אין כאן בינה מלאכותית בדמו הציבורי. התוצאה היא פירוק טקסט + התאמה למאגר.</p>
+    <div style="margin-top:20px;padding-top:16px;border-top:1.5px solid var(--line);">
+      <h3 id="naturalPromptLabel" style="font-size:0.95rem;color:var(--teal-ink);margin-bottom:8px;font-weight:700;">בקשת אימון בשפה חופשית</h3>
+      <textarea id="naturalPromptInput" aria-labelledby="naturalPromptLabel" placeholder="כתבו בקשה חופשית, למשל: אימון חזה ורגליים ל-30 דקות עם משקולות ללא קפיצות" style="height:100px;"></textarea>
+      <div id="parsedPromptBadges" class="tags" role="region" aria-label="תגי הבנה מהטקסט" style="margin-top:8px;min-height:20px;"></div>
+      <button type="button" class="parse-btn" id="generateFromPromptBtn" aria-label="בנה אימון מבקשה חופשית" style="margin-top:10px;">בנה אימון מבקשה</button>
+    </div>
     <button type="button" class="parse-btn" id="netanyaBtn" aria-label="הוסף את חמשת אימוני הפתיחה של שלולית החורף נתניה למאגר השמור">הוסף את חמשת אימוני הפתיחה — שלולית החורף נתניה</button>
     <p class="honest">התאמות מוצעות למדריך. כולל חלופות לקרקע רטובה; תנאי השטח טעונים בדיקה. נשמר בדפדפן זה בלבד.</p>
     <div id="libraryStatus" role="status" aria-live="polite"></div>
@@ -267,6 +273,12 @@
   </section>
 </main>
 <script src="../js/core.js?v=netanya-3"></script>
+<script src="../js/infer.js"></script>
+<script src="../js/analyzer.js"></script>
+<script src="../js/prompt-parser.js"></script>
+<script src="../js/adaptation-engine.js"></script>
+<script src="../js/session-builder.js"></script>
+<script src="../js/natural-workout-flow.js"></script>
 <script src="parse-workout.js?v=netanya-2"></script>
 <script src="saved-workouts.js?v=netanya-2"></script>
 <script src="netanya-opening.js?v=netanya-2"></script>
@@ -350,6 +362,210 @@
     renderCard(w, usedFallback);
   }
 
+  function renderWorkoutDOM(w, explanation, personalization) {
+    var container = $('cardContent');
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    var printArea = document.createElement('div');
+    printArea.id = 'printArea';
+
+    var header = document.createElement('div');
+    header.className = 'card-header';
+
+    var title = document.createElement('div');
+    title.className = 'card-title';
+    title.textContent = w.title || 'אימון';
+    header.appendChild(title);
+
+    var meta = document.createElement('div');
+    meta.className = 'card-meta';
+
+    if (w.duration_minutes) {
+      var durBadge = document.createElement('span');
+      durBadge.className = 'badge';
+      durBadge.textContent = w.duration_minutes + ' דקות';
+      meta.appendChild(durBadge);
+    }
+    if (w.participants) {
+      var partBadge = document.createElement('span');
+      partBadge.className = 'badge';
+      partBadge.textContent = w.participants + ' משתתפים';
+      meta.appendChild(partBadge);
+    }
+    if (w.intensity) {
+      var intBadge = document.createElement('span');
+      var intensityClass = { high: 'intensity-high', medium: 'intensity-medium', low: 'intensity-low' }[w.intensity] || '';
+      var intensityLabel = { high: 'עצימות גבוהה', medium: 'עצימות בינונית', low: 'עצימות נמוכה' }[w.intensity] || w.intensity;
+      intBadge.className = 'badge ' + intensityClass;
+      intBadge.textContent = intensityLabel;
+      meta.appendChild(intBadge);
+    }
+    header.appendChild(meta);
+
+    if (Array.isArray(w.equipment) && w.equipment.length) {
+      var eqList = document.createElement('div');
+      eqList.className = 'equipment-list';
+      w.equipment.forEach(function (eq) {
+        var b = document.createElement('span');
+        b.className = 'badge';
+        b.textContent = eq;
+        eqList.appendChild(b);
+      });
+      header.appendChild(eqList);
+    }
+
+    if (Array.isArray(w.tags) && w.tags.length) {
+      var tagsDiv = document.createElement('div');
+      tagsDiv.className = 'tags';
+      w.tags.forEach(function (t) {
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = '#' + t;
+        tagsDiv.appendChild(tag);
+      });
+      header.appendChild(tagsDiv);
+    }
+    printArea.appendChild(header);
+
+    if (w.notes) {
+      var notesP = document.createElement('p');
+      notesP.className = 'honest';
+      notesP.textContent = w.notes;
+      printArea.appendChild(notesP);
+    }
+
+    if (w.guidanceNote) {
+      var guideP = document.createElement('p');
+      guideP.className = 'honest';
+      guideP.textContent = w.guidanceNote;
+      printArea.appendChild(guideP);
+    }
+
+    if (personalization && Array.isArray(personalization.appliedAdaptations) && personalization.appliedAdaptations.length) {
+      var persDiv = document.createElement('div');
+      persDiv.className = 'phase';
+      var persHead = document.createElement('div');
+      persHead.className = 'phase-header phase-warmup';
+      var persHeadSpan = document.createElement('span');
+      persHeadSpan.textContent = 'התאמה אישית והנמקת בחירות';
+      persHead.appendChild(persHeadSpan);
+      persDiv.appendChild(persHead);
+
+      personalization.appliedAdaptations.forEach(function (note) {
+        var noteRow = document.createElement('div');
+        noteRow.className = 'exercise';
+        var noteText = document.createElement('span');
+        noteText.textContent = note;
+        noteRow.appendChild(noteText);
+        persDiv.appendChild(noteRow);
+      });
+      printArea.appendChild(persDiv);
+    }
+
+    (w.phases || []).forEach(function (phase) {
+      var phaseDiv = document.createElement('div');
+      var phaseClass = { 'Warm-up': 'phase-warmup', 'Main': 'phase-main', 'Cool-down': 'phase-cooldown' }[phase.name] || 'phase-main';
+      var phaseLabel = { 'Warm-up': 'חימום', 'Main': 'עיקר', 'Cool-down': 'שחרור' }[phase.name] || phase.name;
+      phaseDiv.className = 'phase';
+
+      var phaseHeader = document.createElement('div');
+      phaseHeader.className = 'phase-header ' + phaseClass;
+
+      var nameSpan = document.createElement('span');
+      nameSpan.textContent = phaseLabel;
+      phaseHeader.appendChild(nameSpan);
+
+      if (phase.duration_minutes) {
+        var durSpan = document.createElement('span');
+        durSpan.textContent = phase.duration_minutes + ' דקות';
+        phaseHeader.appendChild(durSpan);
+      }
+      phaseDiv.appendChild(phaseHeader);
+
+      (phase.exercises || []).forEach(function (ex) {
+        var exRow = document.createElement('div');
+        exRow.className = 'exercise';
+
+        var leftDiv = document.createElement('div');
+        var nameDiv = document.createElement('div');
+        nameDiv.textContent = ex.name + (TH.hasClip && TH.hasClip(ex) ? ' · יש סרטון' : '');
+        leftDiv.appendChild(nameDiv);
+
+        if (ex.notes) {
+          var noteDiv = document.createElement('div');
+          noteDiv.className = 'history-meta';
+          noteDiv.textContent = ex.notes;
+          leftDiv.appendChild(noteDiv);
+        }
+        exRow.appendChild(leftDiv);
+
+        var detailsDiv = document.createElement('div');
+        detailsDiv.className = 'exercise-details';
+        var bits = exerciseDetailBits(ex);
+        detailsDiv.textContent = bits.join(' · ');
+        exRow.appendChild(detailsDiv);
+
+        phaseDiv.appendChild(exRow);
+      });
+
+      printArea.appendChild(phaseDiv);
+    });
+
+    if (explanation && Array.isArray(explanation.reasons) && explanation.reasons.length) {
+      var reasonDetails = document.createElement('details');
+      var reasonSummary = document.createElement('summary');
+      reasonSummary.textContent = 'הנמקת בחירת התרגילים';
+      reasonDetails.appendChild(reasonSummary);
+
+      var reasonList = document.createElement('div');
+      reasonList.style.padding = '8px 12px';
+      explanation.reasons.forEach(function (r) {
+        var p = document.createElement('p');
+        p.className = 'history-meta';
+        p.textContent = (r.he || r.id) + ': ' + (r.why || 'התאמה לשרירי המטרה');
+        reasonList.appendChild(p);
+      });
+      reasonDetails.appendChild(reasonList);
+      printArea.appendChild(reasonDetails);
+    }
+
+    container.appendChild(printArea);
+  }
+
+  function generateFromPrompt() {
+    var text = ($('naturalPromptInput') ? $('naturalPromptInput').value : '').trim();
+    var flow = window.THNaturalFlow || (typeof THNaturalFlow !== 'undefined' ? THNaturalFlow : null);
+    if (!flow || typeof flow.generateFromNaturalPrompt !== 'function') return;
+
+    var catalog = (window.TH && typeof TH.catalogList === 'function') ? TH.catalogList() : null;
+    var result = flow.generateFromNaturalPrompt(text, null, catalog);
+
+    var badgesContainer = $('parsedPromptBadges');
+    if (badgesContainer) {
+      while (badgesContainer.firstChild) {
+        badgesContainer.removeChild(badgesContainer.firstChild);
+      }
+      var tags = result.summary || flow.formatParsedSummary(result.parsed);
+      tags.forEach(function (tag) {
+        var span = document.createElement('span');
+        span.className = 'badge';
+        span.textContent = typeof tag === 'string' ? tag : (tag.label || tag.text || String(tag));
+        badgesContainer.appendChild(span);
+      });
+    }
+
+    if (result && result.workout) {
+      currentWorkout = result.workout;
+      currentWorkout.saved_id = 'workout-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      $('cardEmpty').hidden = true;
+      $('cardContent').hidden = false;
+      $('actionBar').hidden = false;
+      renderWorkoutDOM(result.workout, result.explanation, result.personalization);
+      $('libraryStatus').textContent = 'האימון נבנה משפה טבעית בהצלחה.';
+    }
+  }
+
   function parseWorkout() {
     var text = $('workoutInput').value.trim();
     if (!text) {
@@ -424,6 +640,9 @@
     });
   }
   $('parseBtn').addEventListener('click', parseWorkout);
+  if ($('generateFromPromptBtn')) {
+    $('generateFromPromptBtn').addEventListener('click', generateFromPrompt);
+  }
   $('startBtn').addEventListener('click', function () {
     if (!currentWorkout) return;
     TH.store.set(TH.KEYS.active, currentWorkout);

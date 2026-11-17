@@ -145,6 +145,74 @@
     .ex-media-wrap { width: min(340px, 90vw); }
     .ex-media-segment, .ex-media-fallback { color: #9ca3af; font-size: 0.8rem; margin-top: 6px; }
 
+    /* Live Media Panel */
+    #liveMediaPanel {
+      width: min(340px, 90vw);
+      background: #12211E;
+      border: 1px solid #28423C;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 8px auto;
+      text-align: right;
+    }
+    .live-media-poster-wrap {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .live-media-poster {
+      width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+      background: #000;
+    }
+    .live-media-action-wrap {
+      margin: 8px 0;
+      display: flex;
+      justify-content: center;
+    }
+    .live-media-video-btn {
+      background: #00756A;
+      color: #fff;
+      border: 1px solid #2DD4BF;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      width: 100%;
+      min-height: 40px;
+    }
+    .live-media-video-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .live-media-cues {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+    .live-media-cues-title {
+      color: #7FE9D9;
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+    .live-media-cues-list {
+      padding-inline-start: 16px;
+      margin: 0;
+    }
+    .live-media-cue-item {
+      margin-bottom: 3px;
+    }
+    .live-media-safety {
+      font-size: 0.78rem;
+      color: #f87171;
+      margin-top: 4px;
+    }
+
     /* ── Controls ── */
     .controls {
       flex-shrink: 0;
@@ -243,6 +311,7 @@
 </header>
 
 <!-- Progress bar -->
+<!-- biome-ignore lint/a11y/useSemanticElements: progress bar region -->
 <div class="progress-wrap" id="progressWrap" style="display:none" role="region" aria-label="התקדמות באימון">
   <div class="progress-info">
     <span id="progressLabel" aria-live="polite" aria-atomic="true">תרגיל 0 מתוך 0</span>
@@ -256,11 +325,13 @@
 <!-- Elapsed total time -->
 <div class="elapsed-bar" id="elapsedBar" style="display:none" role="status" aria-label="זמן כולל">
   <span class="elapsed-label" id="elapsedLabel">זמן אימון:</span>
+  <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: label association for screen readers -->
   <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
 </div>
 
 <!-- Stage (main exercise display) -->
 <main class="stage" id="stage">
+  <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה" style="display:none"></div>
   <div class="empty-state" id="emptyState" role="status" aria-live="polite">
     <div class="big" aria-hidden="true">🏋️</div>
     <p>לא נמצא אימון פעיל.<br>פתח לינק מתאמן, לינק לקליפ מהספרייה, או חזור למסך בניית האימון.</p>
@@ -292,17 +363,25 @@
     <span class="icon" id="ttsIcon" aria-hidden="true">🔊</span><span class="label" id="ttsLabel">קול</span>
   </button>
 </div>
+<!-- biome-ignore lint/a11y/useSemanticElements: dynamic swap panel -->
 <div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
+<!-- biome-ignore lint/a11y/useSemanticElements: live workout controls container -->
+<div id="liveWorkoutContainer" role="region" aria-label="תיעוד אימון חי" style="padding:0 24px 16px"></div>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
+<!-- biome-ignore lint/a11y/useSemanticElements: completion screen region -->
 <div id="completionScreen" role="region" aria-label="סיכום סיום אימון">
   <div class="confetti-row" aria-hidden="true">🎉🏆🎉</div>
   <div class="complete-title">כל הכבוד!</div>
   <div class="complete-subtitle">סיימת את האימון בהצלחה</div>
+  <!-- biome-ignore lint/a11y/useSemanticElements: completion stats group -->
   <div class="stats-grid" role="group" aria-label="נתוני אימון שהושלם">
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="זמן כולל"><div class="val" id="statTime">—</div><div class="lbl">זמן כולל</div></div>
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="תרגילים שהושלמו"><div class="val" id="statExercises">—</div><div class="lbl">תרגילים</div></div>
+    <!-- biome-ignore lint/a11y/useSemanticElements: stat card group -->
     <div class="stat-card" role="group" aria-label="סטים שהושלמו"><div class="val" id="statSets">—</div><div class="lbl">סטים</div></div>
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
@@ -311,9 +390,11 @@
     <p style="color:#7FE9D9;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
       <div style="font-size:0.78rem;color:#9ca3af;margin-bottom:6px">כמה קשה היה? (1 קל · 5 קשה)</div>
+      <!-- biome-ignore lint/a11y/useSemanticElements: rpe ratings group -->
       <div id="rpeRow" role="group" aria-label="דירוג קושי" style="display:flex;gap:6px;justify-content:center"></div>
     </div>
     <button class="done-btn" id="btnWaTrainer" type="button" style="width:100%;margin-top:0" aria-label="שלח סיכום למאמן בוואטסאפ">💬 שלח סיכום למאמן בוואטסאפ</button>
+    <!-- biome-ignore lint/a11y/useSemanticElements: per-exercise rpe group -->
     <div id="exRpeBox" role="group" aria-label="קושי לכל תרגיל"></div>
     <label for="resultCode" style="display:block;font-size:0.75rem;color:#9ca3af;margin:12px 0 4px">קוד לייבוא ביומן המאמן</label>
     <textarea id="resultCode" readonly dir="ltr" aria-label="קוד לייבוא ביומן המאמן" style="width:100%;min-height:72px;background:#0A1513;color:#7FE9D9;border:1px solid #28423C;border-radius:10px;padding:8px;font:0.75rem/1.4 ui-monospace,monospace"></textarea>
@@ -325,6 +406,10 @@
 
 <script src="../js/core.js"></script>
 <script src="../js/journal-storage.js"></script>
+<script src="../js/live-workout.js"></script>
+<script src="../js/live-tempo-cue.js"></script>
+<script src="../js/reel-library.js"></script>
+<script src="../js/live-media-panel.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -353,6 +438,13 @@ function loadWorkout() {
     if (fromHash && fromHash.workout && (fromHash.workout.phases || []).length) {
       linkMeta = { wa: fromHash.wa || '', name: fromHash.name || '', tid: fromHash.tid || '' };
       return fromHash.workout;
+    }
+  }
+  if (typeof location !== 'undefined') {
+    const params = new URLSearchParams(location.search);
+    const exId = params.get('exercise') || params.get('ex') || params.get('id');
+    if (exId && typeof TH !== 'undefined' && typeof TH.clipToWorkout === 'function') {
+      return TH.clipToWorkout({ id: exId });
     }
   }
   loadedFromActive = true;
@@ -415,6 +507,7 @@ function buildSteps(workout) {
         reps: rung ? rung.reps : ex.reps || null,
         duration: rung ? rung.duration : hasDuration ? ex.duration_seconds : null,
         notes: ex.notes || null,
+        tempo: ex.tempo || workout.tempo || null,
         isLastSet: s === sets,
         isLastExercise: item.isLastInPhase,
         exNo: flatIdx + 1,
@@ -474,6 +567,270 @@ let completedStepIds = new Set();
 // Per-set log: { exerciseId, reps, weightKg } — saved to the existing journal storage on finish.
 let setLog = [];
 let setsSavedOnce = false;
+let liveSession = null;
+let restAlertSoundEnabled = true;
+try {
+  if (typeof localStorage !== 'undefined') {
+    const savedSound = localStorage.getItem('trainerhub_rest_sound_preference');
+    if (savedSound !== null) {
+      restAlertSoundEnabled = JSON.parse(savedSound) === true;
+    }
+  }
+} catch (_err) {
+  restAlertSoundEnabled = true;
+}
+
+function updateTempoCue(elapsedMs) {
+  const banner = document.getElementById('tempoCueBanner');
+  if (!banner) return;
+  const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+  if (!currStep) {
+    banner.textContent = '';
+    return;
+  }
+  if (currStep.type === 'exercise') {
+    if (typeof getTempoCueForPhase === 'function') {
+      const cue = getTempoCueForPhase(currStep, elapsedMs || 0);
+      banner.textContent = cue || 'עלייה מבוקרת';
+    }
+  }
+}
+
+function renderLiveWorkoutControls() {
+  const container = document.getElementById('liveWorkoutContainer');
+  if (!container) return;
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
+  // Safe rendering with createElement and textContent ONLY
+  const card = document.createElement('div');
+  card.className = 'live-workout-card';
+  card.style.background = '#12211E';
+  card.style.border = '1px solid #28423C';
+  card.style.borderRadius = '14px';
+  card.style.padding = '14px 20px';
+  card.style.maxWidth = '520px';
+  card.style.margin = '10px auto';
+  card.style.display = 'flex';
+  card.style.flexDirection = 'column';
+  card.style.gap = '10px';
+  card.style.alignItems = 'center';
+
+  const heading = document.createElement('div');
+  heading.style.fontSize = '0.85rem';
+  heading.style.color = '#7FE9D9';
+  heading.style.fontWeight = '700';
+  heading.textContent = 'תיעוד סט חי בזמן אמת';
+  card.appendChild(heading);
+
+  const tempoBanner = document.createElement('div');
+  tempoBanner.id = 'tempoCueBanner';
+  tempoBanner.setAttribute('role', 'status');
+  tempoBanner.setAttribute('aria-live', 'polite');
+  tempoBanner.style.width = '100%';
+  tempoBanner.style.textAlign = 'center';
+  tempoBanner.style.padding = '6px 12px';
+  tempoBanner.style.borderRadius = '8px';
+  tempoBanner.style.background = '#0A1513';
+  tempoBanner.style.border = '1px solid #28423C';
+  tempoBanner.style.color = '#7FE9D9';
+  tempoBanner.style.fontSize = '0.85rem';
+  tempoBanner.style.fontWeight = '600';
+  tempoBanner.textContent = 'קצב ביצוע: מוכן';
+  card.appendChild(tempoBanner);
+
+  const formRow = document.createElement('div');
+  formRow.style.display = 'flex';
+  formRow.style.gap = '10px';
+  formRow.style.flexWrap = 'wrap';
+  formRow.style.justifyContent = 'center';
+  formRow.style.alignItems = 'flex-end';
+
+  // 1. actualRepsInput
+  const repsWrap = document.createElement('div');
+  const repsLbl = document.createElement('label');
+  repsLbl.htmlFor = 'actualRepsInput';
+  repsLbl.style.display = 'block';
+  repsLbl.style.fontSize = '0.78rem';
+  repsLbl.style.color = '#9ca3af';
+  repsLbl.style.marginBottom = '4px';
+  repsLbl.textContent = 'חזרות בפועל';
+  const repsInput = document.createElement('input');
+  repsInput.id = 'actualRepsInput';
+  repsInput.type = 'number';
+  repsInput.min = '0';
+  repsInput.step = '1';
+  repsInput.value = '10';
+  repsInput.setAttribute('aria-label', 'חזרות בפועל');
+  repsInput.style.width = '75px';
+  repsInput.style.textAlign = 'center';
+  repsInput.style.background = '#0A1513';
+  repsInput.style.color = '#E8F1EE';
+  repsInput.style.border = '1px solid #28423C';
+  repsInput.style.borderRadius = '8px';
+  repsInput.style.padding = '6px';
+  repsWrap.appendChild(repsLbl);
+  repsWrap.appendChild(repsInput);
+  formRow.appendChild(repsWrap);
+
+  // 2. weightKgInput
+  const weightWrap = document.createElement('div');
+  const weightLbl = document.createElement('label');
+  weightLbl.htmlFor = 'weightKgInput';
+  weightLbl.style.display = 'block';
+  weightLbl.style.fontSize = '0.78rem';
+  weightLbl.style.color = '#9ca3af';
+  weightLbl.style.marginBottom = '4px';
+  weightLbl.textContent = 'משקל (ק״ג)';
+  const weightInput = document.createElement('input');
+  weightInput.id = 'weightKgInput';
+  weightInput.type = 'number';
+  weightInput.min = '0';
+  weightInput.step = '0.5';
+  weightInput.value = '0';
+  weightInput.setAttribute('aria-label', 'משקל בק״ג');
+  weightInput.style.width = '75px';
+  weightInput.style.textAlign = 'center';
+  weightInput.style.background = '#0A1513';
+  weightInput.style.color = '#E8F1EE';
+  weightInput.style.border = '1px solid #28423C';
+  weightInput.style.borderRadius = '8px';
+  weightInput.style.padding = '6px';
+  weightWrap.appendChild(weightLbl);
+  weightWrap.appendChild(weightInput);
+  formRow.appendChild(weightWrap);
+
+  // 3. rirSelect
+  const rirWrap = document.createElement('div');
+  const rirLbl = document.createElement('label');
+  rirLbl.htmlFor = 'rirSelect';
+  rirLbl.style.display = 'block';
+  rirLbl.style.fontSize = '0.78rem';
+  rirLbl.style.color = '#9ca3af';
+  rirLbl.style.marginBottom = '4px';
+  rirLbl.textContent = 'חזרות ברזרבה RIR';
+  const rirSelect = document.createElement('select');
+  rirSelect.id = 'rirSelect';
+  rirSelect.setAttribute('aria-label', 'חזרות ברזרבה RIR');
+  rirSelect.style.background = '#0A1513';
+  rirSelect.style.color = '#E8F1EE';
+  rirSelect.style.border = '1px solid #28423C';
+  rirSelect.style.borderRadius = '8px';
+  rirSelect.style.padding = '6px';
+  const rirOpts = [
+    { val: '0', text: '0 (כשל)' },
+    { val: '1', text: '1' },
+    { val: '2', text: '2' },
+    { val: '3', text: '3' },
+    { val: '4', text: '4+' },
+  ];
+  rirOpts.forEach((item) => {
+    const opt = document.createElement('option');
+    opt.value = item.val;
+    opt.textContent = item.text;
+    if (item.val === '2') opt.selected = true;
+    rirSelect.appendChild(opt);
+  });
+  rirWrap.appendChild(rirLbl);
+  rirWrap.appendChild(rirSelect);
+  formRow.appendChild(rirWrap);
+
+  card.appendChild(formRow);
+
+  // 4. restTimerDisplay
+  const timerRow = document.createElement('div');
+  timerRow.style.display = 'flex';
+  timerRow.style.gap = '8px';
+  timerRow.style.alignItems = 'center';
+  timerRow.style.fontSize = '0.9rem';
+
+  const timerLbl = document.createElement('span');
+  timerLbl.style.color = '#9ca3af';
+  timerLbl.textContent = 'טיימר מנוחה: ';
+  timerRow.appendChild(timerLbl);
+
+  const timerVal = document.createElement('span');
+  timerVal.id = 'restTimerDisplay';
+  timerVal.setAttribute('role', 'timer');
+  timerVal.setAttribute('aria-live', 'polite');
+  timerVal.style.fontWeight = '700';
+  timerVal.style.color = '#FF8A45';
+  timerVal.textContent = '00:00';
+  timerRow.appendChild(timerVal);
+
+  card.appendChild(timerRow);
+
+  // Buttons row
+  const btnRow = document.createElement('div');
+  btnRow.style.display = 'flex';
+  btnRow.style.gap = '10px';
+  btnRow.style.flexWrap = 'wrap';
+  btnRow.style.justifyContent = 'center';
+  btnRow.style.marginTop = '4px';
+
+  // 5. completeSetBtn
+  const completeBtn = document.createElement('button');
+  completeBtn.type = 'button';
+  completeBtn.id = 'completeSetBtn';
+  completeBtn.className = 'ctrl-btn primary';
+  completeBtn.style.minHeight = '42px';
+  completeBtn.style.padding = '8px 16px';
+  completeBtn.style.borderRadius = '10px';
+  completeBtn.textContent = 'השלם סט';
+  completeBtn.setAttribute('aria-label', 'השלם סט ותעד');
+  completeBtn.addEventListener('click', handleLiveCompleteSet);
+  btnRow.appendChild(completeBtn);
+
+  // 6. finishAndSaveBtn
+  const finishBtn = document.createElement('button');
+  finishBtn.type = 'button';
+  finishBtn.id = 'finishAndSaveBtn';
+  finishBtn.className = 'ctrl-btn';
+  finishBtn.style.minHeight = '42px';
+  finishBtn.style.padding = '8px 16px';
+  finishBtn.style.borderRadius = '10px';
+  finishBtn.textContent = 'שמור אימון ליומן';
+  finishBtn.setAttribute('aria-label', 'שמור אימון ליומן');
+  finishBtn.addEventListener('click', handleLiveFinishAndSave);
+  btnRow.appendChild(finishBtn);
+
+  // 7. restAlertToggleBtn
+  const restAlertBtn = document.createElement('button');
+  restAlertBtn.type = 'button';
+  restAlertBtn.id = 'restAlertToggleBtn';
+  restAlertBtn.className = 'ctrl-btn';
+  restAlertBtn.style.minHeight = '42px';
+  restAlertBtn.style.padding = '8px 16px';
+  restAlertBtn.style.borderRadius = '10px';
+  restAlertBtn.setAttribute('aria-label', 'מתג התראת סיום מנוחה');
+  restAlertBtn.textContent = restAlertSoundEnabled ? '🔔 התראת מנוחה: פעילה' : '🔕 התראת מנוחה: מושתקת';
+  restAlertBtn.addEventListener('click', () => {
+    restAlertSoundEnabled = !restAlertSoundEnabled;
+    restAlertBtn.textContent = restAlertSoundEnabled ? '🔔 התראת מנוחה: פעילה' : '🔕 התראת מנוחה: מושתקת';
+    if (typeof getRestCountdownAlert === 'function') {
+      getRestCountdownAlert(0, restAlertSoundEnabled);
+    }
+  });
+  btnRow.appendChild(restAlertBtn);
+
+  card.appendChild(btnRow);
+  container.appendChild(card);
+}
+
+function handleLiveCompleteSet() {
+  markSetDone();
+}
+
+function handleLiveFinishAndSave() {
+  if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+    const ok = THLiveWorkout.saveLiveWorkoutToJournal(liveSession, typeof localStorage !== 'undefined' ? localStorage : null);
+    const btn = document.getElementById('finishAndSaveBtn');
+    if (btn) {
+      btn.textContent = ok ? 'נשמר ביומן!' : 'שגיאה בשמירה';
+    }
+  }
+}
 /* ═══════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════ */
@@ -487,6 +844,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   workout = loadWorkout();
   if (TH.workoutPrefs) updateTtsButton();
+  if (typeof THLiveWorkout !== 'undefined' && workout) {
+    liveSession = THLiveWorkout.createLiveSession(workout);
+  }
+  renderLiveWorkoutControls();
 
   if (!workout) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -676,18 +1037,29 @@ function renderExercise(step) {
 
   const notes = step.notes ? `<div class="ex-notes" role="note" aria-label="דגשי ביצוע">💡 ${esc(step.notes)}</div>` : '';
   const clip = TH.findExercise(step);
-  const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+  const videoHtml = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
 
   stage.innerHTML = `
     <div class="phase-label">${esc(step.phase)}</div>
     <div class="exercise-name">${esc(step.name)}</div>
     ${setInfo}
     <div class="ex-media-slot" id="exMediaSlot">${videoHtml}</div>
+    <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה"></div>
     ${repsOrTime}
     ${typeof setLogMarkup === 'function' ? setLogMarkup(step) : ''}
     ${notes}
   `;
   announceStatus(step.name + (step.totalSets > 1 ? (', סט ' + step.set + ' מתוך ' + step.totalSets) : ''));
+
+  const livePanel = document.getElementById('liveMediaPanel');
+  if (livePanel && typeof LiveMediaPanel !== 'undefined' && typeof LiveMediaPanel.renderMediaPanel === 'function') {
+    const catalogData = (typeof THReels !== 'undefined' && THReels.catalog) ||
+      (typeof TH !== 'undefined' && (typeof TH.catalogList === 'function' ? TH.catalogList() : TH.catalog)) || null;
+    const media = LiveMediaPanel.resolveExerciseMedia(step, catalogData);
+    if (media) {
+      LiveMediaPanel.renderMediaPanel(livePanel, media);
+    }
+  }
 
   // Update done button label
   const btnDone = document.getElementById('btnDone');
@@ -702,6 +1074,23 @@ function renderExercise(step) {
   }
   const btnSwapEx = document.getElementById('btnSwap');
   if (btnSwapEx) btnSwapEx.style.display = '';
+
+  const repsIn = document.getElementById('actualRepsInput');
+  if (repsIn && step) {
+    const r = typeof TH !== 'undefined' && TH.parseRepsNumber ? TH.parseRepsNumber(step.reps) : parseInt(step.reps, 10);
+    repsIn.value = r != null && !Number.isNaN(r) ? String(r) : (step.reps ? String(step.reps) : '10');
+  }
+  const timerDisp = document.getElementById('restTimerDisplay');
+  if (timerDisp) {
+    timerDisp.textContent = '00:00';
+  }
+  const compBtn = document.getElementById('completeSetBtn');
+  if (compBtn) {
+    compBtn.style.display = '';
+  }
+  if (typeof updateTempoCue === 'function') {
+    updateTempoCue(0);
+  }
 
   // Start timer if duration
   clearCountdown();
@@ -737,6 +1126,15 @@ function renderRest(step) {
   if (btnSwapRest) btnSwapRest.style.display = 'none';
   const swapPanelRest = document.getElementById('swapPanel');
   if (swapPanelRest) { swapPanelRest.hidden = true; swapPanelRest.innerHTML = ''; }
+
+  const timerDisp = document.getElementById('restTimerDisplay');
+  if (timerDisp && step) {
+    timerDisp.textContent = formatTime(step.duration);
+  }
+  const compBtn = document.getElementById('completeSetBtn');
+  if (compBtn) {
+    compBtn.style.display = 'none';
+  }
 
   if (typeof speakNext === 'function') speakNext(step);
   clearCountdown();
@@ -807,6 +1205,12 @@ function startCountdown(seconds, onDone, max) {
   countdownInterval = setInterval(() => {
     countdown--;
     updateClockDisplay(countdown, countdownMax);
+    if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+      const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+      if (currStep && currStep.type === 'rest') {
+        THLiveWorkout.tickTimer(liveSession, 1);
+      }
+    }
     if (countdown <= 0) {
       clearCountdown();
       onDone();
@@ -821,6 +1225,10 @@ function clearCountdown() {
 function updateClockDisplay(val, max) {
   const textEl = document.getElementById('clockText');
   const arcEl  = document.getElementById('clockArc');
+  const liveTimer = document.getElementById('restTimerDisplay');
+  if (liveTimer) {
+    liveTimer.textContent = formatTime(Math.max(0, val));
+  }
   if (!textEl) return;
 
   textEl.textContent = clockLabel(Math.max(0, val), max);
@@ -832,6 +1240,19 @@ function updateClockDisplay(val, max) {
     const frac = max > 0 ? Math.max(0, val) / max : 0;
     arcEl.style.strokeDashoffset = circ * (1 - frac);
   }
+
+  const currStep = typeof steps !== 'undefined' && steps[stepIdx];
+  if (currStep && currStep.type === 'rest' && typeof getRestCountdownAlert === 'function') {
+    const alertInfo = getRestCountdownAlert(val, restAlertSoundEnabled);
+    const banner = document.getElementById('tempoCueBanner');
+    if (banner) {
+      if (alertInfo && alertInfo.alert) {
+        banner.textContent = alertInfo.text;
+      } else {
+        banner.textContent = `מנוחה: ${formatTime(Math.max(0, val))}`;
+      }
+    }
+  }
 }
 
 function startElapsedTimer() {
@@ -839,6 +1260,12 @@ function startElapsedTimer() {
     elapsedSeconds++;
     document.getElementById('elapsedVal').textContent = formatTime(elapsedSeconds);
     document.getElementById('totalTimeLabel').textContent = '⏱ ' + formatTime(elapsedSeconds);
+    if (typeof updateTempoCue === 'function') {
+      const activeStep = typeof steps !== 'undefined' && steps[stepIdx];
+      if (activeStep && activeStep.type === 'exercise') {
+        updateTempoCue(elapsedSeconds * 1000);
+      }
+    }
   }, 1000);
 }
 
@@ -927,9 +1354,18 @@ function hasDoneSet(exercise) {
 
 function markSetDone() {
   // Called when user taps "סיימתי" or duration expires
-  const step = steps[stepIdx];
+  const step = typeof steps !== 'undefined' && steps[stepIdx];
   if (step && step.type === 'exercise' && !completedStepIds.has(stepIdx)) {
     if (typeof recordSet === 'function') recordSet(step);
+    if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+      const repsIn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('actualRepsInput') : null;
+      const weightIn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('weightKgInput') : null;
+      const rirSel = typeof document !== 'undefined' && document.getElementById ? document.getElementById('rirSelect') : null;
+      const actualReps = repsIn ? (Number(repsIn.value) || 0) : (Number(step.reps) || 0);
+      const weightKg = weightIn ? (Number(weightIn.value) || 0) : 0;
+      const rir = rirSel ? (Number(rirSel.value) || 0) : 0;
+      THLiveWorkout.logSetAndAdvance(liveSession, { actualReps, weightKg, rir });
+    }
     // An exercise counts once any of its sets is done: 2 of 3 sets with the
     // last one skipped is still an exercise the trainee did.
     if (!hasDoneSet(step.exercise)) completedExercises++;
@@ -1109,6 +1545,14 @@ function finishWorkout() {
   document.getElementById('statExercises').textContent = completedExercises;
   document.getElementById('statSets').textContent = completedSets;
 
+  if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
+    THLiveWorkout.saveLiveWorkoutToJournal(liveSession, typeof localStorage !== 'undefined' ? localStorage : null);
+    const saveBtn = typeof document !== 'undefined' && document.getElementById ? document.getElementById('finishAndSaveBtn') : null;
+    if (saveBtn) {
+      saveBtn.textContent = 'נשמר ביומן!';
+    }
+  }
+
   document.getElementById('completionScreen').classList.add('active');
 
   let reportRpe = null;
@@ -1227,9 +1671,19 @@ function refreshStepMedia() {
   const step = steps[stepIdx];
   if (!step || step.type !== 'exercise') return;
   const slot = document.getElementById('exMediaSlot');
-  if (!slot) return;
-  const clip = TH.findExercise(step);
-  slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+  if (slot) {
+    const clip = TH.findExercise(step);
+    slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
+  }
+  const livePanel = document.getElementById('liveMediaPanel');
+  if (livePanel && typeof LiveMediaPanel !== 'undefined' && typeof LiveMediaPanel.renderMediaPanel === 'function') {
+    const catalogData = (typeof THReels !== 'undefined' && THReels.catalog) ||
+      (typeof TH !== 'undefined' && (typeof TH.catalogList === 'function' ? TH.catalogList() : TH.catalog)) || null;
+    const media = LiveMediaPanel.resolveExerciseMedia(step, catalogData);
+    if (media) {
+      LiveMediaPanel.renderMediaPanel(livePanel, media);
+    }
+  }
 }
 window.addEventListener('offline', refreshStepMedia);
 window.addEventListener('online', refreshStepMedia);

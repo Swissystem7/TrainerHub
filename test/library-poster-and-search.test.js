@@ -23,13 +23,23 @@ test('a hosted file never gets a Drive poster from driveId or legacyDriveId', fu
   assert.ok(withFile.length >= 40, 'expected the mirrored Drive rows');
   withFile.forEach(function (item) {
     assert.ok(item.driveId || item.legacyDriveId, item.id + ' still keeps its Drive id');
-    assert.equal(TH.posterUrl(item), '', item.id);
-    assert.equal(THReels.posterUrl(item), '', item.id);
+    // A local illustration (assets/posters/...) is allowed; Drive thumbnails from
+    // driveId / legacyDriveId are not. Hosted-file mirrors without an illustration
+    // still have an empty poster URL.
+    const localPoster = (item.poster && item.poster.indexOf('..') === -1 && !/^([a-z]+:|\/)/i.test(String(item.poster).trim()))
+      ? String(item.poster).trim() : '';
+    assert.equal(TH.posterUrl(item), localPoster, item.id);
+    assert.equal(THReels.posterUrl(item), localPoster, item.id);
+    assert.doesNotMatch(TH.posterUrl(item) || '', /drive\.google\.com/, item.id);
     const html = TH.mediaMarkup(item, { className: 'ex-media' });
-    assert.doesNotMatch(html, /drive\.google\.com\/thumbnail/);
+    // The play button may show the live copy's thumbnail (drivePlayId), never a stale id's.
+    (html.match(/drive\.google\.com\/thumbnail\?id=([A-Za-z0-9_-]+)/g) || []).forEach(function (u) {
+      assert.equal(u, 'drive.google.com/thumbnail?id=' + item.drivePlayId, item.id);
+    });
     assert.doesNotMatch(html, /\sposter=/);
-    if (item.driveId) assert.equal(html.includes(item.driveId), false, item.id);
-    if (item.legacyDriveId) assert.equal(html.includes(item.legacyDriveId), false, item.id);
+    // Only the verified live copy (drivePlayId) may appear; a stale driveId never does.
+    if (item.driveId && item.driveId !== item.drivePlayId) assert.equal(html.includes(item.driveId), false, item.id);
+    if (item.legacyDriveId && item.legacyDriveId !== item.drivePlayId) assert.equal(html.includes(item.legacyDriveId), false, item.id);
   });
   // The ids stay in the catalog file.
   assert.match(fs.readFileSync(path.join(root, 'videos', 'drive-catalog.json'), 'utf8'), /legacyDriveId/);

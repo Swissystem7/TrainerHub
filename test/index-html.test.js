@@ -83,6 +83,7 @@ test("index.html scripts exist on disk and core.js is loaded before dependent sc
 		"./js/infer.js",
 		"./js/analyzer.js",
 		"./js/prompt-parser.js",
+		"./js/adaptation-engine.js",
 		"./js/session-builder.js",
 		"./js/rules-with-sources.js",
 		"./js/ingest.js",
@@ -177,4 +178,68 @@ test("index.html links to reserves.html for miluim fitness track", () => {
 	);
 	assert.ok(html.includes('href="reserves.html"'));
 	assert.ok(html.includes("מסלול כושר למילואים"));
+});
+
+test("index.html contains goalSelect selector with required Hebrew options and accessible label", () => {
+	assert.match(
+		html,
+		/<select\b[^>]*\bid=["']goalSelect["'][^>]*>/i,
+		"index.html must include select with id='goalSelect'",
+	);
+	assert.match(
+		html,
+		/<label\b[^>]*\bfor=["']goalSelect["'][^>]*>/i,
+		"index.html must include a label targeting goalSelect",
+	);
+
+	const selectMatch = html.match(
+		/<select\b[^>]*\bid=["']goalSelect["'][^>]*>([\s\S]*?)<\/select>/i,
+	);
+	assert.ok(selectMatch, "goalSelect element must exist");
+	const options = selectMatch[1];
+	assert.ok(
+		options.includes("בניית שריר"),
+		"goalSelect must include option 'בניית שריר'",
+	);
+	assert.ok(
+		options.includes("שימור שריר בירידה בשומן"),
+		"goalSelect must include option 'שימור שריר בירידה בשומן'",
+	);
+	assert.ok(
+		options.includes("כוח ותפקוד"),
+		"goalSelect must include option 'כוח ותפקוד'",
+	);
+});
+
+test("index.html defines dynamic rendering of adaptation card and weekly volume budget without innerHTML", () => {
+	assert.ok(
+		html.includes("renderAdaptationCard"),
+		"index.html must define renderAdaptationCard",
+	);
+	assert.ok(
+		html.includes("התאמה להרכב הגוף וליכולת שלך"),
+		"index.html must render card heading for adaptation card",
+	);
+	assert.ok(
+		html.includes("אומדן נפח שבועי מול עוגן 10 סטים"),
+		"index.html must render weekly volume budget estimation",
+	);
+
+	const fnMatch = html.match(
+		/function\s+renderAdaptationCard\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}\n\s*function/,
+	);
+	assert.ok(fnMatch, "renderAdaptationCard body must be extractable");
+	const fnBody = fnMatch[1];
+	assert.ok(
+		!fnBody.includes("innerHTML"),
+		"renderAdaptationCard must not use innerHTML for rendering",
+	);
+	assert.ok(
+		fnBody.includes("createElement"),
+		"renderAdaptationCard must use createElement",
+	);
+	assert.ok(
+		fnBody.includes("textContent"),
+		"renderAdaptationCard must use textContent",
+	);
 });

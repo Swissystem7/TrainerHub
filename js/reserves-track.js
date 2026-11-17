@@ -625,10 +625,8 @@
 		evaluateTest: evaluateTest,
 		evaluateAll: evaluateAll,
 		loadResults: loadResults,
-		saveResults: saveResults,
 		clearResults: clearResults,
 		logResult: logResult,
-		currentRawMap: currentRawMap,
 		currentSummary: currentSummary,
 		overallLabelHe: overallLabelHe,
 		feedbackOptions: feedbackOptions,
@@ -638,7 +636,6 @@
 		scaleLoad: scaleLoad,
 		strengthPlans: strengthPlans,
 		strengthPlanById: strengthPlanById,
-		findPlanSession: findPlanSession,
 	};
 
 	root.THReserves = api;

@@ -4,6 +4,7 @@
 
 - ראשי: [`js/catalog.json`](../js/catalog.json) — `{id, he, muscles, equipment, level, file, source:"onedrive", available}`. שבע רשומות בלי קובץ מאוחסן נושאות `youtubeId` ומנגנות כהטמעה.
 - רשימת ייבוא היסטורית: [`drive-catalog.json`](./drive-catalog.json) — שומרת גם את מזהי Google Drive הישנים לצורכי עקיבות, אך הנגן משתמש בקובץ המאומת מ־OneDrive דרך כתובת ה־release.
+  רילסים מאינסטגרם שהועלו לתיקיות «כושר» בדרייב נרשמים בה עם `source:"drive"`, `driveId` ו־`sourceUrl`, בלי `file`: הכרטיס מנגן את העותק החי דרך נגן הדרייב, ולכן אין להם נכס ב־GitHub Releases. כל רילס כזה רשום גם ב־`data/drive_videos.json`.
 - הטמעות יוטיוב לקבוצות דלות: [`youtube-catalog.json`](./youtube-catalog.json) — `youtubeId` בלבד, בלי הורדה ובלי העלאה מחדש.
 
 רשומה עם `available:false` נשארת גלויה כתרגיל טקסטואלי, אך אינה נבחרת אוטומטית לאימון ואינה יוצרת נגן שבור.
@@ -32,3 +33,22 @@
 - שמות מספריים בלבד (`1.mp4`, `2.mp4`) — אין שם תרגיל.
 
 המזהים `plank`, `mountain_climber`, `crunches`, `step_up`, `bodyweight_row`, `superman` (ו־`warmup`) תואמים למנוע התוכנית כשיש קליפ עם אותו שם עברי / שם נרדף מקובל. תרגיל בלי קליפ רץ כרגיל בלי וידאו.
+
+## Hosted MP4 copies (Swissystem7/TrainerHub-media)
+
+Drive stays the source of truth, but Drive's preview player starts slowly and
+stalls on mobile data. Each Drive clip the app plays also has a compressed copy
+(H.264/AAC, short side 360 px, `+faststart`) in the public repo
+`Swissystem7/TrainerHub-media`, named `<folder>/<Drive id>.mp4`.
+`videos/media-manifest.json` maps each Drive id to its copy and lists the hosts in
+order: the media repo's GitHub Pages first, then jsDelivr pinned to a tag. The
+player (`js/core.js`) plays the copy in a native `<video>` on the first tap, tries the
+next host if one fails, and falls back to the Drive player if all of them fail.
+
+After adding new Drive clips to the catalogs, run:
+
+    git clone https://github.com/Swissystem7/TrainerHub-media ../TrainerHub-media
+    python3 scripts/media_sync.py ../TrainerHub-media
+
+This transcodes the missing clips, pushes and tags the media repo, and updates
+`videos/media-manifest.json`. Commit that file in the same PR as the new clips.

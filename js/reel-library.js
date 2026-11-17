@@ -7,12 +7,17 @@
  * «לא מצוין» is stored as «לא ממוין». Reels with no mapping stay unclassified.
  */
 (function (root, factory) {
-  var api = factory();
+  var api = factory(root);
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.THReels = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
+  var ProfileFilter = null;
+  if (typeof module === 'object' && module.exports) {
+    try { ProfileFilter = require('./library-profile-filter.js'); } catch (e) { ProfileFilter = null; }
+  }
+  if (!ProfileFilter && typeof globalThis !== 'undefined') ProfileFilter = globalThis.THLibraryProfileFilter || null;
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
@@ -594,9 +599,20 @@
     };
   }
 
+  function globalObj() {
+    var g = root;
+    if (!g && typeof globalThis !== 'undefined') g = globalThis;
+    return g || null;
+  }
+
+  function globalLocalStorage() {
+    var g = globalObj();
+    if (!g) return null;
+    try { return g.localStorage || null; } catch (e) { return null; }
+  }
+
   function browserStore() {
-    var ls = null;
-    try { ls = globalThis.localStorage; } catch (e) { ls = null; }
+    var ls = globalLocalStorage();
     if (!ls) return memoryFallback();
     return {
       get: function (key, fallback) {
@@ -617,7 +633,8 @@
 
   function storeOf(store) {
     if (store && typeof store.get === 'function' && typeof store.set === 'function') return store;
-    if (globalThis.TH && globalThis.TH.store) return globalThis.TH.store;
+    var th = (globalObj() || {}).TH;
+    if (th && th.store) return th.store;
     return browserStore();
   }
 
@@ -672,6 +689,10 @@
 
   function drivePreviewUrl(fileId) {
     return 'https://drive.google.com/file/d/' + fileId + '/preview';
+  }
+
+  function driveThumbUrl(fileId) {
+    return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(fileId || '') + '&sz=w480';
   }
 
   function driveViewUrl(fileId) {
@@ -772,11 +793,18 @@
         source_url: driveViewUrl(fileId),
         preview_url: drivePreviewUrl(fileId),
         creator: '',
-        poster: '',
+        poster: drivePosterPath(row.poster),
         verified: false
       });
     });
     return out;
+  }
+
+  // A row's own illustration (assets/posters/...) replaces the Drive thumbnail.
+  function drivePosterPath(value) {
+    var p = typeof value === 'string' ? value.trim() : '';
+    if (!p || p.indexOf('..') !== -1 || /^([a-z]+:|\/)/i.test(p)) return '';
+    return p;
   }
 
   function driveCardHtml(ex, esc) {
@@ -785,10 +813,19 @@
     var view = ex.source_url || driveViewUrl(ex.file_id);
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
+    // js/core.js opens only players it was told about (load-on-click).
+    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
+    if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       '<div class="poster-frame tone-' + toneName(muscle) + '">' +
-        '<iframe class="drive-frame" title="' + esc(displayName(ex)) + '" src="' + esc(preview) + '" loading="lazy" allow="fullscreen" allowfullscreen></iframe>' +
+        // Load-on-click: the Drive thumbnail with a play button; js/core.js swaps
+        // in the preview iframe on click, so 179 Drive players do not load at once.
+        '<button type="button" class="drive-frame drive-frame-facade" data-th-frame="' + esc(preview) + '"' +
+          ' data-th-frame-allow="autoplay; fullscreen" data-th-frame-title="' + esc(displayName(ex)) + '"' +
+          ' aria-label="' + esc('הפעלת סרטון: ' + displayName(ex)) + '">' +
+          '<img class="th-facade-thumb is-cover" src="' + esc(drivePosterPath(ex.poster) || driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
+          '<span class="ex-media-play" aria-hidden="true"></span></button>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +
       '</div>' +
@@ -847,16 +884,24 @@
     '</article>';
   }
 
+  function createProfileMatchBadge(doc) {
+    var d = doc || (typeof document !== 'undefined' ? document : null);
+    if (!d || typeof d.createElement !== 'function') return null;
+    var badge = d.createElement('span');
+    badge.className = 'pill ok profile-match';
+    badge.textContent = 'מתאים לפרופיל שלך';
+    return badge;
+  }
+
   return {
-    STORAGE_WORKOUTS: STORAGE_WORKOUTS,
-    STORAGE_DRAFT: STORAGE_DRAFT,
     MUSCLE_GROUPS: MUSCLE_GROUPS,
-    UNKNOWN_MUSCLE: UNKNOWN_MUSCLE,
-    UNKNOWN_SETS: UNKNOWN_SETS,
-    UNCLASSIFIED_NAME: UNCLASSIFIED_NAME,
-    REQUIRED_KEYS: REQUIRED_KEYS,
     validateLibrary: validateLibrary,
     filterExercises: filterExercises,
+    filterExercisesForProfile: function (list, profile) {
+      var mod = ProfileFilter || (typeof globalThis !== 'undefined' ? globalThis.THLibraryProfileFilter : null);
+      return mod && typeof mod.filterExercisesForProfile === 'function' ? mod.filterExercisesForProfile(list, profile) : (list || []).slice();
+    },
+    createProfileMatchBadge: createProfileMatchBadge,
     displayName: displayName,
     emptyDraft: emptyDraft,
     addToDraft: addToDraft,
@@ -874,16 +919,11 @@
     saveDraft: saveDraft,
     clearDraft: clearDraft,
     exerciseCardHtml: exerciseCardHtml,
-    toneName: toneName,
     muscleIcon: muscleIcon,
     posterUrl: posterUrl,
     posterSources: posterSources,
     posterFrameHtml: posterFrameHtml,
-    DRIVE_FOLDER_GROUPS: DRIVE_FOLDER_GROUPS,
-    DRIVE_SKIP_FOLDERS: DRIVE_SKIP_FOLDERS,
-    DRIVE_KEYS: DRIVE_KEYS,
     drivePreviewUrl: drivePreviewUrl,
-    driveViewUrl: driveViewUrl,
     driveMuscleGroup: driveMuscleGroup,
     validateDriveVideos: validateDriveVideos,
     driveVideosToExercises: driveVideosToExercises,

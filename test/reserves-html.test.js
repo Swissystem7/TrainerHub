@@ -153,3 +153,76 @@ test("reserves.html autosaves metric inputs under trainerhub_reserves_inputs", (
 	assert.ok(html.includes("restoreReservesInputs"));
 	assert.ok(html.includes("localStorage"));
 });
+
+test("reserves.html contains accessible section for reserves safety guidance with region role", () => {
+	const sectionMatch = html.match(
+		/<section\b([^>]*\bid=["']reserves-safety-guidance["'][^>]*)>/i,
+	);
+	assert.ok(
+		sectionMatch,
+		"reserves.html must contain a <section> with id='reserves-safety-guidance'",
+	);
+	const attrs = sectionMatch[1];
+	assert.match(attrs, /\bclass=["'][^"']*\bcard\b[^"']*["']/);
+	assert.match(attrs, /\brole=["']region["']/);
+	assert.match(attrs, /\baria-labelledby=["']reservesSafetyHeading["']/);
+
+	const mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
+	assert.ok(mainMatch, "<main> element must exist");
+	assert.ok(
+		mainMatch[1].includes('id="reserves-safety-guidance"'),
+		"reserves-safety-guidance must be inside main content area",
+	);
+
+	assert.match(
+		html,
+		/<h2\b[^>]*\bid=["']reservesSafetyHeading["'][^>]*>/,
+		"element with id='reservesSafetyHeading' must exist as h2",
+	);
+});
+
+test("reserves.html safety guidance includes heading and guidance on gradual progression and sleep deficit", () => {
+	const sectionMatch = html.match(
+		/<section\b[^>]*\bid=["']reserves-safety-guidance["'][^>]*>([\s\S]*?)<\/section>/i,
+	);
+	assert.ok(sectionMatch, "reserves-safety-guidance section must exist");
+	const sectionContent = sectionMatch[1];
+
+	const headingMatch = sectionContent.match(
+		/<h2\b[^>]*\bid=["']reservesSafetyHeading["'][^>]*>([\s\S]*?)<\/h2>/i,
+	);
+	assert.ok(
+		headingMatch,
+		"section must have an h2 with id='reservesSafetyHeading'",
+	);
+	assert.match(
+		headingMatch[1],
+		/דגשי בטיחות והתקדמות במילואים/,
+		"heading must contain 'דגשי בטיחות והתקדמות במילואים'",
+	);
+
+	assert.match(
+		sectionContent,
+		/תוכנית האימונים מיועדת לבניית כושר ויכולת בהדרגה בהתאם לביצועים בפועל/,
+		"section must state that training is intended for gradual progression based on performance",
+	);
+	assert.match(
+		sectionContent,
+		/בעומס מילואים או חוסר שינה יש להתאים את הקצב ולא להעמיס בכוח/,
+		"section must advise adjusting pace under reserve duty load or lack of sleep",
+	);
+});
+
+test("reserves.html safety guidance includes instructions to stop and consult a professional on pain or injury", () => {
+	const sectionMatch = html.match(
+		/<section\b[^>]*\bid=["']reserves-safety-guidance["'][^>]*>([\s\S]*?)<\/section>/i,
+	);
+	assert.ok(sectionMatch, "reserves-safety-guidance section must exist");
+	const sectionContent = sectionMatch[1];
+
+	assert.match(
+		sectionContent,
+		/במקרה של כאב חדש או פציעה יש לעצור ולהתייעץ עם איש מקצוע או גורם רפואי/,
+		"section must instruct stopping and consulting a professional in case of new pain or injury",
+	);
+});

@@ -228,6 +228,48 @@
 		cones: "קונוסים",
 	};
 	var NAME_ALIASES = {
+		// Site-scan (js/site-plan.js) drills are emitted by name. Each maps to the
+		// catalog clip of the same movement so workout mode shows a video.
+		"סקווט": "bodyweight_squat",
+		"סקוטים": "bodyweight_squat",
+		"סקווט בזוגות": "bodyweight_squat",
+		"סקווט ללא אמצעי": "bodyweight_squat",
+		"סקווט קפיצה": "jump_squat",
+		"לאנג׳": "lunges",
+		"לאנג׳ים": "lunges",
+		"לאנג׳ בזוגות": "lunges",
+		"לאנג׳ הליכה": "yt_walking_lunge",
+		"מאונטיין קליימבר": "mountain_climber",
+		"מאונטיין קליימבר בזוגות": "mountain_climber",
+		"תרגיל \"מטפס\"": "mountain_climber",
+		"ג׳אמפינג ג׳ק": "yt_jumping_jacks",
+		"ברכיים לחזה": "tuck_jump",
+		"עליות בטן": "crunches",
+		"עליות בטן בזוגות": "בטן_זוגות",
+		"פלאנק בזוגות": "plank",
+		"ברפי בזוגות": "yt_burpee",
+		"ישיבה על הקיר": "wall_sit",
+		"שכיבות סמיכה בשעינה על קיר": "wall_push_up",
+		"עליות מדרגות בריצה קלה": "step_up",
+		"ריצה קלה במדרגות": "step_up",
+		"ריצה בהרמת בירכיים.": "yt_high_knees",
+		"ריצה לפנים תוך סיבובי ידיים לפנים.": "yt_arm_circles",
+		"ריצה לאחור תוך סיבובי ידיים לאחור.": "yt_arm_circles",
+		"תאומים – שריר שוק אחוריים": "yt_calf_stretch",
+		"מתיחת תאומים על מדרגה": "yt_calf_stretch",
+		"תלייה למתיחת גב": "dead_hang",
+		"מתיחת כתף בתלייה": "dead_hang",
+		// Instagram reels hosted on Drive (videos/drive-catalog.json), checked frame by frame.
+		"ריצות עלייה בשיפוע": "drive_ספרינט_בעלייה",
+		"שכיבת פרקדן ומשיכת צוואר לחזה.": "drive_מתיחת_צוואר_-_משיכת_סנטר_לחזה",
+		"מתיחת חזה בפתח": "drive_מתיחת_חזה_בפתח_דלת",
+		"מתיחת ירך על מדרגה": "drive_שחרור_כופפי_ירך_בעמידה_על_מדרגה",
+		"כפיפת מרפקים בזוגות": "drive_כפיפת_מרפקים_בזוגות",
+		"חלק א' – מרוץ שליחים": "drive_מרוץ_שליחים_קבוצתי_עם_קונוסים",
+		"תופסת": "drive_תופסת_קבוצתית_-_חציית_המגרש",
+		"שכיבות סמיכה בזוגות": "push_up",
+		"ריצה עם דלגית": "yt_jump_rope",
+		"שכיבות סמיכה לאחור על ספסל (דיפס)": "bench_dips",
 		"מאונטיין קליימר": "mountain_climber",
 		"mountain climber": "mountain_climber",
 		פלאנק: "plank",
@@ -236,24 +278,72 @@
 		בטן: "crunches",
 		"מתח אוסטרלי": "bodyweight_row",
 		חימום: "warmup",
+		"חימום ארוך": "warmup",
+		"חימום קל": "warmup",
 		מדרגות: "step_up",
 		סופרמן: "superman",
 		"גב תחתון": "superman",
 		"מטפס הרים": "mountain_climber",
-		"שכיבות סמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבות שמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבת שמיכה": "אתגר_שכיבות_שמיכה",
-		"שכיבת סמיכה": "אתגר_שכיבות_שמיכה",
-		שכיבות: "אתגר_שכיבות_שמיכה",
+		"שכיבות סמיכה": "push_up",
+		"שכיבות שמיכה": "push_up",
+		"שכיבת שמיכה": "push_up",
+		"שכיבת סמיכה": "push_up",
+		שכיבות: "push_up",
 		פלנק: "plank",
 		plank: "plank",
 		"סייד פלאנק": "פלאנק_צידי",
 		"פלאנק צד": "פלאנק_צידי",
-		"פוש אפ": "אתגר_שכיבות_שמיכה",
-		פושאפ: "אתגר_שכיבות_שמיכה",
-		"push up": "אתגר_שכיבות_שמיכה",
-		pushups: "אתגר_שכיבות_שמיכה",
-		"push ups": "אתגר_שכיבות_שמיכה",
+		"פוש אפ": "push_up",
+		פושאפ: "push_up",
+		"push up": "push_up",
+		pushups: "push_up",
+		"push ups": "push_up",
+		סקוואט: "squat",
+		דדליפט: "deadlift",
+		חתירה: "barbell_row",
+		"כפיפת מרפק": "bicep_curl",
+		"פשיטת מרפק": "yt_tricep_pushdown",
+		"הרמת רגליים": "leg_raise",
+		"אדמה בוערת": "fast_feet",
+		"שכיבות סמיכה בהתקדמות": "walking_push_up",
+		"ניתורים במקום עם ברכיים לחזה": "tuck_jump",
+		"הליכה על הידיים": "hand_walk_out",
+		"ניתור לאדמה וגלגול": "sprawl",
+		"ניתור לאדמה": "sprawl",
+		גלגול: "sprawl",
+		"זריקות כדור כוח מעל הראש": "med_ball_overhead_throw",
+		"זריקות כדור כוח": "med_ball_overhead_throw",
+		"מסירות כדור כוח": "med_ball_overhead_throw",
+		"צעדי איילה": "agility_5_10_5",
+		"תנועה הצידה": "agility_5_10_5",
+		"תנועה לפנים": "agility_5_10_5",
+		"תנועה לאחור": "agility_5_10_5",
+		"תנועה הצידה ונגיעה": "agility_5_10_5",
+		נגיעה: "agility_5_10_5",
+		"פרפר הפוך משקל גוף": "bodyweight_reverse_fly",
+		"australian pull-up": "bodyweight_row",
+		"australian pull up": "bodyweight_row",
+		"australian pullup": "bodyweight_row",
+		"לאנצ'ים": "lunges",
+		"לאנץ'ים": "lunges",
+		"לאנג' במקום": "lunges",
+		"לאנג׳ במקום": "lunges",
+		"לאנצ'ים בהתקדמות": "yt_walking_lunge",
+		"תרגיל יד אחורית": "yt_diamond_pushup",
+		"ריצה מהירה": "yt_high_knees",
+		"פיק-אפים": "yt_pull_up",
+		"פיק־אפים": "yt_pull_up",
+		"עליות מתח": "yt_pull_up",
+		"תלייה פסיבית": "dead_hang",
+		תלייה: "dead_hang",
+		"ריצה קלה": "run_3000",
+		"ריצה רצופה": "run_3000",
+		אינטרוולים: "run_3000",
+		"ריצת 3000": "run_3000",
+		"ריצת 3000 מ׳": "run_3000",
+		"ניתורים בכריעת ברך": "kneeling_jump",
+		סקוואטים: "bodyweight_squat",
+		"שכיבות סמיכה רגילות": "push_up",
 	};
 
 	var SOURCE_LABELS = {
@@ -342,40 +432,56 @@
 		return isFinite(n) && n > 0 ? Math.round(n * 10) / 10 : null;
 	}
 
-	function normalizeClientDetails(raw) {
-		raw = raw && typeof raw === "object" ? raw : {};
-		var days = Array.isArray(raw.days) ? raw.days : [];
-		days = days
+	function filterClientDays(days) {
+		if (!Array.isArray(days)) return [];
+		return days
 			.map(Number)
 			.filter(function (d, i, a) {
-				return d >= 0 && d <= 6 && d === Math.floor(d) && a.indexOf(d) === i;
+				if (d < 0 || d > 6) return false;
+				if (d !== Math.floor(d)) return false;
+				return a.indexOf(d) === i;
 			})
 			.sort();
+	}
+
+	function clientMeasurementsList(measurements) {
+		if (!Array.isArray(measurements)) return [];
+		return measurements.map(normalizeMeasurement).filter(Boolean);
+	}
+
+	function normalizeClientDetails(raw) {
+		var r = raw && typeof raw === "object" ? raw : {};
+		var goalKey = r.goal;
+		var levelKey = r.level;
 		return {
-			nickname: String(raw.nickname || "")
+			nickname: String(r.nickname || "")
 				.trim()
 				.slice(0, 40),
-			goal: CLIENT_GOALS[raw.goal] ? raw.goal : "",
-			level: CLIENT_LEVELS[raw.level] ? raw.level : "",
-			days: days,
-			measurements: (Array.isArray(raw.measurements) ? raw.measurements : [])
-				.map(normalizeMeasurement)
-				.filter(Boolean),
+			goal: CLIENT_GOALS[goalKey] ? goalKey : "",
+			level: CLIENT_LEVELS[levelKey] ? levelKey : "",
+			days: filterClientDays(r.days),
+			measurements: clientMeasurementsList(r.measurements),
 		};
 	}
 
+	function hasMeasurementValue(out) {
+		if (out.weightKg != null) return true;
+		if (out.waistCm != null) return true;
+		return !!out.note;
+	}
+
 	function normalizeMeasurement(m) {
-		m = m && typeof m === "object" ? m : {};
+		var src = m && typeof m === "object" ? m : {};
 		var out = {
-			at: String(m.at || "").slice(0, 10),
-			weightKg: numOrNull(m.weightKg),
-			waistCm: numOrNull(m.waistCm),
-			note: String(m.note || "")
+			at: String(src.at || "").slice(0, 10),
+			weightKg: numOrNull(src.weightKg),
+			waistCm: numOrNull(src.waistCm),
+			note: String(src.note || "")
 				.trim()
 				.slice(0, 120),
 		};
 		if (!/^\d{4}-\d{2}-\d{2}$/.test(out.at)) return null;
-		if (out.weightKg == null && out.waistCm == null && !out.note) return null;
+		if (!hasMeasurementValue(out)) return null;
 		return out;
 	}
 
@@ -447,14 +553,25 @@
 	var BACKUP_FORMAT = "trainerhub-backup";
 	var BACKUP_ITER = 210000;
 
-	function subtle() {
-		var c = root.crypto && root.crypto.subtle ? root.crypto : null;
-		if (!c && typeof require === "function") {
-			try {
-				c = require("crypto").webcrypto;
-			} catch (e) {}
+	function nodeWebCrypto() {
+		if (typeof require !== "function") return null;
+		try {
+			return require("crypto").webcrypto || null;
+		} catch (e) {
+			return null;
 		}
-		if (!c || !c.subtle) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
+	}
+
+	function getSubtleCrypto() {
+		var rc = root.crypto;
+		if (rc && rc.subtle) return rc;
+		return nodeWebCrypto();
+	}
+
+	function subtle() {
+		var c = getSubtleCrypto();
+		if (!c) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
+		if (!c.subtle) throw new Error("הדפדפן לא תומך בהצפנה (WebCrypto).");
 		return c;
 	}
 
@@ -478,6 +595,12 @@
 		return out;
 	}
 
+	function shouldIncludeBackupKey(k, names) {
+		if (!k) return false;
+		if (k.indexOf("trainerhub_") !== 0) return false;
+		return names.indexOf(k) === -1;
+	}
+
 	function backupKeyNames() {
 		var names = Object.keys(KEYS).map(function (k) {
 			return KEYS[k];
@@ -486,8 +609,7 @@
 		try {
 			for (i = 0; i < localStorage.length; i++) {
 				k = localStorage.key(i);
-				if (k && k.indexOf("trainerhub_") === 0 && names.indexOf(k) === -1)
-					names.push(k);
+				if (shouldIncludeBackupKey(k, names)) names.push(k);
 			}
 		} catch (e) {}
 		return names;
@@ -569,16 +691,33 @@
 			});
 	}
 
-	/** Resolves to { key: rawString } or rejects with a Hebrew message. */
-	function decryptBackup(text, password) {
+	function parseBackupFile(text) {
 		var file;
 		try {
 			file = typeof text === "string" ? JSON.parse(text) : text;
+			if (!file) return null;
+			if (file.format !== BACKUP_FORMAT) return null;
+			if (!file.data) return null;
+			return file;
 		} catch (e) {
+			return null;
+		}
+	}
+
+	function validateDecryptedPayload(buf) {
+		var data = JSON.parse(new TextDecoder().decode(buf));
+		if (!data) throw new Error("bad");
+		if (typeof data !== "object") throw new Error("bad");
+		if (Array.isArray(data)) throw new Error("bad");
+		return data;
+	}
+
+	/** Resolves to { key: rawString } or rejects with a Hebrew message. */
+	function decryptBackup(text, password) {
+		var file = parseBackupFile(text);
+		if (!file) {
 			return Promise.reject(new Error("הקובץ אינו גיבוי של TrainerHub."));
 		}
-		if (!file || file.format !== BACKUP_FORMAT || !file.data)
-			return Promise.reject(new Error("הקובץ אינו גיבוי של TrainerHub."));
 		var c;
 		try {
 			c = subtle();
@@ -594,12 +733,7 @@
 				);
 			})
 			.then(
-				function (buf) {
-					var data = JSON.parse(new TextDecoder().decode(buf));
-					if (!data || typeof data !== "object" || Array.isArray(data))
-						throw new Error("bad");
-					return data;
-				},
+				validateDecryptedPayload,
 				function () {
 					throw new Error("סיסמה שגויה או קובץ פגום.");
 				},
@@ -617,6 +751,36 @@
 			} catch (e) {}
 		});
 		return restored;
+	}
+
+	/** Safe personal-profile read for the exercise library. Never throws. */
+	function getLibraryProfile(clientId) {
+		try {
+			var map = storeGet(KEYS.clientProfiles, {});
+			if (!map || typeof map !== "object" || Array.isArray(map)) map = {};
+			var id = String(clientId || "").trim();
+			var raw = id ? map[id] : map[Object.keys(map)[0] || ""];
+			if (!raw || typeof raw !== "object") {
+				var user = storeGet(KEYS.user, null);
+				raw = user && typeof user === "object" ? user : {};
+			}
+			return {
+				equipment: Array.isArray(raw.equipment)
+					? raw.equipment.slice()
+					: Array.isArray(raw.availableEquipment)
+						? raw.availableEquipment.slice()
+						: [],
+				limitations: Array.isArray(raw.limitations)
+					? raw.limitations.slice()
+					: Array.isArray(raw.restrictions)
+						? raw.restrictions.slice()
+						: Array.isArray(raw.injuries)
+							? raw.injuries.slice()
+							: [],
+			};
+		} catch (e) {
+			return { equipment: [], limitations: [] };
+		}
 	}
 
 	// ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
@@ -653,20 +817,31 @@
 		return parts.join(" ");
 	}
 
+	function findHebrewVoice(synth) {
+		if (!synth.getVoices) return null;
+		var voices = synth.getVoices() || [];
+		var i;
+		for (i = 0; i < voices.length; i++) {
+			if (/^he|^iw/i.test(voices[i].lang || "")) {
+				return voices[i];
+			}
+		}
+		return null;
+	}
+
 	/** Speaks Hebrew via the device's speechSynthesis (works offline with a local voice). Returns true if queued. */
 	function speakHebrew(text, win) {
-		win = win || root;
-		var synth = win && win.speechSynthesis;
-		var Utter = win && win.SpeechSynthesisUtterance;
-		var u, voices, he;
-		if (!text || !synth || !Utter) return false;
+		if (!text) return false;
+		var w = win || root;
+		if (!w) return false;
+		var synth = w.speechSynthesis;
+		var Utter = w.SpeechSynthesisUtterance;
+		if (!synth || !Utter) return false;
+		var u, he;
 		try {
 			u = new Utter(String(text));
 			u.lang = "he-IL";
-			voices = synth.getVoices ? synth.getVoices() : [];
-			he = (voices || []).filter(function (v) {
-				return /^he|^iw/i.test(v.lang || "");
-			})[0];
+			he = findHebrewVoice(synth);
 			if (he) u.voice = he;
 			synth.cancel();
 			synth.speak(u);
@@ -677,52 +852,66 @@
 	}
 
 	var cueAudio = null;
-	/** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
-	function restEndCue(win, opts) {
-		win = win || root;
-		opts = opts || {};
-		var out = { vibrated: false, beeped: false };
-		var nav, AC, t;
+
+	function playCueBeeps(ctx) {
+		var t = ctx.currentTime;
+		[0, 0.25].forEach(function (offset) {
+			var osc = ctx.createOscillator();
+			var gain = ctx.createGain();
+			osc.type = "sine";
+			osc.frequency.value = 880;
+			gain.gain.setValueAtTime(0.0001, t + offset);
+			gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
+			gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
+			osc.connect(gain);
+			gain.connect(ctx.destination);
+			osc.start(t + offset);
+			osc.stop(t + offset + 0.2);
+		});
+	}
+
+	function getCueAudio(win) {
+		var AC = win.AudioContext || win.webkitAudioContext;
+		if (!AC) return null;
+		cueAudio = cueAudio || new AC();
+		if (cueAudio.state === "suspended" && cueAudio.resume) {
+			cueAudio.resume();
+		}
+		return cueAudio;
+	}
+
+	function tryVibrate(win) {
+		var nav;
 		try {
 			nav = win.navigator;
-			if (nav && typeof nav.vibrate === "function")
-				out.vibrated = !!nav.vibrate([200, 100, 200]);
+			if (nav && typeof nav.vibrate === "function") {
+				return !!nav.vibrate([200, 100, 200]);
+			}
 		} catch (e) {}
-		if (opts.sound === false) return out;
+		return false;
+	}
+
+	/** Rest finished: vibrate + short double beep (AudioContext, no audio files). */
+	function restEndCue(win, opts) {
+		var w = win || root;
+		var options = opts || {};
+		var out = { vibrated: tryVibrate(w), beeped: false };
+		if (options.sound === false) return out;
+		var ctx;
 		try {
-			AC = win.AudioContext || win.webkitAudioContext;
-			if (!AC) return out;
-			cueAudio = cueAudio || new AC();
-			if (cueAudio.state === "suspended" && cueAudio.resume) cueAudio.resume();
-			t = cueAudio.currentTime;
-			[0, 0.25].forEach(function (offset) {
-				var osc = cueAudio.createOscillator();
-				var gain = cueAudio.createGain();
-				osc.type = "sine";
-				osc.frequency.value = 880;
-				gain.gain.setValueAtTime(0.0001, t + offset);
-				gain.gain.exponentialRampToValueAtTime(0.4, t + offset + 0.02);
-				gain.gain.exponentialRampToValueAtTime(0.0001, t + offset + 0.18);
-				osc.connect(gain);
-				gain.connect(cueAudio.destination);
-				osc.start(t + offset);
-				osc.stop(t + offset + 0.2);
-			});
-			out.beeped = true;
+			ctx = getCueAudio(w);
+			if (ctx) {
+				playCueBeeps(ctx);
+				out.beeped = true;
+			}
 		} catch (e) {}
 		return out;
 	}
 
 	/** Unlocks audio on a user gesture (iOS/Chrome autoplay rules). */
 	function primeAudio(win) {
-		win = win || root;
-		var AC;
 		try {
-			AC = win.AudioContext || win.webkitAudioContext;
-			if (!AC) return false;
-			cueAudio = cueAudio || new AC();
-			if (cueAudio.state === "suspended" && cueAudio.resume) cueAudio.resume();
-			return true;
+			return !!getCueAudio(win || root);
 		} catch (e) {
 			return false;
 		}
@@ -849,31 +1038,54 @@
 		return false;
 	}
 
+	function entryList(val, fallback) {
+		if (Array.isArray(val) && val.length) return val.slice();
+		return [fallback];
+	}
+
+	function entrySec(val) {
+		return val != null ? Number(val) : null;
+	}
+
+	function entryString(val) {
+		return val ? String(val) : "";
+	}
+
+	function entrySource(e, defaultSource) {
+		if (e.source) return e.source;
+		return defaultSource || "local";
+	}
+
+	function entryTitle(e, id) {
+		if (e.he) return e.he;
+		if (e.id) return e.id;
+		return id;
+	}
+
 	function normalizeEntry(id, raw, defaultSource) {
 		var e = raw && typeof raw === "object" ? raw : {};
+		var entryId = e.id || id;
+		var drivePlay = drivePlayIdOk(e.drivePlayId) ? e.drivePlayId : "";
+		var poster = typeof e.poster === "string" ? e.poster : "";
 		return {
-			id: e.id || id,
-			he: e.he || e.id || id,
-			muscles:
-				Array.isArray(e.muscles) && e.muscles.length
-					? e.muscles.slice()
-					: ["core"],
-			equipment:
-				Array.isArray(e.equipment) && e.equipment.length
-					? e.equipment.slice()
-					: ["none"],
+			id: entryId,
+			he: entryTitle(e, id),
+			muscles: entryList(e.muscles, "core"),
+			equipment: entryList(e.equipment, "none"),
 			level: e.level || "beginner",
 			aliases: aliasList(e),
-			source: e.source || defaultSource || "local",
-			file: e.file || "",
-			driveId: e.driveId || "",
-			youtubeId: e.youtubeId || "",
-			folder: e.folder || "",
-			externalUrl: e.externalUrl || "",
+			source: entrySource(e, defaultSource),
+			file: entryString(e.file),
+			driveId: entryString(e.driveId),
+			drivePlayId: drivePlay,
+			youtubeId: entryString(e.youtubeId),
+			folder: entryString(e.folder),
+			externalUrl: entryString(e.externalUrl),
 			available: e.available !== false,
-			startSec: e.startSec != null ? Number(e.startSec) : null,
-			endSec: e.endSec != null ? Number(e.endSec) : null,
-			segmentOf: e.segmentOf || "",
+			startSec: entrySec(e.startSec),
+			endSec: entrySec(e.endSec),
+			segmentOf: entryString(e.segmentOf),
+			poster: poster,
 		};
 	}
 
@@ -888,6 +1100,14 @@
 	// A catalog row can keep a local filename ("עבודה עם יד אחת.mp4") and also
 	// carry a YouTube id. That filename is not a hosted file, so the embed is
 	// what plays. A real https file still wins: the OneDrive mirror stays a video.
+	// GitHub release files arrive as application/octet-stream behind a
+	// github.com redirect, and browsers block them (ORB) when the page is on
+	// github.io. drivePlayId is a live, link-shared Drive copy of the same clip
+	// whose preview was checked; when present the card plays that copy.
+	function drivePlayIdOk(id) {
+		return typeof id === "string" && /^[A-Za-z0-9_-]{20,}$/.test(id);
+	}
+
 	function hasRemoteFile(entry) {
 		return !!(entry && entry.file && /^https?:\/\//i.test(entry.file));
 	}
@@ -917,6 +1137,28 @@
 		return q.length ? url + "?" + q.join("&") : url;
 	}
 
+	function isValidLocalPoster(str) {
+		if (!str) return false;
+		if (str.indexOf("..") !== -1) return false;
+		return !/^([a-z]+:|\/)/i.test(str);
+	}
+
+	function remotePosterUrl(entry) {
+		var yt = entry.youtubeId || "";
+		if (/^[A-Za-z0-9_-]{11}$/.test(yt)) {
+			return "https://i.ytimg.com/vi/" + yt + "/hqdefault.jpg";
+		}
+		var drive = entry.driveId || entry.file_id || "";
+		if (drive) {
+			return (
+				"https://drive.google.com/thumbnail?id=" +
+				encodeURIComponent(drive) +
+				"&sz=w480"
+			);
+		}
+		return "";
+	}
+
 	// Poster for a library card. A row that already has `file` plays that file;
 	// its driveId / legacyDriveId point at Drive objects that 404, so they are
 	// never turned into a thumbnail. legacyDriveId stays in the catalog data
@@ -925,21 +1167,10 @@
 	function posterUrl(entry) {
 		if (!entry) return "";
 		var local = typeof entry.poster === "string" ? entry.poster.trim() : "";
-		if (local && local.indexOf("..") === -1 && !/^([a-z]+:|\/)/i.test(local))
-			return local;
+		if (isValidLocalPoster(local)) return local;
 		var file = typeof entry.file === "string" ? entry.file.trim() : "";
 		if (file) return "";
-		var yt = entry.youtubeId || "";
-		if (/^[A-Za-z0-9_-]{11}$/.test(yt))
-			return "https://i.ytimg.com/vi/" + yt + "/hqdefault.jpg";
-		var drive = entry.driveId || entry.file_id || "";
-		if (drive)
-			return (
-				"https://drive.google.com/thumbnail?id=" +
-				encodeURIComponent(drive) +
-				"&sz=w480"
-			);
-		return "";
+		return remotePosterUrl(entry);
 	}
 
 	function isOnline() {
@@ -964,65 +1195,109 @@
 		return [];
 	}
 
-	function mergeCatalogs(localMap, driveData, userList) {
-		var out = {};
-		if (localMap && typeof localMap === "object" && !Array.isArray(localMap)) {
-			Object.keys(localMap).forEach(function (id) {
-				out[id] = normalizeEntry(
-					id,
-					localMap[id],
-					(localMap[id] && localMap[id].source) || "local",
-				);
-			});
-		}
-		driveItemsFrom(driveData).forEach(function (raw) {
-			if (!raw) return;
-			var defaultSource = raw.source || (raw.file ? "onedrive" : "drive");
-			var e = normalizeEntry(
-				raw.id || raw.driveId || raw.file,
-				raw,
-				defaultSource,
-			);
-			if (!isPlayable(e)) return;
-			var duplicateAsset =
-				e.file &&
-				Object.keys(out).some(function (existingId) {
-					return out[existingId] && out[existingId].file === e.file;
-				});
-			if (duplicateAsset) return;
-			var id = e.id;
-			if (out[id]) id = (e.source || "media") + "_" + id;
-			e.id = id;
-			out[id] = e;
+	function isPlainCatalogMap(obj) {
+		if (!obj) return false;
+		if (typeof obj !== "object") return false;
+		return !Array.isArray(obj);
+	}
+
+	function mergeLocalCatalog(out, localMap) {
+		if (!isPlainCatalogMap(localMap)) return;
+		Object.keys(localMap).forEach(function (id) {
+			var item = localMap[id];
+			var src = item && item.source ? item.source : "local";
+			out[id] = normalizeEntry(id, item, src);
 		});
-		(userList || []).forEach(function (raw) {
+	}
+
+	function hasDuplicateAssetFile(out, file) {
+		if (!file) return false;
+		return Object.keys(out).some(function (existingId) {
+			return out[existingId] && out[existingId].file === file;
+		});
+	}
+
+	function rawItemSource(raw) {
+		if (raw.source) return raw.source;
+		return raw.file ? "onedrive" : "drive";
+	}
+
+	function rawItemId(raw) {
+		return raw.id || raw.driveId || raw.file;
+	}
+
+	function ensureUniqueId(out, e) {
+		var id = e.id;
+		if (out[id]) return (e.source || "media") + "_" + id;
+		return id;
+	}
+
+	function addDriveItemToCatalog(out, raw) {
+		if (!raw) return;
+		var e = normalizeEntry(
+			rawItemId(raw),
+			raw,
+			rawItemSource(raw),
+		);
+		if (!isPlayable(e)) return;
+		if (hasDuplicateAssetFile(out, e.file)) return;
+		e.id = ensureUniqueId(out, e);
+		out[e.id] = e;
+	}
+
+	function mergeUserCatalog(out, userList) {
+		if (!Array.isArray(userList)) return;
+		userList.forEach(function (raw) {
 			if (!raw || !raw.id) return;
 			out[raw.id] = normalizeEntry(raw.id, raw, raw.source || "user");
 		});
+	}
+
+	function mergeCatalogs(localMap, driveData, userList) {
+		var out = {};
+		mergeLocalCatalog(out, localMap);
+		driveItemsFrom(driveData).forEach(function (raw) {
+			addDriveItemToCatalog(out, raw);
+		});
+		mergeUserCatalog(out, userList);
 		return out;
+	}
+
+	function emptyArrayIfNull(arr) {
+		return arr || [];
+	}
+
+	function catalogItemProp(val, fallback) {
+		return val != null ? val : fallback;
+	}
+
+	function formatCatalogEntry(id, e) {
+		var safe = e || {};
+		return {
+			id: id,
+			he: safe.he,
+			muscles: emptyArrayIfNull(safe.muscles),
+			equipment: safe.equipment || ["none"],
+			level: safe.level || "beginner",
+			aliases: emptyArrayIfNull(safe.aliases),
+			file: entryString(safe.file),
+			source: safe.source || "local",
+			driveId: entryString(safe.driveId),
+			drivePlayId: entryString(safe.drivePlayId),
+			youtubeId: entryString(safe.youtubeId),
+			folder: entryString(safe.folder),
+			externalUrl: entryString(safe.externalUrl),
+			available: safe.available !== false,
+			startSec: catalogItemProp(safe.startSec, null),
+			endSec: catalogItemProp(safe.endSec, null),
+			segmentOf: entryString(safe.segmentOf),
+			poster: entryString(safe.poster),
+		};
 	}
 
 	function catalogList() {
 		return Object.keys(catalog).map(function (id) {
-			var e = catalog[id] || {};
-			return {
-				id: id,
-				he: e.he,
-				muscles: e.muscles || [],
-				equipment: e.equipment || ["none"],
-				level: e.level || "beginner",
-				aliases: e.aliases || [],
-				file: e.file || "",
-				source: e.source || "local",
-				driveId: e.driveId || "",
-				youtubeId: e.youtubeId || "",
-				folder: e.folder || "",
-				externalUrl: e.externalUrl || "",
-				available: e.available !== false,
-				startSec: e.startSec != null ? e.startSec : null,
-				endSec: e.endSec != null ? e.endSec : null,
-				segmentOf: e.segmentOf || "",
-			};
+			return formatCatalogEntry(id, catalog[id]);
 		});
 	}
 
@@ -1033,13 +1308,189 @@
 		return String(id).replace(/_/g, " ");
 	}
 
+	function mappedAlias(key) {
+		if (!key) return null;
+		var mapped =
+			NAME_ALIASES[key] ||
+			NAME_ALIASES[normalizeName(key)] ||
+			NAME_ALIASES[foldHe(key)];
+		if (!mapped) return null;
+		var entry = catalog[mapped];
+		if (entry && isPlayable(entry)) return entry;
+		return null;
+	}
+
+	function aliasListHas(entry, key) {
+		if (!key) return false;
+		var list = entry && entry.aliases;
+		if (!list || !list.length) return false;
+		var folded = foldHe(key);
+		var i;
+		for (i = 0; i < list.length; i++) {
+			if (list[i] === key || foldHe(list[i]) === folded) return true;
+		}
+		return false;
+	}
+
+	// Reserves lines keep their dosage in the visible name («פלאנק 3×20 שנ׳»).
+	// Lookup ignores the dose, then the pieces around «/», «או», and commas.
+	function stripDosage(raw) {
+		var s = String(raw || "");
+		s = s.replace(/\([^)]*\)/g, " ");
+		s = s.replace(/[−\-]\s*\d+\s*%/g, " ");
+		s = s.replace(/\d+\s*[×xX]\s*\d+(?:\s*[–\-־]\s*\d+)?\s*\+?/g, " ");
+		s = s.replace(/\d+\s*[×xX](?=\s|$)/g, " ");
+		s = s.replace(/[×xX]\s*\d+/g, " ");
+		s = s.replace(
+			/\d+\s*[–\-־]\s*\d+\s*(?:דק׳?|דקות|שנ׳?|שניות|מ׳|מטר|ק״מ|ק"מ)/g,
+			" ",
+		);
+		s = s.replace(/\d+\s*(?:דק׳|דקות|שנ׳|שניות|מ׳|מטר|ק״מ|ק"מ)/g, " ");
+		s = s.replace(/\d+\s*סטים/g, " ");
+		s = s.replace(/לכל\s+רגל/g, " ");
+		s = s.replace(/לכל\s+צד/g, " ");
+		s = s.replace(/(?:^|\s)(?:מ׳|מטר|ק״מ|ק"מ|דק׳|שנ׳)(?=\s|$)/g, " ");
+		s = s.replace(/^(?:חזרות|מטר)\s+/, "");
+		s = s.replace(/\s+/g, " ").trim();
+		return s.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "");
+	}
+
+	function isMeaningfulCandidate(x) {
+		return x.length >= 3 && x !== "או";
+	}
+
+	function addCleanCandidate(out, part) {
+		var x = String(part || "")
+			.replace(/^[\s:·,|/–\-־]+|[\s:·,|/–\-־]+$/g, "")
+			.trim();
+		if (!x || x.length < 2) return;
+		if (out.indexOf(x) === -1) out.push(x);
+	}
+
+	function appendCandidateFallbacks(out, raw) {
+		var s = String(raw || "");
+		if (out.length === 0 && /(?:מ׳|ק״מ|ק"מ|דק׳)/.test(s)) {
+			addCleanCandidate(out, "ריצת 3000");
+		}
+		if (!out.some(isMeaningfulCandidate) && /(?:מ׳|ק״מ|ק"מ)/.test(s)) {
+			addCleanCandidate(out, "אינטרוולים");
+		}
+	}
+
+	function nameCandidates(raw) {
+		var stripped = stripDosage(raw);
+		var out = [];
+		addCleanCandidate(out, stripped);
+		String(stripped)
+			.split(/\s*(?:\/|,| או )\s*/)
+			.forEach(function (part) {
+				addCleanCandidate(out, part);
+				var bits = part.split(":");
+				if (bits.length > 1) {
+					bits.slice(1).forEach(function (b) {
+						addCleanCandidate(out, b);
+					});
+				}
+			});
+		appendCandidateFallbacks(out, raw);
+		return out.filter(isMeaningfulCandidate);
+	}
+
+	function entryMatchesExactName(entry, key, name) {
+		if (entry.he === name) return true;
+		if (key === name) return true;
+		return HE_NAMES[key] === name;
+	}
+
+	function entryMatchesPlayableName(entry, key, name, folded) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (entryMatchesExactName(entry, key, name)) return true;
+		if (aliasListHas(entry, name)) return true;
+		return foldHe(entry.he) === folded;
+	}
+
+	function matchPlayableName(name) {
+		if (!name) return null;
+		var viaMap = mappedAlias(name);
+		if (viaMap) return viaMap;
+		var keys = Object.keys(catalog);
+		var folded = foldHe(name);
+		var i, entry, k;
+		for (i = 0; i < keys.length; i++) {
+			k = keys[i];
+			entry = catalog[k];
+			if (entryMatchesPlayableName(entry, k, name, folded)) {
+				return entry;
+			}
+		}
+		return null;
+	}
+
+	// A program step links by exact catalog id, then exact Hebrew title
+	// (including HE_NAMES), then the explicit NAME_ALIASES map, then a row's
+	// own aliases. A reserves line still shows its dosage; the dose is stripped
+	// only for this lookup. Fuzzy contains-matching stays in matchCatalog.
+	// Workouts built in the reel library (exercises.html → «התחל אימון», the
+	// weekly «#reel-plan») carry the reel's own id: «drive-<fileId>» or
+	// «ig-<shortcode>». Those are not catalog keys, so the steps opened with no
+	// video, or with another clip that only shared the name. data/drive_videos.json
+	// is the Drive copy of every reel; its file names end in « - <shortcode>.mp4».
+	var reelDrive = {};
+	var reelDriveIds = {};
+	var reelEntries = {};
+
+	function setReelDriveVideos(list) {
+		reelDrive = {};
+		reelDriveIds = {};
+		reelEntries = {};
+		(Array.isArray(list) ? list : []).forEach(function (row) {
+			var fileId = row && typeof row.fileId === "string" ? row.fileId : "";
+			var m;
+			if (!/^[A-Za-z0-9_-]{20,}$/.test(fileId)) return;
+			reelDriveIds[fileId] = true;
+			m = String(row.name || "").match(/ - ([A-Za-z0-9_-]{6,})\.mp4$/i);
+			if (m && !reelDrive[m[1]]) reelDrive[m[1]] = fileId;
+		});
+	}
+
+	function reelClip(step) {
+		var id = step && typeof step.id === "string" ? step.id : "";
+		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
+		var fileId, keys, i, entry;
+		if (!m) return null;
+		fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
+		if (!fileId || !reelDriveIds[fileId]) return null;
+		keys = Object.keys(catalog);
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (
+				entry &&
+				isPlayable(entry) &&
+				(entry.driveId === fileId ||
+					entry.drivePlayId === fileId ||
+					entry.legacyDriveId === fileId)
+			)
+				return entry;
+		}
+		if (!reelEntries[id])
+			reelEntries[id] = {
+				id: id,
+				he: step.name || "",
+				driveId: fileId,
+				source: "drive-reel",
+			};
+		return reelEntries[id];
+	}
+
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
+		var reel = reelClip(step);
+		if (reel) return reel;
 		var name = step.name;
 		var keys = Object.keys(catalog);
-		var i, entry;
+		var i, entry, viaMap, candidates, c, hit;
 		for (i = 0; i < keys.length; i++) {
 			entry = catalog[keys[i]];
 			if (!entry || !isPlayable(entry)) continue;
@@ -1049,6 +1500,28 @@
 				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
 			)
 				return entry;
+		}
+		viaMap = mappedAlias(id);
+		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
+		if (viaMap) return viaMap;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (!entry || !isPlayable(entry)) continue;
+			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
+				return entry;
+			if (name && foldHe(entry.he) === foldHe(name)) return entry;
+		}
+		if (!name) return null;
+		candidates = nameCandidates(name);
+		for (c = 0; c < candidates.length; c++) {
+			if (candidates[c] === name) continue;
+			hit = matchPlayableName(candidates[c]);
+			if (hit) return hit;
+		}
+		for (c = 0; c < candidates.length; c++) {
+			if (candidates[c] === name || candidates[c].length < 3) continue;
+			hit = matchCatalog(candidates[c]);
+			if (hit && isPlayable(hit)) return hit;
 		}
 		return null;
 	}
@@ -2108,9 +2581,20 @@
 		// is filed under two ids), so a day marks the clip as used too and the trainee
 		// never watches the same drill twice under two names.
 		var usedClips = {};
+		// A built-in id plays the catalog row its Hebrew name resolves to
+		// («romanian_deadlift_db» → yt_rdl_db), and a YouTube row has no file: keyed
+		// on the file alone, one day held «דדליפט רומני משקולות» and «דדליפט רומני עם
+		// משקולות», and the arm-circles warm-up came back in Main as «סיבובי ידיים».
 		function clipOf(id) {
 			var clip = catalog[id];
-			return clip && isPlayable(clip) && clip.file ? clip.file : "";
+			if (!(clip && isPlayable(clip)))
+				clip = findExercise({ id: id, name: HE_NAMES[id] });
+			if (!(clip && isPlayable(clip))) return "";
+			if (clip.file) return clip.file;
+			if (clip.youtubeId) return "yt:" + clip.youtubeId;
+			if (clip.drivePlayId || clip.driveId)
+				return "drive:" + (clip.drivePlayId || clip.driveId);
+			return "id:" + clip.id;
 		}
 		function markUsed(id) {
 			used[id] = true;
@@ -2250,15 +2734,25 @@
 				builtin: true,
 			};
 			seenIds[ex.id] = true;
-			var clip = catalog[ex.id];
+			var direct = catalog[ex.id];
+			var clip =
+				direct && isPlayable(direct)
+					? direct
+					: findExercise({ id: ex.id, name: HE_NAMES[ex.id] });
 			if (clip && isPlayable(clip)) {
 				copy.hasClip = true;
 				copy.tags = catalogTags(clip);
-				// The trainee gets the catalog clip, so its equipment decides what the exercise
-				// needs: bodyweight_row plays «מתח אוסטרלי» on a bar, not a bodyweight row, and
-				// must not land in a «משקל גוף» program just because the built-in list says 'none'.
-				if (Array.isArray(clip.equipment) && clip.equipment.length)
-					copy.equipment = clip.equipment;
+				// The trainee gets the catalog clip stored under this program id, so its
+				// equipment decides what the exercise needs: bodyweight_row plays «מתח אוסטרלי»
+				// on a bar, not a bodyweight row. An aliased YouTube row (goblet_squat →
+				// yt_goblet_squat) keeps the pool's equipment.
+				if (
+					direct &&
+					isPlayable(direct) &&
+					Array.isArray(direct.equipment) &&
+					direct.equipment.length
+				)
+					copy.equipment = direct.equipment;
 			}
 			return copy;
 		});
@@ -2711,9 +3205,16 @@
 	}
 
 	function loadLazyVideos(host) {
-		var list = host.querySelectorAll
-			? host.querySelectorAll("video[" + LAZY_SRC + "]")
-			: [];
+		if (!host) return;
+		var list = [];
+		if (host.matches && host.matches("video[" + LAZY_SRC + "]")) {
+			list.push(host);
+		}
+		if (host.querySelectorAll) {
+			var found = host.querySelectorAll("video[" + LAZY_SRC + "]");
+			var j;
+			for (j = 0; j < found.length; j++) list.push(found[j]);
+		}
 		var i, src;
 		for (i = 0; i < list.length; i++) {
 			src = list[i].getAttribute(LAZY_SRC);
@@ -2761,6 +3262,331 @@
 		return (setupLazyMedia() ? LAZY_SRC : "src") + '="' + esc(url) + '"';
 	}
 
+	// Load-on-click (click-to-play facade). Each Drive/YouTube player is a full
+	// page with its own scripts, so a library of ~300 cards that created every
+	// iframe up front ran browsers out of memory. A card now shows the clip's
+	// thumbnail with a play button in the same box; the iframe is created only
+	// when the user clicks it (activateMediaFrame). opts.eager keeps the old
+	// immediate iframe for single-player views (workout mode, the segment tool).
+	// Hosted MP4 copies of the Drive clips (Swissystem7/TrainerHub-media).
+	// Drive's preview player starts slowly and stalls on mobile data, so a clip
+	// with a copy plays in a native <video> from the media repo's GitHub Pages,
+	// then from jsDelivr (pinned tag) if that fails, and from the Drive player
+	// as the last fallback. Drive stays the source of truth; the copies are
+	// listed in videos/media-manifest.json by Drive id.
+	var MEDIA_MANIFEST = "videos/media-manifest.json";
+	var MEDIA_HOST_RX =
+		/^https:\/\/(?:swissystem7\.github\.io\/TrainerHub-media\/|cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@[A-Za-z0-9._-]+\/)$/;
+	var MEDIA_PATH_RX = /^[a-z0-9_-]+\/[A-Za-z0-9_-]{20,}\.mp4$/;
+	var DRIVE_ID_RX = /^[A-Za-z0-9_-]{20,}$/;
+	var mediaHosts = [];
+	var mediaFiles = Object.create(null);
+	var mediaManifestPromise = null;
+
+	function setMediaManifest(m) {
+		mediaHosts = [];
+		mediaFiles = Object.create(null);
+		if (!m || typeof m !== "object") return 0;
+		(Array.isArray(m.hosts) ? m.hosts : []).forEach(function (h) {
+			if (typeof h === "string" && MEDIA_HOST_RX.test(h)) mediaHosts.push(h);
+		});
+		var files = m.files && typeof m.files === "object" ? m.files : {};
+		var n = 0;
+		Object.keys(files).forEach(function (id) {
+			if (DRIVE_ID_RX.test(id) && typeof files[id] === "string" && MEDIA_PATH_RX.test(files[id])) {
+				mediaFiles[id] = files[id];
+				n++;
+			}
+		});
+		return n;
+	}
+
+	function loadMediaManifest() {
+		if (!mediaManifestPromise)
+			mediaManifestPromise = loadJson(MEDIA_MANIFEST).then(setMediaManifest);
+		return mediaManifestPromise;
+	}
+
+	// Ordered MP4 URLs for a Drive id (empty when there is no hosted copy).
+	function mp4Sources(driveId) {
+		var path = Object.prototype.hasOwnProperty.call(mediaFiles, driveId)
+			? mediaFiles[driveId]
+			: "";
+		if (!path) return [];
+		return mediaHosts.map(function (h) {
+			return h + path;
+		});
+	}
+
+	function driveIframe(doc, driveId, cls, title, allow) {
+		var frame = doc.createElement("iframe");
+		frame.setAttribute("class", cls);
+		frame.setAttribute("title", title || "");
+		frame.setAttribute("allow", allow || DRIVE_ALLOW);
+		frame.setAttribute("allowfullscreen", "");
+		frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
+		frame.setAttribute("src", withAutoplay(drivePreviewUrl(driveId)));
+		return frame;
+	}
+
+	// The <video> failed on its current host: try the next MP4 host, and after
+	// the last one swap in the Drive player (data-th-mp4 holds the Drive id).
+	function mediaFallback(v) {
+		if (!v || !v.getAttribute) return null;
+		var id = String(v.getAttribute("data-th-mp4") || "");
+		if (!DRIVE_ID_RX.test(id)) return null;
+		var list = mp4Sources(id);
+		var next = (v.__thHost == null ? 0 : v.__thHost) + 1;
+		if (next < list.length) {
+			v.__thHost = next;
+			v.setAttribute("src", list[next]);
+			if (typeof v.load === "function") v.load();
+			if (v.__thPlay && typeof v.play === "function") {
+				var pr = v.play();
+				if (pr && typeof pr.catch === "function") pr.catch(function () {});
+			}
+			return v;
+		}
+		var doc = v.ownerDocument || (typeof document !== "undefined" ? document : null);
+		if (!doc || !v.parentNode) return null;
+		var cls = String(v.getAttribute("class") || "").replace(/\s*\bth-mp4\b/g, "").trim();
+		var frame = driveIframe(doc, id, cls, v.getAttribute("aria-label") || "");
+		v.parentNode.replaceChild(frame, v);
+		return frame;
+	}
+
+	function mp4Video(doc, driveId, cls, title) {
+		var list = mp4Sources(driveId);
+		var v = doc.createElement("video");
+		v.setAttribute("class", (cls ? cls + " " : "") + "th-mp4");
+		v.setAttribute("aria-label", title || "");
+		v.setAttribute("data-th-mp4", driveId);
+		v.setAttribute("controls", "");
+		v.setAttribute("playsinline", "");
+		v.setAttribute("webkit-playsinline", "");
+		v.setAttribute("preload", "auto");
+		v.__thHost = 0;
+		v.__thPlay = true;
+		if (typeof v.addEventListener === "function")
+			v.addEventListener("error", function () {
+				mediaFallback(v);
+			});
+		v.setAttribute("src", list[0]);
+		return v;
+	}
+
+	var FRAME_ATTR = "data-th-frame";
+	var DRIVE_ALLOW = "autoplay";
+	var YOUTUBE_ALLOW =
+		"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+
+	function driveThumbUrl(id) {
+		if (!id) return "";
+		return (
+			"https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w480"
+		);
+	}
+
+	// A row's own illustration (assets/posters/<code>.jpg) is preferred over
+	// the Drive thumbnail; only a relative path inside the site is accepted.
+	function localPosterUrl(entry) {
+		var p = entry && typeof entry.poster === "string" ? entry.poster.trim() : "";
+		if (!p || p.indexOf("..") !== -1 || /^([a-z]+:|\/)/i.test(p)) return "";
+		return assetUrl(p);
+	}
+
+	function youtubeThumbUrl(id) {
+		if (!/^[A-Za-z0-9_-]{11}$/.test(id || "")) return "";
+		return "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+	}
+
+	function withAutoplay(url) {
+		if (!url) return "";
+		return url + (url.indexOf("?") === -1 ? "?" : "&") + "autoplay=1";
+	}
+
+	// The thumbnail is a lazy <img> (not a CSS background) so only cards near the
+	// viewport fetch one; a burst of ~150 Drive thumbnails gets refused.
+	function frameFacadeMarkup(o) {
+		registerFrameSrc(o.src);
+		return (
+			'<button type="button" class="' +
+			o.cls +
+			" " +
+			o.cls +
+			'-facade" ' +
+			FRAME_ATTR +
+			'="' +
+			esc(o.src) +
+			'" data-th-frame-allow="' +
+			esc(o.allow) +
+			'" data-th-frame-title="' +
+			esc(o.title) +
+			'" aria-label="' +
+			esc("הפעלת סרטון: " + o.title) +
+			'">' +
+			(o.thumb
+				? '<img class="th-facade-thumb" src="' +
+					esc(o.thumb) +
+					'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">'
+				: "") +
+			'<span class="ex-media-play" aria-hidden="true"></span></button>'
+		);
+	}
+
+	function frameTag(o) {
+		return (
+			'<iframe class="' +
+			o.cls +
+			'" title="' +
+			esc(o.title) +
+			'" src="' +
+			esc(o.src) +
+			'" allow="' +
+			esc(o.allow) +
+			'" allowfullscreen loading="lazy"' +
+			(o.referrer ? ' referrerpolicy="' + o.referrer + '"' : "") +
+			"></iframe>"
+		);
+	}
+
+	// Rebuild a player URL from a facade attribute. Only a Drive preview or a
+	// YouTube embed with a well-formed id (and numeric start/end) is accepted, and
+	// the URL is rebuilt from those parts, so DOM text never becomes a src as is.
+	var DRIVE_PREVIEW_RX = /^https:\/\/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]{8,})\/preview$/;
+	var YOUTUBE_EMBED_RX =
+		/^https:\/\/www\.youtube\.com\/embed\/([A-Za-z0-9_-]{11})(?:\?(start=\d+)?(?:&?(end=\d+))?)?$/;
+	function safeFrameSrc(raw) {
+		var m = DRIVE_PREVIEW_RX.exec(String(raw || ""));
+		// The click on the facade already counts as the user's tap, so the Drive
+		// player starts at once (?autoplay=1, honored with allow="autoplay")
+		// instead of asking for a second tap on its own play button.
+		if (m) return { kind: "drive", src: withAutoplay(drivePreviewUrl(m[1])) };
+		m = YOUTUBE_EMBED_RX.exec(String(raw || ""));
+		if (!m) return null;
+		var start = m[2] ? Number(m[2].slice(6)) : null;
+		var end = m[3] ? Number(m[3].slice(4)) : null;
+		return { kind: "youtube", src: withAutoplay(youtubeEmbedUrl(m[1], start, end)) };
+	}
+
+	// Players this page rendered itself, keyed by the facade's data-th-frame.
+	// A click only looks its attribute up here, so the iframe src always comes
+	// from our own markup code, never from DOM text.
+	var frameSources = Object.create(null);
+	function registerFrameSrc(raw) {
+		var safe = safeFrameSrc(raw);
+		if (safe) frameSources[String(raw)] = safe;
+		return !!safe;
+	}
+
+	// Swap one facade for its real player. Returns the iframe (or null).
+	function activateMediaFrame(btn) {
+		if (!btn || !btn.getAttribute) return null;
+		var key = btn.getAttribute(FRAME_ATTR);
+		var safe = Object.prototype.hasOwnProperty.call(frameSources, key)
+			? frameSources[key]
+			: null;
+		if (!safe) return null;
+		var doc = btn.ownerDocument || (typeof document !== "undefined" ? document : null);
+		if (!doc || !btn.parentNode) return null;
+		var keyMatch = safe.kind === "drive" ? DRIVE_PREVIEW_RX.exec(String(key)) : null;
+		var mp4Id = keyMatch ? keyMatch[1] : "";
+		if (mp4Id && mp4Sources(mp4Id).length) {
+			var vcls = String(btn.getAttribute("class") || "")
+				.split(/\s+/)
+				.filter(function (c) {
+					return /^[A-Za-z][A-Za-z0-9_-]*$/.test(c) && !/-facade$/.test(c);
+				})
+				.join(" ");
+			var video = mp4Video(doc, mp4Id, vcls, String(btn.getAttribute("data-th-frame-title") || ""));
+			btn.parentNode.replaceChild(video, btn);
+			// The tap on the facade is the user gesture, so playback (with sound)
+			// starts on that single tap.
+			if (typeof video.play === "function") {
+				var pr = video.play();
+				if (pr && typeof pr.catch === "function") pr.catch(function () {});
+			}
+			if (typeof video.focus === "function") video.focus();
+			return video;
+		}
+		var frame = doc.createElement("iframe");
+		var cls = String(btn.getAttribute("class") || "")
+			.split(/\s+/)
+			.filter(function (c) {
+				return /^[A-Za-z][A-Za-z0-9_-]*$/.test(c) && !/-facade$/.test(c);
+			})
+			.join(" ");
+		frame.setAttribute("class", cls);
+		frame.setAttribute("title", String(btn.getAttribute("data-th-frame-title") || ""));
+		frame.setAttribute(
+			"allow",
+			safe.kind === "youtube"
+				? YOUTUBE_ALLOW
+				: /fullscreen/.test(btn.getAttribute("data-th-frame-allow") || "")
+					? "autoplay; fullscreen"
+					: DRIVE_ALLOW,
+		);
+		frame.setAttribute("allowfullscreen", "");
+		if (safe.kind === "drive")
+			frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
+		frame.setAttribute("src", safe.src);
+		btn.parentNode.replaceChild(frame, btn);
+		if (typeof frame.focus === "function") frame.focus();
+		return frame;
+	}
+
+	var facadeClicksBound = false;
+	function bindFacadeClicks() {
+		if (facadeClicksBound || typeof document === "undefined" || !document.addEventListener)
+			return;
+		facadeClicksBound = true;
+		document.addEventListener("click", function (ev) {
+			var t = ev.target;
+			var btn = t && t.closest ? t.closest("[" + FRAME_ATTR + "]") : null;
+			if (!btn) return;
+			ev.preventDefault();
+			activateMediaFrame(btn);
+		});
+	}
+
+	function driveFrameMarkup(entry, driveId, cls, eager) {
+		var segNote = "";
+		if (entry.startSec != null && entry.endSec != null) {
+			segNote =
+				'<p class="' +
+				cls +
+				'-segment" role="note">מקטע ' +
+				esc(formatClock(entry.startSec)) +
+				"–" +
+				esc(formatClock(entry.endSec)) +
+				" — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>";
+		}
+		var o = {
+			cls: cls,
+			title: entry.he || "סרטון דרייב",
+			src: drivePreviewUrl(driveId),
+			allow: DRIVE_ALLOW,
+			thumb: localPosterUrl(entry) || driveThumbUrl(driveId),
+			referrer: "no-referrer-when-downgrade",
+		};
+		return (
+			'<div class="' +
+			cls +
+			'-wrap">' +
+			'<div class="' +
+			cls +
+			'-fallback" hidden>' +
+			esc(mediaFallbackText(entry)) +
+			"</div>" +
+			// A hosted copy gets the tap-to-play facade even in workout mode: on
+			// phones a bare <video controls> needs a tap to show its controls and
+			// another on play, while the facade starts the clip on the first tap.
+			(eager && !mp4Sources(driveId).length ? frameTag(o) : frameFacadeMarkup(o)) +
+			segNote +
+			"</div>"
+		);
+	}
+
 	function mediaMarkup(entry, opts) {
 		opts = opts || {};
 		var cls = esc(opts.className || "ex-media");
@@ -2800,6 +3626,13 @@
 			return fallback;
 		}
 		if (
+			!opts.preferVideo &&
+			!opts.video &&
+			hasRemoteFile(entry) &&
+			drivePlayIdOk(entry.drivePlayId)
+		)
+			return driveFrameMarkup(entry, entry.drivePlayId, cls, opts.eager);
+		if (
 			hasRemoteFile(entry) ||
 			(entry.file && !entry.youtubeId && !entry.driveId)
 		) {
@@ -2822,50 +3655,20 @@
 				" — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>"
 			);
 		}
-		if (entry.driveId) {
-			segNote = "";
-			if (entry.startSec != null && entry.endSec != null) {
-				segNote =
-					'<p class="' +
-					cls +
-					'-segment" role="note">מקטע ' +
-					esc(formatClock(entry.startSec)) +
-					"–" +
-					esc(formatClock(entry.endSec)) +
-					" — נגן הדרייב מציג את כל הקובץ; דלגו לזמן המסומן.</p>";
-			}
-			return (
-				'<div class="' +
-				cls +
-				'-wrap">' +
-				'<div class="' +
-				cls +
-				'-fallback" hidden>' +
-				esc(mediaFallbackText(entry)) +
-				"</div>" +
-				'<iframe class="' +
-				cls +
-				'" title="' +
-				esc(entry.he || "סרטון דרייב") +
-				'" src="' +
-				esc(drivePreviewUrl(entry.driveId)) +
-				'" allow="autoplay" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-				segNote +
-				"</div>"
-			);
-		}
+		if (entry.driveId) return driveFrameMarkup(entry, entry.driveId, cls, opts.eager);
 		if (entry.youtubeId) {
+			var yt = {
+				cls: cls,
+				title: entry.he || "סרטון יוטיוב",
+				src: youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec),
+				allow: YOUTUBE_ALLOW,
+				thumb: localPosterUrl(entry) || youtubeThumbUrl(entry.youtubeId),
+			};
 			return (
 				'<div class="' +
 				cls +
 				'-wrap">' +
-				'<iframe class="' +
-				cls +
-				'" title="' +
-				esc(entry.he || "סרטון יוטיוב") +
-				'" src="' +
-				esc(youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec)) +
-				'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>' +
+				(opts.eager ? frameTag(yt) : frameFacadeMarkup(yt)) +
 				"</div>"
 			);
 		}
@@ -3375,8 +4178,11 @@
 			loadJson("js/catalog.json"),
 			loadJson("videos/drive-catalog.json"),
 			loadJson("videos/youtube-catalog.json"),
+			loadJson("data/drive_videos.json"),
+			loadMediaManifest(),
 		])
 			.then(function (parts) {
+				setReelDriveVideos(parts[3]);
 				var local = parts[0] && typeof parts[0] === "object" ? parts[0] : {};
 				var drive = parts[1] || [];
 				var youtube = parts[2] || [];
@@ -4357,6 +5163,7 @@
 		assetUrl: assetUrl,
 		heName: heName,
 		findExercise: findExercise,
+		setReelDriveVideos: setReelDriveVideos,
 		catalogSrc: catalogSrc,
 		phaseLabel: phaseLabel,
 		toPhasesWorkout: toPhasesWorkout,
@@ -4369,7 +5176,6 @@
 		gateMarkup: gateMarkup,
 		copyText: copyText,
 		copyOrShow: copyOrShow,
-		manualCopyMarkup: manualCopyMarkup,
 		offerUrl: offerUrl,
 		printUrl: printUrl,
 		hashAccessCode: hashAccessCode,
@@ -4397,7 +5203,6 @@
 		adjustNextWeek: adjustNextWeek,
 		applyPlanWeek: applyPlanWeek,
 		pplBalance: pplBalance,
-		movementOf: movementOf,
 		rulesWithSources: rulesWithSources,
 		findRule: findRule,
 		rulesMarkup: rulesMarkup,
@@ -4408,7 +5213,6 @@
 		shareQrMarkup: shareQrMarkup,
 		decodeResult: decodeResult,
 		waShareUrl: waShareUrl,
-		workoutModeUrl: workoutModeUrl,
 		generateWorkoutProgram: generateWorkoutProgram,
 		loadCatalog: loadCatalog,
 		setCatalog: setCatalog,
@@ -4441,10 +5245,14 @@
 		drivePreviewUrl: drivePreviewUrl,
 		posterUrl: posterUrl,
 		youtubeEmbedUrl: youtubeEmbedUrl,
-		isOnline: isOnline,
 		mediaMarkup: mediaMarkup,
-		mediaFallbackText: mediaFallbackText,
-		bestMedia: bestMedia,
+		activateMediaFrame: activateMediaFrame,
+		registerFrameSrc: registerFrameSrc,
+		setMediaManifest: setMediaManifest,
+		loadMediaManifest: loadMediaManifest,
+		mp4Sources: mp4Sources,
+		mediaFallback: mediaFallback,
+		driveThumbUrl: driveThumbUrl,
 		mergeCatalogs: mergeCatalogs,
 		normalizeEntry: normalizeEntry,
 		userCatalogList: userCatalogList,
@@ -4458,6 +5266,7 @@
 		speakHebrew: speakHebrew,
 		restEndCue: restEndCue,
 		primeAudio: primeAudio,
+		getLibraryProfile: getLibraryProfile,
 		CLIENT_GOALS: CLIENT_GOALS,
 		CLIENT_LEVELS: CLIENT_LEVELS,
 		WEEKDAYS_HE: WEEKDAYS_HE,
@@ -4486,7 +5295,6 @@
 		decodeResult: decodeResult,
 		compactPlan: compactPlan,
 		expandPlan: expandPlan,
-		workoutModeUrl: workoutModeUrl,
 		waShareUrl: waShareUrl,
 		encodeClip: encodeClip,
 		decodeClipHash: decodeClipHash,
@@ -4514,6 +5322,7 @@
 	}
 
 	if (typeof document !== "undefined") loadCatalog();
+	bindFacadeClicks();
 })(
 	typeof window !== "undefined"
 		? window

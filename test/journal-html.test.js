@@ -490,3 +490,24 @@ test("storage robustness: throwing storage access initializes clients safely wit
 	assert.equal(app.$("clRisk").textContent, "0");
 	assert.equal(app.$("coachClient").disabled, true);
 });
+test("journal.html contains accessibility and section id='journal-progress-guidance'", () => {
+	const sectionMatch = html.match(/<section\b[^>]*id=["']journal-progress-guidance["'][^>]*>/i);
+	assert.ok(sectionMatch, "journal.html must contain a section with id='journal-progress-guidance'");
+	assert.match(html, /id=["']journal-progress-guidance["'][^>]*role=["']region["']/i, "journal-progress-guidance section must have role='region'");
+	assert.match(html, /id=["']journal-progress-guidance["'][^>]*aria-labelledby=["']journalProgressGuidanceHeading["']/i, "journal-progress-guidance section must have aria-labelledby");
+	assert.match(html, /<h2\b[^>]*id=["']journalProgressGuidanceHeading["'][^>]*>איך מודדים התקדמות ביומן<\/h2>/i, "journal-progress-guidance must have heading with id='journalProgressGuidanceHeading'");
+});
+
+test("journal.html guidance explains progress over time based on control, reps, load, adherence, and feel rather than a single measurement", () => {
+	assert.match(
+		html,
+		/מעקב ההתקדמות ביומן מתבסס על שליטה,\s*חזרות,\s*עומס,\s*התמדה והרגשה לאורך זמן,\s*ולא על שקילה או מדידה בודדת/i,
+		"guidance must explain progress tracking over time based on control, reps, load, adherence, and feel rather than single measurement"
+	);
+});
+
+test("journal.html guidance contains safety, recovery check, and injury warning instructions", () => {
+	assert.match(html, /ירידה חוזרת בביצועים,\s*כדאי לבדוק שינה,\s*תזונה ועומס כולל לפני הוספת סטים/i, "guidance must advise checking sleep, nutrition, and load before adding sets when performance drops");
+	assert.match(html, /במקרה של כאב חדש או פציעה יש לעצור ולהתייעץ עם איש מקצוע/i, "guidance must advise stopping and consulting a professional in case of new pain or injury");
+});
+

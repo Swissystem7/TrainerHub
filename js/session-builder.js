@@ -8,10 +8,20 @@
 	var Infer = root.THInfer;
 	var Prompt = root.THPrompt;
 	var Analyzer = root.THAnalyzer;
+	var Adaptation = root.THAdaptation || root.THAdaptationEngine;
+	var Progression = root.THProgression || root.THProgressionEngine;
+	var WarmupGenerator = root.THWarmupGenerator || root.THWarmup;
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 		Prompt = require("./prompt-parser.js");
 		Analyzer = require("./analyzer.js");
+		Adaptation = require("./adaptation-engine.js");
+		try {
+			Progression = require("./progression-engine.js");
+		} catch (_e) {
+			Progression = root.THProgression || root.THProgressionEngine;
+		}
+		WarmupGenerator = require("./warmup-generator.js");
 	}
 
 	var RX = {
@@ -20,6 +30,9 @@
 		endurance: { sets: 3, reps: "12-15", rest: 45 },
 		core: { sets: 3, reps: null, rest: 30, duration: 40 },
 	};
+
+	var GUIDANCE_NOTE =
+		"האימון מותאם ליכולת הנוכחית ומתמקד בחיזוק השריר והתמדה, ללא הבטחה להורדת שומן מקומית";
 
 	function catalogList(explicit) {
 		if (Array.isArray(explicit)) return explicit;
@@ -58,6 +71,9 @@
 
 	function prescription(req) {
 		if (req.goal && RX[req.goal]) return RX[req.goal];
+		if (req.goal === "כוח ותפקוד") return RX.strength;
+		if (req.goal === "שימור שריר בירידה בשומן") return RX.endurance;
+		if (req.goal === "בניית שריר") return RX.hypertrophy;
 		if (coreOnly(req)) return RX.core;
 		return RX.hypertrophy;
 	}
@@ -94,6 +110,7 @@
 	function normalizeDurationMinutes(duration) {
 		var d = Number(duration);
 		if (!Number.isFinite(d) || d <= 0) return 20;
+		if (d > 120) return 120;
 		return d;
 	}
 
@@ -581,6 +598,44 @@
 		});
 	}
 
+	// Muscle x equipment (x level) combos that have no reel at all in the
+	// library (Meta round 6 found none, and the catalog has no clip at that
+	// level). The builder does not offer them: it returns no workout with a
+	// notice instead of a "closest" session built from other equipment.
+	// "*" = every level, including a request with no level.
+	var NO_REEL_COMBOS = [
+		"back|basketball|*",
+		"back|football|*",
+		"back|stairs|*",
+		"biceps|stairs|*",
+		"legs|bar|beginner",
+		"legs|bar|advanced",
+		"biceps|cones|advanced",
+		"triceps|cones|advanced",
+		"biceps|football|advanced",
+		"back|tennis-ball|beginner",
+		"legs|football|advanced",
+		"triceps|football|advanced",
+	];
+	var NO_REEL_SET = {};
+	NO_REEL_COMBOS.forEach((k) => {
+		NO_REEL_SET[k] = true;
+	});
+	var NO_REEL_NOTICE =
+		"אין במאגר אף סרטון לשילוב הזה של שריר וציוד ברמה הזו, ולכן הוא לא מוצע. אפשר לבחור ציוד אחר או קבוצת שריר אחרת.";
+
+	function isNoReelCombo(req) {
+		var eq = (req && req.equipment) || [];
+		var muscles = (req && req.muscles) || [];
+		if (eq.length !== 1 || !muscles.length) return false;
+		var level = req.level || "";
+		return muscles.every(
+			(m) =>
+				NO_REEL_SET[m + "|" + eq[0] + "|*"] ||
+				(level && NO_REEL_SET[m + "|" + eq[0] + "|" + level]),
+		);
+	}
+
 	function buildSession(text, catalogOrList, opts) {
 		opts = opts || {};
 		var prefer = preferMap(opts.prefer);
@@ -589,10 +644,27 @@
 				? Prompt.parsePrompt(text)
 				: text || Prompt.parsePrompt("");
 		req.duration = normalizeDurationMinutes(req.duration);
+		if (isNoReelCombo(req)) {
+			return {
+				request: req,
+				satisfied: false,
+				closest: false,
+				unavailable: true,
+				notice: NO_REEL_NOTICE,
+				workout: null,
+				explanation: null,
+				analysis: null,
+				guidanceNote: GUIDANCE_NOTE,
+				adaptationReport: null,
+				progressionHints: [],
+				warmupBlock: null,
+			};
+		}
 		var list = catalogList(catalogOrList);
 		var rx = prescription(req);
 		var need = wantedCount(req.duration, rx);
 		var relax = { muscle: false, equipment: false, level: false };
+		var emptyAdaptationReport = null;
 		// The designated warm-up clip belongs to the Warm-up phase only. Without
 		// this it scored into the Main phase of full-body / unfocused prompts as
 		// 3 sets x 8-12 reps of "warm-up", and the Warm-up phase came out empty.
@@ -605,7 +677,12 @@
 		// The other warm-up drills («חימום שכיבות שמיכה קונוסים על הגב», «כדורגל
 		// חימום») stay out of Main too: «אימון חזה» prescribed the cone warm-up as
 		// 3 x 8-12 next to the push-ups. Only a catalog with nothing else keeps them.
-		var notWarmups = mainList.filter((e) => !/חימום/.test(foldName(e)));
+		// Rows filed under the stretching folder (doorway, neck and hip-flexor
+		// stretches) are not Main-phase work either.
+		var notWarmups = mainList.filter(
+			(e) =>
+				!/חימום/.test(foldName(e)) && (e.folder || "") !== "מתיחות וגמישות",
+		);
 		if (notWarmups.length) mainList = notWarmups;
 		var pool = filterPool(mainList, req, relax);
 		if (pool.length < 2 && req.level) {
@@ -632,7 +709,32 @@
 		// the minimal session length.
 		var relaxed = relax.muscle || relax.equipment || relax.level;
 		var satisfied = !relaxed && picked.length >= Math.min(3, need);
+		var profileFocus =
+			(opts.profile &&
+				(opts.profile.focus ||
+					opts.profile.muscle ||
+					opts.profile.targetMuscle ||
+					(Array.isArray(opts.profile.targetRegion)
+						? opts.profile.targetRegion[0]
+						: opts.profile.targetRegion))) ||
+			null;
+		var profileGoal = (opts.profile && opts.profile.goal) || null;
+		var effectiveFocus = profileFocus || req.focus || null;
+		var effectiveGoal = profileGoal || req.goal || null;
+
+		var reportProfile = Object.assign({}, req, opts.profile || {});
+		if (effectiveFocus) reportProfile.focus = effectiveFocus;
+		if (effectiveGoal) reportProfile.goal = effectiveGoal;
+
 		if (picked.length === 0) {
+			emptyAdaptationReport =
+				Adaptation && typeof Adaptation.buildAdaptationReport === "function"
+					? Adaptation.buildAdaptationReport(
+							reportProfile,
+							null,
+							opts.weeklySessions,
+						)
+					: null;
 			return {
 				request: req,
 				satisfied: false,
@@ -642,6 +744,10 @@
 				workout: null,
 				explanation: null,
 				analysis: null,
+				guidanceNote: GUIDANCE_NOTE,
+				adaptationReport: emptyAdaptationReport,
+				progressionHints: [],
+				warmupBlock: null,
 			};
 		}
 
@@ -681,19 +787,24 @@
 		var workout = {
 			title: title,
 			duration_minutes: req.duration,
+			guidanceNote: GUIDANCE_NOTE,
 			participants: Math.max(1, Math.floor(Number(req.participants) || 1)),
 			equipment: (relax.equipment
 				? usedEquipment(picked)
 				: req.equipment || []
 			).map((e) => Infer.EQ_LABELS[e] || e),
 			intensity:
-				req.goal === "strength"
+				effectiveGoal === "strength" || effectiveGoal === "כוח ותפקוד"
 					? "high"
 					: req.level === "beginner"
 						? "low"
 						: "medium",
-			tags: [req.focus || "general", req.goal || "catalog"].filter(Boolean),
-			goal: req.goal || null,
+			tags: [
+				effectiveFocus || req.focus || "general",
+				effectiveGoal || req.goal || "catalog",
+			].filter(Boolean),
+			goal: effectiveGoal || req.goal || null,
+			focus: effectiveFocus || req.focus || null,
 			phases: [
 				{ name: "Warm-up", duration_minutes: warmMinutes, exercises: warmEx },
 				{ name: "Main", duration_minutes: mainMinutes, exercises: mainEx },
@@ -702,6 +813,78 @@
 			source: "prompt-engine",
 		};
 		workout.group_plan = groupPlan(workout.participants, mainEx.length);
+
+		var adaptationReport =
+			Adaptation && typeof Adaptation.buildAdaptationReport === "function"
+				? Adaptation.buildAdaptationReport(
+						reportProfile,
+						workout,
+						opts.weeklySessions,
+					)
+				: null;
+		workout.adaptationReport = adaptationReport;
+
+		const rawHistory =
+			opts.sessions ||
+			opts.history ||
+			opts.weeklySessions ||
+			(opts.profile &&
+				(opts.profile.sessions || opts.profile.logs || opts.profile.history)) ||
+			[];
+		const progressionHints = [];
+		if (
+			Progression &&
+			typeof Progression.analyzeExerciseHistory === "function" &&
+			Array.isArray(rawHistory) &&
+			rawHistory.length > 0
+		) {
+			for (let hIdx = 0; hIdx < mainEx.length; hIdx++) {
+				const targetEx = mainEx[hIdx];
+				const exHistory = Progression.analyzeExerciseHistory(
+					rawHistory,
+					targetEx.id,
+				);
+				const targetRange = targetEx.reps || rx.reps || "8-12";
+				const recommendation = Progression.recommendNextLoad(
+					exHistory,
+					targetRange,
+				);
+				progressionHints.push(
+					Object.assign(
+						{
+							exerciseId: targetEx.id,
+							exerciseName: targetEx.name || targetEx.id,
+						},
+						recommendation,
+					),
+				);
+			}
+			progressionHints.byExercise = {};
+			for (let pIdx = 0; pIdx < progressionHints.length; pIdx++) {
+				const hintItem = progressionHints[pIdx];
+				if (hintItem?.exerciseId) {
+					progressionHints.byExercise[hintItem.exerciseId] = hintItem;
+				}
+			}
+			if (typeof Progression.computeWeeklyTrend === "function") {
+				progressionHints.weeklyTrend =
+					Progression.computeWeeklyTrend(rawHistory);
+			}
+		}
+		workout.progressionHints = progressionHints;
+
+		var warmupBlock = null;
+		if (
+			WarmupGenerator &&
+			typeof WarmupGenerator.generateTargetedWarmup === "function"
+		) {
+			warmupBlock = WarmupGenerator.generateTargetedWarmup(
+				workout,
+				opts.profile || opts.userProfile || req,
+				list,
+			);
+		}
+		workout.warmupBlock = warmupBlock;
 
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
@@ -730,6 +913,10 @@
 			workout: workout,
 			explanation: explanation,
 			analysis: analysis,
+			guidanceNote: GUIDANCE_NOTE,
+			adaptationReport: adaptationReport,
+			progressionHints: progressionHints,
+			warmupBlock: warmupBlock,
 		};
 	}
 
@@ -743,6 +930,8 @@
 		coreOnly: coreOnly,
 		wantedCount: wantedCount,
 		normalizeDurationMinutes: normalizeDurationMinutes,
+		isNoReelCombo: isNoReelCombo,
+		NO_REEL_COMBOS: NO_REEL_COMBOS,
 	};
 	root.THEngine = api;
 	if (typeof module === "object" && module.exports) {
