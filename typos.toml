@@ -1,0 +1,3 @@
+[default.extend-identifiers]
+# Instagram reel shortcode. typos splits it into the word "Jus".
+DEQ2kTJusT4 = "DEQ2kTJusT4"
