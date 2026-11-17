@@ -19,12 +19,32 @@
   const PARAM_KEY = 'plan';
   const MAX_QUERY_LENGTH = 4096;
 
+  function stripDisallowedControls(value) {
+    let s = '';
+    for (let i = 0; i < value.length; i++) {
+      const code = value.charCodeAt(i);
+      if (code <= 8 || (code >= 11 && code <= 31) || code === 127) continue;
+      s += value[i];
+    }
+    return s;
+  }
+
+  function stripHtmlTags(value) {
+    // A tag pattern that can cross '<' is incomplete: "<scr<script>ipt>" keeps a
+    // reassembled "<script>". Strip one innermost tag at a time until stable,
+    // then drop any leftover angle brackets one character at a time.
+    let previous;
+    let current = value;
+    do {
+      previous = current;
+      current = current.replace(/<[^<>]*>/g, '');
+    } while (current !== previous);
+    return current.replace(/[<>]/g, '');
+  }
+
   function sanitizeText(value, maxLen) {
     if (value == null) return '';
-    const s = String(value)
-      .replace(/[\x00-\x08\x0b-\x1f\x7f]/g, '')
-      .replace(/<[^>]*>/g, '')
-      .replace(/[<>]/g, '')
+    const s = stripHtmlTags(stripDisallowedControls(String(value)))
       .replace(/\s+/g, ' ')
       .trim();
     const limit = typeof maxLen === 'number' && maxLen > 0 ? maxLen : 200;
@@ -107,9 +127,7 @@
     }
     try {
       const bytes =
-        typeof Buffer !== 'undefined'
-          ? Buffer.from(b64, 'base64')
-          : Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+        typeof Buffer !== 'undefined' ? Buffer.from(b64, 'base64') : Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
       return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
     } catch (_) {
       return null;
@@ -249,9 +267,7 @@
     const rawTitle = c.title ?? c.t ?? c.name;
     const cleanTitle = rawTitle != null ? sanitizeText(String(rawTitle), 120) : '';
 
-    const durationMinutes = parsePositiveInt(
-      c.duration_minutes ?? c.durationMinutes ?? c.d ?? c.duration
-    );
+    const durationMinutes = parsePositiveInt(c.duration_minutes ?? c.durationMinutes ?? c.d ?? c.duration);
 
     const equipment = parseEquipment(c.equipment ?? c.q);
 

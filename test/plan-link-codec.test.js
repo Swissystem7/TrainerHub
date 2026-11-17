@@ -351,9 +351,14 @@ test('9) sanitizeText מנקה תווי בקרה, תגיות מקוננות, ס�
   assert.equal(Codec.sanitizeText('\x1f'), '');
   assert.equal(Codec.sanitizeText('\x7f'), '');
 
-  // Iterative stripping of nested tags
+  // Iterative stripping of nested tags, including a fragment that reassembles after one pass
   assert.equal(Codec.sanitizeText('<script><script>alert(1)</script></script>'), 'alert(1)');
+  assert.equal(Codec.sanitizeText('<scr<script>ipt>alert(1)</script>'), 'alert(1)');
   assert.equal(Codec.sanitizeText('<div><span>טקסט פנימי</span></div>'), 'טקסט פנימי');
+  assert.equal(Codec.sanitizeText('<scr<script>ipt>'), '');
+  assert.equal(Codec.sanitizeText('<script'), 'script');
+  assert.doesNotMatch(Codec.sanitizeText('<script'), /[<>]/);
+  assert.equal(Codec.sanitizeText('>'), '');
 
   // Lingering angle brackets removal
   assert.equal(Codec.sanitizeText('משקל > 50 ק"ג וגם < 100'), 'משקל 50 ק"ג וגם 100');
@@ -485,48 +490,24 @@ test('11) compactPlan ו-compactEx: דחיסת תוכנית ותרגילים ע�
   assert.equal(Codec.compactPlan({ title: '   ' }), null);
 
   // duration_minutes variations: 0, negative, string, float rounding, null, boolean
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: 0 }),
-    { t: 'בדיקת משך' }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: -10 }),
-    { t: 'בדיקת משך' }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: 'abc' }),
-    { t: 'בדיקת משך' }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: true }),
-    { t: 'בדיקת משך' }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', durationMinutes: 42.4 }),
-    { t: 'בדיקת משך', d: 42 }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'בדיקת משך', duration: '55' }),
-    { t: 'בדיקת משך', d: 55 }
-  );
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: 0 }), { t: 'בדיקת משך' });
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: -10 }), { t: 'בדיקת משך' });
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: 'abc' }), { t: 'בדיקת משך' });
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', duration_minutes: true }), { t: 'בדיקת משך' });
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', durationMinutes: 42.4 }), { t: 'בדיקת משך', d: 42 });
+  assert.deepEqual(Codec.compactPlan({ title: 'בדיקת משך', duration: '55' }), { t: 'בדיקת משך', d: 55 });
 
   // Equipment variations: single string, empty string, array, empty array, non-string
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'ציוד מחרוזת', equipment: 'משקולת יד' }),
-    { t: 'ציוד מחרוזת', q: ['משקולת יד'] }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'ציוד ריק', equipment: '   ' }),
-    { t: 'ציוד ריק' }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'ציוד מערך', equipment: ['גומיות', '   ', 'מתח', 123] }),
-    { t: 'ציוד מערך', q: ['גומיות', 'מתח', '123'] }
-  );
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'ציוד מערך ריק', q: [] }),
-    { t: 'ציוד מערך ריק' }
-  );
+  assert.deepEqual(Codec.compactPlan({ title: 'ציוד מחרוזת', equipment: 'משקולת יד' }), {
+    t: 'ציוד מחרוזת',
+    q: ['משקולת יד']
+  });
+  assert.deepEqual(Codec.compactPlan({ title: 'ציוד ריק', equipment: '   ' }), { t: 'ציוד ריק' });
+  assert.deepEqual(Codec.compactPlan({ title: 'ציוד מערך', equipment: ['גומיות', '   ', 'מתח', 123] }), {
+    t: 'ציוד מערך',
+    q: ['גומיות', 'מתח', '123']
+  });
+  assert.deepEqual(Codec.compactPlan({ title: 'ציוד מערך ריק', q: [] }), { t: 'ציוד מערך ריק' });
 
   // Exercises: string exercises vs object exercises with all fields
   const planWithEx = {
@@ -575,10 +556,7 @@ test('11) compactPlan ו-compactEx: דחיסת תוכנית ותרגילים ע�
   assert.deepEqual(compactedPhases.p[4].e, []);
 
   // String duration_minutes zero vs string rest_seconds
-  assert.deepEqual(
-    Codec.compactPlan({ title: 'משך אפס מחרוזת', duration_minutes: '0' }),
-    { t: 'משך אפס מחרוזת' }
-  );
+  assert.deepEqual(Codec.compactPlan({ title: 'משך אפס מחרוזת', duration_minutes: '0' }), { t: 'משך אפס מחרוזת' });
   const stringRsPlan = Codec.compactPlan({
     title: 'מנוחה מחרוזת',
     exercises: [
@@ -633,13 +611,7 @@ test('12) expandPlan ו-expandEx: פריסת תוכנית ותרגילים, בר
   // Plan with phases but no direct exercises: exercises populated from phases, invalid phases filtered
   const phasesOnly = Codec.expandPlan({
     t: 'תוכנית שלבים בלבד',
-    p: [
-      null,
-      'invalid',
-      [],
-      { n: 'חימום', e: [{ n: 'סיבובים' }] },
-      { n: 'כוח', e: [{ n: 'סקוואט' }] }
-    ]
+    p: [null, 'invalid', [], { n: 'חימום', e: [{ n: 'סיבובים' }] }, { n: 'כוח', e: [{ n: 'סקוואט' }] }]
   });
   assert.ok(phasesOnly);
   assert.equal(phasesOnly.exercises.length, 2);
