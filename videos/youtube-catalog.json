@@ -1,0 +1,3762 @@
+{
+  "_meta": {
+    "source": "youtube",
+    "note": "Public YouTube embeds only (youtubeId). No downloaded or re-uploaded media. nhVyTCGGvS0 is the catalog clip for מדרגות and is not repeated here.",
+    "count": 176
+  },
+  "items": [
+    {
+      "id": "yt_hamstring_lunge",
+      "he": "מתיחת המסטרינג דינמית בלאנג'",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "FLDeOadsIsM",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "poster": "assets/posters/ill-FLDeOadsIsM.jpg"
+    },
+    {
+      "id": "yt_hip_flexor_stretch",
+      "he": "מתיחת כופפי ירך בברך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "wX2dHWNiy9E",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "poster": "assets/posters/ill-wX2dHWNiy9E.jpg"
+    },
+    {
+      "id": "yt_cat_cow",
+      "he": "חתול-פרה לניידות עמוד שדרה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "os2P4a1uQQw",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "חתול-פרה",
+        "cat-cow",
+        "cat cow",
+        "cat_cow"
+      ],
+      "poster": "assets/posters/ill-os2P4a1uQQw.jpg"
+    },
+    {
+      "id": "yt_pigeon",
+      "he": "תנוחת יונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "UlyMK4MJ1v4",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "poster": "assets/posters/ill-UlyMK4MJ1v4.jpg"
+    },
+    {
+      "id": "yt_child_pose",
+      "he": "תנוחת הילד",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "VH-Ws3K-x7k",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "מנח הילד",
+        "child's pose",
+        "child pose",
+        "child_pose"
+      ],
+      "poster": "assets/posters/ill-VH-Ws3K-x7k.jpg"
+    },
+    {
+      "id": "yt_calf_stretch",
+      "he": "מתיחת תאומים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Y9NsupDRFzw",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "poster": "assets/posters/ill-Y9NsupDRFzw.jpg"
+    },
+    {
+      "id": "yt_lateral_raise",
+      "he": "הרמות צד עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WPAOe6yBONA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "הרחקה צידית",
+        "lateral raise",
+        "lateral_raise"
+      ],
+      "poster": "assets/posters/ill-WPAOe6yBONA.jpg"
+    },
+    {
+      "id": "yt_arnold_press",
+      "he": "ארנולד פרס עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "2YoSBg15a5M",
+      "folder": "כתפיים",
+      "available": true,
+      "poster": "assets/posters/ill-2YoSBg15a5M.jpg"
+    },
+    {
+      "id": "yt_kb_press",
+      "he": "לחיצת קטלבל",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WYnuAhpDK5Y",
+      "folder": "כתפיים",
+      "available": true,
+      "poster": "assets/posters/ill-WYnuAhpDK5Y.jpg"
+    },
+    {
+      "id": "yt_face_pull",
+      "he": "פייס פול עם גומייה",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "fZCpv4VG92E",
+      "folder": "כתפיים",
+      "available": true,
+      "poster": "assets/posters/ill-fZCpv4VG92E.jpg"
+    },
+    {
+      "id": "yt_band_pull_apart",
+      "he": "משיכת גומייה לצדדים",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "MxQlSph7Zug",
+      "folder": "כתפיים",
+      "available": true,
+      "poster": "assets/posters/ill-MxQlSph7Zug.jpg"
+    },
+    {
+      "id": "yt_wall_angels",
+      "he": "מלאכי קיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "y2ZUHmx-IFY",
+      "folder": "כתפיים",
+      "available": true,
+      "poster": "assets/posters/ill-y2ZUHmx-IFY.jpg"
+    },
+    {
+      "id": "yt_arm_circles",
+      "he": "סיבובי ידיים",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "oLB8i4bC3Zk",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "מעגלי ידיים",
+        "arm circles",
+        "arm_circles"
+      ],
+      "poster": "assets/posters/ill-oLB8i4bC3Zk.jpg"
+    },
+    {
+      "id": "yt_high_knees",
+      "he": "ברכיים גבוהות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Rhj4DwKky_k",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "ריצה מהירה",
+        "sprint",
+        "high knees"
+      ],
+      "poster": "assets/posters/ill-Rhj4DwKky_k.jpg"
+    },
+    {
+      "id": "yt_hip_circles",
+      "he": "סיבובי ירך בעמידה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "OqR7Tl6SPLQ",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "מעגלי ירך",
+        "hip circles",
+        "hip_circles"
+      ],
+      "poster": "assets/posters/ill-OqR7Tl6SPLQ.jpg"
+    },
+    {
+      "id": "yt_torso_twist",
+      "he": "סיבובי גו",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "RZA-z_dn2D8",
+      "folder": "חימום",
+      "available": true,
+      "poster": "assets/posters/ill-RZA-z_dn2D8.jpg"
+    },
+    {
+      "id": "yt_leg_swings",
+      "he": "נדנודי רגלים לניידות ירך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "7coRsjuylVY",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "נדנוד רגליים",
+        "leg swings",
+        "leg_swings"
+      ],
+      "poster": "assets/posters/ill-7coRsjuylVY.jpg"
+    },
+    {
+      "id": "yt_agility_ladder",
+      "he": "תרגיל זריזות בסולם קואורדינציה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "Z7pSU_Oj7kY",
+      "folder": "חימום",
+      "available": true,
+      "poster": "assets/posters/ill-Z7pSU_Oj7kY.jpg"
+    },
+    {
+      "id": "yt_hammer_curl",
+      "he": "פטישים עם משקולות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "SGolzLoGutg",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "פטישים",
+        "hammer curl",
+        "hammer_curl"
+      ],
+      "poster": "assets/posters/ill-SGolzLoGutg.jpg"
+    },
+    {
+      "id": "yt_hammer_curl_alt",
+      "he": "פטישים לסירוגין עם משקולות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "G6wBw5QLDDg",
+      "folder": "יד קדמית",
+      "available": true,
+      "poster": "assets/posters/ill-G6wBw5QLDDg.jpg"
+    },
+    {
+      "id": "yt_concentration_curl",
+      "he": "כפיפת ריכוז",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "cHxRJdSVIkA",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "כפיפה מרוכזת",
+        "concentration curl",
+        "concentration_curl"
+      ],
+      "poster": "assets/posters/ill-cHxRJdSVIkA.jpg"
+    },
+    {
+      "id": "yt_band_curl",
+      "he": "כפיפת מרפקים עם גומייה",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "0sVUQxp-l7k",
+      "folder": "יד קדמית",
+      "available": true,
+      "poster": "assets/posters/ill-0sVUQxp-l7k.jpg"
+    },
+    {
+      "id": "yt_band_curl_demo",
+      "he": "כפיפת מרפקים עם גומיית התנגדות",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "nAQu69thHQg",
+      "folder": "יד קדמית",
+      "available": true,
+      "poster": "assets/posters/ill-nAQu69thHQg.jpg"
+    },
+    {
+      "id": "yt_tricep_pushdown",
+      "he": "לחיצת טרייספס בכבל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "UKsqwz1OSWw",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "פשיטת מרפק",
+        "tricep pushdown",
+        "tricep_pushdown"
+      ],
+      "poster": "assets/posters/ill-UKsqwz1OSWw.jpg"
+    },
+    {
+      "id": "yt_diamond_pushup",
+      "he": "שכיבות סמיכה יהלום",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "nOIcUZMwzgM",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "שכיבות טרייספס",
+        "tricep push-up",
+        "close-grip push-up",
+        "tricep_push_up",
+        "תרגיל יד אחורית",
+        "יד אחורית"
+      ],
+      "poster": "assets/posters/ill-nOIcUZMwzgM.jpg"
+    },
+    {
+      "id": "yt_skull_crusher",
+      "he": "סקאל קרשרס עם משקולות",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WLQizQXoeIg",
+      "folder": "יד אחורית",
+      "available": true,
+      "poster": "assets/posters/ill-WLQizQXoeIg.jpg"
+    },
+    {
+      "id": "yt_tricep_kickback",
+      "he": "קיקבק טרייספס עם משקולת",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "yoyw-GdmZWM",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "בעיטת טרייספס",
+        "tricep kickback",
+        "tricep_kickback"
+      ],
+      "poster": "assets/posters/ill-yoyw-GdmZWM.jpg"
+    },
+    {
+      "id": "yt_overhead_extension",
+      "he": "פשיטת מרפק מעל הראש עם משקולת",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "b_r_LW4HEcM",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "פשיטה מעל הראש",
+        "overhead tricep extension",
+        "overhead_extension"
+      ],
+      "poster": "assets/posters/ill-b_r_LW4HEcM.jpg"
+    },
+    {
+      "id": "yt_single_arm_pushdown",
+      "he": "פשיטת מרפק ביד אחת בכבל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "0GRwxjYDmoY",
+      "folder": "יד אחורית",
+      "available": true,
+      "poster": "assets/posters/ill-0GRwxjYDmoY.jpg"
+    },
+    {
+      "id": "yt_goblet_squat",
+      "he": "סקוואט גביע עם משקולת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Wr-f4vy8wTs",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "סקוואט גביע",
+        "goblet squat",
+        "goblet_squat"
+      ],
+      "poster": "assets/posters/ill-Wr-f4vy8wTs.jpg"
+    },
+    {
+      "id": "yt_rdl_db",
+      "he": "דדליפט רומני עם משקולות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "vnEANU7BqqY",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "דדליפט רומני משקולות",
+        "Romanian deadlift with dumbbells",
+        "romanian deadlift",
+        "romanian_deadlift_db"
+      ],
+      "poster": "assets/posters/ill-vnEANU7BqqY.jpg"
+    },
+    {
+      "id": "yt_walking_lunge",
+      "he": "לאנג'ים בהליכה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ucvLqXxOEOs",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "לאנצ'ים בהתקדמות",
+        "לאנץ'ים בהתקדמות",
+        "walking lunge",
+        "לאנג'ים הליכה",
+        "מכרעים בהליכה"
+      ],
+      "poster": "assets/posters/ill-ucvLqXxOEOs.jpg"
+    },
+    {
+      "id": "yt_kb_swing",
+      "he": "סווינג קטלבל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Bacq2IKq4BA",
+      "folder": "רגליים",
+      "available": true,
+      "poster": "assets/posters/ill-Bacq2IKq4BA.jpg"
+    },
+    {
+      "id": "yt_quad_stretch",
+      "he": "מתיחת ארבע-ראשי בעמידה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ZKMYmIqnzrU",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "מתיחת ארבע ראשי",
+        "quad stretch",
+        "quad_stretch"
+      ],
+      "poster": "assets/posters/ill-ZKMYmIqnzrU.jpg"
+    },
+    {
+      "id": "yt_burpee",
+      "he": "ברפי",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "zYBkodZ1SRU",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "סמוך קום",
+        "סמוך-קום",
+        "ברפיז",
+        "burpee",
+        "בורפי",
+        "בורפיז"
+      ],
+      "poster": "assets/posters/ill-zYBkodZ1SRU.jpg"
+    },
+    {
+      "id": "yt_mountain_climber",
+      "he": "מטפסי הרים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "wrn1Cm_yfEU",
+      "folder": "קרדיו",
+      "available": true,
+      "poster": "assets/posters/ill-wrn1Cm_yfEU.jpg"
+    },
+    {
+      "id": "yt_jump_rope",
+      "he": "קפיצה בחבל",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "pcOkhja6wug",
+      "folder": "קרדיו",
+      "available": true,
+      "poster": "assets/posters/ill-pcOkhja6wug.jpg"
+    },
+    {
+      "id": "yt_jumping_jacks",
+      "he": "ג'מפינג ג'קס",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "s76m4rFdKDY",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "ג׳אמפינג ג׳קס",
+        "ג'מפינג ג'קס",
+        "jumping jacks",
+        "jumping_jacks"
+      ],
+      "poster": "assets/posters/ill-s76m4rFdKDY.jpg"
+    },
+    {
+      "id": "yt_quick_feet",
+      "he": "תרגיל זריזות עם קונוסים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "KeBeea7QZ2w",
+      "folder": "קרדיו",
+      "available": true,
+      "poster": "assets/posters/ill-KeBeea7QZ2w.jpg"
+    },
+    {
+      "id": "yt_one_arm_pushup",
+      "he": "שכיבת סמיכה ביד אחת",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "xp1tgjT_3k0",
+      "folder": "ידיים",
+      "available": true,
+      "aliases": [
+        "one arm push up"
+      ],
+      "poster": "assets/posters/ill-xp1tgjT_3k0.jpg"
+    },
+    {
+      "id": "yt_pistol_squat",
+      "he": "פיסטול סקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "vq5-vdgJc0I",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "pistol squat"
+      ],
+      "poster": "assets/posters/ill-vq5-vdgJc0I.jpg"
+    },
+    {
+      "id": "yt_wall_handstand",
+      "he": "עמידת ידיים לקיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "8Fdyew622mg",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "handstand"
+      ],
+      "poster": "assets/posters/ill-8Fdyew622mg.jpg"
+    },
+    {
+      "id": "yt_l_sit",
+      "he": "L-sit",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "16a529mtX68",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "אל סיט",
+        "l sit"
+      ],
+      "poster": "assets/posters/ill-16a529mtX68.jpg"
+    },
+    {
+      "id": "yt_nordic_curl",
+      "he": "נורדיק",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "htyDuCI8cm8",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "nordic hamstring curl"
+      ],
+      "poster": "assets/posters/ill-htyDuCI8cm8.jpg"
+    },
+    {
+      "id": "yt_pull_up",
+      "he": "מתח",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "9yVGh3XbJ34",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "pull up",
+        "pull_up",
+        "פיק-אפים",
+        "פיק־אפים",
+        "עליות מתח",
+        "מתח בסיוע",
+        "שליליות מתח",
+        "pull-up",
+        "מעגל עליון"
+      ],
+      "poster": "assets/posters/ill-9yVGh3XbJ34.jpg"
+    },
+    {
+      "id": "yt_chin_up",
+      "he": "מתח סנטר (Chin-up)",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "BjlOw-pcstg",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "chin up"
+      ],
+      "poster": "assets/posters/ill-BjlOw-pcstg.jpg"
+    },
+    {
+      "id": "yt_inverted_row",
+      "he": "מתח אוסטרלי / חתירה הפוכה",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Fl0UMfdEzsE",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "inverted row"
+      ],
+      "poster": "assets/posters/ill-Fl0UMfdEzsE.jpg"
+    },
+    {
+      "id": "yt_hanging_leg_raise",
+      "he": "הרמת רגליים בתלייה",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Pr1ieGZ5atk",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "hanging leg raise"
+      ],
+      "poster": "assets/posters/ill-Pr1ieGZ5atk.jpg"
+    },
+    {
+      "id": "yt_one_arm_pull_up",
+      "he": "מתח ביד אחת (התקדמויות)",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "mTJHClMQPM8",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "one arm pull up"
+      ],
+      "poster": "assets/posters/ill-mTJHClMQPM8.jpg"
+    },
+    {
+      "id": "yt_turkish_get_up",
+      "he": "קימה טורקית (Turkish Get-Up)",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "0bWRPC49-KI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "turkish get up"
+      ],
+      "poster": "assets/posters/ill-0bWRPC49-KI.jpg"
+    },
+    {
+      "id": "yt_kb_snatch",
+      "he": "סנאץ' קטלבל",
+      "muscles": [
+        "shoulders",
+        "back",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "AR6E01ABoHk",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "kettlebell snatch"
+      ],
+      "poster": "assets/posters/ill-AR6E01ABoHk.jpg"
+    },
+    {
+      "id": "yt_kb_clean",
+      "he": "קלין קטלבל",
+      "muscles": [
+        "back",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "hIMwYnpgB90",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "kettlebell clean"
+      ],
+      "poster": "assets/posters/ill-hIMwYnpgB90.jpg"
+    },
+    {
+      "id": "yt_kb_windmill",
+      "he": "ווינדמיל קטלבל",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "ITSmgn_BQgY",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "kettlebell windmill"
+      ],
+      "poster": "assets/posters/ill-ITSmgn_BQgY.jpg"
+    },
+    {
+      "id": "yt_kb_front_squat",
+      "he": "סקוואט קדמי עם קטלבל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "tolV0jzQIAY",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell front squat"
+      ],
+      "poster": "assets/posters/ill-tolV0jzQIAY.jpg"
+    },
+    {
+      "id": "yt_incline_curl",
+      "he": "כפיפת מרפקים בשיפוע",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "soxrZlIl35U",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "incline dumbbell curl"
+      ],
+      "poster": "assets/posters/ill-soxrZlIl35U.jpg"
+    },
+    {
+      "id": "yt_preacher_curl",
+      "he": "כפיפת מרפקים על ספסל כומר (Preacher)",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "5u9qWmE7c2Y",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "preacher curl"
+      ],
+      "poster": "assets/posters/ill-5u9qWmE7c2Y.jpg"
+    },
+    {
+      "id": "yt_bayesian_curl",
+      "he": "כפיפת בייסאן בכבל (Bayesian Curl)",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "paM4Yo8fo8g",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "bayesian curl"
+      ],
+      "poster": "assets/posters/ill-paM4Yo8fo8g.jpg"
+    },
+    {
+      "id": "yt_spider_curl",
+      "he": "ספיידר קירל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "NJnmRX4Od6c",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "spider curl"
+      ],
+      "poster": "assets/posters/ill-NJnmRX4Od6c.jpg"
+    },
+    {
+      "id": "yt_weighted_chin_up",
+      "he": "מתח סנטר עם משקל",
+      "muscles": [
+        "biceps",
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "bZ6Ysk9jf6E",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "weighted chin up"
+      ],
+      "poster": "assets/posters/ill-bZ6Ysk9jf6E.jpg"
+    },
+    {
+      "id": "yt_military_press",
+      "he": "לחיצה צבאית מעל הראש (Military Press)",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "2yjwXTZQDDI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "military press",
+        "לחיצת כתפיים",
+        "overhead press",
+        "overhead_press"
+      ],
+      "poster": "assets/posters/ill-2yjwXTZQDDI.jpg"
+    },
+    {
+      "id": "yt_db_shoulder_press",
+      "he": "לחיצת כתפיים עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "qEwKCR5JCog",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "dumbbell shoulder press",
+        "לחיצת כתפיים משקולות",
+        "dumbbell_ohp"
+      ],
+      "poster": "assets/posters/ill-qEwKCR5JCog.jpg"
+    },
+    {
+      "id": "yt_pike_push_up",
+      "he": "שכיבת סמיכה בפייק (Pike Push-Up)",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "18mNeuH4D1k",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "pike push up",
+        "שכיבות פאייק",
+        "שכיבות סמיכה במצב אוהל",
+        "pike push-up",
+        "pike_push_up",
+        "פייק־פוש־אפ",
+        "פייק-פוש-אפ"
+      ],
+      "poster": "assets/posters/ill-18mNeuH4D1k.jpg"
+    },
+    {
+      "id": "yt_rear_delt_fly",
+      "he": "הרמת דלתא אחורית עם משקולות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "lPt0GqwaqEw",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "rear delt fly",
+        "פרפר הפוך",
+        "reverse fly",
+        "reverse_fly"
+      ],
+      "poster": "assets/posters/ill-lPt0GqwaqEw.jpg"
+    },
+    {
+      "id": "yt_cable_face_pull",
+      "he": "פייס פול בכבל",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ljgqer1ZpXg",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "cable face pull"
+      ],
+      "poster": "assets/posters/ill-ljgqer1ZpXg.jpg"
+    },
+    {
+      "id": "bodyweight_squat",
+      "he": "סקוואט משקל גוף",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "PlDqgNcJJ2U",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Bodyweight squat",
+        "סקוואט משקל גוף",
+        "bodyweight_squat",
+        "air squat",
+        "סקוואטים",
+        "סקוואט חופשי"
+      ],
+      "poster": "assets/posters/ill-PlDqgNcJJ2U.jpg"
+    },
+    {
+      "id": "squat",
+      "he": "סקוואט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "-bJIpOq-LWk",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Barbell back squat",
+        "סקוואט",
+        "squat",
+        "back squat",
+        "barbell squat",
+        "barbell back squat"
+      ],
+      "poster": "assets/posters/ill--bJIpOq-LWk.jpg"
+    },
+    {
+      "id": "lunges",
+      "he": "מכרעים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "M6DZ0Dca17w",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Forward lunge",
+        "מכרעים",
+        "lunges",
+        "lunge",
+        "forward lunge",
+        "לאנצ'ים",
+        "לאנץ'ים",
+        "לאנצ׳ים",
+        "לאנג' במקום",
+        "לאנג׳ במקום"
+      ],
+      "poster": "assets/posters/ill-M6DZ0Dca17w.jpg"
+    },
+    {
+      "id": "glute_bridge",
+      "he": "גשר ישבן",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "SKOMwg1JLrU",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Glute bridge",
+        "גשר ישבן",
+        "glute_bridge",
+        "glute bridge"
+      ],
+      "poster": "assets/posters/ill-SKOMwg1JLrU.jpg"
+    },
+    {
+      "id": "wall_sit",
+      "he": "ישיבה על קיר",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none",
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "y-wV4Venusw",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Wall sit",
+        "ישיבה על קיר",
+        "wall_sit",
+        "wall sit"
+      ],
+      "poster": "assets/posters/ill-y-wV4Venusw.jpg"
+    },
+    {
+      "id": "calf_raise",
+      "he": "עליות שוק",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "3UWi44yN-wM",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Standing calf raise",
+        "עליות שוק",
+        "calf_raise",
+        "calf raise",
+        "standing calf raise"
+      ],
+      "poster": "assets/posters/ill-3UWi44yN-wM.jpg"
+    },
+    {
+      "id": "dumbbell_lunge",
+      "he": "מכרע משקולות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "3TM-vVWuLYE",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Dumbbell forward lunge",
+        "מכרע משקולות",
+        "dumbbell_lunge",
+        "dumbbell lunge",
+        "dumbbell forward lunge"
+      ],
+      "poster": "assets/posters/ill-3TM-vVWuLYE.jpg"
+    },
+    {
+      "id": "deadlift",
+      "he": "דדליפט",
+      "muscles": [
+        "legs",
+        "back"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "yPqv3ejnZvc",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Barbell conventional deadlift",
+        "דדליפט",
+        "deadlift",
+        "conventional deadlift",
+        "barbell deadlift"
+      ],
+      "poster": "assets/posters/ill-yPqv3ejnZvc.jpg"
+    },
+    {
+      "id": "leg_press",
+      "he": "לחיצת רגליים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "oujca3_Shgw",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Leg press",
+        "לחיצת רגליים",
+        "leg_press",
+        "leg press"
+      ],
+      "poster": "assets/posters/ill-oujca3_Shgw.jpg"
+    },
+    {
+      "id": "push_up",
+      "he": "שכיבות סמיכה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "WDIpL0pjun0",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Push-up",
+        "שכיבות סמיכה",
+        "push_up",
+        "שכיבות שמיכה",
+        "שכיבת סמיכה",
+        "שכיבת שמיכה",
+        "push-up",
+        "push up",
+        "pushups",
+        "push ups",
+        "שכיבות סמיכה רגילות",
+        "שכיבות סמיכה מלאות",
+        "שכיבות סמיכה עם עצירה בתחתית",
+        "שכיבות סמיכה לפי שלבי ההדגמה"
+      ],
+      "poster": "assets/posters/ill-WDIpL0pjun0.jpg"
+    },
+    {
+      "id": "wide_push_up",
+      "he": "שכיבות רחבות",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "rr6eFNNDQdU",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Wide-grip push-up",
+        "שכיבות רחבות",
+        "wide_push_up",
+        "wide push-up",
+        "wide-grip push-up"
+      ],
+      "poster": "assets/posters/ill-rr6eFNNDQdU.jpg"
+    },
+    {
+      "id": "dumbbell_bench",
+      "he": "לחיצת חזה משקולות",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "VmB1G1K7v94",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Dumbbell bench press",
+        "לחיצת חזה משקולות",
+        "dumbbell_bench",
+        "dumbbell bench press",
+        "dumbbell chest press"
+      ],
+      "poster": "assets/posters/ill-VmB1G1K7v94.jpg"
+    },
+    {
+      "id": "dumbbell_fly",
+      "he": "פרפר משקולות",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "eozdVDA78K0",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Dumbbell fly",
+        "פרפר משקולות",
+        "dumbbell_fly",
+        "dumbbell fly",
+        "dumbbell flys"
+      ],
+      "poster": "assets/posters/ill-eozdVDA78K0.jpg"
+    },
+    {
+      "id": "bench_press",
+      "he": "לחיצת חזה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "rT7DgCr-3pg",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Barbell bench press",
+        "לחיצת חזה",
+        "bench_press",
+        "bench press",
+        "barbell bench press"
+      ],
+      "poster": "assets/posters/ill-rT7DgCr-3pg.jpg"
+    },
+    {
+      "id": "dumbbell_row",
+      "he": "חתירת משקולת",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "-koP10y1qZI",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "Dumbbell row",
+        "חתירת משקולת",
+        "dumbbell_row",
+        "dumbbell row"
+      ],
+      "poster": "assets/posters/ill--koP10y1qZI.jpg"
+    },
+    {
+      "id": "barbell_row",
+      "he": "חתירה",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "9efgcAjQe7E",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "Barbell bent-over row",
+        "חתירה",
+        "barbell_row",
+        "barbell row",
+        "bent-over row"
+      ],
+      "poster": "assets/posters/ill-9efgcAjQe7E.jpg"
+    },
+    {
+      "id": "lat_pulldown",
+      "he": "פולי עליון",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "GL3h256d6JM",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "Lat pulldown",
+        "פולי עליון",
+        "lat_pulldown",
+        "lat pulldown"
+      ],
+      "poster": "assets/posters/ill-GL3h256d6JM.jpg"
+    },
+    {
+      "id": "bodyweight_curl",
+      "he": "כפיפת משקל גוף",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "F5hCRqcDOMI",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "Bodyweight biceps curl",
+        "כפיפת משקל גוף",
+        "bodyweight_curl",
+        "bodyweight curl",
+        "bodyweight biceps curl"
+      ],
+      "poster": "assets/posters/ill-F5hCRqcDOMI.jpg"
+    },
+    {
+      "id": "bicep_curl",
+      "he": "כפיפת מרפק",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "uO_CNYidOw0",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "Dumbbell biceps curl",
+        "כפיפת מרפק",
+        "bicep_curl",
+        "biceps curl",
+        "dumbbell curl",
+        "bicep curl",
+        "כפיפות מרפק",
+        "כפיפות מרפקים"
+      ],
+      "poster": "assets/posters/ill-uO_CNYidOw0.jpg"
+    },
+    {
+      "id": "bench_dips",
+      "he": "דיפס על ספסל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "c3ZGl4pAwZ4",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "Bench dips",
+        "דיפס על ספסל",
+        "bench_dips",
+        "bench dip",
+        "bench dips"
+      ],
+      "poster": "assets/posters/ill-c3ZGl4pAwZ4.jpg"
+    },
+    {
+      "id": "russian_twist",
+      "he": "טוויסט רוסי",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "wkD8rjkodUI",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "Russian twist",
+        "טוויסט רוסי",
+        "russian_twist",
+        "russian twist"
+      ],
+      "poster": "assets/posters/ill-wkD8rjkodUI.jpg"
+    },
+    {
+      "id": "leg_raise",
+      "he": "הרמת רגליים",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "0tzBVqiDwSs",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "Lying leg raise",
+        "הרמת רגליים",
+        "leg_raise",
+        "lying leg raise",
+        "leg raise"
+      ],
+      "poster": "assets/posters/ill-0tzBVqiDwSs.jpg"
+    },
+    {
+      "id": "dumbbell_step_up",
+      "he": "עליית מדרגה עם משקולות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "dumbbells",
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "DxUNi119Qzs",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Dumbbell step-up",
+        "עליית מדרגה עם משקולות",
+        "dumbbell_step_up",
+        "dumbbell step-up",
+        "dumbbell step up"
+      ],
+      "poster": "assets/posters/ill-DxUNi119Qzs.jpg"
+    },
+    {
+      "id": "decline_push_up",
+      "he": "שכיבות שיפוע",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "SKPab2YC8BE",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Decline push-up",
+        "שכיבות שיפוע",
+        "decline_push_up",
+        "decline push-up",
+        "decline push up"
+      ],
+      "poster": "assets/posters/ill-SKPab2YC8BE.jpg"
+    },
+    {
+      "id": "dumbbell_incline",
+      "he": "לחיצה בשיפוע משקולות",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "8iPEnn-ltC8",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Dumbbell incline press",
+        "לחיצה בשיפוע משקולות",
+        "dumbbell_incline",
+        "dumbbell incline press",
+        "incline dumbbell press"
+      ],
+      "poster": "assets/posters/ill-8iPEnn-ltC8.jpg"
+    },
+    {
+      "id": "incline_press",
+      "he": "לחיצה בשיפוע",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "BjGLs6KGWUc",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Incline barbell bench press",
+        "לחיצה בשיפוע",
+        "incline_press",
+        "incline press",
+        "incline bench press"
+      ],
+      "poster": "assets/posters/ill-BjGLs6KGWUc.jpg"
+    },
+    {
+      "id": "wall_walk",
+      "he": "הליכה על קיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "NK_OcHEm8yM",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "Wall walk",
+        "הליכה על קיר",
+        "wall_walk",
+        "wall walk"
+      ],
+      "poster": "assets/posters/ill-NK_OcHEm8yM.jpg"
+    },
+    {
+      "id": "front_raise",
+      "he": "הרמה קדמית",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "-t7fuZ0KhDA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "Dumbbell front raise",
+        "הרמה קדמית",
+        "front_raise",
+        "front raise",
+        "dumbbell front raise"
+      ],
+      "poster": "assets/posters/ill--t7fuZ0KhDA.jpg"
+    },
+    {
+      "id": "upright_row",
+      "he": "חתירה אנכית",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "amCU-ziHITM",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "Barbell upright row",
+        "חתירה אנכית",
+        "upright_row",
+        "upright row",
+        "barbell upright row"
+      ],
+      "poster": "assets/posters/ill-amCU-ziHITM.jpg"
+    },
+    {
+      "id": "doorway_curl",
+      "he": "כפיפה במשקוף",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "id5Bp0gSUmk",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "Doorway / door-frame biceps curl",
+        "כפיפה במשקוף",
+        "doorway_curl",
+        "doorway curl",
+        "door frame curl"
+      ],
+      "poster": "assets/posters/ill-id5Bp0gSUmk.jpg"
+    },
+    {
+      "id": "shoulder_stretch",
+      "he": "מתיחת כתף",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "h_5_0zAzU5Y",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "Cross-body shoulder stretch",
+        "מתיחת כתף",
+        "shoulder_stretch",
+        "shoulder stretch",
+        "cross-body shoulder stretch"
+      ],
+      "poster": "assets/posters/ill-h_5_0zAzU5Y.jpg"
+    },
+    {
+      "id": "dips",
+      "he": "מקבילים",
+      "muscles": [
+        "triceps",
+        "chest"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "UiirN9zI-lw",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "Parallel-bar dips",
+        "מקבילים",
+        "dips",
+        "dip",
+        "parallel-bar dips",
+        "parallel bar dips",
+        "מקבילים בסיוע",
+        "לחיצות ספסל למקבילים"
+      ],
+      "poster": "assets/posters/ill-UiirN9zI-lw.jpg"
+    },
+    {
+      "id": "hamstring_stretch",
+      "he": "מתיחת מיתר",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "5f5aHVj-f9Q",
+      "folder": "מתיחות וגמישות",
+      "available": true,
+      "aliases": [
+        "Standing hamstring stretch",
+        "מתיחת מיתר",
+        "hamstring_stretch",
+        "hamstring stretch",
+        "standing hamstring stretch",
+        "מתיחות",
+        "שחרור"
+      ],
+      "poster": "assets/posters/ill-5f5aHVj-f9Q.jpg"
+    },
+    {
+      "id": "jump_squat",
+      "he": "סקוואט קפיצה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "U4s4mEQ5VqU",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "Jump squat / squat jump",
+        "סקוואט קפיצה",
+        "jump_squat",
+        "jump squat",
+        "squat jump"
+      ],
+      "poster": "assets/posters/ill-U4s4mEQ5VqU.jpg"
+    },
+    {
+      "id": "side_lunge",
+      "he": "מכרע הצידה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "gwWv7aPcD88",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Lateral lunge",
+        "מכרע הצידה",
+        "side_lunge",
+        "side lunge",
+        "lateral lunge"
+      ],
+      "poster": "assets/posters/ill-gwWv7aPcD88.jpg"
+    },
+    {
+      "id": "box_jump",
+      "he": "ניתורים על ארגז",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "h1YkVa7mnRU",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "Box jump",
+        "ניתורים על ארגז",
+        "box_jump",
+        "box jump"
+      ],
+      "poster": "assets/posters/ill-h1YkVa7mnRU.jpg"
+    },
+    {
+      "id": "bird_dog",
+      "he": "אולר יד לרגל נגדית",
+      "muscles": [
+        "core",
+        "back"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ZdAHe9_HeEw",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "Bird dog (opposite arm and leg)",
+        "אולר יד לרגל נגדית",
+        "bird_dog",
+        "bird dog",
+        "bird-dog"
+      ],
+      "poster": "assets/posters/ill-ZdAHe9_HeEw.jpg"
+    },
+    {
+      "id": "knee_push_up",
+      "he": "שכיבות סמיכה על ברכיים",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "lFR1GWy1Dcs",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Knee / modified push-up",
+        "שכיבות סמיכה על ברכיים",
+        "knee_push_up",
+        "knee push-up",
+        "knee push up",
+        "modified push-up"
+      ],
+      "poster": "assets/posters/ill-lFR1GWy1Dcs.jpg"
+    },
+    {
+      "id": "wall_push_up",
+      "he": "שכיבות סמיכה לקיר",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "wIPJvBQs7RA",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Wall push-up",
+        "שכיבות סמיכה לקיר",
+        "wall_push_up",
+        "wall push-up",
+        "wall push up"
+      ],
+      "poster": "assets/posters/ill-wIPJvBQs7RA.jpg"
+    },
+    {
+      "id": "chair_squat",
+      "he": "סקוואט למשען כיסא",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "OViE2ghEop0",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Chair squat / sit-to-stand",
+        "סקוואט למשען כיסא",
+        "chair_squat",
+        "chair squat",
+        "sit-to-stand"
+      ],
+      "poster": "assets/posters/ill-OViE2ghEop0.jpg"
+    },
+    {
+      "id": "hip_thrust",
+      "he": "היפ תרסט",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "SEdqd1n0cvg",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "Hip thrust",
+        "היפ תרסט",
+        "hip_thrust",
+        "hip thrust"
+      ],
+      "poster": "assets/posters/ill-SEdqd1n0cvg.jpg"
+    },
+    {
+      "id": "yt_hand_release_push_up",
+      "he": "שכיבות סמיכה עם ניתוק ידיים",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "dFI0VWMqxIk",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "Hand-release push-up",
+        "שכיבות סמיכה עם ניתוק ידיים",
+        "miluim-hr-pushups",
+        "yt_hand_release_push_up",
+        "hand-release push-up",
+        "hand release push-up"
+      ],
+      "poster": "assets/posters/ill-dFI0VWMqxIk.jpg"
+    },
+    {
+      "id": "tuck_jump",
+      "he": "ניתורים במקום עם ברכיים לחזה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "r7oBejx1PHM",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "tuck jump",
+        "tuck jumps",
+        "ניתורים במקום עם ברכיים לחזה",
+        "tuck_jump"
+      ],
+      "poster": "assets/posters/ill-r7oBejx1PHM.jpg"
+    },
+    {
+      "id": "hand_walk_out",
+      "he": "הליכה על הידיים",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "3hcMM8pQWZ0",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "hand walk out",
+        "hand walk outs",
+        "inchworm",
+        "הליכה על הידיים",
+        "hand_walk_out"
+      ],
+      "poster": "assets/posters/ill-3hcMM8pQWZ0.jpg"
+    },
+    {
+      "id": "sprawl",
+      "he": "ניתור לאדמה וגלגול",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "J0kcsLXX1Ms",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "sprawl",
+        "ניתור לאדמה וגלגול",
+        "ניתור לאדמה",
+        "גלגול"
+      ],
+      "poster": "assets/posters/ill-J0kcsLXX1Ms.jpg"
+    },
+    {
+      "id": "med_ball_overhead_throw",
+      "he": "זריקות כדור כוח מעל הראש",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "2aOV5ZhnRaM",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "medicine ball overhead throw",
+        "medicine ball catch and overhead throw",
+        "זריקות כדור כוח מעל הראש",
+        "זריקות כדור כוח",
+        "מסירות כדור כוח",
+        "מסירות כדור כוח בכל יד",
+        "med_ball_overhead_throw"
+      ],
+      "poster": "assets/posters/ill-2aOV5ZhnRaM.jpg"
+    },
+    {
+      "id": "agility_5_10_5",
+      "he": "ריצת הסעה 5-10-5",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "fZoJVVuqY3U",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "5-10-5",
+        "5-10-5 shuttle",
+        "shuttle run",
+        "צעדי איילה",
+        "תנועה הצידה",
+        "תנועה לאחור",
+        "תנועה לפנים",
+        "תנועה לאחור ונגיעה",
+        "תנועה לפנים ונגיעה",
+        "agility_5_10_5",
+        "תנועה הצידה ונגיעה",
+        "נגיעה"
+      ],
+      "poster": "assets/posters/ill-fZoJVVuqY3U.jpg"
+    },
+    {
+      "id": "bodyweight_reverse_fly",
+      "he": "פרפר הפוך משקל גוף",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "BpbZC_Pd4XU",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "bodyweight reverse fly",
+        "פרפר הפוך משקל גוף",
+        "reverse_fly_bw",
+        "bodyweight_reverse_fly"
+      ],
+      "poster": "assets/posters/ill-BpbZC_Pd4XU.jpg"
+    },
+    {
+      "id": "walking_push_up",
+      "he": "שכיבות סמיכה בהתקדמות",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "l7ZmX1eaXLo",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "walking push-up",
+        "walking pushups",
+        "walking push up",
+        "traveling push-up",
+        "שכיבות סמיכה בהתקדמות",
+        "walking_push_up"
+      ],
+      "poster": "assets/posters/ill-l7ZmX1eaXLo.jpg"
+    },
+    {
+      "id": "fast_feet",
+      "he": "אדמה בוערת",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "eT5M1goPDhY",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "fast feet",
+        "hot feet",
+        "אדמה בוערת",
+        "fast_feet"
+      ],
+      "poster": "assets/posters/ill-eT5M1goPDhY.jpg"
+    },
+    {
+      "id": "kneeling_jump",
+      "he": "ניתורים בכריעת ברך",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "4qK55avGyy4",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "kneeling jump",
+        "kneeling jump squat",
+        "ניתורים בכריעת ברך",
+        "kneeling_jump"
+      ],
+      "poster": "assets/posters/ill-4qK55avGyy4.jpg"
+    },
+    {
+      "id": "dead_hang",
+      "he": "תלייה פסיבית",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "3CEmHJXbNpc",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "passive dead hang",
+        "dead hang",
+        "How to dead hang",
+        "תלייה פסיבית",
+        "תלייה",
+        "dead_hang"
+      ],
+      "poster": "assets/posters/ill-3CEmHJXbNpc.jpg"
+    },
+    {
+      "id": "run_3000",
+      "he": "ריצת 3000 מ׳",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "bMeXQfQJ36E",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "ריצה קלה",
+        "ריצה רצופה",
+        "אינטרוולים",
+        "ריצת 3000",
+        "ריצת 3000 מ׳",
+        "ריצת קצב",
+        "ריצה",
+        "הליכה/ריצה קלה",
+        "הליכה לשחרור",
+        "שחרור והליכה",
+        "3000m run",
+        "run_3000",
+        "ריצה בקצב יעד",
+        "ריצת בקצב יעד"
+      ],
+      "poster": "assets/posters/ill-bMeXQfQJ36E.jpg"
+    },
+    {
+      "id": "yt_kids_basketball_passing",
+      "he": "ילדים מסירות כדורסל בזוגות ובקבוצה",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "AWVgKM_9Yq4",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "basketball passing drills for kids",
+        "מסירות כדורסל לילדים"
+      ],
+      "poster": "assets/posters/ill-AWVgKM_9Yq4.jpg"
+    },
+    {
+      "id": "yt_basketball_cone_shuffle_pass",
+      "he": "מסירות כדורסל בין 4 קונוסים עם בן זוג מוסר",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "legs"
+      ],
+      "equipment": [
+        "basketball",
+        "cones",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "lVIvCLNZAnk",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "4 cone shuffle pass",
+        "basketball cone shuffle pass"
+      ],
+      "poster": "assets/posters/ill-lVIvCLNZAnk.jpg"
+    },
+    {
+      "id": "yt_basketball_shot_fake_rebound",
+      "he": "כדורסל: הטעיית זריקה, סיומת וריבאונד",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "_fTiRodznP0",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "shot fake finish rebounding drill"
+      ],
+      "poster": "assets/posters/ill-_fTiRodznP0.jpg"
+    },
+    {
+      "id": "yt_basketball_figure8_dribble",
+      "he": "כדרור שמינייה בכדורסל",
+      "muscles": [
+        "legs",
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ZPhiBKqDXEQ",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "figure 8 dribbling",
+        "כדרור שמינייה"
+      ],
+      "poster": "assets/posters/ill-ZPhiBKqDXEQ.jpg"
+    },
+    {
+      "id": "yt_kids_soccer_dribbling",
+      "he": "ילדים כדרור כדורגל למתחילים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "O-njByyCFk4",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "dribbling drills for young soccer players",
+        "כדרור כדורגל לילדים"
+      ],
+      "poster": "assets/posters/ill-O-njByyCFk4.jpg"
+    },
+    {
+      "id": "yt_soccer_cone_weave",
+      "he": "כדרור כדורגל בזיגזג בין קונוסים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "cones"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "vnngDOCy9C8",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "cone weave dribbling",
+        "כדרור בין קונוסים"
+      ],
+      "poster": "assets/posters/ill-vnngDOCy9C8.jpg"
+    },
+    {
+      "id": "yt_partner_soccer_passing",
+      "he": "זוגות מסירות כדורגל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "2TVbVAT1XfA",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "simple passing drill",
+        "מסירות כדורגל בזוגות"
+      ],
+      "poster": "assets/posters/ill-2TVbVAT1XfA.jpg"
+    },
+    {
+      "id": "yt_soccer_diamond_rondo",
+      "he": "רונדו יהלום: מסירות כדורגל קבוצתיות",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "rLMQOZ2S3ko",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "diamond rondo",
+        "רונדו"
+      ],
+      "poster": "assets/posters/ill-rLMQOZ2S3ko.jpg"
+    },
+    {
+      "id": "yt_soccer_throw_in",
+      "he": "זריקת חוץ בכדורגל",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "PVd-ZTfPBiI",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "throw-in",
+        "throw in",
+        "זריקת חוץ"
+      ],
+      "poster": "assets/posters/ill-PVd-ZTfPBiI.jpg"
+    },
+    {
+      "id": "yt_soccer_4cone_agility",
+      "he": "זריזות כדורגל ב-4 קונוסים עם גומיות רגליים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "cones",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "6W4ZFdtlRVA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "soccer 4 cone drill",
+        "kbands soccer"
+      ],
+      "poster": "assets/posters/ill-6W4ZFdtlRVA.jpg"
+    },
+    {
+      "id": "yt_soccer_ladder_passing",
+      "he": "סולם זריזות עם מסירות וסיומת בכדורגל",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "football",
+        "ladder"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "rspFRO0U-NM",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "soccer agility ladder passing and finishing"
+      ],
+      "poster": "assets/posters/ill-rspFRO0U-NM.jpg"
+    },
+    {
+      "id": "yt_kids_partner_tennis_catch",
+      "he": "ילדים וזוגות: תפיסת כדור טניס לקואורדינציה",
+      "muscles": [
+        "shoulders",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "C517fq9-DpE",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "tennis hand-eye coordination kids"
+      ],
+      "poster": "assets/posters/ill-C517fq9-DpE.jpg"
+    },
+    {
+      "id": "yt_partner_tennis_ball_drop",
+      "he": "זוגות: תפיסת כדור טניס נופל (תגובה)",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "-pudLqL4GdA",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "tennis ball drop",
+        "ball drop reaction drill"
+      ],
+      "poster": "assets/posters/ill--pudLqL4GdA.jpg"
+    },
+    {
+      "id": "yt_partner_tennis_return",
+      "he": "זוגות: החזרת הגשה בטניס לזמן תגובה",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "tennis-ball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "mY0j4CgxgIQ",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "return of serve drills",
+        "החזרת הגשה"
+      ],
+      "poster": "assets/posters/ill-mY0j4CgxgIQ.jpg"
+    },
+    {
+      "id": "yt_partner_superband",
+      "he": "זוגות אימון גומייה לכל הגוף",
+      "muscles": [
+        "chest",
+        "back",
+        "shoulders",
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "sUIX2XTkQ7I",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "partner superband workout",
+        "גומייה בזוגות"
+      ],
+      "poster": "assets/posters/ill-sUIX2XTkQ7I.jpg"
+    },
+    {
+      "id": "yt_mini_band_upper",
+      "he": "גומייה קטנה לפלג גוף עליון",
+      "muscles": [
+        "shoulders",
+        "back",
+        "biceps",
+        "triceps"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "bgyd3SeZFtA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "mini band upper body workout"
+      ],
+      "poster": "assets/posters/ill-bgyd3SeZFtA.jpg"
+    },
+    {
+      "id": "yt_band_face_pull",
+      "he": "פייס פול עם גומייה",
+      "muscles": [
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "jF5CK2nk0p8",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "banded face pull",
+        "face pull band"
+      ],
+      "poster": "assets/posters/ill-fZCpv4VG92E.jpg"
+    },
+    {
+      "id": "yt_band_assisted_pull_up",
+      "he": "מתח בסיוע גומייה",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "bar",
+        "band"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "023lBUV3Q9E",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "band assisted pull up",
+        "מתח עם גומייה"
+      ],
+      "poster": "assets/posters/ill-023lBUV3Q9E.jpg"
+    },
+    {
+      "id": "yt_kids_partner_kettlebell",
+      "he": "ילדים וזוגות: אימון קטלבל משפחתי קל",
+      "muscles": [
+        "legs",
+        "back",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "YVgoabOknrA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "kettlebell kids workout",
+        "קטלבל לילדים"
+      ],
+      "poster": "assets/posters/ill-YVgoabOknrA.jpg"
+    },
+    {
+      "id": "yt_kb_floor_press",
+      "he": "לחיצת קטלבל בשכיבה על הרצפה",
+      "muscles": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "eDQ0IVCooKo",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "kettlebell floor press"
+      ],
+      "poster": "assets/posters/ill-eDQ0IVCooKo.jpg"
+    },
+    {
+      "id": "yt_kb_curl",
+      "he": "כפיפת מרפקים עם קטלבל",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "kettlebell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "u5eS2ns5cek",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "kettlebell curl"
+      ],
+      "poster": "assets/posters/ill-u5eS2ns5cek.jpg"
+    },
+    {
+      "id": "yt_banded_kb_swing",
+      "he": "סווינג קטלבל עם גומייה",
+      "muscles": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "equipment": [
+        "kettlebell",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "UqpiMY9GktA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "banded kettlebell swing"
+      ],
+      "poster": "assets/posters/ill-UqpiMY9GktA.jpg"
+    },
+    {
+      "id": "yt_barbell_curl",
+      "he": "כפיפת מרפקים עם מוט",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "JnLFSFurrqQ",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "barbell curl"
+      ],
+      "poster": "assets/posters/ill-JnLFSFurrqQ.jpg"
+    },
+    {
+      "id": "yt_barbell_skull_crusher",
+      "he": "סקאל קראשר עם מוט",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "z0A01lCHKk8",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "skull crusher",
+        "lying triceps extension"
+      ],
+      "poster": "assets/posters/ill-z0A01lCHKk8.jpg"
+    },
+    {
+      "id": "yt_banded_barbell_squat",
+      "he": "סקוואט מוט עם גומיות",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "barbell",
+        "band"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Mt7R8RvWkzc",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "banded barbell squat"
+      ],
+      "poster": "assets/posters/ill-Mt7R8RvWkzc.jpg"
+    },
+    {
+      "id": "yt_power_clean",
+      "he": "פאוור קלין (הנפת מוט לכתפיים)",
+      "muscles": [
+        "legs",
+        "back",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "barbell"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "E2z5zK5V-MM",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "power clean",
+        "פאוור קלין"
+      ],
+      "poster": "assets/posters/ill-E2z5zK5V-MM.jpg"
+    },
+    {
+      "id": "yt_machine_chest_press",
+      "he": "לחיצת חזה במכונה",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "ZPteUPefxEg",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "machine chest press"
+      ],
+      "poster": "assets/posters/ill-ZPteUPefxEg.jpg"
+    },
+    {
+      "id": "yt_hack_squat_machine",
+      "he": "האק סקוואט במכונה",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "sw-5KcVZVk8",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "hack squat"
+      ],
+      "poster": "assets/posters/ill-sw-5KcVZVk8.jpg"
+    },
+    {
+      "id": "yt_cable_woodchop",
+      "he": "חטיבת עצים בכבל (וודצ'ופ)",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "machine"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "N-_CloFzrNA",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "cable woodchop",
+        "woodchop"
+      ],
+      "poster": "assets/posters/ill-N-_CloFzrNA.jpg"
+    },
+    {
+      "id": "yt_kids_jackpot_ball_game",
+      "he": "ילדים משחק ג'קפוט: זריקה ותפיסה בכדור",
+      "muscles": [
+        "shoulders",
+        "chest",
+        "legs"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "QuayentSsKQ",
+      "folder": "חימום",
+      "available": true,
+      "aliases": [
+        "jackpot game",
+        "throwing and catching game"
+      ],
+      "poster": "assets/posters/ill-QuayentSsKQ.jpg"
+    },
+    {
+      "id": "yt_swiss_ball_curl",
+      "he": "כפיפת מרפקים בישיבה על כדור פיזיו",
+      "muscles": [
+        "biceps",
+        "core"
+      ],
+      "equipment": [
+        "ball",
+        "dumbbells"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "vlZxROzhH34",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "swiss ball seated curl"
+      ],
+      "poster": "assets/posters/ill-vlZxROzhH34.jpg"
+    },
+    {
+      "id": "yt_swiss_ball_pike",
+      "he": "פייק על כדור פיזיו",
+      "muscles": [
+        "core",
+        "shoulders"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "vo3csqN6rpo",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "swiss ball pike",
+        "stability ball pike"
+      ],
+      "poster": "assets/posters/ill-vo3csqN6rpo.jpg"
+    },
+    {
+      "id": "yt_partner_med_ball",
+      "he": "זוגות אימון כדור כוח",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "core"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "IjJsHWoCKxs",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "partner med ball workout",
+        "כדור כוח בזוגות"
+      ],
+      "poster": "assets/posters/ill-IjJsHWoCKxs.jpg"
+    },
+    {
+      "id": "yt_wall_squat_angels",
+      "he": "ישיבה על קיר עם מלאכי קיר",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "back"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "VamQSMBCmEA",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "wall squat with wall angels",
+        "מלאכי קיר"
+      ],
+      "poster": "assets/posters/ill-VamQSMBCmEA.jpg"
+    },
+    {
+      "id": "yt_stairs_full_workout",
+      "he": "אימון כושר על מדרגות",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "GQV8mJaTvtA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "stairs workout"
+      ],
+      "poster": "assets/posters/ill-GQV8mJaTvtA.jpg"
+    },
+    {
+      "id": "yt_stairs_plyo_power",
+      "he": "אימון פליאומטרי במדרגות לכוח מתפרץ",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "swKfVF81dmY",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "plyometric stair workout",
+        "stair sprints"
+      ],
+      "poster": "assets/posters/ill-swKfVF81dmY.jpg"
+    },
+    {
+      "id": "yt_agility_ladder_30",
+      "he": "סולם זריזות: 30 תרגילים עד רמה מתקדמת",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "ladder"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "67XP-AekUoA",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "30 agility ladder drills"
+      ],
+      "poster": "assets/posters/ill-67XP-AekUoA.jpg"
+    },
+    {
+      "id": "yt_hula_hoop_cardio",
+      "he": "חישוק: אימון קרדיו",
+      "muscles": [
+        "core",
+        "legs"
+      ],
+      "equipment": [
+        "hoop"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "XMdmcWp4om8",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "hula hoop cardio",
+        "הולה הופ"
+      ],
+      "poster": "assets/posters/ill-XMdmcWp4om8.jpg"
+    },
+    {
+      "id": "yt_cone_agility_advanced",
+      "he": "5 תרגילי זריזות מאתגרים עם קונוסים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "cones"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "FRWMRZ_64co",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "challenging agility cone drills",
+        "3 cone drill"
+      ],
+      "poster": "assets/posters/ill-FRWMRZ_64co.jpg"
+    },
+    {
+      "id": "yt_stairs_incline_push_up",
+      "he": "שכיבות סמיכה בשיפוע על מדרגות",
+      "muscles": [
+        "chest",
+        "triceps",
+        "shoulders"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "5IICgggYJjw",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "incline push-up off stairs",
+        "stair push up"
+      ],
+      "poster": "assets/posters/ill-5IICgggYJjw.jpg"
+    },
+    {
+      "id": "yt_overhead_ball_tricep_extension",
+      "he": "פשיטת מרפקים מעל הראש עם כדור",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "EyS4DpiureM",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "medicine ball tricep extension",
+        "overhead ball tricep extension",
+        "פשיטת מרפקים עם כדור"
+      ],
+      "poster": "assets/posters/ill-EyS4DpiureM.jpg"
+    },
+    {
+      "id": "yt_basketball_close_grip_pushup",
+      "he": "שכיבות סמיכה צמודות על כדורסל",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "basketball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Qyz-i83vqCQ",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "basketball close grip push ups",
+        "שכיבות סמיכה צמודות בכדורסל"
+      ],
+      "poster": "assets/posters/ill-Qyz-i83vqCQ.jpg"
+    },
+    {
+      "id": "yt_kids_floor_tricep_dips",
+      "he": "מקבילים בישיבה על הרצפה לילדים",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "IIG_9I97cIA",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "exercise for kids triceps dips",
+        "מקבילים לילדים",
+        "kids floor tricep dips"
+      ],
+      "poster": "assets/posters/ill-IIG_9I97cIA.jpg"
+    },
+    {
+      "id": "yt_tiger_bend_pushups",
+      "he": "שכיבות סמיכה טייגר בנד",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "71XcAgEGQzY",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "tiger bend push-ups",
+        "tiger bend pushups"
+      ],
+      "poster": "assets/posters/ill-71XcAgEGQzY.jpg"
+    },
+    {
+      "id": "yt_kids_pull_ups",
+      "he": "עליות מתח לילדים",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "eSPO3E7Qoy4",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "how to pull up active moves for kids",
+        "מתח לילדים",
+        "kids pull ups"
+      ],
+      "poster": "assets/posters/ill-eSPO3E7Qoy4.jpg"
+    },
+    {
+      "id": "yt_partner_assisted_pull_ups",
+      "he": "מתח בעזרת בן זוג",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "GCpVLHjHHmc",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "partner assisted pull-up",
+        "מתח בסיוע בן זוג"
+      ],
+      "poster": "assets/posters/ill-GCpVLHjHHmc.jpg"
+    },
+    {
+      "id": "yt_kids_stair_jumps",
+      "he": "קפיצות מדרגות לילדים",
+      "muscles": [
+        "legs"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "beginner",
+      "source": "youtube",
+      "youtubeId": "OB04mv3yzMY",
+      "folder": "רגליים",
+      "available": true,
+      "aliases": [
+        "stair jumps",
+        "קפיצות מדרגות",
+        "kids stair jumps"
+      ],
+      "poster": "assets/posters/ill-OB04mv3yzMY.jpg"
+    },
+    {
+      "id": "yt_partner_stair_workout",
+      "he": "אימון מדרגות בזוגות",
+      "muscles": [
+        "core"
+      ],
+      "equipment": [
+        "stairs"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "AJn_U3dWC7M",
+      "folder": "בטן",
+      "available": true,
+      "aliases": [
+        "partner stair workout",
+        "אימון מדרגות עם בן זוג"
+      ],
+      "poster": "assets/posters/ill-AJn_U3dWC7M.jpg"
+    },
+    {
+      "id": "yt_resistance_band_pushups",
+      "he": "שכיבות סמיכה עם גומייה",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "band"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Hzhyjhq9tQo",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "resistance band push ups",
+        "שכיבות סמיכה עם גומיית התנגדות"
+      ],
+      "poster": "assets/posters/ill-Hzhyjhq9tQo.jpg"
+    },
+    {
+      "id": "yt_soccer_ball_back_pushup",
+      "he": "שכיבות סמיכה עם כדורגל על הגב",
+      "muscles": [
+        "chest"
+      ],
+      "equipment": [
+        "football"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "1S7DX4UmqWg",
+      "folder": "חזה",
+      "available": true,
+      "aliases": [
+        "soccer ball on back push up",
+        "שכיבות סמיכה עם כדורגל"
+      ],
+      "poster": "assets/posters/ill-1S7DX4UmqWg.jpg"
+    },
+    {
+      "id": "yt_kids_burpees",
+      "he": "ברפי לילדים",
+      "muscles": [
+        "legs",
+        "core"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "Y8TIp7s38gw",
+      "folder": "קרדיו",
+      "available": true,
+      "aliases": [
+        "burpee fitness for kids",
+        "ברפיז לילדים",
+        "kids burpees"
+      ],
+      "poster": "assets/posters/ill-Y8TIp7s38gw.jpg"
+    },
+    {
+      "id": "yt_archer_pull_ups",
+      "he": "מתח קשת",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "Z7GdTkOEe5Y",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "archer pull-up",
+        "archer pull ups"
+      ],
+      "poster": "assets/posters/ill-Z7GdTkOEe5Y.jpg"
+    },
+    {
+      "id": "yt_wall_handstand_pushups",
+      "he": "שכיבות סמיכה בעמידת ידיים מול קיר",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "wall"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "WxgJS48wf1M",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "wall facing handstand push up",
+        "שכיבות סמיכה בעמידת ידיים"
+      ],
+      "poster": "assets/posters/ill-WxgJS48wf1M.jpg"
+    },
+    {
+      "id": "yt_pelican_curls",
+      "he": "כפיפות פליקן לדו־ראשי",
+      "muscles": [
+        "biceps"
+      ],
+      "equipment": [
+        "bar"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "ElJAjY8kZc4",
+      "folder": "יד קדמית",
+      "available": true,
+      "aliases": [
+        "pelican curls",
+        "calisthenics bodyweight bicep pelican curls"
+      ],
+      "poster": "assets/posters/ill-ElJAjY8kZc4.jpg"
+    },
+    {
+      "id": "yt_bodyweight_skull_crushers",
+      "he": "סקאל קראשרס במשקל גוף",
+      "muscles": [
+        "triceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "TMp6cr2oV74",
+      "folder": "יד אחורית",
+      "available": true,
+      "aliases": [
+        "bodyweight skull crushers",
+        "סקאל קראשר משקל גוף"
+      ],
+      "poster": "assets/posters/ill-TMp6cr2oV74.jpg"
+    },
+    {
+      "id": "yt_swiss_ball_back_extension",
+      "he": "פשיטת גב על כדור פיזיו",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "ZvKCgtHZam0",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "stability ball back extension",
+        "swiss ball hyperextension",
+        "פשיטת גב על כדור יציבות"
+      ],
+      "poster": "assets/posters/ill-ZvKCgtHZam0.jpg"
+    },
+    {
+      "id": "yt_tennis_ball_pull_ups",
+      "he": "מתח עם כדורי טניס",
+      "muscles": [
+        "back"
+      ],
+      "equipment": [
+        "bar",
+        "tennis-ball"
+      ],
+      "level": "intermediate",
+      "source": "youtube",
+      "youtubeId": "jt7he-sC1LY",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "tennis ball pull-ups",
+        "tennis ball pullups"
+      ],
+      "poster": "assets/posters/ill-jt7he-sC1LY.jpg"
+    },
+    {
+      "id": "elevated_pike_pushup",
+      "he": "שכיבות סמיכה פייק עם רגליים מוגבהות",
+      "muscles": [
+        "shoulders"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "T5tjopRuWHA",
+      "folder": "כתפיים",
+      "available": true,
+      "aliases": [
+        "elevated pike push up",
+        "elevated pike push-up",
+        "pike push up with elevated feet",
+        "פייק פוש אפ עם רגליים מוגבהות"
+      ],
+      "poster": "assets/posters/ill-T5tjopRuWHA.jpg"
+    },
+    {
+      "id": "inverted_table_row",
+      "he": "חתירה הפוכה מתחת לשולחן עם רגליים על כיסא",
+      "muscles": [
+        "back",
+        "biceps"
+      ],
+      "equipment": [
+        "none"
+      ],
+      "level": "advanced",
+      "source": "youtube",
+      "youtubeId": "OYUxXMGVuuU",
+      "folder": "גב",
+      "available": true,
+      "aliases": [
+        "inverted table row",
+        "table inverted row feet on chair",
+        "חתירה הפוכה מתחת לשולחן"
+      ],
+      "poster": "assets/posters/ill-OYUxXMGVuuU.jpg"
+    }
+  ]
+}

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrainerHub — התאמה אישית | דוגמה חזותית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --th-bg:#F4F7F6; --th-surface:#FFFFFF; --th-surface2:#E9F0EE;
+  --th-ink:#0F1B19; --th-muted:#4B5B57; --th-line:#D6E0DD;
+  --th-teal:#00756A; --th-on-teal:#FFFFFF; --th-teal-soft:#D5F2EC; --th-teal-ink:#00584F;
+  --th-orange:#FF7A2F; --th-on-orange:#1A0E05; --th-orange-ink:#B03F06; --th-orange-soft:#FFE8DA;
+  --th-hero:#0F1B19; --th-on-hero:#FFFFFF;
+  --th-font:'Heebo',system-ui,'Segoe UI',Arial,sans-serif;
+  --th-r-sm:12px; --th-r-md:14px; --th-r-lg:18px; --th-r-xl:22px;
+  --th-shadow:0 1px 2px rgba(15,27,25,.06),0 8px 24px rgba(15,27,25,.06);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--th-bg);color:var(--th-ink);font-family:var(--th-font);font-size:16px;line-height:1.65}
+a{color:var(--th-teal)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* header */
+.topbar{background:var(--th-surface);border-bottom:1px solid var(--th-line);position:sticky;top:0;z-index:10}
+.topbar-in{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap;padding:10px 0}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.brand .cta{background:var(--th-teal);color:var(--th-on-teal);border-radius:999px;padding:7px 16px;font-weight:600;font-size:14px;text-decoration:none}
+.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+.nav a{color:var(--th-muted);text-decoration:none;font-weight:500}
+.nav a.on{color:var(--th-teal);font-weight:700}
+
+.ribbon{background:var(--th-orange-soft);border-bottom:1px solid var(--th-line);color:var(--th-orange-ink);font-size:13px;font-weight:600;text-align:center;padding:7px 14px}
+
+main{padding:28px 0 60px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+.card{background:var(--th-surface);border:1px solid var(--th-line);border-radius:var(--th-r-lg);box-shadow:var(--th-shadow);padding:22px 24px}
+.card h1{font-size:26px;margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
+.card h2{font-size:18px;margin:0 0 12px;font-weight:800}
+.sub{color:var(--th-muted);font-size:14px;margin:0 0 16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.chip{background:var(--th-surface2);border-radius:999px;padding:5px 13px;font-size:13px;font-weight:600;color:var(--th-teal-ink)}
+
+/* profile inputs */
+.profile{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:560px){.profile{grid-template-columns:repeat(2,1fr)}}
+.f label{display:block;font-size:12px;color:var(--th-muted);font-weight:600;margin-bottom:3px}
+.f input,.f select{width:100%;border:1px solid var(--th-line);border-radius:var(--th-r-sm);padding:8px 10px;font-family:var(--th-font);font-size:14px;background:var(--th-surface);color:var(--th-ink)}
+.f input:focus,.f select:focus{outline:2px solid var(--th-teal);outline-offset:0}
+
+/* verdict */
+.verdict{border:2px solid var(--th-teal);border-radius:var(--th-r-lg);background:var(--th-surface);box-shadow:var(--th-shadow);overflow:hidden}
+.verdict-head{background:var(--th-teal);color:var(--th-on-teal);padding:14px 22px}
+.verdict-head .t{font-weight:800;font-size:17px}
+.verdict-head .s{font-size:13px;opacity:.9}
+.verdict-body{padding:18px 22px}
+.shape-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--th-teal-soft);border-radius:var(--th-r-sm);padding:10px 14px;margin:0 0 14px;font-size:14px}
+.shape-line b{color:var(--th-teal-ink)}
+.params{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:480px){.params{grid-template-columns:1fr 1fr}}
+.param{background:var(--th-surface2);border-radius:var(--th-r-sm);padding:9px 11px;text-align:center}
+.param .v{font-size:17px;font-weight:800;color:var(--th-teal-ink)}
+.param .l{font-size:11.5px;color:var(--th-muted)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0 0 6px}
+@media(max-width:560px){.week{grid-template-columns:repeat(4,1fr)}}
+.day{border:1px solid var(--th-line);border-radius:var(--th-r-sm);padding:7px 4px;text-align:center;font-size:12px}
+.day b{display:block;font-size:12.5px}
+.day .d{color:var(--th-muted);font-size:11px}
+.day.hi{background:var(--th-teal-soft);border-color:var(--th-teal)}
+.day.hi b{color:var(--th-teal-ink)}
+
+/* workout */
+.ex{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px dashed var(--th-line)}
+.ex:last-of-type{border-bottom:0}
+.ex .n{font-weight:700}
+.ex .why{display:block;color:var(--th-muted);font-size:13px;font-weight:400}
+.ex .dose{white-space:nowrap;font-weight:600;color:var(--th-teal-ink);font-size:14px;direction:ltr;unicode-bidi:isolate}
+.added{background:var(--th-teal-soft);border-radius:var(--th-r-sm);padding:10px 14px;margin-top:14px;font-size:14px}
+.added b{color:var(--th-teal-ink)}
+.focus-list{margin:0;padding-right:18px}
+.focus-list li{margin-bottom:7px;font-size:14.5px}
+
+/* side mapping table */
+.map{width:100%;border-collapse:collapse;font-size:13px}
+.map th,.map td{padding:8px 8px;border-bottom:1px dashed var(--th-line);text-align:right;vertical-align:top}
+.map th{color:var(--th-muted);font-size:12px;font-weight:700}
+.map td b{color:var(--th-teal-ink)}
+.foot-note{color:var(--th-muted);font-size:12.5px;margin:12px 0 0}
+footer{border-top:1px solid var(--th-line);color:var(--th-muted);font-size:13px;padding:18px 0;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <div class="brand"><b>TrainerHub</b><a class="cta" href="#">בנה אימון</a></div>
+    <nav class="nav" aria-label="ניווט">
+      <a href="#" class="on">בנה אימון</a><a href="#">פרופיל מתאמן</a><a href="#">יומן ביצוע</a><a href="#">ניהול מאגר</a>
+    </nav>
+  </div>
+</div>
+<div class="ribbon">דוגמה חזותית לפיצ'ר "התאמה אישית" — מוצג מחוץ לאתר החי, לא בשימוש בפועל</div>
+
+<main class="wrap">
+  <div class="grid">
+
+    <div>
+      <!-- trainee profile -->
+      <section class="card" aria-labelledby="prof-title">
+        <h1 id="prof-title">פרופיל מתאמן</h1>
+        <p class="sub">המדריך מזין פעם אחת — כל אימון שנבנה מותאם אוטומטית</p>
+        <div class="profile">
+          <div class="f"><label for="h">גובה (ס"מ)</label><input id="h" type="number" value="178"></div>
+          <div class="f"><label for="w">משקל (ק"ג)</label><input id="w" type="number" value="88"></div>
+          <div class="f"><label for="wc">היקף מותן (ס"מ)</label><input id="wc" type="number" value="96"></div>
+          <div class="f"><label for="hc">היקף ירכיים (ס"מ)</label><input id="hc" type="number" value="102"></div>
+          <div class="f"><label for="g">מטרה</label><select id="g"><option>ירידה בשומן</option><option>בניית מסת שריר</option><option>כושר כללי</option></select></div>
+          <div class="f"><label for="x">ותק</label><select id="x"><option>ביניים</option><option>מתחיל</option><option>מתקדם</option></select></div>
+          <div class="f"><label for="d">ימי אימון בשבוע</label><select id="d"><option>4</option><option>3</option><option>5</option></select></div>
+          <div class="f"><label for="eq">ציוד זמין</label><select id="eq"><option>בית — בלי ציוד</option><option>מכון כושר</option><option>מתח + גומיות</option></select></div>
+        </div>
+      </section>
+
+      <!-- engine verdict -->
+      <section class="verdict" style="margin-top:20px" aria-labelledby="fit-title">
+        <div class="verdict-head">
+          <div class="t" id="fit-title">סוג האימון שמתאים לגוף שלך</div>
+          <div class="s">חושב לפי המדדים והמטרה שהוזנו</div>
+        </div>
+        <div class="verdict-body">
+          <div class="shape-line"><b>צורת הגוף:</b> מבנה חזק וכתפיים רחבות, עם שכבת שומן בטנית בולטת &nbsp;•&nbsp; <b>דגש האימון:</b> כוח בסיסי + אירובי קצר לשריפת השומן שמעל השריר</div>
+          <div class="params" aria-label="פרמטרים מותאמים">
+            <div class="param"><div class="v">8–12</div><div class="l">טווח חזרות</div></div>
+            <div class="param"><div class="v">90 שניות</div><div class="l">מנוחה בין סטים</div></div>
+            <div class="param"><div class="v">2–3</div><div class="l">חזרות בעודף (RIR)</div></div>
+            <div class="param"><div class="v">~10</div><div class="l">סטים לשריר בשבוע</div></div>
+            <div class="param"><div class="v">2</div><div class="l">אימוני אירובי קצרים</div></div>
+            <div class="param"><div class="v">500 קק"ל</div><div class="l">גירעון יומי מומלץ</div></div>
+          </div>
+          <div class="week" aria-label="מבנה שבועי">
+            <div class="day"><b>א'</b><span class="d">עליון — כוח</span></div>
+            <div class="day hi"><b>ב'</b><span class="d">אירובי קצר</span></div>
+            <div class="day"><b>ג'</b><span class="d">תחתון — כוח</span></div>
+            <div class="day"><b>ד'</b><span class="d">מנוחה</span></div>
+            <div class="day"><b>ה'</b><span class="d">עליון — כוח</span></div>
+            <div class="day hi"><b>ו'</b><span class="d">אירובי קצר</span></div>
+            <div class="day"><b>שבת</b><span class="d">מנוחה</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- the adapted workout -->
+      <section class="card" style="margin-top:20px" aria-labelledby="wo-title">
+        <h1 id="wo-title">אימון ידיים — מותאם לגוף שלך</h1>
+        <p class="sub">הבקשה: "אימון ידיים שיחטב את הידיים" • הפלט השתנה לפי הפרופיל: מנוחות, עומק ותוספת סיום</p>
+        <div class="ex"><div><span class="n">1. שכיבות סמיך (ידיים צרות)</span><span class="why">טריספס — בסיס הכוח של היד</span></div><div class="dose">3 × 8–12</div></div>
+        <div class="ex"><div><span class="n">2. מקבולות ידיים סטטיות</span><span class="why">ביספס בהתכווצות ממושכת — מתאים לבית</span></div><div class="dose">3 × 30 שניות</div></div>
+        <div class="ex"><div><span class="n">3. דיפס בין שני כיסאות</span><span class="why">טריספס בטווח מלא</span></div><div class="dose">3 × 8–12</div></div>
+        <div class="ex"><div><span class="n">4. פשיטת יד אחורית איזומטרית בקיר</span><span class="why">סיום — עומס נמוך ובטוח</span></div><div class="dose">2 × 20 שניות</div></div>
+        <div class="added"><b>נוסף בגלל צורת הגוף שלך:</b> סיום אירובי של 8 דקות אינטרוולים (40 שניות מאמץ / 20 מנוחה) — כדי לשרוף את השומן שמכסה את השריר שבנית.</div>
+        <h2 style="margin-top:18px">על מה להתמקד היום</h2>
+        <ul class="focus-list">
+          <li>לסיים כל סט עם תחושה שאפשר עוד 2–3 חזרות — לא עד קריסה.</li>
+          <li>אימון הידיים בונה את השריר מתחת לשומן — החיטוב יגיע מהגירעון הקלורי ומהאירובי, לא מחזרות בידיים דווקא.</li>
+          <li>חלבון בכל ארוחה ושינה של 7 שעות לפחות — בלי זה האימון הזה מפסיד חצי מהערך שלו.</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- side: how the engine maps body shape to training -->
+    <aside>
+      <section class="card">
+        <h2>איך צורת הגוף משנה את האימון</h2>
+        <p class="sub" style="margin-bottom:10px">המנוע מזהה את הפרופיל מהמדדים ובוחר דגש אימון</p>
+        <table class="map" aria-label="התאמת סוג אימון לצורת גוף">
+          <thead><tr><th>מה המדדים מראים</th><th>סוג האימון שמתקבל</th></tr></thead>
+          <tbody>
+            <tr><td>מותן גבוה + מטרת ירידה בשומן <b>(הפרופיל הזה)</b></td><td><b>כוח בסיסי + אירובי קצר</b> — נפח בינוני, מנוחות 90 שניות, סיום אירובי, גירעון מבוקר</td></tr>
+            <tr><td>רזה, קושי לעלות במשקל</td><td><b>היפרטרופיה בלבד</b> — נפח גבוה, מנוחות 2–3 דקות, בלי אירובי כבד, עודף קלורי קטן</td></tr>
+            <tr><td>מבנה שרירי מאוזן, מטרת גדילה</td><td><b>העמסה הדרגתית על כוח</b> — טווח 6–12 חזרות, תוספת משקל כשעוברים את הטווח פעמיים ברצף</td></tr>
+            <tr><td>מתחיל ללא ותק</td><td><b>בסיסות + טכניקה</b> — טווח 8–12, משקלי גוף וגומיות, התקדמות איטית</td></tr>
+          </tbody>
+        </table>
+        <p class="foot-note">ההתאמה מבוססת על עמדות מקצועיות מתעדכנות (ACSM, ISSN) — נמצאת מאחורי הקלעים, המתאמן מקבל רק את האימון וההסבר בשפה פשוטה.</p>
+      </section>
+      <section class="card" style="margin-top:20px">
+        <h2>איפה זה נכנס בזרימה</h2>
+        <p style="font-size:14px;margin:0;color:var(--th-muted)">1. המדריך מזין מדדים פעם אחת בפרופיל.<br>2. הבקשה החופשית נשארת כמו היום — אבל הפלט מותאם: תרגילים, מנוחות, נפח ותוספות.<br>3. המתאמן רואה "על מה להתמקד" בשפה פשוטה, בלי מונחים מחקריים.</p>
+      </section>
+    </aside>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">TrainerHub — דוגמה חזותית לפיצ'ר "התאמה אישית". עיצוב לפי המערכת הקיימת של האפליקציה. הנחיה כללית, אינה אבחון רפואי.</div>
+</footer>
+
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_LINE_HEIGHT = 16;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  const PICK_CAPABILITIES = ["pick"];
+  const PICK_CHAIN_LENGTH = 4;
+  const PICK_MAX_TEXT_CHARS = 120;
+  const PICK_MAX_HTML_CHARS = 300;
+
+  function truncate(value, maxChars) {
+    return value.length > maxChars ? value.slice(0, maxChars - 1) + "…" : value;
+  }
+
+  function isPickableElement(element) {
+    return (
+      element instanceof Element &&
+      element !== document.documentElement &&
+      element !== document.body
+    );
+  }
+
+  function resolvePickTarget(x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+    const element = document.elementFromPoint(x, y);
+    return isPickableElement(element) ? element.closest("svg") || element : null;
+  }
+
+  function pickLabel(element) {
+    if (element.id) return element.localName + "#" + element.id;
+    return [element.localName].concat(Array.from(element.classList).slice(0, 2)).join(".");
+  }
+
+  // Only attributes that help find the element in source. data-* values and URL
+  // query strings or fragments can carry tokens.
+  const PICK_ATTRIBUTES = new Set([
+    "id",
+    "class",
+    "name",
+    "type",
+    "role",
+    "alt",
+    "aria-label",
+    "href",
+    "src",
+  ]);
+
+  function pickAttributeValue(attribute) {
+    return attribute.name === "href" || attribute.name === "src"
+      ? attribute.value.split(/[?#]/)[0]
+      : attribute.value;
+  }
+
+  function describePickElement(element) {
+    const chain = [];
+    for (
+      let current = element;
+      isPickableElement(current) && chain.length < PICK_CHAIN_LENGTH;
+      current = current.parentElement
+    ) {
+      chain.unshift(current);
+    }
+    const attributes = Array.from(element.attributes)
+      .filter((attribute) => PICK_ATTRIBUTES.has(attribute.name))
+      .map((attribute) => ` ${attribute.name}="${pickAttributeValue(attribute).replace(/"/g, "&quot;")}"`)
+      .join("");
+    const text = (element.innerText || element.textContent || "").replace(/\s+/g, " ").trim();
+    return {
+      chain: chain.map(pickLabel),
+      html: truncate(`<${element.localName}${attributes}>`, PICK_MAX_HTML_CHARS),
+      text: text ? truncate(text, PICK_MAX_TEXT_CHARS) : undefined,
+    };
+  }
+
+  // Hover asks once per frame, and innerText on a large section forces layout,
+  // so only the rect is re-read while the pointer stays on the same element.
+  // Clicks ask for fresh details since the page may have changed the element.
+  let lastPick = null;
+
+  function describePickTarget(element, fresh) {
+    if (fresh || lastPick?.element !== element) {
+      lastPick = { element, details: describePickElement(element) };
+    }
+    const rect = element.getBoundingClientRect();
+    return {
+      rect: { x: rect.left, y: rect.top, width: rect.width, height: rect.height },
+      ...lastPick.details,
+    };
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+      capabilities: PICK_CAPABILITIES,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_PICK") {
+      const element = resolvePickTarget(event.data.x, event.data.y);
+      postToTrustedTop({
+        type: "INLINE_EDIT_PICK_RESULT",
+        seq: event.data.seq,
+        target: element ? describePickTarget(element, event.data.fresh === true) : null,
+      });
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_BY") {
+      const { deltaX, deltaY, deltaMode } = event.data;
+      if (!scrollForwarding || !Number.isFinite(deltaX) || !Number.isFinite(deltaY)) return;
+      if (deltaMode !== 0 && deltaMode !== 1 && deltaMode !== 2) return;
+      const lineHeight =
+        parseFloat(getComputedStyle(document.documentElement).lineHeight) || DEFAULT_LINE_HEIGHT;
+      const scaleX = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerWidth : 1;
+      const scaleY = deltaMode === 1 ? lineHeight : deltaMode === 2 ? window.innerHeight : 1;
+      // The selection overlay receives the wheel event instead of this iframe.
+      // Instant scrolling preserves trackpad deltas even on smooth-scroll sites.
+      window.scrollBy({ left: deltaX * scaleX, top: deltaY * scaleY, behavior: "instant" });
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

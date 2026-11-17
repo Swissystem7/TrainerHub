@@ -43,12 +43,47 @@ function planned(workout){
   return wk && TH.applyPlanWeek ? TH.applyPlanWeek(workout, wk) : workout;
 }
 
+function workoutHasExercise(workout){
+  return !!workout && (workout.phases || []).some(function (ph) {
+    return (ph.exercises || []).some(Boolean);
+  });
+}
+function applyWeeklySwap(dayIndex, phaseIndex, exIndex, newId){
+  const raw = window.__lastProgram;
+  const day = raw && raw.dailyWorkouts && raw.dailyWorkouts[dayIndex];
+  if (!day || !newId) return null;
+  const workout = TH.toPhasesWorkout(day, window.__lastMeta || {});
+  const phase = workout.phases && workout.phases[phaseIndex];
+  if (!phase || !phase.exercises || !phase.exercises[exIndex]) return workout;
+  const before = phase.exercises[exIndex];
+  TH.swapExercise(workout, phaseIndex, exIndex, newId);
+  const swapped = phase.exercises[exIndex];
+  if (!swapped || !swapped.name) {
+    phase.exercises[exIndex] = before;
+    return workout;
+  }
+  day.phases = workout.phases;
+  if (workout.title) day.title = workout.title;
+  if (Number(phaseIndex) === 1 && day.exercises && day.exercises[exIndex]) {
+    day.exercises[exIndex] = {
+      name: swapped.name,
+      id: swapped.id,
+      sets: swapped.sets,
+      reps: swapped.reps,
+      restSeconds: swapped.rest_seconds,
+      rest_seconds: swapped.rest_seconds,
+      notes: swapped.notes
+    };
+  }
+  return TH.toPhasesWorkout(day, window.__lastMeta || {});
+}
 function startDayWorkout(dayIndex){
   const raw = window.__lastProgram;
   if (!raw || !raw.dailyWorkouts || !raw.dailyWorkouts[dayIndex]) return;
   const base = TH.toPhasesWorkout(raw.dailyWorkouts[dayIndex], window.__lastMeta || {});
   const workout = typeof planned === 'function' ? planned(base) : base;
-  TH.store.set(TH.KEYS.active, workout);
+  if (!workoutHasExercise(workout)) return;
+  if (!TH.store.set(TH.KEYS.active, workout)) return;
   window.location.href = './frontend/workout-mode.html';
 }
 function previewDayWorkout(dayIndex){
@@ -146,25 +181,14 @@ function renderProgram(p){
   if (typeof renderPeriod === 'function') renderPeriod(p);
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {
-      if (!sel.value) return;
-      const day = window.__lastProgram.dailyWorkouts[Number(sel.dataset.day)];
-      if (!day) return;
-      const workout = TH.toPhasesWorkout(day, window.__lastMeta);
-      TH.swapExercise(workout, Number(sel.dataset.phase), Number(sel.dataset.ex), sel.value);
-      const swapped = workout.phases[Number(sel.dataset.phase)].exercises[Number(sel.dataset.ex)];
-      if (Number(sel.dataset.phase) === 1 && day.exercises && day.exercises[Number(sel.dataset.ex)]) {
-        day.exercises[Number(sel.dataset.ex)] = {
-          name: swapped.id,
-          sets: swapped.sets,
-          reps: swapped.reps,
-          restSeconds: swapped.rest_seconds,
-          rest_seconds: swapped.rest_seconds,
-          notes: swapped.notes
-        };
+      if (!sel.value || window.__swapLock) return;
+      window.__swapLock = true;
+      try {
+        applyWeeklySwap(Number(sel.dataset.day), Number(sel.dataset.phase), Number(sel.dataset.ex), sel.value);
+        renderProgram(window.__lastProgram);
+      } finally {
+        window.__swapLock = false;
       }
-      day.phases = workout.phases;
-      day.title = workout.title;
-      renderProgram(window.__lastProgram);
     });
   });
 }
@@ -303,5 +327,8 @@ renderSavedReelCard();
 var useSavedReelBtn = $('useSavedReelBtn');
 if (useSavedReelBtn && useSavedReelBtn.addEventListener) useSavedReelBtn.addEventListener('click', applySavedReelPlan);
 TH.ready(function () { run(); maybeApplyReelPlan(); });
+window.startDayWorkout = startDayWorkout;
+window.applyWeeklySwap = applyWeeklySwap;
+window.workoutHasExercise = workoutHasExercise;
 </script><script src="./js/th-nav.js"></script>
 </body></html>
