@@ -21,11 +21,7 @@
 		} catch (_e) {
 			Progression = root.THProgression || root.THProgressionEngine;
 		}
-		try {
-			WarmupGenerator = require("./warmup-generator.js");
-		} catch (_e) {
-			WarmupGenerator = root.THWarmupGenerator || root.THWarmup;
-		}
+		WarmupGenerator = require("./warmup-generator.js");
 	}
 
 	var RX = {
@@ -629,14 +625,14 @@
 		"אין במאגר אף סרטון לשילוב הזה של שריר וציוד ברמה הזו, ולכן הוא לא מוצע. אפשר לבחור ציוד אחר או קבוצת שריר אחרת.";
 
 	function isNoReelCombo(req) {
-		var eq = req?.equipment || [];
-		var muscles = req?.muscles || [];
+		var eq = (req && req.equipment) || [];
+		var muscles = (req && req.muscles) || [];
 		if (eq.length !== 1 || !muscles.length) return false;
 		var level = req.level || "";
 		return muscles.every(
 			(m) =>
-				NO_REEL_SET[`${m}|${eq[0]}|*`] ||
-				(level && NO_REEL_SET[`${m}|${eq[0]}|${level}`]),
+				NO_REEL_SET[m + "|" + eq[0] + "|*"] ||
+				(level && NO_REEL_SET[m + "|" + eq[0] + "|" + level]),
 		);
 	}
 

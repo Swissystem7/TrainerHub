@@ -97,13 +97,43 @@ test('יצירת חימום לפלג גוף עליון - מחולל 3 תרגיל
   assert.ok(strWarmup && strWarmup.focus === 'upper_body');
   assert.equal(strWarmup.exercises.length, 3);
 
-  // Test with custom catalog object
+  // Test with custom catalog object and custom items with short/long duration to test clamping
   const objCatalog = {
-    w1: { id: 'w1', he: 'חימום חזה דינמי', category: 'warmup', muscles: ['chest'] },
-    w2: { id: 'w2', he: 'מוביליטי שכמות', category: 'mobility', muscles: ['shoulders'] }
+    w1: { id: 'w1', name: 'חימום חזה דינמי', category: 'warmup', muscles: ['chest'], duration_seconds: 60 },
+    w2: { id: 'w2', he: 'מוביליטי שכמות', category: 'mobility', muscles: ['shoulders'], duration_seconds: 60 }
   };
-  const warmupCustom = WarmupGenerator.generateTargetedWarmup(upperWorkout, {}, objCatalog);
+  const warmupCustom = WarmupGenerator.generateTargetedWarmup(
+    upperWorkout,
+    { limitations: ['shoulder_pain', 'wrist_pain'] },
+    objCatalog
+  );
   assert.equal(warmupCustom.exercises.length, 3);
+  assert.equal(warmupCustom.duration_minutes, 5, 'מינימום 5 דקות');
+
+  const objCatalogLong = {
+    w1: { id: 'w1', name: 'חימום ארוך 1', category: 'warmup', muscles: ['chest'], duration_seconds: 300 },
+    w2: { id: 'w2', he: 'חימום ארוך 2', category: 'mobility', muscles: ['shoulders'], duration_seconds: 300 }
+  };
+  const warmupLong = WarmupGenerator.generateTargetedWarmup(
+    upperWorkout,
+    { limitations: ['shoulder_pain', 'wrist_pain'] },
+    objCatalogLong
+  );
+  assert.equal(warmupLong.duration_minutes, 7, 'מקסימום 7 דקות');
+
+  // Test arms workout with singular muscle and id-only exercises
+  const armsWorkout = {
+    title: 'אימון ידיים וזרועות biceps triceps',
+    phases: [
+      {
+        name: 'Main',
+        exercises: [{ name: 'מתח', muscle: 'back' }, { id: 'pullup' }, { name: 'לחיצת כתפיים overhead' }]
+      }
+    ]
+  };
+  const armsWarmup = WarmupGenerator.generateTargetedWarmup(armsWorkout, {});
+  assert.equal(armsWarmup.focus, 'upper_body');
+  assert.equal(armsWarmup.exercises.length, 3);
 });
 
 // Test 2: יצירת חימום לפלג גוף תחתון
@@ -143,6 +173,20 @@ test('יצירת חימום לפלג גוף תחתון - מחולל 3 תרגיל
     );
   }
 
+  // Test lower body title string
+  const lowerTitleWorkout = {
+    title: 'אימון פלג גוף תחתון lower'
+  };
+  const lowerTitleWarmup = WarmupGenerator.generateTargetedWarmup(lowerTitleWorkout, {});
+  assert.equal(lowerTitleWarmup.focus, 'lower_body');
+
+  // Test ratio: 2 lower muscles vs 1 upper muscle
+  const ratioWorkout = {
+    muscles: ['chest', 'legs', 'glutes']
+  };
+  const ratioWarmup = WarmupGenerator.generateTargetedWarmup(ratioWorkout, {});
+  assert.equal(ratioWarmup.focus, 'lower_body');
+
   // Test core workout
   const coreWorkout = {
     title: 'אימון בטן ופלאנק',
@@ -169,9 +213,10 @@ test('יצירת חימום לפלג גוף תחתון - מחולל 3 תרגיל
   assert.equal(defaultWarmup.focus, 'full_body');
   assert.equal(defaultWarmup.exercises.length, 3);
 
-  // Test catalog with lower body mobility
+  // Test catalog with lower body mobility and empty muscles
   const lowerCat = [
-    { id: 'cat_leg', he: 'חימום רגליים', category: 'warmup', muscles: ['legs'], contraindications: [] }
+    { id: 'cat_leg', he: 'חימום רגליים', category: 'warmup', muscles: ['legs'], contraindications: [] },
+    { id: 'cat_gen', name: 'חימום כללי', category: 'warmup', muscles: [], contraindications: [] }
   ];
   const lowerWithCat = WarmupGenerator.generateTargetedWarmup(lowerWorkout, {}, lowerCat);
   assert.equal(lowerWithCat.exercises.length, 3);
@@ -214,7 +259,7 @@ test('סינון תרגילים מוגבלים בפרופיל - משמיט תר�
   }
 
   // Scenario C: Profile as array with wrist and hip pain
-  const profileArray = ['שורש כף יד', 'מפרק ירך'];
+  const profileArray = ['שורש כף יד', 'מפרק ירך', null, ''];
   const warmupArray = WarmupGenerator.generateTargetedWarmup('אימון שכיבות שמיכה', profileArray);
   assert.equal(warmupArray.exercises.length, 3);
   const wristHipForbidden = [
@@ -234,8 +279,8 @@ test('סינון תרגילים מוגבלים בפרופיל - משמיט תר�
     !warmupStrProfile.exercises.some((e) => ['arm_circles_chest_opener', 'scapular_wall_slides'].includes(e.id))
   );
 
-  // Scenario E: Profile as object with restrictions and injuries
-  const profileInjuries = { injuries: ['גב תחתון', 'lower_back'] };
+  // Scenario E: Profile as object with restrictions, single string limitation and injuries
+  const profileInjuries = { injuries: ['גב תחתון', 'lower_back'], limitations: 'ברכיים' };
   const warmupInjuries = WarmupGenerator.generateTargetedWarmup('אימון רגליים וגב', profileInjuries);
   assert.equal(warmupInjuries.exercises.length, 3);
 });
@@ -267,6 +312,15 @@ test('אינטגרציה עם buildSession - פלט buildSession מכיל שדה
   assert.ok(
     !legResult.warmupBlock.exercises.some((e) => ['bodyweight_tempo_squat', 'world_greatest_stretch'].includes(e.id))
   );
+
+  // Integration test with no opts (fallback to req)
+  const defaultOptsResult = SessionBuilder.buildSession('אימון פלג גוף עליון 20 דקות', mockCatalog);
+  assert.ok(defaultOptsResult.warmupBlock);
+  assert.equal(defaultOptsResult.warmupBlock.focus, 'upper_body');
+
+  // Integration test with empty catalog
+  const emptyCatResult = SessionBuilder.buildSession('אימון שחייה 20 דקות', []);
+  assert.equal(emptyCatResult.warmupBlock, null);
 
   // Integration test with no-reel combo
   const unavailableResult = SessionBuilder.buildSession(
@@ -302,6 +356,89 @@ test("קיום אזור id='warmupSection' ב-index.html - אלמנט קיים, 
   assert.ok(fnBody.includes('createElement'), 'renderWarmupSection משתמש ב-createElement');
   assert.ok(fnBody.includes('textContent'), 'renderWarmupSection משתמש ב-textContent');
   assert.ok(fnBody.includes('checkbox'), 'renderWarmupSection מרנדר תיבות סימון checkbox');
+
+  // Simulate renderWarmupSection execution with mock DOM elements
+  class MockElement {
+    constructor(tag) {
+      this.tagName = tag;
+      this.children = [];
+      this.classList = new Set();
+      this.classList.add = (c) => (this.classList.add ? Set.prototype.add.call(this.classList, c) : null);
+      this.classList.remove = (c) => this.classList.delete(c);
+      this.textContent = '';
+      this.attributes = {};
+      this.listeners = {};
+    }
+    get firstChild() {
+      return this.children[0] || null;
+    }
+    appendChild(child) {
+      this.children.push(child);
+      return child;
+    }
+    removeChild(child) {
+      const idx = this.children.indexOf(child);
+      if (idx !== -1) this.children.splice(idx, 1);
+      return child;
+    }
+    setAttribute(k, v) {
+      this.attributes[k] = v;
+    }
+    removeAttribute(k) {
+      delete this.attributes[k];
+    }
+    addEventListener(evt, fn) {
+      this.listeners[evt] = fn;
+    }
+  }
+
+  const origDocument = globalThis.document;
+  try {
+    globalThis.document = {
+      createElement: (tag) => new MockElement(tag)
+    };
+
+    const fn = new Function('warmupBlock', 'container', `${fnBody}; renderWarmupSection(warmupBlock, container);`);
+    const mockContainer = new MockElement('section');
+    mockContainer.setAttribute('hidden', '');
+
+    // Edge cases: null block and null container
+    fn(null, mockContainer);
+    fn({}, null);
+
+    const testBlock = {
+      duration_minutes: 6,
+      pacingGuidelines: 'קצב הדרגתי ואיטי',
+      exercises: [
+        { id: 'ex1', name: 'סיבובי ידיים', duration_seconds: 120, instructions: '10 חזרות' },
+        { id: 'ex2', name: 'מתיחות', duration_seconds: 120 }
+      ]
+    };
+
+    fn(testBlock, mockContainer);
+    assert.equal(mockContainer.attributes.hidden, undefined, 'hidden attribute is removed');
+    assert.equal(mockContainer.children.length, 3, 'heading, pacing, and list created');
+    assert.equal(mockContainer.children[0].textContent, 'חימום ממוקד ומוביליטי (6 דקות)');
+    assert.ok(mockContainer.children[1].textContent.includes('הנחיות קצב'));
+
+    const list = mockContainer.children[2];
+    assert.equal(list.children.length, 2, 'two list items');
+    const firstItem = list.children[0];
+    const label = firstItem.children[0];
+    const checkbox = label.children[0];
+    assert.equal(checkbox.tagName, 'input');
+    assert.equal(checkbox.type, 'checkbox');
+
+    // Test toggle checkbox
+    checkbox.checked = true;
+    checkbox.listeners.change();
+    assert.ok(firstItem.classList.has('completed'));
+    checkbox.checked = false;
+    checkbox.listeners.change();
+    assert.ok(!firstItem.classList.has('completed'));
+  } finally {
+    globalThis.document = origDocument;
+  }
 
   // Verify namespace exports in UMD / global context
   assert.ok(globalThis.THWarmupGenerator || WarmupGenerator);

@@ -396,7 +396,7 @@
             category: catItem.category || 'warmup',
             bodyRegion: catRegion,
             targetMuscles: catMuscles.length ? catMuscles : ['general'],
-            duration_seconds: 120,
+            duration_seconds: catItem.duration_seconds || 120,
             instructions: catItem.instructions || 'חימום מבוקר',
             pacing: 'קצב קל ורציף',
             contraindications: catItem.contraindications || []
