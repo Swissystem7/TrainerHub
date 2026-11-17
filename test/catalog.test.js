@@ -12,6 +12,7 @@ const REQUIRED = ['id', 'he', 'muscles', 'equipment', 'level', 'file'];
 const LEVELS = new Set(['beginner', 'intermediate', 'advanced']);
 const MUSCLES = new Set(['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'core']);
 const PLACEHOLDER = /placeholder|todo|FIXME|lorem|dummy|example\.mp4|^video\.mp4$|^clip\.mp4$|xxx\.mp4/i;
+const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
 const PERSONAL = /aviran|swissa|אבירן|אבירן|סוויסה|סויסה|avi[\s_-]?ran/i;
 
 const entries = Object.entries(catalog);
@@ -49,13 +50,15 @@ test('available catalog videos use the verified public media mirror', function (
     if (!file || PLACEHOLDER.test(file) || !/\.mp4$/i.test(file)) {
       bad.push(key + ' -> ' + JSON.stringify(file));
     }
-    if (entry.available !== false && !/^https:\/\/github\.com\/Swissystem7\/TrainerHub\/releases\/download\/trainerhub-media-v1\/thv-\d{3}\.mp4$/i.test(file)) {
+    if (entry.available !== false && entry.source === 'youtube') {
+      if (!YOUTUBE_ID.test(entry.youtubeId || '')) bad.push(key + ' youtubeId ' + entry.youtubeId);
+    } else if (entry.available !== false && !/^https:\/\/github\.com\/Swissystem7\/TrainerHub\/releases\/download\/trainerhub-media-v1\/thv-\d{3}\.mp4$/i.test(file)) {
       bad.push(key + ' unverified media url ' + file);
     }
   }
   assert.deepEqual(bad, []);
-  assert.equal(entries.filter(function (row) { return row[1].available !== false; }).length, 70);
-  assert.equal(entries.filter(function (row) { return row[1].available === false; }).length, 8);
+  assert.equal(entries.filter(function (row) { return row[1].available !== false; }).length, 77);
+  assert.equal(entries.filter(function (row) { return row[1].available === false; }).length, 1);
 });
 
 test('catalog entries do not use personal names as ids, titles, or files', function () {

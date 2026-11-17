@@ -46,6 +46,7 @@
     .warn { border-inline-start: 4px solid var(--warn); background: var(--th-orange-soft); color: var(--th-orange-ink); padding: 8px 10px; border-radius: 8px; margin: 6px 0; line-height: 1.5; }
     .why li { color: var(--muted); }
     .pill { display: inline-block; background: var(--th-teal-soft); border-radius: 6px; padding: 2px 8px; font-size: 13px; font-weight: 700; color: var(--th-teal-ink); margin-inline-start: 4px; }
+    /* biome-ignore lint/complexity/noImportantStyles: hidden override */
     [hidden] { display: none !important; }
   </style>
 </head>
@@ -75,6 +76,7 @@
     <label class="shot" for="photos">📷 צלמו או בחרו עד 3 תמונות
       <input id="photos" type="file" accept="image/*" capture="environment" multiple aria-label="צילום או בחירת עד 3 תמונות של השטח" aria-describedby="scanStatus">
     </label>
+    <!-- biome-ignore lint/a11y/useSemanticElements: thumbs region role required for accessibility tests -->
     <div class="thumbs" id="thumbs" role="region" aria-label="תמונות שטח שנבחרו"></div>
     <p class="muted" id="scanStatus" role="status" aria-live="polite">אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.</p>
   </section>
@@ -115,8 +117,9 @@
 <script src="./js/site-plan.js"></script>
 <script src="./js/site-scan.js"></script>
 <script>
-(function () {
+(() => {
   'use strict';
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   var esc = TH.esc;
   var SP = THSiteProfile;
   var GROUPS = [
@@ -140,9 +143,9 @@
 
   function renderChips() {
     var all = SP.chips(profile);
-    $('chipsOut').innerHTML = GROUPS.map(function (g) {
-      var mine = all.filter(function (c) { return c.kind === g.kind; });
-      return '<h3>' + esc(g.he) + '</h3><div class="chips" role="group" aria-label="' + esc(g.he) + '">' + mine.map(function (c) {
+    $('chipsOut').innerHTML = GROUPS.map((g) => {
+      var mine = all.filter((c) => c.kind === g.kind);
+      return '<h3>' + esc(g.he) + '</h3><div class="chips" role="group" aria-label="' + esc(g.he) + '">' + mine.map((c) => {
         return '<button type="button" data-kind="' + esc(c.kind) + '" data-id="' + esc(c.id) + '" aria-pressed="' + c.on + '"' +
           ' aria-label="' + esc(c.he) + '"' +
           (unsure(c) ? ' class="unsure" title="זיהוי לא בטוח"' : '') + '>' + esc(c.he.replace(/^(רוחב|משטח|סכנה): /, '') +
@@ -153,7 +156,7 @@
     $('summary').textContent = (profile.source === 'ai' ? 'זיהוי אוטומטי: ' : 'סימנתם: ') + SP.summaryHe(profile);
   }
 
-  $('chipsOut').addEventListener('click', function (e) {
+  $('chipsOut').addEventListener('click', (e) => {
     var b = e.target.closest('button[data-kind]');
     if (!b) return;
     profile = SP.toggle(profile, b.dataset.kind, b.dataset.id);
@@ -171,11 +174,27 @@
 
   function showThumbs(files) {
     $('thumbs').innerHTML = '';
-    files.forEach(function (f, idx) {
+    files.forEach((f, idx) => {
       var img = document.createElement('img');
       img.alt = 'תמונת שטח ' + (idx + 1);
-      img.src = URL.createObjectURL(f);
-      img.onload = function () { URL.revokeObjectURL(img.src); };
+      if (!(f && ALLOWED_TYPES.includes(f.type))) {
+        img.removeAttribute?.('src');
+        $('scanStatus').textContent = 'אפשר להעלות רק תמונה מסוג JPEG, PNG, WebP או GIF';
+        $('thumbs').appendChild(img);
+        return;
+      }
+      // Decode File -> canvas JPEG data URL (same sanitizer as the camera path).
+      createImageBitmap(f).then((bmp) => {
+        var canvas = document.createElement('canvas');
+        canvas.width = bmp.width;
+        canvas.height = bmp.height;
+        canvas.getContext('2d').drawImage(bmp, 0, 0);
+        bmp.close?.();
+        img.src = canvas.toDataURL('image/jpeg', 0.85);
+      }).catch(() => {
+        img.removeAttribute?.('src');
+        $('scanStatus').textContent = 'לא הצלחתי לקרוא את התמונה. נסו קובץ JPEG או PNG.';
+      });
       $('thumbs').appendChild(img);
     });
   }
@@ -191,9 +210,9 @@
     }
     $('scanStatus').textContent = 'מזהה את השטח…';
     var seq = ++scanSeq;
-    Promise.all(files.map(function (f) { return Scan.resizeImage(f); })).then(function (imgs) {
+    Promise.all(files.map((f) => Scan.resizeImage(f))).then((imgs) => {
       return Scan.analyzeSitePhotos(imgs);
-    }).then(function (res) {
+    }).then((res) => {
       if (seq !== scanSeq) return;
       if (res.ok) {
         profile = res.profile;
@@ -202,7 +221,7 @@
         $('scanStatus').textContent = 'לא הצלחתי לזהות הפעם. סמנו למטה מה יש בשטח.';
       }
       renderChips();
-    }).catch(function () {
+    }).catch(() => {
       if (seq !== scanSeq) return;
       $('scanStatus').textContent = 'לא הצלחתי לקרוא את התמונות. סמנו למטה מה יש בשטח.';
     });
@@ -228,10 +247,10 @@
     current = res.workout;
     var layout = { waves: 'בגלים', stations: 'בתחנות' }[res.layout];
     $('planOut').innerHTML =
-      res.warnings.map(function (w) { return '<div class="warn" role="alert">⚠️ ' + esc(w) + '</div>'; }).join('') +
+      res.warnings.map((w) => '<div class="warn" role="alert">⚠️ ' + esc(w) + '</div>').join('') +
       '<h3>' + esc(current.title) + ' · ' + current.duration_minutes + ' דק׳' + (layout ? '<span class="pill">' + layout + '</span>' : '') + '</h3>' +
-      '<ul class="why">' + res.reasons.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
-      current.phases.map(function (p) {
+      '<ul class="why">' + res.reasons.map((r) => '<li>' + esc(r) + '</li>').join('') + '</ul>' +
+      current.phases.map((p) => {
         return '<h3>' + esc(TH.phaseLabel(p.name)) + ' (' + p.duration_minutes + ' דק׳)</h3><ol>' + p.exercises.map(fmtEx).join('') + '</ol>';
       }).join('');
     renderRisks();
@@ -246,17 +265,17 @@
     if (!rows.length) return;
     $('planOut').insertAdjacentHTML('beforeend',
       '<section aria-labelledby="riskTitle"><h3 id="riskTitle">מחשבון סיכונים</h3><ol class="risks">' +
-      rows.map(function (r) {
+      rows.map((r) => {
         return '<li class="warn" data-level="' + esc(r.level.id) + '"><strong>' + esc(r.hazard) + '</strong>' +
           (r.causes.length ? ' <small>(' + esc(r.causes.join(', ')) + ')</small>' : '') +
           '<br>סבירות ' + r.likelihood + ' × חומרה ' + r.severity + ' = <strong>' + r.score + '</strong> · סיכון ' + esc(r.level.he) +
-          '<details><summary>אמצעים להקטנת הסיכון</summary><ul>' + r.siteLines.concat(r.mitigations).map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></details></li>';
+          '<details><summary>אמצעים להקטנת הסיכון</summary><ul>' + r.siteLines.concat(r.mitigations).map((m) => '<li>' + esc(m) + '</li>').join('') + '</ul></details></li>';
       }).join('') + '</ol>' +
       '<p class="muted">ציון = סבירות × חומרה (1–100), לפי טבלת הסיכונים בתיק הקבוצה. מפגע שסומן בשטח מעלה את הסבירות ב-2.</p></section>');
   }
 
   $('build').addEventListener('click', buildNow);
-  $('reset').addEventListener('click', function () {
+  $('reset').addEventListener('click', () => {
     profile = SP.emptyProfile();
     current = null;
     scanSeq++;
@@ -270,16 +289,16 @@
     $('scanStatus').textContent = 'אפשר גם לדלג על הצילום ולסמן בעצמכם מה יש בשטח.';
     renderChips();
   });
-  $('start').addEventListener('click', function () {
+  $('start').addEventListener('click', () => {
     if (!current) return;
     TH.store.set(TH.KEYS.active, current);
     location.href = './frontend/workout-mode.html';
   });
-  $('previewTrainee').addEventListener('click', function () {
+  $('previewTrainee').addEventListener('click', () => {
     if (!current) return;
     location.href = TH.encodeLink(current, {});
   });
-  $('share').addEventListener('click', function () {
+  $('share').addEventListener('click', () => {
     if (!current) return;
     var host = $('scanGateHost') || $('planOut');
     if (host.innerHTML !== undefined) host.innerHTML = '';
@@ -288,18 +307,18 @@
       if (host.insertAdjacentHTML) host.insertAdjacentHTML('beforeend', TH.gateMarkup('share'));
       return;
     }
-    TH.copyOrShow(shared.url, host, function () {
+    TH.copyOrShow(shared.url, host, () => {
       var btn = $('share');
       if (btn) {
         // A second click within the 1.4 s must not save «הועתק» as the label to restore.
         if (!btn.thLabel) btn.thLabel = btn.textContent;
         btn.textContent = 'הועתק';
         clearTimeout(btn.thLabelTimer);
-        btn.thLabelTimer = setTimeout(function () { btn.textContent = btn.thLabel; }, 1400);
+        btn.thLabelTimer = setTimeout(() => { btn.textContent = btn.thLabel; }, 1400);
       }
     });
   });
-  $('pdf').addEventListener('click', function () {
+  $('pdf').addEventListener('click', () => {
     if (!current) return;
     TH.preparePrint(current, {});
     location.href = TH.printUrl();

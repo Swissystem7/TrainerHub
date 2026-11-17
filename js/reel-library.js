@@ -7,12 +7,17 @@
  * «לא מצוין» is stored as «לא ממוין». Reels with no mapping stay unclassified.
  */
 (function (root, factory) {
-  var api = factory();
+  var api = factory(root);
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.THReels = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
+  var ProfileFilter = null;
+  if (typeof module === 'object' && module.exports) {
+    try { ProfileFilter = require('./library-profile-filter.js'); } catch (e) { ProfileFilter = null; }
+  }
+  if (!ProfileFilter && typeof globalThis !== 'undefined') ProfileFilter = globalThis.THLibraryProfileFilter || null;
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
@@ -178,15 +183,56 @@
     return { ok: errors.length === 0, errors: errors };
   }
 
+  // Hebrew vowel marks and cantillation, plus the maqaf/paseq punctuation in that block.
+  var NIQQUD = /[\u0591-\u05C7]/g;
+  var SEARCH_PUNCT = /["״'`׳.,!?;:()[\]{}<>/\\|@#$%^&*+=~_\-־–—]/g;
+  // Names that exist in both languages. Either form should find the row.
+  var SEARCH_PAIRS = [
+    ['סופרמן', 'superman'],
+    ['פלאנק', 'plank'],
+    ['פלנק', 'plank']
+  ];
+
+  function searchFold(s) {
+    return String(s || '')
+      .replace(NIQQUD, '')
+      .toLowerCase()
+      .replace(SEARCH_PUNCT, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function searchHit(blob, q) {
+    if (!q) return true;
+    if (blob.indexOf(q) !== -1) return true;
+    var tightQ = q.replace(/\s+/g, '');
+    if (!tightQ) return true;
+    return blob.replace(/\s+/g, '').indexOf(tightQ) !== -1;
+  }
+
+  function withLanguageAliases(folded) {
+    var extra = [];
+    var tight = folded.replace(/\s+/g, '');
+    SEARCH_PAIRS.forEach(function (pair) {
+      var a = searchFold(pair[0]);
+      var b = searchFold(pair[1]);
+      if (!a || !b) return;
+      if (folded.indexOf(a) !== -1 || tight.indexOf(a.replace(/\s+/g, '')) !== -1) extra.push(b);
+      if (folded.indexOf(b) !== -1 || tight.indexOf(b.replace(/\s+/g, '')) !== -1) extra.push(a);
+    });
+    return extra.length ? folded + ' ' + extra.join(' ') : folded;
+  }
+
   function normalizeQuery(q) {
-    return String(q || '').trim().toLowerCase();
+    return searchFold(q);
   }
 
   function haystack(ex) {
-    return [
-      ex.name_he, ex.creator, ex.id, ex.folder, ex.file_id, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
+    var folded = searchFold([
+      ex.name_he, ex.name, ex.creator, ex.id, ex.folder, ex.file_id, ex.file, ex.muscle_group, ex.secondary_group, ex.muscle_detail,
       ex.equipment, ex.sets_reps, ex.source_title, ex.source_notes, (ex.steps_he || []).join(' ')
-    ].join(' ').toLowerCase();
+    ].join(' '));
+    return withLanguageAliases(folded);
   }
 
   function filterExercises(exercises, opts) {
@@ -196,7 +242,7 @@
     return (exercises || []).filter(function (ex) {
       if (!ex) return false;
       if (muscle && ex.muscle_group !== muscle && String(ex.secondary_group || '').split(' · ').indexOf(muscle) === -1) return false;
-      if (q && haystack(ex).indexOf(q) === -1) return false;
+      if (q && !searchHit(haystack(ex), q)) return false;
       return true;
     });
   }
@@ -317,26 +363,56 @@
     return match ? match[1] : '';
   }
 
-  // Drop a file at assets/posters/<reel_id>.png or .jpg and the card picks it up.
-  // An explicit poster field wins when it is set.
-  function posterSources(ex) {
+  function youtubeVideoId(ex) {
     ex = ex || {};
-    if (ex.poster) return { primary: ex.poster, secondary: '' };
-    var code = reelCode(ex);
-    if (!code) return { primary: '', secondary: '' };
-    return {
-      primary: 'assets/posters/' + code + '.png',
-      secondary: 'assets/posters/' + code + '.jpg'
-    };
+    var id = ex.youtubeId || ex.youtube_id || '';
+    if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+    var src = String(ex.source_url || ex.externalUrl || ex.file || '');
+    var match = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(src);
+    return match ? match[1] : '';
+  }
+
+  function drivePosterId(ex) {
+    ex = ex || {};
+    // legacyDriveId is a dead Drive id kept on the row for history. It is not
+    // a poster source. driveId is also skipped when the row has a real file.
+    if (ex.file_id && driveFileIdOk(ex.file_id)) return ex.file_id;
+    if (ex.driveId && driveFileIdOk(ex.driveId)) return ex.driveId;
+    var id = String(ex.id || ex.exerciseId || '');
+    var match = /^drive-(.+)$/.exec(id);
+    if (match && driveFileIdOk(match[1])) return match[1];
+    return '';
+  }
+
+  // A relative poster is trusted only when the catalog recorded it. Guessing
+  // assets/posters/<reel>.png then .jpg asked for files that are not in the
+  // repo (two 404s per card). A row with `file` plays that file and must not
+  // pick up a Drive thumbnail from driveId or legacyDriveId (those ids 404).
+  function posterUrl(ex) {
+    ex = ex || {};
+    var local = typeof ex.poster === 'string' ? ex.poster.trim() : '';
+    if (local && local.indexOf('..') === -1 && !/^([a-z]+:|\/)/i.test(local)) return local;
+    var file = typeof ex.file === 'string' ? ex.file.trim() : '';
+    if (file) return '';
+    var yt = youtubeVideoId(ex);
+    if (yt) return 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg';
+    var drive = drivePosterId(ex);
+    if (drive) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(drive) + '&sz=w480';
+    return '';
+  }
+
+  function posterSources(ex) {
+    var url = posterUrl(ex);
+    return { primary: url, secondary: '' };
   }
 
   function posterFrameHtml(ex, esc, thumb) {
     esc = esc || function (s) { return String(s == null ? '' : s); };
     var muscle = (ex && ex.muscle_group) || UNKNOWN_MUSCLE;
     var src = posterSources(ex || {});
+    // onerror hides a thumbnail the host no longer serves; the fallback stays.
     var img = src.primary
-      ? '<img class="poster" alt="" src="' + esc(src.primary) + '"' +
-        (src.secondary ? ' data-jpg="' + esc(src.secondary) + '"' : '') + '>'
+      ? '<img class="poster" alt="" src="' + esc(src.primary) + '" onerror="this.classList.add(\'is-broken\')">'
       : '';
     var badge = thumb ? '' : '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>';
     var indexNo = (!thumb && ex && ex._index) ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
@@ -523,9 +599,20 @@
     };
   }
 
+  function globalObj() {
+    var g = root;
+    if (!g && typeof globalThis !== 'undefined') g = globalThis;
+    return g || null;
+  }
+
+  function globalLocalStorage() {
+    var g = globalObj();
+    if (!g) return null;
+    try { return g.localStorage || null; } catch (e) { return null; }
+  }
+
   function browserStore() {
-    var ls = null;
-    try { ls = globalThis.localStorage; } catch (e) { ls = null; }
+    var ls = globalLocalStorage();
     if (!ls) return memoryFallback();
     return {
       get: function (key, fallback) {
@@ -546,7 +633,8 @@
 
   function storeOf(store) {
     if (store && typeof store.get === 'function' && typeof store.set === 'function') return store;
-    if (globalThis.TH && globalThis.TH.store) return globalThis.TH.store;
+    var th = (globalObj() || {}).TH;
+    if (th && th.store) return th.store;
     return browserStore();
   }
 
@@ -601,6 +689,10 @@
 
   function drivePreviewUrl(fileId) {
     return 'https://drive.google.com/file/d/' + fileId + '/preview';
+  }
+
+  function driveThumbUrl(fileId) {
+    return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(fileId || '') + '&sz=w480';
   }
 
   function driveViewUrl(fileId) {
@@ -701,11 +793,18 @@
         source_url: driveViewUrl(fileId),
         preview_url: drivePreviewUrl(fileId),
         creator: '',
-        poster: '',
+        poster: drivePosterPath(row.poster),
         verified: false
       });
     });
     return out;
+  }
+
+  // A row's own illustration (assets/posters/...) replaces the Drive thumbnail.
+  function drivePosterPath(value) {
+    var p = typeof value === 'string' ? value.trim() : '';
+    if (!p || p.indexOf('..') !== -1 || /^([a-z]+:|\/)/i.test(p)) return '';
+    return p;
   }
 
   function driveCardHtml(ex, esc) {
@@ -714,10 +813,19 @@
     var view = ex.source_url || driveViewUrl(ex.file_id);
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
+    // js/core.js opens only players it was told about (load-on-click).
+    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
+    if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       '<div class="poster-frame tone-' + toneName(muscle) + '">' +
-        '<iframe class="drive-frame" title="' + esc(displayName(ex)) + '" src="' + esc(preview) + '" loading="lazy" allow="fullscreen" allowfullscreen></iframe>' +
+        // Load-on-click: the Drive thumbnail with a play button; js/core.js swaps
+        // in the preview iframe on click, so 179 Drive players do not load at once.
+        '<button type="button" class="drive-frame drive-frame-facade" data-th-frame="' + esc(preview) + '"' +
+          ' data-th-frame-allow="autoplay; fullscreen" data-th-frame-title="' + esc(displayName(ex)) + '"' +
+          ' aria-label="' + esc('הפעלת סרטון: ' + displayName(ex)) + '">' +
+          '<img class="th-facade-thumb is-cover" src="' + esc(drivePosterPath(ex.poster) || driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
+          '<span class="ex-media-play" aria-hidden="true"></span></button>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +
       '</div>' +
@@ -776,16 +884,24 @@
     '</article>';
   }
 
+  function createProfileMatchBadge(doc) {
+    var d = doc || (typeof document !== 'undefined' ? document : null);
+    if (!d || typeof d.createElement !== 'function') return null;
+    var badge = d.createElement('span');
+    badge.className = 'pill ok profile-match';
+    badge.textContent = 'מתאים לפרופיל שלך';
+    return badge;
+  }
+
   return {
-    STORAGE_WORKOUTS: STORAGE_WORKOUTS,
-    STORAGE_DRAFT: STORAGE_DRAFT,
     MUSCLE_GROUPS: MUSCLE_GROUPS,
-    UNKNOWN_MUSCLE: UNKNOWN_MUSCLE,
-    UNKNOWN_SETS: UNKNOWN_SETS,
-    UNCLASSIFIED_NAME: UNCLASSIFIED_NAME,
-    REQUIRED_KEYS: REQUIRED_KEYS,
     validateLibrary: validateLibrary,
     filterExercises: filterExercises,
+    filterExercisesForProfile: function (list, profile) {
+      var mod = ProfileFilter || (typeof globalThis !== 'undefined' ? globalThis.THLibraryProfileFilter : null);
+      return mod && typeof mod.filterExercisesForProfile === 'function' ? mod.filterExercisesForProfile(list, profile) : (list || []).slice();
+    },
+    createProfileMatchBadge: createProfileMatchBadge,
     displayName: displayName,
     emptyDraft: emptyDraft,
     addToDraft: addToDraft,
@@ -803,15 +919,11 @@
     saveDraft: saveDraft,
     clearDraft: clearDraft,
     exerciseCardHtml: exerciseCardHtml,
-    toneName: toneName,
     muscleIcon: muscleIcon,
+    posterUrl: posterUrl,
     posterSources: posterSources,
     posterFrameHtml: posterFrameHtml,
-    DRIVE_FOLDER_GROUPS: DRIVE_FOLDER_GROUPS,
-    DRIVE_SKIP_FOLDERS: DRIVE_SKIP_FOLDERS,
-    DRIVE_KEYS: DRIVE_KEYS,
     drivePreviewUrl: drivePreviewUrl,
-    driveViewUrl: driveViewUrl,
     driveMuscleGroup: driveMuscleGroup,
     validateDriveVideos: validateDriveVideos,
     driveVideosToExercises: driveVideosToExercises,

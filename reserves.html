@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
   <meta name="description" content="מדדי מילואים ב-TrainerHub: ארבעה מבחני עובר/לא עובר, תוכנית 6 שבועות ומעקב מהטלפון.">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>TrainerHub | מדדי מילואים</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +19,7 @@
     .top small { color: var(--th-teal-ink); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
     .top h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 900; line-height: 1.2; margin: 8px 0; }
     .top p, .muted { color: var(--muted); line-height: 1.6; }
-    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; overflow-x: auto; scrollbar-width: none; }
+    .tabs { display: flex; gap: 8px; margin: 16px -16px; padding: 0 16px; max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-padding-inline: 16px; }
     .tabs::-webkit-scrollbar { display: none; }
     .tabs a { flex: none; display: inline-flex; align-items: center; min-height: 44px; background: var(--th-surface); border: 1.5px solid var(--line); color: var(--ink); border-radius: 999px; padding: 0 16px; font-size: 15px; font-weight: 500; white-space: nowrap; text-decoration: none; }
     .tabs a:hover { border-color: var(--th-teal); }
@@ -49,6 +50,8 @@
       outline-offset: 2px;
     }
     .unverified { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .demo-media { margin: 8px 0 12px; }
+    .demo-media .ex-media { width: 100%; max-width: 100%; height: auto; aspect-ratio: 16 / 9; }
   </style>
 <script src="./js/sentry-init.js"></script>
 </head>
@@ -56,23 +59,32 @@
 <a class="skip-link" href="#tests">דלג לתוכן מדדי מילואים</a>
 <nav class="th-nav" aria-label="ניווט ראשי">
   <span class="brand">TrainerHub</span>
-  <a href="./">דף אימון</a>
-  <a href="./weekly.html">דף שבועי</a>
+  <a href="./">בנה אימון</a>
+  <a href="./weekly.html">בונה שבועי</a>
   <a href="./library.html">ספריית סרטונים</a>
   <a href="./exercises.html">ספריית תרגילים</a>
+  <a href="./scan.html">סריקת סביבה</a>
   <a href="./booklet.html">תיק בטיחות</a>
   <span class="chip on" aria-current="page">מדדי מילואים</span>
-  <a href="./journal.html">יומן אימון</a>
+  <a href="./journal.html">יומן ביצוע</a>
+  <a href="./offer.html">הצעה למאמנים</a>
+  <a href="./manage.html">ניהול מאגר</a>
+  <a href="./frontend/">טקסט לכרטיסייה</a>
   <a href="./frontend/workout-mode.html">מצב אימון חי</a>
 </nav>
 <div class="th-banner">
-  יעדי עובר/לא עובר למילואים (ממתינים לאישור יחידה). טכניקת ניתוק ידיים לפי GoArmy/ACFT. הכול verified:false — בדקו מול המפקד/המסמך שלכם.
+  ארבעה מבחני עובר/לא עובר למילואים. בשכיבות הסמיכה עם ניתוק ידיים: קו ישר, חזה וירכיים על הרצפה, וידיים נמתחות לצדדים.
+</div>
+<div id="pwa-update-notice" class="th-banner" role="alert" aria-live="polite" style="display:none;">
+  <span>גרסה חדשה זמינה.</span>
+  <button type="button" id="pwa-refresh-btn" class="th-btn" style="min-height:32px;padding:2px 10px;font-size:13px;margin-inline-start:8px;cursor:pointer;">רענון</button>
 </div>
 <main class="wrap">
   <header class="top">
-    <small>TRAINERHUB / RESERVE FITNESS</small>
+    <small>TRAINERHUB / מדדי מילואים</small>
     <h1 id="page-title">מדדי מילואים</h1>
     <p id="page-sub">ארבעה מבחנים · כולם חובה · יעד עד <span id="deadline">1.12</span></p>
+    <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: equip list -->
     <div class="equip" id="equip" aria-label="ציוד נדרש"></div>
   </header>
 
@@ -103,6 +115,7 @@
     <div class="actions" role="toolbar" aria-label="פעולות מדדי מילואים">
       <button type="button" id="saveBtn" aria-label="שמור תוצאות מדדים">שמור תוצאות</button>
       <button type="button" class="ghost" id="evalBtn" aria-label="בדוק עובר או לא עובר בלי לשמור">בדיקה בלי שמירה</button>
+      <button type="button" class="ghost" id="shareReservesWhatsappBtn" aria-label="שתף סיכום מדדים בוואטסאפ">שתף בוואטסאפ</button>
       <button type="button" class="ghost" id="resetBtn" aria-label="נקה תוצאות שמורות">נקה שמורים</button>
     </div>
   </section>
@@ -111,6 +124,7 @@
     <h2 id="status-h">סטטוס כללי</h2>
     <div id="statusOut" class="status-box incomplete" role="status" aria-live="polite">טוען…</div>
     <div id="statusRows" class="grid" style="margin-top:12px"></div>
+    <div id="reservesComparisonOut" style="margin-top:16px"></div>
   </section>
 
   <section id="demos" aria-labelledby="demos-h">
@@ -122,6 +136,7 @@
   <section id="plan" aria-labelledby="plan-h">
     <h2 id="plan-h">תוכנית 6 שבועות</h2>
     <p class="muted" id="planSummary"></p>
+    <div id="reserves6WeekTracker" style="margin-top:16px"></div>
     <div id="checkpointsOut"></div>
     <div id="sessionsOut"></div>
   </section>
@@ -135,6 +150,7 @@
         <select id="adaptSession" aria-label="בחירת אימון למשוב"></select>
       </div>
     </div>
+    <!-- biome-ignore lint/a11y/useSemanticElements: feedback actions group -->
     <div class="actions" role="group" aria-label="משוב קושי אימון">
       <button type="button" id="fb-easy" data-fb="easy" aria-label="האימון היה קל">קל</button>
       <button type="button" id="fb-exact" class="ghost" data-fb="exact" aria-label="האימון היה בדיוק ברמה">בדיוק</button>
@@ -169,22 +185,60 @@
     <div id="strengthOut" style="margin-top:12px"></div>
   </section>
 
+  <!-- biome-ignore lint/a11y/noRedundantRoles: explicit role required by spec -->
+  <section class="card" id="reserves-safety-guidance" role="region" aria-labelledby="reservesSafetyHeading">
+    <h2 id="reservesSafetyHeading">דגשי בטיחות והתקדמות במילואים</h2>
+    <ul>
+      <li>תוכנית האימונים מיועדת לבניית כושר ויכולת בהדרגה בהתאם לביצועים בפועל.</li>
+      <li>בעומס מילואים או חוסר שינה יש להתאים את הקצב ולא להעמיס בכוח.</li>
+      <li>במקרה של כאב חדש או פציעה יש לעצור ולהתייעץ עם איש מקצוע או גורם רפואי.</li>
+    </ul>
+  </section>
+
 </main>
 
 <script src="./js/core.js"></script>
 <script src="./js/reserves-track.js"></script>
+<script src="./js/whatsapp-share.js"></script>
+<script src="./js/reserves-planner.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
-(function () {
+(() => {
   'use strict';
   var R = window.THReserves;
   if (!R) return;
 
   function el(id) { return document.getElementById(id); }
 
+  
+  var RESERVES_INPUTS_KEY = 'trainerhub_reserves_inputs';
+  function saveReservesInputs() {
+    var map;
+    try {
+      map = readInputs();
+      localStorage.setItem(RESERVES_INPUTS_KEY, JSON.stringify(map));
+    } catch (err) { /* private mode / SecurityError */ }
+  }
+  function restoreReservesInputs() {
+    var raw;
+    var map;
+    try {
+      raw = localStorage.getItem(RESERVES_INPUTS_KEY);
+      if (!raw) return;
+      map = JSON.parse(raw);
+      if (!map || typeof map !== 'object') return;
+      R.tests().forEach((t) => {
+        var input = el('in-' + t.id);
+        if (input && Object.prototype.hasOwnProperty.call(map, t.id) && map[t.id] != null) {
+          input.value = String(map[t.id]);
+        }
+      });
+    } catch (err) { /* ignore corrupt / private mode */ }
+  }
+
   function readInputs() {
     var map = {};
-    R.tests().forEach(function (t) {
+    R.tests().forEach((t) => {
       var input = el('in-' + t.id);
       map[t.id] = input ? input.value : '';
     });
@@ -193,7 +247,7 @@
 
   function fillInputsFromStore() {
     var store = R.loadResults();
-    R.tests().forEach(function (t) {
+    R.tests().forEach((t) => {
       var input = el('in-' + t.id);
       var row = store.results[t.id];
       if (input && row && row.raw != null) input.value = row.raw;
@@ -203,7 +257,7 @@
   function renderEquip(meta) {
     var host = el('equip');
     host.innerHTML = '';
-    (meta.equipment_he || []).forEach(function (e) {
+    (meta.equipment_he || []).forEach((e) => {
       var s = document.createElement('span');
       s.className = 'pill';
       s.textContent = e;
@@ -218,12 +272,12 @@
   function renderFields() {
     var host = el('testFields');
     host.innerHTML = '';
-    R.tests().forEach(function (t) {
+    R.tests().forEach((t) => {
       var wrap = document.createElement('div');
       wrap.className = 'card';
       var label = document.createElement('label');
       label.htmlFor = 'in-' + t.id;
-      label.textContent = t.name_he + ' — יעד: ' + t.threshold_display + (t.pass_when === 'lte' ? ' או פחות' : ' או יותר') + ' (ממתין לאישור יחידה)';
+      label.textContent = t.name_he + ' — יעד: ' + t.threshold_display + (t.pass_when === 'lte' ? ' או פחות' : ' או יותר');
       var input = document.createElement('input');
       input.id = 'in-' + t.id;
       input.setAttribute('aria-label', t.name_he);
@@ -240,10 +294,11 @@
       }
       var eq = document.createElement('p');
       eq.className = 'unverified';
-      eq.textContent = 'ציוד: ' + (t.equipment_he || '') + (t.verified ? '' : ' · לא מאומת');
+      eq.textContent = 'ציוד: ' + (t.equipment_he || '');
       wrap.appendChild(label);
       wrap.appendChild(input);
       wrap.appendChild(eq);
+      appendEmbeds(wrap, t);
       host.appendChild(wrap);
     });
   }
@@ -254,7 +309,7 @@
     box.textContent = R.overallLabelHe(summary.overall);
     var rows = el('statusRows');
     rows.innerHTML = '';
-    summary.tests.forEach(function (t) {
+    summary.tests.forEach((t) => {
       var card = document.createElement('div');
       card.className = 'card';
       var h = document.createElement('h4');
@@ -265,7 +320,7 @@
       var detail = document.createElement('p');
       detail.className = 'muted';
       detail.style.margin = '6px 0 0';
-      detail.textContent = (t.display ? ('תוצאה: ' + t.display + ' · ') : '') + 'יעד: ' + t.threshold_display + ' (ממתין לאישור)';
+      detail.textContent = (t.display ? ('תוצאה: ' + t.display + ' · ') : '') + 'יעד: ' + t.threshold_display;
       card.appendChild(h);
       card.appendChild(pill);
       card.appendChild(detail);
@@ -273,10 +328,36 @@
     });
   }
 
+  function videoIdsOf(row) {
+    var ids = [];
+    if (row && row.youtubeId) ids.push(row.youtubeId);
+    (row && row.youtubeIds || []).forEach((id) => {
+      if (id && ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+
+  function appendEmbeds(host, row) {
+    if (!window.TH || !TH.mediaMarkup) return;
+    videoIdsOf(row).forEach((id) => {
+      var slot = document.createElement('div');
+      slot.className = 'demo-media';
+      slot.innerHTML = TH.mediaMarkup({
+        he: row.name_he || 'סרטון',
+        youtubeId: id,
+        available: true
+      }, { className: 'ex-media' });
+      host.appendChild(slot);
+    });
+  }
+
   function renderDemos() {
     var host = el('demosOut');
     host.innerHTML = '';
-    R.demos().forEach(function (d) {
+    R.demos().forEach((d) => {
+      var th;
+      var tOl;
+      var ul;
       var card = document.createElement('article');
       card.className = 'card';
       card.setAttribute('aria-label', 'הדגמה: ' + d.name_he);
@@ -285,12 +366,15 @@
       var focus = document.createElement('p');
       focus.className = 'muted';
       focus.textContent = d.focus_he || '';
-      if (d.technique_he && d.technique_he.length) {
-        var th = document.createElement('h4');
+      card.appendChild(h);
+      card.appendChild(focus);
+      appendEmbeds(card, d);
+      if (d.technique_he?.length) {
+        th = document.createElement('h4');
         th.textContent = 'טכניקה';
         card.appendChild(th);
-        var tOl = document.createElement('ol');
-        d.technique_he.forEach(function (s) {
+        tOl = document.createElement('ol');
+        d.technique_he.forEach((s) => {
           var li = document.createElement('li');
           li.textContent = s;
           tOl.appendChild(li);
@@ -301,44 +385,40 @@
       prog.textContent = 'התקדמות';
       card.appendChild(prog);
       var ol = document.createElement('ol');
-      (d.steps_he || []).forEach(function (s) {
+      (d.steps_he || []).forEach((s) => {
         var li = document.createElement('li');
         li.textContent = s;
         ol.appendChild(li);
       });
-      card.appendChild(h);
-      card.appendChild(focus);
       card.appendChild(ol);
-      if (d.cues_he && d.cues_he.length) {
-        var ul = document.createElement('ul');
-        d.cues_he.forEach(function (c) {
+      if (d.cues_he?.length) {
+        ul = document.createElement('ul');
+        d.cues_he.forEach((c) => {
           var li = document.createElement('li');
           li.textContent = c;
           ul.appendChild(li);
         });
         card.appendChild(ul);
       }
-      var flag = document.createElement('p');
-      flag.className = 'unverified';
-      flag.textContent = d.verified ? '' : 'verified: false — לא אומת מול מקור רשמי';
-      card.appendChild(flag);
       host.appendChild(card);
     });
   }
 
   function renderPlan() {
     var p = R.plan();
+    var dl;
     el('planSummary').textContent = p.summary_he || p.title_he || '';
     if (p.deload && !document.getElementById('deloadCard')) {
-      var dl = document.createElement('div');
+      dl = document.createElement('div');
       dl.className = 'card';
       dl.id = 'deloadCard';
       dl.innerHTML = '<h4>דילוד</h4><p class="muted" style="margin:0">' + (p.deload.note_he || '') + ' · ' + (p.deload.volume_reduction_he || '') + '</p>';
       el('checkpointsOut').parentNode.insertBefore(dl, el('checkpointsOut'));
     }
+    render6WeekTracker();
     var cp = el('checkpointsOut');
     cp.innerHTML = '<h3>נקודות מבחן</h3>';
-    (p.checkpoints || []).forEach(function (c) {
+    (p.checkpoints || []).forEach((c) => {
       var card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = '<h4>' + c.name_he + '</h4><p class="muted" style="margin:0">שבוע ' + c.week + ' · ' + (c.note_he || '') + '</p>';
@@ -347,34 +427,245 @@
     var sessions = el('sessionsOut');
     sessions.innerHTML = '<h3>אימונים</h3>';
     var byWeek = {};
-    (p.sessions || []).forEach(function (s) {
+    (p.sessions || []).forEach((s) => {
       byWeek[s.week] = byWeek[s.week] || [];
       byWeek[s.week].push(s);
     });
-    Object.keys(byWeek).sort(function (a, b) { return Number(a) - Number(b); }).forEach(function (w) {
+    Object.keys(byWeek).sort((a, b) => Number(a) - Number(b)).forEach((w) => {
       var h = document.createElement('h3');
       h.textContent = 'שבוע ' + w;
       sessions.appendChild(h);
-      byWeek[w].forEach(function (s) {
+      byWeek[w].forEach((s) => {
         var card = document.createElement('div');
         card.className = 'card';
         var title = document.createElement('h4');
         title.textContent = s.day_he + ' — ' + s.focus_he;
         var ul = document.createElement('ul');
-        (s.items_he || []).forEach(function (it) {
+        (s.items_he || []).forEach((it) => {
           var li = document.createElement('li');
           li.textContent = it;
           ul.appendChild(li);
         });
-        var flag = document.createElement('p');
-        flag.className = 'unverified';
-        flag.textContent = s.verified ? '' : 'verified: false';
+        var start = document.createElement('button');
+        start.type = 'button';
+        start.className = 'ghost';
+        start.textContent = 'התחל אימון';
+        start.setAttribute('aria-label', 'התחל ' + (s.day_he || 'אימון') + ' במצב אימון חי');
+        start.addEventListener('click', () => { startReserveSession(s.id); });
         card.appendChild(title);
         card.appendChild(ul);
-        card.appendChild(flag);
+        card.appendChild(start);
         sessions.appendChild(card);
       });
     });
+  }
+
+  function render6WeekTracker() {
+    var host = el('reserves6WeekTracker');
+    if (!host) return;
+    host.textContent = '';
+
+    var planner = window.THReservesPlanner;
+    var summary = planner && typeof planner.getReserveProgressSummary === 'function'
+      ? planner.getReserveProgressSummary()
+      : { completedCount: 0, percent: 0, activeWeek: 1, completedSessions: [] };
+
+    var card = document.createElement('article');
+    card.className = 'card';
+    card.setAttribute('aria-label', 'לוח מעקב 6 שבועות');
+
+    var headerRow = document.createElement('div');
+    headerRow.className = 'row';
+    headerRow.style.alignItems = 'center';
+    headerRow.style.justifyContent = 'space-between';
+
+    var title = document.createElement('h3');
+    title.style.margin = '0';
+    title.textContent = 'לוח מעקב והתקדמות 6 שבועות (18 יחידות אימון)';
+    headerRow.appendChild(title);
+
+    var badge = document.createElement('span');
+    badge.className = 'chip';
+    badge.textContent = summary.percent + '% הושלמו (' + summary.completedCount + '/18)';
+    headerRow.appendChild(badge);
+    card.appendChild(headerRow);
+
+    var subInfo = document.createElement('p');
+    subInfo.className = 'muted';
+    subInfo.style.margin = '6px 0 12px';
+    subInfo.textContent = 'שבוע פעיל נוכחי: שבוע ' + summary.activeWeek + ' מתוך 6. לחצו על כל אימון כדי לסמנו כהושלם.';
+    card.appendChild(subInfo);
+
+    var barTrack = document.createElement('div');
+    barTrack.style.width = '100%';
+    barTrack.style.height = '8px';
+    barTrack.style.backgroundColor = 'var(--line, #374151)';
+    barTrack.style.borderRadius = '4px';
+    barTrack.style.overflow = 'hidden';
+    barTrack.style.marginBottom = '16px';
+
+    var barFill = document.createElement('div');
+    barFill.style.height = '100%';
+    barFill.style.width = summary.percent + '%';
+    barFill.style.backgroundColor = 'var(--accent, #4ade80)';
+    barFill.style.transition = 'width 0.3s ease';
+    barTrack.appendChild(barFill);
+    card.appendChild(barTrack);
+
+    var weeksGrid = document.createElement('div');
+    weeksGrid.className = 'grid';
+    weeksGrid.style.display = 'grid';
+    weeksGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+    weeksGrid.style.gap = '12px';
+
+    for (var w = 1; w <= 6; w++) {
+      var weekCard = document.createElement('div');
+      weekCard.className = 'card';
+      weekCard.style.padding = '8px 12px';
+      if (w === summary.activeWeek) {
+        weekCard.style.border = '1px solid var(--accent, #4ade80)';
+      }
+
+      var weekHeading = document.createElement('h4');
+      weekHeading.style.margin = '0 0 6px';
+      weekHeading.textContent = 'שבוע ' + w + (w === summary.activeWeek ? ' (פעיל)' : '');
+      weekCard.appendChild(weekHeading);
+
+      var daysBox = document.createElement('div');
+      daysBox.style.display = 'flex';
+      daysBox.style.gap = '6px';
+      daysBox.style.flexWrap = 'wrap';
+
+      for (var d = 1; d <= 3; d++) {
+        var isDone = summary.completedSessions && summary.completedSessions.indexOf(w + '-' + d) !== -1;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = isDone ? 'chip' : 'chip ghost';
+        btn.setAttribute('data-week', String(w));
+        btn.setAttribute('data-day', String(d));
+        btn.setAttribute('aria-label', 'שבוע ' + w + ' אימון ' + d + (isDone ? ' הושלם' : ' סמן כהושלם'));
+        btn.textContent = 'אימון ' + (d === 1 ? 'א׳' : d === 2 ? 'ב׳' : 'ג׳') + (isDone ? ' ✓' : '');
+
+        ((weekNum, dayNum) => {
+          btn.addEventListener('click', () => {
+            if (planner && typeof planner.toggleReserveSessionDone === 'function') {
+              planner.toggleReserveSessionDone(weekNum, dayNum);
+              render6WeekTracker();
+            }
+          });
+        })(w, d);
+
+        daysBox.appendChild(btn);
+      }
+      weekCard.appendChild(daysBox);
+      weeksGrid.appendChild(weekCard);
+    }
+
+    card.appendChild(weeksGrid);
+    host.appendChild(card);
+  }
+
+  function renderComparison() {
+    var host = el('reservesComparisonOut');
+    if (!host) return;
+    host.textContent = '';
+
+    var planner = window.THReservesPlanner;
+    if (!planner || typeof planner.compareBaselineAndCurrent !== 'function') return;
+
+    var store = R.loadResults ? R.loadResults() : null;
+    var baseline = null;
+    var current = null;
+
+    if (store && Array.isArray(store.history)) {
+      var placementItems = store.history.filter((h) => h.checkpoint === 'placement');
+      if (placementItems.length > 0) {
+        baseline = {};
+        placementItems.forEach((it) => {
+          if (it.testId && it.raw != null) baseline[it.testId] = it.raw;
+        });
+      }
+      var latestItems = store.history.filter((h) => h.checkpoint === 'midpoint' || h.checkpoint === 'final' || h.checkpoint === 'practice');
+      if (latestItems.length > 0) {
+        current = {};
+        latestItems.forEach((it) => {
+          if (it.testId && it.raw != null) current[it.testId] = it.raw;
+        });
+      }
+    }
+
+    var inputMap = readInputs();
+    var hasInputs = Object.keys(inputMap).some((k) => inputMap[k] !== '');
+    if (hasInputs) {
+      if (!current) current = {};
+      Object.keys(inputMap).forEach((k) => {
+        if (inputMap[k] !== '') current[k] = inputMap[k];
+      });
+    }
+
+    var comp = planner.compareBaselineAndCurrent(baseline, current);
+
+    var card = document.createElement('article');
+    card.className = 'card';
+    card.setAttribute('aria-label', 'השוואת מבדקים');
+
+    var title = document.createElement('h3');
+    title.textContent = 'השוואת מבדקים (מבדק פתיחה מול עדכני)';
+    card.appendChild(title);
+
+    if (!comp || !comp.hasComparison) {
+      var note = document.createElement('p');
+      note.className = 'muted';
+      note.textContent = 'כדי לצפות בהשוואת שיפור בריצה ובכוח, שמרו מבדק פתיחה (מבחן מיון) ומבדק נוסף (אמצע, סיום או אימון).';
+      card.appendChild(note);
+    } else {
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      grid.style.display = 'grid';
+      grid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(220px, 1fr))';
+      grid.style.gap = '12px';
+      grid.style.marginTop = '8px';
+
+      if (comp.run) {
+        var runCard = document.createElement('div');
+        runCard.className = 'card';
+        var runTitle = document.createElement('h4');
+        runTitle.style.margin = '0 0 4px';
+        runTitle.textContent = 'ריצת 3000 מטר';
+        runCard.appendChild(runTitle);
+
+        var runText = document.createElement('p');
+        runText.style.margin = '0';
+        runText.textContent = comp.run.text;
+        runCard.appendChild(runText);
+        grid.appendChild(runCard);
+      }
+
+      if (comp.pushups) {
+        var pushCard = document.createElement('div');
+        pushCard.className = 'card';
+        var pushTitle = document.createElement('h4');
+        pushTitle.style.margin = '0 0 4px';
+        pushTitle.textContent = 'שכיבות סמיכה (ניתוק ידיים)';
+        pushCard.appendChild(pushTitle);
+
+        var pushText = document.createElement('p');
+        pushText.style.margin = '0';
+        pushText.textContent = comp.pushups.text;
+        pushCard.appendChild(pushText);
+        grid.appendChild(pushCard);
+      }
+
+      card.appendChild(grid);
+
+      var summaryP = document.createElement('p');
+      summaryP.style.marginTop = '12px';
+      summaryP.style.fontWeight = 'bold';
+      summaryP.textContent = 'סיכום מגמה: ' + comp.summaryText;
+      card.appendChild(summaryP);
+    }
+
+    host.appendChild(card);
   }
 
 
@@ -382,7 +673,7 @@
     var sel = el('adaptSession');
     if (!sel) return;
     sel.innerHTML = '';
-    (R.plan().sessions || []).forEach(function (s) {
+    (R.plan().sessions || []).forEach((s) => {
       var opt = document.createElement('option');
       opt.value = s.id;
       opt.textContent = 'שבוע ' + s.week + ' · ' + s.day_he + ' — ' + s.focus_he;
@@ -394,29 +685,36 @@
     var recorded = R.recordWorkoutFeedback(sessionId, fb);
     var next = R.nextWorkout(sessionId, fb);
     var host = el('adaptOut');
+    var s;
     if (!recorded) { host.textContent = 'משוב לא תקין'; return; }
     var lines = [];
-    lines.push('נרשם: ' + (recorded.adjustment && recorded.adjustment.he ? recorded.adjustment.he : fb));
+    lines.push('נרשם: ' + (recorded.adjustment?.he ? recorded.adjustment.he : fb));
     if (!next || next.done) {
-      lines.push((next && next.message_he) || 'אין אימון הבא במסלול');
+      lines.push((next?.message_he) || 'אין אימון הבא במסלול');
     } else {
-      var s = next.session;
+      s = next.session;
       lines.push('האימון הבא: ' + (s.day_he || s.name_he || s.id) + (s.focus_he ? (' — ' + s.focus_he) : ''));
-      lines.push('סטים מותאמים: ' + (s.load && s.load.sets) + ' · ' + (s.load && s.load.effort_he || ''));
+      lines.push('סטים מותאמים: ' + (s.load?.sets) + ' · ' + (s.load?.effort_he || ''));
       if (s.adjustment_note_he) lines.push(s.adjustment_note_he);
-      if (s.items_he && s.items_he.length) {
+      if (s.items_he?.length) {
         lines.push('תרגילים:');
-        s.items_he.forEach(function (it) { lines.push('• ' + it); });
+        s.items_he.forEach((it) => { lines.push('• ' + it); });
       }
     }
-    host.innerHTML = lines.map(function (l) { return '<p style="margin:6px 0">' + l + '</p>'; }).join('');
+    host.textContent = '';
+    lines.forEach((l) => {
+      var p = document.createElement('p');
+      p.style.margin = '6px 0';
+      p.textContent = l;
+      host.appendChild(p);
+    });
   }
 
   function bindFeedback() {
-    ['fb-easy', 'fb-exact', 'fb-incomplete'].forEach(function (id) {
+    ['fb-easy', 'fb-exact', 'fb-incomplete'].forEach((id) => {
       var btn = el(id);
       if (!btn) return;
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', () => {
         var sid = el('adaptSession').value;
         showNextAfterFeedback(sid, btn.getAttribute('data-fb'));
       });
@@ -433,7 +731,7 @@
       host.textContent = 'לא נמצאה תוכנית';
       return;
     }
-    plans.forEach(function (p) {
+    plans.forEach((p) => {
       var card = document.createElement('article');
       card.className = 'card';
       var h = document.createElement('h3');
@@ -441,22 +739,23 @@
       card.appendChild(h);
       var meta = document.createElement('p');
       meta.className = 'muted';
-      meta.textContent = p.level_he + ' · ' + p.equipment_he + (p.verified ? '' : ' · verified: false');
+      meta.textContent = p.level_he + ' · ' + p.equipment_he;
       card.appendChild(meta);
-      (p.sessions || []).forEach(function (s) {
+      (p.sessions || []).forEach((s) => {
+        var load;
         var sub = document.createElement('div');
         sub.style.marginTop = '10px';
         var h4 = document.createElement('h4');
         h4.textContent = s.name_he + ' — ' + s.focus_he;
         sub.appendChild(h4);
         if (s.load) {
-          var load = document.createElement('p');
+          load = document.createElement('p');
           load.className = 'muted';
           load.textContent = 'סטים בסיס: ' + s.load.sets + ' · ' + (s.load.effort_he || '');
           sub.appendChild(load);
         }
         var ul = document.createElement('ul');
-        (s.items_he || []).forEach(function (it) {
+        (s.items_he || []).forEach((it) => {
           var li = document.createElement('li');
           li.textContent = it;
           ul.appendChild(li);
@@ -476,43 +775,194 @@
     R.setData(track);
     var m = R.meta();
     el('page-title').textContent = m.title_he || 'מדדי מילואים';
-    el('page-sub').innerHTML = (m.subtitle_he || '') + ' · יעד עד <span id="deadline">' + (m.deadline_display_he || '1.12') + '</span>';
+    var sub = el('page-sub');
+    var deadline = document.createElement('span');
+    deadline.id = 'deadline';
+    deadline.textContent = m.deadline_display_he || '1.12';
+    sub.textContent = '';
+    sub.appendChild(document.createTextNode((m.subtitle_he || '') + ' · יעד עד '));
+    sub.appendChild(deadline);
     renderEquip(m);
     renderFields();
     fillInputsFromStore();
+    restoreReservesInputs();
+    R.tests().forEach((t) => {
+      var input = el('in-' + t.id);
+      if (!input || input.dataset.reservesPersistBound === '1') return;
+      input.dataset.reservesPersistBound = '1';
+      input.addEventListener('input', saveReservesInputs);
+      input.addEventListener('change', saveReservesInputs);
+    });
     renderStatus(R.currentSummary());
     renderDemos();
     renderPlan();
+    render6WeekTracker();
+    renderComparison();
     renderAdaptSessions();
     bindFeedback();
     var strBtn = el('strShow');
     if (strBtn) strBtn.addEventListener('click', renderStrength);
   }
 
-  el('saveBtn').addEventListener('click', function () {
+  function sessionToWorkout(s) {
+    var exercises = (s.items_he || []).map((line, idx) => {
+      var sets = (s.load && s.load.sets) || 1;
+      var reps = null;
+      var m = String(line).match(/(\d+)\s*[×x]\s*(\d+)/);
+      if (m) { sets = Number(m[1]); reps = m[2]; }
+      return {
+        name: line,
+        id: 'miluim-' + s.id + '-' + idx,
+        sets: sets,
+        reps: reps,
+        rest_seconds: 45,
+        notes: s.focus_he || ''
+      };
+    });
+    return {
+      title: 'מילואים · שבוע ' + s.week + ' · ' + (s.day_he || ''),
+      duration_minutes: 30,
+      phases: [{ name: 'Main', exercises: exercises }]
+    };
+  }
+
+  function startReserveSession(sessionId) {
+    var sessions = (R.plan() && R.plan().sessions) || [];
+    var s = null;
+    sessions.forEach((row) => { if (row.id === sessionId) s = row; });
+    if (!s || !window.TH || !TH.store) return;
+    var workout = sessionToWorkout(s);
+    if (!TH.store.set(TH.KEYS.active, workout)) return;
+    window.location.href = './frontend/workout-mode.html';
+  }
+
+  function saveMetricsToJournal(summary) {
+    if (!window.TH || !TH.recordFinishedWorkout) return;
+    var done = (summary.tests || []).filter((t) => !t.incomplete);
+    var exercises = done.map((t) => ({ name: t.name_he, id: t.id, sets: 1, reps: t.pass_when === 'gte' ? String(t.value) : null }));
+    TH.recordFinishedWorkout({
+      title: 'מדדי מילואים',
+      doneAt: new Date().toISOString(),
+      exercises: done.length,
+      sets: done.length,
+      skipped: (summary.tests || []).length - done.length,
+      plan: TH.compactPlan({ title: 'מדדי מילואים', phases: [{ name: 'Main', exercises: exercises }] }),
+      log: done.filter((t) => t.pass_when === 'gte' && t.value > 0).map((t) => ({
+        id: t.id,
+        sets: [{ reps: t.value, weightKg: 0 }]
+      }))
+    });
+  }
+
+  el('saveBtn').addEventListener('click', () => {
+    saveReservesInputs();
     var map = readInputs();
     var cp = el('checkpoint').value;
-    Object.keys(map).forEach(function (id) {
+    Object.keys(map).forEach((id) => {
       if (map[id] !== '') R.logResult(id, map[id], cp);
     });
-    renderStatus(R.currentSummary());
+    var summary = R.currentSummary();
+    renderStatus(summary);
+    saveMetricsToJournal(summary);
+    renderComparison();
   });
-  el('evalBtn').addEventListener('click', function () {
+  el('evalBtn').addEventListener('click', () => {
     renderStatus(R.evaluateAll(readInputs()));
+    renderComparison();
   });
-  el('resetBtn').addEventListener('click', function () {
+  var shareReservesBtn = el('shareReservesWhatsappBtn');
+  if (shareReservesBtn) {
+    shareReservesBtn.addEventListener('click', () => {
+      var shareMod = window.THWhatsAppShare || window.TH || {};
+      var formatFn = (window.THReservesPlanner && typeof window.THReservesPlanner.formatReservesResultText === 'function')
+        ? window.THReservesPlanner.formatReservesResultText
+        : shareMod.formatReservesResultText;
+      var buildUrlFn = shareMod.buildWhatsAppShareUrl;
+      var inputs;
+      var hasInputs;
+      var summary;
+      var progress;
+      var text;
+      var url;
+      var opened = false;
+      var win;
+      if (!formatFn || !buildUrlFn) return;
+
+      inputs = readInputs();
+      hasInputs = Object.keys(inputs).some((k) => inputs[k] !== '');
+      summary = hasInputs && R.evaluateAll ? R.evaluateAll(inputs) : (R.currentSummary ? R.currentSummary() : null);
+      progress = window.THReservesPlanner && typeof window.THReservesPlanner.getReserveProgressSummary === 'function'
+        ? window.THReservesPlanner.getReserveProgressSummary()
+        : null;
+      text = formatFn(summary, progress);
+      if (!text) return;
+      url = buildUrlFn(text);
+      try {
+        if (url && typeof window.open === 'function') {
+          win = window.open(url, '_blank', 'noopener,noreferrer');
+          if (win) opened = true;
+        }
+      } catch (err) {
+        opened = false;
+      }
+      if (!opened) {
+        if (window.TH && typeof window.TH.copyOrShow === 'function') {
+          window.TH.copyOrShow(text, shareReservesBtn.parentNode);
+        }
+      }
+    });
+  }
+  el('resetBtn').addEventListener('click', () => {
     R.clearResults();
-    R.tests().forEach(function (t) {
+    R.tests().forEach((t) => {
       var input = el('in-' + t.id);
       if (input) input.value = '';
     });
     renderStatus(R.currentSummary());
+    renderComparison();
   });
 
   if (R.data) {
     boot(R.data);
   } else {
-    R.load().then(function () { boot(R.data); });
+    R.load().then(() => { boot(R.data); });
+  }
+
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        const showUpdateNotice = () => {
+          const banner = document.getElementById('pwa-update-notice');
+          if (banner) banner.style.display = 'block';
+        };
+
+        if (reg.waiting) {
+          showUpdateNotice();
+        }
+
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showUpdateNotice();
+            }
+          });
+        });
+
+        const refreshBtn = document.getElementById('pwa-refresh-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            if (reg.waiting) {
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+          });
+        }
+      }).catch((err) => {
+        console.warn('Service worker registration failed:', err);
+      });
+    });
   }
 })();
 </script>

@@ -145,8 +145,10 @@ test('posters use assets/posters/<reel_id> and exercises group by muscle', funct
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   const src = THReels.posterSources(bench);
   assert.equal(src.primary, 'assets/posters/DfDEp8PRL3f.jpg');
-  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).primary, 'assets/posters/DdHOFvtKk9z.png');
-  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).secondary, 'assets/posters/DdHOFvtKk9z.jpg');
+  assert.equal(src.secondary, '');
+  // No file is shipped for this reel. Guessing .png then .jpg was two 404s.
+  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).primary, '');
+  assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).secondary, '');
   assert.equal(THReels.posterSources({ id: 'ig-X', poster: 'assets/posters/custom.jpg' }).primary, 'assets/posters/custom.jpg');
   const html = THReels.posterFrameHtml(Object.assign({}, bench, { _index: 2 }), function (s) { return String(s); });
   assert.match(html, /assets\/posters\/DfDEp8PRL3f\.jpg/);
