@@ -88,6 +88,14 @@
     .rule-value { display: block; color: var(--ink); font-size: 15px; line-height: 1.45; }
     .rule-source { display: inline-block; margin-top: 6px; }
     .rule-detail { display: block; color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 4px; }
+    .warmup-section { margin: 16px 0; padding: 14px 16px; background: var(--th-surface2); border: 1px solid var(--line); border-radius: var(--th-r-md); }
+    .warmup-heading { margin: 0 0 6px; font-size: 16px; color: var(--th-orange-ink); }
+    .warmup-pacing { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+    .warmup-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .warmup-item { padding: 6px 8px; border-radius: var(--th-r-sm); background: var(--th-surface); transition: opacity .2s; }
+    .warmup-item.completed { opacity: 0.6; text-decoration: line-through; }
+    .warmup-label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+    .warmup-checkbox { width: 18px; height: 18px; accent-color: var(--lime); cursor: pointer; }
     @media (max-width: 600px) { .seg-grid, .input-grid { grid-template-columns: 1fr; } .th-steps { margin-top: 16px; } }
     button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
   </style>
@@ -201,6 +209,14 @@
       <button type="button" data-fill="כוח גב 30 דקות" aria-label="מלא דוגמה: כוח גב 30 דקות">כוח גב 30 דקות</button>
       <button type="button" data-fill="ידיים בלי ציוד, ביניים" aria-label="מלא דוגמה: ידיים בלי ציוד, ביניים">ידיים בלי ציוד, ביניים</button>
     </div>
+    <section class="card" id="customTemplatesPanel" aria-labelledby="customTemplatesHeading" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <h3 id="customTemplatesHeading" style="margin:0;font-size:1.05rem;">תבניות אישיות</h3>
+        <button type="button" class="th-btn ghost" id="saveTemplateBtn" aria-label="שמור כתבנית אישית">שמור כתבנית אישית</button>
+      </div>
+      <p class="field-help" id="customTemplatesStatus" style="margin:4px 0 8px 0;">טעינה מהירה של תבניות שמורות לבונה האימון.</p>
+      <div id="customTemplatesList" role="region" aria-label="רשימת תבניות שמורות"></div>
+    </section>
   </div>
 
   <div class="panel" id="panel-ingest" role="tabpanel" aria-labelledby="tab-ingest" hidden>
@@ -246,7 +262,9 @@
   </div>
 
   <!-- biome-ignore lint/a11y/useSemanticElements: live result region -->
-  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite"></div>
+  <div id="result" role="region" aria-label="תוצאת אימון" aria-live="polite">
+    <section id="warmupSection" class="warmup-section card" aria-label="חימום ממוקד ומוביליטי" hidden></section>
+  </div>
 </main>
 <script src="./js/core.js"></script>
 <script src="./js/pilot.js"></script>
@@ -254,6 +272,7 @@
 <script src="./js/analyzer.js"></script>
 <script src="./js/prompt-parser.js"></script>
 <script src="./js/adaptation-engine.js"></script>
+<script src="./js/warmup-generator.js"></script>
 <script src="./js/session-builder.js"></script>
 <script src="./js/journal-storage.js"></script>
 <script src="./js/muscle-balance.js"></script>
@@ -262,10 +281,12 @@
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/plan-link-codec.js"></script>
 <script src="./js/live-tempo-cue.js"></script>
+<script src="./js/custom-templates.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
   var trackStartedAt = 0;
+  var activeBuiltWorkout = null;
 
   function muscleList(ids) {
     return (ids || []).map((m) => TH.muscleLabel(m)).join(', ') || '—';
@@ -408,6 +429,7 @@
       return;
     }
     var w = built.workout;
+    activeBuiltWorkout = w;
     var exp = built.explanation || {};
     var stim = exp.stimulus || {};
     var notice = built.notice
@@ -458,6 +480,7 @@
           : '') +
         flags +
         groupPlan +
+        '<section id="warmupSection" class="warmup-section" aria-label="חימום ממוקד ומוביליטי"></section>' +
         phases +
         rules +
         '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
@@ -480,6 +503,15 @@
       '</article>';
 
     bindWorkoutActions(w);
+    var warmupBlock = built.warmupBlock || (w && w.warmupBlock);
+    if (!warmupBlock && typeof THWarmupGenerator !== 'undefined' && typeof THWarmupGenerator.generateTargetedWarmup === 'function') {
+      warmupBlock = THWarmupGenerator.generateTargetedWarmup(w, built.request || {}, TH.catalogList());
+    }
+    var warmupEl = $('warmupSection');
+    if (warmupEl && warmupBlock) {
+      renderWarmupSection(warmupBlock, warmupEl);
+    }
+
     var report = built.adaptationReport || (w && w.adaptationReport);
     if (!report && typeof THAdaptation !== 'undefined') {
       report = THAdaptation.buildAdaptationReport(built.request || {}, w);
@@ -487,6 +519,71 @@
     if (report) {
       renderAdaptationCard(report, box);
     }
+  }
+
+  function renderWarmupSection(warmupBlock, container) {
+    if (!warmupBlock || !container || typeof document.createElement !== 'function') return;
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
+    const heading = document.createElement('h3');
+    heading.className = 'warmup-heading';
+    heading.textContent = 'חימום ממוקד ומוביליטי (' + (warmupBlock.duration_minutes || 6) + ' דקות)';
+    container.appendChild(heading);
+
+    if (warmupBlock.pacingGuidelines || warmupBlock.pacing) {
+      const pacing = document.createElement('p');
+      pacing.className = 'warmup-pacing';
+      pacing.textContent = 'הנחיות קצב: ' + (warmupBlock.pacingGuidelines || warmupBlock.pacing);
+      container.appendChild(pacing);
+    }
+
+    const list = document.createElement('ul');
+    list.className = 'warmup-list';
+    list.setAttribute('role', 'list');
+
+    const exercises = Array.isArray(warmupBlock.exercises) ? warmupBlock.exercises : [];
+    for (const ex of exercises) {
+      const item = document.createElement('li');
+      item.className = 'warmup-item';
+
+      const label = document.createElement('label');
+      label.className = 'warmup-label';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'warmup-checkbox';
+      checkbox.setAttribute('aria-label', 'הושלם: ' + (ex.name || ex.id));
+
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          item.classList.add('completed');
+        } else {
+          item.classList.remove('completed');
+        }
+      });
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'warmup-text';
+      let desc = ex.name || ex.id;
+      if (ex.duration_seconds) {
+        desc += ' (' + Math.round(ex.duration_seconds / 60) + ' דק׳)';
+      }
+      if (ex.instructions) {
+        desc += ' · ' + ex.instructions;
+      }
+      textSpan.textContent = desc;
+
+      label.appendChild(checkbox);
+      label.appendChild(textSpan);
+      item.appendChild(label);
+      list.appendChild(item);
+    }
+
+    container.appendChild(list);
+    container.removeAttribute('hidden');
   }
 
   function renderAdaptationCard(report, container) {
@@ -832,9 +929,124 @@
     });
   }
 
+  function renderCustomTemplates() {
+    var host = $('customTemplatesList');
+    if (!host) return;
+    host.textContent = '';
+    var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+    var list = (CT && typeof CT.listCustomTemplates === 'function') ? CT.listCustomTemplates() : [];
+    if (!list.length) {
+      if (typeof document.createElement === 'function') {
+        var p = document.createElement('p');
+        p.className = 'field-help';
+        p.textContent = 'אין תבניות אישיות שמורות עדיין.';
+        host.appendChild(p);
+      }
+      return;
+    }
+    if (typeof document.createElement !== 'function') return;
+    var ul = document.createElement('ul');
+    ul.className = 'saved-list';
+
+    list.forEach(function (tpl) {
+      var li = document.createElement('li');
+      li.className = 'saved-item';
+
+      var info = document.createElement('span');
+      var b = document.createElement('strong');
+      b.textContent = tpl.name;
+      info.appendChild(b);
+
+      var actions = document.createElement('span');
+      actions.className = 'icon-row';
+
+      var loadBtn = document.createElement('button');
+      loadBtn.type = 'button';
+      loadBtn.className = 'th-btn ghost';
+      loadBtn.textContent = 'טען לבונה';
+      loadBtn.setAttribute('aria-label', 'טען לבונה: ' + tpl.name);
+      loadBtn.addEventListener('click', function () {
+        var w = tpl.workout;
+        if (!w) return;
+        var planToRender = w.phases ? w : {
+          title: tpl.name,
+          phases: [{ name: 'Main', exercises: Array.isArray(w.exercises) ? w.exercises : [] }]
+        };
+        activeBuiltWorkout = planToRender;
+        if (window.TH && window.TH.store) {
+          TH.store.set(TH.KEYS.active, planToRender);
+        }
+        render({
+          workout: planToRender,
+          notice: 'נטענה תבנית אישית: ' + tpl.name,
+          explanation: {
+            type: 'תבנית אישית שמורה',
+            primary: [],
+            secondary: [],
+            stimulus: {},
+            flags: [],
+            reasons: []
+          }
+        });
+        var status = $('customTemplatesStatus');
+        if (status) status.textContent = 'נטענה תבנית «' + tpl.name + '» לבונה האימון.';
+      });
+      actions.appendChild(loadBtn);
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'th-btn ghost';
+      delBtn.textContent = 'מחק';
+      delBtn.setAttribute('aria-label', 'מחק: ' + tpl.name);
+      delBtn.addEventListener('click', function () {
+        if (CT && typeof CT.deleteCustomTemplate === 'function') {
+          CT.deleteCustomTemplate(tpl.id);
+        }
+        renderCustomTemplates();
+        var status = $('customTemplatesStatus');
+        if (status) status.textContent = 'התבנית «' + tpl.name + '» נמחקה.';
+      });
+      actions.appendChild(delBtn);
+
+      li.appendChild(info);
+      li.appendChild(actions);
+      ul.appendChild(li);
+    });
+
+    host.appendChild(ul);
+  }
+
+  function initCustomTemplates() {
+    var saveBtn = $('saveTemplateBtn');
+    if (saveBtn && saveBtn.addEventListener) {
+      saveBtn.addEventListener('click', function () {
+        var w = activeBuiltWorkout;
+        var promptVal = $('prompt') ? $('prompt').value.trim() : '';
+        var name = (w && w.title && w.title !== 'לא הצלחנו לבנות אימון.') ? w.title : (promptVal || 'תבנית אישית');
+        if (!w) {
+          w = {
+            title: name,
+            phases: [{ name: 'Main', exercises: [] }]
+          };
+        }
+        var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+        if (CT && typeof CT.saveCustomTemplate === 'function') {
+          var saved = CT.saveCustomTemplate(name, w);
+          if (saved) {
+            renderCustomTemplates();
+            var status = $('customTemplatesStatus');
+            if (status) status.textContent = '«' + name + '» נשמר בהצלחה כתבנית אישית.';
+          }
+        }
+      });
+    }
+    renderCustomTemplates();
+  }
+
   TH.ready(() => {
     fillSegSelect();
     checkSharedCoachPlan();
+    initCustomTemplates();
     if ($('prompt').value.trim()) {
       syncFieldsFromPrompt();
       run();

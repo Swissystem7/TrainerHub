@@ -1,0 +1,516 @@
+/**
+ * TrainerHub — Dynamic targeted warmup & mobility generator.
+ * Builds a sequence of 3 warmup & mobility exercises (5-7 minutes)
+ * tailored to target muscle groups and user limitations.
+ * Client-side & CommonJS/UMD module.
+ * Namespace: window.THWarmupGenerator / window.THWarmup
+ */
+((root) => {
+  const WARMUP_EXERCISES = [
+    // --- Upper Body ---
+    {
+      id: 'arm_circles_chest_opener',
+      name: 'סיבובי זרועות ופתיחת בית חזה',
+      category: 'mobility',
+      bodyRegion: 'upper',
+      targetMuscles: ['chest', 'shoulders', 'upper'],
+      duration_seconds: 120,
+      instructions: '10 סיבובים קדימה ו-10 לאחור בטווח תנועה מבוקר',
+      pacing: 'קצב קל ורציף, נשימה עמוקה',
+      contraindications: ['shoulder_pain', 'shoulder', 'כתפיים', 'כתף']
+    },
+    {
+      id: 'thoracic_spine_rotations',
+      name: 'רוטציות עמוד שדרה חזי ופתיחת שכמות',
+      category: 'mobility',
+      bodyRegion: 'upper',
+      targetMuscles: ['back', 'shoulders', 'upper'],
+      duration_seconds: 120,
+      instructions: '8 חזרות לכל כיוון בעמידת שש או עמידה זקופה',
+      pacing: 'קצב מתון ללא מתיחת יתר',
+      contraindications: ['wrist_pain', 'שורש כף יד']
+    },
+    {
+      id: 'scapular_wall_slides',
+      name: 'גלישות קיר לשכמות ולכתפיים (Wall Slides)',
+      category: 'activation',
+      bodyRegion: 'upper',
+      targetMuscles: ['shoulders', 'back', 'upper'],
+      duration_seconds: 120,
+      instructions: '10-12 חזרות איטיות במעלה ובמורד הקיר',
+      pacing: 'תנועה מבוקרת וצמודה לקיר',
+      contraindications: ['shoulder_pain', 'shoulder', 'כתפיים', 'כתף']
+    },
+    {
+      id: 'band_or_towel_pull_apart',
+      name: 'פתיחת חזה ושכמות עם גומייה או מגבת',
+      category: 'activation',
+      bodyRegion: 'upper',
+      targetMuscles: ['back', 'shoulders', 'chest', 'upper'],
+      duration_seconds: 120,
+      instructions: '12-15 חזרות עם שהייה של שנייה בשיא ההרחקה',
+      pacing: 'קצב איטי עם שליטה בשלב החזרה',
+      contraindications: []
+    },
+    {
+      id: 'neck_shoulder_rolls',
+      name: 'שחרור צוואר וסיבובי כתפיים איטיים',
+      category: 'mobility',
+      bodyRegion: 'upper',
+      targetMuscles: ['shoulders', 'traps', 'upper'],
+      duration_seconds: 120,
+      instructions: '10 סיבובים איטיים לכל כיוון ונשימות מלאות',
+      pacing: 'תנועה עדינה ומשוחררת',
+      contraindications: []
+    },
+    {
+      id: 'wrist_forearm_mobility',
+      name: 'מוביליטי שורש כף יד ואמות',
+      category: 'mobility',
+      bodyRegion: 'upper',
+      targetMuscles: ['arms', 'forearms', 'upper'],
+      duration_seconds: 120,
+      instructions: 'מעגלי פרקי כף יד ומתיחות עדינות לשני הכיוונים',
+      pacing: 'תנועה מעגלית רגועה ללא עומס',
+      contraindications: ['wrist_pain', 'שורש כף יד']
+    },
+
+    // --- Lower Body ---
+    {
+      id: 'leg_swings_dynamic',
+      name: 'הנפות רגליים דינמיות לפנים ולאחור',
+      category: 'mobility',
+      bodyRegion: 'lower',
+      targetMuscles: ['legs', 'glutes', 'hamstrings', 'lower'],
+      duration_seconds: 120,
+      instructions: '10 הנפות מבוקרות לכל רגל באחיזת קיר או עמוד',
+      pacing: 'תנועה קצבית ומשוחררת ללא הקשתת הגב',
+      contraindications: ['hip_pain', 'מפרק ירך', 'ירך']
+    },
+    {
+      id: 'world_greatest_stretch',
+      name: 'מתיחת המוביליטי הגדולה (World’s Greatest Stretch)',
+      category: 'mobility',
+      bodyRegion: 'lower',
+      targetMuscles: ['legs', 'hips', 'glutes', 'lower'],
+      duration_seconds: 120,
+      instructions: '5 חזרות לכל צד במעבר איטי בין לאנג׳ לפתיחה חזית',
+      pacing: 'קצב איטי עם שהייה ונשימה עמוקה',
+      contraindications: ['knee_pain', 'ברכיים', 'ברך', 'wrist_pain', 'שורש כף יד']
+    },
+    {
+      id: 'glute_bridge_hold_march',
+      name: 'גשר ישבן דינמי להפעלת שרשרת אחורית',
+      category: 'activation',
+      bodyRegion: 'lower',
+      targetMuscles: ['glutes', 'hamstrings', 'legs', 'lower'],
+      duration_seconds: 120,
+      instructions: '12 חזרות עם כיווץ ישבן יציב של 2 שניות בפסגה',
+      pacing: 'עבודה איטית ומבוקרת מהעקבים',
+      contraindications: []
+    },
+    {
+      id: 'ankle_mobility_rockers',
+      name: 'מוביליטי קרסול מול קיר (Ankle Rockers)',
+      category: 'mobility',
+      bodyRegion: 'lower',
+      targetMuscles: ['legs', 'calves', 'lower'],
+      duration_seconds: 120,
+      instructions: '10 חזרות לכל רגל עם עקב צמוד לרצפה',
+      pacing: 'דחיפה עדינה קדימה וחזרה מתונה',
+      contraindications: ['ankle_pain', 'קרסול']
+    },
+    {
+      id: 'hip_openers_90_90',
+      name: 'פתיחת מפרקי ירך בישיבת 90-90',
+      category: 'mobility',
+      bodyRegion: 'lower',
+      targetMuscles: ['legs', 'hips', 'glutes', 'lower'],
+      duration_seconds: 120,
+      instructions: '8 מעברים איטיים מימין לשמאל בשליטת אגן',
+      pacing: 'קצב איטי ללא דחיפה בכוח',
+      contraindications: ['hip_pain', 'מפרק ירך', 'ירך']
+    },
+    {
+      id: 'bodyweight_tempo_squat',
+      name: 'סקוואט איטי לחימום מפרקי הרגליים',
+      category: 'warmup',
+      bodyRegion: 'lower',
+      targetMuscles: ['legs', 'quads', 'glutes', 'lower'],
+      duration_seconds: 120,
+      instructions: '10 חזרות בירידה מתונה של 3 שניות ועליה חלקה',
+      pacing: 'שליטה מלאה בירידה בעומק נוח',
+      contraindications: ['knee_pain', 'ברכיים', 'ברך']
+    },
+
+    // --- Core & Spine ---
+    {
+      id: 'cat_cow_dynamic',
+      name: 'חתול-פרה ומוביליטי עמוד שדרה',
+      category: 'mobility',
+      bodyRegion: 'core',
+      targetMuscles: ['core', 'back', 'spine'],
+      duration_seconds: 120,
+      instructions: '10 חזרות עמוקות בסנכרון מלא עם נשימה',
+      pacing: 'מעבר הדרגתי מקשת לשקיעה',
+      contraindications: ['wrist_pain', 'שורש כף יד']
+    },
+    {
+      id: 'dead_bug_mobility',
+      name: 'דד-באג מבוקר להפעלת ליבה והגנה על הגב',
+      category: 'activation',
+      bodyRegion: 'core',
+      targetMuscles: ['core', 'lower_back'],
+      duration_seconds: 120,
+      instructions: '10 חזרות לסירוגין עם גב תחתון צמוד למזרן',
+      pacing: 'הארכה איטית של הגפיים ונשימה סדירה',
+      contraindications: []
+    },
+    {
+      id: 'bird_dog_hold',
+      name: 'בירד-דוג דינמי לייצוב עמוד השדרה',
+      category: 'activation',
+      bodyRegion: 'core',
+      targetMuscles: ['core', 'back', 'glutes'],
+      duration_seconds: 120,
+      instructions: '8 חזרות לכל צד עם שהייה של 2 שניות בקו ישר',
+      pacing: 'ייצוב מלא ללא תנודות באגן',
+      contraindications: ['wrist_pain', 'שורש כף יד', 'shoulder_pain', 'כתפיים']
+    },
+
+    // --- Full Body / Low Impact ---
+    {
+      id: 'low_impact_step_jacks',
+      name: 'צעדי פתיחה דינמיים להעלאת דופק ללא ניתור',
+      category: 'warmup',
+      bodyRegion: 'full_body',
+      targetMuscles: ['full_body', 'legs', 'shoulders'],
+      duration_seconds: 120,
+      instructions: '45-60 שניות בקצב קל ורציף',
+      pacing: 'קצב אירובי קל (RPE 4-5)',
+      contraindications: []
+    },
+    {
+      id: 'jumping_jacks_dynamic',
+      name: 'קפיצות ג׳אמפינג ג׳קס להעלאת דופק',
+      category: 'warmup',
+      bodyRegion: 'full_body',
+      targetMuscles: ['full_body', 'legs'],
+      duration_seconds: 120,
+      instructions: '45 שניות בקצב הדרגתי',
+      pacing: 'נחיתה רכה על כריות כף הרגל',
+      contraindications: ['no_jumps', 'ללא קפיצות', 'בלי קפיצות', 'knee_pain', 'ברכיים', 'ברך']
+    }
+  ];
+
+  const UPPER_SET = new Set([
+    'chest',
+    'back',
+    'shoulders',
+    'biceps',
+    'triceps',
+    'arms',
+    'upper',
+    'upper_body',
+    'חזה',
+    'גב',
+    'כתפיים',
+    'ידיים',
+    'גוף עליון',
+    'פלג גוף עליון',
+    'זרועות'
+  ]);
+
+  const LOWER_SET = new Set([
+    'legs',
+    'glutes',
+    'hamstrings',
+    'quads',
+    'calves',
+    'hips',
+    'lower',
+    'lower_body',
+    'רגליים',
+    'ישבן',
+    'ירכיים',
+    'תאומים',
+    'פלג גוף תחתון',
+    'ארבע ראשי'
+  ]);
+
+  const CORE_SET = new Set(['core', 'abs', 'obliques', 'spine', 'בטן', 'ליבה', 'גב תחתון']);
+
+  function normalizeLimitations(profile) {
+    let raw = [];
+    if (Array.isArray(profile)) {
+      raw = profile;
+    } else if (profile && typeof profile === 'object') {
+      raw = profile.limitations || profile.restrictions || profile.injuries || [];
+      if (!Array.isArray(raw)) raw = [raw];
+    } else if (typeof profile === 'string') {
+      raw = [profile];
+    }
+    const set = new Set();
+    for (const lim of raw) {
+      if (!lim) continue;
+      const str = String(lim).trim().toLowerCase();
+      set.add(str);
+      if (/ברכ|knee/.test(str)) {
+        set.add('knee_pain');
+        set.add('knee');
+        set.add('ברכיים');
+        set.add('ברך');
+      }
+      if (/כתפ|shoulder/.test(str)) {
+        set.add('shoulder_pain');
+        set.add('shoulder');
+        set.add('כתפיים');
+        set.add('כתף');
+      }
+      if (/שורש כף|wrist/.test(str)) {
+        set.add('wrist_pain');
+        set.add('wrist');
+        set.add('שורש כף יד');
+      }
+      if (/גב תחתון|lower.?back|back_pain/.test(str)) {
+        set.add('lower_back');
+        set.add('back_pain');
+        set.add('גב תחתון');
+      }
+      if (/ירך|hip/.test(str)) {
+        set.add('hip_pain');
+        set.add('hip');
+        set.add('מפרק ירך');
+        set.add('ירך');
+      }
+      if (/קפיצ|ניתור|jump/.test(str)) {
+        set.add('no_jumps');
+        set.add('ללא קפיצות');
+        set.add('בלי קפיצות');
+      }
+    }
+    return set;
+  }
+
+  function detectWorkoutRegion(workout) {
+    const muscles = [];
+    if (!workout) return { muscles: [], region: 'full_body' };
+    const wObj = typeof workout === 'string' ? { title: workout } : workout;
+    if (Array.isArray(wObj.targetMuscles)) muscles.push(...wObj.targetMuscles);
+    if (Array.isArray(wObj.muscles)) muscles.push(...wObj.muscles);
+    if (wObj.focus && typeof wObj.focus === 'string') muscles.push(wObj.focus);
+    if (Array.isArray(wObj.tags)) muscles.push(...wObj.tags);
+    if (wObj.title && typeof wObj.title === 'string') {
+      const title = wObj.title.toLowerCase();
+      if (/חזה|chest/.test(title)) muscles.push('chest');
+      if (/גב|back|pull/.test(title)) muscles.push('back');
+      if (/כתפ|shoulder/.test(title)) muscles.push('shoulders');
+      if (/זרוע|ידיים|biceps|triceps|arms/.test(title)) muscles.push('arms');
+      if (/רגלי|ישבן|סקוואט|לאנג|legs|glutes/.test(title)) muscles.push('legs');
+      if (/בטן|ליבה|core|abs/.test(title)) muscles.push('core');
+      if (/עליון|upper/.test(title)) muscles.push('upper');
+      if (/תחתון|lower/.test(title)) muscles.push('lower');
+    }
+    if (Array.isArray(wObj.phases)) {
+      for (const phase of wObj.phases) {
+        if (Array.isArray(phase.exercises)) {
+          for (const ex of phase.exercises) {
+            if (Array.isArray(ex.muscles)) muscles.push(...ex.muscles);
+            else if (ex.muscle) muscles.push(ex.muscle);
+            else if (ex.name || ex.id) {
+              const nm = String(ex.name || ex.id).toLowerCase();
+              if (/חזה|שכיבות שמיכה|bench|pushup|chest/.test(nm)) muscles.push('chest');
+              if (/מתח|חתירה|גב|row|pullup|lat/.test(nm)) muscles.push('back');
+              if (/סקוואט|מכרעים|לאנג|דדליפט|squat|lunge|leg/.test(nm)) muscles.push('legs');
+              if (/פלאנק|בטן|כפיפות|plank|crunch|core/.test(nm)) muscles.push('core');
+              if (/כתפ|לחיצת כתפיים|overhead|shoulder/.test(nm)) muscles.push('shoulders');
+            }
+          }
+        }
+      }
+    }
+
+    let upperCount = 0;
+    let lowerCount = 0;
+    let coreCount = 0;
+    for (const m of muscles) {
+      const ml = String(m).toLowerCase();
+      if (UPPER_SET.has(ml)) upperCount++;
+      if (LOWER_SET.has(ml)) lowerCount++;
+      if (CORE_SET.has(ml)) coreCount++;
+    }
+
+    let region = 'full_body';
+    if (upperCount > 0 && lowerCount === 0) region = 'upper_body';
+    else if (lowerCount > 0 && upperCount === 0) region = 'lower_body';
+    else if (coreCount > 0 && upperCount === 0 && lowerCount === 0) region = 'core';
+    else if (upperCount >= lowerCount * 2) region = 'upper_body';
+    else if (lowerCount >= upperCount * 2) region = 'lower_body';
+
+    return {
+      muscles: Array.from(new Set(muscles)),
+      region
+    };
+  }
+
+  function isExerciseSafe(exercise, normalizedLimSet) {
+    if (!exercise.contraindications?.length) {
+      return true;
+    }
+    for (const contra of exercise.contraindications) {
+      const cStr = String(contra).toLowerCase();
+      if (normalizedLimSet.has(cStr)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function generateTargetedWarmup(workout, profile, catalog) {
+    const limSet = normalizeLimitations(profile);
+    const analysis = detectWorkoutRegion(workout);
+    const region = analysis.region;
+
+    // Merge optional catalog warmup exercises if provided and valid
+    const pool = WARMUP_EXERCISES.slice();
+    if (catalog) {
+      const catList = Array.isArray(catalog) ? catalog : typeof catalog === 'object' ? Object.values(catalog) : [];
+      for (let cIdx = 0; cIdx < catList.length; cIdx++) {
+        const catItem = catList[cIdx];
+        if (
+          catItem &&
+          (catItem.category === 'warmup' ||
+            catItem.category === 'mobility' ||
+            /חימום|מוביליטי/.test(catItem.he || catItem.name || ''))
+        ) {
+          let catRegion = 'full_body';
+          const catMuscles = Array.isArray(catItem.muscles) ? catItem.muscles : [];
+          if (catMuscles.some((m) => UPPER_SET.has(String(m).toLowerCase()))) {
+            catRegion = 'upper';
+          } else if (catMuscles.some((m) => LOWER_SET.has(String(m).toLowerCase()))) {
+            catRegion = 'lower';
+          }
+          pool.push({
+            id: catItem.id || `catalog_${cIdx}`,
+            name: catItem.he || catItem.name || catItem.id,
+            category: catItem.category || 'warmup',
+            bodyRegion: catRegion,
+            targetMuscles: catMuscles.length ? catMuscles : ['general'],
+            duration_seconds: catItem.duration_seconds || 120,
+            instructions: catItem.instructions || 'חימום מבוקר',
+            pacing: 'קצב קל ורציף',
+            contraindications: catItem.contraindications || []
+          });
+        }
+      }
+    }
+
+    // Filter exercises against user limitations
+    const safePool = pool.filter((ex) => isExerciseSafe(ex, limSet));
+
+    // Score & select 3 exercises matching target region
+    const primary = [];
+    const secondary = [];
+    const fallback = [];
+
+    for (const candidate of safePool) {
+      if (region === 'upper_body') {
+        if (candidate.bodyRegion === 'upper') primary.push(candidate);
+        else if (candidate.bodyRegion === 'core') secondary.push(candidate);
+        else fallback.push(candidate);
+      } else if (region === 'lower_body') {
+        if (candidate.bodyRegion === 'lower') primary.push(candidate);
+        else if (candidate.bodyRegion === 'core') secondary.push(candidate);
+        else fallback.push(candidate);
+      } else if (region === 'core') {
+        if (candidate.bodyRegion === 'core') primary.push(candidate);
+        else if (candidate.bodyRegion === 'upper' || candidate.bodyRegion === 'lower') secondary.push(candidate);
+        else fallback.push(candidate);
+      } else {
+        // full_body
+        if (candidate.bodyRegion === 'full_body' || candidate.bodyRegion === 'core') primary.push(candidate);
+        else secondary.push(candidate);
+      }
+    }
+
+    const picked = [];
+    const seenIds = new Set();
+
+    function tryPick(list) {
+      for (const item of list) {
+        if (picked.length >= 3) break;
+        if (!seenIds.has(item.id)) {
+          seenIds.add(item.id);
+          picked.push(item);
+        }
+      }
+    }
+
+    if (region === 'full_body') {
+      const upperSafe = safePool.filter((e) => e.bodyRegion === 'upper');
+      const lowerSafe = safePool.filter((e) => e.bodyRegion === 'lower');
+      const generalSafe = safePool.filter((e) => e.bodyRegion === 'full_body' || e.bodyRegion === 'core');
+      if (upperSafe.length) {
+        picked.push(upperSafe[0]);
+        seenIds.add(upperSafe[0].id);
+      }
+      if (lowerSafe.length) {
+        picked.push(lowerSafe[0]);
+        seenIds.add(lowerSafe[0].id);
+      }
+      if (generalSafe.length) {
+        picked.push(generalSafe[0]);
+        seenIds.add(generalSafe[0].id);
+      }
+    }
+
+    tryPick(primary);
+    tryPick(secondary);
+    tryPick(fallback);
+    tryPick(safePool);
+
+    // Guarantee exactly 3 exercises
+    const finalExercises = picked.slice(0, 3).map((ex) => ({
+      id: ex.id,
+      name: ex.name,
+      category: ex.category || 'mobility',
+      bodyRegion: ex.bodyRegion,
+      targetMuscles: ex.targetMuscles || [],
+      duration_seconds: ex.duration_seconds || 120,
+      instructions: ex.instructions || 'ביצוע מבוקר בטווח תנועה נוח',
+      pacing: ex.pacing || 'קצב הדרגתי ואיטי, דגש על פתיחת טווחי תנועה'
+    }));
+
+    const totalDurationSec = finalExercises.reduce((sum, e) => sum + (e.duration_seconds || 120), 0);
+    let totalDurationMin = Math.round(totalDurationSec / 60);
+    if (totalDurationMin < 5) totalDurationMin = 5;
+    if (totalDurationMin > 7) totalDurationMin = 7;
+
+    const pacingGuidelines = 'קצב הדרגתי ואיטי (RPE 4-5), נשימה רציפה, שליטה מלאה בטווחי תנועה ללא תנועות פתאומיות';
+
+    return {
+      duration_minutes: totalDurationMin,
+      duration_seconds: totalDurationSec,
+      focus: region,
+      targetMuscles: analysis.muscles,
+      pacingGuidelines,
+      pacing: 'קצב הדרגתי ומתון (RPE 4-5), שליטה מלאה בטווחי תנועה',
+      exercises: finalExercises
+    };
+  }
+
+  const api = {
+    generateTargetedWarmup,
+    WARMUP_EXERCISES,
+    normalizeLimitations,
+    detectWorkoutRegion
+  };
+
+  if (root) {
+    root.THWarmupGenerator = api;
+    root.THWarmup = api;
+  }
+  if (typeof module === 'object' && module.exports) {
+    module.exports = api;
+  }
+})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
