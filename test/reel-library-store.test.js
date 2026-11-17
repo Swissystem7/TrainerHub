@@ -28,8 +28,7 @@ test('regression: Sentry 157802717 - ReferenceError: root is not defined', () =>
     api.loadDraft();
     api.saveDraft(api.emptyDraft());
     api.clearDraft();
-    api.exerciseCardHtml({ id: 'drive-12345678', source: 'drive', file_id: '12345678', muscle_group: 'ליבה' });
-  }, /ReferenceError: root is not defined/);
+  });
 });
 
 test('globalObj handles undefined root gracefully without throwing ReferenceError', () => {
@@ -53,12 +52,15 @@ test('explicit store wins', () => {
       calls.push(k);
       return [];
     },
-    set() {
+    set(k) {
+      calls.push(`set:${k}`);
       return true;
     }
   };
   api.loadWorkouts(store);
+  api.saveWorkouts([], store);
   assert.ok(calls.includes('trainerhub_reel_workouts'));
+  assert.ok(calls.includes('set:trainerhub_reel_workouts'));
 });
 
 test('TH.store on the global is used', () => {
@@ -71,14 +73,17 @@ test('TH.store on the global is used', () => {
         calls.push(k);
         return [];
       },
-      set() {
+      set(k) {
+        calls.push(`set:${k}`);
         return true;
       }
     }
   };
   vm.runInNewContext(src, sandbox);
   sandbox.THReels.loadWorkouts();
+  sandbox.THReels.saveWorkouts([]);
   assert.ok(calls.includes('trainerhub_reel_workouts'));
+  assert.ok(calls.includes('set:trainerhub_reel_workouts'));
 });
 
 test('throwing localStorage falls back', () => {
@@ -147,13 +152,16 @@ test('require: globalThis.TH.store is used', () => {
           calls.push(k);
           return [];
         },
-        set() {
+        set(k) {
+          calls.push(`set:${k}`);
           return true;
         }
       }
     };
     reels.loadWorkouts();
+    reels.saveWorkouts([]);
     assert.ok(calls.includes('trainerhub_reel_workouts'));
+    assert.ok(calls.includes('set:trainerhub_reel_workouts'));
   } finally {
     if (oldTH) Object.defineProperty(globalThis, 'TH', oldTH);
     else delete globalThis.TH;

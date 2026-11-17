@@ -9,7 +9,7 @@
 (function (root, factory) {
   var api = factory(root);
   if (typeof module === 'object' && module.exports) module.exports = api;
-  if (root) root.THReels = api;
+  root.THReels = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
@@ -600,7 +600,7 @@
   }
 
   function globalObj() {
-    var g = typeof root !== 'undefined' ? root : null;
+    var g = root;
     if (!g && typeof globalThis !== 'undefined') g = globalThis;
     return g || null;
   }
@@ -814,7 +814,7 @@
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
     // js/core.js opens only players it was told about (load-on-click).
-    var core = (globalObj() || {}).TH || null;
+    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
     if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
