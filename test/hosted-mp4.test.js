@@ -19,11 +19,22 @@ function fakeDoc() {
   const doc = {
     createElement: function (tag) {
       const el = { tagName: tag.toUpperCase(), attrs: {}, listeners: {}, played: 0, loaded: 0, ownerDocument: doc };
-      el.setAttribute = function (k, v) { el.attrs[k] = String(v); };
-      el.getAttribute = function (k) { return k in el.attrs ? el.attrs[k] : null; };
-      el.addEventListener = function (t, fn) { el.listeners[t] = fn; };
-      el.play = function () { el.played++; return Promise.resolve(); };
-      el.load = function () { el.loaded++; };
+      el.setAttribute = function (k, v) {
+        el.attrs[k] = String(v);
+      };
+      el.getAttribute = function (k) {
+        return k in el.attrs ? el.attrs[k] : null;
+      };
+      el.addEventListener = function (t, fn) {
+        el.listeners[t] = fn;
+      };
+      el.play = function () {
+        el.played++;
+        return Promise.resolve();
+      };
+      el.load = function () {
+        el.loaded++;
+      };
       el.focus = function () {};
       return el;
     }
@@ -31,7 +42,13 @@ function fakeDoc() {
   return doc;
 }
 function facade(doc, src) {
-  const parent = { replaced: null, replaceChild: function (n, o) { this.replaced = [n, o]; n.parentNode = this; } };
+  const parent = {
+    replaced: null,
+    replaceChild: function (n, o) {
+      this.replaced = [n, o];
+      n.parentNode = this;
+    }
+  };
   const attrs = { 'data-th-frame': src, 'data-th-frame-title': 'פלאנק', class: 'ex-media ex-media-facade' };
   const btn = { ownerDocument: doc, parentNode: parent, getAttribute: (k) => (k in attrs ? attrs[k] : null) };
   return { btn, parent };
@@ -39,7 +56,10 @@ function facade(doc, src) {
 
 test('the committed manifest lists Pages first, a pinned jsDelivr tag second, and well-formed paths', function () {
   assert.equal(manifest.hosts[0], PAGES);
-  assert.match(manifest.hosts[1], /^https:\/\/cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@[A-Za-z0-9._-]+\/$/);
+  assert.match(
+    manifest.hosts[1],
+    /^https:\/\/cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@[A-Za-z0-9._-]+\/$/
+  );
   const files = Object.entries(manifest.files);
   assert.ok(files.length > 400, 'most Drive clips have a hosted copy');
   files.forEach(([id, p]) => {
@@ -48,16 +68,24 @@ test('the committed manifest lists Pages first, a pinned jsDelivr tag second, an
     assert.ok(p.endsWith('/' + id + '.mp4'), 'file is named by its Drive id');
   });
   // Every Drive clip the app plays is in the manifest.
-  const cat = JSON.parse(fs.readFileSync(path.join(root, 'videos/drive-catalog.json'), 'utf8')).items
-    .concat(Object.values(JSON.parse(fs.readFileSync(path.join(root, 'js/catalog.json'), 'utf8'))));
-  JSON.parse(fs.readFileSync(path.join(root, 'data/drive_videos.json'), 'utf8')).forEach((x) => cat.push({ driveId: x.fileId }));
-  const missing = cat.filter((e) => e.available !== false).map((e) => (/^https?:/.test(e.file || '') && e.drivePlayId) || e.driveId)
+  const cat = JSON.parse(fs.readFileSync(path.join(root, 'videos/drive-catalog.json'), 'utf8')).items.concat(
+    Object.values(JSON.parse(fs.readFileSync(path.join(root, 'js/catalog.json'), 'utf8')))
+  );
+  JSON.parse(fs.readFileSync(path.join(root, 'data/drive_videos.json'), 'utf8')).forEach((x) =>
+    cat.push({ driveId: x.fileId })
+  );
+  const missing = cat
+    .filter((e) => e.available !== false)
+    .map((e) => (/^https?:/.test(e.file || '') && e.drivePlayId) || e.driveId)
     .filter((id) => id && !manifest.files[id]);
   assert.deepEqual(missing, []);
 });
 
 test('mp4Sources only trusts the media repo hosts and well-formed paths', function () {
-  TH.setMediaManifest({ hosts: [PAGES, 'https://evil.example/', CDN], files: { [ID]: 'core/' + ID + '.mp4', bad: 'x.mp4', ['1'.repeat(25)]: '../../x.mp4' } });
+  TH.setMediaManifest({
+    hosts: [PAGES, 'https://evil.example/', CDN],
+    files: { [ID]: 'core/' + ID + '.mp4', bad: 'x.mp4', ['1'.repeat(25)]: '../../x.mp4' }
+  });
   assert.deepEqual(TH.mp4Sources(ID), [PAGES + 'core/' + ID + '.mp4', CDN + 'core/' + ID + '.mp4']);
   assert.deepEqual(TH.mp4Sources('bad'), []);
   assert.deepEqual(TH.mp4Sources('1'.repeat(25)), []);
@@ -103,7 +131,17 @@ test('workout mode (eager) shows the tap-to-play facade for a hosted copy, the D
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: { [ID]: 'core/' + ID + '.mp4' } });
   const html = TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true });
   assert.doesNotMatch(html, /<iframe/);
-  assert.match(html, new RegExp('<button type="button" class="ex-media ex-media-facade" data-th-frame="https://drive\\.google\\.com/file/d/' + ID + '/preview"'));
+  assert.match(
+    html,
+    new RegExp(
+      '<button type="button" class="ex-media ex-media-facade" data-th-frame="https://drive\\.google\\.com/file/d/' +
+        ID +
+        '/preview"'
+    )
+  );
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: {} });
-  assert.match(TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true }), /<iframe/);
+  assert.match(
+    TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true }),
+    /<iframe/
+  );
 });
