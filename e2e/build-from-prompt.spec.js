@@ -1,4 +1,3 @@
-'use strict';
 const { test, expect } = require('./fixtures');
 
 test.describe('build a workout from a prompt (index.html)', () => {
@@ -46,5 +45,4 @@ test.describe('build a workout from a prompt (index.html)', () => {
     await expect(result.getByRole('toolbar', { name: 'פעולות אימון' })).toBeVisible();
   });
 });
-test.describe.skip(() => {
-});
+test.describe.skip(() => {});
