@@ -10,6 +10,7 @@
 	var Analyzer = root.THAnalyzer;
 	var Adaptation = root.THAdaptation || root.THAdaptationEngine;
 	var Progression = root.THProgression || root.THProgressionEngine;
+	var WarmupGenerator = root.THWarmupGenerator || root.THWarmup;
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 		Prompt = require("./prompt-parser.js");
@@ -20,6 +21,7 @@
 		} catch (_e) {
 			Progression = root.THProgression || root.THProgressionEngine;
 		}
+		WarmupGenerator = require("./warmup-generator.js");
 	}
 
 	var RX = {
@@ -655,6 +657,7 @@
 				guidanceNote: GUIDANCE_NOTE,
 				adaptationReport: null,
 				progressionHints: [],
+				warmupBlock: null,
 			};
 		}
 		var list = catalogList(catalogOrList);
@@ -744,6 +747,7 @@
 				guidanceNote: GUIDANCE_NOTE,
 				adaptationReport: emptyAdaptationReport,
 				progressionHints: [],
+				warmupBlock: null,
 			};
 		}
 
@@ -869,6 +873,19 @@
 		}
 		workout.progressionHints = progressionHints;
 
+		var warmupBlock = null;
+		if (
+			WarmupGenerator &&
+			typeof WarmupGenerator.generateTargetedWarmup === "function"
+		) {
+			warmupBlock = WarmupGenerator.generateTargetedWarmup(
+				workout,
+				opts.profile || opts.userProfile || req,
+				list,
+			);
+		}
+		workout.warmupBlock = warmupBlock;
+
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
 		var reasons = picked.map((e) => ({
@@ -899,6 +916,7 @@
 			guidanceNote: GUIDANCE_NOTE,
 			adaptationReport: adaptationReport,
 			progressionHints: progressionHints,
+			warmupBlock: warmupBlock,
 		};
 	}
 
