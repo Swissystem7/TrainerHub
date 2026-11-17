@@ -329,6 +329,23 @@
   <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
 </div>
 
+<!-- Pre-workout checkin panel -->
+<div id="preWorkoutCheckinPanel" class="card" style="background:#12211E;border:1px solid #28423C;border-radius:14px;padding:16px;max-width:520px;margin:12px auto;text-align:right" role="region" aria-label="בדיקת מוכנות לפני אימון">
+  <h2 style="font-size:1rem;color:#7FE9D9;margin-bottom:8px">בדיקת מוכנות לפני אימון</h2>
+  <div class="row" style="display:flex;gap:10px;margin-bottom:8px">
+    <div style="flex:1">
+      <label for="checkinEnergyInput" style="font-size:0.78rem;color:#9ca3af;display:block;margin-bottom:4px">אנרגיה (1-5)</label>
+      <input id="checkinEnergyInput" type="number" min="1" max="5" value="5" style="width:100%;background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:8px;padding:8px">
+    </div>
+    <div style="flex:1">
+      <label for="checkinSorenessInput" style="font-size:0.78rem;color:#9ca3af;display:block;margin-bottom:4px">רגישות/כאב</label>
+      <input id="checkinSorenessInput" type="text" value="none" style="width:100%;background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:8px;padding:8px">
+    </div>
+  </div>
+  <button type="button" id="applyCheckinBtn" class="ctrl-btn primary" style="width:100%;min-height:40px;border-radius:8px;justify-content:center">החל התאמות מוכנות</button>
+</div>
+<script src="../js/pre-workout-checkin.js"></script>
+
 <!-- Stage (main exercise display) -->
 <main class="stage" id="stage">
   <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה" style="display:none"></div>
