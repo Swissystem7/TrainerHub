@@ -600,7 +600,7 @@
   }
 
   function globalObj() {
-    var g = root;
+    var g = typeof root !== 'undefined' ? root : null;
     if (!g && typeof globalThis !== 'undefined') g = globalThis;
     return g || null;
   }

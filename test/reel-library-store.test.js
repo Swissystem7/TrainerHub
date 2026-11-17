@@ -32,6 +32,16 @@ test('regression: Sentry 157802717 - ReferenceError: root is not defined', () =>
   }, /ReferenceError: root is not defined/);
 });
 
+test('globalObj handles undefined root gracefully without throwing ReferenceError', () => {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'reel-library.js'), 'utf8');
+  const sandbox = { globalThis: undefined };
+  vm.runInNewContext(src, sandbox);
+  const api = sandbox.THReels;
+  assert.doesNotThrow(() => {
+    api.loadWorkouts();
+  });
+});
+
 test('explicit store wins', () => {
   const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'reel-library.js'), 'utf8');
   const sandbox = {};
