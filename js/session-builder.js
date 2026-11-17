@@ -10,6 +10,7 @@
 	var Analyzer = root.THAnalyzer;
 	var Adaptation = root.THAdaptation || root.THAdaptationEngine;
 	var Progression = root.THProgression || root.THProgressionEngine;
+	var WarmupGenerator = root.THWarmupGenerator || root.THWarmup;
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 		Prompt = require("./prompt-parser.js");
@@ -20,6 +21,7 @@
 		} catch (_e) {
 			Progression = root.THProgression || root.THProgressionEngine;
 		}
+		WarmupGenerator = require("./warmup-generator.js");
 	}
 
 	var RX = {
@@ -655,6 +657,7 @@
 				guidanceNote: GUIDANCE_NOTE,
 				adaptationReport: null,
 				progressionHints: [],
+				warmupBlock: null,
 			};
 		}
 		var list = catalogList(catalogOrList);
@@ -706,11 +709,28 @@
 		// the minimal session length.
 		var relaxed = relax.muscle || relax.equipment || relax.level;
 		var satisfied = !relaxed && picked.length >= Math.min(3, need);
+		var profileFocus =
+			(opts.profile &&
+				(opts.profile.focus ||
+					opts.profile.muscle ||
+					opts.profile.targetMuscle ||
+					(Array.isArray(opts.profile.targetRegion)
+						? opts.profile.targetRegion[0]
+						: opts.profile.targetRegion))) ||
+			null;
+		var profileGoal = (opts.profile && opts.profile.goal) || null;
+		var effectiveFocus = profileFocus || req.focus || null;
+		var effectiveGoal = profileGoal || req.goal || null;
+
+		var reportProfile = Object.assign({}, req, opts.profile || {});
+		if (effectiveFocus) reportProfile.focus = effectiveFocus;
+		if (effectiveGoal) reportProfile.goal = effectiveGoal;
+
 		if (picked.length === 0) {
 			emptyAdaptationReport =
 				Adaptation && typeof Adaptation.buildAdaptationReport === "function"
 					? Adaptation.buildAdaptationReport(
-							opts.profile || req,
+							reportProfile,
 							null,
 							opts.weeklySessions,
 						)
@@ -727,6 +747,7 @@
 				guidanceNote: GUIDANCE_NOTE,
 				adaptationReport: emptyAdaptationReport,
 				progressionHints: [],
+				warmupBlock: null,
 			};
 		}
 
@@ -773,13 +794,17 @@
 				: req.equipment || []
 			).map((e) => Infer.EQ_LABELS[e] || e),
 			intensity:
-				req.goal === "strength" || req.goal === "כוח ותפקוד"
+				effectiveGoal === "strength" || effectiveGoal === "כוח ותפקוד"
 					? "high"
 					: req.level === "beginner"
 						? "low"
 						: "medium",
-			tags: [req.focus || "general", req.goal || "catalog"].filter(Boolean),
-			goal: req.goal || null,
+			tags: [
+				effectiveFocus || req.focus || "general",
+				effectiveGoal || req.goal || "catalog",
+			].filter(Boolean),
+			goal: effectiveGoal || req.goal || null,
+			focus: effectiveFocus || req.focus || null,
 			phases: [
 				{ name: "Warm-up", duration_minutes: warmMinutes, exercises: warmEx },
 				{ name: "Main", duration_minutes: mainMinutes, exercises: mainEx },
@@ -792,7 +817,7 @@
 		var adaptationReport =
 			Adaptation && typeof Adaptation.buildAdaptationReport === "function"
 				? Adaptation.buildAdaptationReport(
-						opts.profile || req,
+						reportProfile,
 						workout,
 						opts.weeklySessions,
 					)
@@ -848,6 +873,19 @@
 		}
 		workout.progressionHints = progressionHints;
 
+		var warmupBlock = null;
+		if (
+			WarmupGenerator &&
+			typeof WarmupGenerator.generateTargetedWarmup === "function"
+		) {
+			warmupBlock = WarmupGenerator.generateTargetedWarmup(
+				workout,
+				opts.profile || opts.userProfile || req,
+				list,
+			);
+		}
+		workout.warmupBlock = warmupBlock;
+
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
 		var reasons = picked.map((e) => ({
@@ -878,6 +916,7 @@
 			guidanceNote: GUIDANCE_NOTE,
 			adaptationReport: adaptationReport,
 			progressionHints: progressionHints,
+			warmupBlock: warmupBlock,
 		};
 	}
 

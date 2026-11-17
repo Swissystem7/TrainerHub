@@ -7,12 +7,17 @@
  * «לא מצוין» is stored as «לא ממוין». Reels with no mapping stay unclassified.
  */
 (function (root, factory) {
-  var api = factory();
+  var api = factory(root);
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.THReels = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
   'use strict';
 
+  var ProfileFilter = null;
+  if (typeof module === 'object' && module.exports) {
+    try { ProfileFilter = require('./library-profile-filter.js'); } catch (e) { ProfileFilter = null; }
+  }
+  if (!ProfileFilter && typeof globalThis !== 'undefined') ProfileFilter = globalThis.THLibraryProfileFilter || null;
   var STORAGE_WORKOUTS = 'trainerhub_reel_workouts';
   var STORAGE_DRAFT = 'trainerhub_reel_draft';
 
@@ -594,9 +599,20 @@
     };
   }
 
+  function globalObj() {
+    var g = root;
+    if (!g && typeof globalThis !== 'undefined') g = globalThis;
+    return g || null;
+  }
+
+  function globalLocalStorage() {
+    var g = globalObj();
+    if (!g) return null;
+    try { return g.localStorage || null; } catch (e) { return null; }
+  }
+
   function browserStore() {
-    var ls = null;
-    try { ls = globalThis.localStorage; } catch (e) { ls = null; }
+    var ls = globalLocalStorage();
     if (!ls) return memoryFallback();
     return {
       get: function (key, fallback) {
@@ -617,7 +633,8 @@
 
   function storeOf(store) {
     if (store && typeof store.get === 'function' && typeof store.set === 'function') return store;
-    if (globalThis.TH && globalThis.TH.store) return globalThis.TH.store;
+    var th = (globalObj() || {}).TH;
+    if (th && th.store) return th.store;
     return browserStore();
   }
 
@@ -867,10 +884,24 @@
     '</article>';
   }
 
+  function createProfileMatchBadge(doc) {
+    var d = doc || (typeof document !== 'undefined' ? document : null);
+    if (!d || typeof d.createElement !== 'function') return null;
+    var badge = d.createElement('span');
+    badge.className = 'pill ok profile-match';
+    badge.textContent = 'מתאים לפרופיל שלך';
+    return badge;
+  }
+
   return {
     MUSCLE_GROUPS: MUSCLE_GROUPS,
     validateLibrary: validateLibrary,
     filterExercises: filterExercises,
+    filterExercisesForProfile: function (list, profile) {
+      var mod = ProfileFilter || (typeof globalThis !== 'undefined' ? globalThis.THLibraryProfileFilter : null);
+      return mod && typeof mod.filterExercisesForProfile === 'function' ? mod.filterExercisesForProfile(list, profile) : (list || []).slice();
+    },
+    createProfileMatchBadge: createProfileMatchBadge,
     displayName: displayName,
     emptyDraft: emptyDraft,
     addToDraft: addToDraft,

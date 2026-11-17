@@ -753,6 +753,36 @@
 		return restored;
 	}
 
+	/** Safe personal-profile read for the exercise library. Never throws. */
+	function getLibraryProfile(clientId) {
+		try {
+			var map = storeGet(KEYS.clientProfiles, {});
+			if (!map || typeof map !== "object" || Array.isArray(map)) map = {};
+			var id = String(clientId || "").trim();
+			var raw = id ? map[id] : map[Object.keys(map)[0] || ""];
+			if (!raw || typeof raw !== "object") {
+				var user = storeGet(KEYS.user, null);
+				raw = user && typeof user === "object" ? user : {};
+			}
+			return {
+				equipment: Array.isArray(raw.equipment)
+					? raw.equipment.slice()
+					: Array.isArray(raw.availableEquipment)
+						? raw.availableEquipment.slice()
+						: [],
+				limitations: Array.isArray(raw.limitations)
+					? raw.limitations.slice()
+					: Array.isArray(raw.restrictions)
+						? raw.restrictions.slice()
+						: Array.isArray(raw.injuries)
+							? raw.injuries.slice()
+							: [],
+			};
+		} catch (e) {
+			return { equipment: [], limitations: [] };
+		}
+	}
+
 	// ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
 	/** First whole number in a reps value ("8-10" → 8, "12" → 12, "עד כשל" → null). */
 	function parseRepsNumber(reps) {
@@ -3175,9 +3205,16 @@
 	}
 
 	function loadLazyVideos(host) {
-		var list = host.querySelectorAll
-			? host.querySelectorAll("video[" + LAZY_SRC + "]")
-			: [];
+		if (!host) return;
+		var list = [];
+		if (host.matches && host.matches("video[" + LAZY_SRC + "]")) {
+			list.push(host);
+		}
+		if (host.querySelectorAll) {
+			var found = host.querySelectorAll("video[" + LAZY_SRC + "]");
+			var j;
+			for (j = 0; j < found.length; j++) list.push(found[j]);
+		}
 		var i, src;
 		for (i = 0; i < list.length; i++) {
 			src = list[i].getAttribute(LAZY_SRC);
@@ -3588,7 +3625,12 @@
 			}
 			return fallback;
 		}
-		if (hasRemoteFile(entry) && drivePlayIdOk(entry.drivePlayId))
+		if (
+			!opts.preferVideo &&
+			!opts.video &&
+			hasRemoteFile(entry) &&
+			drivePlayIdOk(entry.drivePlayId)
+		)
 			return driveFrameMarkup(entry, entry.drivePlayId, cls, opts.eager);
 		if (
 			hasRemoteFile(entry) ||
@@ -5224,6 +5266,7 @@
 		speakHebrew: speakHebrew,
 		restEndCue: restEndCue,
 		primeAudio: primeAudio,
+		getLibraryProfile: getLibraryProfile,
 		CLIENT_GOALS: CLIENT_GOALS,
 		CLIENT_LEVELS: CLIENT_LEVELS,
 		WEEKDAYS_HE: WEEKDAYS_HE,
