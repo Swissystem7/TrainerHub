@@ -922,6 +922,17 @@
 
 	// prescription + wantedCount are exported so the rules panel can quote the
 	// numbers this engine actually runs instead of keeping a second copy of them.
+	var UnitConverter = root.THUnitConverter || (typeof require === 'function' ? require('./unit-converter.js') : null);
+
+	function formatExerciseWeight(exercise, unit) {
+		if (!exercise) return exercise;
+		var u = unit || "kg";
+		if (UnitConverter && typeof UnitConverter.formatWeightLabel === "function") {
+			return Object.assign({}, exercise, { weightLabel: UnitConverter.formatWeightLabel(exercise.weightKg || 0, u) });
+		}
+		return exercise;
+	}
+
 	var api = {
 		buildSession: buildSession,
 		scoreEntry: scoreEntry,
@@ -932,6 +943,7 @@
 		normalizeDurationMinutes: normalizeDurationMinutes,
 		isNoReelCombo: isNoReelCombo,
 		NO_REEL_COMBOS: NO_REEL_COMBOS,
+		formatExerciseWeight: formatExerciseWeight,
 	};
 	root.THEngine = api;
 	if (typeof module === "object" && module.exports) {
