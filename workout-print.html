@@ -66,8 +66,10 @@
   <p class="honest no-print" id="hint" role="status" aria-live="polite" style="color:#a7b1ab;font-size:.88rem;line-height:1.5"></p>
   <!-- biome-ignore lint/a11y/useSemanticElements: printable sheet region -->
   <div id="sheet" role="region" aria-label="תצוגת דף אימון להדפסה"></div>
+  <div id="weeklyDigestPrintView" style="display:none"></div>
 </main>
 <script src="./js/core.js"></script>
+<script src="./js/weekly-digest.js"></script>
 <script>
 (() => {
   var $ = (id) => document.getElementById(id);
@@ -109,10 +111,12 @@
 
   function render() {
     var box = $('sheet');
+    var digestBox = $('weeklyDigestPrintView');
     var raw = TH.store.get(TH.KEYS.print, null);
     if (raw?.report && raw.report.kind === 'monthly' && TH.monthlyReportHtml) {
       updatePrintBtn(true);
       box.innerHTML = TH.monthlyReportHtml(raw.report, { brand: $('brand').value.trim() });
+      if (digestBox && digestBox.style) digestBox.style.display = 'none';
       $('hint').textContent = 'דוח חודשי מהיומן. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
       if ($('backBtn')) { $('backBtn').setAttribute('href', './journal.html'); $('backBtn').textContent = 'חזרה ליומן'; }
       return;
@@ -120,6 +124,7 @@
     var packed = currentWorkout();
     if (!packed) {
       box.innerHTML = '<div class="empty" role="status"><p>אין אימון בדפדפן. בנו אימון ואז לחצו «דף להדפסה».</p><a class="th-btn ghost" href="./" style="display:inline-block;margin-top:10px;">בנה אימון עכשיו</a></div>';
+      if (digestBox && digestBox.style) digestBox.style.display = 'none';
       $('hint').textContent = '';
       updatePrintBtn(false);
       return;
@@ -128,6 +133,14 @@
     var brand = $('brand').value.trim();
     var model = TH.workoutPrintModel(packed.workout, { brand: brand, client: packed.client });
     box.innerHTML = TH.workoutPrintHtml(model);
+    if (digestBox && digestBox.style) {
+      if (typeof THWeeklyDigest !== 'undefined') {
+        digestBox.style.display = 'block';
+        digestBox.innerHTML = THWeeklyDigest.digestPrintHtml(THWeeklyDigest.buildWeeklyDigest([packed.workout], 1));
+      } else {
+        digestBox.style.display = 'none';
+      }
+    }
     if (model.branded) {
       $('hint').textContent = 'מסלול מאמן פעיל. השם יופיע בראש הדף. שמירה כ־PDF נעשית מחלון ההדפסה של הדפדפן.';
     } else {
