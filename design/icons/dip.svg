@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%" fill="none" role="img" aria-label="Dip Exercise Icon">
+  <!-- Parallel Bars Equipment -->
+  <!-- Left Parallel Bar & Post -->
+  <line x1="10" y1="36" x2="26" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="18" y1="36" x2="18" y2="60" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+  <!-- Right Parallel Bar & Post -->
+  <line x1="38" y1="36" x2="54" y2="36" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="46" y1="36" x2="46" y2="60" stroke="#2DD4BF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Hands on Bars -->
+  <circle cx="18" cy="36" r="2.5" fill="#B9F24A"/>
+  <circle cx="46" cy="36" r="2.5" fill="#B9F24A"/>
+
+  <!-- Athlete Head -->
+  <circle cx="32" cy="14" r="4.5" fill="#F6F8F6"/>
+
+  <!-- Shoulders & Torso -->
+  <path d="M26 23 L32 24 L38 23" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="32" y1="24" x2="32" y2="40" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Arms in Dip Push Position -->
+  <!-- Left Arm: Shoulder (26, 23) -> Elbow (16, 27) -> Hand (18, 36) -->
+  <path d="M26 23 L14 27 L18 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right Arm: Shoulder (38, 23) -> Elbow (48, 27) -> Hand (46, 36) -->
+  <path d="M38 23 L50 27 L46 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Calisthenics Bent Legs / Crossed Ankles -->
+  <path d="M32 40 L28 49 L35 57" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 40 L34 48 L32 55" stroke="#F6F8F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+
+  <!-- Vertical Thrust Arrow Indicators -->
+  <path d="M32 8 L32 4" stroke="#B9F24A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M30 6 L32 4 L34 6" stroke="#B9F24A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

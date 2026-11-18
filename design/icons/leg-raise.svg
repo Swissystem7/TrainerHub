@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%" fill="none" role="img" aria-label="Hanging Leg Raise Icon">
+  <!-- High Bar Equipment -->
+  <line x1="8" y1="12" x2="56" y2="12" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="12" y1="12" x2="12" y2="6" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <line x1="52" y1="12" x2="52" y2="6" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Hands / Grip -->
+  <circle cx="26" cy="12" r="2.5" fill="#B9F24A"/>
+  <circle cx="38" cy="12" r="2.5" fill="#B9F24A"/>
+
+  <!-- Athlete Head -->
+  <circle cx="32" cy="18" r="4.5" fill="#F6F8F6"/>
+
+  <!-- Straight Hanging Arms -->
+  <line x1="26" y1="12" x2="28" y2="23" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="12" x2="36" y2="23" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Torso (Hanging Vertical) -->
+  <line x1="32" y1="23" x2="32" y2="39" stroke="#B9F24A" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Strict Horizontal Leg Raise (L-Sit Form) -->
+  <path d="M32 39 L46 38 L56 36" stroke="#F6F8F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="56" cy="36" r="2" fill="#2DD4BF"/>
+
+  <!-- Kinetic Arc Arrow (Leg Elevation Motion) -->
+  <path d="M35 52 C44 51, 50 46, 52 42" stroke="#2DD4BF" stroke-width="2" stroke-dasharray="2 2" stroke-linecap="round"/>
+  <path d="M50 40 L53 41 L53 44" stroke="#2DD4BF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Core Activation Accent -->
+  <circle cx="32" cy="35" r="2" fill="#B9F24A"/>
+</svg>
