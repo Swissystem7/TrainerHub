@@ -77,6 +77,25 @@
     <p>מדביקים את קוד <code>TH1</code> שהמתאמן מעתיק ממסך הסיום. הרשת היא 28 יום אחרונים. «הצע שבוע הבא» משנה סטים לפי קושי ודילוגים.</p>
   </header>
 
+  <section class="card" id="preWorkoutCheckinPanel" role="region" aria-labelledby="journalCheckinHeading">
+    <h2 id="journalCheckinHeading">בדיקת מוכנות מתאמן לפני אימון</h2>
+    <div class="row">
+      <div>
+        <label for="checkinEnergyInput">אנרגיה (1-5)</label>
+        <input id="checkinEnergyInput" type="number" min="1" max="5" value="5">
+      </div>
+      <div>
+        <label for="checkinSorenessInput">אזור רגיש (כתף / ברך / גב / אין)</label>
+        <input id="checkinSorenessInput" type="text" value="אין">
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="th-btn" id="applyCheckinBtn">החל התאמות מוכנות</button>
+    </div>
+  </section>
+  <div id="checkinHistorySection"></div>
+  <script src="./js/pre-workout-checkin.js"></script>
+
   <form class="card" id="importForm" role="region" aria-labelledby="importHeading">
     <h2 id="importHeading">ייבוא קוד מהוואטסאפ</h2>
     <label for="importCode">קוד TH1 או JSON</label>
