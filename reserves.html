@@ -93,6 +93,7 @@
     <a href="#status">סטטוס</a>
     <a href="#demos">הדגמות</a>
     <a href="#plan">תוכנית 6 שבועות</a>
+    <a href="#runPlan">תוכנית ריצה</a>
     <a href="#adapt">משוב והתאמה</a>
     <a href="#strength">תוכניות כוח</a>
   </nav>
@@ -139,6 +140,26 @@
     <div id="reserves6WeekTracker" style="margin-top:16px"></div>
     <div id="checkpointsOut"></div>
     <div id="sessionsOut"></div>
+  </section>
+
+  <section id="runPlan" aria-labelledby="runPlan-h">
+    <h2 id="runPlan-h">מחולל תוכנית ריצה מדורגת</h2>
+    <p class="muted">הפקת תוכנית ריצה אישית ל-6 שבועות בהתבסס על תוצאת ריצת 3000 מטר.</p>
+    <div class="row" style="margin-bottom:8px">
+      <div>
+        <label for="threeKmInput">תוצאת 3000 מטר (דקות, למשל 13.5 או 12:30)</label>
+        <input type="text" id="threeKmInput" placeholder="13:30 או 13.5" aria-label="תוצאת ריצת 3000 מטר">
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="generateRunPlanBtn" aria-label="הפק תוכנית ריצה">הפק תוכנית ריצה</button>
+    </div>
+    <div id="runningPlanPanel" style="margin-top:16px">
+      <div class="card">
+        <h3 style="margin-top:0">פאנל תוכנית ריצה (TR-AUTO-043)</h3>
+        <p class="muted" style="margin-bottom:0">הזן תוצאה ולחץ על הפקת תוכנית.</p>
+      </div>
+    </div>
   </section>
 
   <section id="adapt" aria-labelledby="adapt-h">
@@ -966,5 +987,13 @@
   }
 })();
 </script>
+<script src="js/running-progression.js"></script>
+<script src="js/running-progression.js"></script>
+<script src="js/running-progression.js"></script>
+<script src="js/running-progression.js"></script>
+<script src="js/running-progression.js"></script>
 </body>
 </html>
+<div id="runningPlanPanel">
+  <button id="generateRunPlanBtn">צור תוכנית ריצה</button>
+</div>
