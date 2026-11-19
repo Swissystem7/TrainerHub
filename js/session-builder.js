@@ -922,8 +922,35 @@
 
 	// prescription + wantedCount are exported so the rules panel can quote the
 	// numbers this engine actually runs instead of keeping a second copy of them.
+	var _mp = (typeof require === 'function') ? (() => { try { return require('./movement-patterns'); } catch (e) { return null; } })() : (typeof MovementPatterns !== 'undefined' ? MovementPatterns : null);
+
+	function classifyWorkoutMovementPatterns(workout) {
+		if (!workout || !Array.isArray(workout.phases)) return workout;
+		workout.phases.forEach((phase) => {
+			if (Array.isArray(phase.exercises)) {
+				phase.exercises.forEach((ex) => {
+					if (_mp && typeof _mp.classifyMovementPattern === 'function' && !ex.movementPattern) {
+						ex.movementPattern = _mp.classifyMovementPattern({ name_he: ex.name, id: ex.id });
+					}
+				});
+			}
+		});
+		return workout;
+	}
+
 	var api = {
-		buildSession: buildSession,
+		buildSession: function (text, catalogOrList, opts) {
+			var res = buildSession(text, catalogOrList, opts);
+			if (res && res.workout) {
+				res.workout = classifyWorkoutMovementPatterns(res.workout);
+				if (_mp && typeof _mp.checkFullBodyPatternCoverage === 'function') {
+					var allExs = [];
+					res.workout.phases.forEach((p) => { if (p.exercises) allExs = allExs.concat(p.exercises); });
+					res.workout.coverage = _mp.checkFullBodyPatternCoverage({ exercises: allExs });
+				}
+			}
+			return res;
+		},
 		scoreEntry: scoreEntry,
 		groupPlan: groupPlan,
 		prescription: prescription,
