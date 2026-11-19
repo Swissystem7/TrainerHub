@@ -31,6 +31,15 @@
 		core: { sets: 3, reps: null, rest: 30, duration: 40 },
 	};
 
+	var VolumeLandmarks = root.THVolumeLandmarks;
+	if (typeof module === "object" && module.exports && !VolumeLandmarks) {
+		try {
+			VolumeLandmarks = require("./volume-landmarks.js");
+		} catch (_e) {
+			VolumeLandmarks = null;
+		}
+	}
+
 	var GUIDANCE_NOTE =
 		"האימון מותאם ליכולת הנוכחית ומתמקד בחיזוק השריר והתמדה, ללא הבטחה להורדת שומן מקומית";
 
@@ -888,6 +897,18 @@
 
 		var analysis = Analyzer.analyzeSession(workout);
 		analysis.flags = requestFlags(analysis.flags, req);
+
+		if (VolumeLandmarks && typeof VolumeLandmarks.buildMuscleVolumeOverview === "function") {
+			var volOverview = VolumeLandmarks.buildMuscleVolumeOverview([workout]);
+			Object.keys(volOverview).forEach((m) => {
+				if (volOverview[m].classification === "high_warning") {
+					analysis.flags.push({
+						key: "high-volume-warning",
+						he: `אזהרת נפח שבועי גבוה לקבוצת ${m} (מעל 16 סטים)`,
+					});
+				}
+			});
+		}
 		var reasons = picked.map((e) => ({
 			id: e.id,
 			he: e.he,
