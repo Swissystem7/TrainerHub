@@ -93,6 +93,7 @@
     <a href="#status">סטטוס</a>
     <a href="#demos">הדגמות</a>
     <a href="#plan">תוכנית 6 שבועות</a>
+    <a href="#taper">חידוד ועומס</a>
     <a href="#adapt">משוב והתאמה</a>
     <a href="#strength">תוכניות כוח</a>
   </nav>
@@ -139,6 +140,18 @@
     <div id="reserves6WeekTracker" style="margin-top:16px"></div>
     <div id="checkpointsOut"></div>
     <div id="sessionsOut"></div>
+  </section>
+
+  <section id="taper" aria-labelledby="taper-h">
+    <h2 id="taper-h">מתכנן חידוד והפחתת עומס לפני בוחן</h2>
+    <p class="muted">הכנה לקראת בוחן כושר או גיוס: הפחתת עומס של 40-50% בשלושת הימים האחרונים לשמירה על רעננות וביצועי שיא.</p>
+    <div class="row">
+      <div>
+        <label for="taperTargetDateInput">תאריך יעד לבוחן כושר או גיוס</label>
+        <input type="date" id="taperTargetDateInput" aria-label="תאריך יעד לבוחן כושר או גיוס">
+      </div>
+    </div>
+    <div id="taperStatusOut" class="status-box incomplete" role="status" aria-live="polite">בחרו תאריך יעד לבוחן כושר או גיוס לקבלת המלצת חידוד והפחתת עומס.</div>
   </section>
 
   <section id="adapt" aria-labelledby="adapt-h">
@@ -201,6 +214,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/taper-scheduler.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -802,6 +816,73 @@
     bindFeedback();
     var strBtn = el('strShow');
     if (strBtn) strBtn.addEventListener('click', renderStrength);
+    initTaperPlanner();
+  }
+
+  function initTaperPlanner() {
+    var input = el('taperTargetDateInput');
+    var out = el('taperStatusOut');
+    if (!input || !out) return;
+
+    var scheduler = window.THTaperScheduler || (window.TH && window.TH.taperScheduler);
+
+    function renderTaper() {
+      var val = input.value;
+      if (!val) {
+        out.textContent = 'בחרו תאריך יעד לבוחן כושר או גיוס לקבלת המלצת חידוד והפחתת עומס.';
+        out.className = 'status-box incomplete';
+        return;
+      }
+      if (scheduler && typeof scheduler.setStoredTargetDate === 'function') {
+        scheduler.setStoredTargetDate(val);
+      } else {
+        try {
+          localStorage.setItem('trainerhub_taper_target_date', val);
+        } catch (_e) {}
+      }
+
+      if (!scheduler || typeof scheduler.calculateTaperWindow !== 'function') {
+        out.textContent = 'מחשבון חידוד אינו זמין כרגע.';
+        return;
+      }
+
+      var res = scheduler.calculateTaperWindow(val);
+      if (!res || !res.isValid) {
+        out.textContent = 'תאריך יעד לא תקין.';
+        out.className = 'status-box incomplete';
+        return;
+      }
+
+      if (res.phase === 'build') {
+        out.textContent = 'שלב בנייה (' + res.daysRemaining + ' ימים ליעד): שמירה על עצימות ונפח אימון רגיל לקראת היעד.';
+        out.className = 'status-box pass';
+      } else if (res.phase === 'taper_light') {
+        out.textContent = 'שלב חידוד (' + res.daysRemaining + ' ימים ליעד): המלצת הורדת נפח של 40-50% בשלושת הימים האחרונים לשמירה על רעננות.';
+        out.className = 'status-box incomplete';
+      } else if (res.phase === 'rest_ready') {
+        out.textContent = res.daysRemaining === 0
+          ? 'יום היעד הגיע: שלב מנוחה ומוכנות (rest_ready) - התמקדות ברעננות וביצוע מיטבי.'
+          : 'יום היעד חלף: מנוחה והתאוששות.';
+        out.className = 'status-box pass';
+      }
+    }
+
+    var stored = null;
+    if (scheduler && typeof scheduler.getStoredTargetDate === 'function') {
+      stored = scheduler.getStoredTargetDate();
+    } else {
+      try {
+        stored = localStorage.getItem('trainerhub_taper_target_date');
+      } catch (_e) {}
+    }
+
+    if (stored) {
+      input.value = stored;
+    }
+    renderTaper();
+
+    input.addEventListener('input', renderTaper);
+    input.addEventListener('change', renderTaper);
   }
 
   function sessionToWorkout(s) {

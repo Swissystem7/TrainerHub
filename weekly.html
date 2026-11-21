@@ -26,8 +26,10 @@
 <div class="th-banner">
   התוכנית השבועית נבנית בדפדפן מהמאגר. אין שרת חי בדמו הזה.
 </div>
+<div id="weeklyTaperBanner" class="th-banner" role="status" aria-live="polite">מתכנן חידוד והפחתת עומס לפני בוחן כושר</div>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
+<script src="./js/taper-scheduler.js"></script>
 <main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
@@ -288,9 +290,41 @@ function resetForm(){
   window.__lastProgram = null;
   window.__lastMeta = null;
   $('result').innerHTML = '<p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p>';
+  updateWeeklyTaperBanner();
 }
 $('form').addEventListener('submit', run);
 $('resetBtn').addEventListener('click', resetForm);
+function updateWeeklyTaperBanner(){
+  var banner = $('weeklyTaperBanner');
+  if (!banner) return;
+  var scheduler = window.THTaperScheduler || (window.TH && window.TH.taperScheduler);
+  var targetDate = null;
+  if (scheduler && typeof scheduler.getStoredTargetDate === 'function') {
+    targetDate = scheduler.getStoredTargetDate();
+  } else {
+    try {
+      targetDate = localStorage.getItem('trainerhub_taper_target_date');
+    } catch (_e) {}
+  }
+  if (!targetDate || !scheduler || typeof scheduler.calculateTaperWindow !== 'function') {
+    banner.textContent = 'מתכנן חידוד והפחתת עומס: הגדירו תאריך יעד במדדי מילואים להפחתת עומס אוטומטית לפני בוחן.';
+    return;
+  }
+  var res = scheduler.calculateTaperWindow(targetDate);
+  if (!res || !res.isValid) {
+    banner.textContent = 'מתכנן חידוד והפחתת עומס: תאריך היעד שהוגדר אינו תקין.';
+    return;
+  }
+  if (res.phase === 'taper_light') {
+    banner.textContent = 'חידוד לקראת יעד (' + res.daysRemaining + ' ימים נותרו): המלצת הורדת נפח של 40-50% בשלושת הימים האחרונים לשמירה על רעננות.';
+  } else if (res.phase === 'rest_ready') {
+    banner.textContent = res.daysRemaining === 0
+      ? 'יום היעד הגיע: שלב מנוחה ומוכנות (rest_ready) לקראת בוחן הכושר.'
+      : 'יום היעד חלף: שלב מנוחה והתאוששות.';
+  } else {
+    banner.textContent = 'שלב בנייה פעיל: ' + res.daysRemaining + ' ימים עד לבוחן הכושר. שמירה על עצימות ונפח אימון רגיל.';
+  }
+}
 function renderSavedReelCard(){
   var api = window.THReels;
   var card = $('savedReelCard');
@@ -326,7 +360,7 @@ function maybeApplyReelPlan(){
 renderSavedReelCard();
 var useSavedReelBtn = $('useSavedReelBtn');
 if (useSavedReelBtn && useSavedReelBtn.addEventListener) useSavedReelBtn.addEventListener('click', applySavedReelPlan);
-TH.ready(function () { run(); maybeApplyReelPlan(); });
+TH.ready(function () { run(); maybeApplyReelPlan(); updateWeeklyTaperBanner(); });
 window.startDayWorkout = startDayWorkout;
 window.applyWeeklySwap = applyWeeklySwap;
 window.workoutHasExercise = workoutHasExercise;
