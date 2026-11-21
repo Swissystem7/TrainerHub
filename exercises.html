@@ -925,5 +925,21 @@
 })();
 </script>
 <script src="./js/th-nav.js"></script>
+<div id="balanceMobilityContainer">
+	<button id="balanceMobilityBtn" type="button">הוסף מקבץ יציבות ושיווי משקל</button>
+	<div id="balanceMobilityOut" aria-live="polite"></div>
+</div>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var btn = document.getElementById('balanceMobilityBtn');
+		var out = document.getElementById('balanceMobilityOut');
+		if (btn && out && window.THBalanceMobility) {
+			btn.addEventListener('click', function() {
+				var block = window.THBalanceMobility.buildBalanceMobilityBlock('beginner', []);
+				out.textContent = block.title + ': ' + block.exercises.length + ' תרגילים נוספו';
+			});
+		}
+	});
+</script>
 </body>
 </html>

@@ -922,8 +922,23 @@
 
 	// prescription + wantedCount are exported so the rules panel can quote the
 	// numbers this engine actually runs instead of keeping a second copy of them.
+	var BalanceMobility = root.THBalanceMobility || (typeof require === "function" ? require("./balance-mobility.js") : null);
+
+	function buildSessionWithBalance(text, catalogOrList, opts) {
+		var res = buildSession(text, catalogOrList, opts);
+		if (opts && opts.includeBalanceBlock && BalanceMobility && typeof BalanceMobility.buildBalanceMobilityBlock === "function") {
+			var level = res.request && res.request.level ? res.request.level : "beginner";
+			var block = BalanceMobility.buildBalanceMobilityBlock(level, opts.limitations || opts.profile?.limitations);
+			if (res.workout && res.workout.phases && res.workout.phases[0]) {
+				res.workout.phases[0].exercises = res.workout.phases[0].exercises.concat(block.exercises);
+			}
+			res.balanceMobilityBlock = block;
+		}
+		return res;
+	}
+
 	var api = {
-		buildSession: buildSession,
+		buildSession: buildSessionWithBalance,
 		scoreEntry: scoreEntry,
 		groupPlan: groupPlan,
 		prescription: prescription,
