@@ -367,6 +367,14 @@
 <div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
 <!-- biome-ignore lint/a11y/useSemanticElements: live workout controls container -->
 <div id="liveWorkoutContainer" role="region" aria-label="תיעוד אימון חי" style="padding:0 24px 16px"></div>
+<!-- biome-ignore lint/a11y/useSemanticElements: joint prep panel region -->
+<section id="jointPrepPanel" class="joint-prep-panel" role="region" aria-label="בדיקת תנועה מכינה למפרקים" style="display:none;padding:16px 20px;max-width:520px;margin:0 auto 16px;background:#12211E;border:1px solid #28423C;border-radius:16px;text-align:right">
+  <h2 style="font-size:1.05rem;color:#2DD4BF;margin-bottom:6px">בדיקת תנועה מכינה למפרקים</h2>
+  <p style="font-size:0.85rem;color:#9ca3af;margin-bottom:12px">בדוק נוחות מפרקית מהירה לפני תחילת סטים עצימים:</p>
+  <div id="jointPrepChecksList" role="group" aria-label="רשימת תנועות בדיקה" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+  <div id="jointPrepOutcomeMsg" role="status" aria-live="polite" style="font-size:0.85rem;margin-bottom:12px;color:#7FE9D9"></div>
+  <button type="button" class="done-btn" id="confirmJointPrepBtn" style="width:100%;min-height:44px;background:#2DD4BF;color:#0A1513;font-weight:700;border:none;border-radius:12px;cursor:pointer" aria-label="אישור בדיקת מפרקים ומעבר לאימון">אישור והמשך לאימון</button>
+</section>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
@@ -408,6 +416,7 @@
 <script src="../js/journal-storage.js"></script>
 <script src="../js/live-workout.js"></script>
 <script src="../js/live-tempo-cue.js"></script>
+<script src="../js/joint-prep.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
 <script>
@@ -869,8 +878,111 @@ document.addEventListener('DOMContentLoaded', () => {
   const kbdHint = document.getElementById('kbdHint');
   if (kbdHint) kbdHint.style.display = 'block';
 
+  initJointPrepPanel(workout);
+
   renderStep();
 });
+
+function initJointPrepPanel(activeWorkout) {
+  const panel = document.getElementById('jointPrepPanel');
+  const listEl = document.getElementById('jointPrepChecksList');
+  const outcomeMsg = document.getElementById('jointPrepOutcomeMsg');
+  const confirmBtn = document.getElementById('confirmJointPrepBtn');
+  if (!panel || !listEl || typeof THJointPrep === 'undefined') return;
+
+  const muscles = [];
+  ((activeWorkout && activeWorkout.phases) || []).forEach((phase) => {
+    (phase.exercises || []).forEach((ex) => {
+      if (ex && ex.muscles) muscles.push(...ex.muscles);
+      else if (ex && ex.muscle) muscles.push(ex.muscle);
+    });
+  });
+
+  const checks = THJointPrep.getJointPrepChecks(muscles);
+  const checkStatus = {};
+
+  while (listEl.firstChild) {
+    listEl.removeChild(listEl.firstChild);
+  }
+
+  function updateOutcomeDisplay() {
+    const outcome = THJointPrep.resolvePrepCheckOutcome(checkStatus);
+    if (outcomeMsg) {
+      outcomeMsg.textContent = outcome.message;
+      outcomeMsg.style.color = outcome.adjustRom ? '#FF8A45' : '#7FE9D9';
+    }
+  }
+
+  checks.forEach((check) => {
+    checkStatus[check.id] = { discomfort: false };
+
+    const item = document.createElement('div');
+    item.style.padding = '8px 12px';
+    item.style.background = '#0A1513';
+    item.style.border = '1px solid #28423C';
+    item.style.borderRadius = '8px';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+
+    const title = document.createElement('span');
+    title.style.fontWeight = '700';
+    title.style.color = '#E8F1EE';
+    title.textContent = `${check.name} (${check.jointHe})`;
+    header.appendChild(title);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-pressed', 'false');
+    toggle.setAttribute('aria-label', `דווח על אי-נוחות ב${check.name}`);
+    toggle.style.padding = '4px 8px';
+    toggle.style.fontSize = '0.75rem';
+    toggle.style.borderRadius = '6px';
+    toggle.style.border = '1px solid #28423C';
+    toggle.style.background = '#12211E';
+    toggle.style.color = '#9ca3af';
+    toggle.style.cursor = 'pointer';
+    toggle.textContent = 'תקין';
+
+    toggle.addEventListener('click', () => {
+      const isDiscomfort = toggle.getAttribute('aria-pressed') !== 'true';
+      toggle.setAttribute('aria-pressed', isDiscomfort ? 'true' : 'false');
+      toggle.textContent = isDiscomfort ? '⚠️ דווחה אי-נוחות' : 'תקין';
+      toggle.style.color = isDiscomfort ? '#FF8A45' : '#9ca3af';
+      toggle.style.borderColor = isDiscomfort ? '#FF8A45' : '#28423C';
+      checkStatus[check.id] = { discomfort: isDiscomfort };
+      updateOutcomeDisplay();
+    });
+
+    header.appendChild(toggle);
+    item.appendChild(header);
+
+    const desc = document.createElement('div');
+    desc.style.fontSize = '0.78rem';
+    desc.style.color = '#9ca3af';
+    desc.style.marginTop = '4px';
+    desc.textContent = check.instruction;
+    item.appendChild(desc);
+
+    listEl.appendChild(item);
+  });
+
+  updateOutcomeDisplay();
+
+  if (confirmBtn) {
+    confirmBtn.onclick = () => {
+      const outcome = THJointPrep.resolvePrepCheckOutcome(checkStatus);
+      if (outcome.adjustRom) {
+        window.TH_SAFE_ROM_ACTIVE = true;
+      }
+      panel.style.display = 'none';
+    };
+  }
+
+  panel.style.display = 'block';
+}
 
 /* ═══════════════════════════════════════════
    PER-SET LOGGING · REST CUES · TTS
