@@ -7,6 +7,7 @@
   <meta name="description" content="מדדי מילואים ב-TrainerHub: ארבעה מבחני עובר/לא עובר, תוכנית 6 שבועות ומעקב מהטלפון.">
   <link rel="manifest" href="manifest.webmanifest">
   <title>TrainerHub | מדדי מילואים</title>
+  <script src="./js/group-challenge.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap">
@@ -131,6 +132,16 @@
     <h2 id="demos-h">כרטיסי הדגמה</h2>
     <p class="muted">התקדמות שלב־אחר־שלב. מתחילים משכיבת סמיכה עם ניתוק ידיים.</p>
     <div id="demosOut"></div>
+  </section>
+
+  <section id="weeklyChallengePanel">
+    <h2>אתגר קבוצתי</h2>
+    <p>עקבו אחר התקדמות האתגר השבועי.</p>
+    <div>
+      <label for="challengeStepInput">הוסף התקדמות</label>
+      <input type="number" id="challengeStepInput" value="10">
+      <button id="logChallengeStepBtn" type="button">עדכן</button>
+    </div>
   </section>
 
   <section id="plan" aria-labelledby="plan-h">
