@@ -28,7 +28,8 @@
 </div>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
-<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
+<script src="./js/shift-adapter.js"></script>
+<main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div id="shiftAdapterPanel" style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px" aria-labelledby="shiftAdapterHeading"><h3 id="shiftAdapterHeading" style="font-size:16px;margin:0 0 6px">מתאם ימי משמרת ועומס</h3><p class="honest" style="margin:0 0 8px">סמנו ימי משמרת. אימונים כבדים יועברו לימים פנויים ובימי המשמרת תופק תחזוקת מוביליטי קצרה (10 דקות).</p><fieldset style="border:0;padding:0;margin:0 0 10px"><legend class="sr-only">בחירת ימי משמרת ועומס</legend><div style="display:flex;flex-wrap:wrap;gap:8px"><div><input type="checkbox" id="weekly-shift-0" value="0" class="weekly-shift-cb" aria-label="משמרת יום ראשון" style="width:auto;min-height:auto"><label for="weekly-shift-0" style="display:inline;margin:0 4px">ראשון</label></div><div><input type="checkbox" id="weekly-shift-1" value="1" class="weekly-shift-cb" aria-label="משמרת יום שני" style="width:auto;min-height:auto"><label for="weekly-shift-1" style="display:inline;margin:0 4px">שני</label></div><div><input type="checkbox" id="weekly-shift-2" value="2" class="weekly-shift-cb" aria-label="משמרת יום שלישי" style="width:auto;min-height:auto"><label for="weekly-shift-2" style="display:inline;margin:0 4px">שלישי</label></div><div><input type="checkbox" id="weekly-shift-3" value="3" class="weekly-shift-cb" aria-label="משמרת יום רביעי" style="width:auto;min-height:auto"><label for="weekly-shift-3" style="display:inline;margin:0 4px">רביעי</label></div><div><input type="checkbox" id="weekly-shift-4" value="4" class="weekly-shift-cb" aria-label="משמרת יום חמישי" style="width:auto;min-height:auto"><label for="weekly-shift-4" style="display:inline;margin:0 4px">חמישי</label></div><div><input type="checkbox" id="weekly-shift-5" value="5" class="weekly-shift-cb" aria-label="משמרת יום שישי" style="width:auto;min-height:auto"><label for="weekly-shift-5" style="display:inline;margin:0 4px">שישי</label></div><div><input type="checkbox" id="weekly-shift-6" value="6" class="weekly-shift-cb" aria-label="משמרת יום שבת" style="width:auto;min-height:auto"><label for="weekly-shift-6" style="display:inline;margin:0 4px">שבת</label></div></div></fieldset><div id="weeklyShiftScheduleOut" aria-live="polite"></div></div><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
 // Periodization: the plan only holds per-week numbers; the shown week is applied
@@ -191,6 +192,78 @@ function renderProgram(p){
       }
     });
   });
+  if (typeof renderWeeklyShiftSchedule === 'function') renderWeeklyShiftSchedule();
+}
+
+function renderWeeklyShiftSchedule() {
+  if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function' || typeof document.createElement !== 'function') return;
+  const out = typeof document.getElementById === 'function' ? document.getElementById('weeklyShiftScheduleOut') : null;
+  if (!out) return;
+  while (out.firstChild) {
+    out.removeChild(out.firstChild);
+  }
+  const checkedBoxes = document.querySelectorAll('.weekly-shift-cb:checked');
+  const busyIndices = [];
+  checkedBoxes.forEach(function (cb) {
+    const val = Number(cb.value);
+    if (!Number.isNaN(val)) busyIndices.push(val);
+  });
+
+  const raw = window.__lastProgram;
+  const daily = raw && raw.dailyWorkouts ? raw.dailyWorkouts : [];
+  if (busyIndices.length === 0 && daily.length === 0) {
+    return;
+  }
+
+  const baseWeek = [0, 1, 2, 3, 4, 5, 6].map(function (idx) {
+    const d = daily[idx];
+    if (d) {
+      return {
+        dayIndex: idx,
+        day: 'אימון ' + d.day,
+        title: d.split ? 'אימון ' + d.day + ' (' + d.split + ')' : 'אימון ' + d.day,
+        isHeavy: true,
+        workout: d
+      };
+    }
+    return null;
+  });
+
+  const adapter = window.THShiftAdapter;
+  const adaptFn = adapter && typeof adapter.adaptWeekForShifts === 'function' ? adapter.adaptWeekForShifts : null;
+  const adapted = adaptFn ? adaptFn(baseWeek, busyIndices) : baseWeek;
+
+  const title = document.createElement('h4');
+  title.style.margin = '8px 0 4px';
+  title.style.fontSize = '14px';
+  title.textContent = 'לוח שבועי מותאם למשמרות:';
+  out.appendChild(title);
+
+  adapted.forEach(function (slot) {
+    const row = document.createElement('div');
+    row.style.padding = '4px 0';
+    row.style.fontSize = '13px';
+    row.style.borderTop = '1px solid var(--line)';
+
+    const nameSpan = document.createElement('strong');
+    nameSpan.textContent = (slot.dayName || slot.day_he || slot.day || 'יום') + ': ';
+    row.appendChild(nameSpan);
+
+    const statusSpan = document.createElement('span');
+    if (slot.isMobility) {
+      statusSpan.style.color = 'var(--th-orange)';
+      statusSpan.textContent = 'תחזוקת מוביליטי קצרה (10 דקות)';
+    } else if (slot.isRest) {
+      statusSpan.className = 'honest';
+      statusSpan.textContent = 'מנוחה';
+    } else {
+      statusSpan.style.color = 'var(--th-teal)';
+      statusSpan.textContent = slot.title || 'אימון כוח';
+    }
+    row.appendChild(statusSpan);
+
+    out.appendChild(row);
+  });
 }
 
 function renderPeriod(p){
@@ -287,10 +360,23 @@ function resetForm(){
   window.__period = null;
   window.__lastProgram = null;
   window.__lastMeta = null;
+  if (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') {
+    document.querySelectorAll('.weekly-shift-cb').forEach(function (cb) {
+      cb.checked = false;
+    });
+  }
+  if (typeof renderWeeklyShiftSchedule === 'function') {
+    renderWeeklyShiftSchedule();
+  }
   $('result').innerHTML = '<p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p>';
 }
 $('form').addEventListener('submit', run);
 $('resetBtn').addEventListener('click', resetForm);
+if (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') {
+  document.querySelectorAll('.weekly-shift-cb').forEach(function (cb) {
+    cb.addEventListener('change', renderWeeklyShiftSchedule);
+  });
+}
 function renderSavedReelCard(){
   var api = window.THReels;
   var card = $('savedReelCard');

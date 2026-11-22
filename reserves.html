@@ -137,6 +137,44 @@
     <h2 id="plan-h">תוכנית 6 שבועות</h2>
     <p class="muted" id="planSummary"></p>
     <div id="reserves6WeekTracker" style="margin-top:16px"></div>
+    <div id="shiftAdapterPanel" class="card" style="margin-top:16px" aria-labelledby="shiftAdapterHeading">
+      <h3 id="shiftAdapterHeading" style="margin-top:0">מתאם ימי משמרת ועומס במילואים</h3>
+      <p class="muted">סמנו ימים שבהם אתם במשמרת, שמירה או יום עמוס. אימונים כבדים יועברו לימים פנויים, ובימי העומס תבוצע תחזוקת מוביליטי קצרה (10 דקות).</p>
+      <fieldset style="border:0;padding:0;margin:12px 0">
+        <legend class="sr-only">בחירת ימי משמרת ועומס</legend>
+        <div class="row" style="grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px">
+          <div>
+            <input type="checkbox" id="reserves-shift-0" value="0" class="reserves-shift-cb" aria-label="משמרת יום ראשון">
+            <label for="reserves-shift-0">ראשון</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-1" value="1" class="reserves-shift-cb" aria-label="משמרת יום שני">
+            <label for="reserves-shift-1">שני</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-2" value="2" class="reserves-shift-cb" aria-label="משמרת יום שלישי">
+            <label for="reserves-shift-2">שלישי</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-3" value="3" class="reserves-shift-cb" aria-label="משמרת יום רביעי">
+            <label for="reserves-shift-3">רביעי</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-4" value="4" class="reserves-shift-cb" aria-label="משמרת יום חמישי">
+            <label for="reserves-shift-4">חמישי</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-5" value="5" class="reserves-shift-cb" aria-label="משמרת יום שישי">
+            <label for="reserves-shift-5">שישי</label>
+          </div>
+          <div>
+            <input type="checkbox" id="reserves-shift-6" value="6" class="reserves-shift-cb" aria-label="משמרת יום שבת">
+            <label for="reserves-shift-6">שבת</label>
+          </div>
+        </div>
+      </fieldset>
+      <div id="reservesShiftScheduleOut" style="margin-top:12px" aria-live="polite"></div>
+    </div>
     <div id="checkpointsOut"></div>
     <div id="sessionsOut"></div>
   </section>
@@ -201,6 +239,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/shift-adapter.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -458,6 +497,79 @@
         sessions.appendChild(card);
       });
     });
+    renderReservesShiftSchedule();
+  }
+
+  function renderReservesShiftSchedule() {
+    if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function' || typeof document.createElement !== 'function') return;
+    var out = el('reservesShiftScheduleOut');
+    if (!out) return;
+    while (out.firstChild) {
+      out.removeChild(out.firstChild);
+    }
+    var checkedBoxes = document.querySelectorAll('.reserves-shift-cb:checked');
+    var busyIndices = [];
+    checkedBoxes.forEach(function (cb) {
+      var val = Number(cb.value);
+      if (!isNaN(val)) busyIndices.push(val);
+    });
+
+    var planner = window.THReservesPlanner;
+    var summary = planner && typeof planner.getReserveProgressSummary === 'function'
+      ? planner.getReserveProgressSummary()
+      : { activeWeek: 1 };
+    var activeWeek = (summary && summary.activeWeek) || 1;
+
+    var p = R.plan();
+    var weekSessions = (p.sessions || []).filter(function (s) {
+      return Number(s.week) === Number(activeWeek);
+    });
+
+    var baseWeek = [
+      weekSessions[0] ? { title: weekSessions[0].day_he + ' — ' + weekSessions[0].focus_he, isHeavy: true, session: weekSessions[0] } : null,
+      null,
+      weekSessions[1] ? { title: weekSessions[1].day_he + ' — ' + weekSessions[1].focus_he, isHeavy: true, session: weekSessions[1] } : null,
+      null,
+      weekSessions[2] ? { title: weekSessions[2].day_he + ' — ' + weekSessions[2].focus_he, isHeavy: true, session: weekSessions[2] } : null,
+      null,
+      null
+    ];
+
+    var adapter = window.THShiftAdapter;
+    var adaptFn = adapter && typeof adapter.adaptWeekForShifts === 'function' ? adapter.adaptWeekForShifts : null;
+    var adapted = adaptFn ? adaptFn(baseWeek, busyIndices) : baseWeek;
+
+    var title = document.createElement('h4');
+    title.textContent = 'לוח מותאם לשבוע ' + activeWeek;
+    out.appendChild(title);
+
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+    grid.style.marginTop = '8px';
+
+    adapted.forEach(function (day) {
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      var h = document.createElement('h4');
+      h.textContent = day.dayName || day.day || 'יום';
+
+      var pill = document.createElement('span');
+      pill.className = 'pill ' + (day.isMobility ? 'warn' : (day.isRest ? '' : 'ok'));
+      pill.textContent = day.isMobility ? 'מוביליטי 10 דק׳' : (day.isRest ? 'מנוחה' : 'אימון מילואים');
+
+      var pDesc = document.createElement('p');
+      pDesc.className = 'muted';
+      pDesc.style.margin = '4px 0 0';
+      pDesc.textContent = day.title || (day.isMobility ? 'תחזוקת מוביליטי קצרה (10 דקות)' : 'התאוששות');
+
+      card.appendChild(h);
+      card.appendChild(pill);
+      card.appendChild(pDesc);
+      grid.appendChild(card);
+    });
+
+    out.appendChild(grid);
   }
 
   function render6WeekTracker() {
@@ -800,6 +912,11 @@
     renderComparison();
     renderAdaptSessions();
     bindFeedback();
+    if (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') {
+      document.querySelectorAll('.reserves-shift-cb').forEach((cb) => {
+        cb.addEventListener('change', renderReservesShiftSchedule);
+      });
+    }
     var strBtn = el('strShow');
     if (strBtn) strBtn.addEventListener('click', renderStrength);
   }
