@@ -740,13 +740,19 @@
 			);
 	}
 
+	function isRestoreBackupKey(k, val) {
+		if (typeof k !== "string" || k.indexOf("trainerhub_") !== 0) return false;
+		return typeof val === "string";
+	}
+
 	/** Writes restored keys back. Keys not in the backup are left as they are (nothing is deleted). */
 	function restoreBackup(data) {
 		var restored = 0;
-		Object.keys(data || {}).forEach(function (k) {
-			if (k.indexOf("trainerhub_") !== 0 || typeof data[k] !== "string") return;
+		var src = data || {};
+		Object.keys(src).forEach(function (k) {
+			if (!isRestoreBackupKey(k, src[k])) return;
 			try {
-				localStorage.setItem(k, data[k]);
+				localStorage.setItem(k, src[k]);
 				restored++;
 			} catch (e) {}
 		});
@@ -786,9 +792,12 @@
 	// ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
 	/** First whole number in a reps value ("8-10" → 8, "12" → 12, "עד כשל" → null). */
 	function parseRepsNumber(reps) {
-		var m = String(reps == null ? "" : reps).match(/\d+/);
-		var n = m ? Number(m[0]) : NaN;
-		return n > 0 && n < 1000 ? n : null;
+		if (reps == null) return null;
+		var m = String(reps).match(/\d+/);
+		if (!m) return null;
+		var n = Number(m[0]);
+		if (n > 0 && n < 1000) return n;
+		return null;
 	}
 
 	function workoutPrefs() {
@@ -1453,33 +1462,95 @@
 		});
 	}
 
+	function entryMatchesDriveId(entry, fileId) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (entry.driveId === fileId) return true;
+		if (entry.drivePlayId === fileId) return true;
+		return entry.legacyDriveId === fileId;
+	}
+
+	function findCatalogByDriveId(fileId) {
+		var keys = Object.keys(catalog);
+		var i, entry;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (entryMatchesDriveId(entry, fileId)) return entry;
+		}
+		return null;
+	}
+
+	function resolveReelFileId(m) {
+		if (m[1] === "drive") return m[2];
+		return reelDrive[m[2]] || "";
+	}
+
 	function reelClip(step) {
 		var id = step && typeof step.id === "string" ? step.id : "";
 		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
-		var fileId, keys, i, entry;
 		if (!m) return null;
-		fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
+		var fileId = resolveReelFileId(m);
 		if (!fileId || !reelDriveIds[fileId]) return null;
-		keys = Object.keys(catalog);
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (
-				entry &&
-				isPlayable(entry) &&
-				(entry.driveId === fileId ||
-					entry.drivePlayId === fileId ||
-					entry.legacyDriveId === fileId)
-			)
-				return entry;
-		}
-		if (!reelEntries[id])
+		var entry = findCatalogByDriveId(fileId);
+		if (entry) return entry;
+		if (!reelEntries[id]) {
 			reelEntries[id] = {
 				id: id,
 				he: step.name || "",
 				driveId: fileId,
 				source: "drive-reel",
 			};
+		}
 		return reelEntries[id];
+	}
+
+	function findExactCatalog(id, name) {
+		var keys = Object.keys(catalog);
+		var i, k, entry;
+		for (i = 0; i < keys.length; i++) {
+			k = keys[i];
+			entry = catalog[k];
+			if (!entry || !isPlayable(entry)) continue;
+			if (id && (entry.id === id || k === id)) return entry;
+			if (name && (entry.he === name || k === name || HE_NAMES[k] === name))
+				return entry;
+		}
+		return null;
+	}
+
+	function findCatalogByAlias(id, name) {
+		var viaMap = mappedAlias(id);
+		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
+		if (viaMap) return viaMap;
+		var keys = Object.keys(catalog);
+		var folded = name ? foldHe(name) : "";
+		var i, entry;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (!entry || !isPlayable(entry)) continue;
+			if (aliasListHas(entry, id)) return entry;
+			if (name && aliasListHas(entry, name)) return entry;
+			if (name && foldHe(entry.he) === folded) return entry;
+		}
+		return null;
+	}
+
+	function findCatalogByCandidates(name) {
+		if (!name) return null;
+		var candidates = nameCandidates(name);
+		var c, cand, hit;
+		for (c = 0; c < candidates.length; c++) {
+			cand = candidates[c];
+			if (cand === name) continue;
+			hit = matchPlayableName(cand);
+			if (hit) return hit;
+		}
+		for (c = 0; c < candidates.length; c++) {
+			cand = candidates[c];
+			if (cand === name || cand.length < 3) continue;
+			hit = matchCatalog(cand);
+			if (hit && isPlayable(hit)) return hit;
+		}
+		return null;
 	}
 
 	function findExercise(step) {
@@ -1488,56 +1559,24 @@
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
 		var reel = reelClip(step);
 		if (reel) return reel;
-		var name = step.name;
-		var keys = Object.keys(catalog);
-		var i, entry, viaMap, candidates, c, hit;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (id && (entry.id === id || keys[i] === id)) return entry;
-			if (
-				name &&
-				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
-			)
-				return entry;
-		}
-		viaMap = mappedAlias(id);
-		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
-		if (viaMap) return viaMap;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
-				return entry;
-			if (name && foldHe(entry.he) === foldHe(name)) return entry;
-		}
-		if (!name) return null;
-		candidates = nameCandidates(name);
-		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name) continue;
-			hit = matchPlayableName(candidates[c]);
-			if (hit) return hit;
-		}
-		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name || candidates[c].length < 3) continue;
-			hit = matchCatalog(candidates[c]);
-			if (hit && isPlayable(hit)) return hit;
-		}
-		return null;
+		var exact = findExactCatalog(id, step.name);
+		if (exact) return exact;
+		var byAlias = findCatalogByAlias(id, step.name);
+		if (byAlias) return byAlias;
+		return findCatalogByCandidates(step.name);
 	}
 
-	function catalogSrc(file) {
-		if (!file) return "";
-		if (/^https?:\/\//i.test(file)) return file;
-		if (
-			file.indexOf("../") === 0 ||
-			file.indexOf("./") === 0 ||
-			file.charAt(0) === "/"
-		)
-			return file;
+	function isDirectCatalogPath(file) {
+		if (/^https?:\/\//i.test(file)) return true;
+		if (file.indexOf("../") === 0) return true;
+		if (file.indexOf("./") === 0) return true;
+		return file.charAt(0) === "/";
+	}
+
+	function encodeVideoPath(file) {
 		var name = String(file).replace(/^videos\//, "");
-		var encoded = name
-			.split("/")
+		var parts = name.split("/");
+		var encoded = parts
 			.map(function (part) {
 				return encodeURIComponent(part);
 			})
@@ -1545,74 +1584,57 @@
 		return assetUrl("videos/" + encoded);
 	}
 
+	function catalogSrc(file) {
+		if (!file) return "";
+		if (isDirectCatalogPath(file)) return file;
+		return encodeVideoPath(file);
+	}
+
 	function phaseLabel(name) {
 		return PHASE_LABELS[name] || name;
 	}
 
-	function toPhasesWorkout(d, meta) {
-		meta = meta || {};
-		if (d && Array.isArray(d.phases) && d.phases.length) {
-			return {
-				title: d.title || "אימון " + (d.day || ""),
-				duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
-				participants: 1,
-				equipment: meta.equipment || [],
-				intensity: meta.intensity || "medium",
-				tags: meta.tags || ["program"],
-				phases: d.phases,
-			};
-		}
-		var mainEx = (d.exercises || []).map(function (x) {
-			return {
-				name: heName(x.name),
-				id: x.id || x.name,
-				sets: x.sets != null ? x.sets : null,
-				reps: x.reps != null ? x.reps : null,
-				duration_seconds:
-					x.duration_seconds != null ? x.duration_seconds : null,
-				rest_seconds:
-					x.restSeconds != null
-						? x.restSeconds
-						: x.rest_seconds != null
-							? x.rest_seconds
-							: null,
-				notes: x.notes || null,
-			};
-		});
-		var warm = d.warmUp
-			? [
-					{
-						name: heName(d.warmUp),
-						id: d.warmUp,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		var cool = d.coolDown
-			? [
-					{
-						name: heName(d.coolDown),
-						id: d.coolDown,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		// The Main phase lasts as long as its sets and rests: a beginner's four
-		// 3×8-12 exercises take about 14 minutes and an advanced strength day's
-		// six 4×4-6 with 2-minute rests about 42, so the trainee page and the
-		// print sheet do not promise «45 דקות» for either.
+	function resolveExerciseRestSeconds(x) {
+		if (x.restSeconds != null) return x.restSeconds;
+		if (x.rest_seconds != null) return x.rest_seconds;
+		return null;
+	}
+
+	function mapMainExercise(x) {
+		return {
+			name: heName(x.name),
+			id: x.id || x.name,
+			sets: x.sets != null ? x.sets : null,
+			reps: x.reps != null ? x.reps : null,
+			duration_seconds: x.duration_seconds != null ? x.duration_seconds : null,
+			rest_seconds: resolveExerciseRestSeconds(x),
+			notes: x.notes || null,
+		};
+	}
+
+	function auxiliaryPhaseExercise(drill) {
+		if (!drill) return [];
+		return [
+			{
+				name: heName(drill),
+				id: drill,
+				sets: 1,
+				reps: null,
+				duration_seconds: 180,
+				rest_seconds: null,
+				notes: null,
+			},
+		];
+	}
+
+	function buildPhasesFromFlat(d) {
+		var mainEx = (d.exercises || []).map(mapMainExercise);
+		var warm = auxiliaryPhaseExercise(d.warmUp);
+		var cool = auxiliaryPhaseExercise(d.coolDown);
 		var mainSeconds = mainEx.reduce(function (a, ex) {
 			return a + draftExerciseSeconds(ex);
 		}, 0);
-		var phases = [
+		return [
 			{ name: "Warm-up", duration_minutes: 5, exercises: warm },
 			{
 				name: "Main",
@@ -1621,13 +1643,36 @@
 			},
 			{ name: "Cool-down", duration_minutes: 5, exercises: cool },
 		];
+	}
+
+	function toPhasesWorkout(d, meta) {
+		meta = meta || {};
+		var title = (d && d.title) || "אימון " + ((d && d.day) || "");
+		var equipment = meta.equipment || [];
+		var intensity = meta.intensity || "medium";
+		var tags = meta.tags || ["program"];
+
+		if (d && Array.isArray(d.phases) && d.phases.length) {
+			var dur = d.duration_minutes || phasesMinutes(d.phases) || 45;
+			return {
+				title: title,
+				duration_minutes: dur,
+				participants: 1,
+				equipment: equipment,
+				intensity: intensity,
+				tags: tags,
+				phases: d.phases,
+			};
+		}
+
+		var phases = buildPhasesFromFlat(d || {});
 		return {
-			title: d.title || "אימון " + (d.day || ""),
+			title: title,
 			duration_minutes: phasesMinutes(phases),
 			participants: 1,
-			equipment: meta.equipment || [],
-			intensity: meta.intensity || "medium",
-			tags: meta.tags || ["program"],
+			equipment: equipment,
+			intensity: intensity,
+			tags: tags,
 			phases: phases,
 		};
 	}
@@ -1661,84 +1706,109 @@
 		return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 	}
 
-	function b64urlToUtf8(s) {
+	function padB64(s) {
 		var t = String(s || "")
 			.replace(/-/g, "+")
 			.replace(/_/g, "/");
-		while (t.length % 4) t += "=";
-		var bin = atob(t);
+		var pad = (4 - (t.length % 4)) % 4;
+		return t + "===".slice(0, pad);
+	}
+
+	function b64urlToUtf8(s) {
+		var bin = atob(padB64(s));
 		var bytes = new Uint8Array(bin.length);
 		var i;
 		for (i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
 		return new TextDecoder().decode(bytes);
 	}
 
-	function compactPlan(w) {
-		w = w || {};
+	function compactExerciseRow(ex) {
+		var row = { n: ex.name };
+		if (ex.id) row.id = ex.id;
+		if (ex.sets != null) row.s = ex.sets;
+		if (ex.reps != null) row.r = ex.reps;
+		if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
+		if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
+		if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
+		return row;
+	}
+
+	function compactGroupPlan(g) {
+		if (!g) return null;
 		return {
-			t: w.title || "אימון",
-			d: w.duration_minutes || null,
-			i: w.intensity || null,
-			c: w.participants || 1,
-			q: w.equipment || [],
-			g: w.group_plan
-				? {
-						s: w.group_plan.stations || 1,
-						p: w.group_plan.per_station || 1,
-						h: w.group_plan.he || "",
-					}
-				: null,
-			p: (w.phases || []).map(function (ph) {
-				return {
-					n: ph.name,
-					e: (ph.exercises || []).map(function (ex) {
-						var row = { n: ex.name };
-						if (ex.id) row.id = ex.id;
-						if (ex.sets != null) row.s = ex.sets;
-						if (ex.reps != null) row.r = ex.reps;
-						if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
-						if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
-						if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
-						return row;
-					}),
-				};
-			}),
+			s: g.stations || 1,
+			p: g.per_station || 1,
+			h: g.he || "",
+		};
+	}
+
+	function compactPhase(ph) {
+		var list = ph.exercises || [];
+		return {
+			n: ph.name,
+			e: list.map(compactExerciseRow),
+		};
+	}
+
+	function compactPlan(w) {
+		var src = w || {};
+		var phases = src.phases || [];
+		return {
+			t: src.title || "אימון",
+			d: src.duration_minutes || null,
+			i: src.intensity || null,
+			c: src.participants || 1,
+			q: src.equipment || [],
+			g: compactGroupPlan(src.group_plan),
+			p: phases.map(compactPhase),
+		};
+	}
+
+	function expandExerciseRow(ex) {
+		var notes = ex.no != null && ex.no !== "" ? ex.no : null;
+		return {
+			name: ex.n,
+			id: ex.id || null,
+			sets: ex.s != null ? ex.s : null,
+			reps: ex.r != null ? ex.r : null,
+			duration_seconds: ex.ds != null ? ex.ds : null,
+			rest_seconds: ex.rs != null ? ex.rs : null,
+			notes: notes,
+		};
+	}
+
+	function expandGroupPlan(g) {
+		if (!g) return null;
+		return {
+			stations: g.s || 1,
+			per_station: g.p || 1,
+			he: g.h || "",
+		};
+	}
+
+	function expandPhase(ph) {
+		var list = ph.e || [];
+		return {
+			name: ph.n,
+			exercises: list.map(expandExerciseRow),
 		};
 	}
 
 	function expandPlan(c) {
-		c = c || {};
+		var src = c || {};
+		var phases = src.p || [];
 		return {
-			title: c.t || "אימון",
-			duration_minutes: c.d || null,
-			intensity: c.i || null,
-			participants: c.c || 1,
-			equipment: c.q || [],
-			group_plan: c.g
-				? { stations: c.g.s || 1, per_station: c.g.p || 1, he: c.g.h || "" }
-				: null,
-			phases: (c.p || []).map(function (ph) {
-				return {
-					name: ph.n,
-					exercises: (ph.e || []).map(function (ex) {
-						return {
-							name: ex.n,
-							id: ex.id || null,
-							sets: ex.s != null ? ex.s : null,
-							reps: ex.r != null ? ex.r : null,
-							duration_seconds: ex.ds != null ? ex.ds : null,
-							rest_seconds: ex.rs != null ? ex.rs : null,
-							notes: ex.no != null && ex.no !== "" ? ex.no : null,
-						};
-					}),
-				};
-			}),
+			title: src.t || "אימון",
+			duration_minutes: src.d || null,
+			intensity: src.i || null,
+			participants: src.c || 1,
+			equipment: src.q || [],
+			group_plan: expandGroupPlan(src.g),
+			phases: phases.map(expandPhase),
 		};
 	}
 
-	function workoutModeUrl() {
-		var here = location.href.split("#")[0].split("?")[0];
-		if (/workout-mode\.html$/i.test(here)) return here;
+	function resolveFrontendWorkoutUrl(here) {
 		if (/\/frontend(\/index\.html)?\/?$/i.test(here)) {
 			return (
 				here.replace(/index\.html$/i, "").replace(/\/?$/, "/") +
@@ -1750,6 +1820,12 @@
 		}
 		var base = here.replace(/\/[^/]+\.html$/i, "/");
 		return base.replace(/\/?$/, "/") + "frontend/workout-mode.html";
+	}
+
+	function workoutModeUrl() {
+		var here = location.href.split("#")[0].split("?")[0];
+		if (/workout-mode\.html$/i.test(here)) return here;
+		return resolveFrontendWorkoutUrl(here);
 	}
 
 	function encodeLink(workout, meta) {
@@ -1814,16 +1890,20 @@
 		);
 	}
 
+	function removeManualCopyBox(anchor) {
+		var host = anchor && anchor.parentNode;
+		if (!host || !host.querySelector) return;
+		var prev = host.querySelector(".th-manual-copy");
+		if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+	}
+
 	// Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
 	// A box left by an earlier refused copy is removed either way: after a later
 	// successful copy it would still show the old link (e.g. the plan before the
 	// dropdown changed) as if it were the one to send.
 	function copyOrShow(text, anchor, onOk, position) {
 		return copyText(text).then(function (r) {
-			var host = anchor && anchor.parentNode;
-			var prev =
-				host && host.querySelector && host.querySelector(".th-manual-copy");
-			if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+			removeManualCopyBox(anchor);
 			if (r.ok) {
 				if (onOk) onOk();
 				return r;
@@ -1856,16 +1936,19 @@
 		);
 	}
 
+	function extractHashToken(raw) {
+		if (raw.indexOf("TH.") === 0) return raw.slice(3);
+		if (raw.indexOf("p=") === 0) return raw.slice(2);
+		return null;
+	}
+
 	function decodeHash(hash) {
 		var raw = String(hash || location.hash || "").replace(/^#/, "");
 		if (!raw) return null;
-		var token = raw;
-		var data;
-		if (raw.indexOf("TH.") === 0) token = raw.slice(3);
-		else if (raw.indexOf("p=") === 0) token = raw.slice(2);
-		else return null;
+		var token = extractHashToken(raw);
+		if (!token) return null;
 		try {
-			data = JSON.parse(b64urlToUtf8(token));
+			var data = JSON.parse(b64urlToUtf8(token));
 			if (!data || !data.p) return null;
 			return {
 				workout: expandPlan(data.p),
@@ -1965,104 +2048,107 @@
 		for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
 		return res;
 	}
-	function qrPenalty(m, size) {
-		var p = 0,
-			x,
-			y,
-			dark = 0,
-			c;
-		function lines(get) {
-			var a, b, run, s, v, pad, k;
-			for (a = 0; a < size; a++) {
-				run = 1;
-				s = "";
-				for (b = 0; b < size; b++) {
-					v = get(a, b);
-					s += v ? "1" : "0";
-					if (b > 0 && v === get(a, b - 1)) run++;
-					else {
-						if (run >= 5) p += run - 2;
-						run = 1;
-					}
-				}
+	function countPatternPenalty(pad, pattern) {
+		var penalty = 0;
+		var k = pad.indexOf(pattern, 0);
+		while (k !== -1) {
+			penalty += 40;
+			k = pad.indexOf(pattern, k + 1);
+		}
+		return penalty;
+	}
+
+	function linePenalty(size, getLine) {
+		var p = 0;
+		var b,
+			v,
+			prev = null,
+			run = 0,
+			s = "";
+		for (b = 0; b < size; b++) {
+			v = getLine(b);
+			s += v ? "1" : "0";
+			if (v === prev) {
+				run++;
+			} else {
 				if (run >= 5) p += run - 2;
-				pad = "0000" + s + "0000";
-				k = -1;
-				k = pad.indexOf("10111010000", k + 1);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("10111010000", k + 1);
-				}
-				k = pad.indexOf("00001011101", 0);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("00001011101", k + 1);
-				}
+				run = 1;
+				prev = v;
 			}
 		}
-		lines(function (a, b) {
-			return m[a][b];
-		});
-		lines(function (a, b) {
-			return m[b][a];
-		});
-		for (y = 0; y < size; y++) {
-			for (x = 0; x < size; x++) {
-				if (m[y][x]) dark++;
-				if (x < size - 1 && y < size - 1) {
-					c = m[y][x];
-					if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1])
-						p += 3;
-				}
-			}
-		}
-		var total = size * size;
-		p +=
-			Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+		if (run >= 5) p += run - 2;
+		var pad = "0000" + s + "0000";
+		p += countPatternPenalty(pad, "10111010000");
+		p += countPatternPenalty(pad, "00001011101");
 		return p;
 	}
 
-	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
-	// is too long for any version.
-	function qrMatrix(text) {
-		var bytes = [];
-		var utf = unescape(encodeURIComponent(String(text || "")));
-		var i,
-			j,
-			pad,
-			byte,
-			dat,
-			ecc,
-			ay,
-			ax,
-			r,
-			vb,
-			on,
-			a,
-			b,
-			right,
-			vert,
-			x,
-			up,
-			y,
-			mk,
-			pen;
-		for (i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
-		var ver = 0,
-			ecl = null;
-		["M", "L"].some(function (e) {
-			var v, bits;
-			for (v = 1; v <= 40; v++) {
-				bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
-				if (bits <= qrDataCodewords(v, e) * 8) {
-					ver = v;
-					ecl = e;
-					return true;
+	function qrLinesPenalty(m, size) {
+		var p = 0;
+		var a;
+		for (a = 0; a < size; a++) {
+			p += linePenalty(size, function (b) {
+				return m[a][b];
+			});
+			p += linePenalty(size, function (b) {
+				return m[b][a];
+			});
+		}
+		return p;
+	}
+
+	function qrBlocks2x2Penalty(m, size) {
+		var p = 0;
+		var x, y, c;
+		for (y = 0; y < size - 1; y++) {
+			for (x = 0; x < size - 1; x++) {
+				c = m[y][x];
+				if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1]) {
+					p += 3;
 				}
 			}
-			return false;
-		});
-		if (!ver) return null;
+		}
+		return p;
+	}
+
+	function qrDarkRatioPenalty(m, size) {
+		var dark = 0;
+		var x, y;
+		for (y = 0; y < size; y++) {
+			for (x = 0; x < size; x++) {
+				if (m[y][x]) dark++;
+			}
+		}
+		var total = size * size;
+		return (
+			Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10
+		);
+	}
+
+	function qrPenalty(m, size) {
+		return (
+			qrLinesPenalty(m, size) +
+			qrBlocks2x2Penalty(m, size) +
+			qrDarkRatioPenalty(m, size)
+		);
+	}
+
+	function findQrVersion(byteCount) {
+		var ecls = ["M", "L"];
+		var i, e, v, bits;
+		for (i = 0; i < ecls.length; i++) {
+			e = ecls[i];
+			for (v = 1; v <= 40; v++) {
+				bits = 4 + (v < 10 ? 8 : 16) + byteCount * 8;
+				if (bits <= qrDataCodewords(v, e) * 8) {
+					return { version: v, ecl: e };
+				}
+			}
+		}
+		return null;
+	}
+
+	function buildQrCodewords(bytes, ver, ecl) {
 		var cap = qrDataCodewords(ver, ecl) * 8;
 		var bb = [];
 		function put(val, len) {
@@ -2076,22 +2162,28 @@
 		});
 		put(0, Math.min(4, cap - bb.length));
 		put(0, (8 - (bb.length % 8)) % 8);
+		var pad;
 		for (pad = 0xec; bb.length < cap; pad ^= 0xec ^ 0x11) put(pad, 8);
 		var data = [];
+		var i, j, byte;
 		for (i = 0; i < bb.length; i += 8) {
 			byte = 0;
 			for (j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
 			data.push(byte);
 		}
-		// Split into blocks, add Reed-Solomon, interleave.
-		var nb = QR_BLOCKS[ecl][ver],
-			eccLen = QR_ECC[ecl][ver];
+		return data;
+	}
+
+	function interleaveQrBlocks(data, ver, ecl) {
+		var nb = QR_BLOCKS[ecl][ver];
+		var eccLen = QR_ECC[ecl][ver];
 		var raw = Math.floor(qrRawModules(ver) / 8);
-		var nShort = nb - (raw % nb),
-			shortLen = Math.floor(raw / nb);
-		var div = rsDivisor(eccLen),
-			blocks = [],
-			k = 0;
+		var nShort = nb - (raw % nb);
+		var shortLen = Math.floor(raw / nb);
+		var div = rsDivisor(eccLen);
+		var blocks = [];
+		var k = 0;
+		var i, j, dat, ecc;
 		for (i = 0; i < nb; i++) {
 			dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
 			k += dat.length;
@@ -2105,21 +2197,10 @@
 				if (i !== shortLen - eccLen || j >= nShort) words.push(blocks[j][i]);
 			}
 		}
-		var size = ver * 4 + 17,
-			mod = [],
-			fn = [];
-		for (i = 0; i < size; i++) {
-			mod.push(new Array(size).fill(false));
-			fn.push(new Array(size).fill(false));
-		}
-		function setFn(x, y, d) {
-			mod[y][x] = d;
-			fn[y][x] = true;
-		}
-		for (i = 0; i < size; i++) {
-			setFn(6, i, i % 2 === 0);
-			setFn(i, 6, i % 2 === 0);
-		}
+		return words;
+	}
+
+	function applyFinderPatterns(size, setFn) {
 		[
 			[3, 3],
 			[size - 4, 3],
@@ -2136,8 +2217,12 @@
 				}
 			}
 		});
-		var al = qrAlignPositions(ver, size),
-			na = al.length;
+	}
+
+	function applyAlignPatterns(ver, size, setFn) {
+		var al = qrAlignPositions(ver, size);
+		var na = al.length;
+		var i, j, ay, ax;
 		for (i = 0; i < na; i++) {
 			for (j = 0; j < na; j++) {
 				if (
@@ -2156,38 +2241,66 @@
 				}
 			}
 		}
-		function formatBits(mask) {
-			var d = ((ecl === "L" ? 1 : 0) << 3) | mask,
-				r = d,
-				q;
-			for (q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
-			var bits = ((d << 10) | r) ^ 0x5412;
-			function bit(n) {
-				return ((bits >>> n) & 1) !== 0;
-			}
-			for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
-			setFn(8, 7, bit(6));
-			setFn(8, 8, bit(7));
-			setFn(7, 8, bit(8));
-			for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
-			for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
-			for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
-			setFn(8, size - 8, true);
+	}
+
+	function applyVersionBits(ver, size, setFn) {
+		if (ver < 7) return;
+		var r = ver;
+		var i;
+		for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1f25);
+		var vb = (ver << 12) | r;
+		for (i = 0; i < 18; i++) {
+			var on = ((vb >>> i) & 1) !== 0;
+			var a = size - 11 + (i % 3);
+			var b = Math.floor(i / 3);
+			setFn(a, b, on);
+			setFn(b, a, on);
 		}
-		formatBits(0);
-		if (ver >= 7) {
-			r = ver;
-			for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1f25);
-			vb = (ver << 12) | r;
-			for (i = 0; i < 18; i++) {
-				on = ((vb >>> i) & 1) !== 0;
-				a = size - 11 + (i % 3);
-				b = Math.floor(i / 3);
-				setFn(a, b, on);
-				setFn(b, a, on);
-			}
+	}
+
+	function applyFormatBits(ecl, mask, size, setFn) {
+		var d = ((ecl === "L" ? 1 : 0) << 3) | mask;
+		var r = d;
+		var q;
+		for (q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+		var bits = ((d << 10) | r) ^ 0x5412;
+		function bit(n) {
+			return ((bits >>> n) & 1) !== 0;
 		}
+		for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
+		setFn(8, 7, bit(6));
+		setFn(8, 8, bit(7));
+		setFn(7, 8, bit(8));
+		for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
+		for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
+		for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
+		setFn(8, size - 8, true);
+	}
+
+	function isMaskInverted(mask, xx, yy) {
+		switch (mask) {
+			case 0:
+				return (xx + yy) % 2 === 0;
+			case 1:
+				return yy % 2 === 0;
+			case 2:
+				return xx % 3 === 0;
+			case 3:
+				return (xx + yy) % 3 === 0;
+			case 4:
+				return (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
+			case 5:
+				return ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
+			case 6:
+				return (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+			default:
+				return (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+		}
+	}
+
+	function placeDataModules(mod, fn, words, size) {
 		var bi = 0;
+		var right, vert, j, x, up, y;
 		for (right = size - 1; right >= 1; right -= 2) {
 			if (right === 6) right = 5;
 			for (vert = 0; vert < size; vert++) {
@@ -2202,53 +2315,82 @@
 				}
 			}
 		}
-		function applyMask(mask) {
-			var yy, xx, inv;
-			for (yy = 0; yy < size; yy++) {
-				for (xx = 0; xx < size; xx++) {
-					switch (mask) {
-						case 0:
-							inv = (xx + yy) % 2 === 0;
-							break;
-						case 1:
-							inv = yy % 2 === 0;
-							break;
-						case 2:
-							inv = xx % 3 === 0;
-							break;
-						case 3:
-							inv = (xx + yy) % 3 === 0;
-							break;
-						case 4:
-							inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
-							break;
-						case 5:
-							inv = ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
-							break;
-						case 6:
-							inv = (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-							break;
-						default:
-							inv = (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-					}
-					if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
+	}
+
+	function applyQrMask(mod, fn, size, mask) {
+		var yy, xx;
+		for (yy = 0; yy < size; yy++) {
+			for (xx = 0; xx < size; xx++) {
+				if (isMaskInverted(mask, xx, yy) && !fn[yy][xx]) {
+					mod[yy][xx] = !mod[yy][xx];
 				}
 			}
 		}
-		var best = 0,
-			bestP = Infinity;
+	}
+
+	function pickBestQrMask(mod, fn, size, ecl, setFn) {
+		var best = 0;
+		var bestP = Infinity;
+		var mk, pen;
 		for (mk = 0; mk < 8; mk++) {
-			applyMask(mk);
-			formatBits(mk);
+			applyQrMask(mod, fn, size, mk);
+			applyFormatBits(ecl, mk, size, setFn);
 			pen = qrPenalty(mod, size);
 			if (pen < bestP) {
 				bestP = pen;
 				best = mk;
 			}
-			applyMask(mk);
+			applyQrMask(mod, fn, size, mk);
 		}
-		applyMask(best);
-		formatBits(best);
+		applyQrMask(mod, fn, size, best);
+		applyFormatBits(ecl, best, size, setFn);
+		return best;
+	}
+
+	function initQrGrid(size) {
+		var mod = [];
+		var fn = [];
+		var i;
+		for (i = 0; i < size; i++) {
+			mod.push(new Array(size).fill(false));
+			fn.push(new Array(size).fill(false));
+		}
+		return { mod: mod, fn: fn };
+	}
+
+	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
+	// is too long for any version.
+	function qrMatrix(text) {
+		var bytes = [];
+		var utf = unescape(encodeURIComponent(String(text || "")));
+		var i;
+		for (i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
+		var target = findQrVersion(bytes.length);
+		if (!target) return null;
+		var ver = target.version;
+		var ecl = target.ecl;
+		var words = interleaveQrBlocks(buildQrCodewords(bytes, ver, ecl), ver, ecl);
+		var size = ver * 4 + 17;
+		var grid = initQrGrid(size);
+		var mod = grid.mod;
+		var fn = grid.fn;
+
+		function setFn(x, y, d) {
+			mod[y][x] = d;
+			fn[y][x] = true;
+		}
+
+		for (i = 0; i < size; i++) {
+			setFn(6, i, i % 2 === 0);
+			setFn(i, 6, i % 2 === 0);
+		}
+		applyFinderPatterns(size, setFn);
+		applyAlignPatterns(ver, size, setFn);
+		applyFormatBits(ecl, 0, size, setFn);
+		applyVersionBits(ver, size, setFn);
+		placeDataModules(mod, fn, words, size);
+		var best = pickBestQrMask(mod, fn, size, ecl, setFn);
+
 		return { version: ver, ecl: ecl, size: size, mask: best, modules: mod };
 	}
 
