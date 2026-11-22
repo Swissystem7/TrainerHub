@@ -784,11 +784,18 @@
 	}
 
 	// ---- Workout-mode cues: per-set logging helpers, rest-end vibration/sound, Hebrew TTS (all offline, no network) ----
+	function isValidRepsCount(n) {
+		if (n <= 0) return false;
+		if (n >= 1000) return false;
+		return true;
+	}
+
 	/** First whole number in a reps value ("8-10" → 8, "12" → 12, "עד כשל" → null). */
 	function parseRepsNumber(reps) {
 		var m = String(reps == null ? "" : reps).match(/\d+/);
-		var n = m ? Number(m[0]) : NaN;
-		return n > 0 && n < 1000 ? n : null;
+		if (!m) return null;
+		var n = Number(m[0]);
+		return isValidRepsCount(n) ? n : null;
 	}
 
 	function workoutPrefs() {
@@ -1482,48 +1489,92 @@
 		return reelEntries[id];
 	}
 
+	function findDirectPlayable(id) {
+		if (!id) return null;
+		var entry = catalog[id];
+		return entry && isPlayable(entry) ? entry : null;
+	}
+
+	function matchCatalogByIdOrName(entry, k, id, name) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (id && (entry.id === id || k === id)) return true;
+		if (!name) return false;
+		return entry.he === name || k === name || HE_NAMES[k] === name;
+	}
+
+	function findCatalogExactMatch(id, name) {
+		var keys = Object.keys(catalog);
+		var i, k, entry;
+		for (i = 0; i < keys.length; i++) {
+			k = keys[i];
+			entry = catalog[k];
+			if (matchCatalogByIdOrName(entry, k, id, name)) return entry;
+		}
+		return null;
+	}
+
+	function findMappedAlias(id, name) {
+		var via = mappedAlias(id);
+		if (!via && name && name !== id) {
+			via = mappedAlias(name);
+		}
+		return via;
+	}
+
+	function matchCatalogByAliasOrFold(entry, id, name) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (aliasListHas(entry, id)) return true;
+		if (name && aliasListHas(entry, name)) return true;
+		if (name && foldHe(entry.he) === foldHe(name)) return true;
+		return false;
+	}
+
+	function findCatalogAliasMatch(id, name) {
+		var keys = Object.keys(catalog);
+		var i, entry;
+		for (i = 0; i < keys.length; i++) {
+			entry = catalog[keys[i]];
+			if (matchCatalogByAliasOrFold(entry, id, name)) return entry;
+		}
+		return null;
+	}
+
+	function findPlayableCandidate(name) {
+		if (!name) return null;
+		var candidates = nameCandidates(name);
+		var c, cand, hit;
+		for (c = 0; c < candidates.length; c++) {
+			cand = candidates[c];
+			if (cand !== name) {
+				hit = matchPlayableName(cand);
+				if (hit) return hit;
+			}
+		}
+		for (c = 0; c < candidates.length; c++) {
+			cand = candidates[c];
+			if (cand !== name && cand.length >= 3) {
+				hit = matchCatalog(cand);
+				if (hit && isPlayable(hit)) return hit;
+			}
+		}
+		return null;
+	}
+
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
-		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
+		var direct = findDirectPlayable(id);
+		if (direct) return direct;
 		var reel = reelClip(step);
 		if (reel) return reel;
 		var name = step.name;
-		var keys = Object.keys(catalog);
-		var i, entry, viaMap, candidates, c, hit;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (id && (entry.id === id || keys[i] === id)) return entry;
-			if (
-				name &&
-				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
-			)
-				return entry;
-		}
-		viaMap = mappedAlias(id);
-		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
-		if (viaMap) return viaMap;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
-				return entry;
-			if (name && foldHe(entry.he) === foldHe(name)) return entry;
-		}
-		if (!name) return null;
-		candidates = nameCandidates(name);
-		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name) continue;
-			hit = matchPlayableName(candidates[c]);
-			if (hit) return hit;
-		}
-		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name || candidates[c].length < 3) continue;
-			hit = matchCatalog(candidates[c]);
-			if (hit && isPlayable(hit)) return hit;
-		}
-		return null;
+		var exact = findCatalogExactMatch(id, name);
+		if (exact) return exact;
+		var via = findMappedAlias(id, name);
+		if (via) return via;
+		var alias = findCatalogAliasMatch(id, name);
+		if (alias) return alias;
+		return findPlayableCandidate(name);
 	}
 
 	function catalogSrc(file) {
@@ -1549,70 +1600,46 @@
 		return PHASE_LABELS[name] || name;
 	}
 
-	function toPhasesWorkout(d, meta) {
-		meta = meta || {};
-		if (d && Array.isArray(d.phases) && d.phases.length) {
-			return {
-				title: d.title || "אימון " + (d.day || ""),
-				duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
-				participants: 1,
-				equipment: meta.equipment || [],
-				intensity: meta.intensity || "medium",
-				tags: meta.tags || ["program"],
-				phases: d.phases,
-			};
-		}
-		var mainEx = (d.exercises || []).map(function (x) {
-			return {
-				name: heName(x.name),
-				id: x.id || x.name,
-				sets: x.sets != null ? x.sets : null,
-				reps: x.reps != null ? x.reps : null,
-				duration_seconds:
-					x.duration_seconds != null ? x.duration_seconds : null,
-				rest_seconds:
-					x.restSeconds != null
-						? x.restSeconds
-						: x.rest_seconds != null
-							? x.rest_seconds
-							: null,
-				notes: x.notes || null,
-			};
-		});
-		var warm = d.warmUp
-			? [
-					{
-						name: heName(d.warmUp),
-						id: d.warmUp,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		var cool = d.coolDown
-			? [
-					{
-						name: heName(d.coolDown),
-						id: d.coolDown,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		// The Main phase lasts as long as its sets and rests: a beginner's four
-		// 3×8-12 exercises take about 14 minutes and an advanced strength day's
-		// six 4×4-6 with 2-minute rests about 42, so the trainee page and the
-		// print sheet do not promise «45 דקות» for either.
+	function singleWarmCoolExercise(name) {
+		if (!name) return [];
+		return [
+			{
+				name: heName(name),
+				id: name,
+				sets: 1,
+				reps: null,
+				duration_seconds: 180,
+				rest_seconds: null,
+				notes: null,
+			},
+		];
+	}
+
+	function resolveExerciseRestSeconds(x) {
+		if (x.restSeconds != null) return x.restSeconds;
+		if (x.rest_seconds != null) return x.rest_seconds;
+		return null;
+	}
+
+	function normalizeWorkoutExercise(x) {
+		return {
+			name: heName(x.name),
+			id: x.id || x.name,
+			sets: x.sets != null ? x.sets : null,
+			reps: x.reps != null ? x.reps : null,
+			duration_seconds: x.duration_seconds != null ? x.duration_seconds : null,
+			rest_seconds: resolveExerciseRestSeconds(x),
+			notes: x.notes || null,
+		};
+	}
+
+	function buildWorkoutPhases(mainEx, warmUp, coolDown) {
+		var warm = singleWarmCoolExercise(warmUp);
+		var cool = singleWarmCoolExercise(coolDown);
 		var mainSeconds = mainEx.reduce(function (a, ex) {
 			return a + draftExerciseSeconds(ex);
 		}, 0);
-		var phases = [
+		return [
 			{ name: "Warm-up", duration_minutes: 5, exercises: warm },
 			{
 				name: "Main",
@@ -1621,6 +1648,10 @@
 			},
 			{ name: "Cool-down", duration_minutes: 5, exercises: cool },
 		];
+	}
+
+	function buildWorkoutEnvelope(d, phases, meta) {
+		meta = meta || {};
 		return {
 			title: d.title || "אימון " + (d.day || ""),
 			duration_minutes: phasesMinutes(phases),
@@ -1632,10 +1663,30 @@
 		};
 	}
 
+	function toPhasesWorkout(d, meta) {
+		meta = meta || {};
+		if (d && Array.isArray(d.phases) && d.phases.length) {
+			var dur = d.duration_minutes || phasesMinutes(d.phases) || 45;
+			var env = buildWorkoutEnvelope(d, d.phases, meta);
+			env.duration_minutes = dur;
+			return env;
+		}
+		var mainEx = (d.exercises || []).map(normalizeWorkoutExercise);
+		var phases = buildWorkoutPhases(mainEx, d.warmUp, d.coolDown);
+		return buildWorkoutEnvelope(d, phases, meta);
+	}
+
 	function phasesMinutes(phases) {
 		return (phases || []).reduce(function (a, ph) {
 			return a + (Number(ph && ph.duration_minutes) || 0);
 		}, 0);
+	}
+
+	function isCountedSet(set) {
+		if (!set || typeof set !== "object") return false;
+		if (typeof set.reps !== "number" || typeof set.weightKg !== "number")
+			return false;
+		return set.reps > 0 && set.weightKg > 0;
 	}
 
 	function workoutVolume(sets) {
@@ -1644,11 +1695,9 @@
 		var i, set;
 		for (i = 0; i < sets.length; i++) {
 			set = sets[i];
-			if (!set || typeof set !== "object") continue;
-			if (typeof set.reps !== "number" || typeof set.weightKg !== "number")
-				continue;
-			if (!(set.reps > 0) || !(set.weightKg > 0)) continue;
-			total += set.reps * set.weightKg;
+			if (isCountedSet(set)) {
+				total += set.reps * set.weightKg;
+			}
 		}
 		return Math.round(total * 10) / 10;
 	}
@@ -1673,6 +1722,33 @@
 		return new TextDecoder().decode(bytes);
 	}
 
+	function compactExerciseRow(ex) {
+		var row = { n: ex.name };
+		if (ex.id) row.id = ex.id;
+		if (ex.sets != null) row.s = ex.sets;
+		if (ex.reps != null) row.r = ex.reps;
+		if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
+		if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
+		if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
+		return row;
+	}
+
+	function compactGroupPlan(gp) {
+		if (!gp) return null;
+		return {
+			s: gp.stations || 1,
+			p: gp.per_station || 1,
+			h: gp.he || "",
+		};
+	}
+
+	function compactPhase(ph) {
+		return {
+			n: ph.name,
+			e: (ph.exercises || []).map(compactExerciseRow),
+		};
+	}
+
 	function compactPlan(w) {
 		w = w || {};
 		return {
@@ -1681,28 +1757,32 @@
 			i: w.intensity || null,
 			c: w.participants || 1,
 			q: w.equipment || [],
-			g: w.group_plan
-				? {
-						s: w.group_plan.stations || 1,
-						p: w.group_plan.per_station || 1,
-						h: w.group_plan.he || "",
-					}
-				: null,
-			p: (w.phases || []).map(function (ph) {
-				return {
-					n: ph.name,
-					e: (ph.exercises || []).map(function (ex) {
-						var row = { n: ex.name };
-						if (ex.id) row.id = ex.id;
-						if (ex.sets != null) row.s = ex.sets;
-						if (ex.reps != null) row.r = ex.reps;
-						if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
-						if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
-						if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
-						return row;
-					}),
-				};
-			}),
+			g: compactGroupPlan(w.group_plan),
+			p: (w.phases || []).map(compactPhase),
+		};
+	}
+
+	function expandExerciseRow(ex) {
+		return {
+			name: ex.n,
+			id: ex.id || null,
+			sets: ex.s != null ? ex.s : null,
+			reps: ex.r != null ? ex.r : null,
+			duration_seconds: ex.ds != null ? ex.ds : null,
+			rest_seconds: ex.rs != null ? ex.rs : null,
+			notes: ex.no != null && ex.no !== "" ? ex.no : null,
+		};
+	}
+
+	function expandGroupPlan(g) {
+		if (!g) return null;
+		return { stations: g.s || 1, per_station: g.p || 1, he: g.h || "" };
+	}
+
+	function expandPhase(ph) {
+		return {
+			name: ph.n,
+			exercises: (ph.e || []).map(expandExerciseRow),
 		};
 	}
 
@@ -1714,25 +1794,8 @@
 			intensity: c.i || null,
 			participants: c.c || 1,
 			equipment: c.q || [],
-			group_plan: c.g
-				? { stations: c.g.s || 1, per_station: c.g.p || 1, he: c.g.h || "" }
-				: null,
-			phases: (c.p || []).map(function (ph) {
-				return {
-					name: ph.n,
-					exercises: (ph.e || []).map(function (ex) {
-						return {
-							name: ex.n,
-							id: ex.id || null,
-							sets: ex.s != null ? ex.s : null,
-							reps: ex.r != null ? ex.r : null,
-							duration_seconds: ex.ds != null ? ex.ds : null,
-							rest_seconds: ex.rs != null ? ex.rs : null,
-							notes: ex.no != null && ex.no !== "" ? ex.no : null,
-						};
-					}),
-				};
-			}),
+			group_plan: expandGroupPlan(c.g),
+			phases: (c.p || []).map(expandPhase),
 		};
 	}
 
@@ -1856,16 +1919,19 @@
 		);
 	}
 
+	function extractHashToken(raw) {
+		if (raw.indexOf("TH.") === 0) return raw.slice(3);
+		if (raw.indexOf("p=") === 0) return raw.slice(2);
+		return null;
+	}
+
 	function decodeHash(hash) {
 		var raw = String(hash || location.hash || "").replace(/^#/, "");
 		if (!raw) return null;
-		var token = raw;
-		var data;
-		if (raw.indexOf("TH.") === 0) token = raw.slice(3);
-		else if (raw.indexOf("p=") === 0) token = raw.slice(2);
-		else return null;
+		var token = extractHashToken(raw);
+		if (!token) return null;
 		try {
-			data = JSON.parse(b64urlToUtf8(token));
+			var data = JSON.parse(b64urlToUtf8(token));
 			if (!data || !data.p) return null;
 			return {
 				workout: expandPlan(data.p),
@@ -1965,95 +2031,101 @@
 		for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
 		return res;
 	}
-	function qrPenalty(m, size) {
-		var p = 0,
-			x,
-			y,
-			dark = 0,
-			c;
-		function lines(get) {
-			var a, b, run, s, v, pad, k;
-			for (a = 0; a < size; a++) {
+	function countPatternMatches(pad, pat) {
+		var count = 0;
+		var k = pad.indexOf(pat);
+		while (k !== -1) {
+			count++;
+			k = pad.indexOf(pat, k + 1);
+		}
+		return count;
+	}
+
+	function lineRunPenalty(lineStr) {
+		var penalty = 0;
+		var run = 1;
+		var i;
+		for (i = 1; i < lineStr.length; i++) {
+			if (lineStr.charAt(i) === lineStr.charAt(i - 1)) {
+				run++;
+			} else {
+				if (run >= 5) penalty += run - 2;
 				run = 1;
-				s = "";
-				for (b = 0; b < size; b++) {
-					v = get(a, b);
-					s += v ? "1" : "0";
-					if (b > 0 && v === get(a, b - 1)) run++;
-					else {
-						if (run >= 5) p += run - 2;
-						run = 1;
-					}
-				}
-				if (run >= 5) p += run - 2;
-				pad = "0000" + s + "0000";
-				k = -1;
-				k = pad.indexOf("10111010000", k + 1);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("10111010000", k + 1);
-				}
-				k = pad.indexOf("00001011101", 0);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("00001011101", k + 1);
-				}
 			}
 		}
-		lines(function (a, b) {
-			return m[a][b];
-		});
-		lines(function (a, b) {
-			return m[b][a];
-		});
+		if (run >= 5) penalty += run - 2;
+		var pad = "0000" + lineStr + "0000";
+		penalty += countPatternMatches(pad, "10111010000") * 40;
+		penalty += countPatternMatches(pad, "00001011101") * 40;
+		return penalty;
+	}
+
+	function linePenalty(get, size) {
+		var penalty = 0;
+		var a, b, s;
+		for (a = 0; a < size; a++) {
+			s = "";
+			for (b = 0; b < size; b++) {
+				s += get(a, b) ? "1" : "0";
+			}
+			penalty += lineRunPenalty(s);
+		}
+		return penalty;
+	}
+
+	function is2x2SameColor(m, x, y) {
+		var c = m[y][x];
+		return c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1];
+	}
+
+	function count2x2Blocks(m, size) {
+		var count = 0;
+		var y, x;
+		for (y = 0; y < size - 1; y++) {
+			for (x = 0; x < size - 1; x++) {
+				if (is2x2SameColor(m, x, y)) count++;
+			}
+		}
+		return count;
+	}
+
+	function darkRatioPenalty(dark, total) {
+		var diff = Math.abs(dark * 20 - total * 10);
+		return Math.max(0, Math.ceil(diff / total) - 1) * 10;
+	}
+
+	function countDarkModules(m, size) {
+		var count = 0;
+		var y, x;
 		for (y = 0; y < size; y++) {
 			for (x = 0; x < size; x++) {
-				if (m[y][x]) dark++;
-				if (x < size - 1 && y < size - 1) {
-					c = m[y][x];
-					if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1])
-						p += 3;
-				}
+				if (m[y][x]) count++;
 			}
 		}
-		var total = size * size;
-		p +=
-			Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+		return count;
+	}
+
+	function qrPenalty(m, size) {
+		var p = 0;
+		p += linePenalty(function (a, b) {
+			return m[a][b];
+		}, size);
+		p += linePenalty(function (a, b) {
+			return m[b][a];
+		}, size);
+		p += count2x2Blocks(m, size) * 3;
+		var dark = countDarkModules(m, size);
+		p += darkRatioPenalty(dark, size * size);
 		return p;
 	}
 
-	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
-	// is too long for any version.
-	function qrMatrix(text) {
-		var bytes = [];
-		var utf = unescape(encodeURIComponent(String(text || "")));
-		var i,
-			j,
-			pad,
-			byte,
-			dat,
-			ecc,
-			ay,
-			ax,
-			r,
-			vb,
-			on,
-			a,
-			b,
-			right,
-			vert,
-			x,
-			up,
-			y,
-			mk,
-			pen;
-		for (i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
-		var ver = 0,
-			ecl = null;
+	function findQrVersion(bytesLen) {
+		var ver = 0;
+		var ecl = null;
 		["M", "L"].some(function (e) {
 			var v, bits;
 			for (v = 1; v <= 40; v++) {
-				bits = 4 + (v < 10 ? 8 : 16) + bytes.length * 8;
+				bits = 4 + (v < 10 ? 8 : 16) + bytesLen * 8;
 				if (bits <= qrDataCodewords(v, e) * 8) {
 					ver = v;
 					ecl = e;
@@ -2063,6 +2135,10 @@
 			return false;
 		});
 		if (!ver) return null;
+		return { ver: ver, ecl: ecl };
+	}
+
+	function buildQrDataBytes(bytes, ver, ecl) {
 		var cap = qrDataCodewords(ver, ecl) * 8;
 		var bb = [];
 		function put(val, len) {
@@ -2076,22 +2152,28 @@
 		});
 		put(0, Math.min(4, cap - bb.length));
 		put(0, (8 - (bb.length % 8)) % 8);
+		var pad;
 		for (pad = 0xec; bb.length < cap; pad ^= 0xec ^ 0x11) put(pad, 8);
 		var data = [];
+		var i, j, byte;
 		for (i = 0; i < bb.length; i += 8) {
 			byte = 0;
 			for (j = 0; j < 8; j++) byte = (byte << 1) | bb[i + j];
 			data.push(byte);
 		}
-		// Split into blocks, add Reed-Solomon, interleave.
-		var nb = QR_BLOCKS[ecl][ver],
-			eccLen = QR_ECC[ecl][ver];
+		return data;
+	}
+
+	function qrInterleavedWords(ver, ecl, data) {
+		var nb = QR_BLOCKS[ecl][ver];
+		var eccLen = QR_ECC[ecl][ver];
 		var raw = Math.floor(qrRawModules(ver) / 8);
-		var nShort = nb - (raw % nb),
-			shortLen = Math.floor(raw / nb);
-		var div = rsDivisor(eccLen),
-			blocks = [],
-			k = 0;
+		var nShort = nb - (raw % nb);
+		var shortLen = Math.floor(raw / nb);
+		var div = rsDivisor(eccLen);
+		var blocks = [];
+		var k = 0;
+		var i, j, dat, ecc;
 		for (i = 0; i < nb; i++) {
 			dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1));
 			k += dat.length;
@@ -2105,39 +2187,31 @@
 				if (i !== shortLen - eccLen || j >= nShort) words.push(blocks[j][i]);
 			}
 		}
-		var size = ver * 4 + 17,
-			mod = [],
-			fn = [];
-		for (i = 0; i < size; i++) {
-			mod.push(new Array(size).fill(false));
-			fn.push(new Array(size).fill(false));
-		}
-		function setFn(x, y, d) {
-			mod[y][x] = d;
-			fn[y][x] = true;
-		}
-		for (i = 0; i < size; i++) {
-			setFn(6, i, i % 2 === 0);
-			setFn(i, 6, i % 2 === 0);
-		}
-		[
-			[3, 3],
-			[size - 4, 3],
-			[3, size - 4],
-		].forEach(function (c) {
-			var dy, dx, d, xx, yy;
-			for (dy = -4; dy <= 4; dy++) {
-				for (dx = -4; dx <= 4; dx++) {
-					d = Math.max(Math.abs(dx), Math.abs(dy));
-					xx = c[0] + dx;
-					yy = c[1] + dy;
-					if (xx >= 0 && xx < size && yy >= 0 && yy < size)
-						setFn(xx, yy, d !== 2 && d !== 4);
-				}
+		return words;
+	}
+
+	function drawFinderAt(setFn, size, cx, cy) {
+		var dy, dx, d, xx, yy;
+		for (dy = -4; dy <= 4; dy++) {
+			for (dx = -4; dx <= 4; dx++) {
+				d = Math.max(Math.abs(dx), Math.abs(dy));
+				xx = cx + dx;
+				yy = cy + dy;
+				if (xx >= 0 && xx < size && yy >= 0 && yy < size)
+					setFn(xx, yy, d !== 2 && d !== 4);
 			}
-		});
-		var al = qrAlignPositions(ver, size),
-			na = al.length;
+		}
+	}
+
+	function setFinderPatterns(setFn, size) {
+		drawFinderAt(setFn, size, 3, 3);
+		drawFinderAt(setFn, size, size - 4, 3);
+		drawFinderAt(setFn, size, 3, size - 4);
+	}
+
+	function setAlignmentPatterns(setFn, al) {
+		var na = al.length;
+		var i, j, ay, ax;
 		for (i = 0; i < na; i++) {
 			for (j = 0; j < na; j++) {
 				if (
@@ -2156,38 +2230,45 @@
 				}
 			}
 		}
-		function formatBits(mask) {
-			var d = ((ecl === "L" ? 1 : 0) << 3) | mask,
-				r = d,
-				q;
-			for (q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
-			var bits = ((d << 10) | r) ^ 0x5412;
-			function bit(n) {
-				return ((bits >>> n) & 1) !== 0;
-			}
-			for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
-			setFn(8, 7, bit(6));
-			setFn(8, 8, bit(7));
-			setFn(7, 8, bit(8));
-			for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
-			for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
-			for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
-			setFn(8, size - 8, true);
+	}
+
+	function applyFormatBits(setFn, size, ecl, mask) {
+		var d = ((ecl === "L" ? 1 : 0) << 3) | mask;
+		var r = d;
+		var q;
+		for (q = 0; q < 10; q++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+		var bits = ((d << 10) | r) ^ 0x5412;
+		function bit(n) {
+			return ((bits >>> n) & 1) !== 0;
 		}
-		formatBits(0);
-		if (ver >= 7) {
-			r = ver;
-			for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1f25);
-			vb = (ver << 12) | r;
-			for (i = 0; i < 18; i++) {
-				on = ((vb >>> i) & 1) !== 0;
-				a = size - 11 + (i % 3);
-				b = Math.floor(i / 3);
-				setFn(a, b, on);
-				setFn(b, a, on);
-			}
+		for (q = 0; q <= 5; q++) setFn(8, q, bit(q));
+		setFn(8, 7, bit(6));
+		setFn(8, 8, bit(7));
+		setFn(7, 8, bit(8));
+		for (q = 9; q < 15; q++) setFn(14 - q, 8, bit(q));
+		for (q = 0; q < 8; q++) setFn(size - 1 - q, 8, bit(q));
+		for (q = 8; q < 15; q++) setFn(8, size - 15 + q, bit(q));
+		setFn(8, size - 8, true);
+	}
+
+	function applyVersionBits(setFn, size, ver) {
+		if (ver < 7) return;
+		var r = ver;
+		var i, vb, on, a, b;
+		for (i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1f25);
+		vb = (ver << 12) | r;
+		for (i = 0; i < 18; i++) {
+			on = ((vb >>> i) & 1) !== 0;
+			a = size - 11 + (i % 3);
+			b = Math.floor(i / 3);
+			setFn(a, b, on);
+			setFn(b, a, on);
 		}
+	}
+
+	function placeQrDataBits(mod, fn, size, words) {
 		var bi = 0;
+		var right, vert, j, x, up, y;
 		for (right = size - 1; right >= 1; right -= 2) {
 			if (right === 6) right = 5;
 			for (vert = 0; vert < size; vert++) {
@@ -2202,54 +2283,95 @@
 				}
 			}
 		}
-		function applyMask(mask) {
-			var yy, xx, inv;
-			for (yy = 0; yy < size; yy++) {
-				for (xx = 0; xx < size; xx++) {
-					switch (mask) {
-						case 0:
-							inv = (xx + yy) % 2 === 0;
-							break;
-						case 1:
-							inv = yy % 2 === 0;
-							break;
-						case 2:
-							inv = xx % 3 === 0;
-							break;
-						case 3:
-							inv = (xx + yy) % 3 === 0;
-							break;
-						case 4:
-							inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
-							break;
-						case 5:
-							inv = ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
-							break;
-						case 6:
-							inv = (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-							break;
-						default:
-							inv = (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-					}
-					if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
+	}
+
+	function qrMaskCondition(mask, xx, yy) {
+		switch (mask) {
+			case 0:
+				return (xx + yy) % 2 === 0;
+			case 1:
+				return yy % 2 === 0;
+			case 2:
+				return xx % 3 === 0;
+			case 3:
+				return (xx + yy) % 3 === 0;
+			case 4:
+				return (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
+			case 5:
+				return ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
+			case 6:
+				return (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+			default:
+				return (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+		}
+	}
+
+	function toggleQrMask(mod, fn, size, mask) {
+		var yy, xx;
+		for (yy = 0; yy < size; yy++) {
+			for (xx = 0; xx < size; xx++) {
+				if (!fn[yy][xx] && qrMaskCondition(mask, xx, yy)) {
+					mod[yy][xx] = !mod[yy][xx];
 				}
 			}
 		}
-		var best = 0,
-			bestP = Infinity;
+	}
+
+	function chooseBestQrMask(mod, fn, size, ecl, setFn) {
+		var best = 0;
+		var bestP = Infinity;
+		var mk, pen;
 		for (mk = 0; mk < 8; mk++) {
-			applyMask(mk);
-			formatBits(mk);
+			toggleQrMask(mod, fn, size, mk);
+			applyFormatBits(setFn, size, ecl, mk);
 			pen = qrPenalty(mod, size);
 			if (pen < bestP) {
 				bestP = pen;
 				best = mk;
 			}
-			applyMask(mk);
+			toggleQrMask(mod, fn, size, mk);
 		}
-		applyMask(best);
-		formatBits(best);
-		return { version: ver, ecl: ecl, size: size, mask: best, modules: mod };
+		toggleQrMask(mod, fn, size, best);
+		applyFormatBits(setFn, size, ecl, best);
+		return best;
+	}
+
+	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
+	// is too long for any version.
+	function qrMatrix(text) {
+		var bytes = [];
+		var utf = unescape(encodeURIComponent(String(text || "")));
+		var i;
+		for (i = 0; i < utf.length; i++) bytes.push(utf.charCodeAt(i));
+		var verInfo = findQrVersion(bytes.length);
+		if (!verInfo) return null;
+		var ver = verInfo.ver;
+		var ecl = verInfo.ecl;
+		var data = buildQrDataBytes(bytes, ver, ecl);
+		var words = qrInterleavedWords(ver, ecl, data);
+		var size = ver * 4 + 17;
+		var mod = [];
+		var fn = [];
+		for (i = 0; i < size; i++) {
+			mod.push(new Array(size).fill(false));
+			fn.push(new Array(size).fill(false));
+		}
+		function setFn(x, y, d) {
+			mod[y][x] = d;
+			fn[y][x] = true;
+		}
+		for (i = 0; i < size; i++) {
+			setFn(6, i, i % 2 === 0);
+			setFn(i, 6, i % 2 === 0);
+		}
+		setFinderPatterns(setFn, size);
+		var al = qrAlignPositions(ver, size);
+		setAlignmentPatterns(setFn, al);
+		applyFormatBits(setFn, size, ecl, 0);
+		applyVersionBits(setFn, size, ver);
+		placeQrDataBits(mod, fn, size, words);
+		var bestMask = chooseBestQrMask(mod, fn, size, ecl, setFn);
+		return { version: ver, ecl: ecl, size: size, mask: bestMask, modules: mod };
 	}
 
 	// SVG with a 4-module quiet zone, dark on white so phone cameras read it on a dark page.
