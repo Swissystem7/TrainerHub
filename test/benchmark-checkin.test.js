@@ -26,8 +26,12 @@ test('3. compareBiWeeklyBenchmark detects decrease / needs adjustment', () => {
 
 test('4. saveBenchmarkEntry handles storage failure gracefully with try/catch', () => {
   const faultyStorage = {
-    getItem: () => { throw new Error('fail read'); },
-    setItem: () => { throw new Error('fail write'); }
+    getItem: () => {
+      throw new Error('fail read');
+    },
+    setItem: () => {
+      throw new Error('fail write');
+    }
   };
   const ok = BC.saveBenchmarkEntry({ score: 100 }, faultyStorage);
   assert.strictEqual(ok, false);

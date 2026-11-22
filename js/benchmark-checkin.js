@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,9 +6,7 @@
   } else {
     root.THBenchmarkCheckin = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   var STORAGE_KEY = 'trainerhub_benchmarks';
 
   function compareBiWeeklyBenchmark(previousEntry, currentEntry) {
@@ -27,11 +25,12 @@
       trend = 'needs_adjustment';
     }
 
-    var message = trend === 'improving'
-      ? 'יש שיפור חיובי בביצועים לעומת נקודת הביקורת הקודמת.'
-      : (trend === 'needs_adjustment'
-        ? 'זוהתה ירידה קלה בביצועים. מומלץ לבחון עומס או התאוששות.'
-        : 'הביצועים יציבים וללא שינוי משמעותי.');
+    var message =
+      trend === 'improving'
+        ? 'יש שיפור חיובי בביצועים לעומת נקודת הביקורת הקודמת.'
+        : trend === 'needs_adjustment'
+          ? 'זוהתה ירידה קלה בביצועים. מומלץ לבחון עומס או התאוששות.'
+          : 'הביצועים יציבים וללא שינוי משמעותי.';
 
     return {
       trend: trend,
@@ -53,7 +52,7 @@
       list.push(Object.assign({ at: new Date().toISOString() }, entry || {}));
       store.setItem(STORAGE_KEY, JSON.stringify(list));
       return true;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -66,7 +65,7 @@
       if (!raw) return [];
       var parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   }
@@ -78,7 +77,7 @@
     var html = '<h3>מעקב דו-שבועי</h3>';
     if (entries.length >= 2) {
       var comparison = compareBiWeeklyBenchmark(entries[entries.length - 2], entries[entries.length - 1]);
-      html += '<p>' + comparison.message + ' (הפרש: ' + comparison.scoreDiff + ')</p>';
+      html += `<p>${comparison.message} (הפרש: ${comparison.scoreDiff})</p>`;
     } else {
       html += '<p>אין מספיק נתונים להשוואה דו-שבועית.</p>';
     }
@@ -99,4 +98,4 @@
     listBenchmarkEntries: listBenchmarkEntries,
     initBenchmarkUI: initBenchmarkUI
   };
-}));
+});
