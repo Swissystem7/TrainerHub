@@ -80,13 +80,13 @@
   }
 
   function muscleLabels(ids) {
-    return (ids || []).map(function (m) {
+    return ids.map(function (m) {
       return Infer.MUSCLE_LABELS[m] || m;
     }).join(', ');
   }
 
   function eqLabels(ids) {
-    return (ids || []).map(function (e) {
+    return ids.map(function (e) {
       return Infer.EQ_LABELS[e] || e;
     }).join(', ');
   }
@@ -135,7 +135,8 @@
 
   // The Main exercises of a built session, or null when the panel only has a request.
   function mainExercises(workout) {
-    var main = workout && (workout.phases || []).filter(function (ph) { return ph && ph.name === 'Main'; })[0];
+    if (!workout || !Array.isArray(workout.phases)) return null;
+    var main = workout.phases.filter(function (ph) { return ph && ph.name === 'Main'; })[0];
     return main && Array.isArray(main.exercises) ? main.exercises : null;
   }
 
@@ -221,7 +222,8 @@
       evaluate: function (req, workout) {
         var rx = prescription(req);
         var main = mainExercises(workout);
-        var counts = (main || []).map(function (ex) { return Number(ex.sets) || 0; });
+        if (!main) return { value: rxText(rx), source: 'engine' };
+        var counts = main.map(function (ex) { return Number(ex.sets) || 0; });
         var sets = counts.length ? Math.max.apply(null, counts) : 0;
         var fewer = counts.filter(function (s) { return s < sets; }).length;
         if (sets && fewer) {
@@ -298,7 +300,7 @@
       he: def.he,
       detail: def.detail,
       value: out.value,
-      source: SOURCES[out.source] || SOURCES.engine
+      source: SOURCES[out.source]
     };
   }
 
@@ -308,7 +310,7 @@
    */
   function rulesWithSources(input) {
     var req = toRequest(input);
-    var workout = input && typeof input === 'object' && input.workout && typeof input.workout === 'object'
+    var workout = input && input.workout && typeof input.workout === 'object'
       ? input.workout : null;
     var rules = RULE_DEFS.map(function (def) { return evaluateRule(def, req, workout); });
     var seen = {};
@@ -353,7 +355,7 @@
   /** The panel a coach reads before approving the plan. */
   function rulesMarkup(input, opts) {
     opts = opts || {};
-    var result = input && input.rules && Array.isArray(input.rules) ? input : rulesWithSources(input);
+    var result = input && Array.isArray(input.rules) ? input : rulesWithSources(input);
     var title = opts.title || 'הנחות האימון ומקורותיהן';
     var className = opts.className || 'card rules';
     var asked = result.description
@@ -380,4 +382,4 @@
   if (typeof module === 'object' && module.exports) {
     module.exports = api;
   }
-})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
+})(typeof window !== 'undefined' ? window : globalThis);
