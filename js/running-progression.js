@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,12 +6,10 @@
   } else {
     root.THRunningProgression = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   function parseTimeInput(val) {
     if (typeof val === 'number') {
-      return isNaN(val) || val <= 0 ? 14.0 : val;
+      return Number.isNaN(val) || val <= 0 ? 14.0 : val;
     }
     if (typeof val !== 'string') return 14.0;
     var trimmed = val.trim();
@@ -20,18 +18,18 @@
       var parts = trimmed.split(':');
       var m = parseFloat(parts[0]);
       var s = parseFloat(parts[1]);
-      if (isNaN(m) || isNaN(s)) return 14.0;
-      var total = m + (s / 60.0);
+      if (Number.isNaN(m) || Number.isNaN(s)) return 14.0;
+      var total = m + s / 60.0;
       return total > 0 ? total : 14.0;
     }
     var num = parseFloat(trimmed);
-    return !isNaN(num) && num > 0 ? num : 14.0;
+    return !Number.isNaN(num) && num > 0 ? num : 14.0;
   }
 
   function formatPace(minPerKm) {
     var m = Math.floor(minPerKm);
     var s = Math.round((minPerKm - m) * 60);
-    return m + ':' + (s < 10 ? '0' : '') + s;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
 
   function buildSixWeekRunPlan(threeKmMinutes) {
@@ -39,11 +37,11 @@
     var basePaceMinPerKm = mins / 3.0;
     var weeks = [];
     for (var w = 1; w <= 6; w++) {
-      var factor = 1.25 - (w * 0.03);
+      var factor = 1.25 - w * 0.03;
       if (w === 6) factor = 1.15; // taper
-      var paceTempo = Math.round((basePaceMinPerKm * 1.05 * factor) * 100) / 100;
-      var paceInterval = Math.round((basePaceMinPerKm * 0.95 * factor) * 100) / 100;
-      var paceEasy = Math.round((basePaceMinPerKm * 1.15 * factor) * 100) / 100;
+      var paceTempo = Math.round(basePaceMinPerKm * 1.05 * factor * 100) / 100;
+      var paceInterval = Math.round(basePaceMinPerKm * 0.95 * factor * 100) / 100;
+      var paceEasy = Math.round(basePaceMinPerKm * 1.15 * factor * 100) / 100;
 
       weeks.push({
         week: w,
@@ -85,10 +83,14 @@
   function mergeRunDaysWithStrength(runPlan, strengthDays) {
     if (!runPlan || !Array.isArray(runPlan.weeks)) return runPlan;
     var heavyDays = Array.isArray(strengthDays) ? strengthDays : ['יום שלישי', 'יום ראשון'];
-    runPlan.weeks.forEach(function (week) {
+    runPlan.weeks.forEach((week) => {
       if (Array.isArray(week.sessions)) {
-        week.sessions.forEach(function (session) {
-          if (heavyDays.indexOf(session.dayHe) !== -1 && session.typeHe && session.typeHe.indexOf('אינטרוולים') !== -1) {
+        week.sessions.forEach((session) => {
+          if (
+            heavyDays.indexOf(session.dayHe) !== -1 &&
+            session.typeHe &&
+            session.typeHe.indexOf('אינטרוולים') !== -1
+          ) {
             session.dayHe = 'יום רביעי';
             session.noteHe = 'הוזז למניעת עומס עם אימון כוח';
           }
@@ -100,21 +102,21 @@
 
   // Auto-wire UI if running in browser
   if (typeof document !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
       var btn = document.getElementById('generateRunPlanBtn');
       var panel = document.getElementById('runningPlanPanel');
       var slots = document.getElementById('weeklyRunningSlots');
       if (btn && panel) {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', () => {
           var inputEl = document.getElementById('threeKmInput');
           var val = inputEl ? inputEl.value : 13.5;
           var plan = buildSixWeekRunPlan(val);
-          panel.innerHTML = '<pre>' + JSON.stringify(plan, null, 2) + '</pre>';
+          panel.innerHTML = `<pre>${JSON.stringify(plan, null, 2)}</pre>`;
         });
       }
       if (slots) {
         var defaultPlan = buildSixWeekRunPlan(13.5);
-        slots.innerHTML = '<div>תכנית ריצה 6 שבועות: ' + defaultPlan.weeks.length + ' שבועות</div>';
+        slots.innerHTML = `<div>תכנית ריצה 6 שבועות: ${defaultPlan.weeks.length} שבועות</div>`;
       }
     });
   }
@@ -125,4 +127,4 @@
     buildSixWeekRunPlan: buildSixWeekRunPlan,
     mergeRunDaysWithStrength: mergeRunDaysWithStrength
   };
-}));
+});
