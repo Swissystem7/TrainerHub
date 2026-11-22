@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,9 +6,7 @@
   } else {
     root.THPreWorkoutCheckin = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   function evaluatePreWorkoutCheckin(energyLevel, sorenessArea, workout) {
     var adaptedWorkout = workout ? JSON.parse(JSON.stringify(workout)) : { phases: [] };
     var recommendations = [];
@@ -17,10 +15,10 @@
     if (energyNum <= 2) {
       recommendations.push('אנרגיה נמוכה: מומלץ להפחית 20% מהמשקלים או לבצע אימון קל יותר.');
       if (adaptedWorkout && Array.isArray(adaptedWorkout.phases)) {
-        adaptedWorkout.phases.forEach(function (phase) {
+        adaptedWorkout.phases.forEach((phase) => {
           if (Array.isArray(phase.exercises)) {
-            phase.exercises.forEach(function (ex) {
-              if (ex && ex.sets && ex.sets > 1) {
+            phase.exercises.forEach((ex) => {
+              if (ex?.sets && ex.sets > 1) {
                 ex.sets = Math.max(1, ex.sets - 1);
               }
             });
@@ -33,19 +31,36 @@
 
     var soreness = sorenessArea ? String(sorenessArea).trim().toLowerCase() : '';
     if (soreness && soreness !== 'none' && soreness !== 'אין') {
-      recommendations.push('אזור רגיש (' + soreness + '): סומנו תתרגילים רגישים עם המלצת הפחתה או החלפה. במקרה של כאב מתמשך יש לפנות לאיש מקצוע.');
+      recommendations.push(
+        `אזור רגיש (${soreness}): סומנו תתרגילים רגישים עם המלצת הפחתה או החלפה. במקרה של כאב מתמשך יש לפנות לאיש מקצוע.`
+      );
       if (adaptedWorkout && Array.isArray(adaptedWorkout.phases)) {
-        adaptedWorkout.phases.forEach(function (phase) {
+        adaptedWorkout.phases.forEach((phase) => {
           if (Array.isArray(phase.exercises)) {
-            phase.exercises.forEach(function (ex) {
-              if (ex && ex.name) {
+            phase.exercises.forEach((ex) => {
+              if (ex?.name) {
                 var nameLower = String(ex.name).toLowerCase();
-                if (soreness.indexOf('כתף') !== -1 && (nameLower.indexOf('כתף') !== -1 || nameLower.indexOf('לחץ') !== -1 || nameLower.indexOf('press') !== -1)) {
-                  ex.notes = (ex.notes ? ex.notes + ' ' : '') + '[התאמת רגישות כתף: הפחתת עומס או החלפה בתרגיל ללא כאب]';
-                } else if (soreness.indexOf('ברך') !== -1 && (nameLower.indexOf('סקוואט') !== -1 || nameLower.indexOf('לאנץ') !== -1 || nameLower.indexOf('squat') !== -1)) {
-                  ex.notes = (ex.notes ? ex.notes + ' ' : '') + '[התאמת רגישות ברך: הפחתת טווח תנועה או החלפה]';
-                } else if (soreness.indexOf('גב') !== -1 && (nameLower.indexOf('דדליפט') !== -1 || nameLower.indexOf('פלאנק') !== -1 || nameLower.indexOf('deadlift') !== -1)) {
-                  ex.notes = (ex.notes ? ex.notes + ' ' : '') + '[התאמת רגישות גב תחתון: שמירה על ניטרליות או הפחתת עומס]';
+                if (
+                  soreness.indexOf('כתף') !== -1 &&
+                  (nameLower.indexOf('כתף') !== -1 ||
+                    nameLower.indexOf('לחץ') !== -1 ||
+                    nameLower.indexOf('press') !== -1)
+                ) {
+                  ex.notes = `${ex.notes ? `${ex.notes} ` : ''}[התאמת רגישות כתף: הפחתת עומס או החלפה בתרגיל ללא כאب]`;
+                } else if (
+                  soreness.indexOf('ברך') !== -1 &&
+                  (nameLower.indexOf('סקוואט') !== -1 ||
+                    nameLower.indexOf('לאנץ') !== -1 ||
+                    nameLower.indexOf('squat') !== -1)
+                ) {
+                  ex.notes = `${ex.notes ? `${ex.notes} ` : ''}[התאמת רגישות ברך: הפחתת טווח תנועה או החלפה]`;
+                } else if (
+                  soreness.indexOf('גב') !== -1 &&
+                  (nameLower.indexOf('דדליפט') !== -1 ||
+                    nameLower.indexOf('פלאנק') !== -1 ||
+                    nameLower.indexOf('deadlift') !== -1)
+                ) {
+                  ex.notes = `${ex.notes ? `${ex.notes} ` : ''}[התאמת רגישות גב תחתון: שמירה על ניטרליות או הפחתת עומס]`;
                 }
               }
             });
@@ -75,7 +90,7 @@
       list.push(Object.assign({ at: new Date().toISOString() }, record));
       store.setItem('trainerhub_checkins', JSON.stringify(list));
       return true;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -85,7 +100,7 @@
     var panel = document.getElementById('preWorkoutCheckinPanel');
     var btn = document.getElementById('applyCheckinBtn');
     if (panel && btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', () => {
         var energyInput = document.getElementById('checkinEnergyInput');
         var sorenessInput = document.getElementById('checkinSorenessInput');
         var energy = energyInput ? energyInput.value : 5;
@@ -119,4 +134,4 @@
     saveCheckinRecord: saveCheckinRecord,
     initPreWorkoutUI: initPreWorkoutUI
   };
-}));
+});
