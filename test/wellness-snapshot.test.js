@@ -40,8 +40,12 @@ test('TR-AUTO-067: saveWellnessSnapshot handles storage errors gracefully', () =
 
   const mockStore = {
     data: {},
-    setItem(k, v) { this.data[k] = v; },
-    getItem(k) { return this.data[k]; }
+    setItem(k, v) {
+      this.data[k] = v;
+    },
+    getItem(k) {
+      return this.data[k];
+    }
   };
   const ok2 = saveWellnessSnapshot(snap, mockStore);
   assert.equal(ok2, true);

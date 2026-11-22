@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,14 +6,14 @@
   } else {
     root.THWellnessSnapshot = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
+})(typeof self !== 'undefined' ? self : this, () => {
   function buildWellnessSnapshot(avgSleepHours, energyRating) {
     var sleep = Number(avgSleepHours);
-    if (isNaN(sleep) || sleep < 0) sleep = 0;
+    if (Number.isNaN(sleep) || sleep < 0) sleep = 0;
     if (sleep > 14) sleep = 14;
 
     var energy = Number(energyRating);
-    if (isNaN(energy) || energy < 1) energy = 1;
+    if (Number.isNaN(energy) || energy < 1) energy = 1;
     if (energy > 5) energy = 5;
 
     var status = 'steady';
@@ -24,7 +24,8 @@
       recommendation = 'מוכנות מעולה! אפשר לשמור על עומס מלא או לנסות התקדמות קלה בנפח/משקל.';
     } else if (sleep < 6 || energy <= 2) {
       status = 'reduce_load';
-      recommendation = 'זוהה עייפות או חוסר שינה ניכר. מומלץ לבצע פריקה (Deload) או להפחית כ־30%-40% מהסטים באימון הקרוב.';
+      recommendation =
+        'זוהה עייפות או חוסר שינה ניכר. מומלץ לבצע פריקה (Deload) או להפחית כ־30%-40% מהסטים באימון הקרוב.';
     } else {
       status = 'steady';
       recommendation = 'מוכנות בינונית. שימו לב להתאוששות ושמרו על רמת עומס יציבה.';
@@ -47,7 +48,7 @@
     try {
       store.setItem('trainerhub_wellness_weekly', JSON.stringify(snapshot));
       return true;
-    } catch (err) {
+    } catch (_err) {
       return false;
     }
   }
@@ -75,4 +76,4 @@
     saveWellnessSnapshot: saveWellnessSnapshot,
     initWellnessWidget: initWellnessWidget
   };
-}));
+});
