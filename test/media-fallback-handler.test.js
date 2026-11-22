@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const fallbackHandler = require('../js/media-fallback-handler.js');
 
 test('1. יצירת תוכן חלופי לתרגיל תקין', () => {
@@ -24,8 +24,12 @@ test('2. טיפול בתרגיל חסר שדות או null', () => {
 test('3. שמירת דיווח שגיאה ללא כפילות', () => {
   const storeMock = {
     storageMap: {},
-    getItem(k) { return this.storageMap[k] || null; },
-    setItem(k, v) { this.storageMap[k] = v; }
+    getItem(k) {
+      return this.storageMap[k] || null;
+    },
+    setItem(k, v) {
+      this.storageMap[k] = v;
+    }
   };
   const res1 = fallbackHandler.logBrokenMediaReport('ex-101', storeMock);
   assert.equal(res1, true);
@@ -44,8 +48,12 @@ test('3. שמירת דיווח שגיאה ללא כפילות', () => {
 
 test('4. עמידות לשגיאות storage', () => {
   const faultyStore = {
-    getItem() { throw new Error('Storage fail'); },
-    setItem() { throw new Error('Storage fail'); }
+    getItem() {
+      throw new Error('Storage fail');
+    },
+    setItem() {
+      throw new Error('Storage fail');
+    }
   };
   const res = fallbackHandler.logBrokenMediaReport('ex-999', faultyStore);
   assert.equal(res, false);
