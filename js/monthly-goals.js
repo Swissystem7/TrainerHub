@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,9 +6,7 @@
   } else {
     root.THMonthlyGoals = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   var KEY = 'trainerhub_monthly_goal';
 
   function saveMonthlyGoal(goalObj, storage) {
@@ -19,7 +17,7 @@
     try {
       store.setItem(KEY, JSON.stringify(goalObj || {}));
       return true;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -33,13 +31,14 @@
       var val = store.getItem(KEY);
       if (!val) return null;
       return JSON.parse(val);
-    } catch (e) {
+    } catch (_e) {
       return null;
     }
   }
 
   function computeMonthlyGoalProgress(goalObj, completedSessionsOrCount) {
-    var target = goalObj && typeof goalObj.target === 'number' ? goalObj.target : (goalObj && Number(goalObj.target) || 0);
+    var target =
+      goalObj && typeof goalObj.target === 'number' ? goalObj.target : (goalObj && Number(goalObj.target)) || 0;
     if (target <= 0) {
       return { current: 0, target: 0, percent: 0, remaining: 0, completed: true };
     }
@@ -68,4 +67,4 @@
     loadMonthlyGoal: loadMonthlyGoal,
     computeMonthlyGoalProgress: computeMonthlyGoalProgress
   };
-}));
+});

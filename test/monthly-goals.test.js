@@ -10,8 +10,12 @@ global.localStorage = {
     if (k === 'fail') throw new Error('storage error');
     mem[k] = String(v);
   },
-  removeItem: (k) => { delete mem[k]; },
-  get length() { return Object.keys(mem).length; },
+  removeItem: (k) => {
+    delete mem[k];
+  },
+  get length() {
+    return Object.keys(mem).length;
+  },
   key: (i) => Object.keys(mem)[i] ?? null
 };
 
@@ -38,9 +42,14 @@ test('computeMonthlyGoalProgress caps completion at 100% and handles zero/negati
 });
 
 test('saveMonthlyGoal handles storage exceptions gracefully', () => {
-  const ok = MG.saveMonthlyGoal({ target: 20 }, {
-    setItem: () => { throw new Error('fail'); }
-  });
+  const ok = MG.saveMonthlyGoal(
+    { target: 20 },
+    {
+      setItem: () => {
+        throw new Error('fail');
+      }
+    }
+  );
   assert.strictEqual(ok, false);
 
   const ok2 = MG.saveMonthlyGoal({ target: 20 }, global.localStorage);
