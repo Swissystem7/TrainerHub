@@ -238,6 +238,8 @@
 
   <section class="card" id="progression-trends-card" aria-labelledby="progressionTrendsHeading"></section>
 
+  <section class="card" id="journalStreakSummary" role="region" aria-labelledby="journalStreakSummaryHeading"></section>
+
   <section class="card" id="weeklyMuscleBalanceCard" aria-labelledby="weeklyMuscleBalanceHeading"></section>
 
   <section class="card" id="coach-trainees-panel" aria-labelledby="coachTraineesHeading"></section>
@@ -277,6 +279,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/session-tracker.js"></script>
 <script src="./js/journal-storage.js"></script>
+<script src="./js/streak-tracker.js"></script>
 <script src="./js/progression-engine.js"></script>
 <script src="./js/muscle-balance.js"></script>
 <script src="./js/coach-profiles.js"></script>
@@ -690,6 +693,93 @@
     card.appendChild(ul);
   }
 
+  function renderWeeklyStreakSummary(selectedClient) {
+    var card = $('journalStreakSummary');
+    if (!card || typeof document.createElement !== 'function' || typeof card.appendChild !== 'function') return;
+    card.textContent = '';
+
+    var h2 = document.createElement('h2');
+    h2.id = 'journalStreakSummaryHeading';
+    h2.textContent = 'סיכום רצף שבועי ומדד התמדה';
+    card.appendChild(h2);
+
+    var tracker = window.THStreakTracker;
+    if (!tracker || typeof tracker.calculateWeeklyStreak !== 'function') {
+      var msg = document.createElement('p');
+      msg.className = 'honest';
+      msg.textContent = 'מנוע מעקב הרצף אינו זמין כעת.';
+      card.appendChild(msg);
+      return;
+    }
+
+    var c = selectedClient || (typeof insightsClient === 'function' ? insightsClient() : null);
+    var entries = [];
+    var snap = null;
+    if (c) {
+      if (JS && typeof JS.getClientSnapshot === 'function') {
+        snap = JS.getClientSnapshot(c.id);
+        if (snap && Array.isArray(snap.entries)) entries = snap.entries;
+      }
+      if ((!entries || entries.length === 0) && Array.isArray(c.logs)) {
+        entries = c.logs;
+      }
+    }
+    if (!entries || entries.length === 0) {
+      try {
+        var raw = localStorage.getItem('trainerhub_journal_entries');
+        var parsed = raw ? JSON.parse(raw) : null;
+        if (Array.isArray(parsed)) entries = parsed;
+        else if (parsed && Array.isArray(parsed.entries)) entries = parsed.entries;
+      } catch {
+        entries = [];
+      }
+    }
+
+    var d = c && TH && typeof TH.normalizeClientDetails === 'function' ? TH.normalizeClientDetails(c) : null;
+    var target = d && d.days && d.days.length ? d.days.length : 3;
+    var streakInfo = tracker.calculateWeeklyStreak(entries, null, target);
+
+    var statsBox = document.createElement('div');
+    statsBox.className = 'quick-stats';
+
+    var stat1 = document.createElement('div');
+    stat1.className = 'stat';
+    var b1 = document.createElement('b');
+    b1.textContent = String(streakInfo.streak);
+    stat1.appendChild(b1);
+    var label1 = document.createElement('span');
+    label1.textContent = 'שבועות ברצף';
+    stat1.appendChild(label1);
+    statsBox.appendChild(stat1);
+
+    var stat2 = document.createElement('div');
+    stat2.className = 'stat';
+    var b2 = document.createElement('b');
+    b2.textContent = String(streakInfo.complianceRate) + '%';
+    stat2.appendChild(b2);
+    var label2 = document.createElement('span');
+    label2.textContent = 'עמידה שבועית';
+    stat2.appendChild(label2);
+    statsBox.appendChild(stat2);
+
+    var stat3 = document.createElement('div');
+    stat3.className = 'stat';
+    var b3 = document.createElement('b');
+    b3.textContent = String(streakInfo.sessionsThisWeek) + ' / ' + String(streakInfo.targetPerWeek);
+    stat3.appendChild(b3);
+    var label3 = document.createElement('span');
+    label3.textContent = 'אימונים השבוע';
+    stat3.appendChild(label3);
+    statsBox.appendChild(stat3);
+
+    card.appendChild(statsBox);
+
+    var noteP = document.createElement('p');
+    noteP.className = 'honest';
+    noteP.textContent = streakInfo.message;
+    card.appendChild(noteP);
+  }
+
   function renderWeeklyMuscleBalance(selectedClient) {
     var card = $('weeklyMuscleBalanceCard');
     if (!card || typeof document.createElement !== 'function' || typeof card.appendChild !== 'function') return;
@@ -1093,6 +1183,7 @@
     if (prev && clients.some(function (c) { return c.id === prev; })) sel.value = prev;
     var c = insightsClient();
     renderProgressionTrends(c);
+    renderWeeklyStreakSummary(c);
     renderWeeklyMuscleBalance(c);
     updateWeeklySrpeSummary(c);
     $('insights').hidden = !c || !JS;
