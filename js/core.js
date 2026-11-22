@@ -1453,88 +1453,167 @@
 		});
 	}
 
-	function reelClip(step) {
-		var id = step && typeof step.id === "string" ? step.id : "";
-		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
-		var fileId, keys, i, entry;
-		if (!m) return null;
-		fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
-		if (!fileId || !reelDriveIds[fileId]) return null;
-		keys = Object.keys(catalog);
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (
-				entry &&
-				isPlayable(entry) &&
-				(entry.driveId === fileId ||
-					entry.drivePlayId === fileId ||
-					entry.legacyDriveId === fileId)
-			)
-				return entry;
-		}
-		if (!reelEntries[id])
-			reelEntries[id] = {
-				id: id,
-				he: step.name || "",
-				driveId: fileId,
-				source: "drive-reel",
-			};
-		return reelEntries[id];
+	function entryMatchesDriveId(entry, fileId) {
+		if (!entry || !isPlayable(entry)) return false;
+		if (entry.driveId === fileId) return true;
+		if (entry.drivePlayId === fileId) return true;
+		return entry.legacyDriveId === fileId;
 	}
 
-	function findExercise(step) {
-		if (!step) return null;
-		var id = step.id || step.name;
-		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
-		var reel = reelClip(step);
-		if (reel) return reel;
-		var name = step.name;
+	function findCatalogByDriveId(fileId) {
 		var keys = Object.keys(catalog);
-		var i, entry, viaMap, candidates, c, hit;
+		var i, entry;
 		for (i = 0; i < keys.length; i++) {
 			entry = catalog[keys[i]];
-			if (!entry || !isPlayable(entry)) continue;
-			if (id && (entry.id === id || keys[i] === id)) return entry;
-			if (
-				name &&
-				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
-			)
-				return entry;
+			if (entryMatchesDriveId(entry, fileId)) return entry;
 		}
-		viaMap = mappedAlias(id);
-		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
+		return null;
+	}
+
+	function parseReelFileId(step) {
+		var id = step && typeof step.id === "string" ? step.id : "";
+		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
+		if (!m) return null;
+		var fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
+		if (!fileId || !reelDriveIds[fileId]) return null;
+		return { id: id, fileId: fileId };
+	}
+
+	function reelClip(step) {
+		var info = parseReelFileId(step);
+		if (!info) return null;
+		var match = findCatalogByDriveId(info.fileId);
+		if (match) return match;
+		if (!reelEntries[info.id]) {
+			reelEntries[info.id] = {
+				id: info.id,
+				he: step.name || "",
+				driveId: info.fileId,
+				source: "drive-reel",
+			};
+		}
+		return reelEntries[info.id];
+	}
+
+	function directPlayableCatalog(id) {
+		if (!id) return null;
+		var entry = catalog[id];
+		if (!entry) return null;
+		return isPlayable(entry) ? entry : null;
+	}
+
+	function entryMatchesExactId(key, entry, id) {
+		if (!id) return false;
+		if (entry.id === id) return true;
+		return key === id;
+	}
+
+	function entryMatchesExactName(key, entry, name) {
+		if (!name) return false;
+		if (entry.he === name) return true;
+		if (key === name) return true;
+		return HE_NAMES[key] === name;
+	}
+
+	function findExactCatalogEntry(id, name) {
+		var keys = Object.keys(catalog);
+		var i, k, entry;
+		for (i = 0; i < keys.length; i++) {
+			k = keys[i];
+			entry = catalog[k];
+			if (!entry || !isPlayable(entry)) continue;
+			if (entryMatchesExactId(k, entry, id)) return entry;
+			if (entryMatchesExactName(k, entry, name)) return entry;
+		}
+		return null;
+	}
+
+	function findMappedAlias(id, name) {
+		var viaMap = mappedAlias(id);
 		if (viaMap) return viaMap;
+		if (!name) return null;
+		if (name === id) return null;
+		return mappedAlias(name);
+	}
+
+	function entryMatchesAliasOrFold(entry, id, name) {
+		if (aliasListHas(entry, id)) return true;
+		if (name) {
+			if (aliasListHas(entry, name)) return true;
+			if (foldHe(entry.he) === foldHe(name)) return true;
+		}
+		return false;
+	}
+
+	function findFuzzyCatalogEntry(id, name) {
+		var keys = Object.keys(catalog);
+		var i, entry;
 		for (i = 0; i < keys.length; i++) {
 			entry = catalog[keys[i]];
 			if (!entry || !isPlayable(entry)) continue;
-			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
-				return entry;
-			if (name && foldHe(entry.he) === foldHe(name)) return entry;
+			if (entryMatchesAliasOrFold(entry, id, name)) return entry;
 		}
-		if (!name) return null;
-		candidates = nameCandidates(name);
+		return null;
+	}
+
+	function matchCandidatePlayable(candidates, name) {
+		var c, cand, hit;
 		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name) continue;
-			hit = matchPlayableName(candidates[c]);
+			cand = candidates[c];
+			if (cand === name) continue;
+			hit = matchPlayableName(cand);
 			if (hit) return hit;
 		}
+		return null;
+	}
+
+	function matchCandidateCatalog(candidates, name) {
+		var c, cand, hit;
 		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name || candidates[c].length < 3) continue;
-			hit = matchCatalog(candidates[c]);
+			cand = candidates[c];
+			if (cand === name) continue;
+			if (cand.length < 3) continue;
+			hit = matchCatalog(cand);
 			if (hit && isPlayable(hit)) return hit;
 		}
 		return null;
 	}
 
+	function findCandidateMatch(name) {
+		if (!name) return null;
+		var candidates = nameCandidates(name);
+		var hit = matchCandidatePlayable(candidates, name);
+		if (hit) return hit;
+		return matchCandidateCatalog(candidates, name);
+	}
+
+	function findExercise(step) {
+		if (!step) return null;
+		var id = step.id || step.name;
+		var direct = directPlayableCatalog(id);
+		if (direct) return direct;
+		var reel = reelClip(step);
+		if (reel) return reel;
+		var name = step.name;
+		var exact = findExactCatalogEntry(id, name);
+		if (exact) return exact;
+		var alias = findMappedAlias(id, name);
+		if (alias) return alias;
+		var fuzzy = findFuzzyCatalogEntry(id, name);
+		if (fuzzy) return fuzzy;
+		return findCandidateMatch(name);
+	}
+
+	function isExplicitFilePath(file) {
+		if (file.indexOf("../") === 0) return true;
+		if (file.indexOf("./") === 0) return true;
+		return file.charAt(0) === "/";
+	}
+
 	function catalogSrc(file) {
 		if (!file) return "";
 		if (/^https?:\/\//i.test(file)) return file;
-		if (
-			file.indexOf("../") === 0 ||
-			file.indexOf("./") === 0 ||
-			file.charAt(0) === "/"
-		)
-			return file;
+		if (isExplicitFilePath(file)) return file;
 		var name = String(file).replace(/^videos\//, "");
 		var encoded = name
 			.split("/")
@@ -1549,70 +1628,47 @@
 		return PHASE_LABELS[name] || name;
 	}
 
-	function toPhasesWorkout(d, meta) {
-		meta = meta || {};
-		if (d && Array.isArray(d.phases) && d.phases.length) {
-			return {
-				title: d.title || "אימון " + (d.day || ""),
-				duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
-				participants: 1,
-				equipment: meta.equipment || [],
-				intensity: meta.intensity || "medium",
-				tags: meta.tags || ["program"],
-				phases: d.phases,
-			};
-		}
-		var mainEx = (d.exercises || []).map(function (x) {
-			return {
-				name: heName(x.name),
-				id: x.id || x.name,
-				sets: x.sets != null ? x.sets : null,
-				reps: x.reps != null ? x.reps : null,
-				duration_seconds:
-					x.duration_seconds != null ? x.duration_seconds : null,
-				rest_seconds:
-					x.restSeconds != null
-						? x.restSeconds
-						: x.rest_seconds != null
-							? x.rest_seconds
-							: null,
-				notes: x.notes || null,
-			};
-		});
-		var warm = d.warmUp
-			? [
-					{
-						name: heName(d.warmUp),
-						id: d.warmUp,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		var cool = d.coolDown
-			? [
-					{
-						name: heName(d.coolDown),
-						id: d.coolDown,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		// The Main phase lasts as long as its sets and rests: a beginner's four
-		// 3×8-12 exercises take about 14 minutes and an advanced strength day's
-		// six 4×4-6 with 2-minute rests about 42, so the trainee page and the
-		// print sheet do not promise «45 דקות» for either.
+	function resolveRestSeconds(x) {
+		if (x.restSeconds != null) return x.restSeconds;
+		if (x.rest_seconds != null) return x.rest_seconds;
+		return null;
+	}
+
+	function mapMainExercise(x) {
+		return {
+			name: heName(x.name),
+			id: x.id || x.name,
+			sets: x.sets != null ? x.sets : null,
+			reps: x.reps != null ? x.reps : null,
+			duration_seconds: x.duration_seconds != null ? x.duration_seconds : null,
+			rest_seconds: resolveRestSeconds(x),
+			notes: x.notes || null,
+		};
+	}
+
+	function createBookendExercise(name) {
+		if (!name) return [];
+		return [
+			{
+				name: heName(name),
+				id: name,
+				sets: 1,
+				reps: null,
+				duration_seconds: 180,
+				rest_seconds: null,
+				notes: null,
+			},
+		];
+	}
+
+	function buildWorkoutPhases(d) {
+		var mainEx = (d.exercises || []).map(mapMainExercise);
+		var warm = createBookendExercise(d.warmUp);
+		var cool = createBookendExercise(d.coolDown);
 		var mainSeconds = mainEx.reduce(function (a, ex) {
 			return a + draftExerciseSeconds(ex);
 		}, 0);
-		var phases = [
+		return [
 			{ name: "Warm-up", duration_minutes: 5, exercises: warm },
 			{
 				name: "Main",
@@ -1621,13 +1677,45 @@
 			},
 			{ name: "Cool-down", duration_minutes: 5, exercises: cool },
 		];
+	}
+
+	function workoutTitle(d) {
+		if (d.title) return d.title;
+		return "אימון " + (d.day || "");
+	}
+
+	function hasNonEmptyPhases(d) {
+		if (!d) return false;
+		if (!Array.isArray(d.phases)) return false;
+		return d.phases.length > 0;
+	}
+
+	function toPhasesWorkout(d, meta) {
+		meta = meta || {};
+		d = d || {};
+		var equipment = meta.equipment || [];
+		var intensity = meta.intensity || "medium";
+		var tags = meta.tags || ["program"];
+		if (hasNonEmptyPhases(d)) {
+			var dur = d.duration_minutes || phasesMinutes(d.phases) || 45;
+			return {
+				title: workoutTitle(d),
+				duration_minutes: dur,
+				participants: 1,
+				equipment: equipment,
+				intensity: intensity,
+				tags: tags,
+				phases: d.phases,
+			};
+		}
+		var phases = buildWorkoutPhases(d);
 		return {
-			title: d.title || "אימון " + (d.day || ""),
+			title: workoutTitle(d),
 			duration_minutes: phasesMinutes(phases),
 			participants: 1,
-			equipment: meta.equipment || [],
-			intensity: meta.intensity || "medium",
-			tags: meta.tags || ["program"],
+			equipment: equipment,
+			intensity: intensity,
+			tags: tags,
 			phases: phases,
 		};
 	}
@@ -1638,17 +1726,20 @@
 		}, 0);
 	}
 
+	function setVolume(set) {
+		if (!set || typeof set !== "object") return 0;
+		if (typeof set.reps !== "number") return 0;
+		if (typeof set.weightKg !== "number") return 0;
+		if (set.reps <= 0 || set.weightKg <= 0) return 0;
+		return set.reps * set.weightKg;
+	}
+
 	function workoutVolume(sets) {
 		if (!Array.isArray(sets)) return 0;
 		var total = 0;
-		var i, set;
+		var i;
 		for (i = 0; i < sets.length; i++) {
-			set = sets[i];
-			if (!set || typeof set !== "object") continue;
-			if (typeof set.reps !== "number" || typeof set.weightKg !== "number")
-				continue;
-			if (!(set.reps > 0) || !(set.weightKg > 0)) continue;
-			total += set.reps * set.weightKg;
+			total += setVolume(sets[i]);
 		}
 		return Math.round(total * 10) / 10;
 	}
@@ -1673,6 +1764,33 @@
 		return new TextDecoder().decode(bytes);
 	}
 
+	function compactGroupPlan(g) {
+		if (!g) return null;
+		return {
+			s: g.stations || 1,
+			p: g.per_station || 1,
+			h: g.he || "",
+		};
+	}
+
+	function compactExercise(ex) {
+		var row = { n: ex.name };
+		if (ex.id) row.id = ex.id;
+		if (ex.sets != null) row.s = ex.sets;
+		if (ex.reps != null) row.r = ex.reps;
+		if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
+		if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
+		if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
+		return row;
+	}
+
+	function compactPhase(ph) {
+		return {
+			n: ph.name,
+			e: (ph.exercises || []).map(compactExercise),
+		};
+	}
+
 	function compactPlan(w) {
 		w = w || {};
 		return {
@@ -1681,28 +1799,40 @@
 			i: w.intensity || null,
 			c: w.participants || 1,
 			q: w.equipment || [],
-			g: w.group_plan
-				? {
-						s: w.group_plan.stations || 1,
-						p: w.group_plan.per_station || 1,
-						h: w.group_plan.he || "",
-					}
-				: null,
-			p: (w.phases || []).map(function (ph) {
-				return {
-					n: ph.name,
-					e: (ph.exercises || []).map(function (ex) {
-						var row = { n: ex.name };
-						if (ex.id) row.id = ex.id;
-						if (ex.sets != null) row.s = ex.sets;
-						if (ex.reps != null) row.r = ex.reps;
-						if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
-						if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
-						if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
-						return row;
-					}),
-				};
-			}),
+			g: compactGroupPlan(w.group_plan),
+			p: (w.phases || []).map(compactPhase),
+		};
+	}
+
+	function expandGroupPlan(g) {
+		if (!g) return null;
+		return {
+			stations: g.s || 1,
+			per_station: g.p || 1,
+			he: g.h || "",
+		};
+	}
+
+	function expandExercise(ex) {
+		var notes = null;
+		if (ex.no != null && ex.no !== "") {
+			notes = ex.no;
+		}
+		return {
+			name: ex.n,
+			id: ex.id || null,
+			sets: ex.s != null ? ex.s : null,
+			reps: ex.r != null ? ex.r : null,
+			duration_seconds: ex.ds != null ? ex.ds : null,
+			rest_seconds: ex.rs != null ? ex.rs : null,
+			notes: notes,
+		};
+	}
+
+	function expandPhase(ph) {
+		return {
+			name: ph.n,
+			exercises: (ph.e || []).map(expandExercise),
 		};
 	}
 
@@ -1714,25 +1844,8 @@
 			intensity: c.i || null,
 			participants: c.c || 1,
 			equipment: c.q || [],
-			group_plan: c.g
-				? { stations: c.g.s || 1, per_station: c.g.p || 1, he: c.g.h || "" }
-				: null,
-			phases: (c.p || []).map(function (ph) {
-				return {
-					name: ph.n,
-					exercises: (ph.e || []).map(function (ex) {
-						return {
-							name: ex.n,
-							id: ex.id || null,
-							sets: ex.s != null ? ex.s : null,
-							reps: ex.r != null ? ex.r : null,
-							duration_seconds: ex.ds != null ? ex.ds : null,
-							rest_seconds: ex.rs != null ? ex.rs : null,
-							notes: ex.no != null && ex.no !== "" ? ex.no : null,
-						};
-					}),
-				};
-			}),
+			group_plan: expandGroupPlan(c.g),
+			phases: (c.p || []).map(expandPhase),
 		};
 	}
 
@@ -1818,22 +1931,30 @@
 	// A box left by an earlier refused copy is removed either way: after a later
 	// successful copy it would still show the old link (e.g. the plan before the
 	// dropdown changed) as if it were the one to send.
+	function removePreviousManualCopy(anchor) {
+		if (!anchor || !anchor.parentNode) return;
+		var host = anchor.parentNode;
+		if (typeof host.querySelector !== "function") return;
+		var prev = host.querySelector(".th-manual-copy");
+		if (prev && prev.parentNode) {
+			prev.parentNode.removeChild(prev);
+		}
+	}
+
+	function insertManualCopy(anchor, text, position) {
+		if (anchor && typeof anchor.insertAdjacentHTML === "function") {
+			anchor.insertAdjacentHTML(position || "afterend", manualCopyMarkup(text));
+		}
+	}
+
 	function copyOrShow(text, anchor, onOk, position) {
 		return copyText(text).then(function (r) {
-			var host = anchor && anchor.parentNode;
-			var prev =
-				host && host.querySelector && host.querySelector(".th-manual-copy");
-			if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+			removePreviousManualCopy(anchor);
 			if (r.ok) {
 				if (onOk) onOk();
 				return r;
 			}
-			if (anchor && anchor.insertAdjacentHTML) {
-				anchor.insertAdjacentHTML(
-					position || "afterend",
-					manualCopyMarkup(text),
-				);
-			}
+			insertManualCopy(anchor, text, position);
 			return r;
 		});
 	}
@@ -1856,16 +1977,15 @@
 		);
 	}
 
-	function decodeHash(hash) {
-		var raw = String(hash || location.hash || "").replace(/^#/, "");
-		if (!raw) return null;
-		var token = raw;
-		var data;
-		if (raw.indexOf("TH.") === 0) token = raw.slice(3);
-		else if (raw.indexOf("p=") === 0) token = raw.slice(2);
-		else return null;
+	function extractHashToken(raw) {
+		if (raw.indexOf("TH.") === 0) return raw.slice(3);
+		if (raw.indexOf("p=") === 0) return raw.slice(2);
+		return null;
+	}
+
+	function parseHashPayload(token) {
 		try {
-			data = JSON.parse(b64urlToUtf8(token));
+			var data = JSON.parse(b64urlToUtf8(token));
 			if (!data || !data.p) return null;
 			return {
 				workout: expandPlan(data.p),
@@ -1876,6 +1996,14 @@
 		} catch (e) {
 			return null;
 		}
+	}
+
+	function decodeHash(hash) {
+		var raw = String(hash || location.hash || "").replace(/^#/, "");
+		if (!raw) return null;
+		var token = extractHashToken(raw);
+		if (!token) return null;
+		return parseHashPayload(token);
 	}
 
 	// ---- QR code (self-written, no library, no network) ----------------------
@@ -1965,62 +2093,103 @@
 		for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
 		return res;
 	}
-	function qrPenalty(m, size) {
-		var p = 0,
-			x,
-			y,
-			dark = 0,
-			c;
-		function lines(get) {
-			var a, b, run, s, v, pad, k;
-			for (a = 0; a < size; a++) {
-				run = 1;
-				s = "";
-				for (b = 0; b < size; b++) {
-					v = get(a, b);
-					s += v ? "1" : "0";
-					if (b > 0 && v === get(a, b - 1)) run++;
-					else {
-						if (run >= 5) p += run - 2;
-						run = 1;
-					}
-				}
-				if (run >= 5) p += run - 2;
-				pad = "0000" + s + "0000";
-				k = -1;
-				k = pad.indexOf("10111010000", k + 1);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("10111010000", k + 1);
-				}
-				k = pad.indexOf("00001011101", 0);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("00001011101", k + 1);
+	function countPatternOccurrences(str, pat) {
+		var count = 0;
+		var k = str.indexOf(pat, 0);
+		while (k !== -1) {
+			count++;
+			k = str.indexOf(pat, k + 1);
+		}
+		return count;
+	}
+
+	function lineRunAndPatternPenalty(size, get) {
+		var p = 0;
+		var a, b, run, s, v, pad;
+		for (a = 0; a < size; a++) {
+			run = 1;
+			s = "";
+			for (b = 0; b < size; b++) {
+				v = get(a, b);
+				s += v ? "1" : "0";
+				if (b > 0 && v === get(a, b - 1)) {
+					run++;
+				} else {
+					if (run >= 5) p += run - 2;
+					run = 1;
 				}
 			}
+			if (run >= 5) p += run - 2;
+			pad = "0000" + s + "0000";
+			p += 40 * countPatternOccurrences(pad, "10111010000");
+			p += 40 * countPatternOccurrences(pad, "00001011101");
 		}
-		lines(function (a, b) {
-			return m[a][b];
-		});
-		lines(function (a, b) {
-			return m[b][a];
-		});
+		return p;
+	}
+
+	function is2x2BlockUniform(m, x, y) {
+		var c = m[y][x];
+		if (c !== m[y][x + 1]) return false;
+		if (c !== m[y + 1][x]) return false;
+		return c === m[y + 1][x + 1];
+	}
+
+	function qrBlockAndDarkPenalty(m, size) {
+		var p = 0;
+		var dark = 0;
+		var x, y;
 		for (y = 0; y < size; y++) {
 			for (x = 0; x < size; x++) {
 				if (m[y][x]) dark++;
 				if (x < size - 1 && y < size - 1) {
-					c = m[y][x];
-					if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1])
-						p += 3;
+					if (is2x2BlockUniform(m, x, y)) p += 3;
 				}
 			}
 		}
 		var total = size * size;
-		p +=
-			Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+		var balance = Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1;
+		p += Math.max(0, balance) * 10;
 		return p;
 	}
+
+	function qrPenalty(m, size) {
+		var p = 0;
+		p += lineRunAndPatternPenalty(size, function (a, b) {
+			return m[a][b];
+		});
+		p += lineRunAndPatternPenalty(size, function (a, b) {
+			return m[b][a];
+		});
+		p += qrBlockAndDarkPenalty(m, size);
+		return p;
+	}
+
+	var QR_MASKS = [
+		function (x, y) {
+			return (x + y) % 2 === 0;
+		},
+		function (x, y) {
+			return y % 2 === 0;
+		},
+		function (x, y) {
+			return x % 3 === 0;
+		},
+		function (x, y) {
+			return (x + y) % 3 === 0;
+		},
+		function (x, y) {
+			return (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0;
+		},
+		function (x, y) {
+			return ((x * y) % 2) + ((x * y) % 3) === 0;
+		},
+		function (x, y) {
+			return (((x * y) % 2) + ((x * y) % 3)) % 2 === 0;
+		},
+		function (x, y) {
+			return (((x + y) % 2) + ((x * y) % 3)) % 2 === 0;
+		},
+	];
 
 	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
 	// is too long for any version.
@@ -2203,35 +2372,13 @@
 			}
 		}
 		function applyMask(mask) {
-			var yy, xx, inv;
+			var maskFn = QR_MASKS[mask];
+			var yy, xx;
 			for (yy = 0; yy < size; yy++) {
 				for (xx = 0; xx < size; xx++) {
-					switch (mask) {
-						case 0:
-							inv = (xx + yy) % 2 === 0;
-							break;
-						case 1:
-							inv = yy % 2 === 0;
-							break;
-						case 2:
-							inv = xx % 3 === 0;
-							break;
-						case 3:
-							inv = (xx + yy) % 3 === 0;
-							break;
-						case 4:
-							inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
-							break;
-						case 5:
-							inv = ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
-							break;
-						case 6:
-							inv = (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-							break;
-						default:
-							inv = (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+					if (!fn[yy][xx] && maskFn(xx, yy)) {
+						mod[yy][xx] = !mod[yy][xx];
 					}
-					if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
 				}
 			}
 		}
@@ -2298,24 +2445,29 @@
 		);
 	}
 
-	function encodeResult(result) {
-		result = result || {};
-		var payload = {
+	function resultNumber(v, fallback) {
+		return v != null ? v : fallback;
+	}
+
+	function buildResultPayload(res) {
+		return {
 			v: 1,
-			n: result.name || "",
-			t: result.title || "",
-			at: result.doneAt || new Date().toISOString(),
-			m: result.minutes != null ? result.minutes : 0,
-			e: result.exercises != null ? result.exercises : 0,
-			s: result.sets != null ? result.sets : 0,
-			sk: result.skipped != null ? result.skipped : 0,
-			tid: result.tid || "",
-			rpe: result.rpe != null ? result.rpe : null,
-			pl: result.plan || null,
+			n: res.name || "",
+			t: res.title || "",
+			at: res.doneAt || new Date().toISOString(),
+			m: resultNumber(res.minutes, 0),
+			e: resultNumber(res.exercises, 0),
+			s: resultNumber(res.sets, 0),
+			sk: resultNumber(res.skipped, 0),
+			tid: res.tid || "",
+			rpe: resultNumber(res.rpe, null),
+			pl: res.plan || null,
 		};
-		// Optional per-exercise detail, added later. Old readers ignore «x», and a
-		// code without it decodes to an empty log, so old and new codes both import.
-		var x = compactExerciseLog(result.log);
+	}
+
+	function encodeResult(result) {
+		var payload = buildResultPayload(result || {});
+		var x = compactExerciseLog(result && result.log);
 		if (x.length) payload.x = x;
 		return "TH1." + utf8ToB64url(JSON.stringify(payload));
 	}
