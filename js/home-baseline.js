@@ -1,18 +1,16 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
     root.THHomeBaseline = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   function evaluateHomeBaseline(pushups, plankSeconds, squats60s) {
     var p = Number(pushups);
     var pl = Number(plankSeconds);
     var s = Number(squats60s);
 
-    if (isNaN(p) || isNaN(pl) || isNaN(s) || p < 0 || pl < 0 || s < 0) {
+    if (Number.isNaN(p) || Number.isNaN(pl) || Number.isNaN(s) || p < 0 || pl < 0 || s < 0) {
       return {
         level: 'beginner',
         levelHe: 'מתחילים',
@@ -55,12 +53,15 @@
       return false;
     }
     try {
-      store.setItem('trainerhub_home_baseline', JSON.stringify({
-        result: result,
-        savedAt: new Date().toISOString()
-      }));
+      store.setItem(
+        'trainerhub_home_baseline',
+        JSON.stringify({
+          result: result,
+          savedAt: new Date().toISOString()
+        })
+      );
       return true;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
@@ -69,4 +70,4 @@
     evaluateHomeBaseline: evaluateHomeBaseline,
     saveBaselineResult: saveBaselineResult
   };
-}));
+});

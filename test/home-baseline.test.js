@@ -1,5 +1,3 @@
-'use strict';
-
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -10,36 +8,38 @@ const root = path.join(__dirname, '..');
 const reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
 const exercisesHtml = fs.readFileSync(path.join(root, 'exercises.html'), 'utf8');
 
-test('home baseline evaluates beginner level correctly', function () {
+test('home baseline evaluates beginner level correctly', () => {
   const res = evaluateHomeBaseline(5, 20, 15);
   assert.equal(res.level, 'beginner');
   assert.equal(res.levelHe, 'מתחילים');
 });
 
-test('home baseline evaluates intermediate level correctly', function () {
+test('home baseline evaluates intermediate level correctly', () => {
   const res = evaluateHomeBaseline(20, 60, 35);
   assert.equal(res.level, 'intermediate');
   assert.equal(res.levelHe, 'בינוני');
 });
 
-test('home baseline evaluates advanced level correctly', function () {
+test('home baseline evaluates advanced level correctly', () => {
   const res = evaluateHomeBaseline(35, 120, 50);
   assert.equal(res.level, 'advanced');
   assert.equal(res.levelHe, 'מתקדמים');
 });
 
-test('home baseline handles invalid inputs, negative numbers, NaN, and storage failure gracefully', function () {
+test('home baseline handles invalid inputs, negative numbers, NaN, and storage failure gracefully', () => {
   const resNeg = evaluateHomeBaseline(-5, NaN, null);
   assert.equal(resNeg.level, 'beginner');
 
   const throwingStorage = {
-    setItem: () => { throw new Error('Quota exceeded'); }
+    setItem: () => {
+      throw new Error('Quota exceeded');
+    }
   };
   const saved = saveBaselineResult({ level: 'beginner' }, throwingStorage);
   assert.equal(saved, false);
 });
 
-test('reserves and exercises html contain home baseline panel, buttons, and explicit labels', function () {
+test('reserves and exercises html contain home baseline panel, buttons, and explicit labels', () => {
   assert.match(reservesHtml, /id="homeBaselinePanel"/);
   assert.match(reservesHtml, /id="calcHomeBaselineBtn"/);
   assert.match(reservesHtml, /for="hbPushups"/);
