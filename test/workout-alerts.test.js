@@ -1,5 +1,3 @@
-'use strict';
-
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -7,8 +5,8 @@ const path = require('node:path');
 const Alerts = require('../js/workout-alerts.js');
 
 const root = path.join(__dirname, '..');
-const workoutHtml = fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8');
-const reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
+const _workoutHtml = fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8');
+const _reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
 
 test('triggerRestCompleteAlert triggers vibration when available', () => {
   let vibratedPattern = null;
@@ -68,11 +66,13 @@ test('saveAlertPreferences handles storage errors safely', () => {
 
   const workingStore = {
     store: {},
-    setItem(k, v) { this.store[k] = v; }
+    setItem(k, v) {
+      this.store[k] = v;
+    }
   };
   const ok2 = Alerts.saveAlertPreferences({ alert: true }, workingStore);
   assert.equal(ok2, true);
-  assert.match(workingStore.store['trainerhub_alert_prefs'], /alert/);
+  assert.match(workingStore.store.trainerhub_alert_prefs, /alert/);
 });
 
 test('loadAlertPreferences handles missing or invalid storage safely', () => {
@@ -125,17 +125,21 @@ test('initWorkoutAlertsUI sets toggle state and adds event listener when element
   };
 
   const workingStore = {
-    store: { 'trainerhub_alert_prefs': JSON.stringify({ enabled: false }) },
-    getItem(k) { return this.store[k]; },
-    setItem(k, v) { this.store[k] = v; }
+    store: { trainerhub_alert_prefs: JSON.stringify({ enabled: false }) },
+    getItem(k) {
+      return this.store[k];
+    },
+    setItem(k, v) {
+      this.store[k] = v;
+    }
   };
 
   Alerts.initWorkoutAlertsUI(workingStore, mockDoc);
   assert.equal(mockToggle.checked, false);
   assert.equal(addedListener, true);
   assert.equal(typeof changeListener, 'function');
-  
+
   mockToggle.checked = true;
   changeListener();
-  assert.match(workingStore.store['trainerhub_alert_prefs'], /"enabled":true/);
+  assert.match(workingStore.store.trainerhub_alert_prefs, /"enabled":true/);
 });

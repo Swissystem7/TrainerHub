@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,13 +6,11 @@
   } else {
     root.THWorkoutAlerts = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   function prefersReducedMotion(win) {
     try {
       const w = win || (typeof window !== 'undefined' ? window : null);
-      if (!w || !w.matchMedia) return false;
+      if (!w?.matchMedia) return false;
       return w.matchMedia('(prefers-reduced-motion: reduce)').matches;
     } catch (_err) {
       return false;
@@ -21,8 +19,8 @@
 
   function triggerRestCompleteAlert(options, env) {
     const opts = options || {};
-    const win = (env && env.window) || (typeof window !== 'undefined' ? window : null);
-    const nav = (env && env.navigator) || (typeof navigator !== 'undefined' ? navigator : null);
+    const win = env?.window || (typeof window !== 'undefined' ? window : null);
+    const nav = env?.navigator || (typeof navigator !== 'undefined' ? navigator : null);
 
     if (opts.enabled === false) return { triggered: false, reason: 'disabled' };
     if (prefersReducedMotion(win)) return { triggered: false, reason: 'reduced-motion' };
@@ -119,4 +117,4 @@
     prefersReducedMotion,
     initWorkoutAlertsUI
   };
-}));
+});
