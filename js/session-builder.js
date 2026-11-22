@@ -625,14 +625,14 @@
 		"אין במאגר אף סרטון לשילוב הזה של שריר וציוד ברמה הזו, ולכן הוא לא מוצע. אפשר לבחור ציוד אחר או קבוצת שריר אחרת.";
 
 	function isNoReelCombo(req) {
-		var eq = (req && req.equipment) || [];
-		var muscles = (req && req.muscles) || [];
+		var eq = (req?.equipment) || [];
+		var muscles = (req?.muscles) || [];
 		if (eq.length !== 1 || !muscles.length) return false;
 		var level = req.level || "";
 		return muscles.every(
 			(m) =>
-				NO_REEL_SET[m + "|" + eq[0] + "|*"] ||
-				(level && NO_REEL_SET[m + "|" + eq[0] + "|" + level]),
+				NO_REEL_SET[`${m}|${eq[0]}|*`] ||
+				(level && NO_REEL_SET[`${m}|${eq[0]}|${level}`]),
 		);
 	}
 
@@ -718,7 +718,7 @@
 						? opts.profile.targetRegion[0]
 						: opts.profile.targetRegion))) ||
 			null;
-		var profileGoal = (opts.profile && opts.profile.goal) || null;
+		var profileGoal = (opts.profile?.goal) || null;
 		var effectiveFocus = profileFocus || req.focus || null;
 		var effectiveGoal = profileGoal || req.goal || null;
 
@@ -922,7 +922,7 @@
 
 	// prescription + wantedCount are exported so the rules panel can quote the
 	// numbers this engine actually runs instead of keeping a second copy of them.
-	var _mp = (typeof require === 'function') ? (() => { try { return require('./movement-patterns'); } catch (e) { return null; } })() : (typeof MovementPatterns !== 'undefined' ? MovementPatterns : null);
+	var _mp = (typeof require === 'function') ? (() => { try { return require('./movement-patterns'); } catch (_e) { return null; } })() : (typeof MovementPatterns !== 'undefined' ? MovementPatterns : null);
 
 	function classifyWorkoutMovementPatterns(workout) {
 		if (!workout || !Array.isArray(workout.phases)) return workout;
@@ -939,9 +939,9 @@
 	}
 
 	var api = {
-		buildSession: function (text, catalogOrList, opts) {
+		buildSession: (text, catalogOrList, opts) => {
 			var res = buildSession(text, catalogOrList, opts);
-			if (res && res.workout) {
+			if (res?.workout) {
 				res.workout = classifyWorkoutMovementPatterns(res.workout);
 				if (_mp && typeof _mp.checkFullBodyPatternCoverage === 'function') {
 					var allExs = [];
