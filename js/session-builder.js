@@ -625,14 +625,14 @@
 		"אין במאגר אף סרטון לשילוב הזה של שריר וציוד ברמה הזו, ולכן הוא לא מוצע. אפשר לבחור ציוד אחר או קבוצת שריר אחרת.";
 
 	function isNoReelCombo(req) {
-		var eq = (req && req.equipment) || [];
-		var muscles = (req && req.muscles) || [];
+		var eq = (req?.equipment) || [];
+		var muscles = (req?.muscles) || [];
 		if (eq.length !== 1 || !muscles.length) return false;
 		var level = req.level || "";
 		return muscles.every(
 			(m) =>
-				NO_REEL_SET[m + "|" + eq[0] + "|*"] ||
-				(level && NO_REEL_SET[m + "|" + eq[0] + "|" + level]),
+				NO_REEL_SET[`${m}|${eq[0]}|*`] ||
+				(level && NO_REEL_SET[`${m}|${eq[0]}|${level}`]),
 		);
 	}
 
@@ -718,7 +718,7 @@
 						? opts.profile.targetRegion[0]
 						: opts.profile.targetRegion))) ||
 			null;
-		var profileGoal = (opts.profile && opts.profile.goal) || null;
+		var profileGoal = (opts.profile?.goal) || null;
 		var effectiveFocus = profileFocus || req.focus || null;
 		var effectiveGoal = profileGoal || req.goal || null;
 
@@ -926,10 +926,10 @@
 
 	function buildSessionWithBalance(text, catalogOrList, opts) {
 		var res = buildSession(text, catalogOrList, opts);
-		if (opts && opts.includeBalanceBlock && BalanceMobility && typeof BalanceMobility.buildBalanceMobilityBlock === "function") {
-			var level = res.request && res.request.level ? res.request.level : "beginner";
+		if (opts?.includeBalanceBlock && BalanceMobility && typeof BalanceMobility.buildBalanceMobilityBlock === "function") {
+			var level = res.request?.level ? res.request.level : "beginner";
 			var block = BalanceMobility.buildBalanceMobilityBlock(level, opts.limitations || opts.profile?.limitations);
-			if (res.workout && res.workout.phases && res.workout.phases[0]) {
+			if (res.workout?.phases?.[0]) {
 				res.workout.phases[0].exercises = res.workout.phases[0].exercises.concat(block.exercises);
 			}
 			res.balanceMobilityBlock = block;
