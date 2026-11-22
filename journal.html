@@ -229,6 +229,27 @@
 
   <section id="list" role="region" aria-label="רשימת מתאמנים וביצועים"></section>
 
+  <form class="card" id="journalHistorySearchPanel" role="search" aria-labelledby="journalHistorySearchHeading">
+    <h2 id="journalHistorySearchHeading">חיפוש בהיסטוריית אימונים</h2>
+    <p class="honest">סינון הביצועים שנשמרו בדפדפן לפי שם תרגיל וטווח תאריכים. כל השדות אופציונליים.</p>
+    <div class="row">
+      <div>
+        <label for="historyExerciseSearch">שם תרגיל</label>
+        <input id="historyExerciseSearch" name="historyExerciseSearch" type="search" placeholder="לדוגמה: סקוואט" autocomplete="off">
+      </div>
+      <div>
+        <label for="historyDateFrom">מתאריך</label>
+        <input id="historyDateFrom" name="historyDateFrom" type="date">
+      </div>
+      <div>
+        <label for="historyDateTo">עד תאריך</label>
+        <input id="historyDateTo" name="historyDateTo" type="date">
+      </div>
+    </div>
+    <p class="status" id="journalHistoryStatus" role="status" aria-live="polite"></p>
+    <div id="journalHistoryResults" role="region" aria-label="תוצאות חיפוש בהיסטוריית אימונים"></div>
+  </form>
+
   <section class="card" id="journal-progress-guidance" role="region" aria-labelledby="journalProgressGuidanceHeading">
     <h2 id="journalProgressGuidanceHeading">איך מודדים התקדמות ביומן</h2>
     <p class="honest">1. מעקב ההתקדמות ביומן מתבסס על שליטה, חזרות, עומס, התמדה והרגשה לאורך זמן, ולא על שקילה או מדידה בודדת.</p>
@@ -272,6 +293,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/session-tracker.js"></script>
 <script src="./js/journal-storage.js"></script>
+<script src="./js/journal-search.js"></script>
 <script src="./js/progression-engine.js"></script>
 <script src="./js/muscle-balance.js"></script>
 <script src="./js/coach-profiles.js"></script>
@@ -379,6 +401,7 @@
 
   function render(selectedClientId) {
     refreshCoachClients(selectedClientId);
+    renderJournalHistory();
     var list = $('list');
     if (!clients.length) {
       list.innerHTML = '<p class="empty" role="status" aria-live="polite">עדיין אין מתאמנים אמיתיים. הוסיפו שם או ייבאו קוד TH1 ממסך הסיום.</p>';
@@ -489,6 +512,7 @@
 
   var JS = window.THJournalStorage;
   var ST = window.THSessionTracker;
+  var SEARCH = window.THJournalSearch;
 
   function matchesFilter(c, weekEmpty) {
     var q = ($('clientSearch').value || '').trim().toLowerCase();
@@ -509,6 +533,80 @@
     Object.keys(TH.CLIENT_GOALS).forEach(function (k) { opts += '<option value="goal:' + k + '">מטרה: ' + TH.esc(TH.CLIENT_GOALS[k]) + '</option>'; });
     Object.keys(TH.CLIENT_LEVELS).forEach(function (k) { opts += '<option value="level:' + k + '">רמה: ' + TH.esc(TH.CLIENT_LEVELS[k]) + '</option>'; });
     $('clientFilter').innerHTML = opts;
+  }
+
+  // History search reads the same client logs the journal renders. Each row is
+  // shaped for the pure filter engine in js/journal-search.js.
+  function historySessions() {
+    var rows = [];
+    clients.forEach(function (c) {
+      logsOf(c).forEach(function (log) {
+        rows.push({
+          clientName: c.name || 'מתאמן',
+          title: log.title || 'אימון',
+          doneAt: log.at || log.doneAt || '',
+          exercises: Array.isArray(log.exercises) ? log.exercises : [],
+          sets: Array.isArray(log.ex) ? log.ex : (Array.isArray(log.sets) ? log.sets : [])
+        });
+      });
+    });
+    return rows;
+  }
+
+  function historyExerciseLabels(session) {
+    var names = [];
+    var exercises = Array.isArray(session.exercises) ? session.exercises : [];
+    exercises.forEach(function (exercise) {
+      if (typeof exercise === 'string') names.push(exercise);
+      else if (exercise && typeof exercise === 'object') {
+        names.push(exercise.name || exercise.exerciseName || exercise.id || exercise.exerciseId || '');
+      }
+    });
+    var sets = Array.isArray(session.sets) ? session.sets : [];
+    sets.forEach(function (set) {
+      if (set) names.push(set.exerciseName || set.name || set.exerciseId || set.id || '');
+    });
+    return names.filter(Boolean);
+  }
+
+  function renderJournalHistory() {
+    var panel = $('journalHistorySearchPanel');
+    if (!panel) return;
+    var rows = historySessions();
+    var options = {
+      exerciseName: ($('historyExerciseSearch').value || '').trim(),
+      startDate: ($('historyDateFrom').value || '').trim(),
+      endDate: ($('historyDateTo').value || '').trim()
+    };
+    var results = (SEARCH && typeof SEARCH.filterJournalSessions === 'function' ? SEARCH : TH).filterJournalSessions(rows, options);
+    var status = $('journalHistoryStatus');
+    if (status) status.textContent = 'מוצגים ' + results.length + ' מתוך ' + rows.length + ' ביצועים.';
+    var host = $('journalHistoryResults');
+    if (!host || typeof document.createElement !== 'function' || typeof host.appendChild !== 'function') return;
+    host.textContent = '';
+    if (!results.length) {
+      var empty = document.createElement('p');
+      empty.className = 'empty';
+      empty.setAttribute('role', 'status');
+      empty.textContent = 'אין ביצועים שתואמים לחיפוש. שנו את שם התרגיל או את טווח התאריכים.';
+      host.appendChild(empty);
+      return;
+    }
+    var list = document.createElement('ul');
+    results.forEach(function (session) {
+      var li = document.createElement('li');
+      var head = document.createElement('b');
+      head.textContent = (session.clientName || 'מתאמן') + ' · ' + (session.title || 'אימון') + ' · ' + dayKey(session.doneAt);
+      li.appendChild(head);
+      var names = historyExerciseLabels(session);
+      if (names.length) {
+        var detail = document.createElement('small');
+        detail.textContent = names.join(', ');
+        li.appendChild(detail);
+      }
+      list.appendChild(li);
+    });
+    host.appendChild(list);
   }
 
   function insightsClient() {
@@ -1357,6 +1455,10 @@
   $('clientSearch').addEventListener('input', function () { render(); });
   $('clientFilter').addEventListener('change', function () { render(); });
   $('filterForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  if ($('historyExerciseSearch')) $('historyExerciseSearch').addEventListener('input', function () { renderJournalHistory(); });
+  if ($('historyDateFrom')) $('historyDateFrom').addEventListener('change', function () { renderJournalHistory(); });
+  if ($('historyDateTo')) $('historyDateTo').addEventListener('change', function () { renderJournalHistory(); });
+  if ($('journalHistorySearchPanel')) $('journalHistorySearchPanel').addEventListener('submit', function (e) { e.preventDefault(); renderJournalHistory(); });
   $('insClient').addEventListener('change', renderInsights);
   $('setForm').addEventListener('submit', function (e) {
     e.preventDefault();
