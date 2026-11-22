@@ -1,4 +1,5 @@
-(function(root) { root.NetanyaOpeningWorkouts = [
+((root) => {
+  const workouts = [
   {
     "saved_id": "netanya-opening-1-v1",
     "title": "אימון 1 — היכרות ותחנות כוח — שלולית החורף נתניה",
@@ -511,4 +512,98 @@
     ],
     "notes": "התאמה מוצעת על בסיס אימוני פתיחה הכנצ. שלולית החורף היא שם הפארק; תנאי השטח לא נבדקו. נדרש אישור מדריך ותיק קבוצה. מקטעים כוללים הדגמה והפסקות ואינם עבודה רצופה."
   }
-]; })(typeof window !== "undefined" ? window : this);
+];
+
+  function getAdaptWorkoutFn() {
+    if (root?.THWeatherFallback && typeof root.THWeatherFallback.adaptWorkoutForWeather === 'function') {
+      return root.THWeatherFallback.adaptWorkoutForWeather;
+    }
+    if (typeof require === 'function') {
+      try {
+        const wf = require('../js/weather-fallback.js');
+        return wf.adaptWorkoutForWeather || wf;
+      } catch (_e) {}
+    }
+    return null;
+  }
+
+  function adaptNetanyaWorkout(workoutIndexOrId, condition) {
+    const fn = getAdaptWorkoutFn();
+    let workout = null;
+    if (typeof workoutIndexOrId === 'number') {
+      workout = workouts[workoutIndexOrId];
+    } else if (typeof workoutIndexOrId === 'string') {
+      workout = workouts.find((w) => w.saved_id === workoutIndexOrId);
+    } else if (workoutIndexOrId && typeof workoutIndexOrId === 'object') {
+      workout = workoutIndexOrId;
+    }
+    if (!workout) workout = workouts[0];
+    if (fn) {
+      return fn(workout, condition);
+    }
+    return workout;
+  }
+
+  function setupWeatherFallbackUI() {
+    if (typeof document === 'undefined') return null;
+    const selectEl = document.getElementById('weatherConditionSelect');
+    const outputEl = document.getElementById('weatherAdaptedOut');
+    if (!selectEl || !outputEl) return null;
+
+    const renderAdapted = () => {
+      outputEl.textContent = '';
+      const condition = selectEl.value || 'normal';
+      const adapted = adaptNetanyaWorkout(0, condition);
+      if (!adapted) return;
+
+      const title = document.createElement('h4');
+      title.textContent = `התאמת אימון פתיחה נתניה לתנאי: ${condition === 'extreme_heat' ? 'חום כבד' : condition === 'rain_indoor' ? 'גשם / מקורה' : 'רגיל'}`;
+      outputEl.appendChild(title);
+
+      const note = document.createElement('p');
+      note.textContent = adapted.weather_note || 'אימון פתיחה בתנאים רגילים.';
+      outputEl.appendChild(note);
+
+      if (adapted.phases && adapted.phases.length > 0) {
+        const ul = document.createElement('ul');
+        for (const ph of adapted.phases) {
+          for (const ex of ph.exercises || []) {
+            const li = document.createElement('li');
+            li.textContent = `${ex.name} (${ex.duration_seconds || 0} שנ׳)${ex.notes ? ` — ${ex.notes}` : ''}`;
+            ul.appendChild(li);
+          }
+        }
+        outputEl.appendChild(ul);
+      }
+    };
+
+    if (selectEl.dataset && selectEl.dataset.netanyaWeatherBound !== '1') {
+      selectEl.dataset.netanyaWeatherBound = '1';
+      selectEl.addEventListener('change', renderAdapted);
+    }
+    renderAdapted();
+    return renderAdapted;
+  }
+
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupWeatherFallbackUI);
+    } else {
+      setupWeatherFallbackUI();
+    }
+  }
+
+  workouts.NetanyaOpeningWorkouts = workouts;
+  workouts.adaptNetanyaWorkout = adaptNetanyaWorkout;
+  workouts.setupWeatherFallbackUI = setupWeatherFallbackUI;
+
+  if (root) {
+    root.NetanyaOpeningWorkouts = workouts;
+    root.adaptNetanyaWorkout = adaptNetanyaWorkout;
+    root.setupWeatherFallbackUI = setupWeatherFallbackUI;
+  }
+
+  if (typeof module === 'object' && module.exports) {
+    module.exports = workouts;
+  }
+})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);

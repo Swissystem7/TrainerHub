@@ -94,6 +94,7 @@
     <a href="#demos">הדגמות</a>
     <a href="#plan">תוכנית 6 שבועות</a>
     <a href="#adapt">משוב והתאמה</a>
+    <a href="#weather">התאמת מזג אוויר</a>
     <a href="#strength">תוכניות כוח</a>
   </nav>
 
@@ -159,6 +160,22 @@
     <div id="adaptOut" class="card" style="margin-top:12px" role="status" aria-live="polite"></div>
   </section>
 
+  <section id="weather" aria-labelledby="weather-h">
+    <h2 id="weather-h">התאמת אימון למזג אוויר קיצוני</h2>
+    <p class="muted">התאמה מהירה לתנאי עומס חום כבד או גשם ומעבר לשטח מקורה.</p>
+    <div class="row">
+      <div>
+        <label for="weatherConditionSelect">תנאי מזג אוויר</label>
+        <select id="weatherConditionSelect" aria-label="תנאי מזג אוויר">
+          <option value="normal">מזג אוויר רגיל (ללא שינוי)</option>
+          <option value="extreme_heat">עומס חום קיצוני (הפסקות מים וקיצור ריצות)</option>
+          <option value="rain_indoor">גשם / מעבר לשטח מקורה (תחנות משקל גוף)</option>
+        </select>
+      </div>
+    </div>
+    <div id="weatherAdaptedOut" class="card" style="margin-top:12px" role="status" aria-live="polite"></div>
+  </section>
+
   <section id="strength" aria-labelledby="strength-h">
     <h2 id="strength-h">תוכניות כוח מדורגות</h2>
     <p class="muted">רמות מתחילים / בינוני / מתקדמים — עם ציוד (מתח+מקבילים) או בלי ציוד.</p>
@@ -201,6 +218,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/weather-fallback.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -800,8 +818,61 @@
     renderComparison();
     renderAdaptSessions();
     bindFeedback();
+    renderWeatherAdaptedView();
+    var wSel = el('weatherConditionSelect');
+    if (wSel) wSel.addEventListener('change', renderWeatherAdaptedView);
+    var aSel = el('adaptSession');
+    if (aSel) aSel.addEventListener('change', renderWeatherAdaptedView);
     var strBtn = el('strShow');
     if (strBtn) strBtn.addEventListener('click', renderStrength);
+  }
+
+  function renderWeatherAdaptedView() {
+    var sel = el('weatherConditionSelect');
+    var host = el('weatherAdaptedOut');
+    if (!sel || !host) return;
+    host.textContent = '';
+    var cond = sel.value || 'normal';
+    var wf = window.THWeatherFallback;
+    var adaptFn = wf && typeof wf.adaptWorkoutForWeather === 'function' ? wf.adaptWorkoutForWeather : null;
+
+    var s = null;
+    var sid = el('adaptSession') ? el('adaptSession').value : null;
+    var sessions = (R.plan() && R.plan().sessions) || [];
+    if (sid) {
+      sessions.forEach((row) => { if (row.id === sid) s = row; });
+    }
+    if (!s && sessions.length > 0) s = sessions[0];
+    if (!s) {
+      var emptyMsg = document.createElement('p');
+      emptyMsg.textContent = 'אין אימון זמין להתאמה.';
+      host.appendChild(emptyMsg);
+      return;
+    }
+
+    var baseWorkout = sessionToWorkout(s);
+    var adapted = adaptFn ? adaptFn(baseWorkout, cond) : baseWorkout;
+
+    var heading = document.createElement('h4');
+    var condLabel = cond === 'extreme_heat' ? 'עומס חום כבד' : cond === 'rain_indoor' ? 'גשם ומעבר לשטח מקורה' : 'תנאים רגילים';
+    heading.textContent = 'סטטוס התאמה: ' + condLabel;
+    host.appendChild(heading);
+
+    var note = document.createElement('p');
+    note.className = 'muted';
+    note.style.margin = '4px 0 8px';
+    note.textContent = adapted.weather_note || 'האימון נשמר במתכונתו הרגילה.';
+    host.appendChild(note);
+
+    if (adapted.phases && adapted.phases[0] && Array.isArray(adapted.phases[0].exercises)) {
+      var ul = document.createElement('ul');
+      adapted.phases[0].exercises.forEach((ex) => {
+        var li = document.createElement('li');
+        li.textContent = ex.name + (ex.notes ? ' — ' + ex.notes : '');
+        ul.appendChild(li);
+      });
+      host.appendChild(ul);
+    }
   }
 
   function sessionToWorkout(s) {
@@ -832,6 +903,11 @@
     sessions.forEach((row) => { if (row.id === sessionId) s = row; });
     if (!s || !window.TH || !TH.store) return;
     var workout = sessionToWorkout(s);
+    var weatherSel = el('weatherConditionSelect');
+    var cond = weatherSel ? weatherSel.value : 'normal';
+    if (window.THWeatherFallback && typeof window.THWeatherFallback.adaptWorkoutForWeather === 'function') {
+      workout = window.THWeatherFallback.adaptWorkoutForWeather(workout, cond);
+    }
     if (!TH.store.set(TH.KEYS.active, workout)) return;
     window.location.href = './frontend/workout-mode.html';
   }
