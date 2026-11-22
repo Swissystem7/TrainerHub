@@ -28,6 +28,7 @@
 </div>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
+<script src="./js/polarized-balance.js"></script>
 <main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
@@ -178,6 +179,25 @@ function renderProgram(p){
         '<button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')" aria-label="דף להדפסה / PDF עבור ' + esc(dayName) + '">דף להדפסה / PDF</button>' +
         '</div><div class="th-gate-host"></div></section>';
     }).join('');
+  if (typeof document !== 'undefined' && typeof document.createElement === 'function') {
+    const summaryEl = $('result').querySelector('.summary');
+    if (summaryEl) {
+      const badge = document.createElement('div');
+      badge.id = 'polarizedBalanceBadge';
+      badge.className = 'pill';
+      const evaluator = (typeof THPolarizedBalance !== 'undefined' && THPolarizedBalance.evaluatePolarizedBalance)
+        || (typeof window !== 'undefined' && window.THPolarizedBalance && window.THPolarizedBalance.evaluatePolarizedBalance);
+      if (evaluator) {
+        const bal = evaluator(p.dailyWorkouts);
+        badge.textContent = bal.status === 'balanced_80_20'
+          ? 'איזון 80/20 תקין'
+          : ('עודף עצימות: ' + (bal.suggestion || 'מומלץ להחליף אימון קצה במתון'));
+      } else {
+        badge.textContent = 'איזון 80/20';
+      }
+      summaryEl.appendChild(badge);
+    }
+  }
   if (typeof renderPeriod === 'function') renderPeriod(p);
   $('result').querySelectorAll('.swap-sel').forEach(function (sel) {
     sel.addEventListener('change', function () {

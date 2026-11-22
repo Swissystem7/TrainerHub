@@ -201,6 +201,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/polarized-balance.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -416,6 +417,30 @@
       el('checkpointsOut').parentNode.insertBefore(dl, el('checkpointsOut'));
     }
     render6WeekTracker();
+    var existingBadge = typeof document !== 'undefined' ? document.getElementById('polarizedBalanceBadge') : null;
+    if (existingBadge && existingBadge.parentNode) {
+      existingBadge.parentNode.removeChild(existingBadge);
+    }
+    if (typeof document !== 'undefined' && typeof document.createElement === 'function') {
+      var polarBadge = document.createElement('div');
+      polarBadge.id = 'polarizedBalanceBadge';
+      polarBadge.className = 'pill ok';
+      var evaluator = (typeof THPolarizedBalance !== 'undefined' && THPolarizedBalance.evaluatePolarizedBalance)
+        || (typeof window !== 'undefined' && window.THPolarizedBalance && window.THPolarizedBalance.evaluatePolarizedBalance);
+      if (evaluator) {
+        var bal = evaluator(p.sessions || []);
+        polarBadge.textContent = bal.status === 'balanced_80_20'
+          ? 'איזון עצימות 80/20 תקין'
+          : ('עודף עצימות: ' + (bal.suggestion || 'מומלץ להחליף אימון קצה במתון'));
+      } else {
+        polarBadge.textContent = 'איזון עצימות שבועי 80/20';
+      }
+      var planSec = el('plan');
+      var tracker = el('reserves6WeekTracker');
+      if (planSec && tracker) {
+        planSec.insertBefore(polarBadge, tracker);
+      }
+    }
     var cp = el('checkpointsOut');
     cp.innerHTML = '<h3>נקודות מבחן</h3>';
     (p.checkpoints || []).forEach((c) => {
