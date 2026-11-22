@@ -116,6 +116,7 @@
       <button type="button" id="saveBtn" aria-label="שמור תוצאות מדדים">שמור תוצאות</button>
       <button type="button" class="ghost" id="evalBtn" aria-label="בדוק עובר או לא עובר בלי לשמור">בדיקה בלי שמירה</button>
       <button type="button" class="ghost" id="shareReservesWhatsappBtn" aria-label="שתף סיכום מדדים בוואטסאפ">שתף בוואטסאפ</button>
+      <button type="button" class="ghost" id="exportIcsCalendarBtn" aria-label="הורד ליומן (.ics)">הורד ליומן (.ics)</button>
       <button type="button" class="ghost" id="resetBtn" aria-label="נקה תוצאות שמורות">נקה שמורים</button>
     </div>
   </section>
@@ -201,6 +202,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/calendar-export.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -910,6 +912,31 @@
           window.TH.copyOrShow(text, shareReservesBtn.parentNode);
         }
       }
+    });
+  }
+  var exportReservesIcsBtn = el('exportIcsCalendarBtn');
+  if (exportReservesIcsBtn) {
+    exportReservesIcsBtn.addEventListener('click', () => {
+      var exp = window.THCalendarExport || window.TH;
+      if (!exp || typeof exp.buildIcsCalendarText !== 'function') return;
+      var plan = R.plan ? R.plan() : null;
+      if (!plan) return;
+      var events = exp.reservesPlanToCalendarEvents ? exp.reservesPlanToCalendarEvents(plan) : [];
+      var ics = exp.buildIcsCalendarText(events);
+      if (exp.downloadIcsFile) {
+        exp.downloadIcsFile('trainerhub-reserves-plan.ics', ics);
+      }
+      var statusEl = el('reservesIcsExportStatus');
+      if (!statusEl) {
+        statusEl = document.createElement('p');
+        statusEl.id = 'reservesIcsExportStatus';
+        statusEl.className = 'muted';
+        statusEl.setAttribute('role', 'status');
+        if (exportReservesIcsBtn.parentNode) {
+          exportReservesIcsBtn.parentNode.appendChild(statusEl);
+        }
+      }
+      statusEl.textContent = 'קובץ היומן (.ics) הופק בהצלחה (' + events.length + ' אימונים)';
     });
   }
   el('resetBtn').addEventListener('click', () => {
