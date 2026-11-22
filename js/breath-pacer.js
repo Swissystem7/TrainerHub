@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,9 +6,7 @@
   } else {
     root.THBreathPacer = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   var DEFAULT_CONFIG = {
     inhale: 4,
     hold: 2,
@@ -36,7 +34,7 @@
       remainingInPhase = inhale - timeInCycle;
     } else if (timeInCycle < inhale + hold) {
       phase = 'החזקה 2 שניות';
-      remainingInPhase = (inhale + hold) - timeInCycle;
+      remainingInPhase = inhale + hold - timeInCycle;
     } else {
       phase = 'נשיפה איטית 6 שניות';
       remainingInPhase = totalCycle - timeInCycle;
@@ -60,7 +58,7 @@
     return {
       completedCycles: c,
       score: c * 10,
-      label: c >= 5 ? 'התרפיה מושלמת' : (c >= 3 ? 'הרפיה טובה' : 'התחלה טובה')
+      label: c >= 5 ? 'התרפיה מושלמת' : c >= 3 ? 'הרפיה טובה' : 'התחלה טובה'
     };
   }
 
@@ -85,4 +83,4 @@
     calculateRecoveryBreathScore: calculateRecoveryBreathScore,
     initBreathPacerUI: initBreathPacerUI
   };
-}));
+});

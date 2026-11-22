@@ -1,5 +1,3 @@
-'use strict';
-
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -9,7 +7,7 @@ const Pacer = require('../js/breath-pacer.js');
 
 const root = path.join(__dirname, '..');
 const workoutHtml = fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8');
-const reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
+const _reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
 
 test('workout mode html includes breath pacer script and panel', () => {
   assert.ok(workoutHtml.includes('breath-pacer.js'));
@@ -60,4 +58,3 @@ test('breath pacer cyclical transition at 12+ seconds and invalid/negative input
   assert.equal(score.score, 40);
   assert.equal(score.label, 'הרפיה טובה');
 });
-
