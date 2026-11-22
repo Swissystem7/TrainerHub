@@ -248,6 +248,12 @@
       <div id="parsedPromptBadges" class="tags" role="region" aria-label="תגי הבנה מהטקסט" style="margin-top:8px;min-height:20px;"></div>
       <button type="button" class="parse-btn" id="generateFromPromptBtn" aria-label="בנה אימון מבקשה חופשית" style="margin-top:10px;">בנה אימון מבקשה</button>
     </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1.5px solid var(--line);">
+      <h3 id="bulkWorkoutLabel" style="font-size:0.95rem;color:var(--teal-ink);margin-bottom:8px;font-weight:700;">קליטת אימון חופשי מוואטסאפ (טקסט מובנה)</h3>
+      <textarea id="bulkWorkoutInput" aria-labelledby="bulkWorkoutLabel" placeholder="הדביקו הודעת וואטסאפ של אימון (למשל: סקוואט 3x12, פלאנק 45 שניות...)" style="height:100px;"></textarea>
+      <button type="button" class="parse-btn" id="importWorkoutTextBtn" aria-label="קלוט אימון מובנה והתאם לקטלוג" style="margin-top:10px;">קלוט אימון מובנה</button>
+      <div id="importedPlanPreview" role="region" aria-live="polite" style="margin-top:12px;"></div>
+    </div>
     <button type="button" class="parse-btn" id="netanyaBtn" aria-label="הוסף את חמשת אימוני הפתיחה של שלולית החורף נתניה למאגר השמור">הוסף את חמשת אימוני הפתיחה — שלולית החורף נתניה</button>
     <p class="honest">התאמות מוצעות למדריך. כולל חלופות לקרקע רטובה; תנאי השטח טעונים בדיקה. נשמר בדפדפן זה בלבד.</p>
     <div id="libraryStatus" role="status" aria-live="polite"></div>
@@ -279,6 +285,8 @@
 <script src="../js/adaptation-engine.js"></script>
 <script src="../js/session-builder.js"></script>
 <script src="../js/natural-workout-flow.js"></script>
+<script src="../js/ingest.js"></script>
+<script src="../js/workout-text-importer.js"></script>
 <script src="parse-workout.js?v=netanya-2"></script>
 <script src="saved-workouts.js?v=netanya-2"></script>
 <script src="netanya-opening.js?v=netanya-2"></script>

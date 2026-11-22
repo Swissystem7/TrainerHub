@@ -752,11 +752,112 @@
       source_text: raw,
       source: 'client-fallback'
     };
+    phases.forEach(function (ph) {
+      (ph.exercises || []).forEach(function (e) {
+        var meta = parseExercise(e.name);
+        if (meta && meta.warningTag) e.warningTag = meta.warningTag;
+      });
+    });
     var api = (typeof globalThis !== 'undefined' && globalThis.TH) || root.TH;
     if (api && typeof api.attachCatalogIds === 'function') api.attachCatalogIds(workout);
     return workout;
   }
 
+  function renderImportedPlanPreview(container, plan, doc) {
+    if (!container) return;
+    var d = doc || container.ownerDocument || (typeof document !== 'undefined' ? document : null);
+    if (!d || typeof d.createElement !== 'function') return;
+    while (container.firstChild) container.removeChild(container.firstChild);
+
+    if (!plan || !plan.exercises || !plan.exercises.length) {
+      var emptyNotice = d.createElement('div');
+      emptyNotice.className = 'empty-notice';
+      emptyNotice.textContent = 'לא זוהו תרגילים בטקסט החופשי.';
+      container.appendChild(emptyNotice);
+      return;
+    }
+
+    var card = d.createElement('div');
+    card.className = 'imported-plan-preview-card';
+    var header = d.createElement('h4');
+    header.textContent = 'תוכנית אימון שנקלטה (' + (plan.recognized ? plan.recognized.length : 0) + ' תרגילים מזוהים במאגר):';
+    card.appendChild(header);
+
+    var list = d.createElement('ul');
+    list.className = 'imported-exercises-list';
+    plan.exercises.forEach(function (ex) {
+      var li = d.createElement('li');
+      li.className = ex.matched ? 'recognized-item' : 'unmatched-item';
+      var detail = ex.name;
+      if (ex.sets) detail += ' - ' + ex.sets + ' סטים';
+      if (ex.reps) detail += ' x ' + ex.reps + ' חזרות';
+      if (ex.duration_seconds) detail += ' (' + ex.duration_seconds + ' שניות)';
+      if (ex.notes) detail += ' [' + ex.notes + ']';
+      if (ex.matched) {
+        detail += ' (התאמה למאגר: ' + (ex.matchedHe || ex.name) + ')';
+        var warn = parseExercise(ex.id || ex.matchedHe || ex.name);
+        if (warn && warn.warningTag && warn.warningTag.he) detail += ' [' + warn.warningTag.he + ']';
+      } else {
+        detail += ' (לא זוהה בקטלוג)';
+      }
+      li.textContent = detail;
+      list.appendChild(li);
+    });
+    card.appendChild(list);
+
+    if (plan.unmatched && plan.unmatched.length > 0) {
+      var warnBox = d.createElement('div');
+      warnBox.className = 'imported-plan-warnings';
+      var warnHead = d.createElement('strong');
+      warnHead.textContent = 'התראות ואי-התאמות לקטלוג (' + plan.unmatched.length + '):';
+      warnBox.appendChild(warnHead);
+      var warnList = d.createElement('ul');
+      plan.unmatched.forEach(function (un) {
+        var unItem = d.createElement('li');
+        var unName = typeof un === 'string' ? un : un.name;
+        var text = 'התרגיל "' + unName + '" אינו קיים במאגר.';
+        if (un.suggestions && un.suggestions.length > 0) {
+          text += ' הצעות חלופה מומלצות: ' + un.suggestions.map(function (s) { return s.he || s.name || s.id; }).join(', ');
+        }
+        unItem.textContent = text;
+        warnList.appendChild(unItem);
+      });
+      warnBox.appendChild(warnList);
+      card.appendChild(warnBox);
+    }
+    container.appendChild(card);
+  }
+
+  function initBulkWorkoutImporter() {
+    if (typeof document === 'undefined') return;
+    var bulkInput = document.getElementById('bulkWorkoutInput');
+    var importBtn = document.getElementById('importWorkoutTextBtn');
+    var preview = document.getElementById('importedPlanPreview');
+    if (!bulkInput || !importBtn || !preview) return;
+
+    importBtn.addEventListener('click', function () {
+      var importer = (typeof globalThis !== 'undefined' && globalThis.THWorkoutTextImporter) ||
+                     (typeof window !== 'undefined' && window.THWorkoutTextImporter) || root.THWorkoutTextImporter;
+      var parseFn = (importer && (importer.parseWorkoutTextToPlan || importer)) || root.parseWorkoutTextToPlan;
+      if (typeof parseFn !== 'function') {
+        try { parseFn = require('../js/workout-text-importer.js').parseWorkoutTextToPlan; } catch (e) { parseFn = null; }
+      }
+      if (typeof parseFn !== 'function') return;
+      var catalog = (root.TH && root.TH.catalog) || (typeof globalThis !== 'undefined' && globalThis.TH && globalThis.TH.catalog) || null;
+      renderImportedPlanPreview(preview, parseFn(bulkInput.value || '', catalog));
+    });
+  }
+
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBulkWorkoutImporter);
+    } else {
+      initBulkWorkoutImporter();
+    }
+  }
+
   root.parseWorkoutClient = parseWorkoutClient;
   root.parseExercise = parseExercise;
+  root.renderImportedPlanPreview = renderImportedPlanPreview;
+  root.initBulkWorkoutImporter = initBulkWorkoutImporter;
 })(typeof window !== 'undefined' ? window : this);
