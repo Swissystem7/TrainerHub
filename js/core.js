@@ -1453,88 +1453,148 @@
 		});
 	}
 
+	function matchesDriveId(entry, fileId) {
+		if (!entry || !isPlayable(entry)) return false;
+		return (
+			entry.driveId === fileId ||
+			entry.drivePlayId === fileId ||
+			entry.legacyDriveId === fileId
+		);
+	}
+
+	function findCatalogByDriveId(fileId) {
+		var keys = Object.keys(catalog);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = catalog[keys[i]];
+			if (matchesDriveId(entry, fileId)) return entry;
+		}
+		return null;
+	}
+
+	function resolveReelFileId(stepId) {
+		var m = stepId.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
+		if (!m) return "";
+		var fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
+		return fileId && reelDriveIds[fileId] ? fileId : "";
+	}
+
 	function reelClip(step) {
 		var id = step && typeof step.id === "string" ? step.id : "";
-		var m = id.match(/^(drive|ig)-([A-Za-z0-9_-]+)$/);
-		var fileId, keys, i, entry;
-		if (!m) return null;
-		fileId = m[1] === "drive" ? m[2] : reelDrive[m[2]];
-		if (!fileId || !reelDriveIds[fileId]) return null;
-		keys = Object.keys(catalog);
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
-			if (
-				entry &&
-				isPlayable(entry) &&
-				(entry.driveId === fileId ||
-					entry.drivePlayId === fileId ||
-					entry.legacyDriveId === fileId)
-			)
-				return entry;
-		}
-		if (!reelEntries[id])
+		if (!id) return null;
+		var fileId = resolveReelFileId(id);
+		if (!fileId) return null;
+		var existing = findCatalogByDriveId(fileId);
+		if (existing) return existing;
+		if (!reelEntries[id]) {
 			reelEntries[id] = {
 				id: id,
 				he: step.name || "",
 				driveId: fileId,
 				source: "drive-reel",
 			};
+		}
 		return reelEntries[id];
 	}
 
-	function findExercise(step) {
-		if (!step) return null;
-		var id = step.id || step.name;
-		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
-		var reel = reelClip(step);
-		if (reel) return reel;
-		var name = step.name;
+	function directPlayable(id) {
+		if (!id) return null;
+		var entry = catalog[id];
+		return entry && isPlayable(entry) ? entry : null;
+	}
+
+	function matchesCatalogKeyOrId(entry, key, id) {
+		if (!id) return false;
+		return entry.id === id || key === id;
+	}
+
+	function matchesCatalogName(entry, key, name) {
+		if (!name) return false;
+		if (entry.he === name || key === name) return true;
+		return HE_NAMES[key] === name;
+	}
+
+	function findCatalogExact(id, name) {
 		var keys = Object.keys(catalog);
-		var i, entry, viaMap, candidates, c, hit;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
+		for (var i = 0; i < keys.length; i++) {
+			var k = keys[i];
+			var entry = catalog[k];
 			if (!entry || !isPlayable(entry)) continue;
-			if (id && (entry.id === id || keys[i] === id)) return entry;
-			if (
-				name &&
-				(entry.he === name || keys[i] === name || HE_NAMES[keys[i]] === name)
-			)
-				return entry;
+			if (matchesCatalogKeyOrId(entry, k, id)) return entry;
+			if (matchesCatalogName(entry, k, name)) return entry;
 		}
-		viaMap = mappedAlias(id);
-		if (!viaMap && name && name !== id) viaMap = mappedAlias(name);
-		if (viaMap) return viaMap;
-		for (i = 0; i < keys.length; i++) {
-			entry = catalog[keys[i]];
+		return null;
+	}
+
+	function resolveMappedAlias(id, name) {
+		var via = mappedAlias(id);
+		if (via) return via;
+		if (name && name !== id) return mappedAlias(name);
+		return null;
+	}
+
+	function matchesAliasOrFold(entry, id, name) {
+		if (aliasListHas(entry, id)) return true;
+		if (name) {
+			if (aliasListHas(entry, name)) return true;
+			if (foldHe(entry.he) === foldHe(name)) return true;
+		}
+		return false;
+	}
+
+	function findCatalogFuzzy(id, name) {
+		var keys = Object.keys(catalog);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = catalog[keys[i]];
 			if (!entry || !isPlayable(entry)) continue;
-			if (aliasListHas(entry, id) || (name && aliasListHas(entry, name)))
-				return entry;
-			if (name && foldHe(entry.he) === foldHe(name)) return entry;
+			if (matchesAliasOrFold(entry, id, name)) return entry;
 		}
+		return null;
+	}
+
+	function findByCandidateNames(name) {
 		if (!name) return null;
-		candidates = nameCandidates(name);
+		var candidates = nameCandidates(name);
+		var c, hit;
 		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name) continue;
-			hit = matchPlayableName(candidates[c]);
-			if (hit) return hit;
+			if (candidates[c] !== name) {
+				hit = matchPlayableName(candidates[c]);
+				if (hit) return hit;
+			}
 		}
 		for (c = 0; c < candidates.length; c++) {
-			if (candidates[c] === name || candidates[c].length < 3) continue;
-			hit = matchCatalog(candidates[c]);
+			var cand = candidates[c];
+			if (cand === name || cand.length < 3) continue;
+			hit = matchCatalog(cand);
 			if (hit && isPlayable(hit)) return hit;
 		}
 		return null;
 	}
 
+	function findExercise(step) {
+		if (!step) return null;
+		var id = step.id || step.name;
+		var direct = directPlayable(id);
+		if (direct) return direct;
+		var reel = reelClip(step);
+		if (reel) return reel;
+		var name = step.name;
+		var exact = findCatalogExact(id, name);
+		if (exact) return exact;
+		var viaMap = resolveMappedAlias(id, name);
+		if (viaMap) return viaMap;
+		var fuzzy = findCatalogFuzzy(id, name);
+		if (fuzzy) return fuzzy;
+		return findByCandidateNames(name);
+	}
+
+	function isExplicitPath(file) {
+		return /^(\.\/|\.\.\/|\/)/.test(file);
+	}
+
 	function catalogSrc(file) {
 		if (!file) return "";
 		if (/^https?:\/\//i.test(file)) return file;
-		if (
-			file.indexOf("../") === 0 ||
-			file.indexOf("./") === 0 ||
-			file.charAt(0) === "/"
-		)
-			return file;
+		if (isExplicitPath(file)) return file;
 		var name = String(file).replace(/^videos\//, "");
 		var encoded = name
 			.split("/")
@@ -1549,70 +1609,47 @@
 		return PHASE_LABELS[name] || name;
 	}
 
-	function toPhasesWorkout(d, meta) {
-		meta = meta || {};
-		if (d && Array.isArray(d.phases) && d.phases.length) {
-			return {
-				title: d.title || "אימון " + (d.day || ""),
-				duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
-				participants: 1,
-				equipment: meta.equipment || [],
-				intensity: meta.intensity || "medium",
-				tags: meta.tags || ["program"],
-				phases: d.phases,
-			};
-		}
-		var mainEx = (d.exercises || []).map(function (x) {
-			return {
-				name: heName(x.name),
-				id: x.id || x.name,
-				sets: x.sets != null ? x.sets : null,
-				reps: x.reps != null ? x.reps : null,
-				duration_seconds:
-					x.duration_seconds != null ? x.duration_seconds : null,
-				rest_seconds:
-					x.restSeconds != null
-						? x.restSeconds
-						: x.rest_seconds != null
-							? x.rest_seconds
-							: null,
-				notes: x.notes || null,
-			};
-		});
-		var warm = d.warmUp
-			? [
-					{
-						name: heName(d.warmUp),
-						id: d.warmUp,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		var cool = d.coolDown
-			? [
-					{
-						name: heName(d.coolDown),
-						id: d.coolDown,
-						sets: 1,
-						reps: null,
-						duration_seconds: 180,
-						rest_seconds: null,
-						notes: null,
-					},
-				]
-			: [];
-		// The Main phase lasts as long as its sets and rests: a beginner's four
-		// 3×8-12 exercises take about 14 minutes and an advanced strength day's
-		// six 4×4-6 with 2-minute rests about 42, so the trainee page and the
-		// print sheet do not promise «45 דקות» for either.
+	function extractRestSec(x) {
+		if (x.restSeconds != null) return x.restSeconds;
+		if (x.rest_seconds != null) return x.rest_seconds;
+		return null;
+	}
+
+	function mapDraftExercise(x) {
+		return {
+			name: heName(x.name),
+			id: x.id || x.name,
+			sets: x.sets != null ? x.sets : null,
+			reps: x.reps != null ? x.reps : null,
+			duration_seconds: x.duration_seconds != null ? x.duration_seconds : null,
+			rest_seconds: extractRestSec(x),
+			notes: x.notes || null,
+		};
+	}
+
+	function singlePhaseExercise(name, durationSec) {
+		if (!name) return [];
+		return [
+			{
+				name: heName(name),
+				id: name,
+				sets: 1,
+				reps: null,
+				duration_seconds: durationSec,
+				rest_seconds: null,
+				notes: null,
+			},
+		];
+	}
+
+	function buildPhasesFromLegacy(d) {
+		var mainEx = (d.exercises || []).map(mapDraftExercise);
+		var warm = singlePhaseExercise(d.warmUp, 180);
+		var cool = singlePhaseExercise(d.coolDown, 180);
 		var mainSeconds = mainEx.reduce(function (a, ex) {
 			return a + draftExerciseSeconds(ex);
 		}, 0);
-		var phases = [
+		return [
 			{ name: "Warm-up", duration_minutes: 5, exercises: warm },
 			{
 				name: "Main",
@@ -1621,8 +1658,29 @@
 			},
 			{ name: "Cool-down", duration_minutes: 5, exercises: cool },
 		];
+	}
+
+	function hasExistingPhases(d) {
+		return Boolean(d && Array.isArray(d.phases) && d.phases.length > 0);
+	}
+
+	function toPhasesWorkout(d, meta) {
+		meta = meta || {};
+		var title = (d && d.title) || "אימון " + ((d && d.day) || "");
+		if (hasExistingPhases(d)) {
+			return {
+				title: title,
+				duration_minutes: d.duration_minutes || phasesMinutes(d.phases) || 45,
+				participants: 1,
+				equipment: meta.equipment || [],
+				intensity: meta.intensity || "medium",
+				tags: meta.tags || ["program"],
+				phases: d.phases,
+			};
+		}
+		var phases = buildPhasesFromLegacy(d || {});
 		return {
-			title: d.title || "אימון " + (d.day || ""),
+			title: title,
 			duration_minutes: phasesMinutes(phases),
 			participants: 1,
 			equipment: meta.equipment || [],
@@ -1638,17 +1696,20 @@
 		}, 0);
 	}
 
+	function calculateSetVolume(set) {
+		if (!set || typeof set !== "object") return 0;
+		var reps = set.reps;
+		var kg = set.weightKg;
+		if (typeof reps !== "number" || typeof kg !== "number") return 0;
+		if (reps <= 0 || kg <= 0) return 0;
+		return reps * kg;
+	}
+
 	function workoutVolume(sets) {
 		if (!Array.isArray(sets)) return 0;
 		var total = 0;
-		var i, set;
-		for (i = 0; i < sets.length; i++) {
-			set = sets[i];
-			if (!set || typeof set !== "object") continue;
-			if (typeof set.reps !== "number" || typeof set.weightKg !== "number")
-				continue;
-			if (!(set.reps > 0) || !(set.weightKg > 0)) continue;
-			total += set.reps * set.weightKg;
+		for (var i = 0; i < sets.length; i++) {
+			total += calculateSetVolume(sets[i]);
 		}
 		return Math.round(total * 10) / 10;
 	}
@@ -1673,6 +1734,33 @@
 		return new TextDecoder().decode(bytes);
 	}
 
+	function compactExerciseRow(ex) {
+		var row = { n: ex.name };
+		if (ex.id) row.id = ex.id;
+		if (ex.sets != null) row.s = ex.sets;
+		if (ex.reps != null) row.r = ex.reps;
+		if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
+		if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
+		if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
+		return row;
+	}
+
+	function compactGroupPlan(gp) {
+		if (!gp) return null;
+		return {
+			s: gp.stations || 1,
+			p: gp.per_station || 1,
+			h: gp.he || "",
+		};
+	}
+
+	function compactPhaseRow(ph) {
+		return {
+			n: ph.name,
+			e: (ph.exercises || []).map(compactExerciseRow),
+		};
+	}
+
 	function compactPlan(w) {
 		w = w || {};
 		return {
@@ -1681,28 +1769,36 @@
 			i: w.intensity || null,
 			c: w.participants || 1,
 			q: w.equipment || [],
-			g: w.group_plan
-				? {
-						s: w.group_plan.stations || 1,
-						p: w.group_plan.per_station || 1,
-						h: w.group_plan.he || "",
-					}
-				: null,
-			p: (w.phases || []).map(function (ph) {
-				return {
-					n: ph.name,
-					e: (ph.exercises || []).map(function (ex) {
-						var row = { n: ex.name };
-						if (ex.id) row.id = ex.id;
-						if (ex.sets != null) row.s = ex.sets;
-						if (ex.reps != null) row.r = ex.reps;
-						if (ex.duration_seconds != null) row.ds = ex.duration_seconds;
-						if (ex.rest_seconds != null) row.rs = ex.rest_seconds;
-						if (ex.notes != null && ex.notes !== "") row.no = ex.notes;
-						return row;
-					}),
-				};
-			}),
+			g: compactGroupPlan(w.group_plan),
+			p: (w.phases || []).map(compactPhaseRow),
+		};
+	}
+
+	function expandGroupPlan(g) {
+		if (!g) return null;
+		return {
+			stations: g.s || 1,
+			per_station: g.p || 1,
+			he: g.h || "",
+		};
+	}
+
+	function expandExerciseRow(ex) {
+		return {
+			name: ex.n,
+			id: ex.id || null,
+			sets: ex.s != null ? ex.s : null,
+			reps: ex.r != null ? ex.r : null,
+			duration_seconds: ex.ds != null ? ex.ds : null,
+			rest_seconds: ex.rs != null ? ex.rs : null,
+			notes: ex.no != null && ex.no !== "" ? ex.no : null,
+		};
+	}
+
+	function expandPhaseRow(ph) {
+		return {
+			name: ph.n,
+			exercises: (ph.e || []).map(expandExerciseRow),
 		};
 	}
 
@@ -1714,25 +1810,8 @@
 			intensity: c.i || null,
 			participants: c.c || 1,
 			equipment: c.q || [],
-			group_plan: c.g
-				? { stations: c.g.s || 1, per_station: c.g.p || 1, he: c.g.h || "" }
-				: null,
-			phases: (c.p || []).map(function (ph) {
-				return {
-					name: ph.n,
-					exercises: (ph.e || []).map(function (ex) {
-						return {
-							name: ex.n,
-							id: ex.id || null,
-							sets: ex.s != null ? ex.s : null,
-							reps: ex.r != null ? ex.r : null,
-							duration_seconds: ex.ds != null ? ex.ds : null,
-							rest_seconds: ex.rs != null ? ex.rs : null,
-							notes: ex.no != null && ex.no !== "" ? ex.no : null,
-						};
-					}),
-				};
-			}),
+			group_plan: expandGroupPlan(c.g),
+			phases: (c.p || []).map(expandPhaseRow),
 		};
 	}
 
@@ -1814,26 +1893,36 @@
 		);
 	}
 
+	function clearPreviousManualCopy(anchor) {
+		var host = anchor && anchor.parentNode;
+		if (!host || typeof host.querySelector !== "function") return;
+		var prev = host.querySelector(".th-manual-copy");
+		if (prev && prev.parentNode) {
+			prev.parentNode.removeChild(prev);
+		}
+	}
+
+	function renderManualCopy(anchor, text, position) {
+		if (anchor && typeof anchor.insertAdjacentHTML === "function") {
+			anchor.insertAdjacentHTML(
+				position || "afterend",
+				manualCopyMarkup(text),
+			);
+		}
+	}
+
 	// Copy, or show the text for a manual copy next to `anchor`. onOk runs only after a real copy.
 	// A box left by an earlier refused copy is removed either way: after a later
 	// successful copy it would still show the old link (e.g. the plan before the
 	// dropdown changed) as if it were the one to send.
 	function copyOrShow(text, anchor, onOk, position) {
 		return copyText(text).then(function (r) {
-			var host = anchor && anchor.parentNode;
-			var prev =
-				host && host.querySelector && host.querySelector(".th-manual-copy");
-			if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+			clearPreviousManualCopy(anchor);
 			if (r.ok) {
 				if (onOk) onOk();
 				return r;
 			}
-			if (anchor && anchor.insertAdjacentHTML) {
-				anchor.insertAdjacentHTML(
-					position || "afterend",
-					manualCopyMarkup(text),
-				);
-			}
+			renderManualCopy(anchor, text, position);
 			return r;
 		});
 	}
@@ -1856,16 +1945,15 @@
 		);
 	}
 
-	function decodeHash(hash) {
-		var raw = String(hash || location.hash || "").replace(/^#/, "");
-		if (!raw) return null;
-		var token = raw;
-		var data;
-		if (raw.indexOf("TH.") === 0) token = raw.slice(3);
-		else if (raw.indexOf("p=") === 0) token = raw.slice(2);
-		else return null;
+	function extractHashToken(raw) {
+		if (raw.indexOf("TH.") === 0) return raw.slice(3);
+		if (raw.indexOf("p=") === 0) return raw.slice(2);
+		return null;
+	}
+
+	function parseHashPayload(token) {
 		try {
-			data = JSON.parse(b64urlToUtf8(token));
+			var data = JSON.parse(b64urlToUtf8(token));
 			if (!data || !data.p) return null;
 			return {
 				workout: expandPlan(data.p),
@@ -1876,6 +1964,14 @@
 		} catch (e) {
 			return null;
 		}
+	}
+
+	function decodeHash(hash) {
+		var raw = String(hash || location.hash || "").replace(/^#/, "");
+		if (!raw) return null;
+		var token = extractHashToken(raw);
+		if (!token) return null;
+		return parseHashPayload(token);
 	}
 
 	// ---- QR code (self-written, no library, no network) ----------------------
@@ -1904,6 +2000,32 @@
 			49,
 		],
 	};
+	var QR_MASKS = [
+		function (x, y) {
+			return (x + y) % 2 === 0;
+		},
+		function (x, y) {
+			return y % 2 === 0;
+		},
+		function (x, y) {
+			return x % 3 === 0;
+		},
+		function (x, y) {
+			return (x + y) % 3 === 0;
+		},
+		function (x, y) {
+			return (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0;
+		},
+		function (x, y) {
+			return ((x * y) % 2) + ((x * y) % 3) === 0;
+		},
+		function (x, y) {
+			return (((x * y) % 2) + ((x * y) % 3)) % 2 === 0;
+		},
+		function (x, y) {
+			return (((x + y) % 2) + ((x * y) % 3)) % 2 === 0;
+		},
+	];
 	function qrRawModules(ver) {
 		var r = (16 * ver + 128) * ver + 64;
 		var n;
@@ -1965,61 +2087,80 @@
 		for (pos = size - 7; res.length < n; pos -= step) res.splice(1, 0, pos);
 		return res;
 	}
-	function qrPenalty(m, size) {
-		var p = 0,
-			x,
-			y,
-			dark = 0,
-			c;
-		function lines(get) {
-			var a, b, run, s, v, pad, k;
-			for (a = 0; a < size; a++) {
+	function countPatternOccurrences(str, pat) {
+		var count = 0;
+		var k = str.indexOf(pat, 0);
+		while (k !== -1) {
+			count++;
+			k = str.indexOf(pat, k + 1);
+		}
+		return count;
+	}
+
+	function qrLineRunsPenalty(s) {
+		var penalty = 0;
+		var run = 1;
+		for (var b = 1; b < s.length; b++) {
+			if (s.charAt(b) === s.charAt(b - 1)) {
+				run++;
+			} else {
+				if (run >= 5) penalty += run - 2;
 				run = 1;
-				s = "";
-				for (b = 0; b < size; b++) {
-					v = get(a, b);
-					s += v ? "1" : "0";
-					if (b > 0 && v === get(a, b - 1)) run++;
-					else {
-						if (run >= 5) p += run - 2;
-						run = 1;
-					}
-				}
-				if (run >= 5) p += run - 2;
-				pad = "0000" + s + "0000";
-				k = -1;
-				k = pad.indexOf("10111010000", k + 1);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("10111010000", k + 1);
-				}
-				k = pad.indexOf("00001011101", 0);
-				while (k !== -1) {
-					p += 40;
-					k = pad.indexOf("00001011101", k + 1);
-				}
 			}
 		}
-		lines(function (a, b) {
-			return m[a][b];
-		});
-		lines(function (a, b) {
-			return m[b][a];
-		});
-		for (y = 0; y < size; y++) {
-			for (x = 0; x < size; x++) {
+		if (run >= 5) penalty += run - 2;
+		var pad = "0000" + s + "0000";
+		penalty += countPatternOccurrences(pad, "10111010000") * 40;
+		penalty += countPatternOccurrences(pad, "00001011101") * 40;
+		return penalty;
+	}
+
+	function qrLinesPenalty(size, get) {
+		var penalty = 0;
+		for (var a = 0; a < size; a++) {
+			var s = "";
+			for (var b = 0; b < size; b++) {
+				s += get(a, b) ? "1" : "0";
+			}
+			penalty += qrLineRunsPenalty(s);
+		}
+		return penalty;
+	}
+
+	function is2x2Block(m, x, y) {
+		var c = m[y][x];
+		if (c !== m[y][x + 1]) return false;
+		if (c !== m[y + 1][x]) return false;
+		return c === m[y + 1][x + 1];
+	}
+
+	function qrPenaltyBlocksAndDark(m, size) {
+		var p = 0;
+		var dark = 0;
+		var limit = size - 1;
+		for (var y = 0; y < size; y++) {
+			for (var x = 0; x < size; x++) {
 				if (m[y][x]) dark++;
-				if (x < size - 1 && y < size - 1) {
-					c = m[y][x];
-					if (c === m[y][x + 1] && c === m[y + 1][x] && c === m[y + 1][x + 1])
-						p += 3;
+				if (x < limit && y < limit && is2x2Block(m, x, y)) {
+					p += 3;
 				}
 			}
 		}
 		var total = size * size;
-		p +=
-			Math.max(0, Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+		var ratioDeviation = Math.abs(dark * 20 - total * 10);
+		p += Math.max(0, Math.ceil(ratioDeviation / total) - 1) * 10;
 		return p;
+	}
+
+	function qrPenalty(m, size) {
+		var p1 = qrLinesPenalty(size, function (a, b) {
+			return m[a][b];
+		});
+		var p2 = qrLinesPenalty(size, function (a, b) {
+			return m[b][a];
+		});
+		var p3 = qrPenaltyBlocksAndDark(m, size);
+		return p1 + p2 + p3;
 	}
 
 	// Returns {version, ecl, size, modules[y][x] booleans} or null when the text
@@ -2203,35 +2344,12 @@
 			}
 		}
 		function applyMask(mask) {
-			var yy, xx, inv;
-			for (yy = 0; yy < size; yy++) {
-				for (xx = 0; xx < size; xx++) {
-					switch (mask) {
-						case 0:
-							inv = (xx + yy) % 2 === 0;
-							break;
-						case 1:
-							inv = yy % 2 === 0;
-							break;
-						case 2:
-							inv = xx % 3 === 0;
-							break;
-						case 3:
-							inv = (xx + yy) % 3 === 0;
-							break;
-						case 4:
-							inv = (Math.floor(xx / 3) + Math.floor(yy / 2)) % 2 === 0;
-							break;
-						case 5:
-							inv = ((xx * yy) % 2) + ((xx * yy) % 3) === 0;
-							break;
-						case 6:
-							inv = (((xx * yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
-							break;
-						default:
-							inv = (((xx + yy) % 2) + ((xx * yy) % 3)) % 2 === 0;
+			var isMasked = QR_MASKS[mask] || QR_MASKS[0];
+			for (var yy = 0; yy < size; yy++) {
+				for (var xx = 0; xx < size; xx++) {
+					if (!fn[yy][xx] && isMasked(xx, yy)) {
+						mod[yy][xx] = !mod[yy][xx];
 					}
-					if (inv && !fn[yy][xx]) mod[yy][xx] = !mod[yy][xx];
 				}
 			}
 		}
@@ -2298,24 +2416,32 @@
 		);
 	}
 
-	function encodeResult(result) {
-		result = result || {};
-		var payload = {
+	function defaultVal(val, fallback) {
+		return val != null ? val : fallback;
+	}
+
+	function buildResultPayload(res) {
+		return {
 			v: 1,
-			n: result.name || "",
-			t: result.title || "",
-			at: result.doneAt || new Date().toISOString(),
-			m: result.minutes != null ? result.minutes : 0,
-			e: result.exercises != null ? result.exercises : 0,
-			s: result.sets != null ? result.sets : 0,
-			sk: result.skipped != null ? result.skipped : 0,
-			tid: result.tid || "",
-			rpe: result.rpe != null ? result.rpe : null,
-			pl: result.plan || null,
+			n: res.name || "",
+			t: res.title || "",
+			at: res.doneAt || new Date().toISOString(),
+			m: defaultVal(res.minutes, 0),
+			e: defaultVal(res.exercises, 0),
+			s: defaultVal(res.sets, 0),
+			sk: defaultVal(res.skipped, 0),
+			tid: res.tid || "",
+			rpe: defaultVal(res.rpe, null),
+			pl: res.plan || null,
 		};
+	}
+
+	function encodeResult(result) {
+		var res = result || {};
+		var payload = buildResultPayload(res);
 		// Optional per-exercise detail, added later. Old readers ignore «x», and a
 		// code without it decodes to an empty log, so old and new codes both import.
-		var x = compactExerciseLog(result.log);
+		var x = compactExerciseLog(res.log);
 		if (x.length) payload.x = x;
 		return "TH1." + utf8ToB64url(JSON.stringify(payload));
 	}
