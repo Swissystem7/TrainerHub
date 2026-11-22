@@ -307,7 +307,13 @@
     <h1>🏋️ TrainerHub</h1>
     <div class="workout-title" id="workoutTitleBar">טוען אימון...</div>
   </div>
-  <button type="button" class="exit-btn" onclick="exitWorkout()" aria-label="יציאה מהאימון">✕ יציאה</button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem">
+      <input type="checkbox" id="fieldFocusLockToggle" aria-label="מצב מיקוד שטח">
+      <label for="fieldFocusLockToggle">מצב מיקוד שטח</label>
+    </div>
+    <button type="button" class="exit-btn" onclick="exitWorkout()" aria-label="יציאה מהאימון">✕ יציאה</button>
+  </div>
 </header>
 
 <!-- Progress bar -->
@@ -315,6 +321,7 @@
 <div class="progress-wrap" id="progressWrap" style="display:none" role="region" aria-label="התקדמות באימון">
   <div class="progress-info">
     <span id="progressLabel" aria-live="polite" aria-atomic="true">תרגיל 0 מתוך 0</span>
+    <span id="sessionProgressReadout" role="status" aria-live="polite">סט 0 מתוך 0</span>
     <span id="totalTimeLabel">⏱ 0:00</span>
   </div>
   <div class="progress-bar" role="progressbar" aria-labelledby="progressLabel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
@@ -410,6 +417,7 @@
 <script src="../js/live-tempo-cue.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
+<script src="../js/focus-lock-ui.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -1187,6 +1195,19 @@ function updateProgress() {
   document.getElementById('progressFill').style.width = pct + '%';
   const bar = document.getElementById('progressBar');
   if (bar) bar.setAttribute('aria-valuenow', String(Math.round(pct)));
+
+  const readout = document.getElementById('sessionProgressReadout');
+  if (readout && typeof THFocusLockUI !== 'undefined' && typeof THFocusLockUI.computeSessionProgressBar === 'function') {
+    let setsDone = 0;
+    let setsTotal = 0;
+    steps.forEach((s, i) => {
+      if (s.type !== 'exercise') return;
+      setsTotal++;
+      if (i < stepIdx) setsDone++;
+    });
+    const prog = THFocusLockUI.computeSessionProgressBar(setsDone, setsTotal);
+    readout.textContent = prog.text;
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -1652,10 +1673,31 @@ function finishWorkout() {
   if (loadedFromActive) TH.store.remove(TH.KEYS.active);
 }
 
+let activeFieldWakeLock = null;
+const fieldLockToggle = document.getElementById('fieldFocusLockToggle');
+if (fieldLockToggle) {
+  fieldLockToggle.addEventListener('change', async function () {
+    if (fieldLockToggle.checked) {
+      if (typeof THFocusLockUI !== 'undefined' && typeof THFocusLockUI.requestScreenWakeLock === 'function') {
+        activeFieldWakeLock = await THFocusLockUI.requestScreenWakeLock(navigator);
+      }
+    } else if (activeFieldWakeLock && typeof activeFieldWakeLock.release === 'function') {
+      try {
+        await activeFieldWakeLock.release();
+      } catch (_err) {}
+      activeFieldWakeLock = null;
+    }
+  });
+}
+
 function exitWorkout() {
   if (confirm('לצאת מהאימון?')) {
     clearCountdown();
     pauseElapsedTimer();
+    if (typeof activeFieldWakeLock !== 'undefined' && activeFieldWakeLock && typeof activeFieldWakeLock.release === 'function') {
+      try { activeFieldWakeLock.release(); } catch (_e) {}
+      activeFieldWakeLock = null;
+    }
     if (loadedFromActive) TH.store.remove(TH.KEYS.active);
     window.location.href = '../';
   }

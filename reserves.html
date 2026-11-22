@@ -88,6 +88,14 @@
     <div class="equip" id="equip" aria-label="ציוד נדרש"></div>
   </header>
 
+  <section class="card" id="focusLockSection" aria-label="מצב מיקוד שטח" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <input type="checkbox" id="fieldFocusLockToggle" aria-label="מצב מיקוד שטח">
+      <label for="fieldFocusLockToggle">מצב מיקוד שטח</label>
+    </div>
+    <div id="sessionProgressReadout" role="status" aria-live="polite" style="font-weight:600;">סט 0 מתוך 18</div>
+  </section>
+
   <nav class="tabs" aria-label="חלקי המסלול">
     <a href="#tests">המדדים</a>
     <a href="#status">סטטוס</a>
@@ -201,6 +209,7 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/focus-lock-ui.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -460,7 +469,41 @@
     });
   }
 
+  var reservesWakeLockSentinel = null;
+  function setupFieldFocusLock() {
+    var toggle = el('fieldFocusLockToggle');
+    if (!toggle) return;
+    toggle.addEventListener('change', function () {
+      if (toggle.checked) {
+        if (window.THFocusLockUI && typeof window.THFocusLockUI.requestScreenWakeLock === 'function') {
+          window.THFocusLockUI.requestScreenWakeLock(navigator).then(function (sentinel) {
+            reservesWakeLockSentinel = sentinel;
+          });
+        }
+      } else if (reservesWakeLockSentinel && typeof reservesWakeLockSentinel.release === 'function') {
+        try {
+          reservesWakeLockSentinel.release();
+        } catch (_err) {}
+        reservesWakeLockSentinel = null;
+      }
+    });
+  }
+
+  function updateReservesProgressReadout() {
+    var readout = el('sessionProgressReadout');
+    if (!readout) return;
+    var planner = window.THReservesPlanner;
+    var summary = planner && typeof planner.getReserveProgressSummary === 'function'
+      ? planner.getReserveProgressSummary()
+      : { completedCount: 0, percent: 0, activeWeek: 1 };
+    if (window.THFocusLockUI && typeof window.THFocusLockUI.computeSessionProgressBar === 'function') {
+      var prog = window.THFocusLockUI.computeSessionProgressBar(summary.completedCount || 0, 18);
+      readout.textContent = prog.text;
+    }
+  }
+
   function render6WeekTracker() {
+    updateReservesProgressReadout();
     var host = el('reserves6WeekTracker');
     if (!host) return;
     host.textContent = '';
@@ -800,6 +843,8 @@
     renderComparison();
     renderAdaptSessions();
     bindFeedback();
+    setupFieldFocusLock();
+    updateReservesProgressReadout();
     var strBtn = el('strShow');
     if (strBtn) strBtn.addEventListener('click', renderStrength);
   }
