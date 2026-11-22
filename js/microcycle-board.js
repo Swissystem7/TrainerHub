@@ -1,4 +1,4 @@
-(function (root, factory) {
+((root, factory) => {
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -6,13 +6,11 @@
   } else {
     root.THMicrocycleBoard = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function () {
-  'use strict';
-
+})(typeof self !== 'undefined' ? self : this, () => {
   function clone(obj) {
     if (obj === null || typeof obj !== 'object') return obj;
     var copy = Array.isArray(obj) ? [] : {};
-    Object.keys(obj).forEach(function (key) {
+    Object.keys(obj).forEach((key) => {
       copy[key] = clone(obj[key]);
     });
     return copy;
@@ -30,8 +28,8 @@
       toIdx < 0 ||
       fromIdx >= workouts.length ||
       toIdx >= workouts.length ||
-      isNaN(fromIdx) ||
-      isNaN(toIdx)
+      Number.isNaN(fromIdx) ||
+      Number.isNaN(toIdx)
     ) {
       return schedule;
     }
@@ -40,9 +38,9 @@
     var temp = list[fromIdx];
     list[fromIdx] = list[toIdx];
     list[toIdx] = temp;
-    
+
     // Re-index days
-    list.forEach(function (w, i) {
+    list.forEach((w, i) => {
       if (w && typeof w === 'object') {
         w.day = i + 1;
       }
@@ -56,7 +54,7 @@
     }
     var copySchedule = clone(schedule);
     var workouts = copySchedule.dailyWorkouts;
-    var idx = typeof index === 'number' && !isNaN(index) ? index : workouts.length;
+    var idx = typeof index === 'number' && !Number.isNaN(index) ? index : workouts.length;
     if (idx < 0) idx = 0;
     if (idx > workouts.length) idx = workouts.length;
 
@@ -92,7 +90,7 @@
     };
 
     workouts.splice(idx, 0, recoveryWorkout);
-    workouts.forEach(function (w, i) {
+    workouts.forEach((w, i) => {
       if (w && typeof w === 'object') {
         w.day = i + 1;
       }
@@ -103,12 +101,12 @@
   function initMicrocycleBoard() {
     var panels = document.querySelectorAll('#microcycleBoardPanel, .microcycle-board-panel');
     if (!panels.length) return;
-    panels.forEach(function (panel) {
+    panels.forEach((panel) => {
       if (panel.dataset.initialized) return;
       panel.dataset.initialized = 'true';
       var btn = panel.querySelector('#addRecoveryDayBtn, .add-recovery-day-btn');
       if (btn) {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', () => {
           var event = new CustomEvent('microcycle:add-recovery', { bubbles: true });
           panel.dispatchEvent(event);
         });
@@ -129,4 +127,4 @@
     insertActiveRecoveryDay: insertActiveRecoveryDay,
     initMicrocycleBoard: initMicrocycleBoard
   };
-}));
+});

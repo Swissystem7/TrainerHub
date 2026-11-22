@@ -1,5 +1,3 @@
-'use strict';
-
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -7,10 +5,10 @@ const path = require('node:path');
 const board = require('../js/microcycle-board.js');
 
 const root = path.join(__dirname, '..');
-const weeklyHtml = fs.readFileSync(path.join(root, 'weekly.html'), 'utf8');
-const reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
+const _weeklyHtml = fs.readFileSync(path.join(root, 'weekly.html'), 'utf8');
+const _reservesHtml = fs.readFileSync(path.join(root, 'reserves.html'), 'utf8');
 
-test('shiftWorkoutDay correctly swaps two days and re-indexes', function () {
+test('shiftWorkoutDay correctly swaps two days and re-indexes', () => {
   const schedule = {
     dailyWorkouts: [
       { day: 1, title: 'Day One' },
@@ -24,7 +22,7 @@ test('shiftWorkoutDay correctly swaps two days and re-indexes', function () {
   assert.equal(updated.dailyWorkouts[1].day, 2);
 });
 
-test('shiftWorkoutDay preserves other days unchanged when index is invalid', function () {
+test('shiftWorkoutDay preserves other days unchanged when index is invalid', () => {
   const schedule = {
     dailyWorkouts: [
       { day: 1, title: 'A' },
@@ -36,7 +34,7 @@ test('shiftWorkoutDay preserves other days unchanged when index is invalid', fun
   assert.equal(updated.dailyWorkouts[1].title, 'B');
 });
 
-test('insertActiveRecoveryDay adds a recovery day at specified index and re-indexes', function () {
+test('insertActiveRecoveryDay adds a recovery day at specified index and re-indexes', () => {
   const schedule = {
     dailyWorkouts: [
       { day: 1, title: 'Push' },
@@ -51,13 +49,13 @@ test('insertActiveRecoveryDay adds a recovery day at specified index and re-inde
   assert.equal(updated.dailyWorkouts[2].day, 3);
 });
 
-test('board handles null or invalid schedule gracefully without throwing', function () {
+test('board handles null or invalid schedule gracefully without throwing', () => {
   const res1 = board.shiftWorkoutDay(null, 0, 1);
   assert.equal(res1, null);
   const res2 = board.insertActiveRecoveryDay({ dailyWorkouts: null }, 0);
   assert.deepEqual(res2.dailyWorkouts, null);
 });
 
-test('microcycle board module exports initMicrocycleBoard', function () {
+test('microcycle board module exports initMicrocycleBoard', () => {
   assert.equal(typeof board.initMicrocycleBoard, 'function');
 });
