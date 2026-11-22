@@ -77,6 +77,17 @@
     <p>מדביקים את קוד <code>TH1</code> שהמתאמן מעתיק ממסך הסיום. הרשת היא 28 יום אחרונים. «הצע שבוע הבא» משנה סטים לפי קושי ודילוגים.</p>
   </header>
 
+  <section class="card" id="mesocycleAdvisorBanner" aria-labelledby="mesocycleAdvisorHeading">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <h2 id="mesocycleAdvisorHeading" style="margin:0 0 4px;">יועץ מחזור אימונים (6-8 שבועות)</h2>
+        <span class="chip mesocycle-badge" id="mesocycleBadge" data-role="badge">שבוע 0 מתוך 6-8</span>
+      </div>
+      <button type="button" class="th-btn" id="startMesocycleBtn" aria-label="התחל מחזור 6 שבועות חדש">התחל מחזור 6 שבועות חדש</button>
+    </div>
+    <p class="mesocycle-message" id="mesocycleMessage" data-role="message" role="status" aria-live="polite" style="margin:12px 0 0;color:var(--muted);font-size:14px;"></p>
+  </section>
+
   <form class="card" id="importForm" role="region" aria-labelledby="importHeading">
     <h2 id="importHeading">ייבוא קוד מהוואטסאפ</h2>
     <label for="importCode">קוד TH1 או JSON</label>
@@ -276,6 +287,7 @@
 <script src="./js/muscle-balance.js"></script>
 <script src="./js/coach-profiles.js"></script>
 <script src="./js/plan-link-codec.js"></script>
+<script src="./js/mesocycle-advisor.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
@@ -377,7 +389,36 @@
     if (wanted && clients.some(function (c) { return c.id === wanted; })) select.value = wanted;
   }
 
+  function renderMesocycleAdvisor() {
+    if (window.THMesocycleAdvisor && typeof window.THMesocycleAdvisor.updateMesocycleBanner === 'function') {
+      var banner = $('mesocycleAdvisorBanner');
+      if (!banner) return;
+      var totalSessions = 0;
+      for (var ci = 0; ci < clients.length; ci++) {
+        totalSessions += (clients[ci].entries ? clients[ci].entries.length : 0);
+      }
+      window.THMesocycleAdvisor.updateMesocycleBanner(banner, null, totalSessions);
+    }
+  }
+
+  function handleStartNewMesocycle() {
+    try {
+      var nowStr = new Date().toISOString();
+      if (window.THMesocycleAdvisor && window.THMesocycleAdvisor.setMesocycleStartDate) {
+        window.THMesocycleAdvisor.setMesocycleStartDate(nowStr);
+      } else if (typeof localStorage !== 'undefined' && localStorage) {
+        localStorage.setItem('trainerhub_mesocycle_start', nowStr);
+      }
+    } catch (e) {
+      var msgEl = $('mesocycleMessage');
+      if (msgEl) msgEl.textContent = 'שגיאת אחסון מקומי: לא ניתן היה לשמור את תאריך התחלת המחזור.';
+      return;
+    }
+    renderMesocycleAdvisor();
+  }
+
   function render(selectedClientId) {
+    renderMesocycleAdvisor();
     refreshCoachClients(selectedClientId);
     var list = $('list');
     if (!clients.length) {
@@ -1563,6 +1604,22 @@
       var remindTimer = setInterval(remindCheck, 30 * 60 * 1000);
       if (remindTimer && remindTimer.unref) remindTimer.unref();
     }
+  }
+
+  var startMesoBtn = $('startMesocycleBtn');
+  if (startMesoBtn && startMesoBtn.addEventListener) {
+    startMesoBtn.addEventListener('click', handleStartNewMesocycle);
+  }
+  if (window.THMesocycleAdvisor && typeof window.THMesocycleAdvisor.initMesocycleAdvisor === 'function') {
+    window.THMesocycleAdvisor.initMesocycleAdvisor('mesocycleAdvisorBanner', {
+      getSessions: function () {
+        var total = 0;
+        for (var ci = 0; ci < clients.length; ci++) {
+          total += (clients[ci].entries ? clients[ci].entries.length : 0);
+        }
+        return total;
+      }
+    });
   }
 
   render();
