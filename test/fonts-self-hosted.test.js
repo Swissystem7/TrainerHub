@@ -27,7 +27,7 @@ test('no page, stylesheet or script asks Google Fonts for anything', () => {
 
 test('every page that used Heebo now loads css/fonts.css once, with the right relative path', () => {
   const withFonts = PAGES.filter((f) => /fonts\.css/.test(fs.readFileSync(path.join(ROOT, f), 'utf8')));
-  assert.equal(withFonts.length, 15, 'the 15 pages that loaded Heebo from Google Fonts');
+  assert.equal(withFonts.length, 16, 'the 15 pages that loaded Heebo from Google Fonts, plus the privacy page');
   for (const f of withFonts) {
     const html = fs.readFileSync(path.join(ROOT, f), 'utf8');
     const prefix = f.startsWith('frontend/') ? '../' : './';
