@@ -268,7 +268,7 @@ test('7) index.html and reserves.html link manifest.webmanifest in <head>', () =
 test('8) index.html safely registers sw.js and renders new version update notice', () => {
   assert.match(
     indexHtml,
-    /navigator\.serviceWorker\.register\s*\(\s*['"](?:\.\/)?sw\.js['"]\s*\)/,
+    /navigator\.serviceWorker\s*\.\s*register\s*\(\s*['"](?:\.\/)?sw\.js['"]\s*\)/,
     'index.html must register sw.js'
   );
   assert.match(indexHtml, /id=["']pwa-update-notice["']/, 'index.html must contain pwa-update-notice banner element');

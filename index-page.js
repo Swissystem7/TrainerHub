@@ -1,4 +1,3 @@
-
 (() => {
   var $ = (id) => document.getElementById(id);
   var trackStartedAt = 0;
@@ -81,7 +80,9 @@
       if (TH.shareQrMarkup) host.insertAdjacentHTML('afterend', TH.shareQrMarkup(shared.url));
       TH.copyOrShow(shared.url, host, () => {
         $('copyBtn').textContent = 'הועתק';
-        setTimeout(() => { $('copyBtn').textContent = 'שתף אימון ללקוח'; }, 1400);
+        setTimeout(() => {
+          $('copyBtn').textContent = 'שתף אימון ללקוח';
+        }, 1400);
       });
     });
     var shareWaBtn = $('shareWorkoutWhatsappBtn');
@@ -131,96 +132,129 @@
     else if (ex.sets && ex.duration_seconds) bits.push(ex.sets + ' × ' + ex.duration_seconds + ' שנ׳');
     else if (ex.sets > 1) bits.push(ex.sets + ' סטים');
     if (ex.rest_seconds) bits.push('מנוחה ' + ex.rest_seconds + ' שנ׳');
-    String(ex.notes || '').split(' · ').forEach((note) => {
-      note = note.trim();
-      if (note && note !== 'חסר סרטון') bits.push(note);
-    });
+    String(ex.notes || '')
+      .split(' · ')
+      .forEach((note) => {
+        note = note.trim();
+        if (note && note !== 'חסר סרטון') bits.push(note);
+      });
     return bits;
   }
 
   function render(built) {
     var box = $('result');
     if (!built || !built.workout) {
-      box.innerHTML = '<div class="card notice" role="status"><p>' + TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') + '</p></div>';
+      box.innerHTML =
+        '<div class="card notice" role="status"><p>' +
+        TH.esc((built && built.notice) || 'לא הצלחנו לבנות אימון.') +
+        '</p></div>';
       return;
     }
     var w = built.workout;
     activeBuiltWorkout = w;
     var exp = built.explanation || {};
     var stim = exp.stimulus || {};
-    var notice = built.notice
-      ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>'
-      : '';
+    var notice = built.notice ? '<div class="card notice" role="status"><p>' + TH.esc(built.notice) + '</p></div>' : '';
     var flags = (exp.flags || []).length
       ? '<ul class="flags">' + exp.flags.map((f) => '<li>' + TH.esc(f.he) + '</li>').join('') + '</ul>'
       : '';
-    var phases = (w.phases || []).map((ph) => {
-      if (!(ph.exercises || []).length) return '';
-      var label = TH.phaseLabel(ph.name);
-      var rows = (ph.exercises || []).map((ex) => {
-        var reason = (exp.reasons || []).filter((r) => r.id === ex.id)[0];
-        var bits = exerciseBits(ex);
-        var clip = ex.id ? TH.findExercise(ex) : null;
-        var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
-        var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
-        return '<div class="ex"><b>' + TH.esc(ex.name) +
-          (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
-          '</b>' + (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
-          miss + media + '</div>';
-      }).join('');
-      return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
-    }).join('');
+    var phases = (w.phases || [])
+      .map((ph) => {
+        if (!(ph.exercises || []).length) return '';
+        var label = TH.phaseLabel(ph.name);
+        var rows = (ph.exercises || [])
+          .map((ex) => {
+            var reason = (exp.reasons || []).filter((r) => r.id === ex.id)[0];
+            var bits = exerciseBits(ex);
+            var clip = ex.id ? TH.findExercise(ex) : null;
+            var media = clip ? TH.mediaMarkup(clip, { className: 'ex-media' }) : '';
+            var miss = ex.missing ? '<div class="missing">חסר סרטון — מוצג כטקסט בלבד</div>' : '';
+            return (
+              '<div class="ex"><b>' +
+              TH.esc(ex.name) +
+              (bits.length ? ' <span class="pill">' + TH.esc(bits.join(' · ')) + '</span>' : '') +
+              '</b>' +
+              (reason ? '<div class="why">' + TH.esc(reason.why) + '</div>' : '') +
+              miss +
+              media +
+              '</div>'
+            );
+          })
+          .join('');
+        return '<h3 class="phase">' + TH.esc(label) + '</h3>' + rows;
+      })
+      .join('');
     // Every assumption behind the plan, with its source, so it can be read before «התחל אימון».
-    var rules = built.request
-      ? TH.rulesMarkup(built, { className: 'rules', title: 'הנחות האימון ומקורותיהן' })
-      : '';
+    var rules = built.request ? TH.rulesMarkup(built, { className: 'rules', title: 'הנחות האימון ומקורותיהן' }) : '';
     var equipment = (w.equipment || []).length ? w.equipment.join(', ') : 'לפי המאגר';
-    var groupPlan = w.group_plan && w.group_plan.he
-      ? '<p class="stim"><strong>סידור קבוצה:</strong> ' + TH.esc(w.group_plan.he) + '</p>'
-      : '';
+    var groupPlan =
+      w.group_plan && w.group_plan.he
+        ? '<p class="stim"><strong>סידור קבוצה:</strong> ' + TH.esc(w.group_plan.he) + '</p>'
+        : '';
 
-    box.innerHTML = notice +
+    box.innerHTML =
+      notice +
       '<article class="card">' +
-        '<h2>' + TH.esc(w.title) + '</h2>' +
-        '<div class="meta">' +
-          (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
-          '<span class="pill">זמן: ' + TH.esc(TH.durationLabel(w.duration_minutes, exp.durationMinutes)) + '</span>' +
-          '<span class="pill">ציוד: ' + TH.esc(equipment) + '</span>' +
-          '<span class="pill">חניכים: ' + TH.esc(w.participants || 1) + '</span>' +
-          '<span class="pill">ראשי: ' + TH.esc(muscleList(exp.primary)) + '</span>' +
-          '<span class="pill">משני: ' + TH.esc(muscleList(exp.secondary)) + '</span>' +
-        '</div>' +
-        (stim.he
-          ? '<p class="stim"><strong>גירוי צפוי: ' + TH.esc(stim.he) + '</strong>' +
-            '<small>' + TH.esc(stim.detail || '') + ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
-          : '') +
-        flags +
-        groupPlan +
-        '<section id="warmupSection" class="warmup-section" aria-label="חימום ממוקד ומוביליטי"></section>' +
-        phases +
-        rules +
-        '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
-          '<label for="liveWorkoutTempoSelect" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem">' +
-            '<span>קצב מבוקר:</span>' +
-            '<select id="liveWorkoutTempoSelect" aria-label="בחירת קצב ביצוע לפני תחילת אימון חי" style="background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:6px;padding:4px 8px">' +
-              '<option value="none">רגיל (ללא קצב מבוקר)</option>' +
-              '<option value="3-1-1" selected>קצב מבוקר 3-1-1</option>' +
-              '<option value="3-1-2">קצב איטי ומבוקר 3-1-2</option>' +
-              '<option value="4-2-1">אקסצנטרי מודגש 4-2-1</option>' +
-            '</select>' +
-          '</label>' +
-          '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
-          '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
-          '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
-          '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
-          '<button type="button" class="th-btn ghost" id="shareWorkoutWhatsappBtn" aria-label="שתף אימון בוואטסאפ">שתף בוואטסאפ</button>' +
-          '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
-        '</div>' +
+      '<h2>' +
+      TH.esc(w.title) +
+      '</h2>' +
+      '<div class="meta">' +
+      (exp.type ? '<span class="pill">' + TH.esc(exp.type) + '</span>' : '') +
+      '<span class="pill">זמן: ' +
+      TH.esc(TH.durationLabel(w.duration_minutes, exp.durationMinutes)) +
+      '</span>' +
+      '<span class="pill">ציוד: ' +
+      TH.esc(equipment) +
+      '</span>' +
+      '<span class="pill">חניכים: ' +
+      TH.esc(w.participants || 1) +
+      '</span>' +
+      '<span class="pill">ראשי: ' +
+      TH.esc(muscleList(exp.primary)) +
+      '</span>' +
+      '<span class="pill">משני: ' +
+      TH.esc(muscleList(exp.secondary)) +
+      '</span>' +
+      '</div>' +
+      (stim.he
+        ? '<p class="stim"><strong>גירוי צפוי: ' +
+          TH.esc(stim.he) +
+          '</strong>' +
+          '<small>' +
+          TH.esc(stim.detail || '') +
+          ' זה תיאור של העומס, לא הבטחת תוצאה.</small></p>'
+        : '') +
+      flags +
+      groupPlan +
+      '<section id="warmupSection" class="warmup-section" aria-label="חימום ממוקד ומוביליטי"></section>' +
+      phases +
+      rules +
+      '<div class="actions" role="toolbar" aria-label="פעולות אימון">' +
+      '<label for="liveWorkoutTempoSelect" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem">' +
+      '<span>קצב מבוקר:</span>' +
+      '<select id="liveWorkoutTempoSelect" aria-label="בחירת קצב ביצוע לפני תחילת אימון חי" style="background:#0A1513;color:#E8F1EE;border:1px solid #28423C;border-radius:6px;padding:4px 8px">' +
+      '<option value="none">רגיל (ללא קצב מבוקר)</option>' +
+      '<option value="3-1-1" selected>קצב מבוקר 3-1-1</option>' +
+      '<option value="3-1-2">קצב איטי ומבוקר 3-1-2</option>' +
+      '<option value="4-2-1">אקסצנטרי מודגש 4-2-1</option>' +
+      '</select>' +
+      '</label>' +
+      '<button type="button" class="th-btn" id="startBtn" aria-label="התחל אימון במצב חי">התחל אימון</button>' +
+      '<button type="button" class="th-btn ghost" id="startLiveWorkoutBtn" aria-label="התחל אימון חי">התחל אימון חי</button>' +
+      '<button type="button" class="th-btn ghost" id="previewBtn" aria-label="פתח קישור אימון לתצוגת מתאמן">פתח כמתאמן</button>' +
+      '<button type="button" class="th-btn ghost" id="copyBtn" aria-label="שתף אימון ללקוח">שתף אימון ללקוח</button>' +
+      '<button type="button" class="th-btn ghost" id="shareWorkoutWhatsappBtn" aria-label="שתף אימון בוואטסאפ">שתף בוואטסאפ</button>' +
+      '<button type="button" class="th-btn ghost" id="pdfBtn" aria-label="דף להדפסה או שמירה כ־PDF">דף להדפסה / PDF</button>' +
+      '</div>' +
       '</article>';
 
     bindWorkoutActions(w);
     var warmupBlock = built.warmupBlock || (w && w.warmupBlock);
-    if (!warmupBlock && typeof THWarmupGenerator !== 'undefined' && typeof THWarmupGenerator.generateTargetedWarmup === 'function') {
+    if (
+      !warmupBlock &&
+      typeof THWarmupGenerator !== 'undefined' &&
+      typeof THWarmupGenerator.generateTargetedWarmup === 'function'
+    ) {
       warmupBlock = THWarmupGenerator.generateTargetedWarmup(w, built.request || {}, TH.catalogList());
     }
     var warmupEl = $('warmupSection');
@@ -303,7 +337,13 @@
   }
 
   function renderAdaptationCard(report, container) {
-    if (!report || !container || typeof document.createElement !== 'function' || typeof container.appendChild !== 'function') return;
+    if (
+      !report ||
+      !container ||
+      typeof document.createElement !== 'function' ||
+      typeof container.appendChild !== 'function'
+    )
+      return;
 
     const card = document.createElement('section');
     card.className = 'card adaptation-card';
@@ -401,29 +441,38 @@
     var notice = unmatched.length
       ? '<div class="card notice" role="status"><p>' +
         // One missing clip read «1 תרגילים בלי סרטון במאגר. הם מוצגים…».
-        TH.esc(unmatched.length === 1
-          ? 'תרגיל אחד בלי סרטון במאגר. הוא מוצג כטקסט ונוסף לרשימת «סרטונים שכדאי לצלם».'
-          : unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».') +
-        '</p><ul class="flags">' + unmatched.map((n) => '<li>' + TH.esc(n) + '</li>').join('') + '</ul></div>'
+        TH.esc(
+          unmatched.length === 1
+            ? 'תרגיל אחד בלי סרטון במאגר. הוא מוצג כטקסט ונוסף לרשימת «סרטונים שכדאי לצלם».'
+            : unmatched.length + ' תרגילים בלי סרטון במאגר. הם מוצגים כטקסט ונוספו לרשימת «סרטונים שכדאי לצלם».'
+        ) +
+        '</p><ul class="flags">' +
+        unmatched.map((n) => '<li>' + TH.esc(n) + '</li>').join('') +
+        '</ul></div>'
       : '';
     render({
       workout: w,
       notice: null,
-      explanation: analysis ? {
-        type: 'אימון שנקלט מטקסט',
-        durationMinutes: analysis.durationMinutes,
-        primary: analysis.primary,
-        secondary: analysis.secondary,
-        stimulus: analysis.stimulus,
-        flags: analysis.flags,
-        reasons: []
-      } : { type: 'אימון שנקלט מטקסט', primary: [], secondary: [], stimulus: {}, flags: [], reasons: [] }
+      explanation: analysis
+        ? {
+            type: 'אימון שנקלט מטקסט',
+            durationMinutes: analysis.durationMinutes,
+            primary: analysis.primary,
+            secondary: analysis.secondary,
+            stimulus: analysis.stimulus,
+            flags: analysis.flags,
+            reasons: []
+          }
+        : { type: 'אימון שנקלט מטקסט', primary: [], secondary: [], stimulus: {}, flags: [], reasons: [] }
     });
     if (notice) $('result').insertAdjacentHTML('afterbegin', notice);
     if (wish) {
-      $('result').insertAdjacentHTML('beforeend',
-        '<div class="card"><h2>סרטונים שכדאי לצלם</h2><ul class="flags">' + wish +
-        '</ul><p class="honest"><a href="./manage.html">ניהול מאגר</a> — הוספת סרטון בלי לגעת בקוד.</p></div>');
+      $('result').insertAdjacentHTML(
+        'beforeend',
+        '<div class="card"><h2>סרטונים שכדאי לצלם</h2><ul class="flags">' +
+          wish +
+          '</ul><p class="honest"><a href="./manage.html">ניהול מאגר</a> — הוספת סרטון בלי לגעת בקוד.</p></div>'
+      );
     }
   }
 
@@ -485,7 +534,10 @@
       return;
     }
     box.hidden = false;
-    box.innerHTML = TH.mediaMarkup({ he: 'סרטון לפיצול', driveId: id, source: 'drive' }, { className: 'ex-media', eager: true });
+    box.innerHTML = TH.mediaMarkup(
+      { he: 'סרטון לפיצול', driveId: id, source: 'drive' },
+      { className: 'ex-media', eager: true }
+    );
   }
 
   function elapsedSec() {
@@ -496,9 +548,18 @@
   function fillSegSelect() {
     var sel = $('segSource');
     var opts = ['<option value="">בחרו סרטון מהמאגר…</option>'];
-    TH.catalogList().filter((e) => e.driveId && e.startSec == null).forEach((e) => {
-      opts.push('<option value="' + TH.esc(e.id) + '">' + TH.esc(e.he) + (e.folder ? ' · ' + TH.esc(e.folder) : '') + '</option>');
-    });
+    TH.catalogList()
+      .filter((e) => e.driveId && e.startSec == null)
+      .forEach((e) => {
+        opts.push(
+          '<option value="' +
+            TH.esc(e.id) +
+            '">' +
+            TH.esc(e.he) +
+            (e.folder ? ' · ' + TH.esc(e.folder) : '') +
+            '</option>'
+        );
+      });
     sel.innerHTML = opts.join('');
   }
 
@@ -541,14 +602,16 @@
 
     var promptEl = $('prompt');
     if (promptEl) {
-      var promptText = recommendation.suggestedPrompt || ('אימון ' + (recommendation.shortLabel || focusGroup) + ' 20 דקות');
+      var promptText =
+        recommendation.suggestedPrompt || 'אימון ' + (recommendation.shortLabel || focusGroup) + ' 20 דקות';
       promptEl.value = promptText;
       syncFieldsFromPrompt();
     }
 
     var statusEl = $('balancedFocusStatus');
     if (statusEl) {
-      statusEl.textContent = 'הוחל מיקוד מומלץ: ' + (recommendation.shortLabel || focusGroup) + ' (' + (recommendation.reason || '') + ')';
+      statusEl.textContent =
+        'הוחל מיקוד מומלץ: ' + (recommendation.shortLabel || focusGroup) + ' (' + (recommendation.reason || '') + ')';
     }
   }
 
@@ -567,7 +630,9 @@
         btn.style.color = supersetEnabled ? 'var(--th-teal-ink)' : '';
       }
       if (out) {
-        out.textContent = supersetEnabled ? 'מצב סופר-סטים מופעל (ישולבו זוגות שרירים אנטגוניסטיים)' : 'מצב סופר-סטים כבוי';
+        out.textContent = supersetEnabled
+          ? 'מצב סופר-סטים מופעל (ישולבו זוגות שרירים אנטגוניסטיים)'
+          : 'מצב סופר-סטים כבוי';
       }
       run();
     });
@@ -597,7 +662,8 @@
     e.preventDefault();
     var text = $('ingestText').value.trim();
     if (!text) {
-      $('result').innerHTML = '<p class="empty" role="status">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
+      $('result').innerHTML =
+        '<p class="empty" role="status">הדביקו אימון — למשל «3 סבבים: 40 שניות פלאנק, 15 שכיבות שמיכה».</p>';
       return;
     }
     renderIngest(THIngest.ingestText(text));
@@ -666,8 +732,13 @@
     var host = $('customTemplatesList');
     if (!host) return;
     host.textContent = '';
-    var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
-    var list = (CT && typeof CT.listCustomTemplates === 'function') ? CT.listCustomTemplates() : [];
+    var CT =
+      typeof CustomTemplates !== 'undefined'
+        ? CustomTemplates
+        : typeof window !== 'undefined'
+          ? window.CustomTemplates
+          : null;
+    var list = CT && typeof CT.listCustomTemplates === 'function' ? CT.listCustomTemplates() : [];
     if (!list.length) {
       if (typeof document.createElement === 'function') {
         var p = document.createElement('p');
@@ -701,10 +772,12 @@
       loadBtn.addEventListener('click', function () {
         var w = tpl.workout;
         if (!w) return;
-        var planToRender = w.phases ? w : {
-          title: tpl.name,
-          phases: [{ name: 'Main', exercises: Array.isArray(w.exercises) ? w.exercises : [] }]
-        };
+        var planToRender = w.phases
+          ? w
+          : {
+              title: tpl.name,
+              phases: [{ name: 'Main', exercises: Array.isArray(w.exercises) ? w.exercises : [] }]
+            };
         activeBuiltWorkout = planToRender;
         if (window.TH && window.TH.store) {
           TH.store.set(TH.KEYS.active, planToRender);
@@ -755,14 +828,19 @@
       saveBtn.addEventListener('click', function () {
         var w = activeBuiltWorkout;
         var promptVal = $('prompt') ? $('prompt').value.trim() : '';
-        var name = (w && w.title && w.title !== 'לא הצלחנו לבנות אימון.') ? w.title : (promptVal || 'תבנית אישית');
+        var name = w && w.title && w.title !== 'לא הצלחנו לבנות אימון.' ? w.title : promptVal || 'תבנית אישית';
         if (!w) {
           w = {
             title: name,
             phases: [{ name: 'Main', exercises: [] }]
           };
         }
-        var CT = typeof CustomTemplates !== 'undefined' ? CustomTemplates : (typeof window !== 'undefined' ? window.CustomTemplates : null);
+        var CT =
+          typeof CustomTemplates !== 'undefined'
+            ? CustomTemplates
+            : typeof window !== 'undefined'
+              ? window.CustomTemplates
+              : null;
         if (CT && typeof CT.saveCustomTemplate === 'function') {
           var saved = CT.saveCustomTemplate(name, w);
           if (saved) {
@@ -788,38 +866,41 @@
 
   if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').then((reg) => {
-        const showUpdateNotice = () => {
-          const banner = document.getElementById('pwa-update-notice');
-          if (banner) banner.style.display = 'block';
-        };
+      navigator.serviceWorker
+        .register('./sw.js')
+        .then((reg) => {
+          const showUpdateNotice = () => {
+            const banner = document.getElementById('pwa-update-notice');
+            if (banner) banner.style.display = 'block';
+          };
 
-        if (reg.waiting) {
-          showUpdateNotice();
-        }
+          if (reg.waiting) {
+            showUpdateNotice();
+          }
 
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          if (!newWorker) return;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              showUpdateNotice();
-            }
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                showUpdateNotice();
+              }
+            });
           });
+
+          const refreshBtn = document.getElementById('pwa-refresh-btn');
+          if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => {
+              if (reg.waiting) {
+                reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+              }
+              window.location.reload();
+            });
+          }
+        })
+        .catch((err) => {
+          console.warn('Service worker registration failed:', err);
         });
-
-        const refreshBtn = document.getElementById('pwa-refresh-btn');
-        if (refreshBtn) {
-          refreshBtn.addEventListener('click', () => {
-            if (reg.waiting) {
-              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-            }
-            window.location.reload();
-          });
-        }
-      }).catch((err) => {
-        console.warn('Service worker registration failed:', err);
-      });
     });
   }
 })();
