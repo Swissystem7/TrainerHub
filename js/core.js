@@ -5307,6 +5307,15 @@
 		return root.THReadyWorkouts || null;
 	}
 	api.readyWorkouts = readyWorkouts;
+	api.filterJournalSessions = function (sessions, queryOptions) {
+		var mod =
+			root.THJournalSearch ||
+			(typeof require === "function" ? require("./journal-search.js") : null);
+		if (mod && typeof mod.filterJournalSessions === "function") {
+			return mod.filterJournalSessions(sessions, queryOptions);
+		}
+		return Array.isArray(sessions) ? sessions.slice() : [];
+	};
 
 	if (typeof module === "object" && module.exports) {
 		try {
@@ -5316,6 +5325,12 @@
 			enumerable: true,
 			get: function () {
 				return require("./journal-storage.js");
+			},
+		});
+		Object.defineProperty(api, "journalSearch", {
+			enumerable: true,
+			get: function () {
+				return require("./journal-search.js");
 			},
 		});
 		module.exports = api;

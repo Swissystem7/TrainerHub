@@ -231,6 +231,18 @@
     </ul>
   </section>
 
+  <section id="intervalClockPanel" aria-labelledby="intervalClockHeading">
+    <h2 id="intervalClockHeading">שעון מרווחים</h2>
+    <p class="muted">EMOM, טבטה או AMRAP — השעון מתקדם בזמן שהעמוד פתוח.</p>
+    <label for="intervalModeSelect">מצב שעון</label>
+    <select id="intervalModeSelect" aria-label="בחירת שעון מרווחים">
+      <option value="emom">EMOM — דקה כל סבב</option>
+      <option value="tabata" selected>טבטה — 20 עבודה / 10 מנוחה</option>
+      <option value="amrap">AMRAP — כמה שיותר בזמן</option>
+    </select>
+    <output id="intervalClockDisplay" role="status" aria-live="polite" class="status-box incomplete">טבטה · סבב 1 מתוך 8 · עבודה · 20 שניות</output>
+  </section>
+
 </main>
 
 <script src="./js/core.js"></script>
@@ -240,6 +252,7 @@
 <script src="./js/group-scoreboard.js"></script>
 <script src="./frontend/netanya-opening.js"></script>
 <script src="./js/th-nav.js"></script>
+<script src="./js/interval-clock.js"></script>
 <script>
 (() => {
   'use strict';
@@ -1085,6 +1098,30 @@
       });
     });
   }
+})();
+</script>
+<script>
+(() => {
+  'use strict';
+  const select = document.getElementById('intervalModeSelect');
+  const display = document.getElementById('intervalClockDisplay');
+  if (typeof THIntervalClock === 'undefined' || !select || !display) return;
+
+  let state = THIntervalClock.createIntervalClock(select.value);
+  function render() {
+    document.getElementById('intervalClockDisplay').textContent = THIntervalClock.formatIntervalClock(state);
+  }
+
+  select.addEventListener('change', () => {
+    state = THIntervalClock.createIntervalClock(select.value);
+    render();
+  });
+  window.setInterval(() => {
+    if (!state || state.phase === 'finished') return;
+    state = THIntervalClock.advanceIntervalClock(state, 1);
+    render();
+  }, 1000);
+  render();
 })();
 </script>
 </body>
