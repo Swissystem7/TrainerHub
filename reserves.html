@@ -195,12 +195,20 @@
     </ul>
   </section>
 
+  <!-- biome-ignore lint/a11y/noRedundantRoles: explicit role required by spec -->
+  <section class="card" id="reserves-you-go-i-go" role="region" aria-labelledby="reservesPacerHeading">
+    <h2 id="reservesPacerHeading">תור-בתור זוגי בשטח (You-Go-I-Go)</h2>
+    <p class="muted">שעון עבודה ומנוחה זוגי: זמן הביצוע של השותף קובע את זמן המנוחה של בן הזוג.</p>
+    <div id="reservesPartnerMount"></div>
+  </section>
+
 </main>
 
 <script src="./js/core.js"></script>
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/you-go-i-go.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -927,6 +935,66 @@
   } else {
     R.load().then(() => { boot(R.data); });
   }
+
+  function initReservesPartnerPacer() {
+    var mount = el('reservesPartnerMount');
+    if (!mount) return;
+    while (mount.firstChild) {
+      mount.removeChild(mount.firstChild);
+    }
+    var youGoIGoPanel = document.createElement('div');
+    youGoIGoPanel.id = 'youGoIGoPanel';
+    youGoIGoPanel.setAttribute('role', 'region');
+    youGoIGoPanel.setAttribute('aria-label', 'תור-בתור זוגי');
+    youGoIGoPanel.style.display = 'flex';
+    youGoIGoPanel.style.flexDirection = 'column';
+    youGoIGoPanel.style.gap = '8px';
+    youGoIGoPanel.style.alignItems = 'flex-start';
+
+    var activePartnerTurnLabel = document.createElement('div');
+    activePartnerTurnLabel.id = 'activePartnerTurnLabel';
+    activePartnerTurnLabel.setAttribute('role', 'status');
+    activePartnerTurnLabel.setAttribute('aria-live', 'polite');
+    activePartnerTurnLabel.style.fontWeight = '700';
+    activePartnerTurnLabel.style.color = 'var(--th-teal-ink, #2DD4BF)';
+
+    var partnerPacer = typeof createPartnerPacer === 'function' ? createPartnerPacer(3) : null;
+
+    function refreshReservesTurnUI() {
+      if (!partnerPacer) return;
+      if (partnerPacer.isFinished) {
+        activePartnerTurnLabel.textContent = 'אימון זוגי הושלם!';
+      } else {
+        var name = partnerPacer.activePartner === 'partner_a' ? 'שותף א׳' : 'שותף ב׳';
+        activePartnerTurnLabel.textContent = 'תור נוכחי: ' + name + ' (סבב ' + partnerPacer.currentRound + ' מתוך ' + partnerPacer.totalRounds + ')';
+      }
+    }
+    refreshReservesTurnUI();
+    youGoIGoPanel.appendChild(activePartnerTurnLabel);
+
+    var switchPartnerTurnBtn = document.createElement('button');
+    switchPartnerTurnBtn.type = 'button';
+    switchPartnerTurnBtn.id = 'switchPartnerTurnBtn';
+    switchPartnerTurnBtn.setAttribute('aria-label', 'החלף תור שותף');
+    switchPartnerTurnBtn.textContent = 'החלף תור שותף';
+    var partnerTurnStart = Date.now();
+    switchPartnerTurnBtn.addEventListener('click', () => {
+      if (partnerPacer && typeof switchPartnerTurn === 'function') {
+        var elapsedSec = Math.max(1, Math.round((Date.now() - partnerTurnStart) / 1000));
+        partnerTurnStart = Date.now();
+        partnerPacer = switchPartnerTurn(partnerPacer, elapsedSec);
+        refreshReservesTurnUI();
+        if (partnerPacer.isFinished) {
+          switchPartnerTurnBtn.disabled = true;
+          switchPartnerTurnBtn.textContent = 'אימון זוגי הסתיים';
+        }
+      }
+    });
+    youGoIGoPanel.appendChild(switchPartnerTurnBtn);
+
+    mount.appendChild(youGoIGoPanel);
+  }
+  initReservesPartnerPacer();
 
   if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {

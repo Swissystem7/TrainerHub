@@ -424,6 +424,7 @@
 <script src="../js/journal-storage.js"></script>
 <script src="../js/live-workout.js"></script>
 <script src="../js/live-tempo-cue.js"></script>
+<script src="../js/you-go-i-go.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
 <script src="../js/session-rpe.js"></script>
@@ -832,6 +833,74 @@ function renderLiveWorkoutControls() {
   btnRow.appendChild(restAlertBtn);
 
   card.appendChild(btnRow);
+
+  // 8. You-Go-I-Go Partner Pacer panel
+  const youGoIGoPanel = document.createElement('div');
+  youGoIGoPanel.id = 'youGoIGoPanel';
+  youGoIGoPanel.setAttribute('role', 'region');
+  youGoIGoPanel.setAttribute('aria-label', 'תור-בתור זוגי');
+  youGoIGoPanel.style.width = '100%';
+  youGoIGoPanel.style.textAlign = 'center';
+  youGoIGoPanel.style.padding = '8px 12px';
+  youGoIGoPanel.style.borderRadius = '8px';
+  youGoIGoPanel.style.background = '#0A1513';
+  youGoIGoPanel.style.border = '1px solid #28423C';
+  youGoIGoPanel.style.display = 'flex';
+  youGoIGoPanel.style.flexDirection = 'column';
+  youGoIGoPanel.style.gap = '6px';
+  youGoIGoPanel.style.alignItems = 'center';
+
+  const pacerHeading = document.createElement('div');
+  pacerHeading.style.fontSize = '0.82rem';
+  pacerHeading.style.fontWeight = '700';
+  pacerHeading.style.color = '#7FE9D9';
+  pacerHeading.textContent = 'תור-בתור זוגי (You-Go-I-Go)';
+  youGoIGoPanel.appendChild(pacerHeading);
+
+  const activePartnerTurnLabel = document.createElement('div');
+  activePartnerTurnLabel.id = 'activePartnerTurnLabel';
+  activePartnerTurnLabel.setAttribute('role', 'status');
+  activePartnerTurnLabel.setAttribute('aria-live', 'polite');
+  activePartnerTurnLabel.style.fontSize = '0.85rem';
+  activePartnerTurnLabel.style.fontWeight = '600';
+  activePartnerTurnLabel.style.color = '#2DD4BF';
+
+  let livePartnerPacer = typeof createPartnerPacer === 'function' ? createPartnerPacer(3) : null;
+
+  function updateLivePartnerTurnUI() {
+    if (!livePartnerPacer) return;
+    if (livePartnerPacer.isFinished) {
+      activePartnerTurnLabel.textContent = 'אימון זוגי הושלם!';
+    } else {
+      const partnerName = livePartnerPacer.activePartner === 'partner_a' ? 'שותף א׳' : 'שותף ב׳';
+      activePartnerTurnLabel.textContent = `תור נוכחי: ${partnerName} (סבב ${livePartnerPacer.currentRound}/${livePartnerPacer.totalRounds})`;
+    }
+  }
+  updateLivePartnerTurnUI();
+  youGoIGoPanel.appendChild(activePartnerTurnLabel);
+
+  const switchPartnerTurnBtn = document.createElement('button');
+  switchPartnerTurnBtn.type = 'button';
+  switchPartnerTurnBtn.id = 'switchPartnerTurnBtn';
+  switchPartnerTurnBtn.className = 'ctrl-btn';
+  switchPartnerTurnBtn.style.minHeight = '38px';
+  switchPartnerTurnBtn.style.padding = '6px 14px';
+  switchPartnerTurnBtn.style.borderRadius = '8px';
+  switchPartnerTurnBtn.setAttribute('aria-label', 'החלף תור שותף');
+  switchPartnerTurnBtn.textContent = 'החלף תור שותף';
+  switchPartnerTurnBtn.addEventListener('click', () => {
+    if (livePartnerPacer && typeof switchPartnerTurn === 'function') {
+      livePartnerPacer = switchPartnerTurn(livePartnerPacer, elapsedSeconds || 0);
+      updateLivePartnerTurnUI();
+      if (livePartnerPacer.isFinished) {
+        switchPartnerTurnBtn.disabled = true;
+        switchPartnerTurnBtn.textContent = 'אימון זוגי הסתיים';
+      }
+    }
+  });
+  youGoIGoPanel.appendChild(switchPartnerTurnBtn);
+
+  card.appendChild(youGoIGoPanel);
   container.appendChild(card);
 }
 
