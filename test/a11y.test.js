@@ -4,10 +4,11 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
 const pages = {
-  prompt: fs.readFileSync(path.join(root, 'index.html'), 'utf8'),
+  prompt: readIndex(),
   weekly: fs.readFileSync(path.join(root, 'weekly.html'), 'utf8'),
   studio: fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8'),
   workout: fs.readFileSync(path.join(root, 'frontend', 'workout-mode.html'), 'utf8'),

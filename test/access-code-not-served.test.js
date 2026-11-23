@@ -60,7 +60,7 @@ test('MONETIZATION.md explains the access code without printing it', function ()
 
 test('the app still redeems the code through its hash only', function () {
   const core = fs.readFileSync(path.join(root, 'js', 'core.js'), 'utf8');
-  assert.match(core, /var ACCESS_HASH = \d+;/);
+  assert.match(core, /var ACCESS_HASH\s*=\s*\d+;/);
 });
 
 test('ACCESS_HASH is not the revoked predecessor from public git history', function () {

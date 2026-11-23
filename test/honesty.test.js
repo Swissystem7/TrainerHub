@@ -4,6 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
 
@@ -42,7 +43,7 @@ test('catalog keeps its source rows while verified videos live outside Git histo
 
 test('live pages do not sell a fake AI marketplace or SaaS login wall', function () {
   const studio = read('frontend/index.html');
-  const home = read('index.html');
+  const home = readIndex();
   const research = read('RESEARCH.md');
   assert.doesNotMatch(studio, /פלטפורמת AI|GitHub למאמנים|בקרוב!|צור חשבון חינם|MKT_WORKOUTS/);
   assert.doesNotMatch(home, /Marketplace|₪49|₪149/);

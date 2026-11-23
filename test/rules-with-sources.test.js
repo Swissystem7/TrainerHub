@@ -8,9 +8,10 @@ const path = require('node:path');
 const THRules = require('../js/rules-with-sources.js');
 const THEngine = require('../js/session-builder.js');
 const TH = require('../js/core.js');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
-const indexHtml = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const indexHtml = readIndex();
 
 const FULL = 'אימון בטן למתחילים של 45 דקות בלי ציוד ל-12 חניכים למטרת כוח';
 

@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const TH = require('../js/core.js');
+const { readIndex } = require('./helpers/page-source');
 
 test('durationLabel shows the stated length, else a marked estimate, never an empty number', () => {
   assert.equal(TH.durationLabel(30, 12), '30 דקות');
@@ -16,7 +17,7 @@ test('durationLabel shows the stated length, else a marked estimate, never an em
 });
 
 test('the builder card uses durationLabel and passes the analyzer estimate for a pasted workout', () => {
-  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const html = readIndex();
   assert.doesNotMatch(html, /'זמן: ' \+ TH\.esc\(w\.duration_minutes\) \+ ' דקות'/);
   assert.match(html, /TH\.durationLabel\(w\.duration_minutes, exp\.durationMinutes\)/);
   assert.match(html, /durationMinutes: analysis\.durationMinutes/);

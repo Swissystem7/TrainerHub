@@ -11,9 +11,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
-const page = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const page = readIndex();
 
 const TH = require('../js/core.js');
 require('../js/infer.js');

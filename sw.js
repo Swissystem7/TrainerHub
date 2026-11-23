@@ -1,10 +1,12 @@
 // v2: the v1 worker served every cached file first and never refreshed it, so a
 // phone that opened the app once kept that day's code and video catalog
 // (old Drive ids, missing clips). Bumping the name makes activate drop v1.
-const CACHE_NAME = 'trainerhub-v2';
+const CACHE_NAME = 'trainerhub-v2.1';
 const APP_SHELL_FILES = [
   './',
   './index.html',
+  './index-page.css',
+  './index-page.js',
   './reserves.html',
   './journal.html',
   './exercises.html',

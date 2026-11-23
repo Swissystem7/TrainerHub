@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 const {
   STORAGE_KEY,
   saveCustomTemplate,
@@ -250,7 +251,7 @@ test('עמידות לשגיאות storage', () => {
 
 test('קיום הממשק ב-index.html וב-exercises.html', () => {
   const root = path.join(__dirname, '..');
-  const indexHtml = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const indexHtml = readIndex();
   const exercisesHtml = fs.readFileSync(path.join(root, 'exercises.html'), 'utf8');
 
   // index.html

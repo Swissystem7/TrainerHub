@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const MuscleBalance = require('../js/muscle-balance.js');
+const { readIndex } = require('./helpers/page-source');
 
 // Test 1: חישוב מאוזן
 test('1. חישוב מאוזן - computeMuscleGroupBalance calculates balanced volume across push, pull, legs, and core', () => {
@@ -415,7 +416,7 @@ test('7. קיום האלמנטים ב-journal.html - contains weeklyMuscleBalanc
 // Test 8: קיום האלמנטים ב-index.html
 test('8. קיום האלמנטים ב-index.html - contains applyBalancedFocusBtn and updates muscle selector in workout builder', () => {
   const htmlPath = path.join(__dirname, '..', 'index.html');
-  const html = fs.readFileSync(htmlPath, 'utf8');
+  const html = readIndex();
 
   assert.match(html, /id=["']applyBalancedFocusBtn["']/, 'index.html must declare #applyBalancedFocusBtn element');
   assert.match(html, /id=["']muscleSelect["']/, 'index.html must declare #muscleSelect element');

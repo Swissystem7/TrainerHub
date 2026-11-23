@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const {
   formatWorkoutWhatsAppText,
@@ -224,7 +225,7 @@ test('קיום הכפתורים ב-reserves.html - בדיקת קיום כפתו�
 });
 
 test('קיום הכפתורים ב-index.html - בדיקת קיום כפתור שיתוף בוואטסאפ בעמוד בונה האימונים', () => {
-  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const html = readIndex();
 
   assert.ok(
     html.includes('id="shareWorkoutWhatsappBtn"'),

@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { readIndex } = require('./helpers/page-source');
 
 const ROOT = path.join(__dirname, '..');
 const manifestPath = path.join(ROOT, 'manifest.webmanifest');
@@ -11,7 +12,7 @@ const indexPath = path.join(ROOT, 'index.html');
 const reservesPath = path.join(ROOT, 'reserves.html');
 
 const swCode = fs.readFileSync(swPath, 'utf8');
-const indexHtml = fs.readFileSync(indexPath, 'utf8');
+const indexHtml = readIndex();
 const reservesHtml = fs.readFileSync(reservesPath, 'utf8');
 
 function createSwSandbox(overrides = {}) {

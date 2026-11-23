@@ -9,6 +9,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const TH = require('../js/core.js');
 const THReels = require('../js/reel-library.js');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -53,7 +54,7 @@ test('list pages do not ask for eager players', function () {
     assert.doesNotMatch(read(p), /eager:\s*true/, p);
   });
   // index.html: only the one-off segment player is eager, never the workout result list.
-  const index = read('index.html');
+  const index = readIndex();
   assert.equal((index.match(/eager:\s*true/g) || []).length, 1);
   assert.match(index, /var media = clip \? TH\.mediaMarkup\(clip, \{ className: 'ex-media' \}\)/);
 });

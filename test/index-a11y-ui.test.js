@@ -4,9 +4,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const root = path.join(__dirname, '..');
-const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const html = readIndex();
 const TH = require('../js/core.js');
 const THEngine = require('../js/session-builder.js');
 const THPrompt = require('../js/prompt-parser.js');

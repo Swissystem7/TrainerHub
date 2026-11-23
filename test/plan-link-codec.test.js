@@ -6,6 +6,7 @@ const vm = require('node:vm');
 
 const Codec = require('../js/plan-link-codec.js');
 const CP = require('../js/coach-profiles.js');
+const { readIndex } = require('./helpers/page-source');
 
 function createMockStorage(initialData = {}) {
   const map = { ...initialData };
@@ -303,7 +304,7 @@ test('7) קיום כפתור הפקת קישור שיתוף במצב מאמן ב
 
 test('8) קיום באנר טעינה וכניסת טעינה אוטומטית ב-index.html: וידוא id=sharedCoachPlanBanner עם textContent וטעינת הסקריפט', () => {
   const indexPath = path.join(__dirname, '..', 'index.html');
-  const indexHtml = fs.readFileSync(indexPath, 'utf8');
+  const indexHtml = readIndex();
 
   // Verify script src="./js/plan-link-codec.js" is loaded
   assert.match(

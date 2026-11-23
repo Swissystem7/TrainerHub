@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const WarmupGenerator = require('../js/warmup-generator.js');
 const SessionBuilder = require('../js/session-builder.js');
+const { readIndex } = require('./helpers/page-source');
 
 const mockCatalog = [
   {
@@ -337,7 +338,7 @@ test('אינטגרציה עם buildSession - פלט buildSession מכיל שדה
 test("קיום אזור id='warmupSection' ב-index.html - אלמנט קיים, סקריפט נטען, ורינדור תיבות סימון ללא innerHTML", () => {
   const htmlPath = path.join(__dirname, '..', 'index.html');
   assert.ok(fs.existsSync(htmlPath), 'index.html חייב להתקיים');
-  const html = fs.readFileSync(htmlPath, 'utf8');
+  const html = readIndex();
 
   // Verify static id='warmupSection' in index.html
   assert.match(html, /id=["']warmupSection["']/, "index.html חייב להגדיר אלמנט עם id='warmupSection'");

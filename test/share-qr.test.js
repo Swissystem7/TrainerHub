@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
+const { readIndex } = require('./helpers/page-source');
 
 const ROOT = path.join(__dirname, '..');
 const TH = require('../js/core.js');
@@ -74,7 +75,7 @@ test('qrSvg / shareQrMarkup are accessible inline SVG with no external service',
 
 test('share pages wire the QR and workout mode sends the per-exercise log', () => {
   const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
-  assert.match(read('index.html'), /TH\.shareQrMarkup\(shared\.url\)/);
+  assert.match(readIndex(), /TH\.shareQrMarkup\(shared\.url\)/);
   assert.match(read('journal.html'), /showShareQr\(/);
   const wm = read('frontend/workout-mode.html');
   assert.match(wm, /id="exRpeBox"/);

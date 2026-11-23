@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { getTempoCueForPhase, getRestCountdownAlert } = require('../js/live-tempo-cue.js');
 const { createLiveSession, logSetAndAdvance } = require('../js/live-workout.js');
+const { readIndex } = require('./helpers/page-source');
 
 test('1) שלב אקסצנטרי מחזיר הנחיית ירידה איטית מדויקת לפי קצב', () => {
   const exercise = { name: 'סקוואט', tempo: '3-1-1' };
@@ -148,6 +149,6 @@ test('8) קיום האלמנטים ב-frontend/workout-mode.html וחיבורי 
   assert.ok(html.includes('textContent'), 'שימוש ב-textContent קיים');
   assert.ok(!html.includes('innerHTML = `<div id="tempoCueBanner"'), 'לא נעשה שימוש ב-innerHTML ליצירת האלמנטים');
 
-  const indexHtml = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const indexHtml = readIndex();
   assert.ok(indexHtml.includes('liveWorkoutTempoSelect'), 'בחירת קצב מבוקר קיימת ב-index.html');
 });
