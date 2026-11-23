@@ -53,8 +53,8 @@ const unit = (a, b) => {
   return [(b[0] - a[0]) / d, (b[1] - a[1]) / d];
 };
 
-function buildShapes(j, body, C, view = 'side') {
-  if (view !== 'side') return buildFront(j, body, C);
+function buildShapes(j, body, C, view = 'side', opts = {}) {
+  if (view !== 'side') return buildFront(j, body, C, opts);
   const shapes = [];
   let group = '';
   const cone = (a, b, ra, rb, color, extra) => shapes.push({ kind: 'cone', a, b, ra, rb, color, g: group, ...extra });
@@ -122,19 +122,24 @@ function buildShapes(j, body, C, view = 'side') {
 }
 
 /** Front / top view: figure faces the viewer, both sides in full colour. */
-function buildFront(j, body, C) {
+function buildFront(j, body, C, opts = {}) {
   const shapes = [];
   let group = '';
   const cone = (a, b, ra, rb, color, extra) => shapes.push({ kind: 'cone', a, b, ra, rb, color, g: group, ...extra });
   const hem = (a, b, t) => ({ clip: { p: lerp(a, b, t), n: unit(a, b) } });
 
-  group = 'farLeg';
-  for (const s of [j.far, j.near]) {
-    cone(s.knee, s.ankle, 0.056, 0.038, C.skin);
-    cone(s.hip, s.knee, 0.088, 0.058, C.skin);
-    cone(s.hip, s.knee, 0.094, 0.064, C.shorts, hem(s.hip, s.knee, 0.52));
-    cone(s.heel, s.toe, 0.045, 0.04, C.shoe);
-  }
+  const legs = (g) => {
+    group = g;
+    for (const s of [j.far, j.near]) {
+      cone(s.knee, s.ankle, 0.056, 0.038, C.skin);
+      cone(s.hip, s.knee, 0.088, 0.058, C.skin);
+      cone(s.hip, s.knee, 0.094, 0.064, C.shorts, hem(s.hip, s.knee, 0.52));
+      cone(s.heel, s.toe, 0.045, 0.04, C.shoe);
+    }
+  };
+  // Default: legs behind the torso. `legsInFront` (exercise option) is for legs raised towards the
+  // camera, e.g. toes-to-bar seen from the front: they are drawn last, over torso, head and arms.
+  if (!opts.legsInFront) legs('farLeg');
 
   group = 'torso';
   cone(lerp(j.shoulder, j.head, 0.2), j.head, 0.046, 0.042, C.skin);
@@ -169,6 +174,7 @@ function buildFront(j, body, C) {
     cone(s.shoulder, s.elbow, 0.052, 0.042, C.skin);
     cone(s.shoulder, s.elbow, 0.058, 0.047, C.shirt, hem(s.shoulder, s.elbow, 0.46));
   }
+  if (opts.legsInFront) legs('nearLeg');
   return shapes;
 }
 

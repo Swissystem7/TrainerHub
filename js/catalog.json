@@ -299,7 +299,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ",
-    "poster": "assets/posters/ill-15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ.jpg"
+    "poster": "media/anim/knee-plank.jpg",
+    "anim": "knee-plank",
+    "originalPoster": "assets/posters/ill-15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ.jpg"
   },
   "פלאנק_גבוה": {
     "id": "פלאנק_גבוה",
@@ -315,7 +317,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1w60rxHerVffMFuVSsATiIR9MDXThTDI9",
-    "poster": "assets/posters/ill-1w60rxHerVffMFuVSsATiIR9MDXThTDI9.jpg"
+    "poster": "media/anim/high-plank.jpg",
+    "anim": "high-plank",
+    "originalPoster": "assets/posters/ill-1w60rxHerVffMFuVSsATiIR9MDXThTDI9.jpg"
   },
   "פלאנק_מצד_לצד": {
     "id": "פלאנק_מצד_לצד",

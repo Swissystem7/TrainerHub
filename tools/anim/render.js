@@ -91,7 +91,8 @@ function makeScene(ex) {
 
   function drawFrame(t) {
     const joints = solve(anim.poseAt(t), anim.meta, body, view);
-    const shapes = buildShapes(joints, body, C, view);
+    joints.t = t; // time-driven props (skipping rope)
+    const shapes = buildShapes(joints, body, C, view, { legsInFront: !!ex.legsInFront });
     const layers = buildProps(liveProps, joints, C);
     canvas.copyFrom(bg);
     if (ex.shadow && ex.shadow.center) {

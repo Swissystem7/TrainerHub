@@ -1,0 +1,53 @@
+{
+  "id": "knee-plank",
+  "name": { "en": "Knee plank", "he": "פלאנק ברכיים" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.36, "width": 2.05, "groundY": 0.6 },
+  "repeat": 1,
+  "poster": { "t": 4.0 },
+  "poses": {
+    "kneel": {
+      "pin": { "point": "near.knee", "at": [0.0, 0.06] },
+      "torso": -7.26,
+      "neck": -4,
+      "thigh": 228,
+      "shin": 166,
+      "foot": 156,
+      "hand": 0,
+      "elbowBend": -1,
+      "wrist": [1.1447, 0.045],
+      "far": { "shin": 161, "foot": 151 }
+    },
+    "hold": {
+      "base": "kneel",
+      "torso": 18.04,
+      "neck": 18,
+      "thigh": 198.05,
+      "shin": 160,
+      "foot": 150,
+      "far": { "shin": 155, "foot": 145 }
+    },
+    "breath": {
+      "base": "hold",
+      "torso": 16.9,
+      "neck": 17.4,
+      "thigh": 199.3
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "kneel" },
+    { "t": 0.25, "pose": "kneel", "ease": "linear" },
+    { "t": 1.25, "pose": "hold", "ease": "inOutSine" },
+    { "t": 2.2, "pose": "breath", "ease": "inOutSine" },
+    { "t": 3.15, "pose": "hold", "ease": "inOutSine" },
+    { "t": 4.1, "pose": "breath", "ease": "inOutSine" },
+    { "t": 5.05, "pose": "hold", "ease": "inOutSine" },
+    { "t": 6.0, "pose": "breath", "ease": "inOutSine" },
+    { "t": 6.95, "pose": "hold", "ease": "inOutSine" },
+    { "t": 7.7, "pose": "hold", "ease": "linear" },
+    { "t": 8.75, "pose": "kneel", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "kneel", "ease": "linear" }
+  ]
+}

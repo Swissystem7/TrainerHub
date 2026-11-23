@@ -1,0 +1,66 @@
+{
+  "id": "hanging-windshield-wipers",
+  "name": { "en": "Hanging windshield wipers", "he": "מגבי שמשה בתלייה על מוט" },
+  "view": "front",
+  "equipment": ["pull-up bar"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 1.95, "groundY": 0.86 },
+  "repeat": 1,
+  "legsInFront": true,
+  "poster": { "t": 2.3 },
+  "props": [
+    { "type": "rect", "from": [-0.7, 2.225], "to": [-0.64, 3.4], "color": "frame" },
+    { "type": "rect", "from": [0.64, 2.225], "to": [0.7, 3.4], "color": "frame" },
+    { "type": "line", "a": [-0.78, 2.225], "b": [0.78, 2.225], "width": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.78, 2.225], "r": 0.012, "color": "gold" },
+    { "type": "circle", "at": [0.78, 2.225], "r": 0.012, "color": "gold" }
+  ],
+  "poses": {
+    "hang": {
+      "pin": { "point": "shoulder", "at": [0, 1.64] },
+      "torso": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "upperArm": 1, "foreArm": 1, "thigh": 1, "shin": 1 },
+      "wrist": [0.28, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "right": { "thigh": -90, "shin": -90, "foot": 0 },
+      "left": { "thigh": -90, "shin": -90, "foot": 0 }
+    },
+    "up": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [0, 1.725] },
+      "scale": { "hand": 0.6, "upperArm": 0.885, "foreArm": 0.885, "thigh": -1, "shin": -1 },
+      "right": { "thigh": -90, "shin": -90, "foot": 180 },
+      "left": { "thigh": -90, "shin": -90, "foot": 180 }
+    },
+    "left": {
+      "base": "up",
+      "torso": 94,
+      "neck": 91,
+      "right": { "thigh": -45, "shin": -45, "foot": 225 },
+      "left": { "thigh": -45, "shin": -45, "foot": 225 }
+    },
+    "right": {
+      "base": "up",
+      "torso": 86,
+      "neck": 89,
+      "right": { "thigh": -135, "shin": -135, "foot": 135 },
+      "left": { "thigh": -135, "shin": -135, "foot": 135 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "hang" },
+    { "t": 0.3, "pose": "hang", "ease": "linear" },
+    { "t": 1.4, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "up", "ease": "linear" },
+    { "t": 2.3, "pose": "left", "ease": "inOutSine" },
+    { "t": 3.5, "pose": "right", "ease": "inOutSine" },
+    { "t": 4.7, "pose": "left", "ease": "inOutSine" },
+    { "t": 5.9, "pose": "right", "ease": "inOutSine" },
+    { "t": 6.6, "pose": "up", "ease": "inOutSine" },
+    { "t": 6.8, "pose": "up", "ease": "linear" },
+    { "t": 8.3, "pose": "hang", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "hang", "ease": "linear" }
+  ]
+}

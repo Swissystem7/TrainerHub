@@ -335,6 +335,11 @@
      "driveId": "1VWnG4_qc_6eJMJraOiCmmbMZH9rZCu5f",
      "name_he": "תלייה פסיבית על מוט מתח",
      "mediaPath": "shoulders/1VWnG4_qc_6eJMJraOiCmmbMZH9rZCu5f.mp4"
+    },
+    {
+     "driveId": "1rWHSyWx7gaUg_fbTxNigBsS8Ipvz8J7X",
+     "name_he": "תלייה אקטיבית על מוט מתח",
+     "mediaPath": "shoulders/1rWHSyWx7gaUg_fbTxNigBsS8Ipvz8J7X.mp4"
     }
    ]
   },
@@ -1667,6 +1672,11 @@
      "driveId": "1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv",
      "name_he": "סקוואט קפיצה עם משקולות",
      "mediaPath": "legs/1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv.mp4"
+    },
+    {
+     "driveId": "1EApetsdR7IeG6bvuhJX1m4mhclK-_Mp0",
+     "name_he": "קפיצות סקוואט מואצות עם גומייה",
+     "mediaPath": "legs/1EApetsdR7IeG6bvuhJX1m4mhclK-_Mp0.mp4"
     }
    ]
   },
@@ -1747,6 +1757,11 @@
      "driveId": "1__bv5fX4ZldNwF0-Fj490iPeRVqYK1uf",
      "name_he": "דיפס על מדרגות",
      "mediaPath": "triceps/1__bv5fX4ZldNwF0-Fj490iPeRVqYK1uf.mp4"
+    },
+    {
+     "driveId": "122AQtBlz4QmitNnxoUgMqhVYsKh8R4Ot",
+     "name_he": "דיפס על ספסל - הדרכה מונפשת",
+     "mediaPath": "triceps/122AQtBlz4QmitNnxoUgMqhVYsKh8R4Ot.mp4"
     }
    ]
   },
@@ -1769,6 +1784,193 @@
      "driveId": "1Ee_7QZ-DCRnT8FETclMerWRSAqiMul7w",
      "name_he": "דדליפט עם מוט אולימפי",
      "mediaPath": "back/1Ee_7QZ-DCRnT8FETclMerWRSAqiMul7w.mp4"
+    }
+   ]
+  },
+  "towel-row": {
+   "he": "חתירה עם מגבת סביב עמוד",
+   "en": "Towel row around a post",
+   "replaces": [
+    {
+     "driveId": "13gf9EAe3mle-mMVHqxm6TVbhKB4vuNd-",
+     "name_he": "חתירה עם מגבת סביב עמוד",
+     "mediaPath": "back/13gf9EAe3mle-mMVHqxm6TVbhKB4vuNd-.mp4"
+    }
+   ]
+  },
+  "chest-supported-row": {
+   "he": "חתירה נתמכת חזה עם משקולות",
+   "en": "Chest-supported dumbbell row",
+   "replaces": [
+    {
+     "driveId": "1ANohB_tWGJJvIJtID7sjbpwqXn2ocV59",
+     "name_he": "חתירה נתמכת חזה עם משקולות",
+     "mediaPath": "back/1ANohB_tWGJJvIJtID7sjbpwqXn2ocV59.mp4"
+    }
+   ]
+  },
+  "straight-arm-pulldown": {
+   "he": "פולאובר בכבל בזרועות ישרות",
+   "en": "Straight-arm pulldown",
+   "replaces": [
+    {
+     "driveId": "1HKCCXxJN_Zluts3f7dyWEHWLYFqMVjBf",
+     "name_he": "פולאובר בכבל בזרועות ישרות",
+     "mediaPath": "back/1HKCCXxJN_Zluts3f7dyWEHWLYFqMVjBf.mp4"
+    }
+   ]
+  },
+  "dumbbell-superman-pull": {
+   "he": "משיכות סופרמן עם משקולות",
+   "en": "Dumbbell superman pull",
+   "replaces": [
+    {
+     "driveId": "1I1n09EzOgn7672IQbdgUrdFTZlrSRDfc",
+     "name_he": "משיכות סופרמן בשכיבה עם משקולות",
+     "mediaPath": "back/1I1n09EzOgn7672IQbdgUrdFTZlrSRDfc.mp4"
+    }
+   ]
+  },
+  "spider-curl": {
+   "he": "כפיפת עכביש עם משקולות",
+   "en": "Spider curl",
+   "replaces": [
+    {
+     "driveId": "1GsDZrMLicY3nkeKHc3xkIJnSBuytOc1p",
+     "name_he": "כפיפת עכביש עם משקולות",
+     "mediaPath": "biceps/1GsDZrMLicY3nkeKHc3xkIJnSBuytOc1p.mp4"
+    }
+   ]
+  },
+  "hammer-curl": {
+   "he": "כפיפת פטיש לסירוגין",
+   "en": "Alternating hammer curl",
+   "replaces": [
+    {
+     "driveId": "1SIV0a_cy_Z_YPdrKOKuJIfiDY_vXfOlc",
+     "name_he": "כפיפת פטיש לסירוגין",
+     "mediaPath": "biceps/1SIV0a_cy_Z_YPdrKOKuJIfiDY_vXfOlc.mp4"
+    }
+   ]
+  },
+  "jump-rope": {
+   "he": "קפיצה בחבל",
+   "en": "Jump rope",
+   "replaces": [
+    {
+     "driveId": "1k-AY25Ww9g_VyWEu-sWB-MymA13c7xim",
+     "name_he": "קפיצה בחבל אחרי פציעת שוק",
+     "mediaPath": "cardio/1k-AY25Ww9g_VyWEu-sWB-MymA13c7xim.mp4"
+    }
+   ]
+  },
+  "cable-chest-press": {
+   "he": "לחיצת חזה בכבל ביד אחת בכריעה",
+   "en": "Half-kneeling cable chest press",
+   "replaces": [
+    {
+     "driveId": "1el0D7GP9GM8_GJN7qP3UNS0s14useVGG",
+     "name_he": "לחיצת חזה בכבל ביד אחת בכריעה",
+     "mediaPath": "chest/1el0D7GP9GM8_GJN7qP3UNS0s14useVGG.mp4"
+    }
+   ]
+  },
+  "muscle-up": {
+   "he": "מאסל אפ",
+   "en": "Muscle-up",
+   "replaces": [
+    {
+     "driveId": "1kwY-wbPV7pIFYQc56JXfw3cuG08jgTj1",
+     "name_he": "מאסל אפ ממוט נמוך",
+     "mediaPath": "chest/1kwY-wbPV7pIFYQc56JXfw3cuG08jgTj1.mp4"
+    }
+   ]
+  },
+  "plank-knee-to-chest": {
+   "he": "פלאנק ברך לחזה",
+   "en": "Plank knee to chest",
+   "replaces": [
+    {
+     "driveId": "12RqRE41V_a_wm6v8E5czzrI9bb6WFMaK",
+     "name_he": "פלאנק ברך לחזה",
+     "mediaPath": "core/12RqRE41V_a_wm6v8E5czzrI9bb6WFMaK.mp4"
+    }
+   ]
+  },
+  "knee-plank": {
+   "he": "פלאנק ברכיים",
+   "en": "Knee plank",
+   "replaces": [
+    {
+     "driveId": "15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ",
+     "name_he": "פלאנק ברכיים",
+     "mediaPath": "core/15nVtb261oWIC0KU0fNFVPi68LHlJ6tUQ.mp4"
+    }
+   ]
+  },
+  "high-plank": {
+   "he": "פלאנק גבוה",
+   "en": "High plank",
+   "replaces": [
+    {
+     "driveId": "1w60rxHerVffMFuVSsATiIR9MDXThTDI9",
+     "name_he": "פלאנק גבוה",
+     "mediaPath": "core/1w60rxHerVffMFuVSsATiIR9MDXThTDI9.mp4"
+    }
+   ]
+  },
+  "ghd-sit-up": {
+   "he": "כפיפות בטן במכונת GHD",
+   "en": "GHD sit-up",
+   "replaces": [
+    {
+     "driveId": "19V036Bb8pWx9WxDaNyqFw2bKixx_oWJG",
+     "name_he": "כפיפות בטן במכונת GHD",
+     "mediaPath": "core/19V036Bb8pWx9WxDaNyqFw2bKixx_oWJG.mp4"
+    }
+   ]
+  },
+  "hanging-windshield-wipers": {
+   "he": "מגבי שמשה בתלייה",
+   "en": "Hanging windshield wipers",
+   "replaces": [
+    {
+     "driveId": "1NVw0FNsP0IazcJzdDn1twoW6ltIq6Fuk",
+     "name_he": "מגבי שמשה בתלייה על מוט",
+     "mediaPath": "core/1NVw0FNsP0IazcJzdDn1twoW6ltIq6Fuk.mp4"
+    }
+   ]
+  },
+  "turkish-get-up": {
+   "he": "קימה טורקית עם קטלבל",
+   "en": "Turkish get-up",
+   "replaces": [
+    {
+     "driveId": "1NwHfmW01IeRb4vMoSEGo3lu6j5r9kOhu",
+     "name_he": "קימה טורקית כבדה עם קטלבל",
+     "mediaPath": "core/1NwHfmW01IeRb4vMoSEGo3lu6j5r9kOhu.mp4"
+    }
+   ]
+  },
+  "hanging-leg-raise": {
+   "he": "הרמת רגליים בתלייה",
+   "en": "Hanging leg raise",
+   "replaces": [
+    {
+     "driveId": "1hgyBWQVi3EXhUQZn-MB05OktU8jHrUJi",
+     "name_he": "הרמת רגליים בתלייה עם הטיית אגן",
+     "mediaPath": "core/1hgyBWQVi3EXhUQZn-MB05OktU8jHrUJi.mp4"
+    }
+   ]
+  },
+  "toes-to-bar": {
+   "he": "בהונות למוט",
+   "en": "Toes to bar",
+   "replaces": [
+    {
+     "driveId": "1iF1eqIGlk9e_otaFLHVj7uQIzQ8P8vqk",
+     "name_he": "בהונות למוט",
+     "mediaPath": "core/1iF1eqIGlk9e_otaFLHVj7uQIzQ8P8vqk.mp4"
     }
    ]
   }

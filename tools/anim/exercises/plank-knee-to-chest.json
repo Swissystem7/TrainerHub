@@ -1,0 +1,66 @@
+{
+  "id": "plank-knee-to-chest",
+  "name": { "en": "Plank with knee to chest", "he": "פלאנק ברך לחזה" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.64, "width": 2.05, "groundY": 0.6 },
+  "repeat": 3,
+  "poster": { "t": 0.78 },
+  "poses": {
+    "plank": {
+      "pelvis": [0.705, 0.446],
+      "torso": 18.3,
+      "neck": 18,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "scale": { "thigh": 1 },
+      "near": { "wrist": [1.17, 0.03], "ankle": [-0.118, 0.171], "foot": -55 },
+      "far": { "wrist": [1.2, 0.03], "ankle": [-0.118, 0.171], "foot": -55 }
+    },
+    "nearMid": {
+      "base": "plank",
+      "pelvis": [0.697, 0.482],
+      "torso": 13.5,
+      "neck": 14,
+      "near": { "ankle": [0.27, 0.3], "foot": -40, "scale": { "thigh": 0.88 } }
+    },
+    "nearIn": {
+      "base": "plank",
+      "pelvis": [0.695, 0.482],
+      "torso": 13.5,
+      "neck": 12,
+      "near": { "ankle": [0.6, 0.275], "foot": -22, "scale": { "thigh": 0.93 } }
+    },
+    "farMid": {
+      "base": "plank",
+      "pelvis": [0.697, 0.482],
+      "torso": 13.5,
+      "neck": 14,
+      "far": { "ankle": [0.27, 0.3], "foot": -40, "scale": { "thigh": 0.88 } }
+    },
+    "farIn": {
+      "base": "plank",
+      "pelvis": [0.695, 0.482],
+      "torso": 13.5,
+      "neck": 12,
+      "far": { "ankle": [0.6, 0.275], "foot": -22, "scale": { "thigh": 0.93 } }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "plank" },
+    { "t": 0.1, "pose": "plank", "ease": "linear" },
+    { "t": 0.42, "pose": "nearMid", "ease": "inQuad" },
+    { "t": 0.72, "pose": "nearIn", "ease": "outQuad" },
+    { "t": 0.88, "pose": "nearIn", "ease": "linear" },
+    { "t": 1.16, "pose": "nearMid", "ease": "inQuad" },
+    { "t": 1.5, "pose": "plank", "ease": "outQuad" },
+    { "t": 1.6, "pose": "plank", "ease": "linear" },
+    { "t": 1.92, "pose": "farMid", "ease": "inQuad" },
+    { "t": 2.22, "pose": "farIn", "ease": "outQuad" },
+    { "t": 2.38, "pose": "farIn", "ease": "linear" },
+    { "t": 2.66, "pose": "farMid", "ease": "inQuad" },
+    { "t": 3.0, "pose": "plank", "ease": "outQuad" }
+  ]
+}

@@ -10,13 +10,14 @@ runtime, and no existing TrainerHub media is read: every frame is drawn by code.
   - `<id>_360x640.mp4` (app size)
   - `<id>_poster.png` (single still, same framing)
 - `out/contact/<id>.png`: contact sheet (8 frames across one cycle) for a quick visual check
-- `out/STATUS.md` (batch 1), `out/STATUS_batch2.md` (batch 2), `out/STATUS_batch3.md` (batch 3) and
-  `out/STATUS_batch4.md` (batch 4): per-exercise status
+- `out/STATUS.md` (batch 1), `out/STATUS_batch2.md` (batch 2), `out/STATUS_batch3.md` (batch 3),
+  `out/STATUS_batch4.md` (batch 4) and `out/STATUS_batch5a.md` (batch 5A): per-exercise status
 
-Exercises (81): `pushups` (the approved sample), batch 1 (20 exercises, listed in
+Exercises (98): `pushups` (the approved sample), batch 1 (20 exercises, listed in
 `out/STATUS.md`), batch 2 (20 exercises, listed in `out/STATUS_batch2.md`), batch 3
-(20 exercises, listed in `out/STATUS_batch3.md`; no engine changes, only new JSON) and batch 4
-(20 exercises, listed in `out/STATUS_batch4.md`; one optional shadow setting added).
+(20 exercises, listed in `out/STATUS_batch3.md`; no engine changes, only new JSON), batch 4
+(20 exercises, listed in `out/STATUS_batch4.md`; one optional shadow setting added) and batch 5A
+(17 exercises, listed in `out/STATUS_batch5a.md`; adds the `rope` prop and the `legsInFront` option).
 Every clip is 9 s, 30 fps, seamless loop.
 
 ## Requirements
@@ -73,7 +74,7 @@ so no other colour can slip in.
 | `view` | What you see | Sides |
 | --- | --- | --- |
 | `side` (default) | Profile, figure faces right. Far limbs are drawn darker. | `near`, `far` |
-| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`, `pec-deck-fly`, `cable-crossover`, and `side-plank`, where the figure lies on its side). | `right`, `left` as seen on screen |
+| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`, `pec-deck-fly`, `cable-crossover`, `hanging-windshield-wipers`, and `side-plank`, where the figure lies on its side). | `right`, `left` as seen on screen |
 | `top` | Straight down on a lying figure, head towards the top of the frame (used for `floor-dumbbell-fly`). No ground line: the whole frame is floor. | `right`, `left` |
 
 `front` and `top` share one solver: hips and shoulders are spread sideways, and
@@ -113,6 +114,7 @@ No renderer changes are needed: a new exercise is new JSON + one command.
 | `poster` | `{ "t": seconds }` moment used for the poster. |
 | `body` | Optional overrides of the proportions in `lib/skeleton.js`. |
 | `shadow` | Optional: `false`, or `{ center, rx, ry, alpha, soft }` (world units) instead of the automatic floor shadow. `{ "air": k }` keeps the automatic shadow but shrinks and fades it while the figure is off the floor (`jump-squat` uses `2.5`). |
+| `legsInFront` | Optional, front / top view: `true` draws the legs over the torso, head and arms, for legs raised towards the camera (`hanging-windshield-wipers`). |
 | `checks` | Optional: `{ "reach": false }` / `{ "floor": false }` silences a pose warning that is intended. |
 
 ### Poses
@@ -163,6 +165,7 @@ figure every frame, so held equipment cannot drift away from the hands
 | `barEnd` | `at`, `r`, `color` | Bar seen end-on (pull-up bar, cable bar). |
 | `dumbbell` | `at`, `angle`, `along`, `length`, `plate: [thickness, height]` | Handle + two plates. `angle` is absolute, or relative to the `along` segment. |
 | `kettlebell` | `at`, `angle`, `along`, `r`, `bodyLayer` | Handle loop at the grip + round body; `angle` points from the grip to the body. |
+| `rope` | `at`, `r`, `period`, `phase`, `dir`, `bow`, `floor`, `width`, `color` | Skipping rope seen from the side: a thin bowed line from the hand (`at`) to the far point of the loop, `r` long, turning once per `period` seconds (`phase` = angle at t = 0, `dir: -1` = clockwise). It never goes below `floor`. Keep `period` equal to the jump cycle so the loop stays seamless (`jump-rope`). |
 
 `layer` places a prop in the figure's draw order: `back` (behind the figure,
 default for static shapes), `afterFar` (in front of the far limbs), `body`

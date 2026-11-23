@@ -1,0 +1,58 @@
+{
+  "id": "toes-to-bar",
+  "name": { "en": "Toes to bar", "he": "בהונות למוט" },
+  "view": "side",
+  "equipment": ["pull-up bar"],
+  "fps": 30,
+  "camera": { "centerX": 0.2, "width": 1.95, "groundY": 0.86 },
+  "repeat": 3,
+  "poster": { "t": 1.45 },
+  "props": [
+    { "type": "rect", "from": [-0.028, 2.225], "to": [0.028, 3.2], "color": "frame" },
+    { "type": "rect", "from": [-0.07, 2.2], "to": [0.07, 2.25], "color": "frame", "r": 0.02 },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "hang": {
+      "pin": { "point": "shoulder", "at": [0, 1.632] },
+      "torso": 90,
+      "waist": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "neck": 0.82 },
+      "wrist": [0, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "thigh": -87, "shin": -91, "foot": -32 },
+      "far": { "thigh": -84, "shin": -88, "foot": -29 }
+    },
+    "swing": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [0.045, 1.634] },
+      "torso": 85,
+      "waist": 78,
+      "neck": 92,
+      "near": { "thigh": -101, "shin": -108, "foot": -48 },
+      "far": { "thigh": -98, "shin": -105, "foot": -45 }
+    },
+    "top": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.24, 1.7] },
+      "torso": 113,
+      "waist": 136,
+      "neck": 100,
+      "scale": { "hand": 0.6, "neck": 1 },
+      "near": { "thigh": 79, "shin": 80, "foot": 178 },
+      "far": { "thigh": 77, "shin": 78, "foot": 176 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "hang" },
+    { "t": 0.15, "pose": "hang", "ease": "linear" },
+    { "t": 0.6, "pose": "swing", "ease": "inOutSine" },
+    { "t": 1.4, "pose": "top", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "top", "ease": "linear" },
+    { "t": 2.8, "pose": "hang", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "hang", "ease": "linear" }
+  ]
+}

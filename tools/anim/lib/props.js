@@ -119,6 +119,39 @@ const BUILDERS = {
     ];
   },
   /**
+   * Skipping rope seen from the side: a thin bowed line from the hand to the far point of the loop,
+   * turning once per `period` seconds (time-driven, so it needs the frame time `j.t`).
+   * { at, r, period, phase (degrees at t = 0), dir (-1 = clockwise), bow, floor, width, color }
+   * `floor` is the lowest height the rope may reach: it skims the floor instead of passing through it.
+   */
+  rope(def, j, C) {
+    const h = pointOn(j, def.at);
+    const deg = (def.phase ?? 90) + (def.dir ?? -1) * 360 * ((j.t || 0) / (def.period || 1));
+    const u = dirOf(deg);
+    let r = def.r || 1;
+    const floor = def.floor ?? 0.012;
+    if (u[1] < 0 && h[1] + u[1] * r < floor) r = (h[1] - floor) / -u[1];
+    const tip = [h[0] + u[0] * r, h[1] + u[1] * r];
+    // The loop trails slightly behind the hands: bow the line against the direction of travel.
+    const k = (def.bow ?? 0.1) * r * -(def.dir ?? -1);
+    const ctrl = [(h[0] + tip[0]) / 2 - u[1] * k, Math.max(floor, (h[1] + tip[1]) / 2 + u[0] * k)];
+    const col = color(C, def.color, 'gold');
+    const w = (def.width || 0.012) / 2;
+    const out = [];
+    const n = 12;
+    let prev = h;
+    for (let i = 1; i <= n; i++) {
+      const s = i / n;
+      const p = [
+        (1 - s) * (1 - s) * h[0] + 2 * s * (1 - s) * ctrl[0] + s * s * tip[0],
+        (1 - s) * (1 - s) * h[1] + 2 * s * (1 - s) * ctrl[1] + s * s * tip[1]
+      ];
+      out.push(capsule(prev, p, w, col));
+      prev = p;
+    }
+    return out;
+  },
+  /**
    * Kettlebell: handle loop at the grip + round body. `angle` is the direction from the grip to the
    * body (absolute, or relative to `along`). { at, angle, along, r }
    */

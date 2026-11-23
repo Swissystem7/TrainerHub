@@ -37,10 +37,10 @@ const catalogRows = Object.keys(local)
   })
   .concat(drive.items);
 
-test('anim-map lists 81 animations for 257 Drive ids, the same as the clip map', function () {
-  assert.equal(anims.length, 81);
-  assert.equal(animOf.size, 257);
-  assert.deepEqual(animMap.count, { animations: 81, driveIds: 257 });
+test('anim-map lists 98 animations for 277 Drive ids, the same as the clip map', function () {
+  assert.equal(anims.length, 98);
+  assert.equal(animOf.size, 277);
+  assert.deepEqual(animMap.count, { animations: 98, driveIds: 277 });
   assert.deepEqual(anims.slice().sort(), Object.keys(clipMap).sort());
   anims.forEach(function (a) {
     const entry = animMap.animations[a];
@@ -66,7 +66,7 @@ test('anim-map lists 81 animations for 257 Drive ids, the same as the clip map',
     anims.reduce(function (n, a) {
       return n + animMap.animations[a].driveIds.length;
     }, 0),
-    257
+    277
   );
 });
 
@@ -87,7 +87,7 @@ test('each animation has one small MP4 and one JPEG poster in media/anim', funct
     assert.ok(jpg.length < 60 * 1024, a + '.jpg is ' + jpg.length + ' bytes');
     total += mp4.length + jpg.length;
   });
-  assert.ok(total < 5 * 1024 * 1024, 'media/anim is ' + total + ' bytes');
+  assert.ok(total < 10 * 1024 * 1024, 'media/anim is ' + total + ' bytes');
 });
 
 test('every mapped Drive id, and no other row, shows its animation poster', function () {
@@ -121,7 +121,7 @@ test('every mapped Drive id, and no other row, shows its animation poster', func
   youtube.items.forEach(function (e) {
     assert.equal(e.anim, undefined, e.id);
   });
-  assert.equal(wired.size, 257);
+  assert.equal(wired.size, 277);
   // anim-map names the rows it wired.
   anims.forEach(function (a) {
     animMap.animations[a].clips.forEach(function (c) {
@@ -136,7 +136,7 @@ test('library and exercises-page cards render the animation poster', function ()
   const listed = TH.catalogList().filter(function (e) {
     return /^media\/anim\//.test(e.poster);
   });
-  assert.equal(listed.length, 226, 'catalog cards on an animation poster');
+  assert.equal(listed.length, 245, 'catalog cards on an animation poster');
   listed.forEach(function (e) {
     assert.equal(TH.posterUrl(e), e.poster, e.id);
     const html = TH.mediaMarkup(e, { className: 'ex-media' });
@@ -150,7 +150,7 @@ test('library and exercises-page cards render the animation poster', function ()
   const cards = THReels.driveVideosToExercises(driveVideos).filter(function (c) {
     return animOf.has(c.file_id);
   });
-  assert.equal(cards.length, 249);
+  assert.equal(cards.length, 267);
   cards.forEach(function (c) {
     const html = THReels.exerciseCardHtml(c, esc);
     assert.ok(html.indexOf('media/anim/' + animOf.get(c.file_id) + '.jpg') !== -1, c.name_he);

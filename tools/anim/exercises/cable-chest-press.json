@@ -1,0 +1,58 @@
+{
+  "id": "cable-chest-press",
+  "name": { "en": "Half-kneeling single-arm cable chest press", "he": "לחיצת חזה בכבל ביד אחת בכריעה" },
+  "view": "side",
+  "equipment": ["cable column", "handle"],
+  "fps": 30,
+  "camera": { "centerX": -0.3, "width": 2.1, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-1.25, 0.0], "to": [-0.78, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-1.12, 0.0], "to": [-1.03, 2.05], "color": "frame" },
+    { "type": "rect", "from": [-1.16, 0.045], "to": [-0.99, 0.78], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [-1.16, 0.52], "to": [-0.99, 0.535], "color": "gold" },
+    { "type": "rect", "from": [-1.05, 0.905], "to": [-0.93, 0.975], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [-0.93, 0.94], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.93, 0.94], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [-0.93, 0.94], "b": "near.grip", "width": 0.011, "layer": "mid" },
+    { "type": "ring", "at": "near.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "chest": {
+      "pelvis": [0.0, 0.5],
+      "torso": 88,
+      "neck": 89,
+      "kneeBend": 1,
+      "near": {
+        "ankle": [-0.43, 0.062],
+        "foot": 200,
+        "wrist": [0.2, 0.925],
+        "elbowBend": -1,
+        "hand": 6,
+        "scale": { "hand": 0.65, "upperArm": 0.55 }
+      },
+      "far": {
+        "ankle": [0.45, 0.08],
+        "foot": 0,
+        "wristTo": { "at": "far.knee", "along": "far.thigh", "offset": [-0.15, 0.085] },
+        "elbowBend": -1,
+        "hand": -20
+      }
+    },
+    "press": {
+      "base": "chest",
+      "torso": 86,
+      "neck": 88,
+      "near": { "wrist": [0.58, 0.955], "hand": 2, "scale": { "hand": 0.65, "upperArm": 1 } }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "chest" },
+    { "t": 0.15, "pose": "chest", "ease": "linear" },
+    { "t": 1.2, "pose": "press", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "press", "ease": "linear" },
+    { "t": 2.8, "pose": "chest", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "chest", "ease": "linear" }
+  ]
+}

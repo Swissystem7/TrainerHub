@@ -1,0 +1,47 @@
+{
+  "id": "jump-rope",
+  "name": { "en": "Jump rope", "he": "קפיצה בחבל" },
+  "view": "side",
+  "equipment": ["jump rope"],
+  "fps": 30,
+  "camera": { "centerX": 0.06, "width": 2.3, "groundY": 0.8 },
+  "repeat": 18,
+  "poster": { "t": 0.25 },
+  "shadow": { "air": 4 },
+  "props": [
+    { "type": "rope", "at": "far.grip", "r": 0.98, "period": 0.5, "phase": 84, "dir": -1, "bow": 0.14, "width": 0.011, "color": "metal", "layer": "back" },
+    { "type": "line", "a": { "at": "far.grip", "along": "far.hand", "offset": [-0.05, 0] }, "b": { "at": "far.grip", "along": "far.hand", "offset": [0.06, 0] }, "width": 0.028, "color": "frame", "layer": "back" },
+    { "type": "rope", "at": "near.grip", "r": 0.98, "period": 0.5, "phase": 84, "dir": -1, "bow": 0.14, "width": 0.012, "color": "gold", "layer": "front" },
+    { "type": "line", "a": { "at": "near.grip", "along": "near.hand", "offset": [-0.05, 0] }, "b": { "at": "near.grip", "along": "near.hand", "offset": [0.06, 0] }, "width": 0.03, "color": "metal", "layer": "front" }
+  ],
+  "poses": {
+    "low": {
+      "pelvis": [0.0, 0.972],
+      "torso": 86,
+      "neck": 88,
+      "kneeBend": 1,
+      "scale": { "hand": 0.65 },
+      "near": { "ankle": [-0.08, 0.116], "foot": -18, "upperArm": -106, "foreArm": -66, "hand": -52 },
+      "far": { "ankle": [-0.05, 0.116], "foot": -18, "upperArm": -102, "foreArm": -62, "hand": -48 }
+    },
+    "toeoff": {
+      "base": "low",
+      "pelvis": [0.0, 1.001],
+      "near": { "ankle": [-0.074, 0.139], "foot": -30 },
+      "far": { "ankle": [-0.044, 0.139], "foot": -30 }
+    },
+    "air": {
+      "base": "low",
+      "pelvis": [0.0, 1.058],
+      "near": { "ankle": [-0.07, 0.2], "foot": -34 },
+      "far": { "ankle": [-0.04, 0.2], "foot": -34 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "low" },
+    { "t": 0.1, "pose": "toeoff", "ease": "inQuad" },
+    { "t": 0.25, "pose": "air", "ease": "outQuad" },
+    { "t": 0.4, "pose": "toeoff", "ease": "inQuad" },
+    { "t": 0.5, "pose": "low", "ease": "outQuad" }
+  ]
+}

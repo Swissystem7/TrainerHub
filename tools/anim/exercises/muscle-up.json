@@ -1,0 +1,82 @@
+{
+  "id": "muscle-up",
+  "name": { "en": "Bar muscle-up", "he": "מאסל אפ" },
+  "view": "side",
+  "equipment": ["pull-up bar"],
+  "fps": 30,
+  "camera": { "centerX": -0.05, "width": 2.12, "groundY": 0.88 },
+  "repeat": 2,
+  "poster": { "t": 1.5 },
+  "props": [
+    { "type": "rect", "from": [-0.028, 2.225], "to": [0.028, 3.7], "color": "frame" },
+    { "type": "rect", "from": [-0.07, 2.2], "to": [0.07, 2.25], "color": "frame", "r": 0.02 },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "hang": {
+      "pin": { "point": "shoulder", "at": [0, 1.632] },
+      "torso": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "neck": 0.82 },
+      "wrist": [0, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "thigh": -87, "shin": -92, "foot": -32 },
+      "far": { "thigh": -84, "shin": -89, "foot": -29 }
+    },
+    "pull": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.2, 2.1] },
+      "torso": 108,
+      "neck": 96,
+      "scale": { "hand": 0.6, "neck": 1 },
+      "near": { "thigh": -68, "shin": -84, "foot": -24 },
+      "far": { "thigh": -64, "shin": -80, "foot": -20 }
+    },
+    "highpull": {
+      "base": "pull",
+      "pin": { "point": "shoulder", "at": [-0.15, 2.36] },
+      "torso": 80,
+      "neck": 80,
+      "wrist": [-0.019, 2.206],
+      "hand": 45,
+      "near": { "thigh": -78, "shin": -98, "foot": -38 },
+      "far": { "thigh": -74, "shin": -94, "foot": -34 }
+    },
+    "over": {
+      "base": "pull",
+      "pin": { "point": "shoulder", "at": [0.1, 2.5] },
+      "torso": 45,
+      "neck": 62,
+      "wrist": [0, 2.252],
+      "hand": -90,
+      "near": { "thigh": -88, "shin": -104, "foot": -44 },
+      "far": { "thigh": -84, "shin": -100, "foot": -40 }
+    },
+    "support": {
+      "base": "pull",
+      "pin": { "point": "shoulder", "at": [0.06, 2.815] },
+      "torso": 72,
+      "neck": 80,
+      "wrist": [0, 2.252],
+      "hand": -90,
+      "near": { "thigh": -98, "shin": -98, "foot": -38 },
+      "far": { "thigh": -96, "shin": -95, "foot": -35 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "hang" },
+    { "t": 0.3, "pose": "hang", "ease": "linear" },
+    { "t": 0.95, "pose": "pull", "ease": "inQuad" },
+    { "t": 1.2, "pose": "highpull", "ease": "linear" },
+    { "t": 1.55, "pose": "over", "ease": "outQuad" },
+    { "t": 2.15, "pose": "support", "ease": "inOutSine" },
+    { "t": 2.55, "pose": "support", "ease": "linear" },
+    { "t": 3.15, "pose": "over", "ease": "inOutSine" },
+    { "t": 3.5, "pose": "highpull", "ease": "inQuad" },
+    { "t": 3.75, "pose": "pull", "ease": "linear" },
+    { "t": 4.35, "pose": "hang", "ease": "outQuad" },
+    { "t": 4.5, "pose": "hang", "ease": "linear" }
+  ]
+}
