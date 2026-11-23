@@ -377,6 +377,7 @@
     </section>
   </div>
 </main>
+<script src="./js/media-fallback-handler.js"></script>
 <script src="./js/core.js"></script>
 <script src="./js/library-profile-filter.js"></script>
 <script src="./js/reel-library.js"></script>
@@ -458,10 +459,34 @@
     root.addEventListener('error', function (e) {
       var img = e.target;
       if (!img || !img.classList || !img.classList.contains('poster')) return;
-      // No .jpg fallback from a data-jpg attribute: nothing renders it anymore
-      // (posterUrl() uses catalog posters only), and copying DOM text into src
-      // was CodeQL js/xss-through-dom #7.
       img.classList.add('is-broken');
+      var frame = img.closest('.poster-frame');
+      if (frame && typeof THMediaFallback !== 'undefined') {
+        var card = img.closest('.card');
+        var exId = card ? card.getAttribute('data-id') : '';
+        var fallback = THMediaFallback.getExerciseFallbackContent({ name_he: 'תרגיל', muscle_group: 'ליבה' });
+        var box = document.createElement('div');
+        box.id = 'mediaFallbackBox';
+        box.style.padding = '12px';
+        box.style.background = 'var(--th-surface)';
+        box.style.color = 'var(--ink)';
+
+        var t = document.createElement('strong');
+        t.textContent = fallback.fallbackText;
+        box.appendChild(t);
+
+        var btn = document.createElement('button');
+        btn.id = 'reportBrokenMediaBtn';
+        btn.textContent = 'דווח על מדיה שבורה';
+        btn.className = 'th-btn';
+        btn.addEventListener('click', function () {
+          THMediaFallback.logBrokenMediaReport(exId);
+          btn.textContent = 'הדיווח נקלט';
+          btn.disabled = true;
+        });
+        box.appendChild(btn);
+        frame.appendChild(box);
+      }
     }, true);
     root.addEventListener('load', function (e) {
       var img = e.target;
