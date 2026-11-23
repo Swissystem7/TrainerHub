@@ -229,7 +229,7 @@
 			/רגל|ירכ|סולם|מדרג|ארבע|ישבן|גשר/.test(blob)
 		)
 			score += 6;
-		// «גב» and «יד» are matched as words (with a ו/ה/ב/ל prefix): as plain
+		// «גב» and «יד» are matched as words (with a v/e/b/l prefix): as plain
 		// substrings «פלאנק גבוה» (a core clip) was hinted as back and «פלאנק
 		// צידי» as arms, and both were let into those sessions with the reason
 		// «השם והתיקייה מתאימים לבקשה».
@@ -813,6 +813,33 @@
 			source: "prompt-engine",
 		};
 		workout.group_plan = groupPlan(workout.participants, mainEx.length);
+
+		if (opts.useSupersets && root.THSupersetBuilder && typeof root.THSupersetBuilder.pairAntagonistExercises === 'function') {
+			for (let pPhIdx = 0; pPhIdx < (workout.phases || []).length; pPhIdx++) {
+				const ph = workout.phases[pPhIdx];
+				if (ph && ph.name === 'Main' && Array.isArray(ph.exercises) && ph.exercises.length > 1) {
+					const supResult = root.THSupersetBuilder.pairAntagonistExercises(ph.exercises);
+					if (supResult && Array.isArray(supResult.pairs) && supResult.pairs.length > 0) {
+						const reordered = [];
+						for (let sPair = 0; sPair < supResult.pairs.length; sPair++) {
+							reordered.push(supResult.pairs[sPair][0]);
+							reordered.push(supResult.pairs[sPair][1]);
+						}
+						if (Array.isArray(supResult.unpaired)) {
+							for (let sUnp = 0; sUnp < supResult.unpaired.length; sUnp++) {
+								reordered.push(supResult.unpaired[sUnp]);
+							}
+						}
+						ph.exercises = reordered;
+						workout.supersetInfo = {
+							active: true,
+							timeSavedPercent: supResult.timeSavedPercent,
+							pairsCount: supResult.pairs.length
+						};
+					}
+				}
+			}
+		}
 
 		var adaptationReport =
 			Adaptation && typeof Adaptation.buildAdaptationReport === "function"
