@@ -1,0 +1,66 @@
+{
+  "id": "hack-squat-machine",
+  "name": { "en": "Hack squat machine", "he": "סקוואט במכונת האק" },
+  "view": "side",
+  "equipment": ["hack squat machine"],
+  "fps": 30,
+  "camera": { "centerX": -0.1, "width": 2.0, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.95, 0.0], "to": [0.75, 0.05], "color": "frame", "r": 0.01 },
+    { "type": "line", "a": [-0.78, 1.62], "b": [-0.78, 0.04], "width": 0.055, "color": "frame" },
+    { "type": "line", "a": [-0.78, 0.75], "b": [-0.33, 0.04], "width": 0.04, "color": "frame" },
+    { "type": "line", "a": [0.12, 0.064], "b": [-0.78, 1.62], "width": 0.055, "color": "frame" },
+    { "type": "line", "a": [0.6, 0.23], "b": [0.6, 0.04], "width": 0.05, "color": "frame" },
+    { "type": "poly", "points": [[0.25, 0.05], [0.62, 0.264], [0.64, 0.229], [0.27, 0.015]], "r": 0.008, "color": "metal" },
+    { "type": "poly", "points": [
+        { "at": "hip", "along": "torso", "offset": [0.0, 0.19] },
+        { "at": "hip", "along": "torso", "offset": [0.46, 0.19] },
+        { "at": "hip", "along": "torso", "offset": [0.46, 0.3] },
+        { "at": "hip", "along": "torso", "offset": [0.0, 0.3] }
+      ], "r": 0.012, "color": "metal", "layer": "back" },
+    { "type": "circle", "at": { "at": "hip", "along": "torso", "offset": [0.06, 0.26] }, "r": 0.03, "color": "dark", "layer": "back" },
+    { "type": "circle", "at": { "at": "hip", "along": "torso", "offset": [0.4, 0.26] }, "r": 0.03, "color": "dark", "layer": "back" },
+    { "type": "poly", "points": [
+        { "at": "hip", "along": "torso", "offset": [-0.12, 0.125] },
+        { "at": "hip", "along": "torso", "offset": [0.6, 0.125] },
+        { "at": "hip", "along": "torso", "offset": [0.6, 0.195] },
+        { "at": "hip", "along": "torso", "offset": [-0.12, 0.195] }
+      ], "r": 0.015, "color": "pad", "layer": "back" },
+    { "type": "poly", "points": [
+        { "at": "shoulder", "along": "torso", "offset": [0.11, -0.06] },
+        { "at": "shoulder", "along": "torso", "offset": [0.11, 0.14] },
+        { "at": "shoulder", "along": "torso", "offset": [0.165, 0.14] },
+        { "at": "shoulder", "along": "torso", "offset": [0.165, -0.06] }
+      ], "r": 0.016, "color": "pad", "layer": "mid" },
+    { "type": "line", "a": { "at": "shoulder", "along": "torso", "offset": [0.14, -0.06] }, "b": { "at": "shoulder", "along": "torso", "offset": [0.1, -0.2] }, "width": 0.03, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "top": {
+      "pelvis": [-0.08, 0.93],
+      "torso": 120,
+      "neck": 113,
+      "ankle": [0.34, 0.194],
+      "far": { "ankle": [0.37, 0.211] },
+      "kneeBend": 1,
+      "foot": 30,
+      "scale": { "hand": 0.65 },
+      "wristTo": { "at": "shoulder", "along": "torso", "offset": [0.07, -0.19] },
+      "elbowBend": -1,
+      "hand": 110
+    },
+    "bottom": {
+      "base": "top",
+      "pelvis": [0.0375, 0.7265]
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "top", "ease": "linear" }
+  ]
+}

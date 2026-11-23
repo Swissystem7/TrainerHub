@@ -81,7 +81,10 @@
       "legacyDriveId": "1FcJDIXo0DwiUHdXCFVkPi-eU9HY9DHH0",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-014.mp4",
       "available": true,
-      "drivePlayId": "1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T"
+      "drivePlayId": "1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T",
+      "anim": "side-plank",
+      "originalPoster": "",
+      "poster": "media/anim/side-plank.jpg"
     },
     {
       "id": "drive_פלאנק_מצד_לצד",
@@ -924,7 +927,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/Dcdvw-zx4ll/",
-      "poster": "assets/posters/ill-1eBUfeGJR4avzGbV7rxj1folksTnKZNZq.jpg"
+      "poster": "media/anim/knee-pushup.jpg",
+      "anim": "knee-pushup",
+      "originalPoster": "assets/posters/ill-1eBUfeGJR4avzGbV7rxj1folksTnKZNZq.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בטכניקה_נכונה",
@@ -1570,7 +1575,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DaaKwo0NEK9/",
-      "poster": "assets/posters/ill-172TPCVgDlaBGTxMrjWIeagpiDUfFoEEr.jpg"
+      "poster": "media/anim/band-triceps-extension.jpg",
+      "anim": "band-triceps-extension",
+      "originalPoster": "assets/posters/ill-172TPCVgDlaBGTxMrjWIeagpiDUfFoEEr.jpg"
     },
     {
       "id": "drive_פשיטה_סופית_עם_גומייה_(TTE)",
@@ -1588,7 +1595,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DQ9ene_EaLz/",
-      "poster": "assets/posters/ill-1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu.jpg"
+      "poster": "media/anim/band-triceps-extension.jpg",
+      "anim": "band-triceps-extension",
+      "originalPoster": "assets/posters/ill-1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu.jpg"
     },
     {
       "id": "drive_התקדמות_שכיבות_סמיכה_יהלום",
@@ -1668,7 +1677,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DQRr0R8Dtx8/",
-      "poster": "assets/posters/ill-1IzB1u3XdeY8ZRiKIPCE58ii2LCQ8O8Rf.jpg"
+      "poster": "media/anim/pistol-squat.jpg",
+      "anim": "pistol-squat",
+      "originalPoster": "assets/posters/ill-1IzB1u3XdeY8ZRiKIPCE58ii2LCQ8O8Rf.jpg"
     },
     {
       "id": "drive_סקוואט_שרימפ",
@@ -1746,7 +1757,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DY-Jb87opzN/",
-      "poster": "assets/posters/ill-1chGM5rtSAr7BOTrRrcxjsns-C6M70d1b.jpg"
+      "poster": "media/anim/step-up.jpg",
+      "anim": "step-up",
+      "originalPoster": "assets/posters/ill-1chGM5rtSAr7BOTrRrcxjsns-C6M70d1b.jpg"
     },
     {
       "id": "drive_סקוואט_מפוצל_עם_רגל_קדמית_מוגבהת",
@@ -1785,7 +1798,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DfexPA_zSTN/",
-      "poster": "assets/posters/ill-1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1.jpg"
+      "poster": "media/anim/step-up.jpg",
+      "anim": "step-up",
+      "originalPoster": "assets/posters/ill-1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1.jpg"
     },
     {
       "id": "drive_סקוואט_בלי_כאבי_ברכיים",
@@ -2401,7 +2416,9 @@
         "stair dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DJkOTWcsz0b/",
-      "poster": "assets/posters/DJkOTWcsz0b.jpg"
+      "poster": "media/anim/stair-dip.jpg",
+      "anim": "stair-dip",
+      "originalPoster": "assets/posters/DJkOTWcsz0b.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_צמודות_על_כדור_כוח",
@@ -2512,7 +2529,9 @@
         "assisted pistol squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfkGcnTtKwQ/",
-      "poster": "assets/posters/ill-1SKWuYqpISlklstc9x05XWmLisCxx-007.jpg"
+      "poster": "media/anim/pistol-squat.jpg",
+      "anim": "pistol-squat",
+      "originalPoster": "assets/posters/ill-1SKWuYqpISlklstc9x05XWmLisCxx-007.jpg"
     },
     {
       "id": "drive_משיכת_שכמות_בתלייה_והתקדמות_למתח",
@@ -2677,7 +2696,9 @@
         "single leg romanian deadlift"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfZFgYmtAlg/",
-      "poster": "assets/posters/ill-1laF7IRYdYgPDReq13M1e56AI5szHYSUa.jpg"
+      "poster": "media/anim/single-leg-rdl.jpg",
+      "anim": "single-leg-rdl",
+      "originalPoster": "assets/posters/ill-1laF7IRYdYgPDReq13M1e56AI5szHYSUa.jpg"
     },
     {
       "id": "drive_דיפס_בסיוע_גומייה_על_מקבילים",
@@ -2832,7 +2853,9 @@
         "single arm incline dumbbell press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdwNbDRMmiR/",
-      "poster": "assets/posters/DdwNbDRMmiR.jpg"
+      "poster": "media/anim/single-arm-db-bench-press.jpg",
+      "anim": "single-arm-db-bench-press",
+      "originalPoster": "assets/posters/DdwNbDRMmiR.jpg"
     },
     {
       "id": "drive_סקוואט_סומו_עם_קטלבל_לילדים",
@@ -3417,7 +3440,9 @@
         "banded plyo push up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DaLTHvOPTWv/",
-      "poster": "assets/posters/DaLTHvOPTWv.jpg"
+      "poster": "media/anim/plyo-pushup.jpg",
+      "anim": "plyo-pushup",
+      "originalPoster": "assets/posters/DaLTHvOPTWv.jpg"
     },
     {
       "id": "drive_חטיבת_עץ_עם_גומייה_בחצי_כריעה",
@@ -3503,7 +3528,9 @@
         "banded jump squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbxzZPVKo6R/",
-      "poster": "assets/posters/DbxzZPVKo6R.jpg"
+      "poster": "media/anim/jump-squat.jpg",
+      "anim": "jump-squat",
+      "originalPoster": "assets/posters/DbxzZPVKo6R.jpg"
     },
     {
       "id": "drive_לחיצת_כתף_בחצי_כריעה_עם_גומייה_ומשקולת",
@@ -3935,7 +3962,9 @@
         "dumbbell squeeze press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DLkUntJhKP5/",
-      "poster": "assets/posters/DLkUntJhKP5.jpg"
+      "poster": "media/anim/dumbbell-squeeze-press.jpg",
+      "anim": "dumbbell-squeeze-press",
+      "originalPoster": "assets/posters/DLkUntJhKP5.jpg"
     },
     {
       "id": "drive_פרפר_עם_משקולות_על_הרצפה",
@@ -3978,7 +4007,9 @@
         "advanced renegade row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DaNS6zXxQCv/",
-      "poster": "assets/posters/DaNS6zXxQCv.jpg"
+      "poster": "media/anim/renegade-row.jpg",
+      "anim": "renegade-row",
+      "originalPoster": "assets/posters/DaNS6zXxQCv.jpg"
     },
     {
       "id": "drive_חתירת_רנגייד_עם_משקולות_כבדות",
@@ -3999,7 +4030,9 @@
         "heavy renegade row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DLaQlqCRbd7/",
-      "poster": "assets/posters/DLaQlqCRbd7.jpg"
+      "poster": "media/anim/renegade-row.jpg",
+      "anim": "renegade-row",
+      "originalPoster": "assets/posters/DLaQlqCRbd7.jpg"
     },
     {
       "id": "drive_ווינדמיל_עם_משקולת_מעל_הראש",
@@ -4084,7 +4117,9 @@
         "dumbbell jump squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DVVwl1XjUKH/",
-      "poster": "assets/posters/ill-1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv.jpg"
+      "poster": "media/anim/jump-squat.jpg",
+      "anim": "jump-squat",
+      "originalPoster": "assets/posters/ill-1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv.jpg"
     },
     {
       "id": "drive_סקאל_קראשר_עם_משקולות_על_ספסל",
@@ -4369,7 +4404,9 @@
         "barbell deadlift"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DapAAjEoF-o/",
-      "poster": "assets/posters/DapAAjEoF-o.jpg"
+      "poster": "media/anim/barbell-deadlift.jpg",
+      "anim": "barbell-deadlift",
+      "originalPoster": "assets/posters/DapAAjEoF-o.jpg"
     },
     {
       "id": "drive_חתירת_מוט_נתמכת_בספסל",
@@ -5890,7 +5927,9 @@
         "hack squat machine"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Da0TgxQxwOn/",
-      "poster": "assets/posters/Da0TgxQxwOn.jpg"
+      "poster": "media/anim/hack-squat-machine.jpg",
+      "anim": "hack-squat-machine",
+      "originalPoster": "assets/posters/Da0TgxQxwOn.jpg"
     },
     {
       "id": "drive_לחיצת_רגליים_ברגל_אחת_במכונה",
@@ -6062,7 +6101,9 @@
         "standing cable crossover"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DSWSfx1Cp72/",
-      "poster": "assets/posters/ill-1g2wN27E26-TEMa6cyl3CmESC6kNljyq3.jpg"
+      "poster": "media/anim/cable-crossover.jpg",
+      "anim": "cable-crossover",
+      "originalPoster": "assets/posters/ill-1g2wN27E26-TEMa6cyl3CmESC6kNljyq3.jpg"
     },
     {
       "id": "drive_קרוסאובר_בכבל_בכריעה",
@@ -6082,7 +6123,9 @@
         "kneeling cable crossover"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DINiIDSM1r4/",
-      "poster": "assets/posters/DINiIDSM1r4.jpg"
+      "poster": "media/anim/cable-crossover.jpg",
+      "anim": "cable-crossover",
+      "originalPoster": "assets/posters/DINiIDSM1r4.jpg"
     },
     {
       "id": "drive_חטיבת_עץ_בכבל_בצעד_צד",
@@ -6124,7 +6167,9 @@
         "machine hack squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DSNJwLRDLBy/",
-      "poster": "assets/posters/DSNJwLRDLBy.jpg"
+      "poster": "media/anim/hack-squat-machine.jpg",
+      "anim": "hack-squat-machine",
+      "originalPoster": "assets/posters/DSNJwLRDLBy.jpg"
     },
     {
       "id": "drive_הרמות_Y_בכבל_על_ספסל_משופע",
@@ -6424,7 +6469,9 @@
         "banded plyometric push ups"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbFBVwiO5J-/",
-      "poster": "assets/posters/DbFBVwiO5J-.jpg"
+      "poster": "media/anim/plyo-pushup.jpg",
+      "anim": "plyo-pushup",
+      "originalPoster": "assets/posters/DbFBVwiO5J-.jpg"
     },
     {
       "id": "drive_דדליפט_רומני_רגל_אחת_עם_גומייה",
@@ -6444,7 +6491,9 @@
         "banded single leg romanian deadlift"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DOtlXZSkaTH/",
-      "poster": "assets/posters/DOtlXZSkaTH.jpg"
+      "poster": "media/anim/single-leg-rdl.jpg",
+      "anim": "single-leg-rdl",
+      "originalPoster": "assets/posters/DOtlXZSkaTH.jpg"
     },
     {
       "id": "drive_סקין_דה_קאט_מלא_על_מוט_מתח",
@@ -6511,7 +6560,9 @@
         "dumbbell squeeze press bench"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DWJo1h5jRC_/",
-      "poster": "assets/posters/DWJo1h5jRC_.jpg"
+      "poster": "media/anim/dumbbell-squeeze-press.jpg",
+      "anim": "dumbbell-squeeze-press",
+      "originalPoster": "assets/posters/DWJo1h5jRC_.jpg"
     },
     {
       "id": "drive_לחיצת_חזה_ביד_אחת_עם_משקולת",
@@ -6532,7 +6583,9 @@
         "single arm dumbbell bench press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/De2ulfWsWsU/",
-      "poster": "assets/posters/De2ulfWsWsU.jpg"
+      "poster": "media/anim/single-arm-db-bench-press.jpg",
+      "anim": "single-arm-db-bench-press",
+      "originalPoster": "assets/posters/De2ulfWsWsU.jpg"
     },
     {
       "id": "drive_לחיצת_Z_עם_משקולות",
@@ -6661,7 +6714,9 @@
         "smith machine JM press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdTgTSbR9Gc/",
-      "poster": "assets/posters/DdTgTSbR9Gc.jpg"
+      "poster": "media/anim/jm-press.jpg",
+      "anim": "jm-press",
+      "originalPoster": "assets/posters/DdTgTSbR9Gc.jpg"
     },
     {
       "id": "drive_ג'יי-אם_פרס_עם_מוט_על_ספסל",
@@ -6681,7 +6736,9 @@
         "barbell JM press bench"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcTeRODIjwN/",
-      "poster": "assets/posters/DcTeRODIjwN.jpg"
+      "poster": "media/anim/jm-press.jpg",
+      "anim": "jm-press",
+      "originalPoster": "assets/posters/DcTeRODIjwN.jpg"
     },
     {
       "id": "drive_גובלט_סקוואט_עם_קטלבל",
@@ -6701,7 +6758,9 @@
         "kettlebell goblet squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DTTGcifgn6Z/",
-      "poster": "assets/posters/DTTGcifgn6Z.jpg"
+      "poster": "media/anim/goblet-squat.jpg",
+      "anim": "goblet-squat",
+      "originalPoster": "assets/posters/DTTGcifgn6Z.jpg"
     },
     {
       "id": "drive_לחיצת_קטלבל_מעל_הראש_בישיבה_על_הרצפה",
@@ -7118,7 +7177,9 @@
         "close grip wall push up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DChKPJsJDUs/",
-      "poster": "assets/posters/DChKPJsJDUs.jpg"
+      "poster": "media/anim/wall-pushup.jpg",
+      "anim": "wall-pushup",
+      "originalPoster": "assets/posters/DChKPJsJDUs.jpg"
     },
     {
       "id": "drive_קפיצות_בשתי_רגליים_בין_חישוקים",
@@ -7670,12 +7731,14 @@
         "wall push up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfH95gAvkwb/",
-      "poster": "assets/posters/DfH95gAvkwb-1.jpg",
+      "poster": "media/anim/wall-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         24.5,
         33.5
-      ]
+      ],
+      "anim": "wall-pushup",
+      "originalPoster": "assets/posters/DfH95gAvkwb-1.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בהתקדמות_לאורך_סולם",
@@ -8549,12 +8612,14 @@
         "stair dips walking up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfkaCsMpPRA/",
-      "poster": "assets/posters/DfkaCsMpPRA-1.jpg",
+      "poster": "media/anim/stair-dip.jpg",
       "segment": 1,
       "segmentRange": [
         30.0,
         42.0
-      ]
+      ],
+      "anim": "stair-dip",
+      "originalPoster": "assets/posters/DfkaCsMpPRA-1.jpg"
     },
     {
       "id": "drive_הרמות_ברכיים_בתלייה_על_מוט_מתח",
@@ -8830,12 +8895,14 @@
         "standing barbell overhead press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbZdriBTZcv/",
-      "poster": "assets/posters/DbZdriBTZcv-1.jpg",
+      "poster": "media/anim/standing-barbell-ohp.jpg",
       "segment": 1,
       "segmentRange": [
         0.0,
         17.0
-      ]
+      ],
+      "anim": "standing-barbell-ohp",
+      "originalPoster": "assets/posters/DbZdriBTZcv-1.jpg"
     },
     {
       "id": "drive_לחיצת_כתפיים_עם_מוט_באחיזה_רחבה",
@@ -8855,12 +8922,14 @@
         "wide grip barbell overhead press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYIga9rSq8C/",
-      "poster": "assets/posters/DYIga9rSq8C-1.jpg",
+      "poster": "media/anim/standing-barbell-ohp.jpg",
       "segment": 1,
       "segmentRange": [
         17.2,
         24.9
-      ]
+      ],
+      "anim": "standing-barbell-ohp",
+      "originalPoster": "assets/posters/DYIga9rSq8C-1.jpg"
     },
     {
       "id": "drive_לחיצת_קטלבל_הפוך_ביד_אחת_בשכיבה",

@@ -1,0 +1,62 @@
+{
+  "id": "barbell-deadlift",
+  "name": { "en": "Conventional barbell deadlift", "he": "דדליפט עם מוט" },
+  "view": "side",
+  "equipment": ["barbell"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 1.85, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.9 },
+  "props": [
+    { "type": "plate", "at": "near.grip", "r": 0.22, "layer": "mid" }
+  ],
+  "poses": {
+    "bottom": {
+      "pelvis": [-0.33, 0.6402],
+      "torso": 22,
+      "neck": 30,
+      "ankle": [0.0, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "scale": { "hand": 0.65 },
+      "upperArm": -92,
+      "foreArm": -92,
+      "hand": -92
+    },
+    "tight": {
+      "base": "bottom",
+      "pelvis": [-0.325, 0.6286],
+      "torso": 23.5,
+      "neck": 31
+    },
+    "mid": {
+      "base": "bottom",
+      "pelvis": [-0.25, 0.77],
+      "torso": 42,
+      "neck": 46,
+      "upperArm": -91,
+      "foreArm": -91,
+      "hand": -91
+    },
+    "top": {
+      "base": "bottom",
+      "pelvis": [0.0, 0.945],
+      "torso": 88,
+      "neck": 88,
+      "upperArm": -83,
+      "foreArm": -83,
+      "hand": -83
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "bottom" },
+    { "t": 0.12, "pose": "bottom", "ease": "linear" },
+    { "t": 0.4, "pose": "tight", "ease": "inOutSine" },
+    { "t": 0.85, "pose": "mid", "ease": "inQuad" },
+    { "t": 1.35, "pose": "top", "ease": "outQuad" },
+    { "t": 1.65, "pose": "top", "ease": "linear" },
+    { "t": 2.2, "pose": "mid", "ease": "inQuad" },
+    { "t": 2.75, "pose": "bottom", "ease": "outQuad" },
+    { "t": 3.0, "pose": "bottom", "ease": "linear" }
+  ]
+}

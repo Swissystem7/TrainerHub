@@ -1,0 +1,40 @@
+{
+  "id": "knee-pushup",
+  "name": { "en": "Knee push-up", "he": "שכיבות סמיכה מהברכיים" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.36, "width": 2.05, "groundY": 0.6 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "poses": {
+    "top": {
+      "pin": { "point": "near.knee", "at": [0.0, 0.06] },
+      "scale": { "upperArm": 1 },
+      "torso": 34.5,
+      "neck": 34.5,
+      "thigh": 214.5,
+      "shin": 162,
+      "foot": 150,
+      "hand": 0,
+      "elbowBend": -1,
+      "wrist": [0.83, 0.03],
+      "far": { "wrist": [0.86, 0.03], "shin": 157, "foot": 145 }
+    },
+    "bottom": {
+      "base": "top",
+      "scale": { "upperArm": 0.8 },
+      "torso": 9,
+      "neck": 9,
+      "thigh": 189
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "top", "ease": "linear" }
+  ]
+}

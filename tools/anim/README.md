@@ -10,11 +10,13 @@ runtime, and no existing TrainerHub media is read: every frame is drawn by code.
   - `<id>_360x640.mp4` (app size)
   - `<id>_poster.png` (single still, same framing)
 - `out/contact/<id>.png`: contact sheet (8 frames across one cycle) for a quick visual check
-- `out/STATUS.md` (batch 1), `out/STATUS_batch2.md` (batch 2) and `out/STATUS_batch3.md` (batch 3): per-exercise status
+- `out/STATUS.md` (batch 1), `out/STATUS_batch2.md` (batch 2), `out/STATUS_batch3.md` (batch 3) and
+  `out/STATUS_batch4.md` (batch 4): per-exercise status
 
-Exercises (61): `pushups` (the approved sample), batch 1 (20 exercises, listed in
-`out/STATUS.md`), batch 2 (20 exercises, listed in `out/STATUS_batch2.md`) and batch 3
-(20 exercises, listed in `out/STATUS_batch3.md`; no engine changes, only new JSON).
+Exercises (81): `pushups` (the approved sample), batch 1 (20 exercises, listed in
+`out/STATUS.md`), batch 2 (20 exercises, listed in `out/STATUS_batch2.md`), batch 3
+(20 exercises, listed in `out/STATUS_batch3.md`; no engine changes, only new JSON) and batch 4
+(20 exercises, listed in `out/STATUS_batch4.md`; one optional shadow setting added).
 Every clip is 9 s, 30 fps, seamless loop.
 
 ## Requirements
@@ -71,7 +73,7 @@ so no other colour can slip in.
 | `view` | What you see | Sides |
 | --- | --- | --- |
 | `side` (default) | Profile, figure faces right. Far limbs are drawn darker. | `near`, `far` |
-| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`, `pec-deck-fly`). | `right`, `left` as seen on screen |
+| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`, `pec-deck-fly`, `cable-crossover`, and `side-plank`, where the figure lies on its side). | `right`, `left` as seen on screen |
 | `top` | Straight down on a lying figure, head towards the top of the frame (used for `floor-dumbbell-fly`). No ground line: the whole frame is floor. | `right`, `left` |
 
 `front` and `top` share one solver: hips and shoulders are spread sideways, and
@@ -110,7 +112,7 @@ No renderer changes are needed: a new exercise is new JSON + one command.
 | `repeat` | How many times the cycle plays. Duration = last `t` x `repeat` (keep it 9 s). |
 | `poster` | `{ "t": seconds }` moment used for the poster. |
 | `body` | Optional overrides of the proportions in `lib/skeleton.js`. |
-| `shadow` | Optional: `false`, or `{ center, rx, ry, alpha, soft }` (world units) instead of the automatic floor shadow. |
+| `shadow` | Optional: `false`, or `{ center, rx, ry, alpha, soft }` (world units) instead of the automatic floor shadow. `{ "air": k }` keeps the automatic shadow but shrinks and fades it while the figure is off the floor (`jump-squat` uses `2.5`). |
 | `checks` | Optional: `{ "reach": false }` / `{ "floor": false }` silences a pose warning that is intended. |
 
 ### Poses

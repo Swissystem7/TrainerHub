@@ -1,0 +1,93 @@
+{
+  "id": "jump-squat",
+  "name": { "en": "Jump squat", "he": "סקוואט קפיצה" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.02, "width": 1.9, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.53 },
+  "shadow": { "air": 2.5 },
+  "poses": {
+    "stand": {
+      "pelvis": [0.0, 0.945],
+      "torso": 88,
+      "neck": 88,
+      "ankle": [0.0, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "upperArm": -88,
+      "foreArm": -80,
+      "hand": -80,
+      "far": { "upperArm": -86, "foreArm": -76, "hand": -76 }
+    },
+    "squat": {
+      "base": "stand",
+      "pelvis": [-0.21, 0.5],
+      "torso": 55,
+      "neck": 66,
+      "upperArm": -142,
+      "foreArm": -128,
+      "hand": -128,
+      "far": { "upperArm": -138, "foreArm": -122, "hand": -122 }
+    },
+    "takeoff": {
+      "base": "stand",
+      "pelvis": [0.035, 1.0],
+      "torso": 86,
+      "neck": 86,
+      "ankle": [0.051, 0.15],
+      "foot": -35,
+      "upperArm": 25,
+      "foreArm": 45,
+      "hand": 45,
+      "far": { "upperArm": 30, "foreArm": 50, "hand": 50 }
+    },
+    "air": {
+      "base": "stand",
+      "pelvis": [0.035, 1.19],
+      "torso": 90,
+      "neck": 90,
+      "ankle": [0.045, 0.335],
+      "foot": -42,
+      "upperArm": 66,
+      "foreArm": 78,
+      "hand": 78,
+      "far": { "upperArm": 70, "foreArm": 82, "hand": 82 }
+    },
+    "land": {
+      "base": "stand",
+      "pelvis": [0.02, 0.985],
+      "torso": 86,
+      "neck": 86,
+      "ankle": [0.051, 0.15],
+      "foot": -35,
+      "upperArm": 15,
+      "foreArm": 35,
+      "hand": 35,
+      "far": { "upperArm": 20, "foreArm": 40, "hand": 40 }
+    },
+    "absorb": {
+      "base": "stand",
+      "pelvis": [-0.15, 0.64],
+      "torso": 63,
+      "neck": 72,
+      "upperArm": -62,
+      "foreArm": -40,
+      "hand": -40,
+      "far": { "upperArm": -58, "foreArm": -36, "hand": -36 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "stand" },
+    { "t": 0.2, "pose": "stand", "ease": "linear" },
+    { "t": 0.95, "pose": "squat", "ease": "inOutSine" },
+    { "t": 1.05, "pose": "squat", "ease": "linear" },
+    { "t": 1.33, "pose": "takeoff", "ease": "inCubic" },
+    { "t": 1.53, "pose": "air", "ease": "outQuad" },
+    { "t": 1.73, "pose": "land", "ease": "inQuad" },
+    { "t": 2.15, "pose": "absorb", "ease": "outCubic" },
+    { "t": 2.8, "pose": "stand", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "stand", "ease": "linear" }
+  ]
+}

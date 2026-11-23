@@ -107,13 +107,16 @@ function makeScene(ex) {
       });
     } else if (ex.shadow !== false && view !== 'top') {
       const [lo, hi] = extentX(shapes);
+      // Optional `shadow: { "air": k }`: the shadow shrinks and fades while the figure is off the floor (jumps).
+      const air = (ex.shadow && ex.shadow.air) || 0;
+      const shrink = air ? 1 / (1 + air * Math.max(0, lowestPoint(shapes))) : 1;
       canvas.draw({
         kind: 'ellipse',
         c: [X((lo + hi) / 2), groundPx + 16],
-        rx: ((hi - lo) / 2) * scale * 0.96,
+        rx: ((hi - lo) / 2) * scale * 0.96 * shrink,
         ry: 9,
         color: C.shade,
-        alpha: 0.55,
+        alpha: 0.55 * shrink,
         soft: 8
       });
     }

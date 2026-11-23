@@ -353,7 +353,9 @@
       "סייד פלאנק"
     ],
     "drivePlayId": "1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T",
-    "poster": "assets/posters/ill-1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T.jpg"
+    "poster": "media/anim/side-plank.jpg",
+    "anim": "side-plank",
+    "originalPoster": "assets/posters/ill-1hEX4FPoIL2xdPhJkzMMTi3Dlwf6rA81T.jpg"
   },
   "פלאנק_שעון": {
     "id": "פלאנק_שעון",

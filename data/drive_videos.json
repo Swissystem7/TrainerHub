@@ -288,7 +288,10 @@
   "fileId": "1EPqYnoZNgTQkSnwjHTpUMa2vGRQTxuA4",
   "name": "לחיצת חזה עם גומייה צהובה - DdmPI6hoXNT.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "band-chest-press",
+  "originalPoster": "",
+  "poster": "media/anim/band-chest-press.jpg"
  },
  {
   "fileId": "1LtT_iUKfP1SO3YUmI9bWSgki5ZFuU_QB",
@@ -300,7 +303,10 @@
   "fileId": "1XKiO8vgc2l1OeMVx81a_BtLN9uFs9Hv9",
   "name": "לחיצת חזה עם גומייה סגולה ומוט עץ - Db_0bHxi0vk.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "band-chest-press",
+  "originalPoster": "",
+  "poster": "media/anim/band-chest-press.jpg"
  },
  {
   "fileId": "1zpx2jXWJ9bA1075fPrUzJwLeMRoCvZQX",
@@ -742,7 +748,9 @@
   "name": "שכיבות סמיכה מהברכיים - שלב אחר שלב - Dcdvw-zx4ll.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1eBUfeGJR4avzGbV7rxj1folksTnKZNZq.jpg"
+  "poster": "media/anim/knee-pushup.jpg",
+  "anim": "knee-pushup",
+  "originalPoster": "assets/posters/ill-1eBUfeGJR4avzGbV7rxj1folksTnKZNZq.jpg"
  },
  {
   "fileId": "1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ",
@@ -1073,14 +1081,18 @@
   "name": "פשיטת מרפקים עם גומייה - DaaKwo0NEK9.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-172TPCVgDlaBGTxMrjWIeagpiDUfFoEEr.jpg"
+  "poster": "media/anim/band-triceps-extension.jpg",
+  "anim": "band-triceps-extension",
+  "originalPoster": "assets/posters/ill-172TPCVgDlaBGTxMrjWIeagpiDUfFoEEr.jpg"
  },
  {
   "fileId": "1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu",
   "name": "פשיטה סופית עם גומייה (TTE) - DQ9ene_EaLz.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu.jpg"
+  "poster": "media/anim/band-triceps-extension.jpg",
+  "anim": "band-triceps-extension",
+  "originalPoster": "assets/posters/ill-1RNhSIkZRCIloV1P31FNQBCFiIX_sBplu.jpg"
  },
  {
   "fileId": "1Owp44ZKj7wTl5_nOcQLnOSkOKsV73AxL",
@@ -1132,7 +1144,9 @@
   "name": "סקוואט רגל אחת - 3 רמות - DQRr0R8Dtx8.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1IzB1u3XdeY8ZRiKIPCE58ii2LCQ8O8Rf.jpg"
+  "poster": "media/anim/pistol-squat.jpg",
+  "anim": "pistol-squat",
+  "originalPoster": "assets/posters/ill-1IzB1u3XdeY8ZRiKIPCE58ii2LCQ8O8Rf.jpg"
  },
  {
   "fileId": "12vWcLgxeC857wxKrV9ni1Y5EDWnPkjzc",
@@ -1164,7 +1178,9 @@
   "name": "עלייה למדרגה עם הנעת ברך - DY-Jb87opzN.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1chGM5rtSAr7BOTrRrcxjsns-C6M70d1b.jpg"
+  "poster": "media/anim/step-up.jpg",
+  "anim": "step-up",
+  "originalPoster": "assets/posters/ill-1chGM5rtSAr7BOTrRrcxjsns-C6M70d1b.jpg"
  },
  {
   "fileId": "1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU",
@@ -1180,7 +1196,9 @@
   "name": "עלייה למדרגה למתחילים - DfexPA_zSTN.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1.jpg"
+  "poster": "media/anim/step-up.jpg",
+  "anim": "step-up",
+  "originalPoster": "assets/posters/ill-1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1.jpg"
  },
  {
   "fileId": "1EntvQrLECwXs83YIUPm4fEv_SaV770U8",
@@ -1401,7 +1419,10 @@
   "fileId": "1__bv5fX4ZldNwF0-Fj490iPeRVqYK1uf",
   "name": "דיפס על מדרגות - DJkOTWcsz0b.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "stair-dip",
+  "originalPoster": "",
+  "poster": "media/anim/stair-dip.jpg"
  },
  {
   "fileId": "1sz4EE6nrghs3UArdb_SYIW-W85HO7zIu",
@@ -1437,7 +1458,9 @@
   "name": "פיסטול סקוואט באחיזה במוט - DfkGcnTtKwQ.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1SKWuYqpISlklstc9x05XWmLisCxx-007.jpg"
+  "poster": "media/anim/pistol-squat.jpg",
+  "anim": "pistol-squat",
+  "originalPoster": "assets/posters/ill-1SKWuYqpISlklstc9x05XWmLisCxx-007.jpg"
  },
  {
   "fileId": "1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl",
@@ -1496,7 +1519,9 @@
   "name": "דדליפט רומני על רגל אחת עם משקולות - DfZFgYmtAlg.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1laF7IRYdYgPDReq13M1e56AI5szHYSUa.jpg"
+  "poster": "media/anim/single-leg-rdl.jpg",
+  "anim": "single-leg-rdl",
+  "originalPoster": "assets/posters/ill-1laF7IRYdYgPDReq13M1e56AI5szHYSUa.jpg"
  },
  {
   "fileId": "1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm",
@@ -1549,7 +1574,10 @@
   "fileId": "13UbcBXS4O4djh-exBEVW_wR9PQx8kMmB",
   "name": "לחיצת שיפוע ביד אחת עם משקולת - DdwNbDRMmiR.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "single-arm-db-bench-press",
+  "originalPoster": "",
+  "poster": "media/anim/single-arm-db-bench-press.jpg"
  },
  {
   "fileId": "1JHShZYn9Bu4YAowhX81W7iCFjW8jDnrN",
@@ -1746,7 +1774,10 @@
   "fileId": "1VZIjQbmATafmYZFDmLOu6OnrbAZePckH",
   "name": "שכיבות סמיכה מתפרצות עם גומייה על הגב - DaLTHvOPTWv.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "plyo-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/plyo-pushup.jpg"
  },
  {
   "fileId": "11vPfRclg_esFElZRNYxWYeKZF5dBsbpo",
@@ -1779,7 +1810,10 @@
   "fileId": "1ci7UD8T0vILbcuXfSmvgzWAWJmt4lW5s",
   "name": "סקוואט קפיצה עם גומייה סביב המותן - DbxzZPVKo6R.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "jump-squat",
+  "originalPoster": "",
+  "poster": "media/anim/jump-squat.jpg"
  },
  {
   "fileId": "1xN3fSKT2EeiH8paAJ3n8_7nRs8aNupWI",
@@ -1927,7 +1961,10 @@
   "fileId": "1N-7K_DVObSG-HqMmCk9D4UdCnVL9Q6hO",
   "name": "לחיצת חזה באחיזה צמודה עם משקולות - DLkUntJhKP5.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "dumbbell-squeeze-press",
+  "originalPoster": "",
+  "poster": "media/anim/dumbbell-squeeze-press.jpg"
  },
  {
   "fileId": "1rVe-xAewru_-iQx8lYPnrR_PDvfnjVFt",
@@ -1942,13 +1979,19 @@
   "fileId": "1cyGsHVkEirUTt3PnI9r_UdafgRDjbcE9",
   "name": "חתירת רנגייד מתקדמת - DaNS6zXxQCv.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "renegade-row",
+  "originalPoster": "",
+  "poster": "media/anim/renegade-row.jpg"
  },
  {
   "fileId": "1rzhHI5xHcUHKx_o9heco1-x1c5b5_rav",
   "name": "חתירת רנגייד עם משקולות כבדות - DLaQlqCRbd7.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "renegade-row",
+  "originalPoster": "",
+  "poster": "media/anim/renegade-row.jpg"
  },
  {
   "fileId": "1tsmeT1uHcZj2NAW7JfF8bR9KF6J3SZ1h",
@@ -1980,7 +2023,9 @@
   "name": "סקוואט קפיצה עם משקולות - DVVwl1XjUKH.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv.jpg"
+  "poster": "media/anim/jump-squat.jpg",
+  "anim": "jump-squat",
+  "originalPoster": "assets/posters/ill-1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv.jpg"
  },
  {
   "fileId": "1NMqbv478fE9gwcSqe39Zg-uMIixHG5uO",
@@ -2082,7 +2127,10 @@
   "fileId": "1Ee_7QZ-DCRnT8FETclMerWRSAqiMul7w",
   "name": "דדליפט עם מוט אולימפי - DapAAjEoF-o.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "barbell-deadlift",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-deadlift.jpg"
  },
  {
   "fileId": "1qag4GrBXkVscH6VgMN5z7sMgSIGWfP9M",
@@ -2639,7 +2687,10 @@
   "fileId": "12a9_p5semik2NYmMQ-l5wS29iEXotbZN",
   "name": "סקוואט במכונת האק - Da0TgxQxwOn.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "hack-squat-machine",
+  "originalPoster": "",
+  "poster": "media/anim/hack-squat-machine.jpg"
  },
  {
   "fileId": "1W-ymd3c3GcFNie9kCpM4c9ND5ag2dNH2",
@@ -2700,13 +2751,18 @@
   "name": "קרוסאובר בכבלים בעמידה - DSWSfx1Cp72.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1g2wN27E26-TEMa6cyl3CmESC6kNljyq3.jpg"
+  "poster": "media/anim/cable-crossover.jpg",
+  "anim": "cable-crossover",
+  "originalPoster": "assets/posters/ill-1g2wN27E26-TEMa6cyl3CmESC6kNljyq3.jpg"
  },
  {
   "fileId": "1ViZCOABQ9VSMZunEDTmxEZYcK9ztkGFq",
   "name": "קרוסאובר בכבל בכריעה - DINiIDSM1r4.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "cable-crossover",
+  "originalPoster": "",
+  "poster": "media/anim/cable-crossover.jpg"
  },
  {
   "fileId": "1lf2aAvlzdwgi944fE-1cNCBcvpKNam1V",
@@ -2721,7 +2777,10 @@
   "fileId": "1L4e5DUAaIcvMUTo29nOWS-s2T3pTd0L3",
   "name": "האק סקוואט במכונת פלטות - DSNJwLRDLBy.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "hack-squat-machine",
+  "originalPoster": "",
+  "poster": "media/anim/hack-squat-machine.jpg"
  },
  {
   "fileId": "1ogQv8amxm8WWZ3LXTbJ_l6_XOGgITpAB",
@@ -2820,13 +2879,19 @@
   "fileId": "1bWB1x3aco1MdtBWKL8-VbqM6dAC-5puY",
   "name": "שכיבות סמיכה פליומטריות עם גומייה - DbFBVwiO5J-.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "plyo-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/plyo-pushup.jpg"
  },
  {
   "fileId": "1gTyCNVQIf4GDDlV6H8dnzV8bXaFegfTy",
   "name": "דדליפט רומני רגל אחת עם גומייה - DOtlXZSkaTH.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "single-leg-rdl",
+  "originalPoster": "",
+  "poster": "media/anim/single-leg-rdl.jpg"
  },
  {
   "fileId": "1roK3h1kOSGK957IqtmBPWZyiNmJnfH7Z",
@@ -2850,13 +2915,19 @@
   "fileId": "1pKEqOgjwLFFRcseWpmpyNY2uXVPPjsxn",
   "name": "לחיצת סקוויז עם משקולות על ספסל - DWJo1h5jRC_.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "dumbbell-squeeze-press",
+  "originalPoster": "",
+  "poster": "media/anim/dumbbell-squeeze-press.jpg"
  },
  {
   "fileId": "18Z6D5Dsgzy16bj8LXJBUuICeFqmHBGOx",
   "name": "לחיצת חזה ביד אחת עם משקולת - De2ulfWsWsU.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "single-arm-db-bench-press",
+  "originalPoster": "",
+  "poster": "media/anim/single-arm-db-bench-press.jpg"
  },
  {
   "fileId": "1gYvQeL74cjVEAd4hPYmsYZVwK6VlHRCF",
@@ -2899,19 +2970,28 @@
   "fileId": "1BsVO_Z0vb5w4Ufg1O-8WZ0LayDg-SgoP",
   "name": "ג'יי-אם פרס במכונת סמית' - DdTgTSbR9Gc.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "jm-press",
+  "originalPoster": "",
+  "poster": "media/anim/jm-press.jpg"
  },
  {
   "fileId": "1umIH9QhXYT_ordjGRFeqLPyfd9BiCQsm",
   "name": "ג'יי-אם פרס עם מוט על ספסל - DcTeRODIjwN.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "jm-press",
+  "originalPoster": "",
+  "poster": "media/anim/jm-press.jpg"
  },
  {
   "fileId": "12w-w0KeGQ28Dyzp8C3WqTzBEUxApOEVp",
   "name": "גובלט סקוואט עם קטלבל - DTTGcifgn6Z.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "goblet-squat",
+  "originalPoster": "",
+  "poster": "media/anim/goblet-squat.jpg"
  },
  {
   "fileId": "11vPqLacXHvjAcevXZuV7_ts2u1tgTBnF",
@@ -3068,7 +3148,10 @@
   "fileId": "1TW0Gk5nWnUkIlDuErE4xra9MNwcORM_Z",
   "name": "שכיבות סמיכה צמודות בקיר - DChKPJsJDUs.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "wall-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/wall-pushup.jpg"
  },
  {
   "fileId": "1Gwt-oh0WeCRsBLqOWFxUvJVjh9GUSUpL",
@@ -3224,7 +3307,10 @@
   "fileId": "1l3THD0RKF45wh61c3tkjSKG9S_S5TgzS",
   "name": "שכיבות סמיכה על קיר - DfH95gAvkwb-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "wall-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/wall-pushup.jpg"
  },
  {
   "fileId": "1g34cbCbr4BSL9NlqTZr6gZJZmbe8-78k",
@@ -3466,7 +3552,10 @@
   "fileId": "1XLxFItEmSFoon4m8IZ-x8qclvB1IemxJ",
   "name": "דיפס בעלייה במדרגות - DfkaCsMpPRA-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "stair-dip",
+  "originalPoster": "",
+  "poster": "media/anim/stair-dip.jpg"
  },
  {
   "fileId": "1RJzCNtbMXX9neDVISfq2XsngOuZuhqTX",
@@ -3553,13 +3642,19 @@
   "fileId": "1ekbD444lGwX1xXG7SRwvuLjvBXvgZra3",
   "name": "לחיצת כתפיים עם מוט בעמידה - DbZdriBTZcv-קטע1.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "standing-barbell-ohp",
+  "originalPoster": "",
+  "poster": "media/anim/standing-barbell-ohp.jpg"
  },
  {
   "fileId": "1H9C3Dl70Pa6yeDwP2fksiFtU7G2vkHEi",
   "name": "לחיצת כתפיים עם מוט באחיזה רחבה - DYIga9rSq8C-קטע1.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "standing-barbell-ohp",
+  "originalPoster": "",
+  "poster": "media/anim/standing-barbell-ohp.jpg"
  },
  {
   "fileId": "1XT7AD2lLANIsoeCHaRTimFB6_QPTdKII",
