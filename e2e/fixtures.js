@@ -20,6 +20,14 @@ const test = base.test.extend({
   externalRequests: async ({}, use) => { await use([]); },
 
   page: async ({ page, externalRequests }, use) => {
+    // The consent banner would cover buttons: start as a visitor who already said no.
+    await page.addInitScript(() => {
+      try {
+        if (!window.localStorage.getItem('th-consent-v1')) window.localStorage.setItem('th-consent-v1', 'denied');
+      } catch (_) {
+        /* storage blocked */
+      }
+    });
     const pageErrors = [];
     page.on('pageerror', (err) => pageErrors.push(err.message));
     await page.route((url) => !isLocal(url.href), (route) => {

@@ -3,6 +3,7 @@ const assert = require('node:assert');
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const { declineConsent } = require('./helpers/consent');
 
 let chromium;
 try { ({ chromium } = require('playwright')); } catch (e) { chromium = null; }
@@ -33,6 +34,7 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: '360', 
     const browser = await chromium.launch();
     try {
       const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      await declineConsent(ctx);
       await ctx.addInitScript(() => { window.speechSynthesis && (window.speechSynthesis.speak = () => {}); navigator.vibrate = () => true; });
       await ctx.addInitScript((w) => { if (!sessionStorage.getItem('seeded')) { sessionStorage.setItem('seeded', '1'); localStorage.setItem('trainerhub_active_workout', JSON.stringify(w)); } }, WORKOUT);
       const page = await ctx.newPage();
