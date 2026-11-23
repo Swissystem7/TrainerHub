@@ -1,0 +1,419 @@
+{
+  "id": "bear-crawl",
+  "name": {
+    "en": "Bear crawl",
+    "he": "זחילת דוב"
+  },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": {
+    "centerX": 0.36,
+    "width": 2.2,
+    "groundY": 0.6
+  },
+  "repeat": 1,
+  "poster": {
+    "t": 1.75
+  },
+  "poses": {
+    "s0": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.48,
+          0.03
+        ],
+        "ankle": [
+          -0.36,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.51,
+          0.03
+        ],
+        "ankle": [
+          -0.32,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "s1": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.07,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.62,
+          0.03
+        ],
+        "ankle": [
+          -0.36,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.51,
+          0.03
+        ],
+        "ankle": [
+          -0.18,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "s2": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.21,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.62,
+          0.03
+        ],
+        "ankle": [
+          -0.08,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.79,
+          0.03
+        ],
+        "ankle": [
+          -0.18,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "s3": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.35,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.9,
+          0.03
+        ],
+        "ankle": [
+          -0.08,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.79,
+          0.03
+        ],
+        "ankle": [
+          0.1,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "s4": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.42,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.9,
+          0.03
+        ],
+        "ankle": [
+          0.06,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.93,
+          0.03
+        ],
+        "ankle": [
+          0.1,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "m0": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.035,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.55,
+          0.09
+        ],
+        "ankle": [
+          -0.36,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.51,
+          0.03
+        ],
+        "ankle": [
+          -0.25,
+          0.215
+        ],
+        "foot": -48
+      }
+    },
+    "m1": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.14,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.62,
+          0.03
+        ],
+        "ankle": [
+          -0.22,
+          0.215
+        ],
+        "foot": -48
+      },
+      "far": {
+        "wrist": [
+          0.65,
+          0.09
+        ],
+        "ankle": [
+          -0.18,
+          0.17
+        ],
+        "foot": -55
+      }
+    },
+    "m2": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.28,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.76,
+          0.09
+        ],
+        "ankle": [
+          -0.08,
+          0.17
+        ],
+        "foot": -55
+      },
+      "far": {
+        "wrist": [
+          0.79,
+          0.03
+        ],
+        "ankle": [
+          -0.04,
+          0.215
+        ],
+        "foot": -48
+      }
+    },
+    "m3": {
+      "torso": 0,
+      "neck": 10,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "pelvis": [
+        0.385,
+        0.59
+      ],
+      "near": {
+        "wrist": [
+          0.9,
+          0.03
+        ],
+        "ankle": [
+          -0.01,
+          0.215
+        ],
+        "foot": -48
+      },
+      "far": {
+        "wrist": [
+          0.86,
+          0.09
+        ],
+        "ankle": [
+          0.1,
+          0.17
+        ],
+        "foot": -55
+      }
+    }
+  },
+  "timeline": [
+    {
+      "t": 0,
+      "pose": "s0"
+    },
+    {
+      "t": 0.2,
+      "pose": "s0",
+      "ease": "linear"
+    },
+    {
+      "t": 0.7,
+      "pose": "m0",
+      "ease": "inQuad"
+    },
+    {
+      "t": 1.2,
+      "pose": "s1",
+      "ease": "outQuad"
+    },
+    {
+      "t": 1.7,
+      "pose": "m1",
+      "ease": "inQuad"
+    },
+    {
+      "t": 2.2,
+      "pose": "s2",
+      "ease": "outQuad"
+    },
+    {
+      "t": 2.7,
+      "pose": "m2",
+      "ease": "inQuad"
+    },
+    {
+      "t": 3.2,
+      "pose": "s3",
+      "ease": "outQuad"
+    },
+    {
+      "t": 3.7,
+      "pose": "m3",
+      "ease": "inQuad"
+    },
+    {
+      "t": 4.2,
+      "pose": "s4",
+      "ease": "outQuad"
+    },
+    {
+      "t": 4.6,
+      "pose": "s4",
+      "ease": "linear"
+    },
+    {
+      "t": 5.1,
+      "pose": "m3",
+      "ease": "inQuad"
+    },
+    {
+      "t": 5.6,
+      "pose": "s3",
+      "ease": "outQuad"
+    },
+    {
+      "t": 6.1,
+      "pose": "m2",
+      "ease": "inQuad"
+    },
+    {
+      "t": 6.6,
+      "pose": "s2",
+      "ease": "outQuad"
+    },
+    {
+      "t": 7.1,
+      "pose": "m1",
+      "ease": "inQuad"
+    },
+    {
+      "t": 7.6,
+      "pose": "s1",
+      "ease": "outQuad"
+    },
+    {
+      "t": 8.1,
+      "pose": "m0",
+      "ease": "inQuad"
+    },
+    {
+      "t": 8.6,
+      "pose": "s0",
+      "ease": "outQuad"
+    },
+    {
+      "t": 9,
+      "pose": "s0",
+      "ease": "linear"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "skull-crusher",
+  "name": { "en": "Dumbbell skull crusher", "he": "סקאל קראשר" },
+  "view": "side",
+  "equipment": ["flat bench", "dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": -0.15, "width": 2.1, "groundY": 0.66 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.8, 0], "to": [-0.75, 0.37], "color": "frame" },
+    { "type": "rect", "from": [-0.06, 0], "to": [-0.01, 0.37], "color": "frame" },
+    { "type": "rect", "from": [-0.9, 0.35], "to": [0.1, 0.42], "color": "pad", "r": 0.015 },
+    { "type": "rect", "from": [-0.9, 0.35], "to": [0.1, 0.362], "color": "frame" },
+    { "type": "dumbbell", "at": "far.grip", "along": "far.foreArm", "angle": 90, "length": 0.25, "plate": [0.06, 0.13], "layer": "afterFar" },
+    { "type": "dumbbell", "at": "near.grip", "along": "near.foreArm", "angle": 90, "length": 0.25, "plate": [0.06, 0.13], "layer": "mid" }
+  ],
+  "poses": {
+    "up": {
+      "pelvis": [0, 0.525],
+      "torso": 178,
+      "neck": 184,
+      "kneeBend": 1,
+      "foot": 0,
+      "scale": { "hand": 0.65 },
+      "near": { "ankle": [0.45, 0.08], "upperArm": 90, "foreArm": 90, "hand": 90 },
+      "far": { "ankle": [0.5, 0.08], "upperArm": 85, "foreArm": 85, "hand": 85 }
+    },
+    "down": {
+      "base": "up",
+      "near": { "upperArm": 97, "foreArm": 196, "hand": 196 },
+      "far": { "upperArm": 93, "foreArm": 190, "hand": 190 }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "up" },
+    { "t": 0.15, "pose": "up", "ease": "linear" },
+    { "t": 1.3, "pose": "down", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "down", "ease": "linear" },
+    { "t": 2.7, "pose": "up", "ease": "inOutSine" },
+    { "t": 3, "pose": "up", "ease": "linear" }
+  ]
+}

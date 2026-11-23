@@ -1,0 +1,59 @@
+{
+  "id": "superman-hold",
+  "name": { "en": "Superman hold", "he": "סופרמן - החזקה" },
+  "view": "side",
+  "equipment": ["mat"],
+  "fps": 30,
+  "camera": { "centerX": 0.06, "width": 2.5, "groundY": 0.6 },
+  "repeat": 2,
+  "poster": { "t": 2.0 },
+  "props": [
+    { "type": "rect", "from": [-1.14, 0.0], "to": [1.26, 0.02], "color": "frame", "r": 0.008 }
+  ],
+  "poses": {
+    "rest": {
+      "pelvis": [0.0, 0.12],
+      "waist": 1,
+      "torso": 1,
+      "neck": 3,
+      "upperArm": -7,
+      "foreArm": -5,
+      "hand": 0,
+      "thigh": 185.2,
+      "shin": 182.7,
+      "foot": 200
+    },
+    "up": {
+      "base": "rest",
+      "waist": 5,
+      "torso": 16,
+      "neck": 12,
+      "upperArm": 6,
+      "foreArm": 9,
+      "hand": 9,
+      "thigh": 174,
+      "shin": 172
+    },
+    "up2": {
+      "base": "up",
+      "waist": 5.5,
+      "torso": 17.5,
+      "neck": 13,
+      "upperArm": 7,
+      "foreArm": 10.5,
+      "hand": 10.5,
+      "thigh": 173.3,
+      "shin": 171
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "rest" },
+    { "t": 0.25, "pose": "rest", "ease": "linear" },
+    { "t": 1.15, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.9, "pose": "up2", "ease": "inOutSine" },
+    { "t": 2.65, "pose": "up", "ease": "inOutSine" },
+    { "t": 3.4, "pose": "up2", "ease": "inOutSine" },
+    { "t": 4.3, "pose": "rest", "ease": "inOutSine" },
+    { "t": 4.5, "pose": "rest", "ease": "linear" }
+  ]
+}

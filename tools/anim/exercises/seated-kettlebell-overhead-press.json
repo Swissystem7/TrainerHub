@@ -1,0 +1,49 @@
+{
+  "id": "seated-kettlebell-overhead-press",
+  "name": { "en": "Seated floor single-arm kettlebell overhead press", "he": "לחיצת קטלבל מעל הראש בישיבה על הרצפה" },
+  "view": "side",
+  "equipment": ["kettlebell"],
+  "fps": 30,
+  "camera": { "centerX": 0.4, "width": 2.0, "groundY": 0.72 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "kettlebell", "at": "near.grip", "along": "near.foreArm", "angle": 160, "layer": "mid", "bodyLayer": "front" }
+  ],
+  "poses": {
+    "rack": {
+      "pelvis": [0.0, 0.105],
+      "torso": 90,
+      "neck": 90,
+      "near": {
+        "thigh": -4.5,
+        "shin": 2.5,
+        "foot": 80,
+        "scale": { "hand": 0.65 },
+        "wrist": [0.125, 0.561],
+        "elbowBend": -1,
+        "hand": 85
+      },
+      "far": {
+        "thigh": -3,
+        "shin": 1.5,
+        "foot": 86,
+        "wristTo": { "at": "far.knee", "along": "far.thigh", "offset": [-0.2, 0.085] },
+        "elbowBend": -1,
+        "hand": -15
+      }
+    },
+    "top": {
+      "base": "rack",
+      "near": { "wrist": [-0.012, 1.152], "hand": 91 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "rack" },
+    { "t": 0.15, "pose": "rack", "ease": "linear" },
+    { "t": 1.2, "pose": "top", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "top", "ease": "linear" },
+    { "t": 2.8, "pose": "rack", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "rack", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "id": "turkish-get-up",
+  "name": { "en": "Turkish get-up with a kettlebell", "he": "קימה טורקית עם קטלבל" },
+  "view": "side",
+  "equipment": ["kettlebell"],
+  "fps": 30,
+  "camera": { "centerX": 0.07, "width": 2.15, "groundY": 0.76 },
+  "repeat": 1,
+  "poster": { "t": 2.2 },
+  "props": [
+    { "type": "kettlebell", "at": "near.grip", "along": "near.foreArm", "angle": 158, "layer": "mid", "bodyLayer": "front" }
+  ],
+  "poses": {
+    "lie": {
+      "pelvis": [0.0, 0.105],
+      "torso": 178,
+      "neck": 184,
+      "kneeBend": 1,
+      "near": {
+        "ankle": [0.47, 0.08],
+        "foot": 0,
+        "upperArm": 90,
+        "foreArm": 90,
+        "hand": 90,
+        "scale": { "hand": 0.65 }
+      },
+      "far": {
+        "ankle": [0.85, 0.09],
+        "foot": 75,
+        "wrist": [-0.2, 0.04],
+        "elbowBend": 1,
+        "hand": 180,
+        "scale": { "upperArm": 0.512, "foreArm": 0.512, "hand": -0.6 }
+      }
+    },
+    "elbow": {
+      "base": "lie",
+      "torso": 150,
+      "neck": 138,
+      "far": { "wrist": [-0.62, 0.03], "scale": { "upperArm": 1, "foreArm": 0.756, "hand": 0.6 } }
+    },
+    "hand": {
+      "base": "lie",
+      "torso": 130,
+      "neck": 112,
+      "far": { "wrist": [-0.62, 0.03], "scale": { "upperArm": 0.95, "foreArm": 0.95, "hand": 0.6 } }
+    },
+    "bridge": {
+      "base": "lie",
+      "pelvis": [0.0, 0.4],
+      "torso": 160,
+      "neck": 134,
+      "far": {
+        "ankle": [0.8, 0.09],
+        "wrist": [-0.62, 0.03],
+        "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.6 }
+      }
+    },
+    "kneel": {
+      "base": "lie",
+      "pelvis": [0.0, 0.5],
+      "torso": 172,
+      "neck": 140,
+      "far": {
+        "ankle": [-0.36, 0.062],
+        "foot": 200,
+        "wrist": [-0.62, 0.03],
+        "scale": { "upperArm": 0.975, "foreArm": 0.975, "hand": 0.6 }
+      }
+    },
+    "rise": {
+      "base": "lie",
+      "pelvis": [0.0, 0.5],
+      "torso": 130,
+      "neck": 118,
+      "far": {
+        "ankle": [-0.36, 0.062],
+        "foot": 200,
+        "wrist": [-0.37, 0.34],
+        "hand": 240,
+        "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.6 }
+      }
+    },
+    "halfkneel": {
+      "base": "lie",
+      "pelvis": [0.0, 0.5],
+      "torso": 88,
+      "neck": 96,
+      "far": {
+        "ankle": [-0.36, 0.062],
+        "foot": 200,
+        "wrist": [0.05, 0.43],
+        "hand": 270,
+        "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.6 }
+      }
+    },
+    "step": {
+      "base": "lie",
+      "pelvis": [0.28, 0.8],
+      "torso": 84,
+      "neck": 94,
+      "far": {
+        "ankle": [0.02, 0.28],
+        "foot": 292,
+        "wrist": [0.33, 0.72],
+        "hand": 270,
+        "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.6 }
+      }
+    },
+    "stand": {
+      "base": "lie",
+      "pelvis": [0.47, 0.945],
+      "torso": 90,
+      "neck": 97,
+      "far": {
+        "ankle": [0.5, 0.08],
+        "foot": 360,
+        "wrist": [0.5, 0.87],
+        "hand": 270,
+        "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.6 }
+      }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "lie" },
+    { "t": 0.3, "pose": "lie", "ease": "linear" },
+    { "t": 1.0, "pose": "elbow", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "hand", "ease": "inOutSine" },
+    { "t": 2.2, "pose": "bridge", "ease": "inOutSine" },
+    { "t": 2.9, "pose": "kneel", "ease": "inOutSine" },
+    { "t": 3.2, "pose": "rise", "ease": "inQuad" },
+    { "t": 3.5, "pose": "halfkneel", "ease": "outQuad" },
+    { "t": 3.95, "pose": "step", "ease": "linear" },
+    { "t": 4.4, "pose": "stand", "ease": "outQuad" },
+    { "t": 4.75, "pose": "stand", "ease": "linear" },
+    { "t": 5.2, "pose": "step", "ease": "inQuad" },
+    { "t": 5.65, "pose": "halfkneel", "ease": "linear" },
+    { "t": 5.95, "pose": "rise", "ease": "inQuad" },
+    { "t": 6.25, "pose": "kneel", "ease": "outQuad" },
+    { "t": 6.95, "pose": "bridge", "ease": "inOutSine" },
+    { "t": 7.55, "pose": "hand", "ease": "inOutSine" },
+    { "t": 8.15, "pose": "elbow", "ease": "inOutSine" },
+    { "t": 8.8, "pose": "lie", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "lie", "ease": "linear" }
+  ]
+}

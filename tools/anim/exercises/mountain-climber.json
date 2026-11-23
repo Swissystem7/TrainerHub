@@ -1,0 +1,34 @@
+{
+  "id": "mountain-climber",
+  "name": { "en": "Mountain climbers", "he": "מטפס הרים" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.76, "width": 2.05, "groundY": 0.6 },
+  "repeat": 6,
+  "poster": { "t": 0.05 },
+  "poses": {
+    "nearIn": {
+      "pelvis": [0.761, 0.544],
+      "torso": 6,
+      "neck": 13,
+      "hand": 0,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "near": { "wrist": [1.17, 0.03], "ankle": [0.68, 0.3], "foot": -38 },
+      "far": { "wrist": [1.2, 0.03], "ankle": [-0.02, 0.171], "foot": -55 }
+    },
+    "farIn": {
+      "base": "nearIn",
+      "near": { "ankle": [-0.02, 0.171], "foot": -55 },
+      "far": { "ankle": [0.68, 0.3], "foot": -38 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "nearIn" },
+    { "t": 0.12, "pose": "nearIn", "ease": "linear" },
+    { "t": 0.75, "pose": "farIn", "ease": "inOutSine" },
+    { "t": 0.87, "pose": "farIn", "ease": "linear" },
+    { "t": 1.5, "pose": "nearIn", "ease": "inOutSine" }
+  ]
+}

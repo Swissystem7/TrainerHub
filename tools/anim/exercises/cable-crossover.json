@@ -1,0 +1,59 @@
+{
+  "id": "cable-crossover",
+  "name": { "en": "Standing cable crossover", "he": "קרוסאובר בכבלים" },
+  "view": "front",
+  "equipment": ["cable crossover station", "handles"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 2.3, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [-1.08, 0.0], "to": [-0.8, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.8, 0.0], "to": [1.08, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-1.0, 0.0], "to": [-0.9, 2.1], "color": "frame" },
+    { "type": "rect", "from": [0.9, 0.0], "to": [1.0, 2.1], "color": "frame" },
+    { "type": "rect", "from": [-1.03, 0.3], "to": [-0.87, 1.0], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [0.87, 0.3], "to": [1.03, 1.0], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [-1.03, 0.76], "to": [-0.87, 0.775], "color": "gold" },
+    { "type": "rect", "from": [0.87, 0.76], "to": [1.03, 0.775], "color": "gold" },
+    { "type": "rect", "from": [-0.93, 1.985], "to": [-0.84, 2.055], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.84, 1.985], "to": [0.93, 2.055], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [-0.84, 2.02], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [0.84, 2.02], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.84, 2.02], "r": 0.017, "color": "dark" },
+    { "type": "circle", "at": [0.84, 2.02], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [-0.84, 2.02], "b": "left.grip", "width": 0.011, "layer": "front" },
+    { "type": "cable", "a": [0.84, 2.02], "b": "right.grip", "width": 0.011, "layer": "front" },
+    { "type": "ring", "at": "left.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "front" },
+    { "type": "ring", "at": "right.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "front" }
+  ],
+  "poses": {
+    "wide": {
+      "pelvis": [0.0, 0.951],
+      "torso": 90,
+      "neck": 90,
+      "thigh": -86,
+      "shin": -89,
+      "foot": 0,
+      "scale": { "hand": 0.65, "upperArm": 1, "foreArm": 1 },
+      "upperArm": 14,
+      "foreArm": 30,
+      "hand": 30
+    },
+    "together": {
+      "base": "wide",
+      "scale": { "hand": 0.65, "upperArm": 0.94, "foreArm": 0.94 },
+      "upperArm": -99,
+      "foreArm": -116,
+      "hand": -116
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "wide" },
+    { "t": 0.15, "pose": "wide", "ease": "linear" },
+    { "t": 1.25, "pose": "together", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "together", "ease": "linear" },
+    { "t": 2.8, "pose": "wide", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "wide", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "side-plank",
+  "name": { "en": "Side plank", "he": "פלאנק צידי" },
+  "view": "front",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 2.05, "groundY": 0.6 },
+  "repeat": 2,
+  "poster": { "t": 2.2 },
+  "poses": {
+    "down": {
+      "pin": { "point": "right.elbow", "at": [0.55, 0.045] },
+      "torso": 43,
+      "neck": 30,
+      "thigh": 180.8,
+      "shin": 180.8,
+      "right": { "upperArm": -90, "foreArm": 0, "hand": 0, "foot": -85, "thigh": 180.8, "shin": 180.8, "scale": { "foreArm": 0.35, "hand": 0.5 } },
+      "left": { "upperArm": 226, "foreArm": 206, "hand": 200, "foot": -85, "thigh": 180.8, "shin": 180.8 }
+    },
+    "up": {
+      "base": "down",
+      "torso": 15.6,
+      "neck": 15.6,
+      "right": { "thigh": 195.62, "shin": 195.62, "foot": -75 },
+      "left": { "upperArm": 201, "foreArm": 190, "hand": 190, "thigh": 195.62, "shin": 195.62, "foot": -75 }
+    },
+    "breath": {
+      "base": "up",
+      "torso": 16.1,
+      "neck": 16.6,
+      "right": { "thigh": 195.33, "shin": 195.33 },
+      "left": { "upperArm": 201.6, "foreArm": 190.4, "hand": 190.4, "thigh": 195.33, "shin": 195.33 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.25, "pose": "down", "ease": "linear" },
+    { "t": 1.2, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.95, "pose": "breath", "ease": "inOutSine" },
+    { "t": 2.7, "pose": "up", "ease": "inOutSine" },
+    { "t": 3.4, "pose": "breath", "ease": "inOutSine" },
+    { "t": 3.6, "pose": "up", "ease": "inOutSine" },
+    { "t": 4.35, "pose": "down", "ease": "inOutSine" },
+    { "t": 4.5, "pose": "down", "ease": "linear" }
+  ]
+}

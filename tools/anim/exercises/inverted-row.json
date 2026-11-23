@@ -1,0 +1,48 @@
+{
+  "id": "inverted-row",
+  "name": { "en": "Inverted row (Australian pull-up)", "he": "חתירה הפוכה / מתח אוסטרלי" },
+  "view": "side",
+  "equipment": ["bar on a rack"],
+  "fps": 30,
+  "camera": { "centerX": 0.08, "width": 2.2, "groundY": 0.68 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.45, 0.0], "to": [0.2, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.168, 0.0], "to": [-0.098, 1.45], "color": "frame" },
+    { "type": "rect", "from": [-0.2, 0.9], "to": [-0.066, 0.975], "color": "iron", "r": 0.012 },
+    { "type": "barEnd", "at": [-0.133, 0.937], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [-0.133, 0.937], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "low": {
+      "pin": { "point": "near.heel", "at": [0.9, 0.045] },
+      "torso": 165.4,
+      "neck": 170,
+      "thigh": -14.6,
+      "shin": -14.6,
+      "foot": 76,
+      "scale": { "hand": 0.65, "upperArm": 1 },
+      "wrist": [-0.133, 0.908],
+      "elbowBend": -1,
+      "hand": 90
+    },
+    "high": {
+      "base": "low",
+      "torso": 149.7,
+      "neck": 156,
+      "thigh": -30.3,
+      "shin": -30.3,
+      "foot": 60,
+      "scale": { "hand": 0.65, "upperArm": 0.65 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "low" },
+    { "t": 0.15, "pose": "low", "ease": "linear" },
+    { "t": 1.2, "pose": "high", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "high", "ease": "linear" },
+    { "t": 2.8, "pose": "low", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "low", "ease": "linear" }
+  ]
+}

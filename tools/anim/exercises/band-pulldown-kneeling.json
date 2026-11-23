@@ -1,0 +1,51 @@
+{
+  "id": "band-pulldown-kneeling",
+  "name": { "en": "Tall-kneeling band lat pulldown", "he": "משיכת גומייה בברכיים" },
+  "view": "side",
+  "equipment": ["resistance band", "high anchor"],
+  "fps": 30,
+  "camera": { "centerX": 0.27, "width": 1.95, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.75 },
+  "props": [
+    { "type": "rect", "from": [1.0, 0.0], "to": [1.09, 2.2], "color": "frame" },
+    { "type": "rect", "from": [0.92, 2.14], "to": [1.17, 2.2], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.9, 0.0], "to": [1.19, 0.04], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.95, 1.975], "to": [1.02, 2.025], "color": "iron", "r": 0.01 },
+    { "type": "band", "a": [0.955, 2.0], "b": "far.grip", "width": 0.012, "color": "gold", "layer": "afterFar" },
+    { "type": "band", "a": [0.955, 2.0], "b": "near.grip", "width": 0.014, "color": "gold", "layer": "mid" },
+    { "type": "circle", "at": [0.955, 2.0], "r": 0.03, "color": "metal", "layer": "front" },
+    { "type": "circle", "at": [0.955, 2.0], "r": 0.012, "color": "dark", "layer": "front" }
+  ],
+  "poses": {
+    "reach": {
+      "pelvis": [0.0, 0.5],
+      "torso": 86,
+      "neck": 84,
+      "thigh": -90,
+      "shin": 181.3,
+      "foot": 200,
+      "scale": { "hand": 0.65 },
+      "elbowBend": -1,
+      "hand": 50,
+      "near": { "wrist": [0.39, 1.4] },
+      "far": { "wrist": [0.42, 1.385] }
+    },
+    "pull": {
+      "base": "reach",
+      "torso": 90,
+      "neck": 88,
+      "hand": 62,
+      "near": { "wrist": [0.2, 1.0] },
+      "far": { "wrist": [0.23, 0.995] }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "reach" },
+    { "t": 0.15, "pose": "reach", "ease": "linear" },
+    { "t": 1.2, "pose": "pull", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "pull", "ease": "linear" },
+    { "t": 2.8, "pose": "reach", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "reach", "ease": "linear" }
+  ]
+}

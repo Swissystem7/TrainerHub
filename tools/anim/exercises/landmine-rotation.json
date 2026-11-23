@@ -1,0 +1,67 @@
+{
+  "id": "landmine-rotation",
+  "name": { "en": "Landmine rotation", "he": "רוטציית לאנדמיין" },
+  "view": "front",
+  "equipment": ["barbell", "landmine anchor"],
+  "fps": 30,
+  "camera": { "centerX": 0, "width": 2.1, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "line", "a": [0, 0.05], "b": "left.grip", "width": 0.045, "color": "metal", "layer": "mid" },
+    { "type": "rect", "from": [-0.11, 0], "to": [0.11, 0.075], "color": "frame", "r": 0.02, "layer": "mid" },
+    { "type": "circle", "at": [0, 0.05], "r": 0.03, "color": "gold", "layer": "mid" },
+    { "type": "circle", "at": "left.grip", "r": 0.032, "color": "steel", "layer": "mid" }
+  ],
+  "poses": {
+    "center": {
+      "pelvis": [0, 0.9],
+      "torso": 90,
+      "neck": 90,
+      "foot": 0,
+      "right": {
+        "ankle": [0.33, 0.08],
+        "kneeBend": 1,
+        "wrist": [0.02, 1.26],
+        "elbowBend": 1,
+        "hand": 90,
+        "scale": { "upperArm": 0.38, "foreArm": 0.38, "hand": 0.65 }
+      },
+      "left": {
+        "ankle": [-0.33, 0.08],
+        "kneeBend": -1,
+        "wrist": [-0.02, 1.32],
+        "elbowBend": -1,
+        "hand": 90,
+        "scale": { "upperArm": 0.38, "foreArm": 0.38, "hand": 0.65 }
+      }
+    },
+    "right": {
+      "base": "center",
+      "pelvis": [0.06, 0.9],
+      "torso": 86,
+      "neck": 88,
+      "scale": { "shoulders": 0.72, "hips": 0.85 },
+      "right": { "wrist": [0.455, 1.15], "hand": 68, "scale": { "upperArm": 0.56, "foreArm": 0.56, "hand": 0.65 } },
+      "left": { "ankle": [-0.3, 0.11], "wrist": [0.478, 1.21], "hand": 68, "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.65 } }
+    },
+    "left": {
+      "base": "center",
+      "pelvis": [-0.06, 0.9],
+      "torso": 94,
+      "neck": 92,
+      "scale": { "shoulders": 0.72, "hips": 0.85 },
+      "right": { "ankle": [0.3, 0.11], "wrist": [-0.455, 1.15], "hand": 112, "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.65 } },
+      "left": { "wrist": [-0.478, 1.21], "hand": 112, "scale": { "upperArm": 0.56, "foreArm": 0.56, "hand": 0.65 } }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "center" },
+    { "t": 0.7, "pose": "right", "ease": "outQuad" },
+    { "t": 0.8, "pose": "right", "ease": "linear" },
+    { "t": 1.5, "pose": "center", "ease": "inQuad" },
+    { "t": 2.2, "pose": "left", "ease": "outQuad" },
+    { "t": 2.3, "pose": "left", "ease": "linear" },
+    { "t": 3, "pose": "center", "ease": "inQuad" }
+  ]
+}

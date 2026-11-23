@@ -1,0 +1,45 @@
+{
+  "id": "cable-lateral-raise",
+  "name": { "en": "Standing single-arm cable lateral raise", "he": "הרחקה צידית בכבל בעמידה ביד אחת" },
+  "view": "front",
+  "equipment": ["cable column", "handle"],
+  "fps": 30,
+  "camera": { "centerX": -0.08, "width": 2.15, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 1.0 },
+  "props": [
+    { "type": "rect", "from": [-1.0, 0.0], "to": [-0.6, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.88, 0.0], "to": [-0.78, 2.05], "color": "frame" },
+    { "type": "rect", "from": [-0.92, 0.32], "to": [-0.74, 1.05], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [-0.92, 0.78], "to": [-0.74, 0.795], "color": "gold" },
+    { "type": "rect", "from": [-0.8, 0.125], "to": [-0.7, 0.195], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [-0.7, 0.16], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.7, 0.16], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [-0.7, 0.16], "b": "right.grip", "width": 0.011, "layer": "front" },
+    { "type": "ring", "at": "right.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [0.0, 0.951],
+      "torso": 90,
+      "neck": 90,
+      "thigh": -89,
+      "shin": -90,
+      "foot": 0,
+      "right": { "upperArm": -97, "foreArm": -103, "hand": -103, "scale": { "hand": 0.65 } },
+      "left": { "upperArm": -118, "foreArm": -48, "hand": -25 }
+    },
+    "up": {
+      "base": "down",
+      "right": { "upperArm": -7, "foreArm": 3, "hand": 3 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.25, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

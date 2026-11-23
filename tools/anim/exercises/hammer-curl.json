@@ -1,0 +1,45 @@
+{
+  "id": "hammer-curl",
+  "name": { "en": "Alternating hammer curl", "he": "כפיפת פטיש לסירוגין" },
+  "view": "side",
+  "equipment": ["dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": 0.05, "width": 1.9, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "dumbbell", "at": "far.grip", "along": "far.foreArm", "angle": 90, "length": 0.25, "plate": [0.06, 0.13], "layer": "back" },
+    { "type": "dumbbell", "at": "near.grip", "along": "near.foreArm", "angle": 90, "length": 0.25, "plate": [0.06, 0.13], "layer": "mid" }
+  ],
+  "poses": {
+    "rest": {
+      "pelvis": [0.0, 0.945],
+      "torso": 90,
+      "neck": 90,
+      "kneeBend": 1,
+      "foot": 0,
+      "scale": { "hand": 0.65 },
+      "near": { "ankle": [-0.02, 0.08], "upperArm": -92, "foreArm": -86, "hand": -86 },
+      "far": { "ankle": [0.04, 0.08], "upperArm": -80, "foreArm": -74, "hand": -74 }
+    },
+    "nearUp": {
+      "base": "rest",
+      "near": { "upperArm": -90, "foreArm": 50, "hand": 54 }
+    },
+    "farUp": {
+      "base": "rest",
+      "far": { "upperArm": -78, "foreArm": 52, "hand": 56 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "rest" },
+    { "t": 0.1, "pose": "rest", "ease": "linear" },
+    { "t": 0.7, "pose": "nearUp", "ease": "inOutSine" },
+    { "t": 0.9, "pose": "nearUp", "ease": "linear" },
+    { "t": 1.5, "pose": "rest", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "rest", "ease": "linear" },
+    { "t": 2.2, "pose": "farUp", "ease": "inOutSine" },
+    { "t": 2.4, "pose": "farUp", "ease": "linear" },
+    { "t": 3.0, "pose": "rest", "ease": "inOutSine" }
+  ]
+}

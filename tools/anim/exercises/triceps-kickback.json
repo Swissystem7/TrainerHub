@@ -1,0 +1,46 @@
+{
+  "id": "triceps-kickback",
+  "name": { "en": "Dumbbell triceps kickback", "he": "פשיטת מרפק לאחור" },
+  "view": "side",
+  "equipment": ["dumbbell"],
+  "fps": 30,
+  "camera": { "centerX": 0.17, "width": 1.8, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "dumbbell", "at": "near.grip", "along": "near.foreArm", "angle": 90, "length": 0.24, "plate": [0.055, 0.12], "layer": "front" }
+  ],
+  "poses": {
+    "bent": {
+      "pelvis": [0.0, 0.86],
+      "torso": 38,
+      "neck": 34,
+      "kneeBend": 1,
+      "near": {
+        "ankle": [-0.22, 0.08],
+        "upperArm": 203,
+        "foreArm": 276,
+        "hand": 276,
+        "scale": { "hand": 0.65 }
+      },
+      "far": {
+        "ankle": [0.24, 0.08],
+        "wristTo": { "at": "far.knee", "along": "far.thigh", "offset": [-0.14, 0.085] },
+        "elbowBend": -1,
+        "hand": -55
+      }
+    },
+    "straight": {
+      "base": "bent",
+      "near": { "upperArm": 204, "foreArm": 206, "hand": 206 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "bent" },
+    { "t": 0.15, "pose": "bent", "ease": "linear" },
+    { "t": 1.15, "pose": "straight", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "straight", "ease": "linear" },
+    { "t": 2.8, "pose": "bent", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "bent", "ease": "linear" }
+  ]
+}

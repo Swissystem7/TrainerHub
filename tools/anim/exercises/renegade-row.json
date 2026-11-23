@@ -1,0 +1,49 @@
+{
+  "id": "renegade-row",
+  "name": { "en": "Renegade row", "he": "חתירת רנגייד" },
+  "view": "side",
+  "equipment": ["hex dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": 0.76, "width": 2.05, "groundY": 0.6 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "dumbbell", "at": "far.grip", "angle": 0, "length": 0.27, "plate": [0.075, 0.13], "color": "pad", "accent": "metal", "layer": "afterFar" },
+    { "type": "dumbbell", "at": "near.grip", "angle": 0, "length": 0.27, "plate": [0.075, 0.13], "color": "iron", "accent": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "plank": {
+      "pin": { "point": "near.toe", "at": [0.0, 0.03] },
+      "torso": 21.3,
+      "neck": 19,
+      "thigh": 201.3,
+      "shin": 201.3,
+      "foot": -55,
+      "hand": -90,
+      "scale": { "hand": 0.65 },
+      "elbowBend": -1,
+      "near": { "wrist": [1.2, 0.095] },
+      "far": { "wrist": [1.262, 0.095] }
+    },
+    "rowNear": {
+      "base": "plank",
+      "near": { "wrist": [1.02, 0.5] }
+    },
+    "rowFar": {
+      "base": "plank",
+      "far": { "wrist": [1.06, 0.5] }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "plank" },
+    { "t": 0.15, "pose": "plank", "ease": "linear" },
+    { "t": 0.7, "pose": "rowNear", "ease": "inOutSine" },
+    { "t": 0.9, "pose": "rowNear", "ease": "linear" },
+    { "t": 1.4, "pose": "plank", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "plank", "ease": "linear" },
+    { "t": 2.15, "pose": "rowFar", "ease": "inOutSine" },
+    { "t": 2.35, "pose": "rowFar", "ease": "linear" },
+    { "t": 2.85, "pose": "plank", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "plank", "ease": "linear" }
+  ]
+}

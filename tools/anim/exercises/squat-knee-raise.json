@@ -1,0 +1,67 @@
+{
+  "id": "squat-knee-raise",
+  "name": { "en": "Deep squat + knee raise", "he": "סקוואט עמוק + הרמת ברך" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.08, "width": 1.8, "groundY": 0.8 },
+  "repeat": 1,
+  "poster": { "t": 2.5 },
+  "poses": {
+    "stand": {
+      "pelvis": [0.0, 0.948],
+      "torso": 88,
+      "neck": 90,
+      "kneeBend": 1,
+      "foot": 0,
+      "wristTo": { "at": "shoulder", "along": "torso", "offset": [-0.05, -0.2] },
+      "elbowBend": -1,
+      "hand": 62,
+      "scale": { "hand": 0.7 },
+      "near": { "ankle": [0.0, 0.08] },
+      "far": { "ankle": [0.03, 0.08] }
+    },
+    "squat": {
+      "base": "stand",
+      "pelvis": [-0.186, 0.356],
+      "torso": 62,
+      "neck": 74,
+      "hand": 40
+    },
+    "kneeNear": {
+      "base": "stand",
+      "near": { "ankle": [0.42, 0.52], "foot": -22 }
+    },
+    "kneeFar": {
+      "base": "stand",
+      "far": { "ankle": [0.42, 0.52], "foot": -22 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "stand" },
+    { "t": 0.95, "pose": "squat", "ease": "inOutSine" },
+    { "t": 1.1, "pose": "squat", "ease": "linear" },
+    { "t": 1.9, "pose": "stand", "ease": "inOutSine" },
+    { "t": 2.0, "pose": "stand", "ease": "linear" },
+    { "t": 2.4, "pose": "kneeNear", "ease": "inOutSine" },
+    { "t": 2.6, "pose": "kneeNear", "ease": "linear" },
+    { "t": 2.95, "pose": "stand", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "stand", "ease": "linear" },
+    { "t": 3.95, "pose": "squat", "ease": "inOutSine" },
+    { "t": 4.1, "pose": "squat", "ease": "linear" },
+    { "t": 4.9, "pose": "stand", "ease": "inOutSine" },
+    { "t": 5.0, "pose": "stand", "ease": "linear" },
+    { "t": 5.4, "pose": "kneeFar", "ease": "inOutSine" },
+    { "t": 5.6, "pose": "kneeFar", "ease": "linear" },
+    { "t": 5.95, "pose": "stand", "ease": "inOutSine" },
+    { "t": 6.0, "pose": "stand", "ease": "linear" },
+    { "t": 6.95, "pose": "squat", "ease": "inOutSine" },
+    { "t": 7.1, "pose": "squat", "ease": "linear" },
+    { "t": 7.9, "pose": "stand", "ease": "inOutSine" },
+    { "t": 8.0, "pose": "stand", "ease": "linear" },
+    { "t": 8.4, "pose": "kneeNear", "ease": "inOutSine" },
+    { "t": 8.6, "pose": "kneeNear", "ease": "linear" },
+    { "t": 8.95, "pose": "stand", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "stand", "ease": "linear" }
+  ]
+}

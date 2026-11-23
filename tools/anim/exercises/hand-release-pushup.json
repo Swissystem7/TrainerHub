@@ -1,0 +1,48 @@
+{
+  "id": "hand-release-pushup",
+  "name": { "en": "Hand-release push-up", "he": "שכיבות סמיכה עם ניתוק ידיים" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.76, "width": 2.05, "groundY": 0.6 },
+  "repeat": 3,
+  "poster": { "t": 1.4 },
+  "poses": {
+    "top": {
+      "pin": { "point": "near.toe", "at": [0.0, 0.03] },
+      "torso": 18.3,
+      "neck": 18.3,
+      "thigh": 198.3,
+      "shin": 198.3,
+      "foot": -55,
+      "hand": 0,
+      "elbowBend": -1,
+      "wrist": [1.17, 0.03],
+      "far": { "wrist": [1.2, 0.03] }
+    },
+    "floor": {
+      "base": "top",
+      "scale": { "upperArm": 0.72 },
+      "torso": -2,
+      "neck": 2,
+      "thigh": 178,
+      "shin": 178
+    },
+    "release": {
+      "base": "floor",
+      "wrist": [1.17, 0.1],
+      "far": { "wrist": [1.2, 0.1] }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.85, "pose": "floor", "ease": "inOutSine" },
+    { "t": 1.0, "pose": "floor", "ease": "linear" },
+    { "t": 1.25, "pose": "release", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "release", "ease": "linear" },
+    { "t": 1.75, "pose": "floor", "ease": "inOutSine" },
+    { "t": 1.9, "pose": "floor", "ease": "linear" },
+    { "t": 2.75, "pose": "top", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "top", "ease": "linear" }
+  ]
+}

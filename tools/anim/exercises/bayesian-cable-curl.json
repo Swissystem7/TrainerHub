@@ -1,0 +1,43 @@
+{
+  "id": "bayesian-cable-curl",
+  "name": { "en": "Single-arm Bayesian cable curl", "he": "כפיפת באייזיאן בכבל" },
+  "view": "side",
+  "equipment": ["cable column", "handle"],
+  "fps": 30,
+  "camera": { "centerX": -0.33, "width": 2.15, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 0.9 },
+  "props": [
+    { "type": "rect", "from": [-1.28, 0], "to": [-0.78, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-1.14, 0], "to": [-1.04, 2.05], "color": "frame" },
+    { "type": "rect", "from": [-1.18, 0.32], "to": [-1, 1.05], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [-1.18, 0.78], "to": [-1, 0.795], "color": "gold" },
+    { "type": "rect", "from": [-1.06, 0.125], "to": [-0.94, 0.195], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [-0.94, 0.16], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.94, 0.16], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [-0.94, 0.16], "b": "near.grip", "width": 0.011, "layer": "mid" },
+    { "type": "ring", "at": "near.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "back": {
+      "pelvis": [0, 0.9],
+      "torso": 80,
+      "neck": 84,
+      "kneeBend": 1,
+      "near": { "ankle": [0.22, 0.08], "foot": 0, "upperArm": -114, "foreArm": -106, "hand": -106, "scale": { "hand": 0.65 } },
+      "far": { "ankle": [-0.3, 0.12], "foot": -16, "upperArm": -88, "foreArm": -78, "hand": -76 }
+    },
+    "up": {
+      "base": "back",
+      "near": { "upperArm": -102, "foreArm": 52, "hand": 62 }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "back" },
+    { "t": 0.15, "pose": "back", "ease": "linear" },
+    { "t": 1.25, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "back", "ease": "inOutSine" },
+    { "t": 3, "pose": "back", "ease": "linear" }
+  ]
+}

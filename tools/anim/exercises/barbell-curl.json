@@ -1,0 +1,40 @@
+{
+  "id": "barbell-curl",
+  "name": { "en": "Standing barbell curl", "he": "כפיפת מרפקים עם מוט בעמידה" },
+  "view": "side",
+  "equipment": ["barbell"],
+  "fps": 30,
+  "camera": { "centerX": 0.04, "width": 1.7, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "plate", "at": "near.grip", "r": 0.14, "layer": "mid" }
+  ],
+  "poses": {
+    "down": {
+      "pin": { "point": "near.heel", "at": [-0.035, 0.045] },
+      "torso": 89,
+      "neck": 90,
+      "thigh": -87,
+      "shin": -93,
+      "far": { "thigh": -84, "shin": -96 },
+      "scale": { "hand": 0.65 },
+      "upperArm": -83,
+      "foreArm": -77,
+      "hand": -77
+    },
+    "up": {
+      "base": "down",
+      "upperArm": -85,
+      "foreArm": 58,
+      "hand": 68
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 1.15, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.45, "pose": "up", "ease": "linear" },
+    { "t": 2.75, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

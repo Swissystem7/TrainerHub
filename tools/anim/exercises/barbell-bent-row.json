@@ -1,0 +1,40 @@
+{
+  "id": "barbell-bent-row",
+  "name": { "en": "Barbell bent-over row", "he": "חתירת מוט בכפיפה" },
+  "view": "side",
+  "equipment": ["barbell"],
+  "fps": 30,
+  "camera": { "centerX": 0.08, "width": 1.8, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 1.2 },
+  "props": [
+    { "type": "plate", "at": "near.grip", "r": 0.17, "layer": "mid" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [-0.18, 0.88],
+      "torso": 45,
+      "neck": 38,
+      "kneeBend": 1,
+      "foot": 0,
+      "ankle": [0, 0.08],
+      "far": { "ankle": [0.04, 0.08] },
+      "scale": { "hand": 0.65 },
+      "wrist": [0.165, 0.665],
+      "elbowBend": -1,
+      "hand": -90
+    },
+    "up": {
+      "base": "down",
+      "wrist": [0.07, 0.94]
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.15, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.45, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3, "pose": "down", "ease": "linear" }
+  ]
+}

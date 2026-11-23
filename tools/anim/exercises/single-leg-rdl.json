@@ -1,0 +1,37 @@
+{
+  "id": "single-leg-rdl",
+  "name": { "en": "Single-leg Romanian deadlift", "he": "דדליפט רומני על רגל אחת" },
+  "view": "side",
+  "equipment": ["dumbbell"],
+  "fps": 30,
+  "camera": { "centerX": -0.28, "width": 2.2, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 1.4 },
+  "props": [
+    { "type": "dumbbell", "at": "near.grip", "angle": 0, "length": 0.25, "plate": [0.06, 0.13], "layer": "mid" }
+  ],
+  "poses": {
+    "stand": {
+      "pelvis": [0.0, 0.935],
+      "torso": 88,
+      "neck": 88,
+      "near": { "ankle": [0.0, 0.08], "kneeBend": 1, "foot": 0, "upperArm": -90, "foreArm": -88, "hand": -88, "scale": { "hand": 0.65 } },
+      "far": { "thigh": -86, "shin": -124, "foot": -20, "upperArm": -92, "foreArm": -84, "hand": -84 }
+    },
+    "hinge": {
+      "base": "stand",
+      "pelvis": [-0.2, 0.9],
+      "torso": 10,
+      "neck": 15,
+      "far": { "thigh": -170, "shin": -170, "foot": -92, "upperArm": -92, "foreArm": -84, "hand": -84 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "stand" },
+    { "t": 0.15, "pose": "stand", "ease": "linear" },
+    { "t": 1.35, "pose": "hinge", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "hinge", "ease": "linear" },
+    { "t": 2.8, "pose": "stand", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "stand", "ease": "linear" }
+  ]
+}

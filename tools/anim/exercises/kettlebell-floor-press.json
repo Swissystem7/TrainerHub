@@ -1,0 +1,51 @@
+{
+  "id": "kettlebell-floor-press",
+  "name": { "en": "Single-arm kettlebell floor press", "he": "לחיצת רצפה ביד אחת עם קטלבל" },
+  "view": "side",
+  "equipment": ["kettlebell"],
+  "fps": 30,
+  "camera": { "centerX": -0.08, "width": 2.1, "groundY": 0.62 },
+  "repeat": 3,
+  "poster": { "t": 0.7 },
+  "props": [
+    { "type": "kettlebell", "at": "near.grip", "along": "near.foreArm", "angle": 158, "layer": "mid", "bodyLayer": "front" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [0.0, 0.105],
+      "torso": 178,
+      "neck": 184,
+      "foot": 0,
+      "near": {
+        "thigh": 52,
+        "shin": -58.5,
+        "scale": { "upperArm": 0.7, "hand": 0.65 },
+        "wrist": [-0.272, 0.335],
+        "elbowBend": -1,
+        "hand": 90
+      },
+      "far": {
+        "thigh": 48,
+        "shin": -53.8,
+        "upperArm": -8,
+        "foreArm": -2,
+        "hand": 0
+      }
+    },
+    "up": {
+      "base": "down",
+      "near": {
+        "scale": { "upperArm": 1.0, "hand": 0.65 },
+        "wrist": [-0.48, 0.688]
+      }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.2, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "up", "ease": "linear" },
+    { "t": 2.85, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

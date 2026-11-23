@@ -1,0 +1,36 @@
+{
+  "id": "pistol-squat",
+  "name": { "en": "Pistol squat (single-leg squat)", "he": "סקוואט רגל אחת (פיסטול)" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.25, "width": 1.9, "groundY": 0.8 },
+  "repeat": 2,
+  "poster": { "t": 2.1 },
+  "poses": {
+    "stand": {
+      "pelvis": [0.0, 0.94],
+      "torso": 88,
+      "neck": 88,
+      "kneeBend": 1,
+      "near": { "ankle": [0.0, 0.08], "foot": 0, "upperArm": -12, "foreArm": -6, "hand": -6 },
+      "far": { "ankle": [0.45, 0.2], "foot": 20, "upperArm": -8, "foreArm": -2, "hand": -2 }
+    },
+    "bottom": {
+      "base": "stand",
+      "pelvis": [-0.166, 0.29],
+      "torso": 52,
+      "neck": 62,
+      "near": { "upperArm": -2, "foreArm": 2, "hand": 2 },
+      "far": { "ankle": [0.692, 0.152], "foot": 68, "upperArm": 2, "foreArm": 6, "hand": 6 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "stand" },
+    { "t": 0.2, "pose": "stand", "ease": "linear" },
+    { "t": 2.0, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 2.3, "pose": "bottom", "ease": "linear" },
+    { "t": 4.1, "pose": "stand", "ease": "inOutSine" },
+    { "t": 4.5, "pose": "stand", "ease": "linear" }
+  ]
+}

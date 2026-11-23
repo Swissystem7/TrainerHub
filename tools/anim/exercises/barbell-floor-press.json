@@ -1,0 +1,40 @@
+{
+  "id": "barbell-floor-press",
+  "name": { "en": "Barbell floor press", "he": "לחיצת רצפה עם מוט" },
+  "view": "side",
+  "equipment": ["barbell"],
+  "fps": 30,
+  "camera": { "centerX": -0.08, "width": 2.1, "groundY": 0.62 },
+  "repeat": 3,
+  "poster": { "t": 0.75 },
+  "props": [
+    { "type": "plate", "at": "near.grip", "r": 0.17, "layer": "mid" }
+  ],
+  "poses": {
+    "up": {
+      "pelvis": [0.0, 0.105],
+      "torso": 178,
+      "neck": 184,
+      "foot": 0,
+      "scale": { "upperArm": 1.0, "hand": 0.65 },
+      "wrist": [-0.47, 0.688],
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "thigh": 52, "shin": -58.5 },
+      "far": { "thigh": 48, "shin": -53.8 }
+    },
+    "down": {
+      "base": "up",
+      "scale": { "upperArm": 0.7, "hand": 0.65 },
+      "wrist": [-0.3, 0.325]
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "up" },
+    { "t": 0.15, "pose": "up", "ease": "linear" },
+    { "t": 1.3, "pose": "down", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "down", "ease": "linear" },
+    { "t": 2.8, "pose": "up", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "up", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "wall-pushup",
+  "name": { "en": "Wall push-up", "he": "שכיבות סמיכה על קיר" },
+  "view": "side",
+  "equipment": ["wall"],
+  "fps": 30,
+  "camera": { "centerX": 0.4, "width": 1.9, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.85 },
+  "props": [
+    { "type": "rect", "from": [0.915, 0], "to": [1.6, 2.7], "color": "dark" },
+    { "type": "rect", "from": [0.915, 0], "to": [0.927, 2.7], "color": "iron" }
+  ],
+  "poses": {
+    "top": {
+      "pin": { "point": "near.ankle", "at": [0.0, 0.08] },
+      "torso": 76,
+      "neck": 79,
+      "thigh": -104,
+      "shin": -104,
+      "foot": 0,
+      "hand": 90,
+      "elbowBend": -1,
+      "wrist": [0.885, 1.3],
+      "far": { "wrist": [0.885, 1.33] }
+    },
+    "bottom": {
+      "base": "top",
+      "torso": 63,
+      "neck": 68,
+      "thigh": -117,
+      "shin": -117
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "top", "ease": "linear" }
+  ]
+}

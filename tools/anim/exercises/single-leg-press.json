@@ -1,0 +1,55 @@
+{
+  "id": "single-leg-press",
+  "name": { "en": "Single-leg press machine", "he": "לחיצת רגליים ברגל אחת במכונה" },
+  "view": "side",
+  "equipment": ["45-degree leg press machine"],
+  "fps": 30,
+  "camera": { "centerX": 0.27, "width": 2.4, "groundY": 0.72 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [-0.8, 0.0], "to": [1.35, 0.05], "color": "frame", "r": 0.01 },
+    { "type": "line", "a": [-0.55, 0.6], "b": [-0.55, 0.04], "width": 0.05, "color": "frame" },
+    { "type": "line", "a": [0.1, 0.27], "b": [0.1, 0.04], "width": 0.05, "color": "frame" },
+    { "type": "line", "a": [0.25, 0.22], "b": [0.25, 0.04], "width": 0.05, "color": "frame" },
+    { "type": "line", "a": [1.18, 1.15], "b": [1.18, 0.04], "width": 0.05, "color": "frame" },
+    { "type": "line", "a": [0.25, 0.22], "b": [1.22, 1.19], "width": 0.055, "color": "frame" },
+    { "type": "poly", "points": [[-0.004, 0.26], [-0.693, 0.839], [-0.738, 0.785], [-0.049, 0.206]], "r": 0.015, "color": "pad" },
+    { "type": "poly", "points": [[-0.05, 0.3], [0.26, 0.385], [0.275, 0.33], [-0.035, 0.245]], "r": 0.012, "color": "pad" },
+    { "type": "line", "a": { "at": "near.ankle", "offset": [0.035, 0.106] }, "b": { "at": "near.ankle", "offset": [0.285, -0.165] }, "width": 0.04, "color": "frame", "layer": "back" },
+    { "type": "circle", "at": { "at": "near.ankle", "offset": [0.285, -0.165] }, "r": 0.05, "color": "metal", "layer": "back" },
+    { "type": "circle", "at": { "at": "near.ankle", "offset": [0.285, -0.165] }, "r": 0.018, "color": "dark", "layer": "back" },
+    { "type": "poly", "points": [
+        { "at": "near.ankle", "offset": [0.194, -0.074] },
+        { "at": "near.ankle", "offset": [-0.145, 0.265] },
+        { "at": "near.ankle", "offset": [-0.124, 0.286] },
+        { "at": "near.ankle", "offset": [0.215, -0.053] }
+      ], "r": 0.008, "color": "metal", "layer": "back" },
+    { "type": "line", "a": [-0.02, 0.25], "b": [-0.02, 0.365], "width": 0.03, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "extended": {
+      "pelvis": [0.0, 0.42],
+      "torso": 140,
+      "neck": 135,
+      "near": { "ankle": [0.601, 1.021], "kneeBend": 1, "foot": 135 },
+      "far": { "thigh": 85, "shin": -60, "foot": 20 },
+      "wrist": [-0.02, 0.37],
+      "elbowBend": -1,
+      "hand": -90,
+      "scale": { "hand": 0.65 }
+    },
+    "bent": {
+      "base": "extended",
+      "near": { "ankle": [0.435, 0.855] }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "extended" },
+    { "t": 0.15, "pose": "extended", "ease": "linear" },
+    { "t": 1.3, "pose": "bent", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bent", "ease": "linear" },
+    { "t": 2.7, "pose": "extended", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "extended", "ease": "linear" }
+  ]
+}

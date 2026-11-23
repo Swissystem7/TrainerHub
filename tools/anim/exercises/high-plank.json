@@ -1,0 +1,52 @@
+{
+  "id": "high-plank",
+  "name": { "en": "High plank (straight-arm plank)", "he": "פלאנק גבוה" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.64, "width": 2.05, "groundY": 0.6 },
+  "repeat": 1,
+  "poster": { "t": 4.0 },
+  "poses": {
+    "knees": {
+      "pin": { "point": "near.toe", "at": [-0.077, 0.03] },
+      "torso": 34,
+      "neck": 30,
+      "thigh": 214,
+      "shin": 165.1,
+      "foot": -55,
+      "hand": 0,
+      "elbowBend": -1,
+      "wrist": [1.17, 0.03],
+      "far": { "wrist": [1.2, 0.03] }
+    },
+    "plank": {
+      "base": "knees",
+      "torso": 18.3,
+      "neck": 18.3,
+      "thigh": 198.3,
+      "shin": 198.3
+    },
+    "breath": {
+      "base": "plank",
+      "torso": 17.4,
+      "neck": 17.8,
+      "thigh": 198.9,
+      "shin": 198.9
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "knees" },
+    { "t": 0.25, "pose": "knees", "ease": "linear" },
+    { "t": 1.25, "pose": "plank", "ease": "inOutSine" },
+    { "t": 2.2, "pose": "breath", "ease": "inOutSine" },
+    { "t": 3.15, "pose": "plank", "ease": "inOutSine" },
+    { "t": 4.1, "pose": "breath", "ease": "inOutSine" },
+    { "t": 5.05, "pose": "plank", "ease": "inOutSine" },
+    { "t": 6.0, "pose": "breath", "ease": "inOutSine" },
+    { "t": 6.95, "pose": "plank", "ease": "inOutSine" },
+    { "t": 7.7, "pose": "plank", "ease": "linear" },
+    { "t": 8.75, "pose": "knees", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "knees", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "spider-curl",
+  "name": { "en": "Spider curl", "he": "כפיפת עכביש עם משקולות" },
+  "view": "side",
+  "equipment": ["incline bench", "dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": -0.02, "width": 2.0, "groundY": 0.72 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.3, 0.0], "to": [0.5, 0.045], "color": "frame", "r": 0.01, "layer": "afterFar" },
+    { "type": "line", "a": [0.2, 0.03], "b": [0.21, 0.7], "width": 0.06, "color": "frame", "layer": "afterFar" },
+    { "type": "line", "a": [-0.08, 0.03], "b": [0.08, 0.54], "width": 0.05, "color": "frame", "layer": "afterFar" },
+    { "type": "plate", "at": "far.grip", "r": 0.062, "layer": "back" },
+    { "type": "line", "a": [0.062, 0.495], "b": [0.3, 0.76], "width": 0.03, "color": "frame", "layer": "afterFar" },
+    { "type": "poly", "points": [[0.03, 0.539], [0.271, 0.806], [0.304, 0.776], [0.063, 0.509]], "r": 0.02, "color": "pad", "layer": "afterFar" },
+    { "type": "plate", "at": "near.grip", "r": 0.062, "color": "frame", "layer": "front" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [0.0, 0.7],
+      "torso": 48,
+      "neck": 50,
+      "kneeBend": 1,
+      "foot": -50,
+      "scale": { "hand": 0.65 },
+      "near": { "ankle": [-0.56, 0.17], "upperArm": -86, "foreArm": -84, "hand": -80 },
+      "far": { "ankle": [-0.51, 0.17], "upperArm": -82, "foreArm": -80, "hand": -76 }
+    },
+    "up": {
+      "base": "down",
+      "near": { "upperArm": -86, "foreArm": 48, "hand": 56 },
+      "far": { "upperArm": -82, "foreArm": 52, "hand": 60 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.2, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

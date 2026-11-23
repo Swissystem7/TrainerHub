@@ -1,0 +1,52 @@
+{
+  "id": "kneeling-cable-crunch",
+  "name": { "en": "Kneeling cable crunch", "he": "כפיפות בטן בכבל בכריעה מול מכונה" },
+  "view": "side",
+  "equipment": ["cable column", "rope attachment"],
+  "fps": 30,
+  "camera": { "centerX": 0.27, "width": 1.95, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [0.62, 0.0], "to": [1.14, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.92, 0.0], "to": [1.01, 2.13], "color": "frame" },
+    { "type": "rect", "from": [0.88, 0.045], "to": [1.05, 0.8], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [0.88, 0.54], "to": [1.05, 0.555], "color": "gold" },
+    { "type": "rect", "from": [0.74, 2.065], "to": [1.01, 2.13], "color": "frame", "r": 0.01 },
+    { "type": "cable", "a": [0.8, 2.01], "b": "near.grip", "width": 0.012, "layer": "afterFar" },
+    { "type": "circle", "at": [0.8, 2.01], "r": 0.055, "color": "metal", "layer": "afterFar" },
+    { "type": "circle", "at": [0.8, 2.01], "r": 0.018, "color": "dark", "layer": "afterFar" },
+    { "type": "circle", "at": "near.wrist", "r": 0.026, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "tall": {
+      "pelvis": [0.0, 0.5],
+      "waist": 86,
+      "torso": 84,
+      "neck": 80,
+      "thigh": -90,
+      "shin": 181.3,
+      "foot": 200,
+      "scale": { "hand": 0.65 },
+      "upperArm": 8,
+      "foreArm": 121,
+      "hand": 100
+    },
+    "crunch": {
+      "base": "tall",
+      "waist": 58,
+      "torso": -2,
+      "neck": -22,
+      "upperArm": -78,
+      "foreArm": 35,
+      "hand": 14
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "tall" },
+    { "t": 1.15, "pose": "crunch", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "crunch", "ease": "linear" },
+    { "t": 2.75, "pose": "tall", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "tall", "ease": "linear" }
+  ]
+}

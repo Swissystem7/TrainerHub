@@ -1,0 +1,49 @@
+{
+  "id": "towel-row",
+  "name": { "en": "Towel row around a post", "he": "חתירה עם מגבת סביב עמוד" },
+  "view": "side",
+  "equipment": ["post", "towel"],
+  "fps": 30,
+  "camera": { "centerX": 0.36, "width": 2.0, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [0.9, 0.0], "to": [1.16, 0.04], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.99, 0.0], "to": [1.07, 2.2], "color": "frame" },
+    { "type": "band", "a": [1.0, 1.3], "b": "far.grip", "width": 0.026, "color": "white", "layer": "back", "alpha": 0.6 },
+    { "type": "rect", "from": [0.975, 1.265], "to": [1.085, 1.335], "color": "white", "r": 0.012, "layer": "afterFar" },
+    { "type": "band", "a": [1.0, 1.3], "b": "near.grip", "width": 0.032, "color": "white", "layer": "mid" }
+  ],
+  "poses": {
+    "back": {
+      "pin": { "point": "near.heel", "at": [0.74, 0.045] },
+      "torso": 120,
+      "neck": 114,
+      "thigh": -60,
+      "shin": -60,
+      "foot": 30,
+      "hand": 4,
+      "scale": { "hand": 0.65 },
+      "elbowBend": -1,
+      "wrist": [0.64, 1.3],
+      "far": { "wrist": [0.642, 1.31], "thigh": -58, "shin": -58, "foot": 32 }
+    },
+    "row": {
+      "base": "back",
+      "torso": 104,
+      "neck": 100,
+      "thigh": -76,
+      "shin": -76,
+      "foot": 14,
+      "far": { "wrist": [0.642, 1.31], "thigh": -74, "shin": -74, "foot": 16 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "back" },
+    { "t": 0.15, "pose": "back", "ease": "linear" },
+    { "t": 1.2, "pose": "row", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "row", "ease": "linear" },
+    { "t": 2.8, "pose": "back", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "back", "ease": "linear" }
+  ]
+}

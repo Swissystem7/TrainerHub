@@ -1,0 +1,355 @@
+{
+  "id": "skin-the-cat",
+  "name": {
+    "en": "Skin the cat",
+    "he": "סקין דה קאט"
+  },
+  "view": "side",
+  "equipment": [
+    "pull-up bar"
+  ],
+  "fps": 30,
+  "camera": {
+    "centerX": -0.05,
+    "width": 1.95,
+    "groundY": 0.86
+  },
+  "repeat": 1,
+  "poster": {
+    "t": 3.3
+  },
+  "props": [
+    {
+      "type": "rect",
+      "from": [
+        -0.028,
+        2.225
+      ],
+      "to": [
+        0.028,
+        3.2
+      ],
+      "color": "frame"
+    },
+    {
+      "type": "rect",
+      "from": [
+        -0.07,
+        2.2
+      ],
+      "to": [
+        0.07,
+        2.25
+      ],
+      "color": "frame",
+      "r": 0.02
+    },
+    {
+      "type": "barEnd",
+      "at": [
+        0,
+        2.225
+      ],
+      "r": 0.026,
+      "color": "metal",
+      "layer": "front"
+    },
+    {
+      "type": "barEnd",
+      "at": [
+        0,
+        2.225
+      ],
+      "r": 0.011,
+      "color": "gold",
+      "layer": "front"
+    }
+  ],
+  "poses": {
+    "hang": {
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          0,
+          1.6285
+        ]
+      },
+      "torso": 90,
+      "waist": 90,
+      "neck": 90,
+      "scale": {
+        "hand": 0.6,
+        "neck": 0.82
+      },
+      "wrist": [
+        0,
+        2.198
+      ],
+      "elbowBend": -1,
+      "hand": 90,
+      "foot": -32,
+      "far": {
+        "ankle": [
+          0.045,
+          0.29
+        ],
+        "foot": -29
+      },
+      "kneeBend": 1,
+      "ankle": [
+        0,
+        0.285
+      ]
+    },
+    "tuck": {
+      "base": "hang",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          -0.03,
+          1.6293
+        ]
+      },
+      "torso": 97,
+      "waist": 112,
+      "neck": 82,
+      "scale": {
+        "hand": 0.6,
+        "neck": 1
+      },
+      "foot": -3,
+      "far": {
+        "ankle": [
+          0.4,
+          1.13
+        ],
+        "foot": 0
+      },
+      "kneeBend": 1,
+      "ankle": [
+        0.38,
+        1.11
+      ]
+    },
+    "level": {
+      "base": "tuck",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          -0.06,
+          1.6317
+        ]
+      },
+      "torso": 180,
+      "waist": 215,
+      "neck": 165,
+      "foot": 150,
+      "far": {
+        "ankle": [
+          0.18,
+          1.965
+        ],
+        "foot": 153
+      },
+      "kneeBend": 1,
+      "ankle": [
+        0.2,
+        1.98
+      ]
+    },
+    "pass": {
+      "base": "tuck",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          -0.045,
+          1.6305
+        ]
+      },
+      "torso": 202.5,
+      "waist": 240,
+      "neck": 187.5,
+      "ankle": [
+        0,
+        1.99
+      ],
+      "foot": 175,
+      "far": {
+        "ankle": [
+          -0.015,
+          1.975
+        ],
+        "foot": 178
+      }
+    },
+    "thread": {
+      "base": "tuck",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          -0.03,
+          1.6293
+        ]
+      },
+      "torso": 225,
+      "waist": 265,
+      "neck": 210,
+      "foot": 185,
+      "far": {
+        "ankle": [
+          -0.16,
+          2.01
+        ],
+        "foot": 188
+      },
+      "kneeBend": 1,
+      "ankle": [
+        -0.15,
+        2.03
+      ]
+    },
+    "inverted": {
+      "base": "tuck",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          0.02,
+          1.6289
+        ]
+      },
+      "torso": 270,
+      "waist": 300,
+      "neck": 255,
+      "foot": 165,
+      "far": {
+        "ankle": [
+          -0.43,
+          2.085
+        ],
+        "foot": 168
+      },
+      "kneeBend": 1,
+      "ankle": [
+        -0.43,
+        2.11
+      ]
+    },
+    "backhang": {
+      "base": "tuck",
+      "pin": {
+        "point": "shoulder",
+        "at": [
+          0.07,
+          1.6328
+        ]
+      },
+      "torso": 350,
+      "waist": 350,
+      "neck": 360,
+      "foot": 300,
+      "far": {
+        "ankle": [
+          -0.595,
+          0.885
+        ],
+        "foot": 303
+      },
+      "kneeBend": 1,
+      "ankle": [
+        -0.68,
+        0.91
+      ]
+    }
+  },
+  "timeline": [
+    {
+      "t": 0,
+      "pose": "hang"
+    },
+    {
+      "t": 0.3,
+      "pose": "hang",
+      "ease": "linear"
+    },
+    {
+      "t": 1.1,
+      "pose": "tuck",
+      "ease": "inOutSine"
+    },
+    {
+      "t": 2,
+      "pose": "level",
+      "ease": "inQuad"
+    },
+    {
+      "t": 2.25,
+      "pose": "pass",
+      "ease": "linear"
+    },
+    {
+      "t": 2.5,
+      "pose": "thread",
+      "ease": "linear"
+    },
+    {
+      "t": 3.2,
+      "pose": "inverted",
+      "ease": "outQuad"
+    },
+    {
+      "t": 3.4,
+      "pose": "inverted",
+      "ease": "linear"
+    },
+    {
+      "t": 4.4,
+      "pose": "backhang",
+      "ease": "inOutSine"
+    },
+    {
+      "t": 4.9,
+      "pose": "backhang",
+      "ease": "linear"
+    },
+    {
+      "t": 5.9,
+      "pose": "inverted",
+      "ease": "inOutSine"
+    },
+    {
+      "t": 6.1,
+      "pose": "inverted",
+      "ease": "linear"
+    },
+    {
+      "t": 6.8,
+      "pose": "thread",
+      "ease": "inQuad"
+    },
+    {
+      "t": 7.05,
+      "pose": "pass",
+      "ease": "linear"
+    },
+    {
+      "t": 7.3,
+      "pose": "level",
+      "ease": "linear"
+    },
+    {
+      "t": 8,
+      "pose": "tuck",
+      "ease": "outQuad"
+    },
+    {
+      "t": 8.8,
+      "pose": "hang",
+      "ease": "inOutSine"
+    },
+    {
+      "t": 9,
+      "pose": "hang",
+      "ease": "linear"
+    }
+  ]
+}

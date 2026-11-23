@@ -1,0 +1,47 @@
+{
+  "id": "hanging-knee-raise",
+  "name": { "en": "Hanging knee raise", "he": "הרמות ברכיים בתלייה" },
+  "view": "side",
+  "equipment": ["pull-up bar"],
+  "fps": 30,
+  "camera": { "centerX": -0.05, "width": 1.95, "groundY": 0.86 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.028, 2.225], "to": [0.028, 3.2], "color": "frame" },
+    { "type": "rect", "from": [-0.07, 2.2], "to": [0.07, 2.25], "color": "frame", "r": 0.02 },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "hang": {
+      "pin": { "point": "shoulder", "at": [0, 1.632] },
+      "torso": 90,
+      "waist": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "neck": 0.82 },
+      "wrist": [0, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "thigh": -87, "shin": -93, "foot": -32 },
+      "far": { "thigh": -84, "shin": -90, "foot": -29 }
+    },
+    "raise": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.035, 1.6335] },
+      "torso": 93,
+      "waist": 108,
+      "neck": 88,
+      "near": { "thigh": 22, "shin": -84, "foot": -6 },
+      "far": { "thigh": 18, "shin": -80, "foot": -3 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "hang" },
+    { "t": 0.2, "pose": "hang", "ease": "linear" },
+    { "t": 1.2, "pose": "raise", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "raise", "ease": "linear" },
+    { "t": 2.8, "pose": "hang", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "hang", "ease": "linear" }
+  ]
+}

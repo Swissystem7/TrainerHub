@@ -1,0 +1,51 @@
+{
+  "id": "plank",
+  "name": { "en": "Forearm plank hold", "he": "פלאנק" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": 0.5, "width": 2.05, "groundY": 0.6 },
+  "repeat": 1,
+  "poster": { "t": 4.0 },
+  "poses": {
+    "knees": {
+      "pin": { "point": "near.elbow", "at": [1.0, 0.045] },
+      "upperArm": -80,
+      "foreArm": 0,
+      "hand": 0,
+      "torso": 12.06,
+      "neck": 12,
+      "thigh": 204.1,
+      "shin": 165.1,
+      "foot": -55
+    },
+    "plank": {
+      "base": "knees",
+      "upperArm": -90,
+      "torso": 7.5,
+      "neck": 7.5,
+      "thigh": 187.5,
+      "shin": 187.5
+    },
+    "breath": {
+      "base": "plank",
+      "torso": 7.9,
+      "neck": 8.6,
+      "thigh": 187.28,
+      "shin": 187.28
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "knees" },
+    { "t": 0.4, "pose": "knees", "ease": "linear" },
+    { "t": 1.5, "pose": "plank", "ease": "inOutSine" },
+    { "t": 2.5, "pose": "breath", "ease": "inOutSine" },
+    { "t": 3.5, "pose": "plank", "ease": "inOutSine" },
+    { "t": 4.5, "pose": "breath", "ease": "inOutSine" },
+    { "t": 5.5, "pose": "plank", "ease": "inOutSine" },
+    { "t": 6.5, "pose": "breath", "ease": "inOutSine" },
+    { "t": 7.4, "pose": "plank", "ease": "inOutSine" },
+    { "t": 8.6, "pose": "knees", "ease": "inOutSine" },
+    { "t": 9.0, "pose": "knees", "ease": "linear" }
+  ]
+}

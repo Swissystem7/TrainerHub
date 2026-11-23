@@ -1,0 +1,45 @@
+{
+  "id": "bar-dip",
+  "name": { "en": "Bar dip", "he": "דיפס על מקבילים" },
+  "view": "side",
+  "equipment": ["dip bars"],
+  "fps": 30,
+  "camera": { "centerX": 0.12, "width": 2, "groundY": 0.86 },
+  "repeat": 3,
+  "poster": { "t": 1.25 },
+  "props": [
+    { "type": "rect", "from": [0.42, 0], "to": [1, 0.045], "color": "frame", "r": 0.012 },
+    { "type": "rect", "from": [0.66, 0], "to": [0.73, 1.32], "color": "frame", "r": 0.01 },
+    { "type": "line", "a": [-0.24, 1.2], "b": [0.69, 1.2], "width": 0.05, "color": "metal", "layer": "mid" },
+    { "type": "circle", "at": [-0.24, 1.2], "r": 0.012, "color": "gold", "layer": "mid" }
+  ],
+  "poses": {
+    "top": {
+      "pelvis": [-0.087, 1.32],
+      "torso": 82,
+      "neck": 86,
+      "scale": { "hand": 0.6 },
+      "wrist": [0, 1.227],
+      "elbowBend": -1,
+      "hand": -90,
+      "near": { "thigh": -84, "shin": -160, "foot": -110 },
+      "far": { "thigh": -78, "shin": -150, "foot": -100 }
+    },
+    "bottom": {
+      "base": "top",
+      "pelvis": [0.016, 1.099],
+      "torso": 70,
+      "neck": 80,
+      "near": { "thigh": -80 },
+      "far": { "thigh": -74 }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.25, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.45, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3, "pose": "top", "ease": "linear" }
+  ]
+}
