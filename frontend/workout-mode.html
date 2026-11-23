@@ -327,6 +327,9 @@
   <span class="elapsed-label" id="elapsedLabel">זמן אימון:</span>
   <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: label association for screen readers -->
   <span class="elapsed-val" id="elapsedVal" aria-labelledby="elapsedLabel">0:00</span>
+  <span class="tut-label" id="tutLabel" style="margin-right:12px;color:#9ca3af">זמן עבודה מבוקר (TUT):</span>
+  <!-- biome-ignore lint/a11y/useAriaPropsSupportedByRole: label association for screen readers -->
+  <span class="tut-val" id="liveTutReadout" aria-labelledby="tutLabel" style="font-weight:700;color:#2DD4BF">0 שניות</span>
 </div>
 
 <!-- Stage (main exercise display) -->
@@ -367,6 +370,14 @@
 <div id="swapPanel" hidden style="padding:0 24px 16px;max-width:520px;margin:0 auto;width:100%" role="region" aria-label="חלופות לתרגיל"></div>
 <!-- biome-ignore lint/a11y/useSemanticElements: live workout controls container -->
 <div id="liveWorkoutContainer" role="region" aria-label="תיעוד אימון חי" style="padding:0 24px 16px"></div>
+<!-- biome-ignore lint/a11y/useSemanticElements: joint prep panel region -->
+<section id="jointPrepPanel" class="joint-prep-panel" role="region" aria-label="בדיקת תנועה מכינה למפרקים" style="display:none;padding:16px 20px;max-width:520px;margin:0 auto 16px;background:#12211E;border:1px solid #28423C;border-radius:16px;text-align:right">
+  <h2 style="font-size:1.05rem;color:#2DD4BF;margin-bottom:6px">בדיקת תנועה מכינה למפרקים</h2>
+  <p style="font-size:0.85rem;color:#9ca3af;margin-bottom:12px">בדוק נוחות מפרקית מהירה לפני תחילת סטים עצימים:</p>
+  <div id="jointPrepChecksList" role="group" aria-label="רשימת תנועות בדיקה" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+  <div id="jointPrepOutcomeMsg" role="status" aria-live="polite" style="font-size:0.85rem;margin-bottom:12px;color:#7FE9D9"></div>
+  <button type="button" class="done-btn" id="confirmJointPrepBtn" style="width:100%;min-height:44px;background:#2DD4BF;color:#0A1513;font-weight:700;border:none;border-radius:12px;cursor:pointer" aria-label="אישור בדיקת מפרקים ומעבר לאימון">אישור והמשך לאימון</button>
+</section>
 <p class="kbd-hint" id="kbdHint" style="display:none">רווח או Enter להתקדם · Escape להשהות</p>
 
 <!-- Completion screen -->
@@ -386,6 +397,22 @@
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
   <p id="setsSaved" role="status" aria-live="polite" style="color:#7FE9D9;font-size:0.85rem"></p>
+  <div style="margin:12px 0;text-align:right;width:min(420px,92vw)">
+    <label for="sessionRpeSelect" style="display:block;font-size:0.82rem;color:#9ca3af;margin-bottom:6px">דירוג מאמץ כללי של האימון (Session RPE 1–10):</label>
+    <select id="sessionRpeSelect" name="sessionRpeSelect" style="width:100%;min-height:44px;background:#12211E;color:#E8F1EE;border:1px solid #28423C;border-radius:10px;padding:8px 12px;font-size:0.95rem">
+      <option value="1">1 — קל מאוד (Very Light)</option>
+      <option value="2">2 — קל (Light)</option>
+      <option value="3">3 — מתון (Moderate)</option>
+      <option value="4">4 — בינוני (Somewhat Hard)</option>
+      <option value="5">5 — קשה (Hard)</option>
+      <option value="6">6 — קשה יותר</option>
+      <option value="7" selected>7 — קשה מאוד (Very Hard)</option>
+      <option value="8">8 — מאומץ מאוד</option>
+      <option value="9">9 — כמעט מרבי</option>
+      <option value="10">10 — מאמץ מרבי (Maximal)</option>
+    </select>
+    <div id="sessionRpeFeedback" style="font-size:0.8rem;color:#7FE9D9;margin-top:4px"></div>
+  </div>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
     <p style="color:#7FE9D9;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
@@ -405,11 +432,14 @@
 </div>
 
 <script src="../js/core.js"></script>
+<script src="../js/tempo-volume.js"></script>
 <script src="../js/journal-storage.js"></script>
 <script src="../js/live-workout.js"></script>
 <script src="../js/live-tempo-cue.js"></script>
+<script src="../js/joint-prep.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
+<script src="../js/session-rpe.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -578,6 +608,31 @@ try {
   }
 } catch (_err) {
   restAlertSoundEnabled = true;
+}
+
+let totalSessionTutSeconds = 0;
+
+function updateLiveTutReadout() {
+  const el = document.getElementById('liveTutReadout');
+  if (!el) return;
+  let tutSec = 0;
+  if (Array.isArray(setLog)) {
+    setLog.forEach((item) => {
+      if (typeof item.tutSeconds === 'number' && Number.isFinite(item.tutSeconds)) {
+        tutSec += item.tutSeconds;
+      } else {
+        const step = typeof steps !== 'undefined' && steps[item.stepIdx];
+        const tempoVal = step ? (step.tempo || step.tempoPattern || (step.notes?.includes('טמפו') ? step.notes : null)) : null;
+        if (typeof computeSetTimeUnderTension === 'function') {
+          tutSec += computeSetTimeUnderTension(item.reps, tempoVal);
+        } else {
+          tutSec += (Number(item.reps) || 0) * 5;
+        }
+      }
+    });
+  }
+  totalSessionTutSeconds = tutSec;
+  el.textContent = tutSec + ' שניות';
 }
 
 function updateTempoCue(elapsedMs) {
@@ -869,8 +924,111 @@ document.addEventListener('DOMContentLoaded', () => {
   const kbdHint = document.getElementById('kbdHint');
   if (kbdHint) kbdHint.style.display = 'block';
 
+  initJointPrepPanel(workout);
+
   renderStep();
 });
+
+function initJointPrepPanel(activeWorkout) {
+  const panel = document.getElementById('jointPrepPanel');
+  const listEl = document.getElementById('jointPrepChecksList');
+  const outcomeMsg = document.getElementById('jointPrepOutcomeMsg');
+  const confirmBtn = document.getElementById('confirmJointPrepBtn');
+  if (!panel || !listEl || typeof THJointPrep === 'undefined') return;
+
+  const muscles = [];
+  ((activeWorkout && activeWorkout.phases) || []).forEach((phase) => {
+    (phase.exercises || []).forEach((ex) => {
+      if (ex && ex.muscles) muscles.push(...ex.muscles);
+      else if (ex && ex.muscle) muscles.push(ex.muscle);
+    });
+  });
+
+  const checks = THJointPrep.getJointPrepChecks(muscles);
+  const checkStatus = {};
+
+  while (listEl.firstChild) {
+    listEl.removeChild(listEl.firstChild);
+  }
+
+  function updateOutcomeDisplay() {
+    const outcome = THJointPrep.resolvePrepCheckOutcome(checkStatus);
+    if (outcomeMsg) {
+      outcomeMsg.textContent = outcome.message;
+      outcomeMsg.style.color = outcome.adjustRom ? '#FF8A45' : '#7FE9D9';
+    }
+  }
+
+  checks.forEach((check) => {
+    checkStatus[check.id] = { discomfort: false };
+
+    const item = document.createElement('div');
+    item.style.padding = '8px 12px';
+    item.style.background = '#0A1513';
+    item.style.border = '1px solid #28423C';
+    item.style.borderRadius = '8px';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+
+    const title = document.createElement('span');
+    title.style.fontWeight = '700';
+    title.style.color = '#E8F1EE';
+    title.textContent = `${check.name} (${check.jointHe})`;
+    header.appendChild(title);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-pressed', 'false');
+    toggle.setAttribute('aria-label', `דווח על אי-נוחות ב${check.name}`);
+    toggle.style.padding = '4px 8px';
+    toggle.style.fontSize = '0.75rem';
+    toggle.style.borderRadius = '6px';
+    toggle.style.border = '1px solid #28423C';
+    toggle.style.background = '#12211E';
+    toggle.style.color = '#9ca3af';
+    toggle.style.cursor = 'pointer';
+    toggle.textContent = 'תקין';
+
+    toggle.addEventListener('click', () => {
+      const isDiscomfort = toggle.getAttribute('aria-pressed') !== 'true';
+      toggle.setAttribute('aria-pressed', isDiscomfort ? 'true' : 'false');
+      toggle.textContent = isDiscomfort ? '⚠️ דווחה אי-נוחות' : 'תקין';
+      toggle.style.color = isDiscomfort ? '#FF8A45' : '#9ca3af';
+      toggle.style.borderColor = isDiscomfort ? '#FF8A45' : '#28423C';
+      checkStatus[check.id] = { discomfort: isDiscomfort };
+      updateOutcomeDisplay();
+    });
+
+    header.appendChild(toggle);
+    item.appendChild(header);
+
+    const desc = document.createElement('div');
+    desc.style.fontSize = '0.78rem';
+    desc.style.color = '#9ca3af';
+    desc.style.marginTop = '4px';
+    desc.textContent = check.instruction;
+    item.appendChild(desc);
+
+    listEl.appendChild(item);
+  });
+
+  updateOutcomeDisplay();
+
+  if (confirmBtn) {
+    confirmBtn.onclick = () => {
+      const outcome = THJointPrep.resolvePrepCheckOutcome(checkStatus);
+      if (outcome.adjustRom) {
+        window.TH_SAFE_ROM_ACTIVE = true;
+      }
+      panel.style.display = 'none';
+    };
+  }
+
+  panel.style.display = 'block';
+}
 
 /* ═══════════════════════════════════════════
    PER-SET LOGGING · REST CUES · TTS
@@ -917,11 +1075,20 @@ function recordSet(step) {
   const weightEl = document.getElementById('logWeight');
   const weightKg = Number(String(weightEl ? weightEl.value : '').replace(',', '.')) || 0;
   if (!(reps > 0)) return null;
-  const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0, stepIdx: stepIdx };
+  const tempoVal = step.tempo || step.tempoPattern || (step.notes?.includes('טמפו') ? step.notes : null);
+  const tut = typeof computeSetTimeUnderTension === 'function'
+    ? computeSetTimeUnderTension(reps, tempoVal)
+    : reps * 5;
+  const item = { exerciseId: setExerciseId(step), reps, weightKg: weightKg > 0 ? weightKg : 0, stepIdx: stepIdx, tutSeconds: tut };
   for (let i = 0; i < setLog.length; i++) {
-    if (setLog[i].stepIdx === stepIdx) { setLog[i] = item; return item; }
+    if (setLog[i].stepIdx === stepIdx) {
+      setLog[i] = item;
+      if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
+      return item;
+    }
   }
   setLog.push(item);
+  if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
   return item;
 }
 
@@ -1015,6 +1182,7 @@ function renderStep() {
 
   const step = steps[stepIdx];
   updateProgress();
+  if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
 
   if (step.type === 'exercise') {
     renderExercise(step);
@@ -1371,6 +1539,7 @@ function markSetDone() {
     if (!hasDoneSet(step.exercise)) completedExercises++;
     completedStepIds.add(stepIdx);
     completedSets++;
+    if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
   }
   clearCountdown();
   advance();
@@ -1508,6 +1677,7 @@ function goBack() {
       completedStepIds.delete(stepIdx);
       if (typeof setLog !== 'undefined' && Array.isArray(setLog)) {
         setLog = setLog.filter(function (s) { return s.stepIdx !== stepIdx; });
+        if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
       }
       if (step && step.type === 'exercise') {
         if (completedSets > 0) completedSets--;
@@ -1544,6 +1714,10 @@ function finishWorkout() {
   document.getElementById('statTime').textContent = formatTime(elapsedSeconds);
   document.getElementById('statExercises').textContent = completedExercises;
   document.getElementById('statSets').textContent = completedSets;
+  if (typeof summarizeSessionTut === 'function') {
+    summarizeSessionTut(setLog);
+  }
+  if (typeof updateLiveTutReadout === 'function') updateLiveTutReadout();
 
   if (typeof liveSession !== 'undefined' && liveSession && typeof THLiveWorkout !== 'undefined') {
     THLiveWorkout.saveLiveWorkoutToJournal(liveSession, typeof localStorage !== 'undefined' ? localStorage : null);
@@ -1584,6 +1758,37 @@ function finishWorkout() {
       ? ('נשמרו ' + savedSets.sets + ' סטים ביומן במכשיר' + (savedSets.volume ? ' · נפח ' + savedSets.volume + ' ק״ג' : '') +
          (savedSets.prs.length ? ' · 🏆 שיא חדש: ' + savedSets.prs.join(', ') : ''))
       : '';
+  }
+  const sessionRpeSelect = document.getElementById('sessionRpeSelect');
+  function updateSessionRpe() {
+    if (!sessionRpeSelect) return;
+    const durMins = Math.max(1, Math.round(elapsedSeconds / 60));
+    const rpeVal = Number(sessionRpeSelect.value) || 7;
+    const srpeApi = window.THSessionRpe;
+    if (srpeApi && typeof srpeApi.calculateSessionRpeLoad === 'function') {
+      const loadRes = srpeApi.calculateSessionRpeLoad(durMins, rpeVal);
+      if (typeof srpeApi.saveSessionRpeEntry === 'function') {
+        srpeApi.saveSessionRpeEntry({
+          durationMinutes: durMins,
+          rpe: rpeVal,
+          load: loadRes.load,
+          intensity: loadRes.intensity,
+          intensityLabel: loadRes.intensityLabel,
+          title: (workout && workout.title) || 'אימון',
+          clientId: linkMeta.tid || '',
+          name: linkMeta.name || '',
+          date: finishedAt
+        });
+      }
+      const fb = document.getElementById('sessionRpeFeedback');
+      if (fb) {
+        fb.textContent = 'עומס פנימי מחושב: ' + loadRes.load + ' יחידות (' + (loadRes.intensityLabel || loadRes.intensity) + ')';
+      }
+    }
+  }
+  if (sessionRpeSelect) {
+    sessionRpeSelect.onchange = updateSessionRpe;
+    updateSessionRpe();
   }
   function refreshReport() {
     const result = buildResult();

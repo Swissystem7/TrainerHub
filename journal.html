@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<script src="js/benchmark-checkin.js" defer></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="data:,">
@@ -71,6 +72,7 @@
   היומן נשמר בדפדפן הזה בלבד. אין שרת, אין לקוחות לדוגמה, ואין זה CRM שנמכר ב־₪59.
 </div>
 <main class="wrap">
+  <div id="biWeeklyBenchmarkPanel"></div>
   <header class="top">
     <small>TRAINERHUB / יומן</small>
     <h1>מה שקרה באימון, לא רשימת לקוחות בדויה.</h1>
@@ -253,6 +255,11 @@
 
   <section class="card" id="coach-trainees-panel" aria-labelledby="coachTraineesHeading"></section>
 
+  <section class="card" id="weekly-srpe-card" aria-labelledby="weeklySrpeHeading">
+    <h2 id="weeklySrpeHeading">עומס אימון פנימי שבועי (Session RPE)</h2>
+    <p class="honest" id="weeklySrpeLoadSummary">אין עדיין נתוני עומס לשבוע הנוכחי.</p>
+  </section>
+
   <section class="card" id="insights" role="region" aria-labelledby="insightsHeading">
     <h2 id="insightsHeading">תובנות מתאמן</h2>
     <label for="insClient">מתאמן</label>
@@ -288,6 +295,7 @@
 <script src="./js/coach-profiles.js"></script>
 <script src="./js/plan-link-codec.js"></script>
 <script src="./js/mesocycle-advisor.js"></script>
+<script src="./js/session-rpe.js"></script>
 <script>
 // biome-ignore-all lint/correctness/noInnerDeclarations: classic script variable declarations
 (function () {
@@ -814,6 +822,43 @@
     card.appendChild(recBox);
   }
 
+  function updateWeeklySrpeSummary(selectedClient) {
+    var el = $('weeklySrpeLoadSummary');
+    if (!el) return;
+    var srpeApi = window.THSessionRpe;
+    var clientId = selectedClient ? (selectedClient.id || selectedClient.tid || '') : '';
+    if (srpeApi && typeof srpeApi.getWeeklySrpeLoad === 'function') {
+      var weekly = srpeApi.getWeeklySrpeLoad(clientId);
+      if (weekly && weekly.totalLoad > 0) {
+        el.textContent = 'סך עומס פנימי שבועי: ' + weekly.totalLoad + ' יחידות (' + weekly.sessionCount + ' אימונים)';
+        return;
+      }
+    }
+    if (selectedClient && Array.isArray(selectedClient.logs) && selectedClient.logs.length > 0 && srpeApi) {
+      var now = new Date();
+      var weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      var total = 0;
+      var count = 0;
+      selectedClient.logs.forEach(function (log) {
+        var d = new Date(log.doneAt || log.date);
+        if (d >= weekAgo && d <= now) {
+          var mins = Number(log.minutes) || 0;
+          var rpe = Number(log.rpe) || (log.sets ? 5 : 0);
+          if (mins > 0 && rpe > 0) {
+            var calc = srpeApi.calculateSessionRpeLoad(mins, rpe <= 5 ? rpe * 2 : rpe);
+            total += calc.load;
+            count++;
+          }
+        }
+      });
+      if (total > 0) {
+        el.textContent = 'סך עומס פנימי שבועי: ' + total + ' יחידות (' + count + ' אימונים)';
+        return;
+      }
+    }
+    el.textContent = 'אין עדיין נתוני עומס לשבוע הנוכחי.';
+  }
+
   function renderCoachTraineesPanel() {
     var panel = $('coach-trainees-panel');
     if (!panel || typeof document.createElement !== 'function' || typeof panel.appendChild !== 'function') return;
@@ -1092,6 +1137,7 @@
     var c = insightsClient();
     renderProgressionTrends(c);
     renderWeeklyMuscleBalance(c);
+    updateWeeklySrpeSummary(c);
     $('insights').hidden = !c || !JS;
     if (!c || !JS) return;
     var d = TH.normalizeClientDetails(c);
