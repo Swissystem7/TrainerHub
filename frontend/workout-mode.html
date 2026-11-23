@@ -332,6 +332,19 @@
   <span class="tut-val" id="liveTutReadout" aria-labelledby="tutLabel" style="font-weight:700;color:#2DD4BF">0 שניות</span>
 </div>
 
+<!-- Interval clock (EMOM / Tabata / AMRAP) -->
+<!-- biome-ignore lint/a11y/useSemanticElements: interval clock settings group -->
+<section id="intervalClockPanel" role="group" aria-labelledby="intervalClockHeading" style="padding:10px 24px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;flex-shrink:0">
+  <h2 id="intervalClockHeading" style="font-size:0.85rem;color:#7FE9D9">שעון מרווחים</h2>
+  <label for="intervalModeSelect">מצב שעון</label>
+  <select id="intervalModeSelect" aria-label="בחירת שעון מרווחים" style="background:#12211E;color:#E8F1EE;border:1px solid #28423C;border-radius:8px;padding:6px;min-height:44px;font:inherit">
+    <option value="emom">EMOM — דקה כל סבב</option>
+    <option value="tabata" selected>טבטה — 20 עבודה / 10 מנוחה</option>
+    <option value="amrap">AMRAP — כמה שיותר בזמן</option>
+  </select>
+  <output id="intervalClockDisplay" role="status" aria-live="polite" style="font-size:0.85rem;color:#2DD4BF;font-weight:700">טבטה · סבב 1 מתוך 8 · עבודה · 20 שניות</output>
+</section>
+
 <!-- Stage (main exercise display) -->
 <main class="stage" id="stage">
   <div id="liveMediaPanel" class="live-media-panel" role="region" aria-label="תצוגת הדגמה ודגשי טכניקה" style="display:none"></div>
@@ -439,6 +452,7 @@
 <script src="../js/joint-prep.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
+<script src="../js/interval-clock.js"></script>
 <script src="../js/session-rpe.js"></script>
 <script>
 /* ═══════════════════════════════════════════
@@ -890,6 +904,34 @@ function handleLiveFinishAndSave() {
    INIT
 ═══════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════
+   INTERVAL CLOCK (EMOM / Tabata / AMRAP)
+   ═══════════════════════════════════════════ */
+
+let intervalClockState = null;
+
+function renderIntervalClock() {
+  if (typeof THIntervalClock === 'undefined') return;
+  const display = document.getElementById('intervalClockDisplay');
+  if (!display) return;
+  document.getElementById('intervalClockDisplay').textContent = THIntervalClock.formatIntervalClock(intervalClockState);
+}
+
+function initIntervalClock() {
+  const select = document.getElementById('intervalModeSelect');
+  if (!select || typeof THIntervalClock === 'undefined') return;
+  intervalClockState = THIntervalClock.createIntervalClock(select.value);
+  renderIntervalClock();
+}
+
+// One tick of the workout's own elapsed-second clock also advances the interval clock.
+function tickIntervalClock() {
+  if (!intervalClockState || intervalClockState.phase === 'finished') return;
+  if (typeof THIntervalClock === 'undefined') return;
+  intervalClockState = THIntervalClock.advanceIntervalClock(intervalClockState, 1);
+  renderIntervalClock();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // The catalog arrives over the network, often after the trainee already
   // tapped start. It only adds the clip of the current exercise, so it must not
@@ -903,6 +945,9 @@ document.addEventListener('DOMContentLoaded', () => {
     liveSession = THLiveWorkout.createLiveSession(workout);
   }
   renderLiveWorkoutControls();
+  const intervalSelect = document.getElementById('intervalModeSelect');
+  if (intervalSelect) intervalSelect.addEventListener('change', initIntervalClock);
+  initIntervalClock();
 
   if (!workout) {
     document.getElementById('emptyState').style.display = 'flex';
@@ -1428,6 +1473,7 @@ function startElapsedTimer() {
     elapsedSeconds++;
     document.getElementById('elapsedVal').textContent = formatTime(elapsedSeconds);
     document.getElementById('totalTimeLabel').textContent = '⏱ ' + formatTime(elapsedSeconds);
+    tickIntervalClock();
     if (typeof updateTempoCue === 'function') {
       const activeStep = typeof steps !== 'undefined' && steps[stepIdx];
       if (activeStep && activeStep.type === 'exercise') {
