@@ -185,6 +185,29 @@
     <div id="strengthOut" style="margin-top:12px"></div>
   </section>
 
+  <section id="ruckingPlannerPanel" aria-labelledby="ruckingPlannerHeading">
+    <h2 id="ruckingPlannerHeading">מתכנן הליכת משקל מדורגת (Rucking)</h2>
+    <p class="muted">תוכנית מדורגת לנשיאת משקל והליכה בשטח: משקל תיק התחלתי בטוח 10%–15% ממשקל הגוף, והארכת זמן עד 10% בשבוע.</p>
+    <div class="row">
+      <div>
+        <label for="ruckingBodyWeight">משקל גוף (ק"ג)</label>
+        <input id="ruckingBodyWeight" type="number" min="1" step="0.1" value="80">
+      </div>
+      <div>
+        <label for="ruckingCurrentMinutes">זמן הליכה נוכחי (דקות)</label>
+        <input id="ruckingCurrentMinutes" type="number" min="1" step="1" value="30">
+      </div>
+      <div>
+        <label for="ruckingWeekNumber">שבוע בתוכנית</label>
+        <input id="ruckingWeekNumber" type="number" min="1" step="1" value="1">
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="ruckingCalcBtn" aria-label="חשב תוכנית הליכת משקל מדורגת">חשב תוכנית</button>
+    </div>
+    <div id="ruckingResult" role="status" aria-live="polite" style="margin-top:12px"></div>
+  </section>
+
   <!-- biome-ignore lint/a11y/noRedundantRoles: explicit role required by spec -->
   <section class="card" id="reserves-safety-guidance" role="region" aria-labelledby="reservesSafetyHeading">
     <h2 id="reservesSafetyHeading">דגשי בטיחות והתקדמות במילואים</h2>
@@ -201,7 +224,54 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/rucking-planner.js"></script>
 <script src="./js/th-nav.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById('ruckingCalcBtn');
+  var result = document.getElementById('ruckingResult');
+  if (!btn || !result) return;
+  btn.addEventListener('click', function () {
+    result.textContent = '';
+    var api = window.THRucking;
+    if (!api || typeof api.buildRuckingProgression !== 'function') return;
+    var bwEl = document.getElementById('ruckingBodyWeight');
+    var minEl = document.getElementById('ruckingCurrentMinutes');
+    var wkEl = document.getElementById('ruckingWeekNumber');
+    var plan = api.buildRuckingProgression(Number(bwEl.value), Number(minEl.value), Number(wkEl.value));
+    if (!plan) {
+      var err = document.createElement('p');
+      err.textContent = 'קלט לא תקין: יש להזין משקל גוף, זמן ושבוע חיוביים.';
+      result.appendChild(err);
+      return;
+    }
+    var title = document.createElement('p');
+    title.textContent =
+      'שבוע ' +
+      plan.weekNumber +
+      ': תיק ' +
+      plan.packWeightKg +
+      ' ק"ג (טווח בטוח ' +
+      plan.packWeightMinKg +
+      '–' +
+      plan.packWeightMaxKg +
+      ' ק"ג), יעד ' +
+      plan.targetMinutes +
+      ' דקות.';
+    result.appendChild(title);
+    var safety = document.createElement('p');
+    safety.textContent = plan.safetyNote;
+    result.appendChild(safety);
+    var list = document.createElement('ul');
+    plan.weeks.forEach(function (w) {
+      var li = document.createElement('li');
+      li.textContent = 'שבוע ' + w.week + ': ' + w.packWeightKg + ' ק"ג · ' + w.targetMinutes + ' דקות';
+      list.appendChild(li);
+    });
+    result.appendChild(list);
+  });
+})();
+</script>
 <script>
 (() => {
   'use strict';
