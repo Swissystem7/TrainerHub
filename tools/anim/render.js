@@ -29,7 +29,11 @@ const VIEWS = ['side', 'front', 'top'];
 const SAFE_MARGIN = 24; // px: the figure must stay this far inside the frame
 
 function listExercises() {
-  return fs.readdirSync(EX_DIR).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)).sort();
+  return fs
+    .readdirSync(EX_DIR)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => f.slice(0, -5))
+    .sort();
 }
 
 function loadExercise(id) {
@@ -93,14 +97,24 @@ function makeScene(ex) {
     if (ex.shadow && ex.shadow.center) {
       const sh = ex.shadow;
       canvas.draw({
-        kind: 'ellipse', c: P(sh.center), rx: sh.rx * scale, ry: sh.ry * scale,
-        color: C.shade, alpha: sh.alpha ?? 0.45, soft: sh.soft ?? 40
+        kind: 'ellipse',
+        c: P(sh.center),
+        rx: sh.rx * scale,
+        ry: sh.ry * scale,
+        color: C.shade,
+        alpha: sh.alpha ?? 0.45,
+        soft: sh.soft ?? 40
       });
     } else if (ex.shadow !== false && view !== 'top') {
       const [lo, hi] = extentX(shapes);
       canvas.draw({
-        kind: 'ellipse', c: [X((lo + hi) / 2), groundPx + 16], rx: ((hi - lo) / 2) * scale * 0.96, ry: 9,
-        color: C.shade, alpha: 0.55, soft: 8
+        kind: 'ellipse',
+        c: [X((lo + hi) / 2), groundPx + 16],
+        rx: ((hi - lo) / 2) * scale * 0.96,
+        ry: 9,
+        color: C.shade,
+        alpha: 0.55,
+        soft: 8
       });
     }
     const flushed = new Set();
@@ -121,8 +135,12 @@ function makeScene(ex) {
     }
     flush(['afterFar', 'body', 'mid', 'front']);
     // How far the figure pokes out of the safe frame area, in px (<= 0 is fine).
-    const overflow = Math.max(SAFE_MARGIN - X(box[0]), X(box[2]) - (w - SAFE_MARGIN),
-      SAFE_MARGIN - Y(box[3]), Y(box[1]) - (h - SAFE_MARGIN));
+    const overflow = Math.max(
+      SAFE_MARGIN - X(box[0]),
+      X(box[2]) - (w - SAFE_MARGIN),
+      SAFE_MARGIN - Y(box[3]),
+      Y(box[1]) - (h - SAFE_MARGIN)
+    );
     return { buf: canvas.buf, floor: lowestPoint(shapes), reach: joints.reach, overflow, joints };
   }
 
@@ -130,17 +148,37 @@ function makeScene(ex) {
 }
 
 function writePng(buf, file, w = MASTER.w, h = MASTER.h) {
-  const r = spawnSync('ffmpeg', [
-    '-hide_banner', '-loglevel', 'error', '-y',
-    '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', `${w}x${h}`, '-i', '-',
-    '-frames:v', '1', '-update', '1', file
-  ], { input: buf });
+  const r = spawnSync(
+    'ffmpeg',
+    [
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-y',
+      '-f',
+      'rawvideo',
+      '-pix_fmt',
+      'rgb24',
+      '-s',
+      `${w}x${h}`,
+      '-i',
+      '-',
+      '-frames:v',
+      '1',
+      '-update',
+      '1',
+      file
+    ],
+    { input: buf }
+  );
   if (r.status !== 0) throw new Error(`ffmpeg (png) failed: ${r.stderr}`);
 }
 
 /** ffprobe an MP4 and check it against the delivery spec. Returns a list of problems. */
 function verifyMp4(file, width, height, fps, seconds) {
-  const r = spawnSync('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file], { encoding: 'utf8' });
+  const r = spawnSync('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file], {
+    encoding: 'utf8'
+  });
   if (r.status !== 0) return [`ffprobe failed: ${r.stderr}`];
   const info = JSON.parse(r.stdout);
   const video = info.streams.filter((s) => s.codec_type === 'video');
@@ -150,11 +188,15 @@ function verifyMp4(file, width, height, fps, seconds) {
   const crf = (/crf=([\d.]+)/.exec(data.toString('latin1')) || [])[1]; // from the x264 settings string
   const faststart = data.indexOf('moov') !== -1 && data.indexOf('moov') < data.indexOf('mdat');
   const duration = Number(info.format.duration);
-  console.log(`  ffprobe ${path.basename(file)}: ${v.codec_name} ${v.profile} ${v.width}x${v.height} ` +
-    `${v.pix_fmt} ${v.r_frame_rate} fps, ${v.nb_frames} frames, ${duration.toFixed(2)} s, crf=${crf}, ` +
-    `audio streams=${audio.length}, faststart=${faststart}`);
+  console.log(
+    `  ffprobe ${path.basename(file)}: ${v.codec_name} ${v.profile} ${v.width}x${v.height} ` +
+      `${v.pix_fmt} ${v.r_frame_rate} fps, ${v.nb_frames} frames, ${duration.toFixed(2)} s, crf=${crf}, ` +
+      `audio streams=${audio.length}, faststart=${faststart}`
+  );
   const problems = [];
-  const expect = (ok, msg) => { if (!ok) problems.push(`${path.basename(file)}: ${msg}`); };
+  const expect = (ok, msg) => {
+    if (!ok) problems.push(`${path.basename(file)}: ${msg}`);
+  };
   expect(video.length === 1, 'expected exactly one video stream');
   expect(audio.length === 0, 'must not have an audio stream');
   expect(v.codec_name === 'h264' && v.profile === 'Main', `expected H.264 Main, got ${v.codec_name} ${v.profile}`);
@@ -177,7 +219,8 @@ function poseWarnings(ex, stats) {
   if (stats.reach > 0.004 && checks.reach !== false) {
     out.push(`an IK target is ${(stats.reach * 100).toFixed(1)} cm out of reach (hand / foot not on its target)`);
   }
-  if (stats.overflow > 0) out.push(`figure comes within ${SAFE_MARGIN} px of the frame edge (${stats.overflow.toFixed(0)} px over)`);
+  if (stats.overflow > 0)
+    out.push(`figure comes within ${SAFE_MARGIN} px of the frame edge (${stats.overflow.toFixed(0)} px over)`);
   return out;
 }
 
@@ -198,14 +241,53 @@ async function renderExercise(id, outDir) {
   const posterFile = path.join(outDir, `${id}_poster.png`);
 
   // H.264 Main, CRF 28, 30 fps, yuv420p, no audio, faststart.
-  const enc = ['-an', '-c:v', 'libx264', '-profile:v', 'main', '-preset', 'slow', '-crf', '28',
-    '-pix_fmt', 'yuv420p', '-r', String(fps), '-movflags', '+faststart'];
-  const ff = spawn('ffmpeg', [
-    '-hide_banner', '-loglevel', 'error', '-y',
-    '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', `${MASTER.w}x${MASTER.h}`, '-r', String(fps), '-i', '-',
-    '-map', '0:v', ...enc, masterFile,
-    '-map', '0:v', '-vf', `scale=${APP.w}:${APP.h}:flags=lanczos`, ...enc, appFile
-  ], { stdio: ['pipe', 'inherit', 'inherit'] });
+  const enc = [
+    '-an',
+    '-c:v',
+    'libx264',
+    '-profile:v',
+    'main',
+    '-preset',
+    'slow',
+    '-crf',
+    '28',
+    '-pix_fmt',
+    'yuv420p',
+    '-r',
+    String(fps),
+    '-movflags',
+    '+faststart'
+  ];
+  const ff = spawn(
+    'ffmpeg',
+    [
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-y',
+      '-f',
+      'rawvideo',
+      '-pix_fmt',
+      'rgb24',
+      '-s',
+      `${MASTER.w}x${MASTER.h}`,
+      '-r',
+      String(fps),
+      '-i',
+      '-',
+      '-map',
+      '0:v',
+      ...enc,
+      masterFile,
+      '-map',
+      '0:v',
+      '-vf',
+      `scale=${APP.w}:${APP.h}:flags=lanczos`,
+      ...enc,
+      appFile
+    ],
+    { stdio: ['pipe', 'inherit', 'inherit'] }
+  );
   const done = new Promise((resolve, reject) => {
     ff.on('error', reject);
     ff.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`ffmpeg exited with ${code}`))));
@@ -249,16 +331,20 @@ function renderSheet(id, outDir, spec) {
     const n = Number(spec) || 8;
     times = Array.from({ length: n }, (_, i) => (anim.cycle * i) / n);
   }
-  const cols = Math.min(times.length, 4), rows = Math.ceil(times.length / cols);
-  const tw = MASTER.w / 2, th = MASTER.h / 2;
+  const cols = Math.min(times.length, 4),
+    rows = Math.ceil(times.length / cols);
+  const tw = MASTER.w / 2,
+    th = MASTER.h / 2;
   const sheet = Buffer.alloc(cols * tw * rows * th * 3);
   times.forEach((t, n) => {
     const { buf } = drawFrame(t);
-    const ox = (n % cols) * tw, oy = Math.floor(n / cols) * th;
+    const ox = (n % cols) * tw,
+      oy = Math.floor(n / cols) * th;
     for (let y = 0; y < th; y++) {
       for (let x = 0; x < tw; x++) {
         const o = ((oy + y) * cols * tw + ox + x) * 3;
-        const i = (y * 2 * MASTER.w + x * 2) * 3, k = i + MASTER.w * 3;
+        const i = (y * 2 * MASTER.w + x * 2) * 3,
+          k = i + MASTER.w * 3;
         for (let c = 0; c < 3; c++) sheet[o + c] = (buf[i + c] + buf[i + 3 + c] + buf[k + c] + buf[k + 3 + c] + 2) >> 2;
       }
     }
@@ -277,11 +363,15 @@ function printJoints(id, t) {
   const ex = loadExercise(id);
   const { joints } = makeScene(ex).drawFrame(t);
   const f = (p) => `(${p[0].toFixed(3)}, ${p[1].toFixed(3)})`;
-  console.log(`${id} @ ${t} s: hip ${f(joints.hip)} shoulder ${f(joints.shoulder)} head ${f(joints.head)} reach-miss ${joints.reach.toFixed(4)}`);
+  console.log(
+    `${id} @ ${t} s: hip ${f(joints.hip)} shoulder ${f(joints.shoulder)} head ${f(joints.head)} reach-miss ${joints.reach.toFixed(4)}`
+  );
   for (const side of ['near', 'far']) {
     const s = joints[side];
-    console.log(`  ${side}: ` + ['elbow', 'wrist', 'grip', 'handTip', 'knee', 'ankle', 'heel', 'toe']
-      .map((k) => `${k} ${f(s[k])}`).join(' '));
+    console.log(
+      `  ${side}: ` +
+        ['elbow', 'wrist', 'grip', 'handTip', 'knee', 'ankle', 'heel', 'toe'].map((k) => `${k} ${f(s[k])}`).join(' ')
+    );
   }
 }
 
@@ -295,8 +385,12 @@ async function renderBatch(ids, outDir, jobs, quiet) {
       await new Promise((resolve) => {
         const child = spawn(process.execPath, [__filename, id, '--out', outDir], { stdio: ['ignore', 'pipe', 'pipe'] });
         let log = '';
-        child.stdout.on('data', (d) => { log += d; });
-        child.stderr.on('data', (d) => { log += d; });
+        child.stdout.on('data', (d) => {
+          log += d;
+        });
+        child.stderr.on('data', (d) => {
+          log += d;
+        });
         child.on('close', (code) => {
           // --quiet: one line per exercise, plus warnings and errors.
           if (quiet && code === 0) {
@@ -336,8 +430,10 @@ async function main() {
   const quiet = args.includes('--quiet');
   const ids = all ? listExercises() : args.filter((a) => !a.startsWith('--'));
   if (!ids.length) {
-    console.error('Usage: node tools/anim/render.js <exercise-id>... | --all  [--out <dir>] [--jobs <n>] [--quiet]\n' +
-      '       [--still <seconds>] [--sheet [<count> | <t1,t2,...>]] [--joints <seconds>]');
+    console.error(
+      'Usage: node tools/anim/render.js <exercise-id>... | --all  [--out <dir>] [--jobs <n>] [--quiet]\n' +
+        '       [--still <seconds>] [--sheet [<count> | <t1,t2,...>]] [--joints <seconds>]'
+    );
     process.exit(1);
   }
   const outDir = path.resolve(outOpt || path.join(__dirname, 'out'));

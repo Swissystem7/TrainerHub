@@ -1,0 +1,1135 @@
+{
+  "id": "wall-walk",
+  "name": {
+    "en": "Wall walk",
+    "he": "הליכת קיר לעמידת ידיים"
+  },
+  "view": "side",
+  "equipment": [
+    "wall"
+  ],
+  "fps": 30,
+  "camera": {
+    "centerX": 0.66,
+    "width": 2.15,
+    "groundY": 0.8
+  },
+  "repeat": 1,
+  "poster": {
+    "t": 2.47
+  },
+  "props": [
+    {
+      "type": "rect",
+      "from": [
+        -0.7,
+        0
+      ],
+      "to": [
+        -0.14,
+        2.6
+      ],
+      "color": "dark"
+    },
+    {
+      "type": "rect",
+      "from": [
+        -0.15200000000000002,
+        0
+      ],
+      "to": [
+        -0.14,
+        2.6
+      ],
+      "color": "iron"
+    }
+  ],
+  "poses": {
+    "n0": {
+      "pelvis": [
+        0.779,
+        0.442
+      ],
+      "torso": 18.3,
+      "neck": 18.3,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.043,
+          0.17
+        ],
+        "foot": -55,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.043,
+          0.17
+        ],
+        "foot": -55,
+        "wrist": [
+          1.185,
+          0.03
+        ]
+      }
+    },
+    "m1": {
+      "pelvis": [
+        0.793,
+        0.461
+      ],
+      "torso": 15.15,
+      "neck": 15.15,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.006,
+          0.33
+        ],
+        "foot": -59.372,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.014,
+          0.173
+        ],
+        "foot": -66.5,
+        "wrist": [
+          1.185,
+          0.03
+        ]
+      }
+    },
+    "n1": {
+      "pelvis": [
+        0.803,
+        0.484
+      ],
+      "torso": 12,
+      "neck": 12,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.044,
+          0.49
+        ],
+        "foot": -63.744,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.015,
+          0.176
+        ],
+        "foot": -78,
+        "wrist": [
+          1.185,
+          0.03
+        ]
+      }
+    },
+    "m2": {
+      "pelvis": [
+        0.812,
+        0.514
+      ],
+      "torso": 8,
+      "neck": 8,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.044,
+          0.49
+        ],
+        "foot": -63.744,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.033,
+          0.33
+        ],
+        "foot": -75.115,
+        "wrist": [
+          1.185,
+          0.03
+        ]
+      }
+    },
+    "n2": {
+      "pelvis": [
+        0.816,
+        0.545
+      ],
+      "torso": 4,
+      "neck": 4,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.044,
+          0.49
+        ],
+        "foot": -63.744,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.048,
+          0.485
+        ],
+        "foot": -72.229,
+        "wrist": [
+          1.185,
+          0.03
+        ]
+      }
+    },
+    "m3": {
+      "pelvis": [
+        0.814,
+        0.587
+      ],
+      "torso": -1,
+      "neck": -1,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0,
+          0.606
+        ],
+        "foot": -76.665,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.052,
+          0.586
+        ],
+        "foot": -79.408,
+        "wrist": [
+          1.171,
+          0.08
+        ]
+      }
+    },
+    "n3": {
+      "pelvis": [
+        0.806,
+        0.632
+      ],
+      "torso": -6,
+      "neck": -6,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.056,
+          0.722
+        ],
+        "foot": -89.586,
+        "wrist": [
+          1.155,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.056,
+          0.687
+        ],
+        "foot": -86.586,
+        "wrist": [
+          1.158,
+          0.03
+        ]
+      }
+    },
+    "m4": {
+      "pelvis": [
+        0.805,
+        0.676
+      ],
+      "torso": -11.5,
+      "neck": -11.5,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.041,
+          0.831
+        ],
+        "foot": -97.482,
+        "wrist": [
+          1.144,
+          0.08
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.009,
+          0.831
+        ],
+        "foot": -94.482,
+        "wrist": [
+          1.158,
+          0.03
+        ]
+      }
+    },
+    "n4": {
+      "pelvis": [
+        0.803,
+        0.722
+      ],
+      "torso": -17,
+      "neck": -17,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          -0.025,
+          0.94
+        ],
+        "foot": -105.378,
+        "wrist": [
+          1.133,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.025,
+          0.975
+        ],
+        "foot": -102.378,
+        "wrist": [
+          1.158,
+          0.03
+        ]
+      }
+    },
+    "m5": {
+      "pelvis": [
+        0.791,
+        0.771
+      ],
+      "torso": -22.5,
+      "neck": -22.5,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.04,
+          1.082
+        ],
+        "foot": -113.273,
+        "wrist": [
+          1.133,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          -0.01,
+          1.082
+        ],
+        "foot": -110.273,
+        "wrist": [
+          1.14,
+          0.08
+        ]
+      }
+    },
+    "n5": {
+      "pelvis": [
+        0.77,
+        0.817
+      ],
+      "torso": -28,
+      "neck": -28,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.005,
+          1.223
+        ],
+        "foot": -121.169,
+        "wrist": [
+          1.133,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.005,
+          1.188
+        ],
+        "foot": -118.169,
+        "wrist": [
+          1.121,
+          0.03
+        ]
+      }
+    },
+    "m6": {
+      "pelvis": [
+        0.739,
+        0.856
+      ],
+      "torso": -33.5,
+      "neck": -33.5,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.016,
+          1.313
+        ],
+        "foot": -129.065,
+        "wrist": [
+          1.065,
+          0.08
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.066,
+          1.313
+        ],
+        "foot": -126.065,
+        "wrist": [
+          1.121,
+          0.03
+        ]
+      }
+    },
+    "n6": {
+      "pelvis": [
+        0.7,
+        0.893
+      ],
+      "torso": -39,
+      "neck": -39,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.027,
+          1.403
+        ],
+        "foot": -136.961,
+        "wrist": [
+          0.997,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.027,
+          1.438
+        ],
+        "foot": -133.961,
+        "wrist": [
+          1.121,
+          0.03
+        ]
+      }
+    },
+    "m7": {
+      "pelvis": [
+        0.652,
+        0.932
+      ],
+      "torso": -44.5,
+      "neck": -44.5,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.083,
+          1.511
+        ],
+        "foot": -144.857,
+        "wrist": [
+          0.997,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.033,
+          1.511
+        ],
+        "foot": -141.857,
+        "wrist": [
+          1.003,
+          0.08
+        ]
+      }
+    },
+    "n7": {
+      "pelvis": [
+        0.596,
+        0.956
+      ],
+      "torso": -50,
+      "neck": -50,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.039,
+          1.619
+        ],
+        "foot": -152.753,
+        "wrist": [
+          0.997,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.039,
+          1.584
+        ],
+        "foot": -149.753,
+        "wrist": [
+          0.885,
+          0.03
+        ]
+      }
+    },
+    "m8": {
+      "pelvis": [
+        0.538,
+        0.985
+      ],
+      "torso": -55,
+      "neck": -55,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.04,
+          1.66
+        ],
+        "foot": -159.931,
+        "wrist": [
+          0.843,
+          0.08
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.09,
+          1.66
+        ],
+        "foot": -156.931,
+        "wrist": [
+          0.885,
+          0.03
+        ]
+      }
+    },
+    "n8": {
+      "pelvis": [
+        0.474,
+        0.985
+      ],
+      "torso": -60,
+      "neck": -60,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.041,
+          1.7
+        ],
+        "foot": -167.109,
+        "wrist": [
+          0.688,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.041,
+          1.735
+        ],
+        "foot": -164.109,
+        "wrist": [
+          0.885,
+          0.03
+        ]
+      }
+    },
+    "m9": {
+      "pelvis": [
+        0.411,
+        1.021
+      ],
+      "torso": -64.5,
+      "neck": -64.5,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.087,
+          1.763
+        ],
+        "foot": -173.57,
+        "wrist": [
+          0.688,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.037,
+          1.763
+        ],
+        "foot": -170.57,
+        "wrist": [
+          0.714,
+          0.08
+        ]
+      }
+    },
+    "n9": {
+      "pelvis": [
+        0.344,
+        1.017
+      ],
+      "torso": -69,
+      "neck": -69,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.034,
+          1.826
+        ],
+        "foot": -180.03,
+        "wrist": [
+          0.688,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.034,
+          1.791
+        ],
+        "foot": -177.03,
+        "wrist": [
+          0.543,
+          0.03
+        ]
+      }
+    },
+    "m10": {
+      "pelvis": [
+        0.282,
+        1.042
+      ],
+      "torso": -73,
+      "neck": -73,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.028,
+          1.827
+        ],
+        "foot": -185.773,
+        "wrist": [
+          0.515,
+          0.08
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.078,
+          1.827
+        ],
+        "foot": -182.773,
+        "wrist": [
+          0.543,
+          0.03
+        ]
+      }
+    },
+    "n10": {
+      "pelvis": [
+        0.217,
+        1.02
+      ],
+      "torso": -77,
+      "neck": -77,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.022,
+          1.829
+        ],
+        "foot": -191.515,
+        "wrist": [
+          0.341,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.022,
+          1.864
+        ],
+        "foot": -188.515,
+        "wrist": [
+          0.543,
+          0.03
+        ]
+      }
+    },
+    "m11": {
+      "pelvis": [
+        0.15,
+        1.052
+      ],
+      "torso": -81,
+      "neck": -81,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.064,
+          1.861
+        ],
+        "foot": -197.258,
+        "wrist": [
+          0.341,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.022,
+          1.864
+        ],
+        "foot": -188.515,
+        "wrist": [
+          0.365,
+          0.08
+        ]
+      }
+    },
+    "n11": {
+      "pelvis": [
+        0.081,
+        1.03
+      ],
+      "torso": -85,
+      "neck": -85,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.005,
+          1.893
+        ],
+        "foot": -203,
+        "wrist": [
+          0.341,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.022,
+          1.864
+        ],
+        "foot": -188.515,
+        "wrist": [
+          0.188,
+          0.03
+        ]
+      }
+    },
+    "m12": {
+      "pelvis": [
+        0.081,
+        1.06
+      ],
+      "torso": -85,
+      "neck": -85,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.005,
+          1.913
+        ],
+        "foot": -203,
+        "wrist": [
+          0.249,
+          0.08
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.014,
+          1.899
+        ],
+        "foot": -194.258,
+        "wrist": [
+          0.188,
+          0.03
+        ]
+      }
+    },
+    "n12": {
+      "pelvis": [
+        0.081,
+        1.07
+      ],
+      "torso": -85,
+      "neck": -85,
+      "elbowBend": -1,
+      "kneeBend": 1,
+      "hand": 0,
+      "near": {
+        "ankle": [
+          0.005,
+          1.933
+        ],
+        "foot": -203,
+        "wrist": [
+          0.158,
+          0.03
+        ]
+      },
+      "far": {
+        "ankle": [
+          0.005,
+          1.933
+        ],
+        "foot": -200,
+        "wrist": [
+          0.188,
+          0.03
+        ]
+      }
+    }
+  },
+  "timeline": [
+    {
+      "t": 0,
+      "pose": "n0"
+    },
+    {
+      "t": 0.3,
+      "pose": "n0",
+      "ease": "linear"
+    },
+    {
+      "t": 0.455,
+      "pose": "m1",
+      "ease": "inQuad"
+    },
+    {
+      "t": 0.61,
+      "pose": "n1",
+      "ease": "outQuad"
+    },
+    {
+      "t": 0.765,
+      "pose": "m2",
+      "ease": "inQuad"
+    },
+    {
+      "t": 0.92,
+      "pose": "n2",
+      "ease": "outQuad"
+    },
+    {
+      "t": 1.075,
+      "pose": "m3",
+      "ease": "inQuad"
+    },
+    {
+      "t": 1.23,
+      "pose": "n3",
+      "ease": "outQuad"
+    },
+    {
+      "t": 1.385,
+      "pose": "m4",
+      "ease": "inQuad"
+    },
+    {
+      "t": 1.54,
+      "pose": "n4",
+      "ease": "outQuad"
+    },
+    {
+      "t": 1.695,
+      "pose": "m5",
+      "ease": "inQuad"
+    },
+    {
+      "t": 1.85,
+      "pose": "n5",
+      "ease": "outQuad"
+    },
+    {
+      "t": 2.005,
+      "pose": "m6",
+      "ease": "inQuad"
+    },
+    {
+      "t": 2.16,
+      "pose": "n6",
+      "ease": "outQuad"
+    },
+    {
+      "t": 2.315,
+      "pose": "m7",
+      "ease": "inQuad"
+    },
+    {
+      "t": 2.47,
+      "pose": "n7",
+      "ease": "outQuad"
+    },
+    {
+      "t": 2.625,
+      "pose": "m8",
+      "ease": "inQuad"
+    },
+    {
+      "t": 2.78,
+      "pose": "n8",
+      "ease": "outQuad"
+    },
+    {
+      "t": 2.935,
+      "pose": "m9",
+      "ease": "inQuad"
+    },
+    {
+      "t": 3.09,
+      "pose": "n9",
+      "ease": "outQuad"
+    },
+    {
+      "t": 3.245,
+      "pose": "m10",
+      "ease": "inQuad"
+    },
+    {
+      "t": 3.4,
+      "pose": "n10",
+      "ease": "outQuad"
+    },
+    {
+      "t": 3.555,
+      "pose": "m11",
+      "ease": "inQuad"
+    },
+    {
+      "t": 3.71,
+      "pose": "n11",
+      "ease": "outQuad"
+    },
+    {
+      "t": 3.865,
+      "pose": "m12",
+      "ease": "inQuad"
+    },
+    {
+      "t": 4.02,
+      "pose": "n12",
+      "ease": "outQuad"
+    },
+    {
+      "t": 4.6,
+      "pose": "n12",
+      "ease": "linear"
+    },
+    {
+      "t": 4.755,
+      "pose": "m12",
+      "ease": "inQuad"
+    },
+    {
+      "t": 4.91,
+      "pose": "n11",
+      "ease": "outQuad"
+    },
+    {
+      "t": 5.065,
+      "pose": "m11",
+      "ease": "inQuad"
+    },
+    {
+      "t": 5.22,
+      "pose": "n10",
+      "ease": "outQuad"
+    },
+    {
+      "t": 5.375,
+      "pose": "m10",
+      "ease": "inQuad"
+    },
+    {
+      "t": 5.53,
+      "pose": "n9",
+      "ease": "outQuad"
+    },
+    {
+      "t": 5.685,
+      "pose": "m9",
+      "ease": "inQuad"
+    },
+    {
+      "t": 5.84,
+      "pose": "n8",
+      "ease": "outQuad"
+    },
+    {
+      "t": 5.995,
+      "pose": "m8",
+      "ease": "inQuad"
+    },
+    {
+      "t": 6.15,
+      "pose": "n7",
+      "ease": "outQuad"
+    },
+    {
+      "t": 6.305,
+      "pose": "m7",
+      "ease": "inQuad"
+    },
+    {
+      "t": 6.46,
+      "pose": "n6",
+      "ease": "outQuad"
+    },
+    {
+      "t": 6.615,
+      "pose": "m6",
+      "ease": "inQuad"
+    },
+    {
+      "t": 6.77,
+      "pose": "n5",
+      "ease": "outQuad"
+    },
+    {
+      "t": 6.925,
+      "pose": "m5",
+      "ease": "inQuad"
+    },
+    {
+      "t": 7.08,
+      "pose": "n4",
+      "ease": "outQuad"
+    },
+    {
+      "t": 7.235,
+      "pose": "m4",
+      "ease": "inQuad"
+    },
+    {
+      "t": 7.39,
+      "pose": "n3",
+      "ease": "outQuad"
+    },
+    {
+      "t": 7.545,
+      "pose": "m3",
+      "ease": "inQuad"
+    },
+    {
+      "t": 7.7,
+      "pose": "n2",
+      "ease": "outQuad"
+    },
+    {
+      "t": 7.855,
+      "pose": "m2",
+      "ease": "inQuad"
+    },
+    {
+      "t": 8.01,
+      "pose": "n1",
+      "ease": "outQuad"
+    },
+    {
+      "t": 8.165,
+      "pose": "m1",
+      "ease": "inQuad"
+    },
+    {
+      "t": 8.32,
+      "pose": "n0",
+      "ease": "outQuad"
+    },
+    {
+      "t": 9,
+      "pose": "n0",
+      "ease": "linear"
+    }
+  ]
+}

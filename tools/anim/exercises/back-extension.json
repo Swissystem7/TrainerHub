@@ -1,0 +1,43 @@
+{
+  "id": "back-extension",
+  "name": { "en": "Stability-ball back extension", "he": "פשיטת גב על כדור פיזיו" },
+  "view": "side",
+  "equipment": ["stability ball"],
+  "fps": 30,
+  "camera": { "centerX": -0.17, "width": 2.1, "groundY": 0.68 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "circle", "at": [0.0, 0.3], "r": 0.3, "color": "metal" }
+  ],
+  "poses": {
+    "draped": {
+      "pelvis": [-0.195, 0.667],
+      "waist": 5,
+      "torso": -22,
+      "neck": -30,
+      "thigh": 216,
+      "shin": 216,
+      "foot": -39,
+      "scale": { "upperArm": 0.62, "foreArm": 0.6, "hand": 0.5 },
+      "wristTo": { "at": "head", "along": "neck", "offset": [-0.03, 0.06] },
+      "elbowBend": -1,
+      "hand": 30
+    },
+    "extended": {
+      "base": "draped",
+      "waist": 34,
+      "torso": 36,
+      "neck": 34,
+      "hand": 95
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "draped" },
+    { "t": 0.15, "pose": "draped", "ease": "linear" },
+    { "t": 1.2, "pose": "extended", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "extended", "ease": "linear" },
+    { "t": 2.8, "pose": "draped", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "draped", "ease": "linear" }
+  ]
+}

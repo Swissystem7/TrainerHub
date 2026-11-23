@@ -1,0 +1,41 @@
+{
+  "id": "reverse-hyperextension",
+  "name": { "en": "Reverse hyperextension on a stability ball", "he": "היפראקסטנציה הפוכה על כדור פיזיו" },
+  "view": "side",
+  "equipment": ["stability ball"],
+  "fps": 30,
+  "camera": { "centerX": -0.1, "width": 2.1, "groundY": 0.66 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "circle", "at": [0.1, 0.27], "r": 0.27, "color": "metal" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [-0.08, 0.65],
+      "torso": -7,
+      "neck": 0,
+      "thigh": 213.5,
+      "shin": 213.5,
+      "foot": -50,
+      "wrist": [0.41, 0.03],
+      "elbowBend": -1,
+      "hand": 0,
+      "far": { "wrist": [0.44, 0.03] }
+    },
+    "up": {
+      "base": "down",
+      "thigh": 173,
+      "shin": 173,
+      "foot": -95
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.2, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

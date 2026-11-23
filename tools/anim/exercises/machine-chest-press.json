@@ -1,0 +1,53 @@
+{
+  "id": "machine-chest-press",
+  "name": { "en": "Seated machine chest press", "he": "לחיצת חזה במכונה בישיבה" },
+  "view": "side",
+  "equipment": ["chest press machine"],
+  "fps": 30,
+  "camera": { "centerX": 0.12, "width": 1.95, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [-0.55, 0.0], "to": [0.5, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.44, 0.0], "to": [-0.35, 1.84], "color": "frame" },
+    { "type": "rect", "from": [-0.44, 1.76], "to": [0.42, 1.84], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.36, 0.3], "to": [0.02, 0.36], "color": "frame" },
+    { "type": "rect", "from": [-0.02, 0.04], "to": [0.05, 0.4], "color": "frame" },
+    { "type": "rect", "from": [-0.19, 0.39], "to": [0.27, 0.455], "color": "pad", "r": 0.02 },
+    { "type": "poly", "points": [[-0.185, 0.47], [-0.125, 0.47], [-0.2, 1.2], [-0.26, 1.2]], "r": 0.02, "color": "pad" },
+    { "type": "line", "a": [-0.36, 0.95], "b": [-0.23, 0.95], "width": 0.04, "color": "frame" },
+    { "type": "line", "a": [0.37, 1.76], "b": { "at": "near.grip", "offset": [0, 0.07] }, "width": 0.04, "color": "metal", "layer": "afterFar" },
+    { "type": "circle", "at": [0.37, 1.76], "r": 0.055, "color": "metal", "layer": "afterFar" },
+    { "type": "circle", "at": [0.37, 1.76], "r": 0.02, "color": "dark", "layer": "afterFar" },
+    { "type": "line", "a": { "at": "near.grip", "offset": [0, 0.075] }, "b": { "at": "near.grip", "offset": [0, -0.075] }, "width": 0.036, "color": "iron", "layer": "mid" },
+    { "type": "line", "a": { "at": "near.grip", "offset": [0, -0.06] }, "b": { "at": "near.grip", "offset": [0, -0.075] }, "width": 0.036, "color": "gold", "layer": "mid" }
+  ],
+  "poses": {
+    "back": {
+      "pelvis": [0.0, 0.55],
+      "torso": 95,
+      "neck": 91,
+      "ankle": [0.46, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "far": { "ankle": [0.49, 0.08] },
+      "scale": { "hand": 0.65, "upperArm": 0.55 },
+      "hand": 90,
+      "elbowBend": -1,
+      "wrist": [0.2, 0.95]
+    },
+    "press": {
+      "base": "back",
+      "scale": { "hand": 0.65, "upperArm": 1 },
+      "wrist": [0.5, 0.95]
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "back" },
+    { "t": 0.15, "pose": "back", "ease": "linear" },
+    { "t": 1.2, "pose": "press", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "press", "ease": "linear" },
+    { "t": 2.8, "pose": "back", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "back", "ease": "linear" }
+  ]
+}

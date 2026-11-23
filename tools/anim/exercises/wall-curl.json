@@ -1,0 +1,42 @@
+{
+  "id": "wall-curl",
+  "name": { "en": "Wall dumbbell curl", "he": "כפיפת מרפקים עם גב לקיר" },
+  "view": "side",
+  "equipment": ["wall", "dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": 0.05, "width": 1.8, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.85 },
+  "props": [
+    { "type": "rect", "from": [-0.7, 0], "to": [-0.127, 2.6], "color": "dark" },
+    { "type": "rect", "from": [-0.139, 0], "to": [-0.127, 2.6], "color": "iron" },
+    { "type": "dumbbell", "at": "far.grip", "along": "far.foreArm", "angle": 90, "length": 0.24, "plate": [0.055, 0.12], "layer": "afterFar" },
+    { "type": "dumbbell", "at": "near.grip", "along": "near.foreArm", "angle": 90, "length": 0.24, "plate": [0.055, 0.12], "layer": "front" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [-0.012, 0.928],
+      "torso": 90,
+      "neck": 90,
+      "ankle": [0.14, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "scale": { "hand": 0.65 },
+      "near": { "upperArm": -92, "foreArm": -84, "hand": -84 },
+      "far": { "upperArm": -92, "foreArm": -78, "hand": -78, "ankle": [0.17, 0.08] }
+    },
+    "up": {
+      "base": "down",
+      "near": { "upperArm": -92, "foreArm": 62, "hand": 62 },
+      "far": { "upperArm": -92, "foreArm": 68, "hand": 68 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.15, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.45, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

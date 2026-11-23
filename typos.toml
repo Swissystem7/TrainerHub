@@ -1,3 +1,7 @@
 [default.extend-identifiers]
 # Instagram reel shortcode. typos splits it into the word "Jus".
 DEQ2kTJusT4 = "DEQ2kTJusT4"
+
+[files]
+# Generated Drive-id maps (tools/anim/wire.js): random ids, typos splits them into words.
+extend-exclude = ["tools/anim/clip-map.json", "videos/anim-map.json"]

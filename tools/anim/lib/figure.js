@@ -36,8 +36,14 @@ function colors() {
   const far = (rgb) => mix(rgb, c.shade, 0.32); // far-side limbs: same hue, darker
   return {
     ...c,
-    skin: c.white, shirt: c.red, shorts: c.gold, shoe: c.red,
-    skinFar: far(c.white), shirtFar: far(c.red), shortsFar: far(c.gold), shoeFar: far(c.red)
+    skin: c.white,
+    shirt: c.red,
+    shorts: c.gold,
+    shoe: c.red,
+    skinFar: far(c.white),
+    shirtFar: far(c.red),
+    shortsFar: far(c.gold),
+    shoeFar: far(c.red)
   };
 }
 
@@ -133,11 +139,14 @@ function buildFront(j, body, C) {
   group = 'torso';
   cone(lerp(j.shoulder, j.head, 0.2), j.head, 0.046, 0.042, C.skin);
   // Torso: rounded trapezoid in the torso frame (u = along the spine, v = to the figure's side).
-  const u = unit(j.hip, j.shoulder), v = [u[1], -u[0]];
+  const u = unit(j.hip, j.shoulder),
+    v = [u[1], -u[0]];
   const L = Math.hypot(j.shoulder[0] - j.hip[0], j.shoulder[1] - j.hip[1]);
   const at = (across, along) => [j.hip[0] + v[0] * across + u[0] * along, j.hip[1] + v[1] * across + u[1] * along];
   const outline = (grow) => ({
-    kind: 'poly', r: 0.055 + grow, g: group,
+    kind: 'poly',
+    r: 0.055 + grow,
+    g: group,
     pts: [at(-0.105, -0.015), at(0.105, -0.015), at(0.15, L - 0.045), at(-0.15, L - 0.045)]
   });
   shapes.push({ ...outline(0), color: C.shirt });
@@ -166,12 +175,17 @@ function buildFront(j, body, C) {
 /** Bounding box of one world-space shape: [minX, minY, maxX, maxY]. */
 function bounds(s) {
   if (s.kind === 'cone') {
-    return [Math.min(s.a[0] - s.ra, s.b[0] - s.rb), Math.min(s.a[1] - s.ra, s.b[1] - s.rb),
-      Math.max(s.a[0] + s.ra, s.b[0] + s.rb), Math.max(s.a[1] + s.ra, s.b[1] + s.rb)];
+    return [
+      Math.min(s.a[0] - s.ra, s.b[0] - s.rb),
+      Math.min(s.a[1] - s.ra, s.b[1] - s.rb),
+      Math.max(s.a[0] + s.ra, s.b[0] + s.rb),
+      Math.max(s.a[1] + s.ra, s.b[1] + s.rb)
+    ];
   }
   if (s.kind === 'poly') {
     const r = s.r || 0;
-    const xs = s.pts.map((p) => p[0]), ys = s.pts.map((p) => p[1]);
+    const xs = s.pts.map((p) => p[0]),
+      ys = s.pts.map((p) => p[1]);
     return [Math.min(...xs) - r, Math.min(...ys) - r, Math.max(...xs) + r, Math.max(...ys) + r];
   }
   if (s.kind === 'ring') {
@@ -194,7 +208,8 @@ function lowestPoint(shapes) {
 
 /** Horizontal extent of the figure (for the floor shadow). */
 function extentX(shapes) {
-  let lo = Infinity, hi = -Infinity;
+  let lo = Infinity,
+    hi = -Infinity;
   for (const s of shapes) {
     const b = bounds(s);
     if (!b) continue;

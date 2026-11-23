@@ -10,10 +10,11 @@ runtime, and no existing TrainerHub media is read: every frame is drawn by code.
   - `<id>_360x640.mp4` (app size)
   - `<id>_poster.png` (single still, same framing)
 - `out/contact/<id>.png`: contact sheet (8 frames across one cycle) for a quick visual check
-- `out/STATUS.md` (batch 1) and `out/STATUS_batch2.md` (batch 2): per-exercise status
+- `out/STATUS.md` (batch 1), `out/STATUS_batch2.md` (batch 2) and `out/STATUS_batch3.md` (batch 3): per-exercise status
 
-Exercises (41): `pushups` (the approved sample), batch 1 (20 exercises, listed in
-`out/STATUS.md`) and batch 2 (20 exercises, listed in `out/STATUS_batch2.md`).
+Exercises (61): `pushups` (the approved sample), batch 1 (20 exercises, listed in
+`out/STATUS.md`), batch 2 (20 exercises, listed in `out/STATUS_batch2.md`) and batch 3
+(20 exercises, listed in `out/STATUS_batch3.md`; no engine changes, only new JSON).
 Every clip is 9 s, 30 fps, seamless loop.
 
 ## Requirements
@@ -70,7 +71,7 @@ so no other colour can slip in.
 | `view` | What you see | Sides |
 | --- | --- | --- |
 | `side` (default) | Profile, figure faces right. Far limbs are drawn darker. | `near`, `far` |
-| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`). | `right`, `left` as seen on screen |
+| `front` | Figure faces the viewer (used for `cable-lateral-raise`, `landmine-rotation`, `cable-woodchop`, `pec-deck-fly`). | `right`, `left` as seen on screen |
 | `top` | Straight down on a lying figure, head towards the top of the frame (used for `floor-dumbbell-fly`). No ground line: the whole frame is floor. | `right`, `left` |
 
 `front` and `top` share one solver: hips and shoulders are spread sideways, and
@@ -78,7 +79,8 @@ limb values given at the top level of a pose describe the **right** side and are
 mirrored for the left (`angle -> 180 - angle`, IK targets mirrored around the
 pelvis x or `axis`). Values inside `right: {...}` / `left: {...}` are taken as written.
 In `top` view a limb pointing at the camera is shown with `scale` (a negative
-scale flips it, e.g. arms crossing above the chest).
+scale flips it, e.g. arms crossing above the chest). The same works in `front` view:
+`pec-deck-fly` brings the arms forward by taking the forearm `scale` from `1` to a negative value.
 A torso turned away from the camera (rotation exercises) is shown with
 `scale: { "shoulders": 0.72, "hips": 0.85 }`: the shoulder / hip joints move
 towards the spine, as they do when the body is seen at an angle (1 = square on).

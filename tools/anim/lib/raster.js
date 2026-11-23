@@ -31,16 +31,19 @@ function mix(c1, c2, t) {
 
 // Signed distance to a "round cone" (two circles + their hull).
 function sdRoundCone(px, py, ax, ay, bx, by, r1, r2) {
-  const bax = bx - ax, bay = by - ay;
+  const bax = bx - ax,
+    bay = by - ay;
   const l2 = bax * bax + bay * bay;
-  const pax = px - ax, pay = py - ay;
+  const pax = px - ax,
+    pay = py - ay;
   if (l2 < 1e-9) return Math.hypot(pax, pay) - Math.max(r1, r2);
   const rr = r1 - r2;
   const a2 = l2 - rr * rr;
   const il2 = 1 / l2;
   const y = pax * bax + pay * bay;
   const z = y - l2;
-  const qx = pax * l2 - bax * y, qy = pay * l2 - bay * y;
+  const qx = pax * l2 - bax * y,
+    qy = pay * l2 - bay * y;
   const x2 = qx * qx + qy * qy;
   const y2 = y * y * l2;
   const z2 = z * z * l2;
@@ -53,17 +56,24 @@ function sdRoundCone(px, py, ax, ay, bx, by, r1, r2) {
 // Signed distance to a simple polygon (negative inside).
 function sdPolygon(px, py, pts) {
   const n = pts.length;
-  let d = Infinity, sign = 1;
+  let d = Infinity,
+    sign = 1;
   for (let i = 0, k = n - 1; i < n; k = i, i++) {
-    const vi = pts[i], vk = pts[k];
-    const ex = vk[0] - vi[0], ey = vk[1] - vi[1];
-    const wx = px - vi[0], wy = py - vi[1];
+    const vi = pts[i],
+      vk = pts[k];
+    const ex = vk[0] - vi[0],
+      ey = vk[1] - vi[1];
+    const wx = px - vi[0],
+      wy = py - vi[1];
     let t = (wx * ex + wy * ey) / (ex * ex + ey * ey || 1);
     t = t < 0 ? 0 : t > 1 ? 1 : t;
-    const bx = wx - ex * t, by = wy - ey * t;
+    const bx = wx - ex * t,
+      by = wy - ey * t;
     const dd = bx * bx + by * by;
     if (dd < d) d = dd;
-    const c1 = py >= vi[1], c2 = py < vk[1], c3 = ex * wy > ey * wx;
+    const c1 = py >= vi[1],
+      c2 = py < vk[1],
+      c3 = ex * wy > ey * wx;
     if ((c1 && c2 && c3) || (!c1 && !c2 && !c3)) sign = -sign;
   }
   return sign * Math.sqrt(d);
@@ -81,12 +91,16 @@ class Canvas {
   }
 
   fillRect(x0, y0, x1, y1, color) {
-    x0 = Math.max(0, Math.round(x0)); y0 = Math.max(0, Math.round(y0));
-    x1 = Math.min(this.w, Math.round(x1)); y1 = Math.min(this.h, Math.round(y1));
+    x0 = Math.max(0, Math.round(x0));
+    y0 = Math.max(0, Math.round(y0));
+    x1 = Math.min(this.w, Math.round(x1));
+    y1 = Math.min(this.h, Math.round(y1));
     for (let y = y0; y < y1; y++) {
       let i = (y * this.w + x0) * 3;
       for (let x = x0; x < x1; x++) {
-        this.buf[i++] = color[0]; this.buf[i++] = color[1]; this.buf[i++] = color[2];
+        this.buf[i++] = color[0];
+        this.buf[i++] = color[1];
+        this.buf[i++] = color[2];
       }
     }
   }
@@ -97,31 +111,43 @@ class Canvas {
     let minX, maxX, minY, maxY, dist;
     if (s.kind === 'cone') {
       const r = Math.max(s.ra, s.rb);
-      minX = Math.min(s.a[0], s.b[0]) - r; maxX = Math.max(s.a[0], s.b[0]) + r;
-      minY = Math.min(s.a[1], s.b[1]) - r; maxY = Math.max(s.a[1], s.b[1]) + r;
+      minX = Math.min(s.a[0], s.b[0]) - r;
+      maxX = Math.max(s.a[0], s.b[0]) + r;
+      minY = Math.min(s.a[1], s.b[1]) - r;
+      maxY = Math.max(s.a[1], s.b[1]) + r;
       dist = (x, y) => sdRoundCone(x, y, s.a[0], s.a[1], s.b[0], s.b[1], s.ra, s.rb);
     } else if (s.kind === 'ellipse') {
-      minX = s.c[0] - s.rx; maxX = s.c[0] + s.rx;
-      minY = s.c[1] - s.ry; maxY = s.c[1] + s.ry;
+      minX = s.c[0] - s.rx;
+      maxX = s.c[0] + s.rx;
+      minY = s.c[1] - s.ry;
+      maxY = s.c[1] + s.ry;
       const rmin = Math.min(s.rx, s.ry);
       dist = (x, y) => (Math.hypot((x - s.c[0]) / s.rx, (y - s.c[1]) / s.ry) - 1) * rmin;
     } else if (s.kind === 'poly') {
       const r = s.r || 0;
-      minX = minY = Infinity; maxX = maxY = -Infinity;
+      minX = minY = Infinity;
+      maxX = maxY = -Infinity;
       for (const p of s.pts) {
-        minX = Math.min(minX, p[0] - r); maxX = Math.max(maxX, p[0] + r);
-        minY = Math.min(minY, p[1] - r); maxY = Math.max(maxY, p[1] + r);
+        minX = Math.min(minX, p[0] - r);
+        maxX = Math.max(maxX, p[0] + r);
+        minY = Math.min(minY, p[1] - r);
+        maxY = Math.max(maxY, p[1] + r);
       }
       dist = (x, y) => sdPolygon(x, y, s.pts) - r;
     } else if (s.kind === 'ring') {
       const o = s.r + s.w;
-      minX = s.c[0] - o; maxX = s.c[0] + o; minY = s.c[1] - o; maxY = s.c[1] + o;
+      minX = s.c[0] - o;
+      maxX = s.c[0] + o;
+      minY = s.c[1] - o;
+      maxY = s.c[1] + o;
       dist = (x, y) => Math.abs(Math.hypot(x - s.c[0], y - s.c[1]) - s.r) - s.w;
     } else {
       throw new Error(`Unknown shape kind: ${s.kind}`);
     }
-    const x0 = Math.max(0, Math.floor(minX - soft)), x1 = Math.min(this.w - 1, Math.ceil(maxX + soft));
-    const y0 = Math.max(0, Math.floor(minY - soft)), y1 = Math.min(this.h - 1, Math.ceil(maxY + soft));
+    const x0 = Math.max(0, Math.floor(minX - soft)),
+      x1 = Math.min(this.w - 1, Math.ceil(maxX + soft));
+    const y0 = Math.max(0, Math.floor(minY - soft)),
+      y1 = Math.min(this.h - 1, Math.ceil(maxY + soft));
     const [cr, cg, cb] = s.color;
     const clip = s.clip;
     for (let y = y0; y <= y1; y++) {

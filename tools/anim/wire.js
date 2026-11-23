@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict';
 
 /*
  * Wire the code-drawn animations into the app's data files.
@@ -27,9 +26,9 @@
  * No npm dependencies; needs ffmpeg on PATH only when a poster is missing.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { spawnSync } = require('child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 
 const ROOT = path.join(__dirname, '..', '..');
 const MEDIA_DIR = 'media/anim';
@@ -53,7 +52,7 @@ function abs(rel) {
 // copied back from the original text so the diff shows only the wired rows.
 const RANGE_RX = /"segmentRange": \[[^\]]*\]/g;
 function serialize(data, indent, original) {
-  let text = JSON.stringify(data, null, indent) + '\n';
+  let text = `${JSON.stringify(data, null, indent)}\n`;
   const kept = original ? original.match(RANGE_RX) || [] : [];
   if (kept.length) {
     if ((text.match(RANGE_RX) || []).length !== kept.length) throw new Error('segmentRange count changed');
@@ -63,18 +62,18 @@ function serialize(data, indent, original) {
   return text;
 }
 
-const mediaPath = (anim) => MEDIA_DIR + '/' + anim + '.mp4';
-const posterPath = (anim) => MEDIA_DIR + '/' + anim + '.jpg';
+const mediaPath = (anim) => `${MEDIA_DIR}/${anim}.mp4`;
+const posterPath = (anim) => `${MEDIA_DIR}/${anim}.jpg`;
 
 // ---- clip map -------------------------------------------------------------
 
 const clipMap = JSON.parse(fs.readFileSync(path.join(__dirname, 'clip-map.json'), 'utf8')).animations;
 const animOf = new Map(); // Drive id -> animation id
-Object.keys(clipMap).forEach(function (anim) {
-  if (!/^[a-z0-9-]+$/.test(anim)) throw new Error('bad animation id: ' + anim);
-  clipMap[anim].replaces.forEach(function (r) {
-    if (!/^[A-Za-z0-9_-]{20,}$/.test(r.driveId)) throw new Error('bad Drive id: ' + r.driveId);
-    if (animOf.has(r.driveId)) throw new Error('Drive id mapped twice: ' + r.driveId);
+Object.keys(clipMap).forEach((anim) => {
+  if (!/^[a-z0-9-]+$/.test(anim)) throw new Error(`bad animation id: ${anim}`);
+  clipMap[anim].replaces.forEach((r) => {
+    if (!/^[A-Za-z0-9_-]{20,}$/.test(r.driveId)) throw new Error(`bad Drive id: ${r.driveId}`);
+    if (animOf.has(r.driveId)) throw new Error(`Drive id mapped twice: ${r.driveId}`);
     animOf.set(r.driveId, anim);
   });
 });
@@ -87,17 +86,17 @@ function sameBytes(a, b) {
 
 function syncMedia(problems) {
   if (mode === 'apply') fs.mkdirSync(abs(MEDIA_DIR), { recursive: true });
-  Object.keys(clipMap).forEach(function (anim) {
-    const srcMp4 = path.join(OUT_DIR, anim + '_360x640.mp4');
-    const srcPng = path.join(OUT_DIR, anim + '_poster.png');
+  Object.keys(clipMap).forEach((anim) => {
+    const srcMp4 = path.join(OUT_DIR, `${anim}_360x640.mp4`);
+    const srcPng = path.join(OUT_DIR, `${anim}_poster.png`);
     const dstMp4 = abs(mediaPath(anim));
     const dstJpg = abs(posterPath(anim));
     // The render output is not needed once media/anim holds the pair.
     if (fs.existsSync(srcMp4) && !sameBytes(srcMp4, dstMp4)) {
-      if (mode === 'check') problems.push('stale ' + mediaPath(anim));
+      if (mode === 'check') problems.push(`stale ${mediaPath(anim)}`);
       else fs.copyFileSync(srcMp4, dstMp4);
     }
-    if (!fs.existsSync(dstMp4)) problems.push('missing ' + mediaPath(anim));
+    if (!fs.existsSync(dstMp4)) problems.push(`missing ${mediaPath(anim)}`);
     const stale =
       fs.existsSync(srcPng) && (!fs.existsSync(dstJpg) || fs.statSync(dstJpg).mtimeMs < fs.statSync(srcPng).mtimeMs);
     if (stale && mode === 'apply') {
@@ -121,9 +120,9 @@ function syncMedia(problems) {
         ],
         { encoding: 'utf8' }
       );
-      if (r.status !== 0) throw new Error('ffmpeg (poster ' + anim + ') failed: ' + (r.stderr || r.error));
+      if (r.status !== 0) throw new Error(`ffmpeg (poster ${anim}) failed: ${r.stderr || r.error}`);
     }
-    if (!fs.existsSync(dstJpg)) problems.push('missing ' + posterPath(anim));
+    if (!fs.existsSync(dstJpg)) problems.push(`missing ${posterPath(anim)}`);
   });
 }
 
@@ -159,11 +158,10 @@ function clipId(row) {
 const seen = {}; // Drive id -> { data file: [row ids] }
 
 function processRows(rows, file) {
-  rows.forEach(function (row) {
+  rows.forEach((row) => {
     const id = clipId(row);
     if (!id) {
-      if (row && row.anim)
-        throw new Error(file + ': row ' + (row.id || row.fileId) + ' has `anim` but no mapped Drive id');
+      if (row?.anim) throw new Error(`${file}: row ${row.id || row.fileId} has \`anim\` but no mapped Drive id`);
       return;
     }
     if (mode === 'revert') {
@@ -172,7 +170,8 @@ function processRows(rows, file) {
     }
     wireRow(row, animOf.get(id));
     seen[id] = seen[id] || {};
-    (seen[id][file] = seen[id][file] || []).push(row.id || row.fileId);
+    seen[id][file] = seen[id][file] || [];
+    seen[id][file].push(row.id || row.fileId);
   });
 }
 
@@ -183,12 +182,12 @@ if (mode !== 'revert') syncMedia(problems);
 
 const data = {};
 const before = {};
-Object.keys(FILES).forEach(function (k) {
+Object.keys(FILES).forEach((k) => {
   before[k] = fs.readFileSync(abs(FILES[k]), 'utf8');
   data[k] = JSON.parse(before[k]);
   // The files are plain JSON.stringify output; refuse to reformat anything else.
   if (serialize(data[k], INDENT[k], before[k]) !== before[k])
-    throw new Error(FILES[k] + ' is not in the expected JSON layout; not rewriting it');
+    throw new Error(`${FILES[k]} is not in the expected JSON layout; not rewriting it`);
 });
 
 processRows(data.driveCatalog.items, FILES.driveCatalog);
@@ -207,30 +206,33 @@ if (mode !== 'revert') {
     count: { animations: Object.keys(clipMap).length, driveIds: animOf.size },
     animations: {}
   };
-  Object.keys(clipMap).forEach(function (anim) {
+  Object.keys(clipMap).forEach((anim) => {
     animMap.animations[anim] = {
       he: clipMap[anim].he,
       en: clipMap[anim].en,
       media: mediaPath(anim),
       poster: posterPath(anim),
       driveIds: clipMap[anim].replaces.map((r) => r.driveId),
-      clips: clipMap[anim].replaces.map(function (r) {
-        return { driveId: r.driveId, name_he: r.name_he, originalMedia: r.mediaPath, rows: seen[r.driveId] || {} };
-      })
+      clips: clipMap[anim].replaces.map((r) => ({
+        driveId: r.driveId,
+        name_he: r.name_he,
+        originalMedia: r.mediaPath,
+        rows: seen[r.driveId] || {}
+      }))
     };
   });
-  animOf.forEach(function (anim, driveId) {
-    if (!seen[driveId]) problems.push('Drive id ' + driveId + ' (' + anim + ') is in no data file');
+  animOf.forEach((anim, driveId) => {
+    if (!seen[driveId]) problems.push(`Drive id ${driveId} (${anim}) is in no data file`);
   });
   const mapPath = abs(MAP_FILE);
   outputs.push([MAP_FILE, serialize(animMap, 2), fs.existsSync(mapPath) ? fs.readFileSync(mapPath, 'utf8') : '']);
 }
 
 let changed = 0;
-outputs.forEach(function (o) {
+outputs.forEach((o) => {
   if (o[1] === o[2]) return;
   changed++;
-  if (mode === 'check') problems.push('out of date: ' + o[0]);
+  if (mode === 'check') problems.push(`out of date: ${o[0]}`);
   else fs.writeFileSync(abs(o[0]), o[1]);
 });
 if (mode === 'revert' && fs.existsSync(abs(MAP_FILE))) fs.unlinkSync(abs(MAP_FILE));
@@ -247,7 +249,7 @@ console.log(
     (mode === 'check' ? 'differ' : 'written')
 );
 if (mode !== 'revert') {
-  Object.keys(FILES).forEach(function (k) {
+  Object.keys(FILES).forEach((k) => {
     const ids = Object.keys(seen).filter((id) => seen[id][FILES[k]]);
     console.log(
       '  ' +
@@ -259,7 +261,7 @@ if (mode !== 'revert') {
         ' Drive ids'
     );
   });
-  console.log('  poster switched for ' + Object.keys(seen).length + ' of ' + animOf.size + ' Drive ids');
+  console.log(`  poster switched for ${Object.keys(seen).length} of ${animOf.size} Drive ids`);
 }
 if (problems.length) {
   console.error(problems.join('\n'));

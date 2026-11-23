@@ -20,18 +20,18 @@
 
 // Adult proportions, about 1.77 m standing.
 const DEFAULT_BODY = {
-  torso: 0.48,      // hip joint -> shoulder joint
-  neck: 0.235,      // shoulder joint -> head centre
+  torso: 0.48, // hip joint -> shoulder joint
+  neck: 0.235, // shoulder joint -> head centre
   headR: 0.105,
-  upperArm: 0.30,
+  upperArm: 0.3,
   foreArm: 0.27,
   hand: 0.09,
   thigh: 0.44,
   shin: 0.43,
-  toe: [0.14, -0.045],   // toe centre, in the foot frame (origin = ankle)
+  toe: [0.14, -0.045], // toe centre, in the foot frame (origin = ankle)
   heel: [-0.035, -0.035], // heel centre, in the foot frame
-  hipHalf: 0.085,        // front / top view: half the distance between the hip joints
-  shoulderHalf: 0.185    // front / top view: half the distance between the shoulder joints
+  hipHalf: 0.085, // front / top view: half the distance between the hip joints
+  shoulderHalf: 0.185 // front / top view: half the distance between the shoulder joints
 };
 // Front view: the foot points at the viewer, so it is drawn short.
 const FRONT_BODY = { toe: [0.03, -0.04], heel: [-0.012, -0.036] };
@@ -57,7 +57,8 @@ const EASINGS = {
 const rad = (deg) => (deg * Math.PI) / 180;
 const polar = (p, len, deg) => [p[0] + len * Math.cos(rad(deg)), p[1] + len * Math.sin(rad(deg))];
 const rotate = (v, deg) => {
-  const c = Math.cos(rad(deg)), s = Math.sin(rad(deg));
+  const c = Math.cos(rad(deg)),
+    s = Math.sin(rad(deg));
   return [v[0] * c - v[1] * s, v[0] * s + v[1] * c];
 };
 const add = (a, b) => [a[0] + b[0], a[1] + b[1]];
@@ -79,8 +80,12 @@ function segment(j, name) {
   const [sideName, seg] = String(name).split('.');
   const s = j[SIDE_ALIAS[sideName]];
   const map = s && {
-    upperArm: [s.shoulder, s.elbow], foreArm: [s.elbow, s.wrist], hand: [s.wrist, s.handTip],
-    thigh: [s.hip, s.knee], shin: [s.knee, s.ankle], foot: [s.heel, s.toe]
+    upperArm: [s.shoulder, s.elbow],
+    foreArm: [s.elbow, s.wrist],
+    hand: [s.wrist, s.handTip],
+    thigh: [s.hip, s.knee],
+    shin: [s.knee, s.ankle],
+    foot: [s.heel, s.toe]
   };
   if (!map || !map[seg] || !map[seg][0] || !map[seg][1]) throw new Error(`Unknown segment "${name}"`);
   return map[seg];
@@ -101,7 +106,8 @@ function pointOn(j, spec) {
   if (!spec.along) return add(base, off);
   const [a, b] = segment(j, spec.along);
   const d = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
-  const ux = (b[0] - a[0]) / d, uy = (b[1] - a[1]) / d;
+  const ux = (b[0] - a[0]) / d,
+    uy = (b[1] - a[1]) / d;
   return [base[0] + ux * off[0] - uy * off[1], base[1] + uy * off[0] + ux * off[1]];
 }
 
@@ -114,8 +120,15 @@ function segmentAngle(j, name) {
 function deepMerge(base, over) {
   const out = Object.assign({}, base);
   for (const [k, v] of Object.entries(over)) {
-    out[k] = v && typeof v === 'object' && !Array.isArray(v) && base[k] && typeof base[k] === 'object' && !Array.isArray(base[k])
-      ? deepMerge(base[k], v) : v;
+    out[k] =
+      v &&
+      typeof v === 'object' &&
+      !Array.isArray(v) &&
+      base[k] &&
+      typeof base[k] === 'object' &&
+      !Array.isArray(base[k])
+        ? deepMerge(base[k], v)
+        : v;
   }
   return out;
 }
@@ -174,7 +187,10 @@ function flattenPose(pose, name, view = 'side') {
     for (const k of SCALE_KEYS) {
       num[`${side}.scale.${k}`] = (ov.scale && ov.scale[k]) ?? (pose.scale && pose.scale[k]) ?? 1;
     }
-    for (const [target, bendKey] of [['wrist', 'elbowBend'], ['ankle', 'kneeBend']]) {
+    for (const [target, bendKey] of [
+      ['wrist', 'elbowBend'],
+      ['ankle', 'kneeBend']
+    ]) {
       let bend = ov[bendKey];
       if (bend == null) {
         bend = pose[bendKey] ?? (target === 'wrist' ? -1 : 1);
@@ -182,7 +198,7 @@ function flattenPose(pose, name, view = 'side') {
       }
       let tgt = ov[target];
       if (!tgt && pose[target]) tgt = mirror ? [2 * axis - pose[target][0], pose[target][1]] : pose[target];
-      const to = target === 'wrist' ? (ov.wristTo || (ov.wrist ? null : pose.wristTo)) : null;
+      const to = target === 'wrist' ? ov.wristTo || (ov.wrist ? null : pose.wristTo) : null;
       if (to && !ov.wrist) {
         // Wrist follows a body point (e.g. a hand resting on the knee, or on a bar across the back).
         const off = to.offset || [0, 0];
@@ -208,8 +224,10 @@ function compileExercise(ex) {
   const names = Object.keys(poses);
   const first = poses[names[0]];
   for (const n of names) {
-    if (JSON.stringify(poses[n].meta) !== JSON.stringify(first.meta) ||
-        Object.keys(poses[n].num).join() !== Object.keys(first.num).join()) {
+    if (
+      JSON.stringify(poses[n].meta) !== JSON.stringify(first.meta) ||
+      Object.keys(poses[n].num).join() !== Object.keys(first.num).join()
+    ) {
       throw new Error(`Pose "${n}" must use the same pin / IK targets as pose "${names[0]}"`);
     }
   }
@@ -236,7 +254,8 @@ function compileExercise(ex) {
     const tc = ((t % cycle) + cycle) % cycle;
     let i = 1;
     while (i < keys.length - 1 && tc >= keys[i].t) i++;
-    const k0 = keys[i - 1], k1 = keys[i];
+    const k0 = keys[i - 1],
+      k1 = keys[i];
     const u = k1.ease(Math.min(1, Math.max(0, (tc - k0.t) / (k1.t - k0.t))));
     const out = {};
     for (const f of fields) out[f] = k0.pose[f] + (k1.pose[f] - k0.pose[f]) * u;
@@ -248,10 +267,16 @@ function compileExercise(ex) {
 
 /** Two-bone IK. bend = +1 puts the middle joint counter-clockwise of root->target. */
 function twoBoneIK(root, target, a, b, bend) {
-  let dx = target[0] - root[0], dy = target[1] - root[1];
+  let dx = target[0] - root[0],
+    dy = target[1] - root[1];
   let d = Math.hypot(dx, dy);
-  if (d < 1e-9) { dx = 1; dy = 0; d = 1e-9; }
-  const ux = dx / d, uy = dy / d;
+  if (d < 1e-9) {
+    dx = 1;
+    dy = 0;
+    d = 1e-9;
+  }
+  const ux = dx / d,
+    uy = dy / d;
   const dc = Math.min(a + b - 1e-6, Math.max(Math.abs(a - b) + 1e-6, d));
   const x = (a * a - b * b + dc * dc) / (2 * dc);
   const h = Math.sqrt(Math.max(0, a * a - x * x)) * bend;
@@ -280,8 +305,10 @@ function solve(p, meta, body = DEFAULT_BODY, view = 'side') {
     j.neckDir = rotate([1, 0], p.neck);
     j.torsoDeg = p.torso;
     j.waistDeg = p.waist;
-    const hipAcross = rotate([1, 0], p.waist - 90), shAcross = rotate([1, 0], p.torso - 90);
-    const hipHalf = body.hipHalf * p['scale.hips'], shoulderHalf = body.shoulderHalf * p['scale.shoulders'];
+    const hipAcross = rotate([1, 0], p.waist - 90),
+      shAcross = rotate([1, 0], p.torso - 90);
+    const hipHalf = body.hipHalf * p['scale.hips'],
+      shoulderHalf = body.shoulderHalf * p['scale.shoulders'];
     for (const side of SIDES) {
       const k = frontal ? (side === 'near' ? 1 : -1) : 0;
       j[side] = {
@@ -299,7 +326,8 @@ function solve(p, meta, body = DEFAULT_BODY, view = 'side') {
       const ankleBend = meta.ik[`${side}.ankle`];
       if (useIK && ankleBend != null) {
         const r = twoBoneIK(s.hip, [g('ankle.x'), g('ankle.y')], len('thigh'), len('shin'), ankleBend);
-        s.knee = r.mid; s.ankle = r.end;
+        s.knee = r.mid;
+        s.ankle = r.end;
         j.reach = Math.max(j.reach, r.miss);
       } else {
         s.knee = polar(s.hip, len('thigh'), g('thigh'));
@@ -316,11 +344,13 @@ function solve(p, meta, body = DEFAULT_BODY, view = 'side') {
       const wristBend = meta.ik[`${side}.wrist`];
       const toBend = meta.ik[`${side}.wristTo`];
       if (useIK && (wristBend != null || toBend != null)) {
-        const target = toBend != null
-          ? pointOn(j, { at: meta.to[side].at, along: meta.to[side].along, offset: [g('wristTo.x'), g('wristTo.y')] })
-          : [g('wrist.x'), g('wrist.y')];
+        const target =
+          toBend != null
+            ? pointOn(j, { at: meta.to[side].at, along: meta.to[side].along, offset: [g('wristTo.x'), g('wristTo.y')] })
+            : [g('wrist.x'), g('wrist.y')];
         const r = twoBoneIK(s.shoulder, target, len('upperArm'), len('foreArm'), toBend != null ? toBend : wristBend);
-        s.elbow = r.mid; s.wrist = r.end;
+        s.elbow = r.mid;
+        s.wrist = r.end;
         j.reach = Math.max(j.reach, r.miss);
       } else {
         s.elbow = polar(s.shoulder, len('upperArm'), g('upperArm'));
@@ -344,5 +374,14 @@ function solve(p, meta, body = DEFAULT_BODY, view = 'side') {
 }
 
 module.exports = {
-  DEFAULT_BODY, FRONT_BODY, EASINGS, SIDES, compileExercise, solve, anchor, segment, pointOn, segmentAngle
+  DEFAULT_BODY,
+  FRONT_BODY,
+  EASINGS,
+  SIDES,
+  compileExercise,
+  solve,
+  anchor,
+  segment,
+  pointOn,
+  segmentAngle
 };

@@ -390,7 +390,9 @@
       "superman"
     ],
     "drivePlayId": "1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m",
-    "poster": "assets/posters/ill-1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m.jpg"
+    "poster": "media/anim/back-extension.jpg",
+    "anim": "back-extension",
+    "originalPoster": "assets/posters/ill-1sOx7gLDV74wpi7Da119eCiq_qUy9Mi0m.jpg"
   },
   "כתפיים_וגב": {
     "id": "כתפיים_וגב",
@@ -431,7 +433,9 @@
       "australian pullup"
     ],
     "drivePlayId": "1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm",
-    "poster": "assets/posters/ill-1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm.jpg"
+    "poster": "media/anim/inverted-row.jpg",
+    "anim": "inverted-row",
+    "originalPoster": "assets/posters/ill-1-E140E4jVGEgAs77bVmAYf-ndZyaXVNm.jpg"
   },
   "קונוסים_גב": {
     "id": "קונוסים_גב",

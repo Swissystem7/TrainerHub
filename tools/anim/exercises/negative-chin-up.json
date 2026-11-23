@@ -1,0 +1,74 @@
+{
+  "id": "negative-chin-up",
+  "name": { "en": "Negative (eccentric) chin-up", "he": "ירידה איטית במתח סנטר" },
+  "view": "side",
+  "equipment": ["pull-up bar", "box"],
+  "fps": 30,
+  "camera": { "centerX": -0.05, "width": 1.95, "groundY": 0.86 },
+  "repeat": 2,
+  "poster": { "t": 1.6 },
+  "props": [
+    { "type": "rect", "from": [-0.028, 2.225], "to": [0.028, 3.2], "color": "frame" },
+    { "type": "rect", "from": [-0.07, 2.2], "to": [0.07, 2.25], "color": "frame", "r": 0.02 },
+    { "type": "rect", "from": [-0.6, 0.0], "to": [-0.1, 0.72], "color": "frame", "r": 0.015 },
+    { "type": "rect", "from": [-0.6, 0.675], "to": [-0.1, 0.72], "color": "metal", "r": 0.012 },
+    { "type": "rect", "from": [-0.6, 0.66], "to": [-0.1, 0.672], "color": "gold" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "top": {
+      "pin": { "point": "shoulder", "at": [-0.13, 2.11] },
+      "torso": 93,
+      "neck": 84,
+      "scale": { "hand": 0.6, "neck": 1, "upperArm": 0.6 },
+      "wrist": [0, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "kneeBend": 1,
+      "near": { "ankle": [-0.3, 0.8], "foot": 0 },
+      "far": { "ankle": [-0.25, 0.8], "foot": 0 }
+    },
+    "lift": {
+      "base": "top",
+      "near": { "ankle": [0.0, 0.9], "foot": -25 },
+      "far": { "ankle": [0.04, 0.87], "foot": -22 }
+    },
+    "hang": {
+      "base": "top",
+      "pin": { "point": "shoulder", "at": [0, 1.632] },
+      "torso": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "neck": 0.82, "upperArm": 1 },
+      "near": { "ankle": [0.03, 0.3], "foot": -40 },
+      "far": { "ankle": [0.07, 0.31], "foot": -36 }
+    },
+    "kneesup": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.07, 1.636] },
+      "torso": 86,
+      "neck": 88,
+      "near": { "ankle": [-0.04, 0.92], "foot": -20 },
+      "far": { "ankle": [0.02, 0.76], "foot": -30 }
+    },
+    "onbox": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.15, 1.652] },
+      "torso": 80,
+      "neck": 86,
+      "near": { "ankle": [-0.3, 0.8], "foot": 0 },
+      "far": { "ankle": [-0.25, 0.8], "foot": 0 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.2, "pose": "top", "ease": "linear" },
+    { "t": 0.55, "pose": "lift", "ease": "inOutSine" },
+    { "t": 3.05, "pose": "hang", "ease": "inOutSine" },
+    { "t": 3.25, "pose": "hang", "ease": "linear" },
+    { "t": 3.55, "pose": "kneesup", "ease": "inOutSine" },
+    { "t": 3.85, "pose": "onbox", "ease": "inOutSine" },
+    { "t": 4.35, "pose": "top", "ease": "inOutSine" },
+    { "t": 4.5, "pose": "top", "ease": "linear" }
+  ]
+}

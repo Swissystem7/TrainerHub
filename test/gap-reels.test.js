@@ -25,7 +25,11 @@ test('every gap reel is a Drive row with its own poster', function () {
   CODES.forEach(function (c) {
     const e = row(c);
     assert.ok(e, c);
-    assert.equal(e.poster, 'assets/posters/' + c + '.jpg');
+    // A row wired to a code-drawn animation (`anim`) shows that poster and
+    // keeps its own poster as originalPoster.
+    const own = e.anim ? e.originalPoster : e.poster;
+    assert.equal(own, 'assets/posters/' + c + '.jpg');
+    assert.ok(fs.existsSync(path.join(root, own)), own);
     assert.ok(fs.existsSync(path.join(root, e.poster)), e.poster);
     const m = merged[e.id];
     assert.equal(TH.playableKind(m), 'drive', e.id);

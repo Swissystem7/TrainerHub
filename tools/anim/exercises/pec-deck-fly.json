@@ -1,0 +1,56 @@
+{
+  "id": "pec-deck-fly",
+  "name": { "en": "Pec deck fly", "he": "פרפר במכונת פק דק" },
+  "view": "front",
+  "equipment": ["pec deck machine"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 2.05, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.75 },
+  "props": [
+    { "type": "rect", "from": [-0.42, 0.0], "to": [0.42, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.05, 0.0], "to": [0.05, 1.86], "color": "frame" },
+    { "type": "rect", "from": [-0.52, 1.78], "to": [0.52, 1.86], "color": "frame", "r": 0.012 },
+    { "type": "rect", "from": [-0.215, 0.56], "to": [0.215, 1.33], "color": "pad", "r": 0.04 },
+    { "type": "rect", "from": [-0.25, 0.46], "to": [0.25, 0.535], "color": "pad", "r": 0.025 },
+    { "type": "line", "a": [-0.44, 1.8], "b": { "at": "left.grip", "offset": [0, 0.13] }, "width": 0.04, "color": "metal", "layer": "mid" },
+    { "type": "line", "a": [0.44, 1.8], "b": { "at": "right.grip", "offset": [0, 0.13] }, "width": 0.04, "color": "metal", "layer": "mid" },
+    { "type": "circle", "at": [-0.44, 1.8], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [0.44, 1.8], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.44, 1.8], "r": 0.018, "color": "dark" },
+    { "type": "circle", "at": [0.44, 1.8], "r": 0.018, "color": "dark" },
+    { "type": "line", "a": { "at": "left.grip", "offset": [0, 0.13] }, "b": { "at": "left.grip", "offset": [0, -0.13] }, "width": 0.06, "color": "iron", "layer": "mid" },
+    { "type": "line", "a": { "at": "right.grip", "offset": [0, 0.13] }, "b": { "at": "right.grip", "offset": [0, -0.13] }, "width": 0.06, "color": "iron", "layer": "mid" },
+    { "type": "line", "a": { "at": "left.grip", "offset": [0, -0.115] }, "b": { "at": "left.grip", "offset": [0, -0.13] }, "width": 0.06, "color": "gold", "layer": "mid" },
+    { "type": "line", "a": { "at": "right.grip", "offset": [0, -0.115] }, "b": { "at": "right.grip", "offset": [0, -0.13] }, "width": 0.06, "color": "gold", "layer": "mid" }
+  ],
+  "poses": {
+    "open": {
+      "pelvis": [0.0, 0.648],
+      "torso": 90,
+      "neck": 90,
+      "thigh": -78,
+      "shin": -90,
+      "foot": 0,
+      "scale": { "thigh": 0.3, "upperArm": 1, "foreArm": 1, "hand": 0.65 },
+      "upperArm": -6,
+      "foreArm": 6,
+      "hand": 90
+    },
+    "closed": {
+      "base": "open",
+      "scale": { "thigh": 0.3, "upperArm": 0.2, "foreArm": -0.72, "hand": 0.65 },
+      "upperArm": -30,
+      "foreArm": 4,
+      "hand": 90
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "open" },
+    { "t": 0.15, "pose": "open", "ease": "linear" },
+    { "t": 1.2, "pose": "closed", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "closed", "ease": "linear" },
+    { "t": 2.8, "pose": "open", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "open", "ease": "linear" }
+  ]
+}

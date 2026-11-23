@@ -39,7 +39,8 @@ const capsule = (a, b, r, col, extra) => ({ kind: 'cone', a, b, ra: r, rb: r, co
 /** Rectangle centred on c: half-length hl along unit vector u, half-width hw across, corner radius r. */
 function box(c, u, hl, hw, r, col) {
   const n = [-u[1], u[0]];
-  const a = hl - r, b = hw - r;
+  const a = hl - r,
+    b = hw - r;
   const pt = (s, t) => [c[0] + u[0] * a * s + n[0] * b * t, c[1] + u[1] * a * s + n[1] * b * t];
   return { kind: 'poly', pts: [pt(-1, -1), pt(1, -1), pt(1, 1), pt(-1, 1)], r, color: col };
 }
@@ -47,14 +48,17 @@ function box(c, u, hl, hw, r, col) {
 const BUILDERS = {
   /** Axis-aligned rectangle: { from: [x0, y0], to: [x1, y1], r } */
   rect(def, j, C) {
-    const a = pointOn(j, def.from), b = pointOn(j, def.to);
+    const a = pointOn(j, def.from),
+      b = pointOn(j, def.to);
     const r = Math.min(def.r || 0, Math.abs(b[0] - a[0]) / 2, Math.abs(b[1] - a[1]) / 2);
     const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
     return [box(c, [1, 0], Math.abs(b[0] - a[0]) / 2, Math.abs(b[1] - a[1]) / 2, r, color(C, def.color, 'frame'))];
   },
   /** Free polygon: { points: [...], r } (r grows the outline and rounds the corners) */
   poly(def, j, C) {
-    return [{ kind: 'poly', pts: def.points.map((p) => pointOn(j, p)), r: def.r || 0, color: color(C, def.color, 'frame') }];
+    return [
+      { kind: 'poly', pts: def.points.map((p) => pointOn(j, p)), r: def.r || 0, color: color(C, def.color, 'frame') }
+    ];
   },
   /** Straight bar / cable / strut with round ends: { a, b, width } */
   line(def, j, C) {
@@ -66,7 +70,9 @@ const BUILDERS = {
   },
   /** Resistance band: taut coloured line with a thin dark rim so it reads over the figure. { a, b, width, color } */
   band(def, j, C) {
-    const a = pointOn(j, def.a), b = pointOn(j, def.b), w = (def.width || 0.014) / 2;
+    const a = pointOn(j, def.a),
+      b = pointOn(j, def.b),
+      w = (def.width || 0.014) / 2;
     return [capsule(a, b, w + 0.005, C.shade, { alpha: 0.55 }), capsule(a, b, w, color(C, def.color, 'gold'))];
   },
   /** { at, r } */
@@ -75,11 +81,14 @@ const BUILDERS = {
   },
   /** Circle outline: { at, r, width } */
   ring(def, j, C) {
-    return [{ kind: 'ring', c: pointOn(j, def.at), r: def.r, w: (def.width || 0.02) / 2, color: color(C, def.color, 'frame') }];
+    return [
+      { kind: 'ring', c: pointOn(j, def.at), r: def.r, w: (def.width || 0.02) / 2, color: color(C, def.color, 'frame') }
+    ];
   },
   /** Barbell / bar seen end-on: round plate with a gold ring and the bar end in the middle. { at, r } */
   plate(def, j, C) {
-    const c = pointOn(j, def.at), r = def.r || 0.14;
+    const c = pointOn(j, def.at),
+      r = def.r || 0.14;
     return [
       disc(c, r, color(C, def.color, 'iron')),
       { kind: 'ring', c, r: r * 0.78, w: 0.006, color: color(C, def.accent, 'gold') },
@@ -89,7 +98,8 @@ const BUILDERS = {
   },
   /** Bar seen end-on (pull-up bar, cable bar): { at, r } */
   barEnd(def, j, C) {
-    const c = pointOn(j, def.at), r = def.r || 0.02;
+    const c = pointOn(j, def.at),
+      r = def.r || 0.02;
     return [disc(c, r, color(C, def.color, 'steel'))];
   },
   /** Dumbbell seen from the side: handle + two plates. { at, angle | along + angle, length, plate: [thickness, height] } */
