@@ -28,6 +28,7 @@
 </div>
 <script src="./js/core.js"></script>
 <script src="./js/reel-library.js"></script>
+<script src="./js/microcycle-board.js"></script>
 <main class="wrap"><header class="top"><small>TRAINERHUB / PROGRAM BUILDER</small><h1>האימון הבא שלך, מוכן.</h1><p>תוכנית קצרה המותאמת למטרות, לרמת הכושר, לציוד ולאזורים שתרצו לאמן.</p></header><section class="card" id="savedReelCard" hidden><h2 id="savedReelHeading">אימונים שנשמרו מספריית התרגילים</h2><div id="savedReelList"></div><div class="actions"><button type="button" class="th-btn" id="useSavedReelBtn" aria-label="הצג את האימונים השמורים בתוכנית השבועית">הצג בתוכנית השבועית</button><a class="th-btn ghost" href="./exercises.html">אל ספריית התרגילים</a></div></section><section class="layout"><form class="card" id="form" role="region" aria-labelledby="formHeading"><h2 id="formHeading">העדפות מתאמן</h2><label for="muscle">קבוצת שרירים מרכזית</label><select id="muscle"><option value="full">פיצול גוף מלא</option><option value="legs">רגליים</option><option value="chest">חזה</option><option value="back">גב</option><option value="shoulders">כתפיים</option><option value="core">ליבה</option></select><label for="goal">מטרה</label><select id="goal"><option value="strength">כוח</option><option value="hypertrophy">היפרטרופיה</option><option value="muscle_gain">עלייה במסת שריר</option><option value="endurance">סיבולת</option><option value="general_fitness">כושר כללי</option></select><label for="level">רמה</label><select id="level"><option value="beginner">מתחילים</option><option value="intermediate">ביניים</option><option value="advanced">מתקדמים</option></select><label for="equipment">ציוד</label><select id="equipment"><option value="none">משקל גוף</option><option value="dumbbells">משקולות</option><option value="band">גומיות</option><option value="cones">קונוסים</option><option value="ball">כדור</option></select><label for="audience">קהל</label><select id="audience"><option value="general">מבוגרים / כללי</option><option value="kids">ילדים</option><option value="sport">ספורט (כדור / מגרש)</option></select><label for="days">ימי אימון בשבוע</label><input id="days" type="number" min="1" max="5" value="3"><label for="periodWeeks">תקופתיות (מחזור עומס)</label><select id="periodWeeks" aria-label="אורך תוכנית תקופתית בשבועות"><option value="0">שבוע בודד</option><option value="4">4 שבועות</option><option value="6">6 שבועות</option><option value="8">8 שבועות</option><option value="10">10 שבועות</option><option value="12">12 שבועות</option></select><div class="actions" role="toolbar" aria-label="פעולות טופס תוכנית שבועית"><button type="submit" class="th-btn" id="buildBtn" aria-label="בנה תוכנית אימונים שבועית מהמאגר">בנה אימון</button><button type="button" class="th-btn ghost" id="resetBtn" aria-label="נקה נתוני טופס והחזר לברירת מחדל">נקה</button></div></form><div class="card" id="result" role="region" aria-label="תוצאת תוכנית שבועית" aria-live="polite"><p class="empty" role="status">בחרו את העדפות המתאמן ולחצו «בנה אימון» כדי להפיק תוכנית שבועית מותאמת.</p></div></section></main><script>
 const $=x=>document.getElementById(x);
 const esc=s=>TH.esc(s);
@@ -114,7 +115,6 @@ function copyDayTraineeLink(dayIndex, sourceBtn){
   TH.copyOrShow(shared.url, host, function(){
     host.insertAdjacentHTML('beforeend', '<p class="honest copy-status" role="status">הלינק הועתק. הלקוח פותח בלי התחברות.</p>');
     if (sourceBtn) {
-      // A second click within the 1.4 s must not save «הועתק» as the label to restore.
       if (!sourceBtn.thLabel) sourceBtn.thLabel = sourceBtn.textContent;
       sourceBtn.textContent = 'הועתק';
       clearTimeout(sourceBtn.thLabelTimer);
@@ -131,13 +131,24 @@ function printDayWorkout(dayIndex){
   window.location.href = TH.printUrl ? TH.printUrl() : './workout-print.html';
 }
 
+function addRecoveryDayToProgram(dayIndex) {
+  if (!window.__lastProgram || !window.THMicrocycleBoard) return;
+  window.__lastProgram = window.THMicrocycleBoard.insertActiveRecoveryDay(window.__lastProgram, dayIndex);
+  renderProgram(window.__lastProgram);
+}
+
+function shiftDayInProgram(fromIdx, toIdx) {
+  if (!window.__lastProgram || !window.THMicrocycleBoard) return;
+  window.__lastProgram = window.THMicrocycleBoard.shiftWorkoutDay(window.__lastProgram, fromIdx, toIdx);
+  renderProgram(window.__lastProgram);
+}
+
 function renderProgram(p){
   if (!p || !p.dailyWorkouts || !p.dailyWorkouts.length) {
     $('result').innerHTML = '<p class="empty" role="status">לא נמצאו אימונים מתאימים להעדפות שנבחרו. נסו לשנות את קבוצת השרירים או הציוד.</p>';
     return;
   }
   const eq = $('equipment').value;
-  // Warm-up and cool-down read «180 שנ׳», rest «מנוחה 120 שנ׳»: whole minutes read «3 דק׳», «45 שנ׳» stays.
   const secs = s => s >= 60 && s % 60 === 0 ? (s / 60) + ' דק׳' : s + ' שנ׳';
   const sets = p.dailyWorkouts.flatMap(d => (d.exercises || []).map(x => ({
     reps: Number(String(x.reps).split('-')[0]), weightKg: eq === 'none' ? 0 : 12
@@ -146,7 +157,15 @@ function renderProgram(p){
   const clipCount = p.dailyWorkouts.reduce((n, d) => {
     return n + (d.exercises || []).filter(x => TH.hasClip({ id: x.name, name: x.name })).length;
   }, 0);
-  $('result').innerHTML = '<div class="summary"><div class="pill">'+countPill(p.dailyWorkouts.length,'אימון אחד','אימונים')+'</div><div class="pill">'+countPill(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0,'תרגיל אחד','תרגילים')+' באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
+  
+  const boardHeaderHtml = '<div id="microcycleBoardPanel" class="microcycle-board-panel card" style="margin-bottom:16px;background:var(--th-surface2);padding:12px;border-radius:var(--th-r-md);" aria-label="לוח מיקרו-מחזור">' +
+    '<h3 style="margin:0 0 8px;font-size:16px">ניהול מיקרו-מחזור (לוח שבועי)</h3>' +
+    '<p class="honest" style="margin:0 0 10px">הוספת יום התאוששות אקטיבית או שינוי סדר הימים בתוכנית השבועית.</p>' +
+    '<div class="actions" style="margin-top:0">' +
+    '<button type="button" class="th-btn ghost add-recovery-day-btn" id="addRecoveryDayBtn" aria-label="הוסף יום התאוששות אקטיבית בתוכנית">הוסף יום התאוששות אקטיבית</button>' +
+    '</div></div>';
+
+  $('result').innerHTML = boardHeaderHtml + '<div class="summary"><div class="pill">'+countPill(p.dailyWorkouts.length,'אימון אחד','אימונים')+'</div><div class="pill">'+countPill(p.dailyWorkouts[0]&&p.dailyWorkouts[0].exercises?p.dailyWorkouts[0].exercises.length:0,'תרגיל אחד','תרגילים')+' באימון</div><div class="pill"><b>'+clipCount+'</b> עם סרטון מהספרייה</div></div>' +
     p.dailyWorkouts.map((d, i) => {
       const w0 = TH.toPhasesWorkout(d, window.__lastMeta);
       const w = typeof planned === 'function' ? planned(w0) : w0;
@@ -170,12 +189,19 @@ function renderProgram(p){
       }).join('');
       const splitLabel = { push:'דחיפה', pull:'משיכה', legs:'רגליים', upper:'פלג עליון', lower:'פלג תחתון', full:'גוף מלא', focus:'מיקוד' }[d.split] || '';
       const dayName = 'אימון ' + d.day + (splitLabel ? ' (' + splitLabel + ')' : '');
-      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '')+'</h3>'+phasesHtml+
+      
+      const shiftButtons = '<div style="display:inline-flex;gap:4px;margin-inline-start:8px;">' +
+        (i > 0 ? '<button type="button" class="th-btn ghost" style="min-height:36px;padding:2px 8px;font-size:13px;" onclick="shiftDayInProgram(' + i + ', ' + (i - 1) + ')" aria-label="הזז יום שמאלה">←</button>' : '') +
+        (i < p.dailyWorkouts.length - 1 ? '<button type="button" class="th-btn ghost" style="min-height:36px;padding:2px 8px;font-size:13px;" onclick="shiftDayInProgram(' + i + ', ' + (i + 1) + ')" aria-label="הזז יום ימינה">→</button>' : '') +
+        '</div>';
+
+      return '<section class="day"><h3>אימון '+d.day+(splitLabel ? ' · ' + splitLabel : '') + shiftButtons + '</h3>'+phasesHtml+
         '<div class="actions" role="toolbar" aria-label="פעולות עבור ' + esc(dayName) + '">' +
         '<button type="button" class="start-day th-btn" onclick="startDayWorkout('+i+')" aria-label="התחל ' + esc(dayName) + ' במצב אימון חי">התחל אימון</button>' +
         '<button type="button" class="start-day th-btn ghost" onclick="previewDayWorkout('+i+')" aria-label="פתח כמתאמן עבור ' + esc(dayName) + '">פתח כמתאמן</button>' +
         '<button type="button" class="start-day th-btn ghost" onclick="copyDayTraineeLink('+i+', this)" aria-label="שתף אימון ללקוח עבור ' + esc(dayName) + '">שתף אימון ללקוח</button>' +
         '<button type="button" class="start-day th-btn ghost" onclick="printDayWorkout('+i+')" aria-label="דף להדפסה / PDF עבור ' + esc(dayName) + '">דף להדפסה / PDF</button>' +
+        '<button type="button" class="start-day th-btn ghost" onclick="addRecoveryDayToProgram(' + (i + 1) + ')" aria-label="הוסף התאוששות אחרי יום ' + d.day + '">הוסף התאוששות אחרי</button>' +
         '</div><div class="th-gate-host"></div></section>';
     }).join('');
   if (typeof renderPeriod === 'function') renderPeriod(p);
@@ -191,6 +217,14 @@ function renderProgram(p){
       }
     });
   });
+
+  var panel = $('microcycleBoardPanel');
+  if (panel && window.THMicrocycleBoard && typeof window.THMicrocycleBoard.initMicrocycleBoard === 'function') {
+    panel.addEventListener('microcycle:add-recovery', function () {
+      addRecoveryDayToProgram(p.dailyWorkouts.length);
+    });
+    window.THMicrocycleBoard.initMicrocycleBoard();
+  }
 }
 
 function renderPeriod(p){
@@ -235,7 +269,6 @@ function onPeriodActual(n){
   };
   window.__periodActual = window.__periodActual || {};
   window.__periodActual[n] = actual;
-  // Re-plan from the base so a corrected entry replaces, not stacks on, the earlier one.
   let plan = TH.periodizePlan({ weeks: window.__period.total, goal: $('goal').value });
   Object.keys(window.__periodActual).map(Number).sort((a, b) => a - b).forEach(function (w) {
     plan = TH.adjustNextWeek(plan, w, window.__periodActual[w]);
@@ -330,5 +363,7 @@ TH.ready(function () { run(); maybeApplyReelPlan(); });
 window.startDayWorkout = startDayWorkout;
 window.applyWeeklySwap = applyWeeklySwap;
 window.workoutHasExercise = workoutHasExercise;
+window.addRecoveryDayToProgram = addRecoveryDayToProgram;
+window.shiftDayInProgram = shiftDayInProgram;
 </script><script src="./js/th-nav.js"></script>
 </body></html>
