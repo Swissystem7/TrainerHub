@@ -95,6 +95,7 @@
     <a href="#plan">תוכנית 6 שבועות</a>
     <a href="#adapt">משוב והתאמה</a>
     <a href="#strength">תוכניות כוח</a>
+    <a href="#groupScoreboardPanel">לוח תחנות</a>
   </nav>
 
   <section id="tests" aria-labelledby="tests-h">
@@ -185,6 +186,39 @@
     <div id="strengthOut" style="margin-top:12px"></div>
   </section>
 
+  <section id="groupScoreboardPanel" aria-labelledby="groupScoreboardHeading">
+    <h2 id="groupScoreboardHeading">לוח רישום תוצאות תחנות קבוצתי (ללא פרטים מזהים)</h2>
+    <p class="muted">רישום ביצועי תחנות לפי מספר ברזל או כינוי בלבד — ללא שמות מלאים או מספרי טלפון.</p>
+    <div class="row">
+      <div>
+        <label for="groupStationName">שם / מספר תחנה</label>
+        <input type="text" id="groupStationName" placeholder="לדוגמה: תחנה 1 — שכיבות סמיכה" aria-label="שם או מספר תחנה">
+      </div>
+      <div>
+        <label for="groupSlotLabel">כינוי / מספר ברזל</label>
+        <input type="text" id="groupSlotLabel" placeholder="לדוגמה: ברזל 4" aria-label="כינוי או מספר ברזל">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="groupScoreValue">תוצאה</label>
+        <input type="number" id="groupScoreValue" min="0" step="1" inputmode="numeric" placeholder="0" aria-label="תוצאת ביצוע">
+      </div>
+      <div>
+        <label for="groupMetricType">סוג מדד</label>
+        <select id="groupMetricType" aria-label="סוג מדד תחנה">
+          <option value="reps">חזרות (גבוה מנצח)</option>
+          <option value="time">זמן בשניות (קצר מנצח)</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions" role="toolbar" aria-label="פעולות לוח תחנות">
+      <button type="button" id="groupSaveScoreBtn" aria-label="רשום תוצאת תחנה">רשום תוצאת תחנה</button>
+      <button type="button" class="ghost" id="groupClearBoardBtn" aria-label="נקה לוח תחנות">נקה לוח תחנות</button>
+    </div>
+    <div id="groupLeaderboardOut" aria-live="polite" style="margin-top:16px"></div>
+  </section>
+
   <!-- biome-ignore lint/a11y/noRedundantRoles: explicit role required by spec -->
   <section class="card" id="reserves-safety-guidance" role="region" aria-labelledby="reservesSafetyHeading">
     <h2 id="reservesSafetyHeading">דגשי בטיחות והתקדמות במילואים</h2>
@@ -201,6 +235,8 @@
 <script src="./js/reserves-track.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/reserves-planner.js"></script>
+<script src="./js/group-scoreboard.js"></script>
+<script src="./frontend/netanya-opening.js"></script>
 <script src="./js/th-nav.js"></script>
 <script>
 (() => {
@@ -921,6 +957,89 @@
     renderStatus(R.currentSummary());
     renderComparison();
   });
+
+  function initGroupScoreboard() {
+    var stationIn = el('groupStationName');
+    var slotIn = el('groupSlotLabel');
+    var scoreIn = el('groupScoreValue');
+    var metricSel = el('groupMetricType');
+    var saveBtn = el('groupSaveScoreBtn');
+    var clearBtn = el('groupClearBoardBtn');
+    var out = el('groupLeaderboardOut');
+
+    if (!stationIn || !slotIn || !scoreIn || !metricSel || !saveBtn || !clearBtn || !out) return;
+
+    var SB = window.THGroupScoreboard;
+
+    function renderGroupBoard() {
+      while (out.firstChild) {
+        out.removeChild(out.firstChild);
+      }
+      if (!SB) return;
+      var st = stationIn.value.trim();
+      var mt = metricSel.value;
+      var all = SB.getStationScores(st);
+      var ranked = SB.rankStationParticipants(all, mt);
+
+      if (ranked.length === 0) {
+        var emptyP = document.createElement('p');
+        emptyP.className = 'muted';
+        emptyP.textContent = 'אין תוצאות רשומות עדיין לתחנה זו.';
+        out.appendChild(emptyP);
+        return;
+      }
+
+      var list = document.createElement('div');
+      list.className = 'group-board-list';
+      list.style.marginTop = '12px';
+
+      ranked.forEach(function (item) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.display = 'flex';
+        card.style.justifyContent = 'space-between';
+        card.style.alignItems = 'center';
+
+        var left = document.createElement('span');
+        left.textContent = '#' + item.rank + ' ' + item.slotLabel;
+        left.style.fontWeight = 'bold';
+
+        var right = document.createElement('span');
+        var unit = item.metricType === 'time' ? ' שנ׳' : ' חזרות';
+        right.textContent = item.scoreValue + unit;
+
+        card.appendChild(left);
+        card.appendChild(right);
+        list.appendChild(card);
+      });
+      out.appendChild(list);
+    }
+
+    saveBtn.addEventListener('click', function () {
+      if (!SB) return;
+      var st = stationIn.value.trim() || 'תחנה 1';
+      var sl = slotIn.value.trim();
+      var sc = scoreIn.value;
+      var mt = metricSel.value;
+      if (!sl || sc === '') return;
+      SB.recordStationScore(st, sl, sc, mt);
+      slotIn.value = '';
+      scoreIn.value = '';
+      renderGroupBoard();
+    });
+
+    clearBtn.addEventListener('click', function () {
+      if (!SB) return;
+      SB.clearStationScores();
+      renderGroupBoard();
+    });
+
+    stationIn.addEventListener('input', renderGroupBoard);
+    metricSel.addEventListener('change', renderGroupBoard);
+
+    renderGroupBoard();
+  }
+  initGroupScoreboard();
 
   if (R.data) {
     boot(R.data);
