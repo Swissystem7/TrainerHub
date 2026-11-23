@@ -199,6 +199,10 @@
         <button type="button" class="th-btn ghost" id="applyBalancedFocusBtn" aria-label="החל מיקוד שרירי מומלץ מאיזון שבועי">החל מיקוד שרירי מומלץ</button>
         <span id="balancedFocusStatus" class="field-help" style="margin: 0;"></span>
       </div>
+      <div class="balanced-focus-container" style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="th-btn ghost" id="supersetModeBtn" aria-label="הפעל מצב סופר-סטים אנטגוניסטיים לחיסכון בזמן">מצב סופר-סטים (חיסכון בזמן)</button>
+        <span id="supersetPairsOut" class="field-help" style="margin: 0;"></span>
+      </div>
       <p class="field-help">לקבוצה האימון מחולק אוטומטית לתחנות בגודל מעשי.</p>
       <button type="submit" class="go" aria-label="בנה אימון מהמאגר לפי ההגדרות">בנה אימון</button>
     </form>
@@ -278,6 +282,7 @@
 <script src="./js/muscle-balance.js"></script>
 <script src="./js/rules-with-sources.js"></script>
 <script src="./js/ingest.js"></script>
+<script src="./js/superset-builder.js"></script>
 <script src="./js/whatsapp-share.js"></script>
 <script src="./js/plan-link-codec.js"></script>
 <script src="./js/live-tempo-cue.js"></script>
@@ -746,7 +751,7 @@
     if (equipment !== 'auto') req.equipment = [equipment];
     var goalVal = $('goalSelect') ? $('goalSelect').value : null;
     if (goalVal) req.goal = goalVal;
-    render(THEngine.buildSession(req));
+    render(THEngine.buildSession(req, null, { useSupersets: supersetEnabled }));
   }
 
   function currentDriveId() {
@@ -838,6 +843,23 @@
 
   if ($('applyBalancedFocusBtn')) {
     $('applyBalancedFocusBtn').addEventListener('click', applyBalancedFocus);
+  }
+
+  var supersetEnabled = false;
+  if ($('supersetModeBtn')) {
+    $('supersetModeBtn').addEventListener('click', () => {
+      supersetEnabled = !supersetEnabled;
+      var btn = $('supersetModeBtn');
+      var out = $('supersetPairsOut');
+      if (btn) {
+        btn.style.background = supersetEnabled ? 'var(--th-teal-soft)' : '';
+        btn.style.color = supersetEnabled ? 'var(--th-teal-ink)' : '';
+      }
+      if (out) {
+        out.textContent = supersetEnabled ? 'מצב סופר-סטים מופעל (ישולבו זוגות שרירים אנטגוניסטיים)' : 'מצב סופר-סטים כבוי';
+      }
+      run();
+    });
   }
 
   $('prompt').addEventListener('input', syncFieldsFromPrompt);
