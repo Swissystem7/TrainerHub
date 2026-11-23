@@ -1,4 +1,5 @@
-(function(root) { root.NetanyaOpeningWorkouts = [
+((root) => {
+  root.NetanyaOpeningWorkouts = [
   {
     "saved_id": "netanya-opening-1-v1",
     "title": "אימון 1 — היכרות ותחנות כוח — שלולית החורף נתניה",
@@ -511,4 +512,220 @@
     ],
     "notes": "התאמה מוצעת על בסיס אימוני פתיחה הכנצ. שלולית החורף היא שם הפארק; תנאי השטח לא נבדקו. נדרש אישור מדריך ותיק קבוצה. מקטעים כוללים הדגמה והפסקות ואינם עבודה רצופה."
   }
-]; })(typeof window !== "undefined" ? window : this);
+  ];
+
+  function renderGroupScoreboardPanel(container) {
+    if (typeof document === 'undefined') return null;
+    const target = typeof container === 'string' ? document.getElementById(container) : container;
+    if (!target) return null;
+
+    while (target.firstChild) {
+      target.removeChild(target.firstChild);
+    }
+
+    const panel = document.createElement('div');
+    panel.id = 'groupScoreboardPanel';
+    panel.className = 'card group-scoreboard-panel';
+
+    const heading = document.createElement('h3');
+    heading.textContent = 'לוח תוצאות תחנות קבוצתי (ללא פרטים מזהים)';
+    panel.appendChild(heading);
+
+    const desc = document.createElement('p');
+    desc.className = 'muted';
+    desc.textContent = 'רישום ביצועי תחנות לפי כינוי או מספר ברזל בלבד — שומר על פרטיות מלאה.';
+    panel.appendChild(desc);
+
+    const row1 = document.createElement('div');
+    row1.className = 'row';
+
+    const stationCol = document.createElement('div');
+    const stationLbl = document.createElement('label');
+    stationLbl.htmlFor = 'groupStationName';
+    stationLbl.textContent = 'שם / מספר תחנה';
+    const stationInput = document.createElement('input');
+    stationInput.type = 'text';
+    stationInput.id = 'groupStationName';
+    stationInput.setAttribute('aria-label', 'שם או מספר תחנה');
+    stationInput.placeholder = 'לדוגמה: תחנה 1 — שכיבות סמיכה';
+    stationCol.appendChild(stationLbl);
+    stationCol.appendChild(stationInput);
+    row1.appendChild(stationCol);
+
+    const slotCol = document.createElement('div');
+    const slotLbl = document.createElement('label');
+    slotLbl.htmlFor = 'groupSlotLabel';
+    slotLbl.textContent = 'כינוי / מספר ברזל';
+    const slotInput = document.createElement('input');
+    slotInput.type = 'text';
+    slotInput.id = 'groupSlotLabel';
+    slotInput.setAttribute('aria-label', 'כינוי או מספר ברזל');
+    slotInput.placeholder = 'לדוגמה: ברזל 4';
+    slotCol.appendChild(slotLbl);
+    slotCol.appendChild(slotInput);
+    row1.appendChild(slotCol);
+    panel.appendChild(row1);
+
+    const row2 = document.createElement('div');
+    row2.className = 'row';
+
+    const scoreCol = document.createElement('div');
+    const scoreLbl = document.createElement('label');
+    scoreLbl.htmlFor = 'groupScoreValue';
+    scoreLbl.textContent = 'תוצאה';
+    const scoreInput = document.createElement('input');
+    scoreInput.type = 'number';
+    scoreInput.id = 'groupScoreValue';
+    scoreInput.min = '0';
+    scoreInput.step = '1';
+    scoreInput.inputMode = 'numeric';
+    scoreInput.setAttribute('aria-label', 'תוצאת ביצוע');
+    scoreCol.appendChild(scoreLbl);
+    scoreCol.appendChild(scoreInput);
+    row2.appendChild(scoreCol);
+
+    const metricCol = document.createElement('div');
+    const metricLbl = document.createElement('label');
+    metricLbl.htmlFor = 'groupMetricType';
+    metricLbl.textContent = 'סוג מדד';
+    const metricSelect = document.createElement('select');
+    metricSelect.id = 'groupMetricType';
+    metricSelect.setAttribute('aria-label', 'סוג מדד תחנה');
+
+    const optReps = document.createElement('option');
+    optReps.value = 'reps';
+    optReps.textContent = 'חזרות (גבוה מנצח)';
+    metricSelect.appendChild(optReps);
+
+    const optTime = document.createElement('option');
+    optTime.value = 'time';
+    optTime.textContent = 'זמן בשניות (קצר מנצח)';
+    metricSelect.appendChild(optTime);
+
+    metricCol.appendChild(metricLbl);
+    metricCol.appendChild(metricSelect);
+    row2.appendChild(metricCol);
+    panel.appendChild(row2);
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.id = 'groupSaveScoreBtn';
+    saveBtn.textContent = 'רשום תוצאת תחנה';
+    saveBtn.setAttribute('aria-label', 'רשום תוצאת תחנה');
+    actions.appendChild(saveBtn);
+
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'ghost';
+    clearBtn.id = 'groupClearBoardBtn';
+    clearBtn.textContent = 'נקה לוח תחנות';
+    clearBtn.setAttribute('aria-label', 'נקה לוח תחנות');
+    actions.appendChild(clearBtn);
+
+    panel.appendChild(actions);
+
+    const out = document.createElement('div');
+    out.id = 'groupLeaderboardOut';
+    out.setAttribute('aria-live', 'polite');
+    panel.appendChild(out);
+
+    target.appendChild(panel);
+
+    const getScoreboard = () => {
+      if (typeof window !== 'undefined' && window.THGroupScoreboard) {
+        return window.THGroupScoreboard;
+      }
+      try {
+        return require('../js/group-scoreboard.js');
+      } catch (_) {
+        return null;
+      }
+    };
+
+    const renderBoard = () => {
+      while (out.firstChild) {
+        out.removeChild(out.firstChild);
+      }
+      const sb = getScoreboard();
+      if (!sb) return;
+
+      const st = stationInput.value.trim();
+      const mt = metricSelect.value;
+      const all = sb.getStationScores(st);
+      const ranked = sb.rankStationParticipants(all, mt);
+
+      if (ranked.length === 0) {
+        const emptyP = document.createElement('p');
+        emptyP.className = 'muted';
+        emptyP.textContent = 'אין תוצאות רשומות עדיין לתחנה זו.';
+        out.appendChild(emptyP);
+        return;
+      }
+
+      const list = document.createElement('div');
+      list.className = 'group-board-list';
+      list.style.marginTop = '12px';
+
+      ranked.forEach((item) => {
+        const itemRow = document.createElement('div');
+        itemRow.className = 'card';
+        itemRow.style.display = 'flex';
+        itemRow.style.justifyContent = 'space-between';
+        itemRow.style.alignItems = 'center';
+
+        const leftSpan = document.createElement('span');
+        leftSpan.textContent = `#${item.rank} ${item.slotLabel}`;
+        leftSpan.style.fontWeight = 'bold';
+
+        const rightSpan = document.createElement('span');
+        const unit = item.metricType === 'time' ? ' שנ׳' : ' חזרות';
+        rightSpan.textContent = item.scoreValue + unit;
+
+        itemRow.appendChild(leftSpan);
+        itemRow.appendChild(rightSpan);
+        list.appendChild(itemRow);
+      });
+
+      out.appendChild(list);
+    };
+
+    saveBtn.addEventListener('click', () => {
+      const sb = getScoreboard();
+      if (!sb) return;
+      const st = stationInput.value.trim() || 'תחנה 1';
+      const sl = slotInput.value.trim();
+      const sc = scoreInput.value;
+      const mt = metricSelect.value;
+      if (!sl || sc === '') return;
+      sb.recordStationScore(st, sl, sc, mt);
+      slotInput.value = '';
+      scoreInput.value = '';
+      renderBoard();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      const sb = getScoreboard();
+      if (!sb) return;
+      sb.clearStationScores();
+      renderBoard();
+    });
+
+    stationInput.addEventListener('change', renderBoard);
+    metricSelect.addEventListener('change', renderBoard);
+
+    renderBoard();
+    return panel;
+  }
+
+  root.renderGroupScoreboardPanel = renderGroupScoreboardPanel;
+
+  if (typeof module === 'object' && module.exports) {
+    module.exports = {
+      NetanyaOpeningWorkouts: root.NetanyaOpeningWorkouts,
+      renderGroupScoreboardPanel: renderGroupScoreboardPanel
+    };
+  }
+})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
