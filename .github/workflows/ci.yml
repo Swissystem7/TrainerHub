@@ -14,7 +14,10 @@ jobs:
     name: ci
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    # Same-repo pushes and PRs run on the Dell self-hosted runner
+    # (factory-dell-heavy, labels heavy + playwright). Pull requests from forks
+    # stay on GitHub-hosted runners so outside code never runs on the Dell.
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || fromJSON('["self-hosted","heavy","playwright"]') }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
