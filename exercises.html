@@ -313,6 +313,8 @@
         </div>
         <ol class="draft-list" id="draftList"></ol>
         <p class="status" id="builderStatus" role="status" aria-live="polite"></p>
+        <!-- biome-ignore lint/a11y/useSemanticElements: joint prep hint region -->
+        <div id="exerciseJointPrepHint" class="exercise-joint-prep-hint" role="region" aria-label="תנועות הכנה למפרקים" style="display:none;padding:12px;margin:8px 0;background:var(--card-2);border:1px solid var(--line);border-radius:14px"></div>
         <div class="builder-actions">
           <button type="button" class="th-btn" id="saveWorkout">שמור אימון</button>
           <button type="button" class="th-btn ghost" id="saveSelectionAsTemplateBtn" aria-label="שמור כתבנית אישית">שמור כתבנית אישית</button>
@@ -389,6 +391,7 @@
 <script src="./js/core.js"></script>
 <script src="./js/library-profile-filter.js"></script>
 <script src="./js/reel-library.js"></script>
+<script src="./js/joint-prep.js"></script>
 <script src="./js/live-media-panel.js"></script>
 <script src="./js/custom-templates.js"></script>
 <script>
@@ -409,6 +412,49 @@
     for (var i = 0; i < chips.length; i++) {
       chips[i].setAttribute('aria-pressed', chips[i].getAttribute('data-muscle') === muscle ? 'true' : 'false');
     }
+    updateJointPrepHint();
+  }
+
+  function updateJointPrepHint() {
+    var host = $('exerciseJointPrepHint');
+    if (!host || typeof THJointPrep === 'undefined') return;
+
+    var muscle = currentMuscle();
+    if (!muscle && draft && draft.items && draft.items.length) {
+      muscle = draft.items[0].muscle || draft.items[0].category || '';
+    }
+
+    var checks = THJointPrep.getJointPrepChecks(muscle);
+
+    while (host.firstChild) {
+      host.removeChild(host.firstChild);
+    }
+
+    var title = document.createElement('div');
+    title.style.fontWeight = '800';
+    title.style.fontSize = '0.9rem';
+    title.style.marginBottom = '6px';
+    title.style.color = 'var(--ink)';
+    title.textContent = 'תנועות הכנה מומלצות למפרקים (' + (muscle || 'כללי') + '):';
+    host.appendChild(title);
+
+    var list = document.createElement('ul');
+    list.style.margin = '0';
+    list.style.paddingInlineStart = '18px';
+    list.style.fontSize = '0.8rem';
+    list.style.color = 'var(--muted)';
+    list.style.display = 'flex';
+    list.style.flexDirection = 'column';
+    list.style.gap = '4px';
+
+    checks.forEach(function (c) {
+      var li = document.createElement('li');
+      li.textContent = c.name + ' (' + c.jointHe + ') — ' + c.instruction;
+      list.appendChild(li);
+    });
+
+    host.appendChild(list);
+    host.style.display = 'block';
   }
 
   function paintIcons() {
@@ -460,6 +506,7 @@
     if (!total) {
       host.innerHTML = '';
       empty.hidden = false;
+      updateJointPrepHint();
       return;
     }
     empty.hidden = true;
@@ -499,6 +546,7 @@
           '<span class="count">' + section.items.length + '</span></h3>' +
         '<ol class="section-list">' + rows + '</ol></li>';
     }).join('');
+    updateJointPrepHint();
   }
 
   function cardHtml(ex, added, index) {
@@ -591,6 +639,7 @@
   }
 
   paintIcons();
+  updateJointPrepHint();
   watchPosters($('grid'));
   watchPosters($('draftList'));
 

@@ -8,6 +8,14 @@
 	if (typeof module === "object" && module.exports) {
 		Infer = require("./infer.js");
 	}
+	var TempoVolume = root.THTempoVolume;
+	if (typeof module === "object" && module.exports) {
+		try {
+			TempoVolume = require("./tempo-volume.js");
+		} catch (_e) {
+			TempoVolume = root.THTempoVolume;
+		}
+	}
 
 	var STIMULUS = {
 		endurance: {
@@ -367,6 +375,31 @@
 				.filter((m) => primarySet.indexOf(m) === -1),
 		);
 
+		var totalTutSeconds = 0;
+		exercises.forEach((ex) => {
+			var setsRaw = Number(ex?.sets);
+			var setCount = Number.isFinite(setsRaw) && setsRaw > 0 ? setsRaw : 1;
+			var durRaw = Number(ex?.duration_seconds);
+			var reps;
+			var tempoVal;
+			var setTut;
+			if (Number.isFinite(durRaw) && durRaw > 0) {
+				totalTutSeconds += setCount * durRaw;
+			} else {
+				reps = parseRepMid(ex?.reps);
+				if (reps && reps > 0) {
+					tempoVal = ex?.tempo || ex?.tempoPattern || ex?.tempoObj;
+					setTut =
+						TempoVolume &&
+						typeof TempoVolume.computeSetTimeUnderTension === "function"
+							? TempoVolume.computeSetTimeUnderTension(reps, tempoVal)
+							: reps * 5;
+					totalTutSeconds += setCount * setTut;
+				}
+			}
+		});
+		totalTutSeconds = Math.max(0, Math.round(totalTutSeconds));
+
 		return {
 			exercises: analyses,
 			volume: volumePct,
@@ -377,6 +410,7 @@
 			flags: flags,
 			primary: primarySet,
 			secondary: secondarySet,
+			totalTutSeconds: totalTutSeconds,
 		};
 	}
 
