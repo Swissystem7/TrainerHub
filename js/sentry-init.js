@@ -3,6 +3,7 @@
  * Classic script, no bundler. Namespace: window.THSentry.
  * Errors only: no tracing, no session replay, no PII. The workout lives in the
  * URL hash, so every URL that leaves the page has its hash cut off first.
+ * Nothing loads until the visitor agrees (js/consent.js).
  * The Sentry bundle is loaded from the CDN after the page; offline or blocked,
  * the load just fails quietly and the app keeps working.
  */
@@ -119,7 +120,41 @@
     return true;
   }
 
+  // Consent: Sentry is loaded only after the visitor said yes (js/consent.js stores the choice
+  // under CONSENT_KEY and announces it with the 'th-consent' event). No choice or 'denied' means
+  // no bundle is fetched and nothing is buffered or sent.
+  var CONSENT_KEY = 'th-consent-v1';
+  var CONSENT_EVENT = 'th-consent';
+
+  function hasConsent(win) {
+    try {
+      return !!win.localStorage && win.localStorage.getItem(CONSENT_KEY) === 'granted';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function startWhenConsented(win) {
+    if (!win || !win.document) return false;
+    if (typeof win.addEventListener === 'function') {
+      win.addEventListener(CONSENT_EVENT, function (e) {
+        var choice = e && e.detail;
+        if (choice === 'granted') {
+          start(win);
+        } else if (choice === 'denied' && win.Sentry && typeof win.Sentry.close === 'function') {
+          try { win.Sentry.close(); } catch (_) { /* already closed */ }
+        }
+      });
+    }
+    if (hasConsent(win)) return start(win);
+    return false;
+  }
+
   var api = {
+    CONSENT_KEY: CONSENT_KEY,
+    CONSENT_EVENT: CONSENT_EVENT,
+    hasConsent: hasConsent,
+    startWhenConsented: startWhenConsented,
     DSN: DSN,
     BUNDLE_URL: BUNDLE_URL,
     stripHash: stripHash,
@@ -134,6 +169,6 @@
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root && root.document) {
     root.THSentry = api;
-    start(root);
+    startWhenConsented(root);
   }
 })(typeof window !== 'undefined' ? window : this);
