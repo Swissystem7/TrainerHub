@@ -7,7 +7,7 @@ const { readIndex } = require('./helpers/page-source');
 const ROOT = path.join(__dirname, '..');
 const TH = require('../js/core.js');
 let jsQR = null;
-try { jsQR = require('jsqr'); } catch (e) { jsQR = null; }
+try { jsQR = require('jsqr'); } catch { jsQR = null; }
 
 const BASE = { title: 'כוח A', doneAt: '2026-11-05T09:00:00.000Z', minutes: 40, rpe: 7, name: 'נועה' };
 
@@ -49,7 +49,7 @@ test('qrMatrix: sizes, finder patterns, too-long text → null', () => {
 });
 
 test('qrMatrix decodes back to the share URL (jsQR)', { skip: !jsQR && 'jsqr not installed' }, () => {
-  const url = 'https://aviran.github.io/TrainerHub/client.html#w=' + 'Ab9_-'.repeat(60);
+  const url = `https://aviran.github.io/TrainerHub/client.html#w=${'Ab9_-'.repeat(60)}`;
   const m = TH.qrMatrix(url);
   const px = 4, q = 4, n = (m.size + q * 2) * px;
   const data = new Uint8ClampedArray(n * n * 4).fill(255);
