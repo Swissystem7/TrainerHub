@@ -1,0 +1,41 @@
+{
+  "id": "wall-angels",
+  "name": { "en": "Standing wall angels", "he": "מלאכי קיר בעמידה" },
+  "view": "side",
+  "equipment": ["wall"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 1.7, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [-0.6, 0.0], "to": [-0.127, 2.6], "color": "dark" },
+    { "type": "rect", "from": [-0.139, 0.0], "to": [-0.127, 2.6], "color": "iron" }
+  ],
+  "poses": {
+    "goalpost": {
+      "pin": { "point": "near.heel", "at": [0.065, 0.045] },
+      "torso": 90,
+      "neck": 92,
+      "thigh": -80,
+      "shin": -86,
+      "scale": { "upperArm": 0.33, "foreArm": 1.0 },
+      "upperArm": 135,
+      "foreArm": 90,
+      "hand": 90
+    },
+    "overhead": {
+      "base": "goalpost",
+      "scale": { "upperArm": 0.85, "foreArm": 0.85 },
+      "upperArm": 97,
+      "foreArm": 95,
+      "hand": 93
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "goalpost" },
+    { "t": 1.2, "pose": "overhead", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "overhead", "ease": "linear" },
+    { "t": 2.7, "pose": "goalpost", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "goalpost", "ease": "linear" }
+  ]
+}

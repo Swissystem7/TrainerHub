@@ -24,7 +24,10 @@
       "legacyDriveId": "1tLFxcQifJQgGYRZD20YQticZ0S4psv2r",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-015.mp4",
       "available": true,
-      "drivePlayId": "1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o"
+      "drivePlayId": "1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o",
+      "anim": "plank",
+      "originalPoster": "",
+      "poster": "media/anim/plank.jpg"
     },
     {
       "id": "drive_פלאנק_גבוה",
@@ -129,7 +132,10 @@
       "legacyDriveId": "1vK0HbdNXhZ_FChgFKRDf2-Lkm9_g4obj",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-009.mp4",
       "available": true,
-      "drivePlayId": "1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3"
+      "drivePlayId": "1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3",
+      "anim": "mountain-climber",
+      "originalPoster": "",
+      "poster": "media/anim/mountain-climber.jpg"
     },
     {
       "id": "drive_מטפס_הרים_עם_פלאנק",
@@ -147,7 +153,10 @@
       "legacyDriveId": "1kZGzGL4AsY8-0fh6cSRKRjlkqAKnP_8K",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-008.mp4",
       "available": true,
-      "drivePlayId": "1ypdsQOSm46T_94w6f660G_97bQ2Hurfz"
+      "drivePlayId": "1ypdsQOSm46T_94w6f660G_97bQ2Hurfz",
+      "anim": "mountain-climber",
+      "originalPoster": "",
+      "poster": "media/anim/mountain-climber.jpg"
     },
     {
       "id": "drive_בטן",
@@ -420,7 +429,10 @@
       "legacyDriveId": "1HBsxB8etnLWCOaY2Xe2C1QXG70c0PgoL",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-043.mp4",
       "available": true,
-      "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM"
+      "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM",
+      "anim": "pushups",
+      "originalPoster": "",
+      "poster": "media/anim/pushups.jpg"
     },
     {
       "id": "drive_חימום_שכיבות_שמיכה_קונוסים_על_הגב",
@@ -780,7 +792,10 @@
       "legacyDriveId": "17TLtLaj06GakS7lclm-Ty5QqyKJMNSe3",
       "file": "https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-068.mp4",
       "available": true,
-      "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd"
+      "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd",
+      "anim": "pushups",
+      "originalPoster": "",
+      "poster": "media/anim/pushups.jpg"
     },
     {
       "id": "drive_סולם_רגליים",
@@ -923,7 +938,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DcWN0zEIvGK/",
-      "poster": "assets/posters/ill-1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ.jpg"
+      "poster": "media/anim/pushups.jpg",
+      "anim": "pushups",
+      "originalPoster": "assets/posters/ill-1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_עם_הפעלת_חזה",
@@ -942,7 +959,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DYcpLzaKb0N/",
-      "poster": "assets/posters/ill-1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9.jpg"
+      "poster": "media/anim/pushups.jpg",
+      "anim": "pushups",
+      "originalPoster": "assets/posters/ill-1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9.jpg"
     },
     {
       "id": "drive_התקדמות_שכיבות_סמיכה_ב־4_שלבים",
@@ -961,7 +980,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/Dah3eKkT01y/",
-      "poster": "assets/posters/ill-1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr.jpg"
+      "poster": "media/anim/pushups.jpg",
+      "anim": "pushups",
+      "originalPoster": "assets/posters/ill-1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בשיפוע_על_מוט",
@@ -980,7 +1001,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DXUywlAj_iT/",
-      "poster": "assets/posters/ill-1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/ill-1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs.jpg"
     },
     {
       "id": "drive_פרפר_חזה_עם_גומייה",
@@ -998,7 +1021,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DcjQxgwotKZ/",
-      "poster": "assets/posters/ill-14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b.jpg"
+      "poster": "media/anim/floor-dumbbell-fly.jpg",
+      "anim": "floor-dumbbell-fly",
+      "originalPoster": "assets/posters/ill-14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_על_הברכיים_-_3_וריאציות",
@@ -1037,7 +1062,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DdQWo6MJQHY/",
-      "poster": "assets/posters/ill-1EwdqwshrpQfEVyBy_sIu2oYUrE469xbZ.jpg"
+      "poster": "media/anim/pushups.jpg",
+      "anim": "pushups",
+      "originalPoster": "assets/posters/ill-1EwdqwshrpQfEVyBy_sIu2oYUrE469xbZ.jpg"
     },
     {
       "id": "drive_אתגר_שכיבות_סמיכה_ביד_אחת_בזוג",
@@ -1076,7 +1103,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DVJjBPBgZr9/",
-      "poster": "assets/posters/ill-1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB.jpg"
+      "poster": "media/anim/pull-up.jpg",
+      "anim": "pull-up",
+      "originalPoster": "assets/posters/ill-1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB.jpg"
     },
     {
       "id": "drive_מתח_עם_משקל_נוסף",
@@ -1095,7 +1124,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/Dd4A1BxNpmR/",
-      "poster": "assets/posters/ill-1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN.jpg"
+      "poster": "media/anim/pull-up.jpg",
+      "anim": "pull-up",
+      "originalPoster": "assets/posters/ill-1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN.jpg"
     },
     {
       "id": "drive_חתירה_ביד_אחת_עם_משקולת",
@@ -1133,7 +1164,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DWKwmB_kTKl/",
-      "poster": "assets/posters/ill-11L8DLfkD26gP5o4aY5uGpQDXa8_XAKHP.jpg"
+      "poster": "media/anim/band-row.jpg",
+      "anim": "band-row",
+      "originalPoster": "assets/posters/ill-11L8DLfkD26gP5o4aY5uGpQDXa8_XAKHP.jpg"
     },
     {
       "id": "drive_סופרמן_-_החזקה",
@@ -1152,7 +1185,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DT0RhRjk80n/",
-      "poster": "assets/posters/ill-1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua.jpg"
+      "poster": "media/anim/superman-hold.jpg",
+      "anim": "superman-hold",
+      "originalPoster": "assets/posters/ill-1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua.jpg"
     },
     {
       "id": "drive_חתירה_ביד_אחת_עם_גומייה",
@@ -1171,7 +1206,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DblbSnjNF9z/",
-      "poster": "assets/posters/ill-1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt.jpg"
+      "poster": "media/anim/band-row.jpg",
+      "anim": "band-row",
+      "originalPoster": "assets/posters/ill-1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt.jpg"
     },
     {
       "id": "drive_משיכות_סופרמן_בשכיבה_עם_משקולות",
@@ -1228,7 +1265,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DW3uis2DIn6/",
-      "poster": "assets/posters/ill-11McYv17HvWF22sdBgDegr5O-00MNEV9-.jpg"
+      "poster": "media/anim/cable-lateral-raise.jpg",
+      "anim": "cable-lateral-raise",
+      "originalPoster": "assets/posters/ill-11McYv17HvWF22sdBgDegr5O-00MNEV9-.jpg"
     },
     {
       "id": "drive_לחיצת_כתפיים_בישיבה_עם_גומייה",
@@ -1247,7 +1286,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DZbGqTGPGqP/",
-      "poster": "assets/posters/ill-1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt.jpg"
+      "poster": "media/anim/band-overhead-press.jpg",
+      "anim": "band-overhead-press",
+      "originalPoster": "assets/posters/ill-1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt.jpg"
     },
     {
       "id": "drive_הרמת_V_עם_גומייה",
@@ -1285,7 +1326,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DXGE2xBCGgE/",
-      "poster": "assets/posters/ill-1ZsmSobl9hg8XXeDswfzA2jZSp8Hr99ib.jpg"
+      "poster": "media/anim/cable-lateral-raise.jpg",
+      "anim": "cable-lateral-raise",
+      "originalPoster": "assets/posters/ill-1ZsmSobl9hg8XXeDswfzA2jZSp8Hr99ib.jpg"
     },
     {
       "id": "drive_לחיצה_קובנית",
@@ -1322,7 +1365,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DWOx39VFDw_/",
-      "poster": "assets/posters/ill-1rYuXwGMBroJl2TgY3kH2_cnveHpmqwxw.jpg"
+      "poster": "media/anim/pike-pushup.jpg",
+      "anim": "pike-pushup",
+      "originalPoster": "assets/posters/ill-1rYuXwGMBroJl2TgY3kH2_cnveHpmqwxw.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_פייק_-_הדרכה_מונפשת",
@@ -1341,7 +1386,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DUEBGSUlPPV/",
-      "poster": "assets/posters/ill-1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe.jpg"
+      "poster": "media/anim/pike-pushup.jpg",
+      "anim": "pike-pushup",
+      "originalPoster": "assets/posters/ill-1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe.jpg"
     },
     {
       "id": "drive_לחיצת_כתפיים_בעמידה_עם_גומייה",
@@ -1360,7 +1407,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DZY0p8gKCWM/",
-      "poster": "assets/posters/ill-11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV.jpg"
+      "poster": "media/anim/band-overhead-press.jpg",
+      "anim": "band-overhead-press",
+      "originalPoster": "assets/posters/ill-11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV.jpg"
     },
     {
       "id": "drive_כפיפת_פטיש_לסירוגין",
@@ -1414,7 +1463,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DdbhjKqRY-L/",
-      "poster": "assets/posters/ill-1HDUfPsMi9VPYyti3odRtDZCqataqujTK.jpg"
+      "poster": "media/anim/concentration-curl.jpg",
+      "anim": "concentration-curl",
+      "originalPoster": "assets/posters/ill-1HDUfPsMi9VPYyti3odRtDZCqataqujTK.jpg"
     },
     {
       "id": "drive_כפיפת_מרפק_עם_גומייה_בעמידה",
@@ -1432,7 +1483,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DcbiITZtExG/",
-      "poster": "assets/posters/ill-1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF.jpg"
+      "poster": "media/anim/band-curl.jpg",
+      "anim": "band-curl",
+      "originalPoster": "assets/posters/ill-1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF.jpg"
     },
     {
       "id": "drive_כפיפה_עם_גומייה_מאחורי_הגוף",
@@ -1450,7 +1503,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DbVwC50ox3N/",
-      "poster": "assets/posters/ill-1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd.jpg"
+      "poster": "media/anim/band-curl.jpg",
+      "anim": "band-curl",
+      "originalPoster": "assets/posters/ill-1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd.jpg"
     },
     {
       "id": "drive_כפיפה_באחיזה_צמודה_עם_גומייה",
@@ -1468,7 +1523,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DeOMzxIslEp/",
-      "poster": "assets/posters/ill-1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8.jpg"
+      "poster": "media/anim/band-curl.jpg",
+      "anim": "band-curl",
+      "originalPoster": "assets/posters/ill-1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8.jpg"
     },
     {
       "id": "drive_דיפס_על_ספסל_-_הדרכה_מונפשת",
@@ -1560,7 +1617,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/Da8cvXDhKSi/",
-      "poster": "assets/posters/ill-1fzis0Gg-mh_8IL1J7ohsxgdjc_tqCE51.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/ill-1fzis0Gg-mh_8IL1J7ohsxgdjc_tqCE51.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_יהלום_-_הדרכה",
@@ -1690,7 +1749,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DffAMV0AKa2/",
-      "poster": "assets/posters/ill-1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU.jpg"
+      "poster": "media/anim/bulgarian-split-squat.jpg",
+      "anim": "bulgarian-split-squat",
+      "originalPoster": "assets/posters/ill-1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU.jpg"
     },
     {
       "id": "drive_עלייה_למדרגה_למתחילים",
@@ -1744,7 +1805,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DGa3xyHiY18/",
-      "poster": "assets/posters/ill-1SSC1Bnr97JEAQePBCZ3n_GuFj26trfO0.jpg"
+      "poster": "media/anim/barbell-back-squat.jpg",
+      "anim": "barbell-back-squat",
+      "originalPoster": "assets/posters/ill-1SSC1Bnr97JEAQePBCZ3n_GuFj26trfO0.jpg"
     },
     {
       "id": "drive_פלאנק_על_האמות_-_טכניקה",
@@ -1762,7 +1825,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/DWwRxG_jLOo/",
-      "poster": "assets/posters/ill-1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox.jpg"
+      "poster": "media/anim/plank.jpg",
+      "anim": "plank",
+      "originalPoster": "assets/posters/ill-1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox.jpg"
     },
     {
       "id": "drive_פלאנק_ברך_לחזה",
@@ -1852,7 +1917,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/Dap79yBOnSF/",
-      "poster": "assets/posters/ill-1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF.jpg"
+      "poster": "media/anim/dead-bug.jpg",
+      "anim": "dead-bug",
+      "originalPoster": "assets/posters/ill-1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF.jpg"
     },
     {
       "id": "drive_כפיפת_V_בישיבה",
@@ -1870,7 +1937,9 @@
       "available": true,
       "aliases": [],
       "sourceUrl": "https://www.instagram.com/reel/De-vCS7x6cn/",
-      "poster": "assets/posters/ill-1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_.jpg"
+      "poster": "media/anim/seated-v-up.jpg",
+      "anim": "seated-v-up",
+      "originalPoster": "assets/posters/ill-1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_.jpg"
     },
     {
       "id": "drive_אתגר_פלאנק_משפחתי_לילדים_ולזוגות",
@@ -2400,7 +2469,9 @@
         "דיפס מוט ישר"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DOITmPRjLeZ/",
-      "poster": "assets/posters/ill-12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/ill-12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f.jpg"
     },
     {
       "id": "drive_פיסטול_סקוואט_באחיזה_במוט",
@@ -2444,7 +2515,9 @@
         "התקדמות למתח"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DVSSS7dCZmF/",
-      "poster": "assets/posters/ill-1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl.jpg"
+      "poster": "media/anim/pull-up.jpg",
+      "anim": "pull-up",
+      "originalPoster": "assets/posters/ill-1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בירידה_על_מדרגות",
@@ -2466,7 +2539,9 @@
         "שכיבות סמיכה רגליים על מדרגה"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DatSixZpEoY/",
-      "poster": "assets/posters/ill-1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/ill-1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_פייק_עם_רגליים_על_המדרגות",
@@ -2488,7 +2563,9 @@
         "elevated pike push ups on stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbYGBdJp_-Z/",
-      "poster": "assets/posters/ill-1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf.jpg"
+      "poster": "media/anim/pike-pushup.jpg",
+      "anim": "pike-pushup",
+      "originalPoster": "assets/posters/ill-1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf.jpg"
     },
     {
       "id": "drive_סדרת_HIIT_ג'אמפינג_ג'קס,_ברך_גבוהה,_מטפס_הרים_וסקוואט_קפיצה",
@@ -2531,7 +2608,9 @@
         "cross body mountain climber"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZs_ftUBacO/",
-      "poster": "assets/posters/DZs_ftUBacO.jpg"
+      "poster": "media/anim/mountain-climber.jpg",
+      "anim": "mountain-climber",
+      "originalPoster": "assets/posters/DZs_ftUBacO.jpg"
     },
     {
       "id": "drive_חתירה_מתחת_לשולחן_עם_רגליים_על_הרצפה",
@@ -2599,7 +2678,9 @@
         "band assisted dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DewMmR1g_fK/",
-      "poster": "assets/posters/ill-1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/ill-1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_בקבוקי_מים_לילדים",
@@ -2681,7 +2762,9 @@
         "banded bulgarian split squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Db_KYjmOcgn/",
-      "poster": "assets/posters/Db_KYjmOcgn.jpg"
+      "poster": "media/anim/bulgarian-split-squat.jpg",
+      "anim": "bulgarian-split-squat",
+      "originalPoster": "assets/posters/Db_KYjmOcgn.jpg"
     },
     {
       "id": "drive_חתירה_כבדה_ביד_אחת_עם_משקולת",
@@ -2789,7 +2872,9 @@
         "swiss ball preacher curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DCiDTM4MPki/",
-      "poster": "assets/posters/DCiDTM4MPki.jpg"
+      "poster": "media/anim/preacher-curl.jpg",
+      "anim": "preacher-curl",
+      "originalPoster": "assets/posters/DCiDTM4MPki.jpg"
     },
     {
       "id": "drive_כפיפת_מרפק_ביד_אחת_נשענת_על_כדור_פיזיו",
@@ -2810,7 +2895,9 @@
         "stability ball one arm preacher curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdehFUAJ-5h/",
-      "poster": "assets/posters/DdehFUAJ-5h.jpg"
+      "poster": "media/anim/preacher-curl.jpg",
+      "anim": "preacher-curl",
+      "originalPoster": "assets/posters/DdehFUAJ-5h.jpg"
     },
     {
       "id": "drive_כדרור_כפול_בשני_כדורסל_לילדים",
@@ -3123,7 +3210,9 @@
         "stability ball decline push up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Da9q3OeJdnr/",
-      "poster": "assets/posters/Da9q3OeJdnr.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/Da9q3OeJdnr.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_על_ידיות_עם_רגליים_על_כדור_פיזיו",
@@ -3144,7 +3233,9 @@
         "feet on stability ball handle push up"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dc4EqUvvv_q/",
-      "poster": "assets/posters/Dc4EqUvvv_q.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/Dc4EqUvvv_q.jpg"
     },
     {
       "id": "drive_ערבוב_סיר_על_כדור_פיזיו",
@@ -3185,7 +3276,9 @@
         "stability ball pike"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbDQEQPSPar/",
-      "poster": "assets/posters/DbDQEQPSPar.jpg"
+      "poster": "media/anim/pike-pushup.jpg",
+      "anim": "pike-pushup",
+      "originalPoster": "assets/posters/DbDQEQPSPar.jpg"
     },
     {
       "id": "drive_דיפס_עם_עקבים_על_כדור_פיזיו",
@@ -3205,7 +3298,9 @@
         "stability ball bench dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DVeniyskoCm/",
-      "poster": "assets/posters/DVeniyskoCm.jpg"
+      "poster": "media/anim/stability-ball-bench-dip.jpg",
+      "anim": "stability-ball-bench-dip",
+      "originalPoster": "assets/posters/DVeniyskoCm.jpg"
     },
     {
       "id": "drive_דיפס_במקבילים_עם_רגליים_על_כדור_פיזיו",
@@ -3226,7 +3321,9 @@
         "stability ball feet dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DaShhJxxY0-/",
-      "poster": "assets/posters/DaShhJxxY0-.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/DaShhJxxY0-.jpg"
     },
     {
       "id": "drive_חתירה_ביד_אחת_עם_גומייה_בעמידת_מכרע",
@@ -3247,7 +3344,9 @@
         "split stance single arm band row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZLKClvIWdB/",
-      "poster": "assets/posters/DZLKClvIWdB.jpg"
+      "poster": "media/anim/band-row.jpg",
+      "anim": "band-row",
+      "originalPoster": "assets/posters/DZLKClvIWdB.jpg"
     },
     {
       "id": "drive_כפיפת_ריכוז_ביד_אחת_עם_גומייה",
@@ -3267,7 +3366,9 @@
         "single arm band concentration curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DEQ2kTJusT4/",
-      "poster": "assets/posters/DEQ2kTJusT4.jpg"
+      "poster": "media/anim/concentration-curl.jpg",
+      "anim": "concentration-curl",
+      "originalPoster": "assets/posters/DEQ2kTJusT4.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_מתפרצות_עם_גומייה_על_הגב",
@@ -3308,7 +3409,9 @@
         "half kneeling band woodchop"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcwnoAWom8H/",
-      "poster": "assets/posters/DcwnoAWom8H.jpg"
+      "poster": "media/anim/cable-woodchop.jpg",
+      "anim": "cable-woodchop",
+      "originalPoster": "assets/posters/DcwnoAWom8H.jpg"
     },
     {
       "id": "drive_דד_באג_עם_מיני_גומייה",
@@ -3328,7 +3431,9 @@
         "banded dead bug"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DEqXGrHRECu/",
-      "poster": "assets/posters/DEqXGrHRECu.jpg"
+      "poster": "media/anim/dead-bug.jpg",
+      "anim": "dead-bug",
+      "originalPoster": "assets/posters/DEqXGrHRECu.jpg"
     },
     {
       "id": "drive_דד_באג_עם_גומייה_מעוגנת",
@@ -3348,7 +3453,9 @@
         "anchored band dead bug"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DashoeainRD/",
-      "poster": "assets/posters/DashoeainRD.jpg"
+      "poster": "media/anim/dead-bug.jpg",
+      "anim": "dead-bug",
+      "originalPoster": "assets/posters/DashoeainRD.jpg"
     },
     {
       "id": "drive_סקוואט_קפיצה_עם_גומייה_סביב_המותן",
@@ -3389,7 +3496,9 @@
         "half kneeling banded overhead press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DeJ_A8WR2Tt/",
-      "poster": "assets/posters/DeJ_A8WR2Tt.jpg"
+      "poster": "media/anim/band-overhead-press.jpg",
+      "anim": "band-overhead-press",
+      "originalPoster": "assets/posters/DeJ_A8WR2Tt.jpg"
     },
     {
       "id": "drive_פשיטת_מרפק_לאחור_עם_מיני_גומייה",
@@ -3513,7 +3622,9 @@
         "dead hang"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdXACV_BApE/",
-      "poster": "assets/posters/DdXACV_BApE.jpg"
+      "poster": "media/anim/dead-hang.jpg",
+      "anim": "dead-hang",
+      "originalPoster": "assets/posters/DdXACV_BApE.jpg"
     },
     {
       "id": "drive_תלייה_אקטיבית_על_מוט_מתח",
@@ -3555,7 +3666,9 @@
         "korean dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DUhU5gjkVA3/",
-      "poster": "assets/posters/DUhU5gjkVA3.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/DUhU5gjkVA3.jpg"
     },
     {
       "id": "drive_דיפס_על_מוט_ישר_עם_משקל",
@@ -3576,7 +3689,9 @@
         "weighted straight bar dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Ddg69cfCxIH/",
-      "poster": "assets/posters/Ddg69cfCxIH.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/Ddg69cfCxIH.jpg"
     },
     {
       "id": "drive_דיפס_על_מוט_נמוך",
@@ -3597,7 +3712,9 @@
         "low bar dips"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZqqIkCgy_3/",
-      "poster": "assets/posters/DZqqIkCgy_3.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/DZqqIkCgy_3.jpg"
     },
     {
       "id": "drive_פלאנק_עם_תפיסת_כדורסל_מתחלפת",
@@ -3802,7 +3919,9 @@
         "floor dumbbell fly"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DehkvvXxH_0/",
-      "poster": "assets/posters/DehkvvXxH_0.jpg"
+      "poster": "media/anim/floor-dumbbell-fly.jpg",
+      "anim": "floor-dumbbell-fly",
+      "originalPoster": "assets/posters/DehkvvXxH_0.jpg"
     },
     {
       "id": "drive_חתירת_רנגייד_מתקדמת",
@@ -3885,7 +4004,9 @@
         "dumbbell dead bug"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DckJE7XsSg2/",
-      "poster": "assets/posters/DckJE7XsSg2.jpg"
+      "poster": "media/anim/dead-bug.jpg",
+      "anim": "dead-bug",
+      "originalPoster": "assets/posters/DckJE7XsSg2.jpg"
     },
     {
       "id": "drive_סקוואט_בולגרי_עם_משקולות_כבדות",
@@ -3905,7 +4026,9 @@
         "heavy dumbbell bulgarian split squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Deu6X-xSXy1/",
-      "poster": "assets/posters/Deu6X-xSXy1.jpg"
+      "poster": "media/anim/bulgarian-split-squat.jpg",
+      "anim": "bulgarian-split-squat",
+      "originalPoster": "assets/posters/Deu6X-xSXy1.jpg"
     },
     {
       "id": "drive_סקוואט_קפיצה_עם_משקולות",
@@ -3945,7 +4068,9 @@
         "dumbbell skull crusher"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfVBX25M9e9/",
-      "poster": "assets/posters/DfVBX25M9e9.jpg"
+      "poster": "media/anim/skull-crusher.jpg",
+      "anim": "skull-crusher",
+      "originalPoster": "assets/posters/DfVBX25M9e9.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_בשכיבה_עם_משקולות",
@@ -3965,7 +4090,9 @@
         "lying dumbbell triceps extension"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DRvestVCVA9/",
-      "poster": "assets/posters/ill-1McjkSLkIFZKTfolrtWoXd41vDLH67Zo_.jpg"
+      "poster": "media/anim/skull-crusher.jpg",
+      "anim": "skull-crusher",
+      "originalPoster": "assets/posters/ill-1McjkSLkIFZKTfolrtWoXd41vDLH67Zo_.jpg"
     },
     {
       "id": "drive_כפיפות_בטן_עם_זריקת_חוץ_בכדורגל",
@@ -4028,7 +4155,9 @@
         "incline push up on stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DWFs5LuiDwq/",
-      "poster": "assets/posters/DWFs5LuiDwq.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DWFs5LuiDwq.jpg"
     },
     {
       "id": "drive_זחילת_דוב_במעלה_מדרגות",
@@ -4131,7 +4260,9 @@
         "barbell pendlay row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DH9Z1duSE_6/",
-      "poster": "assets/posters/DH9Z1duSE_6.jpg"
+      "poster": "media/anim/barbell-bent-row.jpg",
+      "anim": "barbell-bent-row",
+      "originalPoster": "assets/posters/DH9Z1duSE_6.jpg"
     },
     {
       "id": "drive_חתירת_מוט_מהרצפה",
@@ -4152,7 +4283,9 @@
         "barbell row from floor"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DV1quogj_bN/",
-      "poster": "assets/posters/DV1quogj_bN.jpg"
+      "poster": "media/anim/barbell-bent-row.jpg",
+      "anim": "barbell-bent-row",
+      "originalPoster": "assets/posters/DV1quogj_bN.jpg"
     },
     {
       "id": "drive_חתירת_מוט_בכפיפה",
@@ -4173,7 +4306,9 @@
         "barbell bent over row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcLtULuNG5g/",
-      "poster": "assets/posters/DcLtULuNG5g.jpg"
+      "poster": "media/anim/barbell-bent-row.jpg",
+      "anim": "barbell-bent-row",
+      "originalPoster": "assets/posters/DcLtULuNG5g.jpg"
     },
     {
       "id": "drive_דדליפט_עם_מוט_אולימפי",
@@ -4215,7 +4350,9 @@
         "bench supported barbell row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfHkcmPzO3T/",
-      "poster": "assets/posters/DfHkcmPzO3T.jpg"
+      "poster": "media/anim/barbell-bent-row.jpg",
+      "anim": "barbell-bent-row",
+      "originalPoster": "assets/posters/DfHkcmPzO3T.jpg"
     },
     {
       "id": "drive_כפיפות_מרפקים_21_עם_מוט",
@@ -4235,7 +4372,9 @@
         "barbell 21s"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DXRfwQlk2g2/",
-      "poster": "assets/posters/DXRfwQlk2g2.jpg"
+      "poster": "media/anim/barbell-curl.jpg",
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DXRfwQlk2g2.jpg"
     },
     {
       "id": "drive_כפיפות_מוט_21_בחצאי_טווח",
@@ -4255,7 +4394,9 @@
         "barbell 21s partial curls"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DXJfIxjFHIW/",
-      "poster": "assets/posters/DXJfIxjFHIW.jpg"
+      "poster": "media/anim/barbell-curl.jpg",
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DXJfIxjFHIW.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_מוט_בעמידה",
@@ -4275,7 +4416,9 @@
         "standing barbell curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DX2aHRPyLWJ/",
-      "poster": "assets/posters/DX2aHRPyLWJ.jpg"
+      "poster": "media/anim/barbell-curl.jpg",
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DX2aHRPyLWJ.jpg"
     },
     {
       "id": "drive_לחיצת_מוט_בשיפוע_חיובי_כבדה",
@@ -4297,7 +4440,9 @@
         "heavy incline barbell bench press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DKKqZDmRs_j/",
-      "poster": "assets/posters/DKKqZDmRs_j.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DKKqZDmRs_j.jpg"
     },
     {
       "id": "drive_לחיצת_מוט_בשיפוע_עם_שומר",
@@ -4319,7 +4464,9 @@
         "spotted incline barbell bench press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DIeGEe_JTIB/",
-      "poster": "assets/posters/DIeGEe_JTIB.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DIeGEe_JTIB.jpg"
     },
     {
       "id": "drive_לחיצת_רצפה_כבדה_עם_מוט",
@@ -4423,7 +4570,9 @@
         "landmine 180"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dc1hU3UKNYc/",
-      "poster": "assets/posters/Dc1hU3UKNYc.jpg"
+      "poster": "media/anim/landmine-rotation.jpg",
+      "anim": "landmine-rotation",
+      "originalPoster": "assets/posters/Dc1hU3UKNYc.jpg"
     },
     {
       "id": "drive_רוטציית_לאנדמיין",
@@ -4443,7 +4592,9 @@
         "landmine rotation"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcWieqzyUz8/",
-      "poster": "assets/posters/DcWieqzyUz8.jpg"
+      "poster": "media/anim/landmine-rotation.jpg",
+      "anim": "landmine-rotation",
+      "originalPoster": "assets/posters/DcWieqzyUz8.jpg"
     },
     {
       "id": "drive_רוטציית_לאנדמיין_בטווח_מורחב",
@@ -4463,7 +4614,9 @@
         "landmine rotation extended reach"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdvevHGtL-N/",
-      "poster": "assets/posters/DdvevHGtL-N.jpg"
+      "poster": "media/anim/landmine-rotation.jpg",
+      "anim": "landmine-rotation",
+      "originalPoster": "assets/posters/DdvevHGtL-N.jpg"
     },
     {
       "id": "drive_פרונט_סקוואט_עם_מוט",
@@ -4543,7 +4696,9 @@
         "empty bar squat"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfX1tqny6O_/",
-      "poster": "assets/posters/DfX1tqny6O_.jpg"
+      "poster": "media/anim/barbell-back-squat.jpg",
+      "anim": "barbell-back-squat",
+      "originalPoster": "assets/posters/DfX1tqny6O_.jpg"
     },
     {
       "id": "drive_פוש_פרס_עם_מוט",
@@ -4648,7 +4803,9 @@
         "kettlebell bent over row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DKCtSfxCLxt/",
-      "poster": "assets/posters/DKCtSfxCLxt.jpg"
+      "poster": "media/anim/kettlebell-bent-row.jpg",
+      "anim": "kettlebell-bent-row",
+      "originalPoster": "assets/posters/DKCtSfxCLxt.jpg"
     },
     {
       "id": "drive_חתירה_בכפיפה_עם_קטלבל_ביד_אחת",
@@ -4669,7 +4826,9 @@
         "single arm kettlebell bent over row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DJUOT17OEQc/",
-      "poster": "assets/posters/DJUOT17OEQc.jpg"
+      "poster": "media/anim/kettlebell-bent-row.jpg",
+      "anim": "kettlebell-bent-row",
+      "originalPoster": "assets/posters/DJUOT17OEQc.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_קטלבל_הפוך",
@@ -4689,7 +4848,9 @@
         "bottoms up kettlebell curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DY7kG-1KS4V/",
-      "poster": "assets/posters/DY7kG-1KS4V.jpg"
+      "poster": "media/anim/bottoms-up-kb-curl.jpg",
+      "anim": "bottoms-up-kb-curl",
+      "originalPoster": "assets/posters/DY7kG-1KS4V.jpg"
     },
     {
       "id": "drive_לחיצת_רצפה_עם_קטלבל_הפוך_ביד_אחת",
@@ -4710,7 +4871,9 @@
         "single arm bottoms up kettlebell floor press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DK0LwTbpeLR/",
-      "poster": "assets/posters/DK0LwTbpeLR.jpg"
+      "poster": "media/anim/bottoms-up-kb-curl.jpg",
+      "anim": "bottoms-up-kb-curl",
+      "originalPoster": "assets/posters/DK0LwTbpeLR.jpg"
     },
     {
       "id": "drive_לחיצת_רצפה_עם_קטלבל_הפוך",
@@ -4731,7 +4894,9 @@
         "bottoms up kettlebell floor press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DeZJGicy3uD/",
-      "poster": "assets/posters/DeZJGicy3uD.jpg"
+      "poster": "media/anim/bottoms-up-kb-curl.jpg",
+      "anim": "bottoms-up-kb-curl",
+      "originalPoster": "assets/posters/DeZJGicy3uD.jpg"
     },
     {
       "id": "drive_לחיצת_רצפה_עם_קטלבלס_בבית",
@@ -4752,7 +4917,9 @@
         "kettlebell floor press at home"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dbbb_hWvkTE/",
-      "poster": "assets/posters/Dbbb_hWvkTE.jpg"
+      "poster": "media/anim/kettlebell-floor-press.jpg",
+      "anim": "kettlebell-floor-press",
+      "originalPoster": "assets/posters/Dbbb_hWvkTE.jpg"
     },
     {
       "id": "drive_לחיצת_רצפה_עם_קטלבל",
@@ -4773,7 +4940,9 @@
         "kettlebell floor press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYSefxWyKvM/",
-      "poster": "assets/posters/DYSefxWyKvM.jpg"
+      "poster": "media/anim/kettlebell-floor-press.jpg",
+      "anim": "kettlebell-floor-press",
+      "originalPoster": "assets/posters/DYSefxWyKvM.jpg"
     },
     {
       "id": "drive_קימה_טורקית_כבדה_עם_קטלבל",
@@ -4856,7 +5025,9 @@
         "kettlebell skull crusher on bench"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DOmUPaFClwd/",
-      "poster": "assets/posters/DOmUPaFClwd.jpg"
+      "poster": "media/anim/skull-crusher.jpg",
+      "anim": "skull-crusher",
+      "originalPoster": "assets/posters/DOmUPaFClwd.jpg"
     },
     {
       "id": "drive_סקאל_קראשר_עם_קטלבל_על_ספסל_במתקן",
@@ -4876,7 +5047,9 @@
         "kettlebell skull crusher in rack"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdR-glfSSQy/",
-      "poster": "assets/posters/DdR-glfSSQy.jpg"
+      "poster": "media/anim/skull-crusher.jpg",
+      "anim": "skull-crusher",
+      "originalPoster": "assets/posters/DdR-glfSSQy.jpg"
     },
     {
       "id": "drive_סקאל_קראשר_עם_קטלבל_בשיפוע",
@@ -4896,7 +5069,9 @@
         "incline kettlebell skull crusher"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DJOyOQfRCnQ/",
-      "poster": "assets/posters/DJOyOQfRCnQ.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DJOyOQfRCnQ.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_קטלבל_בעמידה",
@@ -4916,7 +5091,9 @@
         "standing kettlebell overhead triceps extension"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DWbguFJh4OC/",
-      "poster": "assets/posters/ill-1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl.jpg"
+      "poster": "media/anim/overhead-triceps-extension.jpg",
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/ill-1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_מעל_הראש_עם_קטלבל_בישיבה",
@@ -4936,7 +5113,9 @@
         "seated kettlebell overhead triceps extension"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DK1BMZ1CoxI/",
-      "poster": "assets/posters/DK1BMZ1CoxI.jpg"
+      "poster": "media/anim/overhead-triceps-extension.jpg",
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/DK1BMZ1CoxI.jpg"
     },
     {
       "id": "drive_חתירה_הפוכה_של_ילד_על_מוט_נמוך",
@@ -5117,7 +5296,9 @@
         "incline push up low bar"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DNQziffMVDK/",
-      "poster": "assets/posters/DNQziffMVDK.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DNQziffMVDK.jpg"
     },
     {
       "id": "drive_הרמות_ברכיים_בתלייה_על_מוט",
@@ -5238,7 +5419,9 @@
         "single arm kettlebell floor press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DUIPy77CHbw/",
-      "poster": "assets/posters/DUIPy77CHbw.jpg"
+      "poster": "media/anim/kettlebell-floor-press.jpg",
+      "anim": "kettlebell-floor-press",
+      "originalPoster": "assets/posters/DUIPy77CHbw.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בירידה_על_המדרגות_בבית",
@@ -5258,7 +5441,9 @@
         "decline push up on stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfI-KGXSxpI/",
-      "poster": "assets/posters/DfI-KGXSxpI.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/DfI-KGXSxpI.jpg"
     },
     {
       "id": "drive_לאנג׳_קפיצה_עם_תפיסת_כדור_טניס",
@@ -5424,7 +5609,9 @@
         "plate loaded lat pulldown machine"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfRhTmdsm39/",
-      "poster": "assets/posters/ill-1VvANlAnGbalmGx7ZIPGeA1rWqVZ5yI10.jpg"
+      "poster": "media/anim/seated-cable-lat-pulldown.jpg",
+      "anim": "seated-cable-lat-pulldown",
+      "originalPoster": "assets/posters/ill-1VvANlAnGbalmGx7ZIPGeA1rWqVZ5yI10.jpg"
     },
     {
       "id": "drive_פולי_עליון_בכבל_בישיבה",
@@ -5445,7 +5632,9 @@
         "seated cable lat pulldown"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdUzpk3hajS/",
-      "poster": "assets/posters/DdUzpk3hajS.jpg"
+      "poster": "media/anim/seated-cable-lat-pulldown.jpg",
+      "anim": "seated-cable-lat-pulldown",
+      "originalPoster": "assets/posters/DdUzpk3hajS.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_בכבל_בכריעה",
@@ -5465,7 +5654,9 @@
         "squatting cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbIu9xspgtw/",
-      "poster": "assets/posters/DbIu9xspgtw.jpg"
+      "poster": "media/anim/cable-curl.jpg",
+      "anim": "cable-curl",
+      "originalPoster": "assets/posters/DbIu9xspgtw.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_בכבל_בעמידה",
@@ -5485,7 +5676,9 @@
         "standing cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdMb8mlt0cv/",
-      "poster": "assets/posters/DdMb8mlt0cv.jpg"
+      "poster": "media/anim/cable-curl.jpg",
+      "anim": "cable-curl",
+      "originalPoster": "assets/posters/DdMb8mlt0cv.jpg"
     },
     {
       "id": "drive_לחיצת_חזה_במכונה_ביד_אחת",
@@ -5547,7 +5740,9 @@
         "cable woodchop"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DY-UdQdRjdw/",
-      "poster": "assets/posters/DY-UdQdRjdw.jpg"
+      "poster": "media/anim/cable-woodchop.jpg",
+      "anim": "cable-woodchop",
+      "originalPoster": "assets/posters/DY-UdQdRjdw.jpg"
     },
     {
       "id": "drive_כפיפות_בטן_במכונת_GHD",
@@ -5587,7 +5782,9 @@
         "kneeling cable crunch"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DXMj8jgoab5/",
-      "poster": "assets/posters/DXMj8jgoab5.jpg"
+      "poster": "media/anim/kneeling-cable-crunch.jpg",
+      "anim": "kneeling-cable-crunch",
+      "originalPoster": "assets/posters/DXMj8jgoab5.jpg"
     },
     {
       "id": "drive_כפיפות_בטן_בכבל_על_הברכיים",
@@ -5647,7 +5844,9 @@
         "single leg press machine"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbYnVU5JO6a/",
-      "poster": "assets/posters/DbYnVU5JO6a.jpg"
+      "poster": "media/anim/single-leg-press.jpg",
+      "anim": "single-leg-press",
+      "originalPoster": "assets/posters/DbYnVU5JO6a.jpg"
     },
     {
       "id": "drive_מלאכי_קיר_בעמידה",
@@ -5668,7 +5867,9 @@
         "wall angels"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dc6O7EcxNOV/",
-      "poster": "assets/posters/Dc6O7EcxNOV.jpg"
+      "poster": "media/anim/wall-angels.jpg",
+      "anim": "wall-angels",
+      "originalPoster": "assets/posters/Dc6O7EcxNOV.jpg"
     },
     {
       "id": "drive_סקוואט_עם_חישוק_מוחזק_קדימה",
@@ -5751,7 +5952,9 @@
         "single arm bayesian cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbnrxhEthLB/",
-      "poster": "assets/posters/DbnrxhEthLB.jpg"
+      "poster": "media/anim/bayesian-cable-curl.jpg",
+      "anim": "bayesian-cable-curl",
+      "originalPoster": "assets/posters/DbnrxhEthLB.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_בכבל_תחתון_בישיבה",
@@ -5771,7 +5974,9 @@
         "seated low cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZAydnxJIMY/",
-      "poster": "assets/posters/DZAydnxJIMY.jpg"
+      "poster": "media/anim/cable-curl.jpg",
+      "anim": "cable-curl",
+      "originalPoster": "assets/posters/DZAydnxJIMY.jpg"
     },
     {
       "id": "drive_קרוסאובר_בכבלים_בעמידה",
@@ -5831,7 +6036,9 @@
         "lateral lunge cable woodchop"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DN0jXsR4rhO/",
-      "poster": "assets/posters/DN0jXsR4rhO.jpg"
+      "poster": "media/anim/cable-woodchop.jpg",
+      "anim": "cable-woodchop",
+      "originalPoster": "assets/posters/DN0jXsR4rhO.jpg"
     },
     {
       "id": "drive_האק_סקוואט_במכונת_פלטות",
@@ -5891,7 +6098,9 @@
         "single arm cable lateral raise"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Ddy2XLyz80o/",
-      "poster": "assets/posters/Ddy2XLyz80o.jpg"
+      "poster": "media/anim/cable-lateral-raise.jpg",
+      "anim": "cable-lateral-raise",
+      "originalPoster": "assets/posters/Ddy2XLyz80o.jpg"
     },
     {
       "id": "drive_לחיצת_כתפיים_במכונה",
@@ -5932,7 +6141,9 @@
         "single arm overhead cable triceps extension"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbD2JkctvzG/",
-      "poster": "assets/posters/ill-15sCOsheKiROTnYXhgtT-rrV5DVJtasgp.jpg"
+      "poster": "media/anim/overhead-triceps-extension.jpg",
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/ill-15sCOsheKiROTnYXhgtT-rrV5DVJtasgp.jpg"
     },
     {
       "id": "drive_הליכת_קיר_לעמידת_ידיים",
@@ -6014,7 +6225,9 @@
         "standing single arm cable lateral raise"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DSLUGyIk9CA/",
-      "poster": "assets/posters/DSLUGyIk9CA.jpg"
+      "poster": "media/anim/cable-lateral-raise.jpg",
+      "anim": "cable-lateral-raise",
+      "originalPoster": "assets/posters/DSLUGyIk9CA.jpg"
     },
     {
       "id": "drive_עליות_מתח_עם_כדורי_טניס_תלויים",
@@ -6120,7 +6333,9 @@
         "pike push up feet on stability ball"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DQaZ2NdDJlM/",
-      "poster": "assets/posters/ill-185uIzkeRa0Zai3ZHKOhetm0LVTB73H3r.jpg"
+      "poster": "media/anim/pike-pushup.jpg",
+      "anim": "pike-pushup",
+      "originalPoster": "assets/posters/ill-185uIzkeRa0Zai3ZHKOhetm0LVTB73H3r.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_פליומטריות_עם_גומייה",
@@ -6286,7 +6501,9 @@
         "dumbbell skull crusher"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DKDGYJeSood/",
-      "poster": "assets/posters/DKDGYJeSood.jpg"
+      "poster": "media/anim/skull-crusher.jpg",
+      "anim": "skull-crusher",
+      "originalPoster": "assets/posters/DKDGYJeSood.jpg"
     },
     {
       "id": "drive_משיכת_מגבת_על_הרצפה_בשכיבה_על_הבטן",
@@ -6329,7 +6546,9 @@
         "incline barbell bench press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYx4nQkxpKk/",
-      "poster": "assets/posters/DYx4nQkxpKk.jpg"
+      "poster": "media/anim/incline-pushup.jpg",
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DYx4nQkxpKk.jpg"
     },
     {
       "id": "drive_פוש_פרס_על_לוח_איזון",
@@ -6431,7 +6650,9 @@
         "seated floor kettlebell overhead press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfIe8rVvsUv/",
-      "poster": "assets/posters/DfIe8rVvsUv.jpg"
+      "poster": "media/anim/seated-kettlebell-overhead-press.jpg",
+      "anim": "seated-kettlebell-overhead-press",
+      "originalPoster": "assets/posters/DfIe8rVvsUv.jpg"
     },
     {
       "id": "drive_היפראקסטנציה_הפוכה_על_כדור_פיזיו_עם_כתוביות",
@@ -6473,7 +6694,9 @@
         "split stance banded row"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdRYl9jwk2F/",
-      "poster": "assets/posters/DdRYl9jwk2F.jpg"
+      "poster": "media/anim/band-row.jpg",
+      "anim": "band-row",
+      "originalPoster": "assets/posters/DdRYl9jwk2F.jpg"
     },
     {
       "id": "drive_הטחת_כדור_כוח_מעל_הראש",
@@ -6515,7 +6738,9 @@
         "banded push ups on parallettes"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbYYX2BoZQd/",
-      "poster": "assets/posters/DbYYX2BoZQd.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/DbYYX2BoZQd.jpg"
     },
     {
       "id": "drive_הולה_הופ_במותניים_ליד_חלון",
@@ -6556,7 +6781,9 @@
         "banded curl back against wall"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DanwDjiI3ou/",
-      "poster": "assets/posters/DanwDjiI3ou.jpg"
+      "poster": "media/anim/band-curl.jpg",
+      "anim": "band-curl",
+      "originalPoster": "assets/posters/DanwDjiI3ou.jpg"
     },
     {
       "id": "drive_הליכת_פלאנק_צידית_בסולם_עם_משקולת",
@@ -6617,7 +6844,9 @@
         "preacher curl machine"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DUWbUWMEYP3/",
-      "poster": "assets/posters/DUWbUWMEYP3.jpg"
+      "poster": "media/anim/preacher-curl.jpg",
+      "anim": "preacher-curl",
+      "originalPoster": "assets/posters/DUWbUWMEYP3.jpg"
     },
     {
       "id": "drive_הרחקה_צידית_בכבל_נמוך_ביד_אחת",
@@ -6637,7 +6866,9 @@
         "single arm low cable lateral raise"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DMNLq3lTMGQ/",
-      "poster": "assets/posters/DMNLq3lTMGQ.jpg"
+      "poster": "media/anim/cable-lateral-raise.jpg",
+      "anim": "cable-lateral-raise",
+      "originalPoster": "assets/posters/DMNLq3lTMGQ.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_מעל_הראש_בכבל_בעמידה",
@@ -6657,7 +6888,9 @@
         "standing overhead cable triceps extension"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdlcL88Jw77/",
-      "poster": "assets/posters/ill-1HBflmCgsi8_yrurFDLqm22KyGxwHS27r.jpg"
+      "poster": "media/anim/overhead-triceps-extension.jpg",
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/ill-1HBflmCgsi8_yrurFDLqm22KyGxwHS27r.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_מעל_הראש_בכבל_עם_גב_למכונה",
@@ -6677,7 +6910,9 @@
         "overhead cable triceps extension facing away"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dfc2wBKRxEQ/",
-      "poster": "assets/posters/ill-1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW.jpg"
+      "poster": "media/anim/overhead-triceps-extension.jpg",
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/ill-1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW.jpg"
     },
     {
       "id": "drive_החלקות_ידיים_על_הקיר",
@@ -6698,7 +6933,9 @@
         "wall slides"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcZFnGeMmR3/",
-      "poster": "assets/posters/DcZFnGeMmR3.jpg"
+      "poster": "media/anim/wall-angels.jpg",
+      "anim": "wall-angels",
+      "originalPoster": "assets/posters/DcZFnGeMmR3.jpg"
     },
     {
       "id": "drive_כפיפות_בטן_בכבל_בכריעה_מול_מכונה",
@@ -6718,7 +6955,9 @@
         "kneeling cable crunch"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DXc7FxeIzR5/",
-      "poster": "assets/posters/DXc7FxeIzR5.jpg"
+      "poster": "media/anim/kneeling-cable-crunch.jpg",
+      "anim": "kneeling-cable-crunch",
+      "originalPoster": "assets/posters/DXc7FxeIzR5.jpg"
     },
     {
       "id": "drive_לחיצת_רגליים_חד-רגלית_במכונת_לחיצה_משופעת",
@@ -6738,7 +6977,9 @@
         "single leg leg press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdJoHoxz7OL/",
-      "poster": "assets/posters/DdJoHoxz7OL.jpg"
+      "poster": "media/anim/single-leg-press.jpg",
+      "anim": "single-leg-press",
+      "originalPoster": "assets/posters/DdJoHoxz7OL.jpg"
     },
     {
       "id": "drive_ישיבה_על_קיר_עם_הסבר",
@@ -6758,7 +6999,9 @@
         "wall sit hold explained"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfsP2ihhceW/",
-      "poster": "assets/posters/ill-1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G.jpg"
+      "poster": "media/anim/wall-sit.jpg",
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/ill-1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G.jpg"
     },
     {
       "id": "drive_החזקת_ישיבה_על_קיר",
@@ -6778,7 +7021,9 @@
         "wall sit isometric hold"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfFgDc_MicM/",
-      "poster": "assets/posters/DfFgDc_MicM.jpg"
+      "poster": "media/anim/wall-sit.jpg",
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/DfFgDc_MicM.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_צמודות_בקיר",
@@ -6844,12 +7089,14 @@
         "cable crossover"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DRKNr5kEV_H/",
-      "poster": "assets/posters/DRKNr5kEV_H-1.jpg",
+      "poster": "media/anim/concentration-curl.jpg",
       "segment": 1,
       "segmentRange": [
         0.0,
         3.8
-      ]
+      ],
+      "anim": "concentration-curl",
+      "originalPoster": "assets/posters/DRKNr5kEV_H-1.jpg"
     },
     {
       "id": "drive_פרפר_בכבלים_בישיבה",
@@ -6922,12 +7169,14 @@
         "weighted wall sit"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYR8I20P9Pv/",
-      "poster": "assets/posters/DYR8I20P9Pv-1.jpg",
+      "poster": "media/anim/wall-sit.jpg",
       "segment": 1,
       "segmentRange": [
         30.4,
         35.2
-      ]
+      ],
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/DYR8I20P9Pv-1.jpg"
     },
     {
       "id": "drive_לחיצת_רגליים_במכונה",
@@ -6973,12 +7222,14 @@
         "wall sit march"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYuavsgOyeA/",
-      "poster": "assets/posters/ill-1Y4sXWg72nmhdxi9XRi1kFGfgvHRYVjsh.jpg",
+      "poster": "media/anim/wall-sit.jpg",
       "segment": 1,
       "segmentRange": [
         5.2,
         9.5
-      ]
+      ],
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/ill-1Y4sXWg72nmhdxi9XRi1kFGfgvHRYVjsh.jpg"
     },
     {
       "id": "drive_ישיבה_על_קיר_עם_פתיחת_ברכיים_בגומייה",
@@ -6999,12 +7250,14 @@
         "wall sit band abduction pulses"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DYuavsgOyeA/",
-      "poster": "assets/posters/DYuavsgOyeA-2.jpg",
+      "poster": "media/anim/wall-sit.jpg",
       "segment": 2,
       "segmentRange": [
         9.6,
         15.0
-      ]
+      ],
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/DYuavsgOyeA-2.jpg"
     },
     {
       "id": "drive_הליכת_עמידת_ידיים_לאורך_סולם",
@@ -7228,12 +7481,14 @@
         "cable woodchop"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcvUHe8tDDm/",
-      "poster": "assets/posters/DcvUHe8tDDm-1.jpg",
+      "poster": "media/anim/cable-woodchop.jpg",
       "segment": 1,
       "segmentRange": [
         0.0,
         4.6
-      ]
+      ],
+      "anim": "cable-woodchop",
+      "originalPoster": "assets/posters/DcvUHe8tDDm-1.jpg"
     },
     {
       "id": "drive_פשיטת_ברכיים_במכונה",
@@ -7278,12 +7533,14 @@
         "bayesian cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DeZfw9Gs6JL/",
-      "poster": "assets/posters/DeZfw9Gs6JL-1.jpg",
+      "poster": "media/anim/bayesian-cable-curl.jpg",
       "segment": 1,
       "segmentRange": [
         11.1,
         15.7
-      ]
+      ],
+      "anim": "bayesian-cable-curl",
+      "originalPoster": "assets/posters/DeZfw9Gs6JL-1.jpg"
     },
     {
       "id": "drive_הליכת_קיר_עם_הסבר",
@@ -7615,12 +7872,14 @@
         "bayesian cable curl behind body"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Db5gP_qBqdw/",
-      "poster": "assets/posters/Db5gP_qBqdw-1.jpg",
+      "poster": "media/anim/bayesian-cable-curl.jpg",
       "segment": 1,
       "segmentRange": [
         96.5,
         104.0
-      ]
+      ],
+      "anim": "bayesian-cable-curl",
+      "originalPoster": "assets/posters/Db5gP_qBqdw-1.jpg"
     },
     {
       "id": "drive_כפיפת_באייזיאן_עם_הגב_למכונת_פריצ'ר",
@@ -7640,12 +7899,14 @@
         "faceaway bayesian cable curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcHjwmaRIdq/",
-      "poster": "assets/posters/DcHjwmaRIdq-1.jpg",
+      "poster": "media/anim/bayesian-cable-curl.jpg",
       "segment": 1,
       "segmentRange": [
         3.0,
         8.9
-      ]
+      ],
+      "anim": "bayesian-cable-curl",
+      "originalPoster": "assets/posters/DcHjwmaRIdq-1.jpg"
     },
     {
       "id": "drive_לחיצת_חזה_עליון_במכונה_ביד_אחת",
@@ -7759,12 +8020,14 @@
         "decline push up feet on wall"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DWY_GSTCVhN/",
-      "poster": "assets/posters/DWY_GSTCVhN-1.jpg",
+      "poster": "media/anim/decline-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         4.2,
         9.6
-      ]
+      ],
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/DWY_GSTCVhN-1.jpg"
     },
     {
       "id": "drive_פלאנק_עם_רגליים_על_הקיר",
@@ -7785,7 +8048,9 @@
         "feet on wall plank"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DebrnDvTKcc/",
-      "poster": "assets/posters/DebrnDvTKcc.jpg"
+      "poster": "media/anim/decline-pushup.jpg",
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/DebrnDvTKcc.jpg"
     },
     {
       "id": "drive_העברת_כדור_טניס_מתחת_לרגליים_בישיבת_V",
@@ -8082,12 +8347,14 @@
         "incline mountain climbers on stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZNDNX8xfV0/",
-      "poster": "assets/posters/DZNDNX8xfV0-1.jpg",
+      "poster": "media/anim/mountain-climber.jpg",
       "segment": 1,
       "segmentRange": [
         0.0,
         14.0
-      ]
+      ],
+      "anim": "mountain-climber",
+      "originalPoster": "assets/posters/DZNDNX8xfV0-1.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בשיפוע_עם_ידיים_על_המדרגות",
@@ -8108,12 +8375,14 @@
         "incline push ups on stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DZvC9M0R5JF/",
-      "poster": "assets/posters/DZvC9M0R5JF-1.jpg",
+      "poster": "media/anim/incline-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         28.0,
         42.0
-      ]
+      ],
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DZvC9M0R5JF-1.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_בשיפוע_שלילי_בעלייה_במדרגות",
@@ -8135,12 +8404,14 @@
         "decline push ups going up stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DcRriknOvJu/",
-      "poster": "assets/posters/DcRriknOvJu-1.jpg",
+      "poster": "media/anim/incline-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         0.5,
         20.0
-      ]
+      ],
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DcRriknOvJu-1.jpg"
     },
     {
       "id": "drive_זחילת_דוב_בירידה_במדרגות",
@@ -8161,12 +8432,14 @@
         "bear crawl down stairs"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DdkPHVLNBVs/",
-      "poster": "assets/posters/DdkPHVLNBVs-1.jpg",
+      "poster": "media/anim/decline-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         13.6,
         21.4
-      ]
+      ],
+      "anim": "decline-pushup",
+      "originalPoster": "assets/posters/DdkPHVLNBVs-1.jpg"
     },
     {
       "id": "drive_דיפס_בעלייה_במדרגות",
@@ -8263,12 +8536,14 @@
         "wall sit alternating knee raise with band"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Dd2Ch-jhA4l/",
-      "poster": "assets/posters/Dd2Ch-jhA4l-1.jpg",
+      "poster": "media/anim/wall-sit.jpg",
       "segment": 1,
       "segmentRange": [
         28.4,
         41.0
-      ]
+      ],
+      "anim": "wall-sit",
+      "originalPoster": "assets/posters/Dd2Ch-jhA4l-1.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_מוט_וגב_לקיר",
@@ -8289,7 +8564,9 @@
         "barbell wall curl"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbHwXBVKZ0-/",
-      "poster": "assets/posters/DbHwXBVKZ0-.jpg"
+      "poster": "media/anim/barbell-curl.jpg",
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DbHwXBVKZ0-.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_קפדנית_עם_מוט_צמוד_לקיר",
@@ -8310,12 +8587,14 @@
         "strict barbell curl against wall"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DGUjn9ntXE9/",
-      "poster": "assets/posters/DGUjn9ntXE9-1.jpg",
+      "poster": "media/anim/barbell-curl.jpg",
       "segment": 1,
       "segmentRange": [
         0.0,
         23.0
-      ]
+      ],
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DGUjn9ntXE9-1.jpg"
     },
     {
       "id": "drive_כפיפת_מרפקים_עם_מוט_EZ_וגב_לקיר",
@@ -8336,12 +8615,14 @@
         "ez bar curl back against wall"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DDzsSGeylGq/",
-      "poster": "assets/posters/DDzsSGeylGq-1.jpg",
+      "poster": "media/anim/barbell-curl.jpg",
       "segment": 1,
       "segmentRange": [
         3.0,
         28.9
-      ]
+      ],
+      "anim": "barbell-curl",
+      "originalPoster": "assets/posters/DDzsSGeylGq-1.jpg"
     },
     {
       "id": "drive_פשיטת_מרפקים_בעמידת_ידיים_על_הקיר",
@@ -8433,7 +8714,9 @@
         "landmine rotation"
       ],
       "sourceUrl": "https://www.instagram.com/reel/Da3pxVSuEM4/",
-      "poster": "assets/posters/Da3pxVSuEM4.jpg"
+      "poster": "media/anim/landmine-rotation.jpg",
+      "anim": "landmine-rotation",
+      "originalPoster": "assets/posters/Da3pxVSuEM4.jpg"
     },
     {
       "id": "drive_לחיצת_כתפיים_עם_מוט_בעמידה",
@@ -8504,12 +8787,14 @@
         "bottoms up kettlebell floor press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DbK6VJoBtHH/",
-      "poster": "assets/posters/DbK6VJoBtHH-1.jpg",
+      "poster": "media/anim/bottoms-up-kb-curl.jpg",
       "segment": 1,
       "segmentRange": [
         9.3,
         15.0
-      ]
+      ],
+      "anim": "bottoms-up-kb-curl",
+      "originalPoster": "assets/posters/DbK6VJoBtHH-1.jpg"
     },
     {
       "id": "drive_זחילת_דוב_בין_חישוקים_במעגל",
@@ -9231,12 +9516,14 @@
         "half kneeling band overhead press"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DG8AKS_R68M/",
-      "poster": "assets/posters/DG8AKS_R68M-1.jpg",
+      "poster": "media/anim/band-overhead-press.jpg",
       "segment": 1,
       "segmentRange": [
         7.6,
         17.9
-      ]
+      ],
+      "anim": "band-overhead-press",
+      "originalPoster": "assets/posters/DG8AKS_R68M-1.jpg"
     },
     {
       "id": "drive_פלאנק_גבוה_עם_הערמת_קונוסים",
@@ -9900,12 +10187,14 @@
         "medicine ball overhead triceps extension lateral step"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DagghMDRZ-g/",
-      "poster": "assets/posters/DagghMDRZ-g-1.jpg",
+      "poster": "media/anim/overhead-triceps-extension.jpg",
       "segment": 1,
       "segmentRange": [
         3.6,
         7.8
-      ]
+      ],
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/DagghMDRZ-g-1.jpg"
     },
     {
       "id": "drive_מקבילים_נמוכים_עם_עזרת_רגליים",
@@ -9925,7 +10214,9 @@
         "assisted low parallel bar dips feet on floor"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DXo3b1aCWmK/",
-      "poster": "assets/posters/DXo3b1aCWmK.jpg"
+      "poster": "media/anim/bar-dip.jpg",
+      "anim": "bar-dip",
+      "originalPoster": "assets/posters/DXo3b1aCWmK.jpg"
     },
     {
       "id": "drive_פלאנק_בשיפוע_על_המדרגות_עם_טפיחות_כתפיים_וברך_לאף",
@@ -9946,12 +10237,14 @@
         "incline plank on stairs shoulder taps knee to nose"
       ],
       "sourceUrl": "https://www.instagram.com/reel/DfsEZpMBDpj/",
-      "poster": "assets/posters/DfsEZpMBDpj-1.jpg",
+      "poster": "media/anim/incline-pushup.jpg",
       "segment": 1,
       "segmentRange": [
         0.2,
         7.3
-      ]
+      ],
+      "anim": "incline-pushup",
+      "originalPoster": "assets/posters/DfsEZpMBDpj-1.jpg"
     },
     {
       "id": "drive_שכיבות_סמיכה_עם_הזזת_קונוסים_מצד_לצד",
@@ -10175,12 +10468,14 @@
         "medicine ball overhead triceps extension"
       ],
       "sourceUrl": "https://www.facebook.com/reel/4438822906366427/",
-      "poster": "assets/posters/fb4438822906366427-1.jpg",
+      "poster": "media/anim/overhead-triceps-extension.jpg",
       "segment": 1,
       "segmentRange": [
         7.0,
         19.0
-      ]
+      ],
+      "anim": "overhead-triceps-extension",
+      "originalPoster": "assets/posters/fb4438822906366427-1.jpg"
     },
     {
       "id": "drive_כפיפות_מרפקים_עם_משקולות_בעמידה_על_סולם_זריזות",

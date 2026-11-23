@@ -1,0 +1,53 @@
+{
+  "id": "wall-sit",
+  "name": { "en": "Wall sit", "he": "ישיבה על קיר" },
+  "view": "side",
+  "equipment": ["wall"],
+  "fps": 30,
+  "camera": { "centerX": 0.05, "width": 1.7, "groundY": 0.8 },
+  "repeat": 1,
+  "poster": { "t": 4 },
+  "props": [
+    { "type": "rect", "from": [-0.7, 0], "to": [-0.127, 2.6], "color": "dark" },
+    { "type": "rect", "from": [-0.139, 0], "to": [-0.127, 2.6], "color": "iron" }
+  ],
+  "poses": {
+    "stand": {
+      "pelvis": [-0.012, 0.8],
+      "torso": 90,
+      "neck": 90,
+      "ankle": [0.44, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "wristTo": { "at": "near.knee", "along": "near.thigh", "offset": [-0.33, 0.085] },
+      "elbowBend": -1,
+      "hand": -60,
+      "far": { "ankle": [0.47, 0.08] }
+    },
+    "sit": {
+      "base": "stand",
+      "pelvis": [-0.012, 0.512],
+      "wristTo": { "at": "near.knee", "along": "near.thigh", "offset": [-0.15, 0.075] },
+      "hand": -4
+    },
+    "sitIn": {
+      "base": "sit",
+      "pelvis": [-0.012, 0.515],
+      "neck": 88.5,
+      "wristTo": { "at": "near.knee", "along": "near.thigh", "offset": [-0.155, 0.075] }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "stand" },
+    { "t": 0.4, "pose": "stand", "ease": "linear" },
+    { "t": 2, "pose": "sit", "ease": "inOutSine" },
+    { "t": 2.9, "pose": "sitIn", "ease": "inOutSine" },
+    { "t": 3.8, "pose": "sit", "ease": "inOutSine" },
+    { "t": 4.7, "pose": "sitIn", "ease": "inOutSine" },
+    { "t": 5.6, "pose": "sit", "ease": "inOutSine" },
+    { "t": 6.5, "pose": "sitIn", "ease": "inOutSine" },
+    { "t": 7.1, "pose": "sit", "ease": "inOutSine" },
+    { "t": 8.6, "pose": "stand", "ease": "inOutSine" },
+    { "t": 9, "pose": "stand", "ease": "linear" }
+  ]
+}

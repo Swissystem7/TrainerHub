@@ -1,0 +1,42 @@
+{
+  "id": "barbell-back-squat",
+  "name": { "en": "Barbell back squat", "he": "סקוואט אחורי עם מוט - טכניקה" },
+  "view": "side",
+  "equipment": ["barbell"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 1.8, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "plate", "at": "near.grip", "r": 0.16, "layer": "mid" }
+  ],
+  "poses": {
+    "stand": {
+      "pelvis": [0.0, 0.947],
+      "torso": 84,
+      "neck": 87,
+      "ankle": [0.0, 0.08],
+      "kneeBend": 1,
+      "foot": 0,
+      "scale": { "upperArm": 0.62, "foreArm": 0.62, "hand": 0.65 },
+      "wristTo": { "at": "shoulder", "along": "torso", "offset": [0.0, 0.075] },
+      "elbowBend": 1,
+      "hand": 84
+    },
+    "bottom": {
+      "base": "stand",
+      "pelvis": [-0.224, 0.475],
+      "torso": 52,
+      "neck": 62,
+      "hand": 52
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "stand" },
+    { "t": 0.15, "pose": "stand", "ease": "linear" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "stand", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "stand", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "pull-up",
+  "name": { "en": "Pull-up", "he": "עליות מתח" },
+  "view": "side",
+  "equipment": ["pull-up bar"],
+  "fps": 30,
+  "camera": { "centerX": -0.05, "width": 1.95, "groundY": 0.86 },
+  "repeat": 3,
+  "poster": { "t": 1.35 },
+  "props": [
+    { "type": "rect", "from": [-0.028, 2.225], "to": [0.028, 3.2], "color": "frame" },
+    { "type": "rect", "from": [-0.07, 2.2], "to": [0.07, 2.25], "color": "frame", "r": 0.02 },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.026, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": [0, 2.225], "r": 0.011, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "hang": {
+      "pin": { "point": "shoulder", "at": [0, 1.632] },
+      "torso": 90,
+      "neck": 90,
+      "scale": { "hand": 0.6, "neck": 0.82, "upperArm": 1 },
+      "wrist": [0, 2.198],
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "thigh": -88, "shin": -122, "foot": -70 },
+      "far": { "thigh": -84, "shin": -116, "foot": -62 }
+    },
+    "top": {
+      "base": "hang",
+      "pin": { "point": "shoulder", "at": [-0.13, 2.11] },
+      "torso": 99,
+      "neck": 84,
+      "scale": { "hand": 0.6, "neck": 1, "upperArm": 0.6 },
+      "near": { "thigh": -80, "shin": -118 },
+      "far": { "thigh": -76, "shin": -112 }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "hang" },
+    { "t": 0.2, "pose": "hang", "ease": "linear" },
+    { "t": 1.25, "pose": "top", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "top", "ease": "linear" },
+    { "t": 2.8, "pose": "hang", "ease": "inOutSine" },
+    { "t": 3, "pose": "hang", "ease": "linear" }
+  ]
+}

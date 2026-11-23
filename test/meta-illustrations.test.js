@@ -19,9 +19,13 @@ const driveVideos = read('data/drive_videos.json');
 const reels = read('data/exercises.json').exercises;
 
 const ILL = /^assets\/posters\/ill-[A-Za-z0-9_-]+\.jpg$/;
+// A row wired to a code-drawn animation (`anim`, tools/anim/wire.js) shows the
+// animation's poster, shared with the other clips of that movement; its own
+// illustration stays on the row as originalPoster.
+function ownPoster(e) { return (e.anim ? e.originalPoster : e.poster) || ''; }
 const rows = [];
-Object.keys(local).forEach(function (k) { if (ILL.test(local[k].poster || '')) rows.push(Object.assign({ id: k }, local[k])); });
-drive.items.concat(youtube.items).forEach(function (e) { if (ILL.test(e.poster || '')) rows.push(e); });
+Object.keys(local).forEach(function (k) { if (ILL.test(ownPoster(local[k]))) rows.push(Object.assign({ id: k }, local[k])); });
+drive.items.concat(youtube.items).forEach(function (e) { if (ILL.test(ownPoster(e))) rows.push(e); });
 const reelRows = reels.filter(function (r) { return r.id === 'ig-DdHOFvtKk9z' || r.id === 'ig-Dart5bjomQ5'; });
 
 test('358 catalog rows and 2 reels carry their own illustration file', function () {
@@ -33,9 +37,10 @@ test('no two exercises share an illustration', function () {
   const all = rows.concat(reelRows);
   const byPath = new Map();
   all.forEach(function (r) {
-    const list = byPath.get(r.poster) || [];
+    const own = r.name_he ? r.poster : ownPoster(r);
+    const list = byPath.get(own) || [];
     list.push(r);
-    byPath.set(r.poster, list);
+    byPath.set(own, list);
   });
   byPath.forEach(function (list, poster) {
     const names = new Set(list.map(function (r) { return r.he || r.name_he || r.id; }));
@@ -61,8 +66,10 @@ test('library, builder and workout cards show the illustration', function () {
 });
 
 test('Drive cards on the exercises page show the illustration', function () {
+  // 106 rows have their own illustration; a row wired to an animation shows
+  // the animation's poster instead (v.poster), which the card must use too.
+  assert.equal(driveVideos.filter(function (v) { return ownPoster(v); }).length, 106);
   const withPoster = driveVideos.filter(function (v) { return v.poster; });
-  assert.equal(withPoster.length, 106);
   const cards = THReels.driveVideosToExercises(driveVideos);
   const esc = function (s) { return String(s); };
   withPoster.forEach(function (v) {

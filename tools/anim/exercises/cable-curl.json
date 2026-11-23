@@ -1,0 +1,50 @@
+{
+  "id": "cable-curl",
+  "name": { "en": "Standing cable curl", "he": "כפיפת מרפקים בכבל בעמידה" },
+  "view": "side",
+  "equipment": ["cable column", "straight bar"],
+  "fps": 30,
+  "camera": { "centerX": 0.38, "width": 2.15, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 0.85 },
+  "props": [
+    { "type": "rect", "from": [0.72, 0], "to": [1.22, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [0.98, 0], "to": [1.08, 2.05], "color": "frame" },
+    { "type": "rect", "from": [0.94, 0.32], "to": [1.12, 1.05], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [0.94, 0.78], "to": [1.12, 0.795], "color": "gold" },
+    { "type": "rect", "from": [0.88, 0.125], "to": [1, 0.195], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [0.88, 0.16], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [0.88, 0.16], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [0.88, 0.16], "b": "near.grip", "width": 0.011, "layer": "mid" },
+    { "type": "barEnd", "at": "near.grip", "r": 0.024, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": "near.grip", "r": 0.01, "color": "gold", "layer": "front" }
+  ],
+  "poses": {
+    "down": {
+      "pin": { "point": "near.heel", "at": [-0.035, 0.045] },
+      "torso": 89,
+      "neck": 90,
+      "thigh": -87,
+      "shin": -93,
+      "far": { "thigh": -84, "shin": -96 },
+      "scale": { "hand": 0.65 },
+      "upperArm": -84,
+      "foreArm": -72,
+      "hand": -72
+    },
+    "up": {
+      "base": "down",
+      "upperArm": -85,
+      "foreArm": 56,
+      "hand": 66
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.25, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3, "pose": "down", "ease": "linear" }
+  ]
+}

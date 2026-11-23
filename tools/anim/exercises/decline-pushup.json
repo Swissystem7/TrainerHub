@@ -1,0 +1,45 @@
+{
+  "id": "decline-pushup",
+  "name": { "en": "Decline push-up (feet elevated)", "he": "שכיבות סמיכה עם רגליים מוגבהות" },
+  "view": "side",
+  "equipment": ["bench"],
+  "fps": 30,
+  "camera": { "centerX": 0.68, "width": 2.25, "groundY": 0.62 },
+  "repeat": 3,
+  "poster": { "t": 0.8 },
+  "props": [
+    { "type": "rect", "from": [-0.33, 0], "to": [-0.28, 0.4], "color": "frame" },
+    { "type": "rect", "from": [0.05, 0], "to": [0.1, 0.4], "color": "frame" },
+    { "type": "rect", "from": [-0.39, 0.38], "to": [0.16, 0.45], "color": "pad", "r": 0.015 },
+    { "type": "rect", "from": [-0.39, 0.38], "to": [0.16, 0.392], "color": "frame" }
+  ],
+  "poses": {
+    "top": {
+      "pin": { "point": "near.toe", "at": [0, 0.48] },
+      "torso": -2,
+      "neck": 2,
+      "thigh": 178,
+      "shin": 178,
+      "foot": -55,
+      "hand": 0,
+      "elbowBend": -1,
+      "wrist": [1.33, 0.03],
+      "far": { "wrist": [1.36, 0.03] }
+    },
+    "bottom": {
+      "base": "top",
+      "scale": { "upperArm": 0.72 },
+      "torso": -15,
+      "neck": -6,
+      "thigh": 165,
+      "shin": 165
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "top" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.6, "pose": "top", "ease": "inOutSine" },
+    { "t": 3, "pose": "top", "ease": "linear" }
+  ]
+}

@@ -46,7 +46,10 @@ test('advanced band legs and dumbbell back cells get a real clip; kids legs gain
 test('single-leg RDL and band-assisted dips show their illustration', function () {
   ['DfZFgYmtAlg', 'DewMmR1g_fK'].forEach(function (c) {
     const e = row(c);
-    assert.equal(e.poster, 'assets/posters/ill-' + e.driveId + '.jpg');
+    // A row wired to a code-drawn animation (`anim`) shows that poster and
+    // keeps its own illustration as originalPoster.
+    assert.equal(e.anim ? e.originalPoster : e.poster, 'assets/posters/ill-' + e.driveId + '.jpg');
+    assert.ok(fs.existsSync(path.join(root, 'assets/posters/ill-' + e.driveId + '.jpg')));
     assert.ok(fs.existsSync(path.join(root, e.poster)));
     assert.equal(driveVideos.find(function (v) { return v.fileId === e.driveId; }).poster, e.poster);
   });

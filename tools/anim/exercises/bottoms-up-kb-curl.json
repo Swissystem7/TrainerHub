@@ -1,0 +1,36 @@
+{
+  "id": "bottoms-up-kb-curl",
+  "name": { "en": "Bottoms-up kettlebell curl", "he": "כפיפת מרפקים עם קטלבל הפוך" },
+  "view": "side",
+  "equipment": ["kettlebell"],
+  "fps": 30,
+  "camera": { "centerX": 0.06, "width": 1.7, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 0.9 },
+  "props": [
+    { "type": "kettlebell", "at": "near.grip", "angle": 90, "r": 0.082, "layer": "mid" }
+  ],
+  "poses": {
+    "down": {
+      "pin": { "point": "near.heel", "at": [-0.035, 0.045] },
+      "torso": 90,
+      "neck": 90,
+      "thigh": -87,
+      "shin": -93,
+      "near": { "upperArm": -86, "foreArm": -45, "hand": 70, "scale": { "hand": 0.6 } },
+      "far": { "thigh": -84, "shin": -96, "upperArm": -93, "foreArm": -86, "hand": -84 }
+    },
+    "up": {
+      "base": "down",
+      "near": { "upperArm": -72, "foreArm": 72, "hand": 88 }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "down" },
+    { "t": 0.15, "pose": "down", "ease": "linear" },
+    { "t": 1.25, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.55, "pose": "up", "ease": "linear" },
+    { "t": 2.8, "pose": "down", "ease": "inOutSine" },
+    { "t": 3, "pose": "down", "ease": "linear" }
+  ]
+}

@@ -52,3 +52,13 @@ After adding new Drive clips to the catalogs, run:
 
 This transcodes the missing clips, pushes and tags the media repo, and updates
 `videos/media-manifest.json`. Commit that file in the same PR as the new clips.
+
+## Code-drawn animations (media/anim)
+
+`videos/anim-map.json` lists the animations drawn by `tools/anim` and the Drive
+ids each one stands in for. `node tools/anim/wire.js` generates it, keeps one
+MP4 + poster per animation in `media/anim/`, and points the `poster` of the
+mapped rows in `drive-catalog.json`, `js/catalog.json` and
+`data/drive_videos.json` at it (the previous value stays as `originalPoster`,
+the animation id as `anim`). The Drive ids and hosted copies are not changed.
+See `tools/anim/WIRING_NOTES.md`.

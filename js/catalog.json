@@ -229,7 +229,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3",
-    "poster": "assets/posters/ill-1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3.jpg"
+    "poster": "media/anim/mountain-climber.jpg",
+    "anim": "mountain-climber",
+    "originalPoster": "assets/posters/ill-1GsNyjqdsGaCkaGAur-g3ogXMLGodhjR3.jpg"
   },
   "מטפס_הרים_עם_פלאנק": {
     "id": "מטפס_הרים_עם_פלאנק",
@@ -245,7 +247,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1ypdsQOSm46T_94w6f660G_97bQ2Hurfz",
-    "poster": "assets/posters/ill-1ypdsQOSm46T_94w6f660G_97bQ2Hurfz.jpg"
+    "poster": "media/anim/mountain-climber.jpg",
+    "anim": "mountain-climber",
+    "originalPoster": "assets/posters/ill-1ypdsQOSm46T_94w6f660G_97bQ2Hurfz.jpg"
   },
   "סט_בטן": {
     "id": "סט_בטן",
@@ -277,7 +281,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o",
-    "poster": "assets/posters/ill-1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o.jpg"
+    "poster": "media/anim/plank.jpg",
+    "anim": "plank",
+    "originalPoster": "assets/posters/ill-1J36J-ulZP7uY0hxC11qp5AJfc4nIXB7o.jpg"
   },
   "פלאנק_ברכיים": {
     "id": "פלאנק_ברכיים",
@@ -850,7 +856,9 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM",
-    "poster": "assets/posters/ill-1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM.jpg"
+    "poster": "media/anim/pushups.jpg",
+    "anim": "pushups",
+    "originalPoster": "assets/posters/ill-1_ZDTzaFtOJqJ94vIG3CufwxXp3m040iM.jpg"
   },
   "ילדים_הוקי_נעליים": {
     "id": "ילדים_הוקי_נעליים",
@@ -1325,6 +1333,8 @@
     "source": "onedrive",
     "available": true,
     "drivePlayId": "1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd",
-    "poster": "assets/posters/ill-1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd.jpg"
+    "poster": "media/anim/pushups.jpg",
+    "anim": "pushups",
+    "originalPoster": "assets/posters/ill-1VpNjgivvvaLHQlzzh_hTQQwj_BFycIKd.jpg"
   }
 }

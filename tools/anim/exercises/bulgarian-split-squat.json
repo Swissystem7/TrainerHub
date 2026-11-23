@@ -1,0 +1,42 @@
+{
+  "id": "bulgarian-split-squat",
+  "name": { "en": "Bulgarian split squat", "he": "סקוואט בולגרי" },
+  "view": "side",
+  "equipment": ["bench", "dumbbells"],
+  "fps": 30,
+  "camera": { "centerX": -0.3, "width": 1.95, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-1.08, 0], "to": [-1.03, 0.37], "color": "frame" },
+    { "type": "rect", "from": [-0.75, 0], "to": [-0.7, 0.37], "color": "frame" },
+    { "type": "rect", "from": [-1.14, 0.35], "to": [-0.64, 0.42], "color": "pad", "r": 0.015 },
+    { "type": "rect", "from": [-1.14, 0.35], "to": [-0.64, 0.362], "color": "frame" },
+    { "type": "dumbbell", "at": "near.grip", "angle": 0, "length": 0.25, "plate": [0.06, 0.13], "layer": "mid" }
+  ],
+  "poses": {
+    "top": {
+      "pelvis": [-0.12, 0.89],
+      "torso": 88,
+      "neck": 90,
+      "kneeBend": 1,
+      "scale": { "hand": 0.65 },
+      "near": { "ankle": [0.15, 0.08], "foot": 0, "upperArm": -90, "foreArm": -88, "hand": -88 },
+      "far": { "ankle": [-0.66, 0.465], "foot": 200, "upperArm": -91, "foreArm": -89, "hand": -89 }
+    },
+    "bottom": {
+      "base": "top",
+      "pelvis": [-0.18, 0.52],
+      "torso": 84,
+      "neck": 88
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.3, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3, "pose": "top", "ease": "linear" }
+  ]
+}

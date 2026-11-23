@@ -99,7 +99,10 @@
   "fileId": "1n4Hqkpa4KiY87h8v-DrTXR72w2x-LQpD",
   "name": "כפיפת וי עם כדור רפואי - De-B03DRTf9.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "seated-v-up",
+  "originalPoster": "",
+  "poster": "media/anim/seated-v-up.jpg"
  },
  {
   "fileId": "16iBFKKRnlizEZmZNelOogdtW65pFufub",
@@ -129,7 +132,10 @@
   "fileId": "1qjlWG5adMGslqzaSv7WU1UrrLLUcnc34",
   "name": "כפיפות בטן בישיבה עם הרמת ברכיים - DQ85J9ykRwz.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "seated-v-up",
+  "originalPoster": "",
+  "poster": "media/anim/seated-v-up.jpg"
  },
  {
   "fileId": "19ug34X7qMbo6V5KbznpP-ETWMd4ktKkg",
@@ -153,7 +159,10 @@
   "fileId": "1xHgi-eT4dniXhhWaXM4wf4zhKpWJNOMo",
   "name": "כפיפות בטן בישיבה עם הרמת רגליים - DdsgLw6zeP9.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "seated-v-up",
+  "originalPoster": "",
+  "poster": "media/anim/seated-v-up.jpg"
  },
  {
   "fileId": "1mGGsyI0fG_qwDPL7L2GDCvJ7IB98IvfS",
@@ -207,7 +216,10 @@
   "fileId": "1r1ZB1yciOlGP4R80h04m5xED8-u9ZEz5",
   "name": "סקוואט עמוק + הרמת ברך - DfBRl7Ksmyt.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "squat-knee-raise",
+  "originalPoster": "",
+  "poster": "media/anim/squat-knee-raise.jpg"
  },
  {
   "fileId": "1_vWMFGEMOYd1cb7tSu8CK8kue9fG6xwh",
@@ -255,7 +267,10 @@
   "fileId": "1TUKiSWRxl1LuHjSCopOqOjmRnY01qxqk",
   "name": "שכיבות סמיכה 100 ביום - DecQ9KKC296.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "pushups",
+  "originalPoster": "",
+  "poster": "media/anim/pushups.jpg"
  },
  {
   "fileId": "1yuhKlOxW5dI_FXRn5c0k3WGGuwL1_StU",
@@ -321,7 +336,10 @@
   "fileId": "1eND53l9PZt1FKjLWXbnWGBRAjuTy-7jX",
   "name": "רוורס פלאנק היפ דיפס, כפיפה קדימה, רוורס פלאנק הולד, סקפולה - DVvjbFwkhpk.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "19GUonpW402fa90wnlW4NGRQuNUwY6Nau",
@@ -525,7 +543,10 @@
   "fileId": "1oS-szb34eutDke9I3m6HFdeJHvSFYi0e",
   "name": "מכרע סקוואט בולגרי ודדליפט - DVi77AKja_v.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "bulgarian-split-squat",
+  "originalPoster": "",
+  "poster": "media/anim/bulgarian-split-squat.jpg"
  },
  {
   "fileId": "1XaWf09T3G6MYS7DpP3jkqLTIUidwef5g",
@@ -633,13 +654,19 @@
   "fileId": "1Q497QujaC3FCciOlxvGgOCop3bvqcl-b",
   "name": "שכיבות סמיכה עם ניתוק ידיים - dFI0VWMqxIk.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "hand-release-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/hand-release-pushup.jpg"
  },
  {
   "fileId": "1DbJeMxkYKBhb_x90A2S0mMAniNSzpO9B",
   "name": "מתח עם גומייה - gTZRADe8cN8.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "pull-up",
+  "originalPoster": "",
+  "poster": "media/anim/pull-up.jpg"
  },
  {
   "fileId": "1AgVYBgfe6aLaFB6MvIAEdj5PEE-xT9m8",
@@ -651,13 +678,19 @@
   "fileId": "1ZhaUYaspbb03EovjyDB-JPXIygPZHXrs",
   "name": "מקבילים שלבי ביניים - UiirN9zI-lw.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "13nNsqrh3ZgpXAh5Q1HtNekwVnPQxzlyD",
   "name": "מקבילים בסיוע רגליים - VgnRwQcDsuA.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "1_F3xM_XRgQWBALb_G3rqN98uHgRmsB5M",
@@ -692,35 +725,45 @@
   "name": "שכיבות סמיכה בטכניקה נכונה - DcWN0zEIvGK.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ.jpg"
+  "poster": "media/anim/pushups.jpg",
+  "anim": "pushups",
+  "originalPoster": "assets/posters/ill-1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ.jpg"
  },
  {
   "fileId": "1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9",
   "name": "שכיבות סמיכה עם הפעלת חזה - DYcpLzaKb0N.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9.jpg"
+  "poster": "media/anim/pushups.jpg",
+  "anim": "pushups",
+  "originalPoster": "assets/posters/ill-1O4JspQUdnEFZSGIyJi81BbLGEL0LRws9.jpg"
  },
  {
   "fileId": "1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr",
   "name": "התקדמות שכיבות סמיכה ב־4 שלבים - Dah3eKkT01y.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr.jpg"
+  "poster": "media/anim/pushups.jpg",
+  "anim": "pushups",
+  "originalPoster": "assets/posters/ill-1RI-Zlg-LI_pHKyyRQudUi9bfFRzq9Elr.jpg"
  },
  {
   "fileId": "1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs",
   "name": "שכיבות סמיכה בשיפוע על מוט - DXUywlAj_iT.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs.jpg"
+  "poster": "media/anim/incline-pushup.jpg",
+  "anim": "incline-pushup",
+  "originalPoster": "assets/posters/ill-1J6fD00MAgzHki9r2gVIsa3pEbU9JmtJs.jpg"
  },
  {
   "fileId": "14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b",
   "name": "פרפר חזה עם גומייה - DcjQxgwotKZ.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b.jpg"
+  "poster": "media/anim/floor-dumbbell-fly.jpg",
+  "anim": "floor-dumbbell-fly",
+  "originalPoster": "assets/posters/ill-14-_nmHPox9W2axHUq2P4YCRTO-2e7s2b.jpg"
  },
  {
   "fileId": "1vgVUSnKJ8eb8bh4O4lfqfpkBcePuXP2G",
@@ -734,7 +777,9 @@
   "name": "שכיבות סמיכה - מיקומי ידיים - DdQWo6MJQHY.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1EwdqwshrpQfEVyBy_sIu2oYUrE469xbZ.jpg"
+  "poster": "media/anim/pushups.jpg",
+  "anim": "pushups",
+  "originalPoster": "assets/posters/ill-1EwdqwshrpQfEVyBy_sIu2oYUrE469xbZ.jpg"
  },
  {
   "fileId": "1K31mCs4F-a1jr-K1_0rK6_NA8UDtQmTu",
@@ -747,21 +792,28 @@
   "fileId": "1Frn5-VxslBcBTjtdynSWkpJ-zTjj9Inb",
   "name": "שכיבות סמיכה - 5 טעויות נפוצות - DfRLKy7Jk9A.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "pushups",
+  "originalPoster": "",
+  "poster": "media/anim/pushups.jpg"
  },
  {
   "fileId": "1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB",
   "name": "מתח מושלם - טכניקה - DVJjBPBgZr9.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB.jpg"
+  "poster": "media/anim/pull-up.jpg",
+  "anim": "pull-up",
+  "originalPoster": "assets/posters/ill-1sgLKTR_7bfHkQQUOYi71jbQAORnk4eUB.jpg"
  },
  {
   "fileId": "1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN",
   "name": "מתח עם משקל נוסף - Dd4A1BxNpmR.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN.jpg"
+  "poster": "media/anim/pull-up.jpg",
+  "anim": "pull-up",
+  "originalPoster": "assets/posters/ill-1OBCe5Hafh9dxLUMpmOsjjk8-6PXNY_BN.jpg"
  },
  {
   "fileId": "1pxXtGGUMNFCxFUmL3rjJzOqqLcKBgUq1",
@@ -787,21 +839,27 @@
   "name": "חתירה כפולה ביד אחת עם גומייה - DWKwmB_kTKl.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-11L8DLfkD26gP5o4aY5uGpQDXa8_XAKHP.jpg"
+  "poster": "media/anim/band-row.jpg",
+  "anim": "band-row",
+  "originalPoster": "assets/posters/ill-11L8DLfkD26gP5o4aY5uGpQDXa8_XAKHP.jpg"
  },
  {
   "fileId": "1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua",
   "name": "סופרמן - החזקה - DT0RhRjk80n.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua.jpg"
+  "poster": "media/anim/superman-hold.jpg",
+  "anim": "superman-hold",
+  "originalPoster": "assets/posters/ill-1IPWsGmKn2BuaakFZ8XgzzpYFFOfXUQua.jpg"
  },
  {
   "fileId": "1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt",
   "name": "חתירה ביד אחת עם גומייה - DblbSnjNF9z.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt.jpg"
+  "poster": "media/anim/band-row.jpg",
+  "anim": "band-row",
+  "originalPoster": "assets/posters/ill-1cDkCpT8r1JVdl5Dw6jm3XCkzzPrd4ljt.jpg"
  },
  {
   "fileId": "1I1n09EzOgn7672IQbdgUrdFTZlrSRDfc",
@@ -814,7 +872,10 @@
   "fileId": "1z44ww9AjYF-SyKl4eEa4qy9c_VX0670X",
   "name": "הרחקה צידית בכבל - DbvNWiTNC85.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "",
+  "poster": "media/anim/cable-lateral-raise.jpg"
  },
  {
   "fileId": "1KtOyzLm2rd95BhRB0yV-Bn3l9-W71Iak",
@@ -828,14 +889,18 @@
   "name": "הרחקה צידית עם גומייה וקטלבל - DW3uis2DIn6.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-11McYv17HvWF22sdBgDegr5O-00MNEV9-.jpg"
+  "poster": "media/anim/cable-lateral-raise.jpg",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "assets/posters/ill-11McYv17HvWF22sdBgDegr5O-00MNEV9-.jpg"
  },
  {
   "fileId": "1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt",
   "name": "לחיצת כתפיים בישיבה עם גומייה - DZbGqTGPGqP.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt.jpg"
+  "poster": "media/anim/band-overhead-press.jpg",
+  "anim": "band-overhead-press",
+  "originalPoster": "assets/posters/ill-1oOkRWNmbpijo8U9-Qz7EqxOygTQwLsxt.jpg"
  },
  {
   "fileId": "1jKuyw-Dy5XGLJviWEkb9V3DRzpIB2rLy",
@@ -849,7 +914,9 @@
   "name": "הרחקה צידית ארצ׳ר עם גומייה - DXGE2xBCGgE.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-1ZsmSobl9hg8XXeDswfzA2jZSp8Hr99ib.jpg"
+  "poster": "media/anim/cable-lateral-raise.jpg",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "assets/posters/ill-1ZsmSobl9hg8XXeDswfzA2jZSp8Hr99ib.jpg"
  },
  {
   "fileId": "1NAefqPANwQpxhr6nLtNhwiwAxu6F3lOF",
@@ -863,21 +930,27 @@
   "name": "שכיבות סמיכה פייק - מיקום ידיים - DWOx39VFDw_.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-1rYuXwGMBroJl2TgY3kH2_cnveHpmqwxw.jpg"
+  "poster": "media/anim/pike-pushup.jpg",
+  "anim": "pike-pushup",
+  "originalPoster": "assets/posters/ill-1rYuXwGMBroJl2TgY3kH2_cnveHpmqwxw.jpg"
  },
  {
   "fileId": "1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe",
   "name": "שכיבות סמיכה פייק - הדרכה מונפשת - DUEBGSUlPPV.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe.jpg"
+  "poster": "media/anim/pike-pushup.jpg",
+  "anim": "pike-pushup",
+  "originalPoster": "assets/posters/ill-1tBhhmSXMEHehko3ERLaR7HLNgK3zrqoe.jpg"
  },
  {
   "fileId": "11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV",
   "name": "לחיצת כתפיים בעמידה עם גומייה - DZY0p8gKCWM.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV.jpg"
+  "poster": "media/anim/band-overhead-press.jpg",
+  "anim": "band-overhead-press",
+  "originalPoster": "assets/posters/ill-11NmFINfr_XKUkM-fcyBxHrshz7c4LOHV.jpg"
  },
  {
   "fileId": "1SIV0a_cy_Z_YPdrKOKuJIfiDY_vXfOlc",
@@ -898,46 +971,63 @@
   "name": "כפיפת מרפק ביד אחת בהטיה קדימה - DdbhjKqRY-L.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1HDUfPsMi9VPYyti3odRtDZCqataqujTK.jpg"
+  "poster": "media/anim/concentration-curl.jpg",
+  "anim": "concentration-curl",
+  "originalPoster": "assets/posters/ill-1HDUfPsMi9VPYyti3odRtDZCqataqujTK.jpg"
  },
  {
   "fileId": "1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF",
   "name": "כפיפת מרפק עם גומייה בעמידה - DcbiITZtExG.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF.jpg"
+  "poster": "media/anim/band-curl.jpg",
+  "anim": "band-curl",
+  "originalPoster": "assets/posters/ill-1eFF0JQ_7NFi9bESv9LmuI2y4AtLhZTvF.jpg"
  },
  {
   "fileId": "1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd",
   "name": "כפיפה עם גומייה מאחורי הגוף - DbVwC50ox3N.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd.jpg"
+  "poster": "media/anim/band-curl.jpg",
+  "anim": "band-curl",
+  "originalPoster": "assets/posters/ill-1posgsSg8r4huR9ENwBwoPk_AEsbHgmZd.jpg"
  },
  {
   "fileId": "1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8",
   "name": "כפיפה באחיזה צמודה עם גומייה - DeOMzxIslEp.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8.jpg"
+  "poster": "media/anim/band-curl.jpg",
+  "anim": "band-curl",
+  "originalPoster": "assets/posters/ill-1qyZN4BP7q5WEgRM9Qp4HI9muYwGlSdm8.jpg"
  },
  {
   "fileId": "1X0gxwKNMTRFHYkzPANtMAZ9vuLCHSVTP",
   "name": "כפיפה עם גומייה וידיות - Dah5NGeFtIP.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "band-curl",
+  "originalPoster": "",
+  "poster": "media/anim/band-curl.jpg"
  },
  {
   "fileId": "1_M6LYz-jK5_SX5RxcMHfElWeqQMkmF06",
   "name": "כפיפת פטיש בכבל - DaCC2T6Cvj9.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/cable-curl.jpg"
  },
  {
   "fileId": "12_I0cm7bijruHWO_GtsaeplV67c1CocQ",
   "name": "כפיפה בספסל כומר - DZsGQ93RyEW.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "preacher-curl",
+  "originalPoster": "",
+  "poster": "media/anim/preacher-curl.jpg"
  },
  {
   "fileId": "122AQtBlz4QmitNnxoUgMqhVYsKh8R4Ot",
@@ -964,7 +1054,10 @@
   "fileId": "1Owp44ZKj7wTl5_nOcQLnOSkOKsV73AxL",
   "name": "פשיטה מעל הראש בכבל - Da2miTeRAQv.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "",
+  "poster": "media/anim/overhead-triceps-extension.jpg"
  },
  {
   "fileId": "15SwbzAXX1SAeapPFZm9Zz5MYOBn4FqnK",
@@ -984,7 +1077,9 @@
   "name": "פשיטת מרפקים בשיפוע עם גומייה - Da8cvXDhKSi.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1fzis0Gg-mh_8IL1J7ohsxgdjc_tqCE51.jpg"
+  "poster": "media/anim/incline-pushup.jpg",
+  "anim": "incline-pushup",
+  "originalPoster": "assets/posters/ill-1fzis0Gg-mh_8IL1J7ohsxgdjc_tqCE51.jpg"
  },
  {
   "fileId": "1ryXeMNhrX9rn6ZJy2OdDu8diaYOcO1zA",
@@ -1033,7 +1128,9 @@
   "name": "סקוואט מפוצל עם רגל קדמית מוגבהת - DffAMV0AKa2.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU.jpg"
+  "poster": "media/anim/bulgarian-split-squat.jpg",
+  "anim": "bulgarian-split-squat",
+  "originalPoster": "assets/posters/ill-1R0PsldEKEuuLXjfX1AZnENb1YnA02qlU.jpg"
  },
  {
   "fileId": "1dgrjezeIs9hsRVGgZx4tBnp3q84JpBt1",
@@ -1054,14 +1151,18 @@
   "name": "סקוואט אחורי עם מוט - טכניקה - DGa3xyHiY18.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1SSC1Bnr97JEAQePBCZ3n_GuFj26trfO0.jpg"
+  "poster": "media/anim/barbell-back-squat.jpg",
+  "anim": "barbell-back-squat",
+  "originalPoster": "assets/posters/ill-1SSC1Bnr97JEAQePBCZ3n_GuFj26trfO0.jpg"
  },
  {
   "fileId": "1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox",
   "name": "פלאנק על האמות - טכניקה - DWwRxG_jLOo.mp4",
   "folder": "כושר/בטן",
   "muscleGroup": "בטן",
-  "poster": "assets/posters/ill-1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox.jpg"
+  "poster": "media/anim/plank.jpg",
+  "anim": "plank",
+  "originalPoster": "assets/posters/ill-1ZxgbJiej6iZ23l8cKJnj6Bhtqe_-f6Ox.jpg"
  },
  {
   "fileId": "12RqRE41V_a_wm6v8E5czzrI9bb6WFMaK",
@@ -1095,21 +1196,28 @@
   "fileId": "1lxDpD2Vhq1vlL2pO-q2WXST_7PFAOqpZ",
   "name": "דד באג - דגש לחיצה - DZ58-t_BEhT.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "dead-bug",
+  "originalPoster": "",
+  "poster": "media/anim/dead-bug.jpg"
  },
  {
   "fileId": "1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF",
   "name": "דד באג - Dap79yBOnSF.mp4",
   "folder": "כושר/בטן",
   "muscleGroup": "בטן",
-  "poster": "assets/posters/ill-1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF.jpg"
+  "poster": "media/anim/dead-bug.jpg",
+  "anim": "dead-bug",
+  "originalPoster": "assets/posters/ill-1UCAFelQ-Xo6tJRMCcb4mstz4gzpZwceF.jpg"
  },
  {
   "fileId": "1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_",
   "name": "כפיפת V בישיבה - De-vCS7x6cn.mp4",
   "folder": "כושר/בטן",
   "muscleGroup": "בטן",
-  "poster": "assets/posters/ill-1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_.jpg"
+  "poster": "media/anim/seated-v-up.jpg",
+  "anim": "seated-v-up",
+  "originalPoster": "assets/posters/ill-1PFe1EqU5VZ1jl2L7uotZbbDgEkmP_yB_.jpg"
  },
  {
   "fileId": "1Et8DxIhy12i8fjnEnp2SGr7xYXly4rB4",
@@ -1272,7 +1380,9 @@
   "name": "דיפס על מוט ישר - DOITmPRjLeZ.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f.jpg"
+  "poster": "media/anim/bar-dip.jpg",
+  "anim": "bar-dip",
+  "originalPoster": "assets/posters/ill-12cQ1Tg8QbNaYNwTpgCN6_miNIdBmK_2f.jpg"
  },
  {
   "fileId": "1SKWuYqpISlklstc9x05XWmLisCxx-007",
@@ -1286,21 +1396,27 @@
   "name": "משיכת שכמות בתלייה והתקדמות למתח - DVSSS7dCZmF.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl.jpg"
+  "poster": "media/anim/pull-up.jpg",
+  "anim": "pull-up",
+  "originalPoster": "assets/posters/ill-1ToRTQwNIZCLXC4zB997npJTB1Jz_UdLl.jpg"
  },
  {
   "fileId": "1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB",
   "name": "שכיבות סמיכה בירידה על מדרגות - DatSixZpEoY.mp4",
   "folder": "כושר/חזה",
   "muscleGroup": "חזה",
-  "poster": "assets/posters/ill-1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB.jpg"
+  "poster": "media/anim/decline-pushup.jpg",
+  "anim": "decline-pushup",
+  "originalPoster": "assets/posters/ill-1rrGPAjYRP6vTfqgjW6F7AMOz_JjB4mMB.jpg"
  },
  {
   "fileId": "1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf",
   "name": "שכיבות סמיכה פייק עם רגליים על המדרגות - DbYGBdJp_-Z.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf.jpg"
+  "poster": "media/anim/pike-pushup.jpg",
+  "anim": "pike-pushup",
+  "originalPoster": "assets/posters/ill-1ZX2eCNSV8QWrPzZsLZOZf6Ai822BTkOf.jpg"
  },
  {
   "fileId": "1hYvG6xfwQSJQT3fciteplc-EvZxY3xxN",
@@ -1313,7 +1429,10 @@
   "fileId": "1jAtCx4PRwl0QKos2mrLgSNTCOGnmONnb",
   "name": "מטפס הרים מוצלב - DZs_ftUBacO.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "mountain-climber",
+  "originalPoster": "",
+  "poster": "media/anim/mountain-climber.jpg"
  },
  {
   "fileId": "1TDtibRiQr91z0ydTpjC5QdhFx0gW8eKc",
@@ -1333,7 +1452,9 @@
   "name": "דיפס בסיוע גומייה על מקבילים - DewMmR1g_fK.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm.jpg"
+  "poster": "media/anim/bar-dip.jpg",
+  "anim": "bar-dip",
+  "originalPoster": "assets/posters/ill-1aY9LbaTi6MFUolYOsYGHuAOiQkQSGOjm.jpg"
  },
  {
   "fileId": "1HMdAkVpqLqqs-bKtfoxKHdTqCDJ_T5gA",
@@ -1359,7 +1480,10 @@
   "fileId": "1Hv_-TT0weqdZxuCgFjB7k7ugNchmNtLt",
   "name": "סקוואט בולגרי עם גומייה - Db_KYjmOcgn.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "bulgarian-split-squat",
+  "originalPoster": "",
+  "poster": "media/anim/bulgarian-split-squat.jpg"
  },
  {
   "fileId": "1epTFYthoK96hoxF8IfR7ANsFpurZD5ib",
@@ -1389,13 +1513,19 @@
   "fileId": "1-8xIjMz7zrlHYC5MyBztWqcmdZOtLnte",
   "name": "כפיפת מרפקים נשענת על כדור פיזיו עם משקולות - DCiDTM4MPki.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "preacher-curl",
+  "originalPoster": "",
+  "poster": "media/anim/preacher-curl.jpg"
  },
  {
   "fileId": "1BtxMuS1ZTk9xoHNHbiKa6LZIXd_SVlho",
   "name": "כפיפת מרפק ביד אחת נשענת על כדור פיזיו - DdehFUAJ-5h.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "preacher-curl",
+  "originalPoster": "",
+  "poster": "media/anim/preacher-curl.jpg"
  },
  {
   "fileId": "161PqeSJ5aPV0w-iD6cbvpb5eGEWiBZRH",
@@ -1487,13 +1617,19 @@
   "fileId": "1Fh187VbXGWN_qjaATxn2jGhl7_OFbhTx",
   "name": "שכיבות סמיכה עם רגליים על כדור פיזיו - Da9q3OeJdnr.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1KdZvSm0oBtJpWhhSBHL6TEjUo9YjtXIy",
   "name": "שכיבות סמיכה על ידיות עם רגליים על כדור פיזיו - Dc4EqUvvv_q.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1kbQjTlRjh-YYBfGyM1FByubr_zr2Nuto",
@@ -1505,31 +1641,46 @@
   "fileId": "1VmpDKe5yGYamu0G1-ICyNzS9GUtPjhEY",
   "name": "פייק עם רגליים על כדור פיזיו - DbDQEQPSPar.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "pike-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/pike-pushup.jpg"
  },
  {
   "fileId": "1UL_y3EIWlm1g8HGZFWW5VS1TQJqUCO8u",
   "name": "דיפס עם עקבים על כדור פיזיו - DVeniyskoCm.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "stability-ball-bench-dip",
+  "originalPoster": "",
+  "poster": "media/anim/stability-ball-bench-dip.jpg"
  },
  {
   "fileId": "1Ye119UKyYHvKmNmazZvpmU03Gn6Wu_Jc",
   "name": "דיפס במקבילים עם רגליים על כדור פיזיו - DaShhJxxY0-.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1aZAeWGC7kthqXuSxL4XbOnwp43Vynl1X",
   "name": "חתירה ביד אחת עם גומייה בעמידת מכרע - DZLKClvIWdB.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "band-row",
+  "originalPoster": "",
+  "poster": "media/anim/band-row.jpg"
  },
  {
   "fileId": "1rV4tlj7YngEokGu3qvMoDzjGJlmITtuu",
   "name": "כפיפת ריכוז ביד אחת עם גומייה - DEQ2kTJusT4.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "concentration-curl",
+  "originalPoster": "",
+  "poster": "media/anim/concentration-curl.jpg"
  },
  {
   "fileId": "1VZIjQbmATafmYZFDmLOu6OnrbAZePckH",
@@ -1541,19 +1692,28 @@
   "fileId": "11vPfRclg_esFElZRNYxWYeKZF5dBsbpo",
   "name": "חטיבת עץ עם גומייה בחצי כריעה - DcwnoAWom8H.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "cable-woodchop",
+  "originalPoster": "",
+  "poster": "media/anim/cable-woodchop.jpg"
  },
  {
   "fileId": "1I7yzHo2tdl2xLa7NzSJlriCi77xZ756G",
   "name": "דד באג עם מיני גומייה - DEqXGrHRECu.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "dead-bug",
+  "originalPoster": "",
+  "poster": "media/anim/dead-bug.jpg"
  },
  {
   "fileId": "19E49R8oocvOg5URaC1wsOe870ZpRW7An",
   "name": "דד באג עם גומייה מעוגנת - DashoeainRD.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "dead-bug",
+  "originalPoster": "",
+  "poster": "media/anim/dead-bug.jpg"
  },
  {
   "fileId": "1ci7UD8T0vILbcuXfSmvgzWAWJmt4lW5s",
@@ -1565,7 +1725,10 @@
   "fileId": "1xN3fSKT2EeiH8paAJ3n8_7nRs8aNupWI",
   "name": "לחיצת כתף בחצי כריעה עם גומייה ומשקולת - DeJ_A8WR2Tt.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "band-overhead-press",
+  "originalPoster": "",
+  "poster": "media/anim/band-overhead-press.jpg"
  },
  {
   "fileId": "1IpWxXf2vigtGzAQD5nMD3m2gQMlYrY5x",
@@ -1602,7 +1765,10 @@
   "fileId": "1VWnG4_qc_6eJMJraOiCmmbMZH9rZCu5f",
   "name": "תלייה פסיבית על מוט מתח - DdXACV_BApE.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "dead-hang",
+  "originalPoster": "",
+  "poster": "media/anim/dead-hang.jpg"
  },
  {
   "fileId": "1rWHSyWx7gaUg_fbTxNigBsS8Ipvz8J7X",
@@ -1614,19 +1780,28 @@
   "fileId": "1ge53Y8mWonheXP5k-cAIDuWXsGgwqXor",
   "name": "דיפס קוריאני על מוט - DUhU5gjkVA3.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "19O5pwiAR4q8n1Xi0wE8hXe5h7-Smw9Sj",
   "name": "דיפס על מוט ישר עם משקל - Ddg69cfCxIH.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "1lQvT8DOi33pjp0pmHgn8xRqfmq1FX6Xm",
   "name": "דיפס על מוט נמוך - DZqqIkCgy_3.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "1iuCsDCYIpFtxMzT_OaD2Um2YceNAsdMr",
@@ -1686,7 +1861,10 @@
   "fileId": "1rVe-xAewru_-iQx8lYPnrR_PDvfnjVFt",
   "name": "פרפר עם משקולות על הרצפה - DehkvvXxH_0.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "floor-dumbbell-fly",
+  "originalPoster": "",
+  "poster": "media/anim/floor-dumbbell-fly.jpg"
  },
  {
   "fileId": "1cyGsHVkEirUTt3PnI9r_UdafgRDjbcE9",
@@ -1711,13 +1889,19 @@
   "fileId": "1q2hyw0urUkTAZ5wT7CX5FKyRIjXL3C6o",
   "name": "דד באג עם משקולות - DckJE7XsSg2.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "dead-bug",
+  "originalPoster": "",
+  "poster": "media/anim/dead-bug.jpg"
  },
  {
   "fileId": "1KG7psaqNPChFD05b2u36y3PtF2FH7POs",
   "name": "סקוואט בולגרי עם משקולות כבדות - Deu6X-xSXy1.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "bulgarian-split-squat",
+  "originalPoster": "",
+  "poster": "media/anim/bulgarian-split-squat.jpg"
  },
  {
   "fileId": "1hpB660QyFnOokjTjNC-_aPt-BwVdyqPv",
@@ -1730,14 +1914,19 @@
   "fileId": "1NMqbv478fE9gwcSqe39Zg-uMIixHG5uO",
   "name": "סקאל קראשר עם משקולות על ספסל - DfVBX25M9e9.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "skull-crusher",
+  "originalPoster": "",
+  "poster": "media/anim/skull-crusher.jpg"
  },
  {
   "fileId": "1McjkSLkIFZKTfolrtWoXd41vDLH67Zo_",
   "name": "פשיטת מרפקים בשכיבה עם משקולות - DRvestVCVA9.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1McjkSLkIFZKTfolrtWoXd41vDLH67Zo_.jpg"
+  "poster": "media/anim/skull-crusher.jpg",
+  "anim": "skull-crusher",
+  "originalPoster": "assets/posters/ill-1McjkSLkIFZKTfolrtWoXd41vDLH67Zo_.jpg"
  },
  {
   "fileId": "1RLO9SO7EyPeXZu4C2mOv-UriHJhm69s0",
@@ -1755,7 +1944,10 @@
   "fileId": "1bpD6lCDPzRYRaWqdhjgVnFffYhafsgDE",
   "name": "שכיבות סמיכה בשיפוע על מדרגות בבית - DWFs5LuiDwq.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1tXxOehHCzjufUTqcTcfPX_cFQqnDoeEN",
@@ -1786,19 +1978,28 @@
   "fileId": "1mqREldgDf3sk9Q1qsa03U6fVWpZOkdub",
   "name": "חתירת פנדליי עם מוט - DH9Z1duSE_6.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "barbell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-bent-row.jpg"
  },
  {
   "fileId": "1IAst246uHlQLIf6bxblUC_HV00CR2Zuf",
   "name": "חתירת מוט מהרצפה - DV1quogj_bN.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "barbell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-bent-row.jpg"
  },
  {
   "fileId": "1XloQM5fhYvauIynDh7fNhqOO_ZqUeTsA",
   "name": "חתירת מוט בכפיפה - DcLtULuNG5g.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "barbell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-bent-row.jpg"
  },
  {
   "fileId": "1Ee_7QZ-DCRnT8FETclMerWRSAqiMul7w",
@@ -1810,37 +2011,55 @@
   "fileId": "1qag4GrBXkVscH6VgMN5z7sMgSIGWfP9M",
   "name": "חתירת מוט נתמכת בספסל - DfHkcmPzO3T.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "barbell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-bent-row.jpg"
  },
  {
   "fileId": "1VYld46DQGDAemESAH2awplwUqUCnkaTa",
   "name": "כפיפות מרפקים 21 עם מוט - DXRfwQlk2g2.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "1XxwuQb6FO4-orF_-S-UwnHUN2qSpw12t",
   "name": "כפיפות מוט 21 בחצאי טווח - DXJfIxjFHIW.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "1kp3Rxp0SdEdh2rq7VT_Q5eUEDjoKRANr",
   "name": "כפיפת מרפקים עם מוט בעמידה - DX2aHRPyLWJ.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "19NX5dQKYaz-lqydEQTRYLGRbyd4wVkwy",
   "name": "לחיצת מוט בשיפוע חיובי כבדה - DKKqZDmRs_j.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "11a_HDcxEW1mwvHPMXenSobokkUeyiues",
   "name": "לחיצת מוט בשיפוע עם שומר - DIeGEe_JTIB.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1KZ19_uMENQaT9zdB9a9JYyM5Fz45nHbQ",
@@ -1870,19 +2089,28 @@
   "fileId": "1KqjngFwMBquFNH1L9oCmRBrPzA2J5OlP",
   "name": "לאנדמיין 180 - Dc1hU3UKNYc.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "landmine-rotation",
+  "originalPoster": "",
+  "poster": "media/anim/landmine-rotation.jpg"
  },
  {
   "fileId": "1rxrdWjja2OxcEmcHHAiZJuT26j3zWsEy",
   "name": "רוטציית לאנדמיין - DcWieqzyUz8.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "landmine-rotation",
+  "originalPoster": "",
+  "poster": "media/anim/landmine-rotation.jpg"
  },
  {
   "fileId": "10ddy8yglakVNXxI_cdi5uw60CiUjcaBG",
   "name": "רוטציית לאנדמיין בטווח מורחב - DdvevHGtL-N.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "landmine-rotation",
+  "originalPoster": "",
+  "poster": "media/anim/landmine-rotation.jpg"
  },
  {
   "fileId": "1KSCBGoady-O_m1qQH61NMF5qHfa0nCnS",
@@ -1906,7 +2134,10 @@
   "fileId": "1zkJ1H8dfFOsF1zT4sxwCmqsg1sNAugRl",
   "name": "סקוואט עם מוט ריק - DfX1tqny6O_.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "barbell-back-squat",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-back-squat.jpg"
  },
  {
   "fileId": "1KJi89w79BImoP8SiRsd8aI9Usk0IEvwU",
@@ -1936,43 +2167,64 @@
   "fileId": "1nXbJzUE3IRRQQhYx20lbXWC5kVpgw3Ab",
   "name": "חתירת קטלבל בכפיפה - DKCtSfxCLxt.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "kettlebell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/kettlebell-bent-row.jpg"
  },
  {
   "fileId": "1ZhZsfay9kKyQ1e3nHSejYS8mfjt-QzIW",
   "name": "חתירה בכפיפה עם קטלבל ביד אחת - DJUOT17OEQc.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "kettlebell-bent-row",
+  "originalPoster": "",
+  "poster": "media/anim/kettlebell-bent-row.jpg"
  },
  {
   "fileId": "1_-kOa0kUki_9b0cP4XWgV3zjRL2Wjo4y",
   "name": "כפיפת מרפקים עם קטלבל הפוך - DY7kG-1KS4V.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bottoms-up-kb-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bottoms-up-kb-curl.jpg"
  },
  {
   "fileId": "1Oe-YVHQqFmmnzpAmD0OfSKr9r9yFAe9W",
   "name": "לחיצת רצפה עם קטלבל הפוך ביד אחת - DK0LwTbpeLR.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "bottoms-up-kb-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bottoms-up-kb-curl.jpg"
  },
  {
   "fileId": "157UQUV7sSDnmxiPcECsYCo0uKvEArVTS",
   "name": "לחיצת רצפה עם קטלבל הפוך - DeZJGicy3uD.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "bottoms-up-kb-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bottoms-up-kb-curl.jpg"
  },
  {
   "fileId": "1uNJkr_44wF3E_IbttMglOYmExwQ-66Kh",
   "name": "לחיצת רצפה עם קטלבלס בבית - Dbbb_hWvkTE.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "kettlebell-floor-press",
+  "originalPoster": "",
+  "poster": "media/anim/kettlebell-floor-press.jpg"
  },
  {
   "fileId": "1BhvsGh9Ft9mmpGWINZesuMk3I5jiVsDO",
   "name": "לחיצת רצפה עם קטלבל - DYSefxWyKvM.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "kettlebell-floor-press",
+  "originalPoster": "",
+  "poster": "media/anim/kettlebell-floor-press.jpg"
  },
  {
   "fileId": "1NwHfmW01IeRb4vMoSEGo3lu6j5r9kOhu",
@@ -1997,32 +2249,46 @@
   "fileId": "11I2F_TYHja8OrytF1LXZkpnNRnNje_Mi",
   "name": "סקאל קראשר עם קטלבלס על ספסל - DOmUPaFClwd.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "skull-crusher",
+  "originalPoster": "",
+  "poster": "media/anim/skull-crusher.jpg"
  },
  {
   "fileId": "1yhDhQx1eP3zYxy0K6Fjbmeff72FbxfLC",
   "name": "סקאל קראשר עם קטלבל על ספסל במתקן - DdR-glfSSQy.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "skull-crusher",
+  "originalPoster": "",
+  "poster": "media/anim/skull-crusher.jpg"
  },
  {
   "fileId": "14QWHYm9RNKG6nwCD_CVRzMrdgT8ZFTUX",
   "name": "סקאל קראשר עם קטלבל בשיפוע - DJOyOQfRCnQ.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl",
   "name": "פשיטת מרפקים מעל הראש עם קטלבל בעמידה - DWbguFJh4OC.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl.jpg"
+  "poster": "media/anim/overhead-triceps-extension.jpg",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "assets/posters/ill-1qfQSWQLqeSfGI4V_eBTcnASgUHrHu_hl.jpg"
  },
  {
   "fileId": "1mWgfxFysrjDBxO8EVDYLTwpy2x2eu_qM",
   "name": "פשיטת מרפקים מעל הראש עם קטלבל בישיבה - DK1BMZ1CoxI.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "",
+  "poster": "media/anim/overhead-triceps-extension.jpg"
  },
  {
   "fileId": "12mhbgCpwLVj_rTSuKygs32_jHFNE3lzA",
@@ -2079,7 +2345,10 @@
   "fileId": "1mpdoW7WknOfId_RhSxeVOZCUmUjiE0JN",
   "name": "שכיבות סמיכה בשיפוע על מוט נמוך - DNQziffMVDK.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1KB4jqh3yP5c3zSjGfom3FGesuWt2_Jex",
@@ -2116,13 +2385,19 @@
   "fileId": "1Rceg9QddwWXnbjAAB3ozHA96n8yL3dU7",
   "name": "לחיצת רצפה ביד אחת עם קטלבל - DUIPy77CHbw.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "kettlebell-floor-press",
+  "originalPoster": "",
+  "poster": "media/anim/kettlebell-floor-press.jpg"
  },
  {
   "fileId": "1f_m7AlFTb9lkatzxqSGYwMmseCMaoebt",
   "name": "שכיבות סמיכה בירידה על המדרגות בבית - DfI-KGXSxpI.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1Md1jea-2VwyKzQZoFQ64V-Z_tcTPEWZC",
@@ -2173,25 +2448,36 @@
   "name": "פולי עליון במכונת פלטות - DfRhTmdsm39.mp4",
   "folder": "כושר/גב",
   "muscleGroup": "גב",
-  "poster": "assets/posters/ill-1VvANlAnGbalmGx7ZIPGeA1rWqVZ5yI10.jpg"
+  "poster": "media/anim/seated-cable-lat-pulldown.jpg",
+  "anim": "seated-cable-lat-pulldown",
+  "originalPoster": "assets/posters/ill-1VvANlAnGbalmGx7ZIPGeA1rWqVZ5yI10.jpg"
  },
  {
   "fileId": "1Q_Ap3a8mnhvbMbj3whlcsE0mQNCWonx6",
   "name": "פולי עליון בכבל בישיבה - DdUzpk3hajS.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "seated-cable-lat-pulldown",
+  "originalPoster": "",
+  "poster": "media/anim/seated-cable-lat-pulldown.jpg"
  },
  {
   "fileId": "1jQF6QJZkF3CQCsp9tUEk5Xe2a3MY8AcT",
   "name": "כפיפת מרפקים בכבל בכריעה - DbIu9xspgtw.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/cable-curl.jpg"
  },
  {
   "fileId": "1wa_1llOFKPICvIsSTvOdwlPakLPmdHSK",
   "name": "כפיפת מרפקים בכבל בעמידה - DdMb8mlt0cv.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/cable-curl.jpg"
  },
  {
   "fileId": "1B8NdT8lRBoSuft-Wz6TCH8tzVsPXjdrz",
@@ -2209,7 +2495,10 @@
   "fileId": "196OYbAXQSTmhcYhVRSB5XFKrxAjDKrOg",
   "name": "חטיבת עץ בכבל - DY-UdQdRjdw.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "cable-woodchop",
+  "originalPoster": "",
+  "poster": "media/anim/cable-woodchop.jpg"
  },
  {
   "fileId": "19V036Bb8pWx9WxDaNyqFw2bKixx_oWJG",
@@ -2221,7 +2510,10 @@
   "fileId": "1gjb6h3P7qClumpCsxYLaYWk3LGig-4oO",
   "name": "כפיפות בטן בכבל בכריעה - DXMj8jgoab5.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "kneeling-cable-crunch",
+  "originalPoster": "",
+  "poster": "media/anim/kneeling-cable-crunch.jpg"
  },
  {
   "fileId": "1d7yCUXxWCsiomEhJrFY4vxi4UVYnWd0w",
@@ -2239,13 +2531,19 @@
   "fileId": "1W-ymd3c3GcFNie9kCpM4c9ND5ag2dNH2",
   "name": "לחיצת רגליים ברגל אחת במכונה - DbYnVU5JO6a.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "single-leg-press",
+  "originalPoster": "",
+  "poster": "media/anim/single-leg-press.jpg"
  },
  {
   "fileId": "1FdguHLn7GffP7Pa2ca2T81lvQGDZwtfR",
   "name": "מלאכי קיר בעמידה - Dc6O7EcxNOV.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "wall-angels",
+  "originalPoster": "",
+  "poster": "media/anim/wall-angels.jpg"
  },
  {
   "fileId": "1Ki7pYNm5Rp9My_Q67C1RywrRQfpx-K1P",
@@ -2269,13 +2567,19 @@
   "fileId": "1Acs_tpZlW65fosCsjIzqDyduXkGPvLAb",
   "name": "כפיפת באייזיאן בכבל ביד אחת - DbnrxhEthLB.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bayesian-cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bayesian-cable-curl.jpg"
  },
  {
   "fileId": "1nX6TKUe7dIxJCShETqzgNJZ5RUrQlgJN",
   "name": "כפיפת מרפקים בכבל תחתון בישיבה - DZAydnxJIMY.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/cable-curl.jpg"
  },
  {
   "fileId": "1g2wN27E26-TEMa6cyl3CmESC6kNljyq3",
@@ -2294,7 +2598,10 @@
   "fileId": "1lf2aAvlzdwgi944fE-1cNCBcvpKNam1V",
   "name": "חטיבת עץ בכבל בצעד צד - DN0jXsR4rhO.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "cable-woodchop",
+  "originalPoster": "",
+  "poster": "media/anim/cable-woodchop.jpg"
  },
  {
   "fileId": "1L4e5DUAaIcvMUTo29nOWS-s2T3pTd0L3",
@@ -2312,7 +2619,10 @@
   "fileId": "1rZLjxFzSQ1h-3CSMkO-U4J-BEuIS57Gp",
   "name": "הרחקה צידית בכבל ביד אחת - Ddy2XLyz80o.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "",
+  "poster": "media/anim/cable-lateral-raise.jpg"
  },
  {
   "fileId": "1n4alreyEc29PekuToyGE5g6wKQWsprsB",
@@ -2325,7 +2635,9 @@
   "name": "פשיטת מרפקים מעל הראש בכבל ביד אחת - DbD2JkctvzG.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-15sCOsheKiROTnYXhgtT-rrV5DVJtasgp.jpg"
+  "poster": "media/anim/overhead-triceps-extension.jpg",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "assets/posters/ill-15sCOsheKiROTnYXhgtT-rrV5DVJtasgp.jpg"
  },
  {
   "fileId": "19CwU9lZQ9tNb60Hmt37pHMm0Ds94jSNh",
@@ -2350,7 +2662,10 @@
   "fileId": "1khFGn6vErfI6ukeu84197h0akk0l5gB6",
   "name": "הרחקה צידית בכבל בעמידה ביד אחת - DSLUGyIk9CA.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "",
+  "poster": "media/anim/cable-lateral-raise.jpg"
  },
  {
   "fileId": "1fqbkzhMCLQQw8em_KEKlAa3cFIeSyHGb",
@@ -2381,7 +2696,9 @@
   "name": "פייק פוש אפ עם רגליים על כדור פיזיו - DQaZ2NdDJlM.mp4",
   "folder": "כושר/כתפיים",
   "muscleGroup": "כתפיים",
-  "poster": "assets/posters/ill-185uIzkeRa0Zai3ZHKOhetm0LVTB73H3r.jpg"
+  "poster": "media/anim/pike-pushup.jpg",
+  "anim": "pike-pushup",
+  "originalPoster": "assets/posters/ill-185uIzkeRa0Zai3ZHKOhetm0LVTB73H3r.jpg"
  },
  {
   "fileId": "1bWB1x3aco1MdtBWKL8-VbqM6dAC-5puY",
@@ -2429,7 +2746,10 @@
   "fileId": "19IaipgOghLKZ5aEOJWInMu-W1jrAt3Y5",
   "name": "סקאל קראשר עם משקולות בשכיבה - DKDGYJeSood.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "skull-crusher",
+  "originalPoster": "",
+  "poster": "media/anim/skull-crusher.jpg"
  },
  {
   "fileId": "17alfM02plOyPqbbrRk-oGjYldBnoETPk",
@@ -2441,7 +2761,10 @@
   "fileId": "11iCRvziv8EWFAHxTdJA9AxROEXqKT2Tw",
   "name": "לחיצת מוט בספסל בשיפוע חיובי - DYx4nQkxpKk.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1Wi9zOxNt8RC8Q6XaOQMkv-7omwyXW3tU",
@@ -2472,7 +2795,10 @@
   "fileId": "11vPqLacXHvjAcevXZuV7_ts2u1tgTBnF",
   "name": "לחיצת קטלבל מעל הראש בישיבה על הרצפה - DfIe8rVvsUv.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "seated-kettlebell-overhead-press",
+  "originalPoster": "",
+  "poster": "media/anim/seated-kettlebell-overhead-press.jpg"
  },
  {
   "fileId": "1VQ_MopzqFvmw9YzkMO3LPydPqazjX9yv",
@@ -2484,7 +2810,10 @@
   "fileId": "1JTc9kBeQzkCCto20gblWK9yFxpuiYc7_",
   "name": "חתירה עם גומייה בעמידת מכרע - DdRYl9jwk2F.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "band-row",
+  "originalPoster": "",
+  "poster": "media/anim/band-row.jpg"
  },
  {
   "fileId": "1xNMuIRzVLsk4PUqX-51bxPhBN6DMoFOG",
@@ -2496,7 +2825,10 @@
   "fileId": "1GhInbjcanTJsyC4tcGQ1Zh7Ucu2lPnVD",
   "name": "שכיבות סמיכה עם גומייה על מקבילונים - DbYYX2BoZQd.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "1qKNJsQWLsqvfSPFjqyOI2miSTXMLdYmP",
@@ -2508,7 +2840,10 @@
   "fileId": "1Gj0JNANqYT9FCSd4ONhVNQEJsqhHw760",
   "name": "כפיפת מרפקים עם גומייה בגב לקיר - DanwDjiI3ou.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "band-curl",
+  "originalPoster": "",
+  "poster": "media/anim/band-curl.jpg"
  },
  {
   "fileId": "1jRgHfOqdT6DNNN2UgpUQ8JBamYOF-BhU",
@@ -2527,58 +2862,82 @@
   "fileId": "1lLdgq1xuqskNPSmUgLa3lrKRpPW2TsRl",
   "name": "כפיפת מרפקים במכונת כומר - DUWbUWMEYP3.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "preacher-curl",
+  "originalPoster": "",
+  "poster": "media/anim/preacher-curl.jpg"
  },
  {
   "fileId": "1UzOQ4vDmVfAqb2uDDcEJd1m9jt5CjeFU",
   "name": "הרחקה צידית בכבל נמוך ביד אחת - DMNLq3lTMGQ.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "cable-lateral-raise",
+  "originalPoster": "",
+  "poster": "media/anim/cable-lateral-raise.jpg"
  },
  {
   "fileId": "1HBflmCgsi8_yrurFDLqm22KyGxwHS27r",
   "name": "פשיטת מרפקים מעל הראש בכבל בעמידה - DdlcL88Jw77.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1HBflmCgsi8_yrurFDLqm22KyGxwHS27r.jpg"
+  "poster": "media/anim/overhead-triceps-extension.jpg",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "assets/posters/ill-1HBflmCgsi8_yrurFDLqm22KyGxwHS27r.jpg"
  },
  {
   "fileId": "1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW",
   "name": "פשיטת מרפקים מעל הראש בכבל עם גב למכונה - Dfc2wBKRxEQ.mp4",
   "folder": "כושר/ידיים",
   "muscleGroup": "ידיים",
-  "poster": "assets/posters/ill-1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW.jpg"
+  "poster": "media/anim/overhead-triceps-extension.jpg",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "assets/posters/ill-1pUDjUxM-FUhwTYxKeI1RmN1p02qw9uCW.jpg"
  },
  {
   "fileId": "1ruBaY-B9Ci-i38slPQxTXmKn4K-lM2EL",
   "name": "החלקות ידיים על הקיר - DcZFnGeMmR3.mp4",
   "folder": "כושר/גב",
-  "muscleGroup": "גב"
+  "muscleGroup": "גב",
+  "anim": "wall-angels",
+  "originalPoster": "",
+  "poster": "media/anim/wall-angels.jpg"
  },
  {
   "fileId": "1eDX7jbVN2H5TDHpOKCg7_Fx_CmzZpv9v",
   "name": "כפיפות בטן בכבל בכריעה מול מכונה - DXc7FxeIzR5.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "kneeling-cable-crunch",
+  "originalPoster": "",
+  "poster": "media/anim/kneeling-cable-crunch.jpg"
  },
  {
   "fileId": "1JDkKS9EpTh0xIm6eaBKdp17OZEDFqTWG",
   "name": "לחיצת רגליים חד-רגלית במכונת לחיצה משופעת - DdJoHoxz7OL.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "single-leg-press",
+  "originalPoster": "",
+  "poster": "media/anim/single-leg-press.jpg"
  },
  {
   "fileId": "1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G",
   "name": "ישיבה על קיר עם הסבר - DfsP2ihhceW.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G.jpg"
+  "poster": "media/anim/wall-sit.jpg",
+  "anim": "wall-sit",
+  "originalPoster": "assets/posters/ill-1kqVhFA27ejycAgB8RSCCQHoIO9H6mA4G.jpg"
  },
  {
   "fileId": "1Sq3gAoO8_Wucvdx3nbDpbY6uAnwd_45u",
   "name": "החזקת ישיבה על קיר - DfFgDc_MicM.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "wall-sit",
+  "originalPoster": "",
+  "poster": "media/anim/wall-sit.jpg"
  },
  {
   "fileId": "1TW0Gk5nWnUkIlDuErE4xra9MNwcORM_Z",
@@ -2596,7 +2955,10 @@
   "fileId": "1ADIcs5arItIHU__Ci9hacTNr62LWJdqQ",
   "name": "קרוסאובר בכבלים בהטיה קדימה - DRKNr5kEV_H-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "concentration-curl",
+  "originalPoster": "",
+  "poster": "media/anim/concentration-curl.jpg"
  },
  {
   "fileId": "10HKIr5wciviC1KrDDv7L1aNwg5ov4-OY",
@@ -2614,7 +2976,10 @@
   "fileId": "1HwIf8TsUbBOYjkEQWJwSysSB_8UxGbVZ",
   "name": "ישיבה על קיר עם משקולת - DYR8I20P9Pv-קטע1.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "wall-sit",
+  "originalPoster": "",
+  "poster": "media/anim/wall-sit.jpg"
  },
  {
   "fileId": "1yDj4_NENkdumerxZW_4XKMUHMr4zKXEP",
@@ -2627,13 +2992,18 @@
   "name": "ישיבה על קיר עם הרמת ברך לסירוגין - DYuavsgOyeA-קטע1.mp4",
   "folder": "כושר/רגליים",
   "muscleGroup": "רגליים",
-  "poster": "assets/posters/ill-1Y4sXWg72nmhdxi9XRi1kFGfgvHRYVjsh.jpg"
+  "poster": "media/anim/wall-sit.jpg",
+  "anim": "wall-sit",
+  "originalPoster": "assets/posters/ill-1Y4sXWg72nmhdxi9XRi1kFGfgvHRYVjsh.jpg"
  },
  {
   "fileId": "1ds0mnTP9iPZf7wadkodW4KAn623vXedu",
   "name": "ישיבה על קיר עם פתיחת ברכיים בגומייה - DYuavsgOyeA-קטע2.mp4",
   "folder": "כושר/רגליים",
-  "muscleGroup": "רגליים"
+  "muscleGroup": "רגליים",
+  "anim": "wall-sit",
+  "originalPoster": "",
+  "poster": "media/anim/wall-sit.jpg"
  },
  {
   "fileId": "1dKmvsWV6V0__QuMnB-A2sv64gqpIKEWN",
@@ -2687,7 +3057,10 @@
   "fileId": "1S4gcT19zXYcIRt5PnZLXLqmJbJhnNwIV",
   "name": "חטיבת עץ בכבל מלמעלה למטה - DcvUHe8tDDm-קטע1.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "cable-woodchop",
+  "originalPoster": "",
+  "poster": "media/anim/cable-woodchop.jpg"
  },
  {
   "fileId": "1joB95LyKK_OcUKU6AdSe8ArJ0Mdfeq4j",
@@ -2699,7 +3072,10 @@
   "fileId": "1dcdyApqMZYeVuML9WQD6a6nRLJweo05F",
   "name": "כפיפת מרפק באייזיאן בכבל - DeZfw9Gs6JL-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bayesian-cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bayesian-cable-curl.jpg"
  },
  {
   "fileId": "1jzyBoCaX-8y5K7M1V1lV1PbXtvqE4VF1",
@@ -2777,13 +3153,19 @@
   "fileId": "1ufmDzdHzddgPmsWGZ3la_lRvCKBzvLBu",
   "name": "כפיפת באייזיאן בכבל מאחורי הגוף - Db5gP_qBqdw-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bayesian-cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bayesian-cable-curl.jpg"
  },
  {
   "fileId": "142qTYlNyZbX7xKR3nYBD0zgHholiMc0e",
   "name": "כפיפת באייזיאן עם הגב למכונת פריצ'ר - DcHjwmaRIdq-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bayesian-cable-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bayesian-cable-curl.jpg"
  },
  {
   "fileId": "1IkIcSccBOhwFCQTyd_5sJs7kg7dR2kX3",
@@ -2813,13 +3195,19 @@
   "fileId": "13pVU35aVSzfq4U1r2ZKYrzsa3ozrdAVu",
   "name": "שכיבות סמיכה עם רגליים על הקיר - DWY_GSTCVhN-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1wfsv6RUnKeet7QqRKI0bk9a0nAHvmA4v",
   "name": "פלאנק עם רגליים על הקיר - DebrnDvTKcc.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1CzLvoBad1Cla3SznYIVBdU1sq3jjnmPQ",
@@ -2893,25 +3281,37 @@
   "fileId": "1GKRpQctEsqx31hu250XUhY3m__bQ9-DC",
   "name": "מטפס הרים עם ידיים על מדרגה - DZNDNX8xfV0-קטע1.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "mountain-climber",
+  "originalPoster": "",
+  "poster": "media/anim/mountain-climber.jpg"
  },
  {
   "fileId": "1K_PNum55tnHUiwD0ffsM2l7Otov1NmNy",
   "name": "שכיבות סמיכה בשיפוע עם ידיים על המדרגות - DZvC9M0R5JF-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "17kDwavZRJGS9Z_3PST0JjrnT1YFhZWCX",
   "name": "שכיבות סמיכה בשיפוע שלילי בעלייה במדרגות - DcRriknOvJu-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "1zrT0z1DYhJDD_vAT3o_qrdu9dN59K87W",
   "name": "זחילת דוב בירידה במדרגות - DdkPHVLNBVs-קטע1.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "decline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/decline-pushup.jpg"
  },
  {
   "fileId": "1XLxFItEmSFoon4m8IZ-x8qclvB1IemxJ",
@@ -2935,25 +3335,37 @@
   "fileId": "1EgWhiy1pItyOYYvD88V8TUwVrNp0Y2Cl",
   "name": "הרמות ברכיים בישיבת קיר עם גומייה - Dd2Ch-jhA4l-קטע1.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "wall-sit",
+  "originalPoster": "",
+  "poster": "media/anim/wall-sit.jpg"
  },
  {
   "fileId": "1MLqctoWiatoFZaQ0_VP1-mMIn5Uam5Ml",
   "name": "כפיפת מרפקים עם מוט וגב לקיר - DbHwXBVKZ0-.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "1MorgBHzAGQ9F8XPWj2LbpliWxaYux-u6",
   "name": "כפיפת מרפקים קפדנית עם מוט צמוד לקיר - DGUjn9ntXE9-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "1v42sg60v41kUx9AILrC1NCwkgZtNjTo6",
   "name": "כפיפת מרפקים עם מוט EZ וגב לקיר - DDzsSGeylGq-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "barbell-curl",
+  "originalPoster": "",
+  "poster": "media/anim/barbell-curl.jpg"
  },
  {
   "fileId": "1BSOo5O-QQ0iUWRyvf-MOyJ7kBwrvUrRT",
@@ -2977,7 +3389,10 @@
   "fileId": "1dPFQTLlZZzBq70SofS1IHXpUQ8OmC9US",
   "name": "סיבובי לנדמיין - Da3pxVSuEM4.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "landmine-rotation",
+  "originalPoster": "",
+  "poster": "media/anim/landmine-rotation.jpg"
  },
  {
   "fileId": "1ekbD444lGwX1xXG7SRwvuLjvBXvgZra3",
@@ -2995,7 +3410,10 @@
   "fileId": "1XT7AD2lLANIsoeCHaRTimFB6_QPTdKII",
   "name": "לחיצת קטלבל הפוך ביד אחת בשכיבה - DbK6VJoBtHH-קטע1.mp4",
   "folder": "כושר/חזה",
-  "muscleGroup": "חזה"
+  "muscleGroup": "חזה",
+  "anim": "bottoms-up-kb-curl",
+  "originalPoster": "",
+  "poster": "media/anim/bottoms-up-kb-curl.jpg"
  },
  {
   "fileId": "1UJOk7NXN5ZPE1VhyTC364SgSprhxtNEI",
@@ -3173,7 +3591,10 @@
   "fileId": "12OS9pdcmVTXqZe2NHnQECfUVK-xdv3-f",
   "name": "לחיצת כתפיים עם גומייה בחצי כריעה - DG8AKS_R68M-קטע1.mp4",
   "folder": "כושר/כתפיים",
-  "muscleGroup": "כתפיים"
+  "muscleGroup": "כתפיים",
+  "anim": "band-overhead-press",
+  "originalPoster": "",
+  "poster": "media/anim/band-overhead-press.jpg"
  },
  {
   "fileId": "1qEdk3r91mhEBOvE1NZHAPnnz1yjbzEvE",
@@ -3337,19 +3758,28 @@
   "fileId": "1HYWMBGXz4WTZDvgXOyor7jVxDR3MmG3G",
   "name": "פשיטת מרפקים מעל הראש עם כדור כוח וצעד צידי - DagghMDRZ-g-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "",
+  "poster": "media/anim/overhead-triceps-extension.jpg"
  },
  {
   "fileId": "16wE48c4twgUTCbV1WWfXHxiRN9oAipGp",
   "name": "מקבילים נמוכים עם עזרת רגליים - DXo3b1aCWmK.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "bar-dip",
+  "originalPoster": "",
+  "poster": "media/anim/bar-dip.jpg"
  },
  {
   "fileId": "1L8CIOlbIRnQj2bNa-lYlhdpZQL-cswVO",
   "name": "פלאנק בשיפוע על המדרגות עם טפיחות כתפיים וברך לאף - DfsEZpMBDpj-קטע1.mp4",
   "folder": "כושר/בטן",
-  "muscleGroup": "בטן"
+  "muscleGroup": "בטן",
+  "anim": "incline-pushup",
+  "originalPoster": "",
+  "poster": "media/anim/incline-pushup.jpg"
  },
  {
   "fileId": "18TqB3rDKgc323YcmsltWMsnxfiJoUZiU",
@@ -3403,7 +3833,10 @@
   "fileId": "1mVAQfgXk5CovIZ5xNfHQ1AHqpnyBZ1yh",
   "name": "הרמת כדור כוח מהחזה אל מאחורי הראש - fb4438822906366427-קטע1.mp4",
   "folder": "כושר/ידיים",
-  "muscleGroup": "ידיים"
+  "muscleGroup": "ידיים",
+  "anim": "overhead-triceps-extension",
+  "originalPoster": "",
+  "poster": "media/anim/overhead-triceps-extension.jpg"
  },
  {
   "fileId": "1D__UQHpz9Uwn41xOH6-YjFb_VMnLvC7t",

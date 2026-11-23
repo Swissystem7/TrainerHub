@@ -1,0 +1,67 @@
+{
+  "id": "cable-woodchop",
+  "name": { "en": "High-to-low cable woodchop", "he": "חטיבת עץ בכבל" },
+  "view": "front",
+  "equipment": ["cable column", "handle"],
+  "fps": 30,
+  "camera": { "centerX": -0.22, "width": 2.3, "groundY": 0.8 },
+  "repeat": 3,
+  "poster": { "t": 1.35 },
+  "props": [
+    { "type": "rect", "from": [-1.13, 0], "to": [-0.73, 0.045], "color": "frame", "r": 0.01 },
+    { "type": "rect", "from": [-0.98, 0], "to": [-0.88, 2.1], "color": "frame" },
+    { "type": "rect", "from": [-1.02, 0.32], "to": [-0.84, 1.05], "color": "pad", "r": 0.01 },
+    { "type": "rect", "from": [-1.02, 0.78], "to": [-0.84, 0.795], "color": "gold" },
+    { "type": "rect", "from": [-0.9, 1.915], "to": [-0.8, 1.985], "color": "frame", "r": 0.01 },
+    { "type": "circle", "at": [-0.8, 1.95], "r": 0.05, "color": "metal" },
+    { "type": "circle", "at": [-0.8, 1.95], "r": 0.017, "color": "dark" },
+    { "type": "cable", "a": [-0.8, 1.95], "b": "left.grip", "width": 0.011, "layer": "mid" },
+    { "type": "ring", "at": "left.grip", "r": 0.036, "width": 0.014, "color": "metal", "layer": "mid" }
+  ],
+  "poses": {
+    "high": {
+      "pelvis": [-0.06, 0.92],
+      "torso": 97,
+      "neck": 95,
+      "foot": 0,
+      "scale": { "shoulders": 0.75, "hips": 0.9 },
+      "right": { "ankle": [0.28, 0.1], "kneeBend": 1, "wrist": [-0.43, 1.71], "elbowBend": 1, "hand": 130, "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.65 } },
+      "left": {
+        "ankle": [-0.3, 0.08],
+        "kneeBend": -1,
+        "wrist": [-0.45, 1.75],
+        "elbowBend": -1,
+        "hand": 130,
+        "scale": { "upperArm": 0.81, "foreArm": 0.81, "hand": 0.65 }
+      }
+    },
+    "mid": {
+      "base": "high",
+      "pelvis": [0, 0.9],
+      "torso": 89,
+      "neck": 90,
+      "scale": { "shoulders": 1, "hips": 1 },
+      "right": { "ankle": [0.3, 0.08], "wrist": [0.015, 1.255], "hand": 215, "scale": { "upperArm": 0.4, "foreArm": 0.4, "hand": 0.65 } },
+      "left": { "ankle": [-0.3, 0.09], "wrist": [-0.015, 1.29], "hand": 215, "scale": { "upperArm": 0.4, "foreArm": 0.4, "hand": 0.65 } }
+    },
+    "low": {
+      "base": "high",
+      "pelvis": [0.06, 0.87],
+      "torso": 80,
+      "neck": 84,
+      "scale": { "shoulders": 0.75, "hips": 0.9 },
+      "right": { "ankle": [0.3, 0.08], "wrist": [0.325, 0.905], "hand": 300, "scale": { "upperArm": 0.8, "foreArm": 0.8, "hand": 0.65 } },
+      "left": { "ankle": [-0.28, 0.115], "wrist": [0.3, 0.94], "hand": 300, "scale": { "upperArm": 1, "foreArm": 1, "hand": 0.65 } }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "high" },
+    { "t": 0.15, "pose": "high", "ease": "linear" },
+    { "t": 0.7, "pose": "mid", "ease": "inQuad" },
+    { "t": 1.25, "pose": "low", "ease": "outQuad" },
+    { "t": 1.5, "pose": "low", "ease": "linear" },
+    { "t": 2.15, "pose": "mid", "ease": "inQuad" },
+    { "t": 2.8, "pose": "high", "ease": "outQuad" },
+    { "t": 3, "pose": "high", "ease": "linear" }
+  ]
+}

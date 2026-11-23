@@ -1,0 +1,44 @@
+{
+  "id": "floor-dumbbell-fly",
+  "name": { "en": "Lying dumbbell fly on the floor", "he": "פרפר עם משקולות על הרצפה" },
+  "view": "top",
+  "equipment": ["dumbbells", "mat"],
+  "fps": 30,
+  "camera": { "centerX": 0.0, "width": 2.25, "groundY": 0.53 },
+  "body": { "toe": [0.012, -0.17], "heel": [0.0, -0.02] },
+  "shadow": { "center": [0.0, 0.1], "rx": 0.42, "ry": 0.8, "alpha": 0.5, "soft": 60 },
+  "repeat": 3,
+  "poster": { "t": 1.1 },
+  "props": [
+    { "type": "rect", "from": [-0.45, -0.92], "to": [0.45, 1.0], "color": "dark", "r": 0.04 },
+    { "type": "rect", "from": [-0.45, -0.93], "to": [0.45, -0.918], "color": "gold" },
+    { "type": "dumbbell", "at": "right.grip", "angle": 90, "layer": "mid" },
+    { "type": "dumbbell", "at": "left.grip", "angle": 90, "layer": "mid" }
+  ],
+  "poses": {
+    "closed": {
+      "pelvis": [0.0, 0.0],
+      "torso": 90,
+      "neck": 90,
+      "thigh": -87,
+      "shin": -92,
+      "foot": 0,
+      "scale": { "thigh": 0.64, "shin": 0.5, "upperArm": -0.22, "foreArm": -0.2, "hand": 0.2 },
+      "upperArm": 2,
+      "foreArm": 14,
+      "hand": 14
+    },
+    "open": {
+      "base": "closed",
+      "scale": { "thigh": 0.64, "shin": 0.5, "upperArm": 1.0, "foreArm": 0.97, "hand": 0.65 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "closed" },
+    { "t": 0.15, "pose": "closed", "ease": "linear" },
+    { "t": 1.35, "pose": "open", "ease": "inOutSine" },
+    { "t": 1.6, "pose": "open", "ease": "linear" },
+    { "t": 2.85, "pose": "closed", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "closed", "ease": "linear" }
+  ]
+}

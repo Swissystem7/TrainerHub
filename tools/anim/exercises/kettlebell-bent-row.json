@@ -1,0 +1,45 @@
+{
+  "id": "kettlebell-bent-row",
+  "name": { "en": "Single-arm kettlebell bent-over row", "he": "חתירת קטלבל בכפיפה" },
+  "view": "side",
+  "equipment": ["kettlebell"],
+  "fps": 30,
+  "camera": { "centerX": 0.17, "width": 1.8, "groundY": 0.78 },
+  "repeat": 3,
+  "poster": { "t": 0.85 },
+  "props": [
+    { "type": "kettlebell", "at": "near.grip", "angle": -90, "layer": "mid" }
+  ],
+  "poses": {
+    "down": {
+      "pelvis": [0.0, 0.86],
+      "torso": 45,
+      "neck": 40,
+      "kneeBend": 1,
+      "near": {
+        "ankle": [-0.22, 0.08],
+        "wrist": [0.339, 0.633],
+        "elbowBend": -1,
+        "hand": -90,
+        "scale": { "hand": 0.65 }
+      },
+      "far": {
+        "ankle": [0.24, 0.08],
+        "wristTo": { "at": "far.knee", "along": "far.thigh", "offset": [-0.14, 0.085] },
+        "elbowBend": -1,
+        "hand": -55
+      }
+    },
+    "up": {
+      "base": "down",
+      "near": { "wrist": [0.2, 0.93] }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "down" },
+    { "t": 1.1, "pose": "up", "ease": "inOutSine" },
+    { "t": 1.4, "pose": "up", "ease": "linear" },
+    { "t": 2.75, "pose": "down", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "down", "ease": "linear" }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "band-overhead-press",
+  "name": { "en": "Standing band overhead press", "he": "לחיצת כתפיים עם גומייה" },
+  "view": "side",
+  "equipment": ["resistance band"],
+  "fps": 30,
+  "camera": { "centerX": 0.04, "width": 1.8, "groundY": 0.82 },
+  "repeat": 3,
+  "poster": { "t": 0.75 },
+  "props": [
+    { "type": "band", "a": [0.075, 0.008], "b": "near.grip", "width": 0.018, "color": "gold", "layer": "mid" },
+    { "type": "barEnd", "at": "near.grip", "r": 0.024, "color": "metal", "layer": "front" },
+    { "type": "barEnd", "at": "near.grip", "r": 0.01, "color": "dark", "layer": "front" }
+  ],
+  "poses": {
+    "rack": {
+      "pin": { "point": "near.heel", "at": [-0.035, 0.045] },
+      "torso": 90,
+      "neck": 90,
+      "thigh": -87,
+      "shin": -93,
+      "scale": { "hand": 0.65 },
+      "elbowBend": -1,
+      "hand": 90,
+      "near": { "wrist": [0.17, 1.4] },
+      "far": { "thigh": -84, "shin": -96, "wrist": [0.2, 1.41] }
+    },
+    "top": {
+      "base": "rack",
+      "near": { "wrist": [0.03, 1.992] },
+      "far": { "wrist": [0.06, 1.99] }
+    }
+  },
+  "timeline": [
+    { "t": 0, "pose": "rack" },
+    { "t": 0.15, "pose": "rack", "ease": "linear" },
+    { "t": 1.2, "pose": "top", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "top", "ease": "linear" },
+    { "t": 2.8, "pose": "rack", "ease": "inOutSine" },
+    { "t": 3, "pose": "rack", "ease": "linear" }
+  ]
+}

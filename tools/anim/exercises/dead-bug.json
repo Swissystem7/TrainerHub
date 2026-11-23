@@ -1,0 +1,40 @@
+{
+  "id": "dead-bug",
+  "name": { "en": "Dead bug", "he": "דד באג" },
+  "view": "side",
+  "equipment": [],
+  "fps": 30,
+  "camera": { "centerX": -0.05, "width": 2.65, "groundY": 0.6 },
+  "repeat": 3,
+  "poster": { "t": 0.7 },
+  "poses": {
+    "tabletop": {
+      "pelvis": [0.0, 0.105],
+      "torso": 178,
+      "neck": 184,
+      "near": { "upperArm": 90, "foreArm": 90, "hand": 90, "thigh": 90, "shin": 0, "foot": 90 },
+      "far": { "upperArm": 85, "foreArm": 85, "hand": 85, "thigh": 85, "shin": -5, "foot": 85 }
+    },
+    "nearArmFarLeg": {
+      "base": "tabletop",
+      "near": { "upperArm": 176, "foreArm": 178, "hand": 178 },
+      "far": { "thigh": 6, "shin": 4, "foot": 80 }
+    },
+    "farArmNearLeg": {
+      "base": "tabletop",
+      "far": { "upperArm": 174, "foreArm": 176, "hand": 176 },
+      "near": { "thigh": 7, "shin": 5, "foot": 80 }
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "tabletop" },
+    { "t": 0.6, "pose": "nearArmFarLeg", "ease": "inOutSine" },
+    { "t": 0.85, "pose": "nearArmFarLeg", "ease": "linear" },
+    { "t": 1.45, "pose": "tabletop", "ease": "inOutSine" },
+    { "t": 1.5, "pose": "tabletop", "ease": "linear" },
+    { "t": 2.1, "pose": "farArmNearLeg", "ease": "inOutSine" },
+    { "t": 2.35, "pose": "farArmNearLeg", "ease": "linear" },
+    { "t": 2.95, "pose": "tabletop", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "tabletop", "ease": "linear" }
+  ]
+}

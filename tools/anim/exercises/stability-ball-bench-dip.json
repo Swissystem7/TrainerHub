@@ -1,0 +1,44 @@
+{
+  "id": "stability-ball-bench-dip",
+  "name": { "en": "Bench dip with heels on a stability ball", "he": "דיפס עם עקבים על כדור פיזיו" },
+  "view": "side",
+  "equipment": ["flat bench", "stability ball"],
+  "fps": 30,
+  "camera": { "centerX": 0.25, "width": 2.3, "groundY": 0.68 },
+  "repeat": 3,
+  "poster": { "t": 1.3 },
+  "props": [
+    { "type": "rect", "from": [-0.66, 0.0], "to": [-0.61, 0.41], "color": "frame" },
+    { "type": "rect", "from": [-0.21, 0.0], "to": [-0.16, 0.41], "color": "frame" },
+    { "type": "rect", "from": [-0.72, 0.395], "to": [-0.072, 0.455], "color": "pad", "r": 0.015 },
+    { "type": "rect", "from": [-0.72, 0.395], "to": [-0.072, 0.407], "color": "frame" },
+    { "type": "circle", "at": [0.918, 0.28], "r": 0.28, "color": "metal" }
+  ],
+  "poses": {
+    "top": {
+      "pelvis": [0.03, 0.58],
+      "torso": 105.6,
+      "neck": 92,
+      "wrist": [-0.165, 0.485],
+      "elbowBend": -1,
+      "hand": -12,
+      "ankle": [0.89, 0.646],
+      "kneeBend": 1,
+      "foot": 80
+    },
+    "bottom": {
+      "base": "top",
+      "pelvis": [0.052, 0.428],
+      "torso": 111.9,
+      "neck": 96
+    }
+  },
+  "timeline": [
+    { "t": 0.0, "pose": "top" },
+    { "t": 0.15, "pose": "top", "ease": "linear" },
+    { "t": 1.25, "pose": "bottom", "ease": "inOutSine" },
+    { "t": 1.45, "pose": "bottom", "ease": "linear" },
+    { "t": 2.7, "pose": "top", "ease": "inOutSine" },
+    { "t": 3.0, "pose": "top", "ease": "linear" }
+  ]
+}
