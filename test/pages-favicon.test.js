@@ -11,8 +11,9 @@ const pages = [
 ];
 
 for (const page of pages) {
-  test(page + ' declares an inline icon, so the browser never requests a missing /favicon.ico', () => {
+  test(page + ' declares a real icon (never the empty data: icon), so the browser never requests a missing /favicon.ico', () => {
     const html = fs.readFileSync(path.join(__dirname, '..', page), 'utf8');
-    assert.match(html, /<link rel="icon" href="data:,">/);
+    assert.match(html, /<link rel="icon" type="image\/svg\+xml" href="(?:\.\/|\.\.\/)icons\/icon\.svg">/);
+    assert.doesNotMatch(html, /href="data:,"/);
   });
 }

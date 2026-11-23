@@ -1,24 +1,131 @@
-// v2: the v1 worker served every cached file first and never refreshed it, so a
-// phone that opened the app once kept that day's code and video catalog
-// (old Drive ids, missing clips). Bumping the name makes activate drop v1.
-const CACHE_NAME = 'trainerhub-v2';
-const APP_SHELL_FILES = [
+// v3: the whole app now works offline. v2 cached only 4 pages and 4 scripts, so a phone that went
+// offline lost the other pages, the stylesheet, the data files and the fonts. Bumping the name makes
+// activate drop v2.
+//
+// What is cached at install:
+//   CORE_FILES   must all arrive, or the worker does not install (the builder page and its basics).
+//   Other groups are best effort: one failing group (a slow connection) does not block the install,
+//   and any file missing here is still stored the first time it is fetched online.
+// Not cached on purpose: videos and posters (large, range requests), and cross-origin files
+// (Google Drive, Instagram, YouTube, the Sentry bundle). test/sw-offline-shell.test.js keeps this
+// list complete: every local script, stylesheet and page the app uses must be in it.
+const CACHE_NAME = 'trainerhub-v3';
+
+const CORE_FILES = [
   './',
   './index.html',
-  './reserves.html',
-  './journal.html',
-  './exercises.html',
+  './css/app.css',
+  './css/fonts.css',
+  './fonts/heebo-hebrew.woff2',
+  './fonts/heebo-latin.woff2',
+  './fonts/heebo-latin-ext.woff2',
+  './manifest.webmanifest',
+  './icons/icon.svg',
+  './icons/icon-192.png',
+  './icons/apple-touch-icon.png',
   './js/core.js',
   './js/session-builder.js',
   './js/journal-storage.js',
-  './js/session-tracker.js'
+  './js/session-tracker.js',
+  './js/th-nav.js'
 ];
+
+const PAGE_FILES = [
+  './booklet.html',
+  './exercises.html',
+  './journal.html',
+  './library.html',
+  './manage.html',
+  './offer.html',
+  './pitch.html',
+  './privacy.html',
+  './reserves.html',
+  './scan.html',
+  './site-scan.html',
+  './weekly.html',
+  './workout-print.html',
+  './frontend/index.html',
+  './frontend/workout-mode.html'
+];
+
+const SCRIPT_FILES = [
+  './js/adaptation-engine.js',
+  './js/analyzer.js',
+  './js/benchmark-checkin.js',
+  './js/booklet.js',
+  './js/coach-profiles.js',
+  './js/consent.js',
+  './js/contact.js',
+  './js/custom-templates.js',
+  './js/exercise-card-fallback.js',
+  './js/feedback.js',
+  './js/group-scoreboard.js',
+  './js/infer.js',
+  './js/ingest.js',
+  './js/joint-prep.js',
+  './js/library-profile-filter.js',
+  './js/live-media-panel.js',
+  './js/live-tempo-cue.js',
+  './js/live-workout.js',
+  './js/muscle-balance.js',
+  './js/natural-workout-flow.js',
+  './js/pilot.js',
+  './js/plan-link-codec.js',
+  './js/profile.js',
+  './js/progression-engine.js',
+  './js/prompt-parser.js',
+  './js/ready-workouts.js',
+  './js/reel-library.js',
+  './js/reserves-planner.js',
+  './js/reserves-readiness-ui.js',
+  './js/reserves-track.js',
+  './js/rules-with-sources.js',
+  './js/scan-match.js',
+  './js/sentry-init.js',
+  './js/session-rpe.js',
+  './js/site-plan.js',
+  './js/site-profile.js',
+  './js/site-scan.js',
+  './js/superset-builder.js',
+  './js/tempo-volume.js',
+  './js/warmup-generator.js',
+  './js/whatsapp-share.js',
+  './js/workout-timer-ui.js',
+  './frontend/netanya-opening.js',
+  './frontend/parse-workout.js',
+  './frontend/saved-workouts.js'
+];
+
+const DATA_FILES = [
+  './js/catalog.json',
+  './js/ready-workouts.json',
+  './data/exercises.json',
+  './data/drive_videos.json',
+  './content/adaptation-templates.json',
+  './content/booklet/team-safety-file.json',
+  './content/reserves/miluim-track.json',
+  './videos/drive-catalog.json',
+  './videos/media-manifest.json',
+  './videos/youtube-catalog.json',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png'
+];
+
+const APP_SHELL_FILES = [...CORE_FILES, ...PAGE_FILES, ...SCRIPT_FILES, ...DATA_FILES];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL_FILES))
+      .then((cache) =>
+        cache.addAll(CORE_FILES).then(() =>
+          // Best effort, one group at a time: a failed group is skipped, not fatal.
+          [PAGE_FILES, SCRIPT_FILES, DATA_FILES].reduce(
+            (chain, group) => chain.then(() => cache.addAll(group).catch(() => null)),
+            Promise.resolve()
+          )
+        )
+      )
       .then(() => self.skipWaiting())
   );
 });

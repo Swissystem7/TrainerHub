@@ -63,6 +63,6 @@ test('the builder and the booklet link to the site scan', function () {
   assert.match(read('booklet.html'), /href="\.\/site-scan\.html"/);
 });
 
-test('site scan page declares an inline icon, so it loads without a favicon 404', function () {
-  assert.match(page, /<link rel="icon" href="data:,">/);
+test('site scan page declares a real icon, so it loads without a favicon 404', function () {
+  assert.match(page, /<link rel="icon" type="image\/svg\+xml" href=".\/icons\/icon\.svg">/);
 });
