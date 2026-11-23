@@ -3,6 +3,7 @@ const assert = require('node:assert');
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const { declineConsent } = require('./helpers/consent');
 
 let chromium;
 try { ({ chromium } = require('playwright')); } catch (e) { chromium = null; }
@@ -29,6 +30,7 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: '360', 
     const browser = await chromium.launch();
     try {
       const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, acceptDownloads: true });
+      await declineConsent(ctx);
       const page = await ctx.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(String(e)));
@@ -65,7 +67,9 @@ for (const vp of [{ name: 'desktop', width: 1280, height: 900 }, { name: '360', 
       if (SHOTS) await page.locator('#backupForm').screenshot({ path: path.join(SHOTS, 'backup-' + vp.name + '.png') });
 
       // New device: empty storage, restore with wrong then right password.
-      const page2 = await (await browser.newContext({ viewport: { width: vp.width, height: vp.height } })).newPage();
+      const ctx2 = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      await declineConsent(ctx2);
+      const page2 = await ctx2.newPage();
       page2.on('dialog', (d) => d.accept());
       await page2.goto(base + '/journal.html');
       await page2.setInputFiles('#backupFile', file);
