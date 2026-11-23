@@ -1966,5 +1966,12 @@ document.addEventListener('keydown', function (e) {
 });
 </script>
 
+  <div id="breathPacerPanel"></div>
+  <script src="../js/breath-pacer.js"></script>
+  <script>
+    if (window.THBreathPacer && typeof THBreathPacer.initBreathPacerUI === 'function') {
+      THBreathPacer.initBreathPacerUI('#breathPacerPanel');
+    }
+  </script>
 </body>
 </html>
