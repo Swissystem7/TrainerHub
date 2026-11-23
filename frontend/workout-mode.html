@@ -389,6 +389,22 @@
   </div>
   <div style="color:#9ca3af;font-size:0.9rem">💪 עבודה מצוינת!</div>
   <p id="setsSaved" role="status" aria-live="polite" style="color:#7FE9D9;font-size:0.85rem"></p>
+  <div style="margin:12px 0;text-align:right;width:min(420px,92vw)">
+    <label for="sessionRpeSelect" style="display:block;font-size:0.82rem;color:#9ca3af;margin-bottom:6px">דירוג מאמץ כללי של האימון (Session RPE 1–10):</label>
+    <select id="sessionRpeSelect" name="sessionRpeSelect" style="width:100%;min-height:44px;background:#12211E;color:#E8F1EE;border:1px solid #28423C;border-radius:10px;padding:8px 12px;font-size:0.95rem">
+      <option value="1">1 — קל מאוד (Very Light)</option>
+      <option value="2">2 — קל (Light)</option>
+      <option value="3">3 — מתון (Moderate)</option>
+      <option value="4">4 — בינוני (Somewhat Hard)</option>
+      <option value="5">5 — קשה (Hard)</option>
+      <option value="6">6 — קשה יותר</option>
+      <option value="7" selected>7 — קשה מאוד (Very Hard)</option>
+      <option value="8">8 — מאומץ מאוד</option>
+      <option value="9">9 — כמעט מרבי</option>
+      <option value="10">10 — מאמץ מרבי (Maximal)</option>
+    </select>
+    <div id="sessionRpeFeedback" style="font-size:0.8rem;color:#7FE9D9;margin-top:4px"></div>
+  </div>
   <div id="reportWrap" style="display:none;width:min(420px,92vw);text-align:right;direction:rtl">
     <p style="color:#7FE9D9;font-size:0.85rem;margin-bottom:10px">שלח את הסיכום למאמן בוואטסאפ — בלי שרת ובלי התחברות. הדגמה מקומית.</p>
     <div style="margin-bottom:12px">
@@ -414,6 +430,7 @@
 <script src="../js/live-tempo-cue.js"></script>
 <script src="../js/reel-library.js"></script>
 <script src="../js/live-media-panel.js"></script>
+<script src="../js/session-rpe.js"></script>
 <script>
 /* ═══════════════════════════════════════════
    DATA LOADING & FLATTENING
@@ -1629,6 +1646,37 @@ function finishWorkout() {
       ? ('נשמרו ' + savedSets.sets + ' סטים ביומן במכשיר' + (savedSets.volume ? ' · נפח ' + savedSets.volume + ' ק״ג' : '') +
          (savedSets.prs.length ? ' · 🏆 שיא חדש: ' + savedSets.prs.join(', ') : ''))
       : '';
+  }
+  const sessionRpeSelect = document.getElementById('sessionRpeSelect');
+  function updateSessionRpe() {
+    if (!sessionRpeSelect) return;
+    const durMins = Math.max(1, Math.round(elapsedSeconds / 60));
+    const rpeVal = Number(sessionRpeSelect.value) || 7;
+    const srpeApi = window.THSessionRpe;
+    if (srpeApi && typeof srpeApi.calculateSessionRpeLoad === 'function') {
+      const loadRes = srpeApi.calculateSessionRpeLoad(durMins, rpeVal);
+      if (typeof srpeApi.saveSessionRpeEntry === 'function') {
+        srpeApi.saveSessionRpeEntry({
+          durationMinutes: durMins,
+          rpe: rpeVal,
+          load: loadRes.load,
+          intensity: loadRes.intensity,
+          intensityLabel: loadRes.intensityLabel,
+          title: (workout && workout.title) || 'אימון',
+          clientId: linkMeta.tid || '',
+          name: linkMeta.name || '',
+          date: finishedAt
+        });
+      }
+      const fb = document.getElementById('sessionRpeFeedback');
+      if (fb) {
+        fb.textContent = 'עומס פנימי מחושב: ' + loadRes.load + ' יחידות (' + (loadRes.intensityLabel || loadRes.intensity) + ')';
+      }
+    }
+  }
+  if (sessionRpeSelect) {
+    sessionRpeSelect.onchange = updateSessionRpe;
+    updateSessionRpe();
   }
   function refreshReport() {
     const result = buildResult();
