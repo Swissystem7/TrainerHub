@@ -63,16 +63,17 @@ test('each Drive-hosted reel has one Instagram/Facebook code, one Drive file and
   });
 });
 
-test('Drive-hosted reels play in the Drive player inside the merged library', function () {
+test('Drive-hosted reels stay in the library but never render the reel', function () {
   const merged = TH.mergeCatalogs(TH.mergeCatalogs(local, drive, []), youtube, []);
   TH.setCatalog(merged);
   REELS.forEach(function (e) {
     const row = merged[e.id];
     assert.ok(row, e.id + ' missing after merge');
-    assert.equal(TH.playableKind(row), 'drive', e.id);
+    assert.equal(row.thirdParty, true, e.id);
+    assert.equal(TH.playableKind(row), 'soon', e.id);
     const html = TH.mediaMarkup(row, { className: 'ex-media' });
-    assert.match(html, new RegExp('drive\\.google\\.com/file/d/' + e.driveId + '/preview'));
-    assert.doesNotMatch(html, /trainerhub-media-v1|<video/);
+    assert.match(html, /הסרטון יעלה בקרוב/);
+    assert.doesNotMatch(html, /drive\.google\.com|instagram\.com|youtube\.com|<iframe|<video/);
     const found = TH.findExercise({ name: e.he });
     assert.ok(found && found.driveId === e.driveId, e.he + ' not found by name');
   });

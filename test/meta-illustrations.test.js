@@ -68,8 +68,12 @@ test('Drive cards on the exercises page show the illustration', function () {
   withPoster.forEach(function (v) {
     const ex = cards.find(function (c) { return c.file_id === v.fileId; });
     assert.ok(ex, v.fileId);
-    assert.ok(THReels.exerciseCardHtml(ex, esc).indexOf(v.poster) !== -1, v.name);
+    const html = THReels.exerciseCardHtml(ex, esc);
+    assert.match(html, /הסרטון יעלה בקרוב/, v.name);
+    assert.doesNotMatch(html, /drive\.google\.com|instagram\.com|<iframe/, v.name);
   });
   const plain = cards.find(function (c) { return !c.poster; });
-  assert.ok(THReels.exerciseCardHtml(plain, esc).indexOf('drive.google.com/thumbnail') !== -1);
+  const plainHtml = THReels.exerciseCardHtml(plain, esc);
+  assert.match(plainHtml, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(plainHtml, /drive\.google\.com/);
 });

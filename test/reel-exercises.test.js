@@ -151,7 +151,8 @@ test('posters use assets/posters/<reel_id> and exercises group by muscle', funct
   assert.equal(THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' }).secondary, '');
   assert.equal(THReels.posterSources({ id: 'ig-X', poster: 'assets/posters/custom.jpg' }).primary, 'assets/posters/custom.jpg');
   const html = THReels.posterFrameHtml(Object.assign({}, bench, { _index: 2 }), function (s) { return String(s); });
-  assert.match(html, /assets\/posters\/DfDEp8PRL3f\.jpg/);
+  assert.match(html, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(html, /assets\/posters\/DfDEp8PRL3f\.jpg|<img/);
   assert.match(html, /poster-fallback/);
   assert.match(html, /muscle-badge/);
   assert.match(html, />02</);
@@ -174,14 +175,15 @@ test('posters use assets/posters/<reel_id> and exercises group by muscle', funct
   assert.equal(moved.items[0].exerciseId, bench.id);
 });
 
-test('exercise cards link to the source reel', function () {
+test('exercise cards keep the exercise and do not link to the reel', function () {
   const bench = data.exercises.find(function (ex) { return ex.id === 'ig-DfDEp8PRL3f'; });
   const html = THReels.exerciseCardHtml(bench, function (s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   });
-  assert.match(html, /href="https:\/\/www\.instagram\.com\/reel\/DfDEp8PRL3f\/"/);
+  assert.doesNotMatch(html, /instagram\.com|href=/);
+  assert.match(html, /הסרטון יעלה בקרוב/);
   assert.match(html, /נוגעים ביד בכתף/);
   assert.doesNotMatch(html, /לא מאומת/);
   assert.match(html, /data-add="ig-DfDEp8PRL3f"/);

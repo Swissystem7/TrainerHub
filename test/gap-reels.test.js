@@ -28,7 +28,7 @@ test('every gap reel is a Drive row with its own poster', function () {
     assert.equal(e.poster, 'assets/posters/' + c + '.jpg');
     assert.ok(fs.existsSync(path.join(root, e.poster)), e.poster);
     const m = merged[e.id];
-    assert.equal(TH.playableKind(m), 'drive', e.id);
+    assert.equal(TH.playableKind(m), 'soon', e.id);
     assert.equal(TH.posterUrl(m), e.poster);
   });
 });
@@ -70,11 +70,11 @@ test('the Drive player card shows the reel poster before it loads', function () 
   TH.setCatalog(merged);
   const e = row('DQRgIA8DC_V');
   const html = TH.mediaMarkup(merged[e.id], { className: 'ex-media' });
-  assert.match(html, /<img class="th-facade-thumb" src="(\.\/)?assets\/posters\/DQRgIA8DC_V\.jpg"/);
-  // After every playable Drive-only row has a local illustration, the
-  // thumbnail fallback is checked on a synthetic entry (not a leftover catalog row).
+  assert.match(html, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(html, /assets\/posters\/DQRgIA8DC_V\.jpg|drive\.google\.com|<iframe/);
   const plain = { id: 'drive_plain_fixture', he: 'בדיקה', source: 'drive', driveId: '1AAAAAAAAAAAAAAAAAAAAAAAAAA', available: true };
-  assert.match(TH.mediaMarkup(plain, { className: 'ex-media' }), /drive\.google\.com\/thumbnail\?id=/);
+  assert.match(TH.mediaMarkup(plain, { className: 'ex-media' }), /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(TH.mediaMarkup(plain, { className: 'ex-media' }), /drive\.google\.com/);
 });
 
 test('library cards (catalogList rows) keep the reel poster', function () {
@@ -82,5 +82,6 @@ test('library cards (catalogList rows) keep the reel poster', function () {
   const e = row('DQRgIA8DC_V');
   const listed = TH.catalogList().find(function (x) { return x.id === e.id; });
   assert.equal(listed.poster, e.poster);
-  assert.match(TH.mediaMarkup(listed, { className: 'ex-media' }), /assets\/posters\/DQRgIA8DC_V\.jpg/);
+  assert.match(TH.mediaMarkup(listed, { className: 'ex-media' }), /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(TH.mediaMarkup(listed, { className: 'ex-media' }), /assets\/posters\/DQRgIA8DC_V\.jpg/);
 });

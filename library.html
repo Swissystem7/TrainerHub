@@ -231,16 +231,12 @@
       var tags = TH.catalogTags(e).map(function (t) {
         return '<span class="pill">' + TH.esc(TH.tagLabel(t)) + '</span>';
       }).join('');
-      var kind = TH.playableKind(e);
       var sourcePill = e.source
         ? '<span class="pill source-pill">' + TH.esc({
-            local: 'מקומי', onedrive: 'OneDrive מאומת', drive: 'דרייב', youtube: 'יוטיוב', link: 'קישור חיצוני', user: 'נוסף במאגר'
+            local: 'מקומי', onedrive: 'OneDrive מאומת', drive: 'יעלה בקרוב', youtube: 'יעלה בקרוב', metaai: 'מקורי', link: 'קישור חיצוני', user: 'נוסף במאגר'
           }[e.source] || e.source) + '</span>'
         : '';
       var video = TH.mediaMarkup(e, { className: 'ex-media', preferVideo: true });
-      if (!video && kind === 'link' && e.externalUrl) {
-        video = '<a class="ex-media-link" href="' + TH.esc(e.externalUrl) + '" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני</a>';
-      }
       var alts = TH.substitutesFor({ id: e.id }, { limit: 3 });
       var altHtml = alts.length
         ? '<div class="alts">חלופות: ' + alts.map(function (a) {

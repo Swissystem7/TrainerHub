@@ -354,6 +354,10 @@
 	};
 
 	var catalog = {};
+	// Existing catalog id → Meta AI media id that should play for it.
+	var originalCovers = Object.create(null);
+	// Hosted MP4 ids that are TrainerHub-owned (Meta AI or OneDrive mirrors).
+	var ownedHostedIds = Object.create(null);
 	var catalogReady = false;
 	var readyWaiters = [];
 
@@ -1067,6 +1071,19 @@
 		var entryId = e.id || id;
 		var drivePlay = drivePlayIdOk(e.drivePlayId) ? e.drivePlayId : "";
 		var poster = typeof e.poster === "string" ? e.poster : "";
+		var source = entrySource(e, defaultSource);
+		var original = e.original === true || source === "metaai";
+		var thirdParty = entryIsThirdParty(e, source, original);
+		var reference = thirdParty
+			? {
+					youtubeId: entryString(e.youtubeId),
+					driveId: entryString(e.driveId),
+					drivePlayId: drivePlay,
+					externalUrl: entryString(e.externalUrl),
+					sourceUrl: entryString(e.sourceUrl),
+					file: entryString(e.file),
+				}
+			: null;
 		return {
 			id: entryId,
 			he: entryTitle(e, id),
@@ -1074,7 +1091,7 @@
 			equipment: entryList(e.equipment, "none"),
 			level: e.level || "beginner",
 			aliases: aliasList(e),
-			source: entrySource(e, defaultSource),
+			source: source,
 			file: entryString(e.file),
 			driveId: entryString(e.driveId),
 			drivePlayId: drivePlay,
@@ -1086,14 +1103,51 @@
 			endSec: entrySec(e.endSec),
 			segmentOf: entryString(e.segmentOf),
 			poster: poster,
+			mediaId: entryString(e.mediaId),
+			original: original,
+			code: entryString(e.code),
+			group: entryString(e.group),
+			covers: Array.isArray(e.covers)
+				? e.covers.filter(function (cid) {
+						return typeof cid === "string" && cid;
+					})
+				: [],
+			thirdParty: thirdParty,
+			reference: reference,
 		};
+	}
+
+	// Instagram reels, YouTube embeds, and other people's clips stay on the
+	// entry as reference data. They are never a publishable player.
+	function entryIsThirdParty(e, source, original) {
+		if (!e || original) return false;
+		if (e.thirdParty === true) return true;
+		var ref = e.reference || {};
+		if (
+			/instagram\.com|youtube\.com|youtu\.be|facebook\.com|tiktok\.com/i.test(
+				(e.externalUrl || "") +
+					" " +
+					(e.sourceUrl || "") +
+					" " +
+					(ref.sourceUrl || "") +
+					" " +
+					(ref.externalUrl || ""),
+			)
+		)
+			return true;
+		if (source === "onedrive" || source === "metaai") return false;
+		if (source === "youtube" || source === "drive" || source === "drive-reel")
+			return true;
+		if (e.youtubeId) return true;
+		if (e.driveId && source !== "onedrive" && source !== "metaai") return true;
+		return false;
 	}
 
 	function isPlayable(e) {
 		return !!(
 			e &&
 			e.available !== false &&
-			(e.file || e.driveId || e.youtubeId)
+			(e.file || e.driveId || e.youtubeId || e.mediaId || e.original)
 		);
 	}
 
@@ -1114,11 +1168,21 @@
 
 	function playableKind(e) {
 		if (!e || e.available === false) return null;
-		if (hasRemoteFile(e)) return "file";
-		if (e.driveId) return "drive";
-		if (e.youtubeId) return "youtube";
+		if (resolvePlayId(e) || directFileOk(e)) return "file";
+		if (e.original || e.source === "metaai" || (e.id && originalCovers[e.id]))
+			return "file";
+		if (isOwnedEntry(e)) return "file";
+		if (
+			e.thirdParty ||
+			e.youtubeId ||
+			e.driveId ||
+			e.source === "youtube" ||
+			e.source === "drive" ||
+			e.source === "drive-reel" ||
+			(e.externalUrl && blockedMediaUrl(e.externalUrl))
+		)
+			return "soon";
 		if (e.file) return "file";
-		if (e.externalUrl) return "link";
 		return null;
 	}
 
@@ -1159,18 +1223,14 @@
 		return "";
 	}
 
-	// Poster for a library card. A row that already has `file` plays that file;
-	// its driveId / legacyDriveId point at Drive objects that 404, so they are
-	// never turned into a thumbnail. legacyDriveId stays in the catalog data
-	// and is not read here. With no file, a YouTube id or a live Drive id can
-	// still supply a poster. Anything else is omitted.
+	// Poster for a library card. Only a relative illustration that ships with
+	// the site is used. YouTube and Drive thumbnails are third-party media and
+	// are not requested.
 	function posterUrl(entry) {
 		if (!entry) return "";
 		var local = typeof entry.poster === "string" ? entry.poster.trim() : "";
 		if (isValidLocalPoster(local)) return local;
-		var file = typeof entry.file === "string" ? entry.file.trim() : "";
-		if (file) return "";
-		return remotePosterUrl(entry);
+		return "";
 	}
 
 	function isOnline() {
@@ -1292,6 +1352,13 @@
 			endSec: catalogItemProp(safe.endSec, null),
 			segmentOf: entryString(safe.segmentOf),
 			poster: entryString(safe.poster),
+			mediaId: entryString(safe.mediaId),
+			original: safe.original === true,
+			code: entryString(safe.code),
+			group: entryString(safe.group),
+			covers: Array.isArray(safe.covers) ? safe.covers.slice() : [],
+			thirdParty: safe.thirdParty === true,
+			reference: safe.reference || null,
 		};
 	}
 
@@ -1482,10 +1549,37 @@
 		return reelEntries[id];
 	}
 
+	function coveredStub(id, name) {
+		var mid = originalCovers[id];
+		if (!mid) return null;
+		var keys = Object.keys(catalog);
+		var i, e;
+		for (i = 0; i < keys.length; i++) {
+			e = catalog[keys[i]];
+			if (!e || (e.mediaId !== mid && e.id !== mid)) continue;
+			return {
+				id: id,
+				he: name || e.he,
+				muscles: e.muscles,
+				equipment: e.equipment,
+				level: e.level,
+				source: "metaai",
+				original: true,
+				mediaId: mid,
+				available: true,
+			};
+		}
+		return null;
+	}
+
 	function findExercise(step) {
 		if (!step) return null;
 		var id = step.id || step.name;
 		if (id && catalog[id] && isPlayable(catalog[id])) return catalog[id];
+		// A saved workout can still name an id that the merge dropped, or a reel
+		// id an original was matched to. Play that original and keep the id.
+		var covered = id ? coveredStub(id, step.name) : null;
+		if (covered) return covered;
 		var reel = reelClip(step);
 		if (reel) return reel;
 		var name = step.name;
@@ -3138,36 +3232,10 @@
 		return isPlayable(e);
 	}
 
+	// Only an explicit covers[] link may substitute a clip. A shared Hebrew
+	// title is not enough: a different variation must keep its own placeholder.
 	function bestMedia(entry) {
-		if (!entry) return null;
-		if (
-			entry.available !== false &&
-			((entry.file && /^https?:\/\//i.test(entry.file)) ||
-				entry.driveId ||
-				entry.youtubeId ||
-				entry.externalUrl)
-		)
-			return entry;
-		var he = foldHe(entry.he);
-		if (!he) return entry;
-		var keys = Object.keys(catalog);
-		var i, hosted, e;
-		for (i = 0; i < keys.length; i++) {
-			hosted = catalog[keys[i]];
-			if (
-				hosted &&
-				hosted.available !== false &&
-				hosted.file &&
-				/^https?:\/\//i.test(hosted.file) &&
-				foldHe(hosted.he) === he
-			)
-				return hosted;
-		}
-		for (i = 0; i < keys.length; i++) {
-			e = catalog[keys[i]];
-			if (e && e.driveId && foldHe(e.he) === he) return e;
-		}
-		return entry;
+		return entry || null;
 	}
 
 	function formatClock(sec) {
@@ -3262,22 +3330,16 @@
 		return (setupLazyMedia() ? LAZY_SRC : "src") + '="' + esc(url) + '"';
 	}
 
-	// Load-on-click (click-to-play facade). Each Drive/YouTube player is a full
-	// page with its own scripts, so a library of ~300 cards that created every
-	// iframe up front ran browsers out of memory. A card now shows the clip's
-	// thumbnail with a play button in the same box; the iframe is created only
-	// when the user clicks it (activateMediaFrame). opts.eager keeps the old
-	// immediate iframe for single-player views (workout mode, the segment tool).
-	// Hosted MP4 copies of the Drive clips (Swissystem7/TrainerHub-media).
-	// Drive's preview player starts slowly and stalls on mobile data, so a clip
-	// with a copy plays in a native <video> from the media repo's GitHub Pages,
-	// then from jsDelivr (pinned tag) if that fails, and from the Drive player
-	// as the last fallback. Drive stays the source of truth; the copies are
-	// listed in videos/media-manifest.json by Drive id.
+	// Published video is a native MP4 from TrainerHub-media (GitHub Pages, then
+	// the pinned jsDelivr tag). Meta AI originals use metaai-* ids. OneDrive
+	// clips we own play from the same hosts. Instagram, YouTube, and other
+	// people's files stay in the catalog as reference and are not requested.
 	var MEDIA_MANIFEST = "videos/media-manifest.json";
 	var MEDIA_HOST_RX =
 		/^https:\/\/(?:swissystem7\.github\.io\/TrainerHub-media\/|cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@[A-Za-z0-9._-]+\/)$/;
-	var MEDIA_PATH_RX = /^[a-z0-9_-]+\/[A-Za-z0-9_-]{20,}\.mp4$/;
+	var MEDIA_ID_RX = /^(?:[A-Za-z0-9_-]{20,}|metaai-[a-z0-9]+(?:-[a-z0-9]+)*)$/;
+	var MEDIA_PATH_RX =
+		/^[a-z0-9_-]+\/(?:[A-Za-z0-9_-]{20,}|metaai-[a-z0-9]+(?:-[a-z0-9]+)*)\.mp4$/;
 	var DRIVE_ID_RX = /^[A-Za-z0-9_-]{20,}$/;
 	var mediaHosts = [];
 	var mediaFiles = Object.create(null);
@@ -3293,7 +3355,12 @@
 		var files = m.files && typeof m.files === "object" ? m.files : {};
 		var n = 0;
 		Object.keys(files).forEach(function (id) {
-			if (DRIVE_ID_RX.test(id) && typeof files[id] === "string" && MEDIA_PATH_RX.test(files[id])) {
+			if (
+				MEDIA_ID_RX.test(id) &&
+				typeof files[id] === "string" &&
+				MEDIA_PATH_RX.test(files[id]) &&
+				files[id].slice(-(id.length + 4)) === id + ".mp4"
+			) {
 				mediaFiles[id] = files[id];
 				n++;
 			}
@@ -3329,12 +3396,12 @@
 		return frame;
 	}
 
-	// The <video> failed on its current host: try the next MP4 host, and after
-	// the last one swap in the Drive player (data-th-mp4 holds the Drive id).
+	// The <video> failed on its current host: try the next MP4 host. There is
+	// no Drive or YouTube fallback — those are third-party players.
 	function mediaFallback(v) {
 		if (!v || !v.getAttribute) return null;
 		var id = String(v.getAttribute("data-th-mp4") || "");
-		if (!DRIVE_ID_RX.test(id)) return null;
+		if (!MEDIA_ID_RX.test(id)) return null;
 		var list = mp4Sources(id);
 		var next = (v.__thHost == null ? 0 : v.__thHost) + 1;
 		if (next < list.length) {
@@ -3347,12 +3414,7 @@
 			}
 			return v;
 		}
-		var doc = v.ownerDocument || (typeof document !== "undefined" ? document : null);
-		if (!doc || !v.parentNode) return null;
-		var cls = String(v.getAttribute("class") || "").replace(/\s*\bth-mp4\b/g, "").trim();
-		var frame = driveIframe(doc, id, cls, v.getAttribute("aria-label") || "");
-		v.parentNode.replaceChild(frame, v);
-		return frame;
+		return null;
 	}
 
 	function mp4Video(doc, driveId, cls, title) {
@@ -3491,7 +3553,7 @@
 		if (!doc || !btn.parentNode) return null;
 		var keyMatch = safe.kind === "drive" ? DRIVE_PREVIEW_RX.exec(String(key)) : null;
 		var mp4Id = keyMatch ? keyMatch[1] : "";
-		if (mp4Id && mp4Sources(mp4Id).length) {
+		if (mp4Id && hostedPlaybackAllowed(mp4Id) && mp4Sources(mp4Id).length) {
 			var vcls = String(btn.getAttribute("class") || "")
 				.split(/\s+/)
 				.filter(function (c) {
@@ -3509,30 +3571,7 @@
 			if (typeof video.focus === "function") video.focus();
 			return video;
 		}
-		var frame = doc.createElement("iframe");
-		var cls = String(btn.getAttribute("class") || "")
-			.split(/\s+/)
-			.filter(function (c) {
-				return /^[A-Za-z][A-Za-z0-9_-]*$/.test(c) && !/-facade$/.test(c);
-			})
-			.join(" ");
-		frame.setAttribute("class", cls);
-		frame.setAttribute("title", String(btn.getAttribute("data-th-frame-title") || ""));
-		frame.setAttribute(
-			"allow",
-			safe.kind === "youtube"
-				? YOUTUBE_ALLOW
-				: /fullscreen/.test(btn.getAttribute("data-th-frame-allow") || "")
-					? "autoplay; fullscreen"
-					: DRIVE_ALLOW,
-		);
-		frame.setAttribute("allowfullscreen", "");
-		if (safe.kind === "drive")
-			frame.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
-		frame.setAttribute("src", safe.src);
-		btn.parentNode.replaceChild(frame, btn);
-		if (typeof frame.focus === "function") frame.focus();
-		return frame;
+		return null;
 	}
 
 	var facadeClicksBound = false;
@@ -3587,10 +3626,181 @@
 		);
 	}
 
+	function coverScore(originalHe, targetHe) {
+		var a = foldHe(originalHe);
+		var b = foldHe(targetHe);
+		if (!a || !b) return 0;
+		if (a === b) return 1000;
+		if (a.indexOf(b) !== -1 || b.indexOf(a) !== -1)
+			return 500 + Math.min(a.length, b.length);
+		var ta = a.split(" ");
+		var tb = b.split(" ");
+		var n = 0;
+		var i;
+		for (i = 0; i < ta.length; i++) {
+			if (ta[i] && tb.indexOf(ta[i]) !== -1) n++;
+		}
+		return n * 10;
+	}
+
+	function indexOriginalCovers() {
+		originalCovers = Object.create(null);
+		ownedHostedIds = Object.create(null);
+		var claims = Object.create(null);
+		var keys = Object.keys(catalog);
+		var i, e, c, cid;
+		for (i = 0; i < keys.length; i++) {
+			e = catalog[keys[i]];
+			if (!e) continue;
+			if (isOwnedEntry(e) && e.drivePlayId) ownedHostedIds[e.drivePlayId] = true;
+			if (e.mediaId && /^metaai-/.test(e.mediaId)) ownedHostedIds[e.mediaId] = true;
+			if (!e.covers || !e.covers.length) continue;
+			for (c = 0; c < e.covers.length; c++) {
+				cid = e.covers[c];
+				if (!cid) continue;
+				if (!claims[cid]) claims[cid] = [];
+				claims[cid].push(e);
+			}
+		}
+		Object.keys(claims).forEach(function (id) {
+			var list = claims[id].slice().sort(function (a, b) {
+				var target = catalog[id];
+				var sa = coverScore(a.he, target && target.he);
+				var sb = coverScore(b.he, target && target.he);
+				if (sb !== sa) return sb - sa;
+				return String(a.id).localeCompare(String(b.id));
+			});
+			originalCovers[id] = list[0].mediaId || list[0].id;
+		});
+	}
+
+	function hostedPlaybackAllowed(id) {
+		if (/^metaai-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id || "")) return true;
+		return !!ownedHostedIds[id];
+	}
+
+	function isOwnedEntry(entry) {
+		if (!entry || entry.thirdParty) return false;
+		if (entry.original === true || entry.source === "metaai") return true;
+		if (entry.source !== "onedrive") return false;
+		var file = String(entry.file || "");
+		return (
+			/github\.com\/Swissystem7\/TrainerHub\/releases\/download\/trainerhub-media-v1\//i.test(
+				file,
+			) ||
+			/^https:\/\/(?:swissystem7\.github\.io\/TrainerHub-media\/|cdn\.jsdelivr\.net\/gh\/Swissystem7\/TrainerHub-media@)/i.test(
+				file,
+			)
+		);
+	}
+
+	function blockedMediaUrl(url) {
+		return /instagram\.com|youtube\.com|youtu\.be|ytimg\.com|facebook\.com|fb\.watch|tiktok\.com|drive\.google\.com|drive\.usercontent\.google\.com|googlevideo\.com/i.test(
+			String(url || ""),
+		);
+	}
+
+	function releaseFileUrl(url) {
+		return /github\.com\/[^/]+\/[^/]+\/releases\/download\//i.test(String(url || ""));
+	}
+
+	function directFileOk(entry) {
+		if (!entry || !entry.file) return false;
+		if (
+			entry.youtubeId ||
+			entry.source === "youtube" ||
+			entry.source === "drive" ||
+			entry.source === "drive-reel"
+		)
+			return false;
+		if (blockedMediaUrl(entry.file) || releaseFileUrl(entry.file)) return false;
+		if (/^https?:\/\//i.test(entry.file)) return true;
+		if (entry.driveId) return false;
+		return true;
+	}
+
+	function resolvePlayId(entry) {
+		if (!entry || entry.available === false) return "";
+		var mid = "";
+		if (
+			entry.original === true ||
+			entry.source === "metaai" ||
+			/^metaai-/.test(entry.mediaId || "") ||
+			/^metaai-/.test(entry.id || "")
+		) {
+			mid = entry.mediaId || (/^metaai-/.test(entry.id || "") ? entry.id : "");
+		}
+		if (!mid && entry.id && originalCovers[entry.id]) mid = originalCovers[entry.id];
+		if (
+			!mid &&
+			isOwnedEntry(entry) &&
+			entry.drivePlayId &&
+			mp4Sources(entry.drivePlayId).length
+		)
+			mid = entry.drivePlayId;
+		if (!mid || !mp4Sources(mid).length) return "";
+		if (
+			/^metaai-/.test(mid) ||
+			hostedPlaybackAllowed(mid) ||
+			(isOwnedEntry(entry) && mid === entry.drivePlayId)
+		)
+			return mid;
+		return "";
+	}
+
+	function comingSoonMarkup(cls, entry) {
+		var name = entry && entry.he ? entry.he : "תרגיל";
+		var local = posterUrl(entry);
+		// ill-* files are illustrations we made. Reel frames and remote thumbs are not.
+		var ill =
+			local && /(^|\/)ill-[A-Za-z0-9_-]+\.jpg$/i.test(local)
+				? '<img class="th-facade-thumb" src="' +
+					esc(local) +
+					'" alt="" />'
+				: "";
+		return (
+			'<div class="' +
+			cls +
+			'-fallback th-video-soon" data-video="coming-soon">' +
+			ill +
+			'<strong class="th-video-soon-name">' +
+			esc(name) +
+			"</strong>" +
+			'<span class="th-video-soon-label">הסרטון יעלה בקרוב</span></div>'
+		);
+	}
+
+	function hostedVideoMarkup(entry, cls, mediaId, eager) {
+		var list = mp4Sources(mediaId);
+		if (!list.length) return comingSoonMarkup(cls, entry);
+		var local = localPosterUrl(entry);
+		var poster = local ? ' poster="' + esc(local) + '"' : "";
+		var srcAttr = eager
+			? 'src="' + esc(list[0]) + '"'
+			: videoSrcAttr(list[0]);
+		return (
+			'<div class="' +
+			cls +
+			'-wrap">' +
+			'<video class="' +
+			cls +
+			' th-mp4" playsinline controls preload="metadata" ' +
+			srcAttr +
+			' data-th-mp4="' +
+			esc(mediaId) +
+			'" data-video="original"' +
+			poster +
+			' onerror="if(window.TH&&TH.mediaFallback&&TH.mediaFallback(this))return;this.hidden=true;var n=this.nextElementSibling;if(n)n.hidden=false"></video>' +
+			'<div class="' +
+			cls +
+			'-fallback th-video-soon" hidden data-video="coming-soon">הסרטון יעלה בקרוב</div></div>'
+		);
+	}
+
 	function mediaMarkup(entry, opts) {
 		opts = opts || {};
 		var cls = esc(opts.className || "ex-media");
-		var poster, posterAttr, segNote;
+		var poster, posterAttr;
 		if (!entry) return "";
 		entry = bestMedia(entry) || entry;
 		var fallback =
@@ -3598,44 +3808,22 @@
 			cls +
 			'-fallback" role="note">' +
 			esc(mediaFallbackText(entry)) +
-			(playableKind(entry) && playableKind(entry) !== "file"
-				? '<span class="' +
-					cls +
-					'-offline"> — בלי רשת מוצג שם התרגיל במקום הנגן.</span>'
-				: "") +
 			"</div>";
 		if (entry.available === false) {
 			return (
 				'<div class="' +
 				cls +
-				'-fallback" role="note">' +
+				'-fallback th-video-soon" data-video="coming-soon">' +
 				esc(mediaFallbackText(entry)) +
-				" — עדיין אין קובץ וידאו מאומת לתרגיל הזה.</div>"
+				" — הסרטון יעלה בקרוב</div>"
 			);
 		}
-		if (!isOnline() || opts.offline) {
-			if (entry.externalUrl) {
-				return (
-					'<p class="' +
-					cls +
-					'-fallback" role="note">' +
-					esc(mediaFallbackText(entry)) +
-					" — הקישור החיצוני דורש רשת.</p>"
-				);
-			}
-			return fallback;
-		}
-		if (
-			!opts.preferVideo &&
-			!opts.video &&
-			hasRemoteFile(entry) &&
-			drivePlayIdOk(entry.drivePlayId)
-		)
-			return driveFrameMarkup(entry, entry.drivePlayId, cls, opts.eager);
-		if (
-			hasRemoteFile(entry) ||
-			(entry.file && !entry.youtubeId && !entry.driveId)
-		) {
+		if (!isOnline() || opts.offline) return fallback;
+		var playId = resolvePlayId(entry);
+		if (playId) return hostedVideoMarkup(entry, cls, playId, !!opts.eager);
+		if (isOwnedEntry(entry) && !directFileOk(entry))
+			return comingSoonMarkup(cls, entry);
+		if (directFileOk(entry)) {
 			poster = posterUrl(entry);
 			posterAttr = poster ? ' poster="' + esc(poster) + '"' : "";
 			return (
@@ -3647,7 +3835,7 @@
 				'" hidden playsinline controls muted preload="metadata" ' +
 				videoSrcAttr(catalogSrc(entry.file)) +
 				posterAttr +
-				' onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
+				' data-video="file" onloadeddata="this.hidden=false" onerror="this.hidden=true;this.nextElementSibling.hidden=false"></video>' +
 				'<div class="' +
 				cls +
 				'-fallback" hidden role="note">' +
@@ -3655,34 +3843,17 @@
 				" — הסרטון לא זמין כרגע; פרטי התרגיל נשארים מוצגים.</div></div>"
 			);
 		}
-		if (entry.driveId) return driveFrameMarkup(entry, entry.driveId, cls, opts.eager);
-		if (entry.youtubeId) {
-			var yt = {
-				cls: cls,
-				title: entry.he || "סרטון יוטיוב",
-				src: youtubeEmbedUrl(entry.youtubeId, entry.startSec, entry.endSec),
-				allow: YOUTUBE_ALLOW,
-				thumb: localPosterUrl(entry) || youtubeThumbUrl(entry.youtubeId),
-			};
-			return (
-				'<div class="' +
-				cls +
-				'-wrap">' +
-				(opts.eager ? frameTag(yt) : frameFacadeMarkup(yt)) +
-				"</div>"
-			);
-		}
-		if (entry.externalUrl) {
-			return (
-				'<a class="' +
-				cls +
-				'-link" href="' +
-				esc(entry.externalUrl) +
-				'" target="_blank" rel="noopener noreferrer">פתח קישור חיצוני — ' +
-				esc(entry.he || "קישור") +
-				"</a>"
-			);
-		}
+		if (
+			entry.thirdParty ||
+			entry.youtubeId ||
+			entry.driveId ||
+			entry.drivePlayId ||
+			entry.source === "youtube" ||
+			entry.source === "drive" ||
+			entry.source === "drive-reel" ||
+			entry.externalUrl
+		)
+			return comingSoonMarkup(cls, entry);
 		return fallback;
 	}
 
@@ -3904,13 +4075,11 @@
 		var who = name ? "היי " + name + " 💪\n" : "";
 		var kind = playableKind(entry);
 		var note = "פותחים בלי הרשמה.";
-		if (kind === "drive")
-			note = "הסרטון מתנגן מדרייב משותף. בלי רשת יוצג שם התרגיל במקום הנגן.";
-		else if (kind === "youtube") note = "הסרטון מיוטיוב שנשמר במאגר.";
-		else if (kind === "link")
-			note = "זה קישור חיצוני שנפתח מחוץ לאפליקציה — לא חיבור למאמנים.";
-		else
-			note = "פותחים בלי הרשמה. אם הנגן לא מופיע — הקובץ אצלך במכשיר, לא בענן.";
+		if (kind === "soon")
+			note = "הסרטון יעלה בקרוב. בינתיים מוצגים שם התרגיל והמינון.";
+		else if (kind === "file")
+			note = "הסרטון המקורי של TrainerHub. פותחים בלי הרשמה.";
+		else note = "פותחים בלי הרשמה. אם הנגן לא מופיע — מוצג שם התרגיל.";
 		return who + "הנה הסרטון ל«" + entry.he + "»:\n" + url + "\n\n" + note;
 	}
 
@@ -4153,6 +4322,7 @@
 				);
 			});
 		}
+		indexOriginalCovers();
 		catalogReady = true;
 		readyWaiters.splice(0).forEach(function (fn) {
 			try {
@@ -4180,6 +4350,7 @@
 			loadJson("videos/youtube-catalog.json"),
 			loadJson("data/drive_videos.json"),
 			loadMediaManifest(),
+			loadJson("videos/originals-catalog.json"),
 		])
 			.then(function (parts) {
 				setReelDriveVideos(parts[3]);
@@ -4187,7 +4358,11 @@
 				var drive = parts[1] || [];
 				var youtube = parts[2] || [];
 				var merged = mergeCatalogs(local, drive, []);
-				setCatalog(mergeCatalogs(merged, youtube, userCatalogList()));
+				merged = mergeCatalogs(merged, youtube, userCatalogList());
+				driveItemsFrom(parts[5]).forEach(function (raw) {
+					addDriveItemToCatalog(merged, raw);
+				});
+				setCatalog(merged);
 				return catalog;
 			})
 			.catch(function () {

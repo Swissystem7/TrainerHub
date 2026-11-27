@@ -32,11 +32,7 @@ test('a hosted file never gets a Drive poster from driveId or legacyDriveId', fu
     assert.equal(THReels.posterUrl(item), localPoster, item.id);
     assert.doesNotMatch(TH.posterUrl(item) || '', /drive\.google\.com/, item.id);
     const html = TH.mediaMarkup(item, { className: 'ex-media' });
-    // The play button may show the live copy's thumbnail (drivePlayId), never a stale id's.
-    (html.match(/drive\.google\.com\/thumbnail\?id=([A-Za-z0-9_-]+)/g) || []).forEach(function (u) {
-      assert.equal(u, 'drive.google.com/thumbnail?id=' + item.drivePlayId, item.id);
-    });
-    assert.doesNotMatch(html, /\sposter=/);
+    assert.doesNotMatch(html, /drive\.google\.com/, item.id);
     // Only the verified live copy (drivePlayId) may appear; a stale driveId never does.
     if (item.driveId && item.driveId !== item.drivePlayId) assert.equal(html.includes(item.driveId), false, item.id);
     if (item.legacyDriveId && item.legacyDriveId !== item.drivePlayId) assert.equal(html.includes(item.legacyDriveId), false, item.id);
@@ -45,19 +41,10 @@ test('a hosted file never gets a Drive poster from driveId or legacyDriveId', fu
   assert.match(fs.readFileSync(path.join(root, 'videos', 'drive-catalog.json'), 'utf8'), /legacyDriveId/);
 });
 
-test('poster URLs are YouTube hqdefault, a live Drive thumbnail, or nothing', function () {
-  assert.equal(
-    TH.posterUrl({ youtubeId: 'FLDeOadsIsM' }),
-    'https://i.ytimg.com/vi/FLDeOadsIsM/hqdefault.jpg'
-  );
-  assert.equal(
-    THReels.posterUrl({ youtubeId: 'FLDeOadsIsM' }),
-    'https://i.ytimg.com/vi/FLDeOadsIsM/hqdefault.jpg'
-  );
-  assert.equal(
-    TH.posterUrl({ driveId: 'abc12345', legacyDriveId: 'deadlegacy1' }),
-    'https://drive.google.com/thumbnail?id=abc12345&sz=w480'
-  );
+test('poster URLs never point at YouTube or Drive', function () {
+  assert.equal(TH.posterUrl({ youtubeId: 'FLDeOadsIsM' }), '');
+  assert.equal(THReels.posterUrl({ youtubeId: 'FLDeOadsIsM' }), '');
+  assert.equal(TH.posterUrl({ driveId: 'abc12345', legacyDriveId: 'deadlegacy1' }), '');
   assert.equal(TH.posterUrl({ legacyDriveId: 'deadlegacy1' }), '');
   assert.equal(THReels.posterUrl({ legacyDriveId: 'deadlegacy1', driveId: '', file_id: '' }), '');
   const guarded = {
@@ -86,7 +73,8 @@ test('reel poster builder never points at a missing local poster', function () {
       assert.match(html, /poster-fallback/);
     } else {
       const html = THReels.posterFrameHtml(ex, esc);
-      assert.match(html, /onerror="this\.classList\.add\('is-broken'\)"/);
+      assert.match(html, /הסרטון יעלה בקרוב/);
+      assert.doesNotMatch(html, /<img|instagram\.com|drive\.google\.com/);
     }
   });
   const bare = THReels.posterSources({ id: 'ig-DdHOFvtKk9z', poster: '' });

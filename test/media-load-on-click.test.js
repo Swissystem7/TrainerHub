@@ -28,22 +28,19 @@ function fakeButton(attrs) {
   return { btn, parent };
 }
 
-test('Drive and YouTube rows render a play button with a thumbnail, not an iframe', function () {
+test('Drive and YouTube rows render a coming-soon placeholder, not a player', function () {
   const drive = TH.mediaMarkup({ he: 'פלאנק', driveId: '1tLFxcQifJQgGYRZD20YQticZ0S4psv2r', source: 'drive' }, { className: 'ex-media' });
-  assert.doesNotMatch(drive, /<iframe/);
-  assert.match(drive, /<button type="button" class="ex-media ex-media-facade"/);
-  assert.match(drive, /data-th-frame="https:\/\/drive\.google\.com\/file\/d\/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r\/preview"/);
-  assert.match(drive, /<img class="th-facade-thumb" src="https:\/\/drive\.google\.com\/thumbnail\?id=1tLFxcQifJQgGYRZD20YQticZ0S4psv2r&amp;sz=w480" alt="" loading="lazy"/);
-  assert.match(drive, /aria-label="הפעלת סרטון: פלאנק"/);
+  assert.match(drive, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(drive, /<iframe|<video|drive\.google\.com|data-th-frame/);
   const yt = TH.mediaMarkup({ he: 'סקוואט', youtubeId: 'PlDqgNcJJ2U' }, { className: 'ex-media' });
-  assert.doesNotMatch(yt, /<iframe/);
-  assert.match(yt, /data-th-frame="https:\/\/www\.youtube\.com\/embed\/PlDqgNcJJ2U"/);
-  assert.match(yt, /i\.ytimg\.com\/vi\/PlDqgNcJJ2U\/hqdefault\.jpg/);
+  assert.match(yt, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(yt, /<iframe|youtube\.com|i\.ytimg\.com/);
 });
 
-test('eager keeps the immediate iframe for single-player views', function () {
+test('eager workout mode still does not embed YouTube', function () {
   const html = TH.mediaMarkup({ he: 'סקוואט', youtubeId: 'PlDqgNcJJ2U' }, { className: 'ex-media', eager: true });
-  assert.match(html, /<iframe class="ex-media"[^>]*src="https:\/\/www\.youtube\.com\/embed\/PlDqgNcJJ2U"/);
+  assert.match(html, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(html, /<iframe|youtube\.com/);
   assert.match(read('frontend/workout-mode.html'), /mediaMarkup\(clip, \{ className: 'ex-media', eager: true \}\)/);
   assert.doesNotMatch(read('frontend/workout-mode.html'), /mediaMarkup\(clip, \{ className: 'ex-media' \}\)/);
 });
@@ -58,28 +55,16 @@ test('list pages do not ask for eager players', function () {
   assert.match(index, /var media = clip \? TH\.mediaMarkup\(clip, \{ className: 'ex-media' \}\)/);
 });
 
-test('clicking a facade swaps in the iframe, with autoplay for YouTube', function () {
+test('clicking a YouTube or Drive facade does not create a player', function () {
   TH.registerFrameSrc('https://www.youtube.com/embed/PlDqgNcJJ2U?start=5');
   TH.registerFrameSrc('https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview');
   const yt = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5', 'data-th-frame-title': 'סקוואט',
     'data-th-frame-allow': 'autoplay; encrypted-media', class: 'ex-media ex-media-facade' });
-  const f = TH.activateMediaFrame(yt.btn);
-  assert.equal(f.tagName, 'IFRAME');
-  assert.equal(f.attrs.src, 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&autoplay=1');
-  assert.equal(f.attrs.class, 'ex-media');
-  assert.equal(f.attrs.title, 'סקוואט');
-  assert.equal(f.attrs.allow, 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-  assert.equal(f.attrs.allowfullscreen, '');
-  assert.equal(yt.parent.replaced[0], f);
-  assert.equal(yt.parent.replaced[1], yt.btn);
-  assert.equal(f.focused, true);
+  assert.equal(TH.activateMediaFrame(yt.btn), null);
+  assert.equal(yt.parent.replaced, null);
   const dr = fakeButton({ 'data-th-frame': 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview',
     'data-th-frame-allow': 'autoplay; fullscreen', class: 'drive-frame drive-frame-facade' });
-  const g = TH.activateMediaFrame(dr.btn);
-  assert.equal(g.attrs.src, 'https://drive.google.com/file/d/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r/preview?autoplay=1');
-  assert.equal(g.attrs.class, 'drive-frame');
-  assert.equal(g.attrs.referrerpolicy, 'no-referrer-when-downgrade');
-  assert.equal(g.attrs.allow, 'autoplay; fullscreen');
+  assert.equal(TH.activateMediaFrame(dr.btn), null);
   assert.equal(TH.activateMediaFrame({ getAttribute: function () { return null; } }), null);
 });
 
@@ -103,38 +88,37 @@ test('a facade only ever loads a Drive preview or a YouTube embed rebuilt from i
   bad_register_check();
   assert.equal(TH.registerFrameSrc('https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30'), true);
   const ok = fakeButton({ 'data-th-frame': 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30', class: 'ex-media ex-media-facade x"y' });
-  const f = TH.activateMediaFrame(ok.btn);
-  assert.equal(f.attrs.src, 'https://www.youtube.com/embed/PlDqgNcJJ2U?start=5&end=30&autoplay=1');
-  assert.equal(f.attrs.class, 'ex-media');
+  assert.equal(TH.activateMediaFrame(ok.btn), null);
+  assert.equal(ok.parent.replaced, null);
 });
 
-test('every facade the app renders passes the allowlist', function () {
-  const urls = [
+test('rendered third-party cards contain no player URL', function () {
+  [
     TH.mediaMarkup({ he: 'א', driveId: '1tLFxcQifJQgGYRZD20YQticZ0S4psv2r', source: 'drive' }),
     TH.mediaMarkup({ he: 'ב', youtubeId: 'PlDqgNcJJ2U', startSec: 12, endSec: 40 }),
     TH.mediaMarkup({ he: 'ג', youtubeId: 'PlDqgNcJJ2U' })
-  ].map(function (h) { return h.match(/data-th-frame="([^"]+)"/)[1].replace(/&amp;/g, '&'); });
-  urls.forEach(function (u) {
-    const fb = fakeButton({ 'data-th-frame': u, class: 'ex-media ex-media-facade' });
-    assert.ok(TH.activateMediaFrame(fb.btn), u);
+  ].forEach(function (html) {
+    assert.match(html, /הסרטון יעלה בקרוב/);
+    assert.doesNotMatch(html, /data-th-frame|youtube\.com|drive\.google\.com|<iframe/);
   });
 });
 
-test('reels page Drive cards register their player with core', function () {
+test('reels page Drive cards do not register a third-party player', function () {
   const ex = THReels.driveVideosToExercises([{ fileId: '1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ', name: 'א - X.mp4', folder: 'כושר/חזה', muscleGroup: 'חזה' }])[0];
   globalThis.TH = TH;
-  try { THReels.exerciseCardHtml(ex, TH.esc); } finally { delete globalThis.TH; }
+  let html;
+  try { html = THReels.exerciseCardHtml(ex, TH.esc); } finally { delete globalThis.TH; }
+  assert.doesNotMatch(html, /data-th-frame|drive\.google\.com/);
   const fb = fakeButton({ 'data-th-frame': 'https://drive.google.com/file/d/1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ/preview', class: 'drive-frame drive-frame-facade' });
-  assert.ok(TH.activateMediaFrame(fb.btn));
+  assert.equal(TH.activateMediaFrame(fb.btn), null);
 });
 
-test('reels page Drive cards use the same play button', function () {
+test('reels page Drive cards show a coming-soon placeholder', function () {
   const ex = THReels.driveVideosToExercises([{ fileId: '1tLFxcQifJQgGYRZD20YQticZ0S4psv2r', name: 'פלאנק - X.mp4', folder: 'כושר/בטן', muscleGroup: 'בטן' }])[0];
   const html = THReels.exerciseCardHtml(ex, TH.esc);
-  assert.doesNotMatch(html, /<iframe/);
-  assert.match(html, /class="drive-frame drive-frame-facade"/);
-  assert.match(html, /<span class="ex-media-play" aria-hidden="true"><\/span>/);
-  assert.match(html, /<img class="th-facade-thumb is-cover" src="https:\/\/drive\.google\.com\/thumbnail\?id=1tLFxcQifJQgGYRZD20YQticZ0S4psv2r&amp;sz=w480" alt="" loading="lazy"/);
+  assert.doesNotMatch(html, /<iframe|drive\.google\.com|data-th-frame/);
+  assert.match(html, /הסרטון יעלה בקרוב/);
+  assert.match(html, /data-add=/);
 });
 
 test('the play button style ships in css/app.css', function () {

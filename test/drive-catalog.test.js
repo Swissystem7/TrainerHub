@@ -111,11 +111,10 @@ test('mediaMarkup degrades to exercise text when offline and never embeds an exc
     level: 'beginner', source: 'drive', driveId: '1tLFxcQifJQgGYRZD20YQticZ0S4psv2r'
   };
   const online = TH.mediaMarkup(entry, { className: 'ex-media' });
-  assert.match(online, /drive\.google\.com\/file\/d\/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r\/preview/);
-  // Load-on-click: a play button until clicked; the single-player view still embeds directly.
-  assert.doesNotMatch(online, /<iframe/);
-  assert.match(online, /data-th-frame="https:\/\/drive\.google\.com\/file\/d\/1tLFxcQifJQgGYRZD20YQticZ0S4psv2r\/preview"/);
-  assert.match(TH.mediaMarkup(entry, { className: 'ex-media', eager: true }), /<iframe/);
+  assert.match(online, /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(online, /<iframe|drive\.google\.com|youtube\.com|instagram\.com/);
+  assert.match(TH.mediaMarkup(entry, { className: 'ex-media', eager: true }), /הסרטון יעלה בקרוב/);
+  assert.doesNotMatch(TH.mediaMarkup(entry, { className: 'ex-media', eager: true }), /<iframe/);
   const offline = TH.mediaMarkup(entry, { className: 'ex-media', offline: true });
   assert.doesNotMatch(offline, /<iframe/);
   assert.match(offline, /פלאנק/);
@@ -125,11 +124,13 @@ test('mediaMarkup degrades to exercise text when offline and never embeds an exc
   });
 });
 
-test('verified OneDrive media plays from its live Drive copy, not the blocked release file or a stale id', function () {
+test('verified OneDrive media plays from the hosted MP4, not a Drive player or the blocked release file', function () {
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'videos/media-manifest.json'), 'utf8'));
+  TH.setMediaManifest(manifest);
   const entry = items.find(function (item) { return item.available && item.source === 'onedrive' && item.legacyDriveId; });
   const html = TH.mediaMarkup(entry, { className: 'ex-media' });
-  assert.doesNotMatch(html, /<video/);
-  assert.doesNotMatch(html, /trainerhub-media-v1/);
-  assert.match(html, new RegExp('drive\\.google\\.com/file/d/' + entry.drivePlayId + '/preview'));
+  assert.match(html, /<video/);
+  assert.ok(html.includes('TrainerHub-media/' + manifest.files[entry.drivePlayId]), entry.id);
+  assert.doesNotMatch(html, /trainerhub-media-v1|drive\.google\.com|<iframe/);
   assert.equal(html.includes(entry.legacyDriveId), false);
 });

@@ -115,6 +115,17 @@ video.drive-frame.th-mp4 { object-fit: contain; background: #000; }
   font-size: 0.9rem;
   line-height: 1.5;
 }
+.th-video-soon:not([hidden]) {
+  display: grid;
+  gap: 4px;
+  place-items: center;
+  text-align: center;
+  min-height: 120px;
+}
+.th-video-soon[hidden] { display: none; }
+.th-video-soon-name { color: var(--th-ink, #f4f7f5); font-size: 1rem; }
+.th-video-soon-label { color: var(--th-muted, #a7b1ab); font-size: 0.95rem; }
+.poster-frame .th-video-soon { min-height: 0; background: transparent; border: 0; padding: 0; }
 .ex-media-link {
   display: inline-block;
   margin-top: 6px;

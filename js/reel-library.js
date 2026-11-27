@@ -357,33 +357,6 @@
     return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">' + ICON[key] + '</svg>';
   }
 
-  function reelCode(ex) {
-    var id = ex && (ex.id || ex.exerciseId) || '';
-    var match = /^ig-([A-Za-z0-9_-]+)$/.exec(String(id));
-    return match ? match[1] : '';
-  }
-
-  function youtubeVideoId(ex) {
-    ex = ex || {};
-    var id = ex.youtubeId || ex.youtube_id || '';
-    if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
-    var src = String(ex.source_url || ex.externalUrl || ex.file || '');
-    var match = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(src);
-    return match ? match[1] : '';
-  }
-
-  function drivePosterId(ex) {
-    ex = ex || {};
-    // legacyDriveId is a dead Drive id kept on the row for history. It is not
-    // a poster source. driveId is also skipped when the row has a real file.
-    if (ex.file_id && driveFileIdOk(ex.file_id)) return ex.file_id;
-    if (ex.driveId && driveFileIdOk(ex.driveId)) return ex.driveId;
-    var id = String(ex.id || ex.exerciseId || '');
-    var match = /^drive-(.+)$/.exec(id);
-    if (match && driveFileIdOk(match[1])) return match[1];
-    return '';
-  }
-
   // A relative poster is trusted only when the catalog recorded it. Guessing
   // assets/posters/<reel>.png then .jpg asked for files that are not in the
   // repo (two 404s per card). A row with `file` plays that file and must not
@@ -394,10 +367,6 @@
     if (local && local.indexOf('..') === -1 && !/^([a-z]+:|\/)/i.test(local)) return local;
     var file = typeof ex.file === 'string' ? ex.file.trim() : '';
     if (file) return '';
-    var yt = youtubeVideoId(ex);
-    if (yt) return 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg';
-    var drive = drivePosterId(ex);
-    if (drive) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(drive) + '&sz=w480';
     return '';
   }
 
@@ -409,19 +378,14 @@
   function posterFrameHtml(ex, esc, thumb) {
     esc = esc || function (s) { return String(s == null ? '' : s); };
     var muscle = (ex && ex.muscle_group) || UNKNOWN_MUSCLE;
-    var src = posterSources(ex || {});
-    // onerror hides a thumbnail the host no longer serves; the fallback stays.
-    var img = src.primary
-      ? '<img class="poster" alt="" src="' + esc(src.primary) + '" onerror="this.classList.add(\'is-broken\')">'
-      : '';
     var badge = thumb ? '' : '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>';
     var indexNo = (!thumb && ex && ex._index) ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     var uncertain = (!thumb && ex && ex.poster_uncertain)
       ? '<span class="uncertain-flag">איור לא ודאי</span>'
       : (thumb && ex && ex.poster_uncertain ? '<span class="uncertain-dot" title="איור לא ודאי"></span>' : '');
-    return '<div class="poster-frame tone-' + toneName(muscle) + (thumb ? ' is-thumb' : '') + '">' +
-      img +
-      '<div class="poster-fallback">' + muscleIcon(muscle) + '<span>' + esc(muscle) + '</span></div>' +
+    var soon = thumb ? '' : '<span class="th-video-soon-label">הסרטון יעלה בקרוב</span>';
+    return '<div class="poster-frame tone-' + toneName(muscle) + (thumb ? ' is-thumb' : '') + '" data-video="coming-soon">' +
+      '<div class="poster-fallback th-video-soon">' + muscleIcon(muscle) + '<span>' + esc(muscle) + '</span>' + soon + '</div>' +
       badge + indexNo + uncertain +
       '</div>';
   }
@@ -691,10 +655,6 @@
     return 'https://drive.google.com/file/d/' + fileId + '/preview';
   }
 
-  function driveThumbUrl(fileId) {
-    return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(fileId || '') + '&sz=w480';
-  }
-
   function driveViewUrl(fileId) {
     return 'https://drive.google.com/file/d/' + fileId + '/view';
   }
@@ -809,23 +769,13 @@
 
   function driveCardHtml(ex, esc) {
     var muscle = ex.muscle_group || UNKNOWN_MUSCLE;
-    var preview = ex.preview_url || drivePreviewUrl(ex.file_id);
-    var view = ex.source_url || driveViewUrl(ex.file_id);
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
-    // js/core.js opens only players it was told about (load-on-click).
-    var core = typeof globalThis !== 'undefined' ? globalThis.TH : null;
-    if (core && typeof core.registerFrameSrc === 'function') core.registerFrameSrc(preview);
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
-      '<div class="poster-frame tone-' + toneName(muscle) + '">' +
-        // Load-on-click: the Drive thumbnail with a play button; js/core.js swaps
-        // in the preview iframe on click, so 179 Drive players do not load at once.
-        '<button type="button" class="drive-frame drive-frame-facade" data-th-frame="' + esc(preview) + '"' +
-          ' data-th-frame-allow="autoplay; fullscreen" data-th-frame-title="' + esc(displayName(ex)) + '"' +
-          ' aria-label="' + esc('הפעלת סרטון: ' + displayName(ex)) + '">' +
-          '<img class="th-facade-thumb is-cover" src="' + esc(drivePosterPath(ex.poster) || driveThumbUrl(ex.file_id)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">' +
-          '<span class="ex-media-play" aria-hidden="true"></span></button>' +
+      '<div class="poster-frame tone-' + toneName(muscle) + '" data-video="coming-soon">' +
+        '<div class="poster-fallback th-video-soon">' + muscleIcon(muscle) +
+          '<span>' + esc(muscle) + '</span><span class="th-video-soon-label">הסרטון יעלה בקרוב</span></div>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +
       '</div>' +
@@ -833,7 +783,6 @@
         '<div class="card-kicker"><span class="pill tone">' + muscleIcon(muscle) + esc(muscle) + '</span></div>' +
         '<h2>' + esc(displayName(ex)) + '</h2>' +
         '<div class="actions">' +
-          '<a class="reel" href="' + esc(view) + '" target="_blank" rel="noopener noreferrer">פתיחה ב-Drive</a>' +
           '<button type="button" class="add" data-add="' + esc(ex.id) + '"' + added + '>' + addLabel + '</button>' +
         '</div>' +
       '</div>' +
@@ -854,7 +803,6 @@
     var secondary = ex.secondary_group ? '<span class="pill">' + esc(ex.secondary_group) + '</span>' : '';
     var detail = ex.muscle_detail ? '<span class="pill">' + esc(ex.muscle_detail) + '</span>' : '';
     var flag = ex.verified ? '<span class="pill ok">מאומת</span>' : '<span class="pill unverified">לא מאומת</span>';
-    var watchLabel = /\/p\//.test(ex.source_url || '') ? 'צפייה בפוסט' : 'צפייה בריל';
     var trainable = ex.muscle_group !== 'השראה';
     var added = ex._added ? ' aria-pressed="true"' : ' aria-pressed="false"';
     var addLabel = ex._added ? 'נוסף לאימון' : 'הוסף לאימון';
@@ -866,7 +814,7 @@
       '<div class="card-body">' +
         '<div class="card-kicker">' + flag + '<span class="pill tone">' + muscleIcon(ex.muscle_group) + esc(ex.muscle_group) + '</span></div>' +
         '<h2>' + esc(displayName(ex)) + '</h2>' +
-        '<p class="creator"><a href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">@' + esc(ex.creator) + '</a></p>' +
+        (ex.creator ? '<p class="creator">' + esc(ex.creator) + '</p>' : '') +
         '<div class="meta">' +
           '<span class="pill">' + esc(ex.sets_reps) + '</span>' +
           secondary +
@@ -877,7 +825,6 @@
         stepsHtml +
         safetyHtml +
         '<div class="actions">' +
-          '<a class="reel" href="' + esc(ex.source_url) + '" target="_blank" rel="noopener noreferrer">' + watchLabel + '</a>' +
           addBtn +
         '</div>' +
       '</div>' +
