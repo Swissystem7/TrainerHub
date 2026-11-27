@@ -774,7 +774,7 @@
     var indexNo = ex._index ? '<span class="card-index">' + esc(twoDigit(ex._index)) + '</span>' : '';
     return '<article class="card drive-card tone-' + toneName(muscle) + '" data-id="' + esc(ex.id) + '" draggable="true">' +
       '<div class="poster-frame tone-' + toneName(muscle) + '" data-video="coming-soon">' +
-        '<div class="poster-fallback th-video-soon" role="note">' + muscleIcon(muscle) +
+        '<div class="poster-fallback th-video-soon">' + muscleIcon(muscle) +
           '<span>' + esc(muscle) + '</span><span class="th-video-soon-label">הסרטון יעלה בקרוב</span></div>' +
         '<span class="muscle-badge">' + muscleIcon(muscle) + esc(muscle) + '</span>' +
         indexNo +

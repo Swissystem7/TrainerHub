@@ -1,5 +1,3 @@
-'use strict';
-
 // Hosted MP4 copies (Swissystem7/TrainerHub-media): a Drive clip with a copy
 // plays in a native <video> from GitHub Pages, then jsDelivr, then the Drive
 // player as the last fallback.
@@ -17,25 +15,23 @@ const CDN = 'https://cdn.jsdelivr.net/gh/Swissystem7/TrainerHub-media@v1/';
 
 function fakeDoc() {
   const doc = {
-    createElement: function (tag) {
+    createElement: (tag) => {
       const el = { tagName: tag.toUpperCase(), attrs: {}, listeners: {}, played: 0, loaded: 0, ownerDocument: doc };
-      el.setAttribute = function (k, v) {
+      el.setAttribute = (k, v) => {
         el.attrs[k] = String(v);
       };
-      el.getAttribute = function (k) {
-        return k in el.attrs ? el.attrs[k] : null;
-      };
-      el.addEventListener = function (t, fn) {
+      el.getAttribute = (k) => (k in el.attrs ? el.attrs[k] : null);
+      el.addEventListener = (t, fn) => {
         el.listeners[t] = fn;
       };
-      el.play = function () {
+      el.play = () => {
         el.played++;
         return Promise.resolve();
       };
-      el.load = function () {
+      el.load = () => {
         el.loaded++;
       };
-      el.focus = function () {};
+      el.focus = () => {};
       return el;
     }
   };
@@ -54,7 +50,7 @@ function facade(doc, src) {
   return { btn, parent };
 }
 
-test('the committed manifest lists Pages first, a pinned jsDelivr tag second, and well-formed paths', function () {
+test('the committed manifest lists Pages first, a pinned jsDelivr tag second, and well-formed paths', () => {
   assert.equal(manifest.hosts[0], PAGES);
   assert.match(
     manifest.hosts[1],
@@ -82,7 +78,7 @@ test('the committed manifest lists Pages first, a pinned jsDelivr tag second, an
   assert.deepEqual(missing, []);
 });
 
-test('mp4Sources only trusts the media repo hosts and well-formed paths', function () {
+test('mp4Sources only trusts the media repo hosts and well-formed paths', () => {
   TH.setMediaManifest({
     hosts: [PAGES, 'https://evil.example/', CDN],
     files: { [ID]: 'core/' + ID + '.mp4', bad: 'x.mp4', ['1'.repeat(25)]: '../../x.mp4' }
@@ -93,12 +89,17 @@ test('mp4Sources only trusts the media repo hosts and well-formed paths', functi
   assert.deepEqual(TH.mp4Sources('toString'), []);
 });
 
-test('a tap on an owned hosted copy plays a native <video> and does not fall back to Drive', function () {
+test('a tap on an owned hosted copy plays a native <video> and does not fall back to Drive', () => {
   TH.setCatalog({
     plank: {
-      id: 'plank', he: 'פלאנק', source: 'onedrive', muscles: ['core'], equipment: ['none'],
+      id: 'plank',
+      he: 'פלאנק',
+      source: 'onedrive',
+      muscles: ['core'],
+      equipment: ['none'],
       file: 'https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-015.mp4',
-      drivePlayId: ID, available: true
+      drivePlayId: ID,
+      available: true
     }
   });
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: { [ID]: 'core/' + ID + '.mp4' } });
@@ -123,7 +124,7 @@ test('a tap on an owned hosted copy plays a native <video> and does not fall bac
   assert.doesNotMatch(JSON.stringify(parent.replaced[0].attrs), /drive\.google\.com/);
 });
 
-test('a Drive or YouTube facade never becomes an embed', function () {
+test('a Drive or YouTube facade never becomes an embed', () => {
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: {} });
   const src = 'https://drive.google.com/file/d/1ZvTfInYpDspk7eqZ2NRNPi-L8hDGeypQ/preview';
   TH.registerFrameSrc(src);
@@ -131,18 +132,23 @@ test('a Drive or YouTube facade never becomes an embed', function () {
   assert.equal(TH.activateMediaFrame(btn), null);
 });
 
-test('workout mode shows an owned hosted video, and a third-party clip as coming soon', function () {
+test('workout mode shows an owned hosted video, and a third-party clip as coming soon', () => {
   TH.setCatalog({
     plank: {
-      id: 'plank', he: 'פלאנק', source: 'onedrive', muscles: ['core'], equipment: ['none'],
+      id: 'plank',
+      he: 'פלאנק',
+      source: 'onedrive',
+      muscles: ['core'],
+      equipment: ['none'],
       file: 'https://github.com/Swissystem7/TrainerHub/releases/download/trainerhub-media-v1/thv-015.mp4',
-      drivePlayId: ID, available: true
+      drivePlayId: ID,
+      available: true
     }
   });
   TH.setMediaManifest({ hosts: [PAGES, CDN], files: { [ID]: 'core/' + ID + '.mp4' } });
   const owned = TH.mediaMarkup(TH.catalog.plank, { className: 'ex-media', eager: true });
   assert.match(owned, /<video/);
-  assert.match(owned, new RegExp(PAGES.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 'core/' + ID + '\\.mp4'));
+  assert.ok(owned.includes(PAGES + 'core/' + ID + '.mp4'));
   assert.doesNotMatch(owned, /<iframe|drive\.google\.com/);
   const html = TH.mediaMarkup({ he: 'פלאנק', driveId: ID, source: 'drive' }, { className: 'ex-media', eager: true });
   assert.match(html, /הסרטון יעלה בקרוב/);

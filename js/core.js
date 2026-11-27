@@ -3761,7 +3761,7 @@
 		return (
 			'<div class="' +
 			cls +
-			'-fallback th-video-soon" role="note" data-video="coming-soon">' +
+			'-fallback th-video-soon" data-video="coming-soon">' +
 			ill +
 			'<strong class="th-video-soon-name">' +
 			esc(name) +
@@ -3793,7 +3793,7 @@
 			' onerror="if(window.TH&&TH.mediaFallback&&TH.mediaFallback(this))return;this.hidden=true;var n=this.nextElementSibling;if(n)n.hidden=false"></video>' +
 			'<div class="' +
 			cls +
-			'-fallback th-video-soon" hidden role="note" data-video="coming-soon">הסרטון יעלה בקרוב</div></div>'
+			'-fallback th-video-soon" hidden data-video="coming-soon">הסרטון יעלה בקרוב</div></div>'
 		);
 	}
 
@@ -3813,7 +3813,7 @@
 			return (
 				'<div class="' +
 				cls +
-				'-fallback th-video-soon" role="note" data-video="coming-soon">' +
+				'-fallback th-video-soon" data-video="coming-soon">' +
 				esc(mediaFallbackText(entry)) +
 				" — הסרטון יעלה בקרוב</div>"
 			);

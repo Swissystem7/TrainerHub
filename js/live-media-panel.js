@@ -25,7 +25,11 @@
     if (/^vbscript\s*:/i.test(trimmed)) return false;
     if (/^file\s*:/i.test(trimmed)) return false;
 
-    if (/instagram\.com|youtube\.com|youtu\.be|ytimg\.com|facebook\.com|tiktok\.com|drive\.google\.com|googlevideo\.com/i.test(trimmed)) {
+    if (
+      /instagram\.com|youtube\.com|youtu\.be|ytimg\.com|facebook\.com|tiktok\.com|drive\.google\.com|googlevideo\.com/i.test(
+        trimmed
+      )
+    ) {
       return false;
     }
 
@@ -124,7 +128,14 @@
           const html = root.TH.mediaMarkup(entry, { className: 'ex-media', eager: true });
           const owned = /src="(https:\/\/[^"]+\.mp4)/.exec(html || '');
           if (owned) rawVideoUrl = owned[1];
-          else if (entry.original || entry.thirdParty || entry.source === 'metaai' || entry.source === 'youtube' || entry.source === 'drive' || entry.source === 'drive-reel') {
+          else if (
+            entry.original ||
+            entry.thirdParty ||
+            entry.source === 'metaai' ||
+            entry.source === 'youtube' ||
+            entry.source === 'drive' ||
+            entry.source === 'drive-reel'
+          ) {
             rawVideoUrl = '';
           }
         }
