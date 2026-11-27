@@ -110,8 +110,9 @@
     {
       "id": "metaai-e01-06",
       "code": "E01-06",
-      "he": "מתיחת כתף לרוחב הגוף",
+      "he": "פתיחת חזה וכתפיים בעמידה",
       "muscles": [
+        "chest",
         "shoulders"
       ],
       "equipment": [
@@ -123,9 +124,8 @@
       "group": "01 כתפיים",
       "original": true,
       "mediaId": "metaai-e01-06",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-e02-01",
@@ -1254,9 +1254,8 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-05-08",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-05-09",
@@ -1467,9 +1466,8 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-e04-09",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-e04-10",
@@ -1487,9 +1485,8 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-e04-10",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-e04-11",
@@ -1824,22 +1821,22 @@
     {
       "id": "metaai-07-06",
       "code": "07-06",
-      "he": "ריצת זיגזג בין קונוסים",
+      "he": "תחנות עם קונוסים",
       "muscles": [
+        "core",
         "legs"
       ],
       "equipment": [
         "cones"
       ],
-      "level": "beginner",
+      "level": "intermediate",
       "source": "metaai",
-      "folder": "רגליים",
+      "folder": "גוף מלא HIIT",
       "group": "07 מעגלים ו-HIIT",
       "original": true,
       "mediaId": "metaai-07-06",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-07-07",
@@ -2089,7 +2086,7 @@
     {
       "id": "metaai-07-hiit-10",
       "code": "07-HIIT-10",
-      "he": "ריצת שאטל בין קונוסים",
+      "he": "ריצת שאטל",
       "muscles": [
         "legs"
       ],
@@ -2098,13 +2095,12 @@
       ],
       "level": "beginner",
       "source": "metaai",
-      "folder": "רגליים",
+      "folder": "קרדיו",
       "group": "07 מעגלים ו-HIIT",
       "original": true,
       "mediaId": "metaai-07-hiit-10",
-      "available": false,
-      "covers": [],
-      "withheld": "mismatch"
+      "available": true,
+      "covers": []
     },
     {
       "id": "metaai-e04-01",

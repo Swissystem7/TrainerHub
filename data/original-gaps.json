@@ -1,9 +1,9 @@
 {
   "generated": "2026-11-27",
-  "note": "Exercises that still have no Meta AI original after visual QA. placeholder entries render \"הסרטון יעלה בקרוב\". Mismatch clips are withheld and are not in the catalog. unmapped lists catalog ids detached from an original because the movement or equipment did not match.",
+  "note": "Exercises that still have no Meta AI original after visual QA. placeholder entries render \"הסרטון יעלה בקרוב\". The six former mismatches are published again as their own exercises and are not in withheld. unmapped lists catalog ids detached from an original because the movement or equipment did not match.",
   "counts": {
-    "originalsPublished": 101,
-    "originalsWithheld": 6,
+    "originalsPublished": 107,
+    "originalsWithheld": 0,
     "catalogIdsCovered": 50,
     "libraryCardsPlayingOriginal": 44,
     "placeholder": 581,
@@ -15,44 +15,7 @@
     "gapsOwnedByName": 0,
     "gapsNotFoundByExactName": 57
   },
-  "withheld": [
-    {
-      "code": "E01-06",
-      "id": "metaai-e01-06",
-      "he": "מתיחת כתף לרוחב הגוף",
-      "reason": "MISMATCH"
-    },
-    {
-      "code": "05-08",
-      "id": "metaai-05-08",
-      "he": "אימון בטן 3 דקות",
-      "reason": "MISMATCH"
-    },
-    {
-      "code": "E04-09",
-      "id": "metaai-e04-09",
-      "he": "ליבה של מתאבק",
-      "reason": "MISMATCH"
-    },
-    {
-      "code": "E04-10",
-      "id": "metaai-e04-10",
-      "he": "אלכסונים עם משקולת",
-      "reason": "MISMATCH"
-    },
-    {
-      "code": "07-06",
-      "id": "metaai-07-06",
-      "he": "ריצת זיגזג בין קונוסים",
-      "reason": "MISMATCH"
-    },
-    {
-      "code": "07-HIIT-10",
-      "id": "metaai-07-hiit-10",
-      "he": "ריצת שאטל בין קונוסים",
-      "reason": "MISMATCH"
-    }
-  ],
+  "withheld": [],
   "unmapped": [
     {
       "catalogId": "yt_military_press",

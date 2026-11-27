@@ -1,8 +1,8 @@
 {
- "_note": "Hosted MP4s by id. metaai-* files are TrainerHub-owned Meta AI originals at <folder>/<id>.mp4. Six QA mismatches are omitted until they are regenerated. jsDelivr is pinned to v3.",
+ "_note": "Hosted MP4s by id. metaai-* files are TrainerHub-owned Meta AI originals at <folder>/<id>.mp4. jsDelivr is pinned to v4, which includes the regenerated clips.",
  "hosts": [
   "https://swissystem7.github.io/TrainerHub-media/",
-  "https://cdn.jsdelivr.net/gh/Swissystem7/TrainerHub-media@v3/"
+  "https://cdn.jsdelivr.net/gh/Swissystem7/TrainerHub-media@v4/"
  ],
  "files": {
   "1-8hjtB0MsAZlBTiIg2otvHHV1Q8-SLK9": "chest/1-8hjtB0MsAZlBTiIg2otvHHV1Q8-SLK9.mp4",
@@ -667,6 +667,7 @@
   "metaai-05-05-11": "core/metaai-05-05-11.mp4",
   "metaai-05-06": "core/metaai-05-06.mp4",
   "metaai-05-07": "core/metaai-05-07.mp4",
+  "metaai-05-08": "core/metaai-05-08.mp4",
   "metaai-05-09": "core/metaai-05-09.mp4",
   "metaai-05-10": "core/metaai-05-10.mp4",
   "metaai-05-g01": "core/metaai-05-g01.mp4",
@@ -687,6 +688,7 @@
   "metaai-07-03": "chest/metaai-07-03.mp4",
   "metaai-07-04": "back/metaai-07-04.mp4",
   "metaai-07-05": "core/metaai-07-05.mp4",
+  "metaai-07-06": "full/metaai-07-06.mp4",
   "metaai-07-07": "legs/metaai-07-07.mp4",
   "metaai-07-08": "core/metaai-07-08.mp4",
   "metaai-07-09": "core/metaai-07-09.mp4",
@@ -699,11 +701,13 @@
   "metaai-07-hiit-07": "legs/metaai-07-hiit-07.mp4",
   "metaai-07-hiit-08": "legs/metaai-07-hiit-08.mp4",
   "metaai-07-hiit-09": "chest/metaai-07-hiit-09.mp4",
+  "metaai-07-hiit-10": "cardio/metaai-07-hiit-10.mp4",
   "metaai-e01-01": "shoulders/metaai-e01-01.mp4",
   "metaai-e01-02": "shoulders/metaai-e01-02.mp4",
   "metaai-e01-03": "shoulders/metaai-e01-03.mp4",
   "metaai-e01-04": "core/metaai-e01-04.mp4",
   "metaai-e01-05": "shoulders/metaai-e01-05.mp4",
+  "metaai-e01-06": "shoulders/metaai-e01-06.mp4",
   "metaai-e02-01": "chest/metaai-e02-01.mp4",
   "metaai-e02-02": "chest/metaai-e02-02.mp4",
   "metaai-e02-03": "chest/metaai-e02-03.mp4",
@@ -728,6 +732,8 @@
   "metaai-e04-06": "core/metaai-e04-06.mp4",
   "metaai-e04-07": "core/metaai-e04-07.mp4",
   "metaai-e04-08": "core/metaai-e04-08.mp4",
+  "metaai-e04-09": "core/metaai-e04-09.mp4",
+  "metaai-e04-10": "core/metaai-e04-10.mp4",
   "metaai-e04-11": "core/metaai-e04-11.mp4",
   "metaai-e04-12": "core/metaai-e04-12.mp4"
  }

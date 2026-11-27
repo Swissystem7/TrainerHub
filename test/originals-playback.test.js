@@ -27,14 +27,24 @@ function load() {
 test('published originals are catalog exercises with a hosted mp4', function () {
   load();
   const withheld = originals.items.filter(function (clip) { return clip.available === false; });
-  assert.deepEqual(withheld.map(function (clip) { return clip.code; }).sort(), ['05-08', '07-06', '07-HIIT-10', 'E01-06', 'E04-09', 'E04-10']);
-  withheld.forEach(function (clip) {
-    assert.equal(TH.catalog[clip.id], undefined, clip.id);
-    assert.equal(manifest.files[clip.id], undefined, clip.id);
-    assert.deepEqual(clip.covers, []);
+  assert.deepEqual(withheld, []);
+  const restored = {
+    'E01-06': 'פתיחת חזה וכתפיים בעמידה',
+    '05-08': 'אימון בטן 3 דקות',
+    'E04-09': 'ליבה של מתאבק',
+    'E04-10': 'אלכסונים עם משקולת',
+    '07-06': 'תחנות עם קונוסים',
+    '07-HIIT-10': 'ריצת שאטל'
+  };
+  Object.keys(restored).forEach(function (code) {
+    const clip = originals.items.find(function (item) { return item.code === code; });
+    assert.equal(clip.he, restored[code], code);
+    assert.deepEqual(clip.covers, [], code);
+    assert.ok(TH.catalog[clip.id], code);
+    assert.equal(manifest.files[clip.id] != null, true, code);
   });
   const published = originals.items.filter(function (clip) { return clip.available !== false; });
-  assert.equal(published.length, 101);
+  assert.equal(published.length, 107);
   published.forEach(function (clip) {
     assert.equal(manifest.files[clip.id], clip.folder && manifest.files[clip.id]);
     assert.match(manifest.files[clip.mediaId], new RegExp('/' + clip.mediaId + '\\.mp4$'));

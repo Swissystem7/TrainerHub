@@ -1,13 +1,13 @@
 # Original clip coverage
 
-Updated 27 Nov 2026 after visual QA (71 match, 23 partial, 6 mismatch, 7 no source). The app plays a Meta AI clip on an existing catalog id only when that clip is the same movement. A different variation or piece of equipment stays a standalone exercise. Instagram, YouTube, and other third-party media stay in the catalog as reference and render **הסרטון יעלה בקרוב**.
+Updated 27 Nov 2026 after visual QA and a second pass on the six former mismatches. Five were regenerated and published again. `07-HIIT-10` stays the original shuttle run and is published as its own exercise. The app plays a Meta AI clip on an existing catalog id only when that clip is the same movement. Instagram, YouTube, and other third-party media stay in the catalog as reference and render **הסרטון יעלה בקרוב**.
 
 ## Counts
 
 | | |
 |---|---:|
-| Meta AI originals published | 101 |
-| Mismatch clips withheld (not shown, files removed from the public media tag) | 6 |
+| Meta AI originals published | 107 |
+| Mismatch clips still withheld | 0 |
 | Existing catalog ids that play an original | 50 |
 | Library cards whose player is that original | 44 |
 | Catalog ids unmapped back to the placeholder | 33 |
@@ -15,22 +15,20 @@ Updated 27 Nov 2026 after visual QA (71 match, 23 partial, 6 mismatch, 7 no sour
 | TrainerHub-owned clips with no Meta AI original | 65 |
 | Covered ids whose Hebrew title still differs, same movement | 29 |
 
-Playback is `https://swissystem7.github.io/TrainerHub-media/<folder>/<id>.mp4`, then jsDelivr `@v3`. Pages serves the media repo default branch. `@v3` omits the six mismatch files.
+Playback is `https://swissystem7.github.io/TrainerHub-media/<folder>/<id>.mp4`, then jsDelivr `@v4`. `@v4` includes the five regenerated files and the shuttle run. None of these six is mapped to another catalog id: the chest opener, plank flow, wrestler core, side-lying crunch, and cone stations are their own exercises, and `ריצת שאטל` has no source reel.
 
-## Withheld (mismatch)
+## Restored clips
 
-These clips are not catalog exercises and are not in `videos/media-manifest.json`. They will be regenerated.
-
-- `E01-06` «מתיחת כתף לרוחב הגוף» (`metaai-e01-06`)
-- `05-08` «אימון בטן 3 דקות» (`metaai-05-08`)
-- `E04-09` «ליבה של מתאבק» (`metaai-e04-09`)
-- `E04-10` «אלכסונים עם משקולת» (`metaai-e04-10`)
-- `07-06` «ריצת זיגזג בין קונוסים» (`metaai-07-06`)
-- `07-HIIT-10` «ריצת שאטל בין קונוסים» (`metaai-07-hiit-10`)
+- `E01-06` «פתיחת חזה וכתפיים בעמידה» — dynamic standing chest opener. Partial against the static posture source, so it is not mapped to the doorway chest stretches.
+- `05-08` «אימון בטן 3 דקות» — forearm, high, and side plank flow. Not mapped onto a single plank id.
+- `E04-09` «ליבה של מתאבק» — seated wrestler core. No same-movement catalog id.
+- `E04-10` «אלכסונים עם משקולת» — side-lying dumbbell oblique crunch. Not mapped to a standing side bend.
+- `07-06` «תחנות עם קונוסים» — cone stations (plank, then sit-ups), filed under `full/` (גוף מלא HIIT). `קונוסים_תחנות` was not confirmed as this same station sequence, so it stays unmapped.
+- `07-HIIT-10` «ריצת שאטל» — the original shuttle run, published as a no-source standalone in `cardio/`. Mapped to nothing.
 
 ## Unmapped back to the placeholder
 
-The original remains its own exercise, except the withheld mismatches. The catalog id no longer plays that clip. Of these 33 ids, 19 show the placeholder, 5 already have a separate TrainerHub-owned file and play that file (`superman`, `בטן_זוגות`, `זוגות_בטן`, `בטן_כדור_כדורסל`, `גומיות_בטן`), and 9 are not a live library card.
+The original remains its own exercise. The catalog id no longer plays that clip. Of these 33 ids, 19 show the placeholder, 5 already have a separate TrainerHub-owned file and play that file (`superman`, `בטן_זוגות`, `זוגות_בטן`, `בטן_כדור_כדורסל`, `גומיות_בטן`), and 9 are not a live library card.
 
 - `yt_military_press` «לחיצה צבאית מעל הראש (Military Press)» was `E01-01` «לחיצת כתפיים». Dumbbell overhead press; military press is a barbell variation.
 - `yt_cable_face_pull` «פייס פול בכבל» was `E01-05` «משיכת פנים». No source reel to confirm the face pull against the cable-face-pull id.
