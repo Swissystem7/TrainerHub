@@ -2,7 +2,7 @@
   "_meta": {
     "source": "metaai",
     "count": 107,
-    "note": "TrainerHub-owned Meta AI 10-second demos. covers lists existing catalog ids whose player uses this clip. Third-party reels and YouTube ids stay in their catalogs as reference and are not rendered.",
+    "note": "TrainerHub-owned Meta AI 10-second demos. covers lists existing catalog ids whose player uses this clip, and only when visual QA says it is the same movement. Mismatch clips are available:false and are not shown. Third-party reels stay in their catalogs as reference.",
     "release": "https://github.com/Swissystem7/TrainerHub-media/releases/tag/metaai-originals-v1"
   },
   "items": [
@@ -24,7 +24,6 @@
       "mediaId": "metaai-e01-01",
       "available": true,
       "covers": [
-        "yt_military_press",
         "yt_db_shoulder_press"
       ]
     },
@@ -106,9 +105,7 @@
       "original": true,
       "mediaId": "metaai-e01-05",
       "available": true,
-      "covers": [
-        "yt_cable_face_pull"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e01-06",
@@ -126,8 +123,9 @@
       "group": "01 כתפיים",
       "original": true,
       "mediaId": "metaai-e01-06",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-e02-01",
@@ -267,8 +265,7 @@
       "mediaId": "metaai-e02-11",
       "available": true,
       "covers": [
-        "bench_press",
-        "dumbbell_bench"
+        "bench_press"
       ]
     },
     {
@@ -288,9 +285,7 @@
       "original": true,
       "mediaId": "metaai-e03-01",
       "available": true,
-      "covers": [
-        "yt_rdl_db"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e03-02",
@@ -310,10 +305,7 @@
       "original": true,
       "mediaId": "metaai-e03-02",
       "available": true,
-      "covers": [
-        "drive_חתירת_מוט_בכפיפה",
-        "drive_חתירת_קטלבל_בכפיפה"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e03-03",
@@ -374,9 +366,7 @@
       "original": true,
       "mediaId": "metaai-e03-05",
       "available": true,
-      "covers": [
-        "superman"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e03-06",
@@ -873,8 +863,7 @@
       "available": true,
       "covers": [
         "bench_dips",
-        "drive_דיפס_על_ספסל_-_הדרכה_מונפשת",
-        "drive_דיפס_על_ספסל_לילדים"
+        "drive_דיפס_על_ספסל_-_הדרכה_מונפשת"
       ]
     },
     {
@@ -1224,8 +1213,7 @@
       "mediaId": "metaai-05-06",
       "available": true,
       "covers": [
-        "drive_דד_באג",
-        "drive_דד_באג_עם_משקולות"
+        "drive_דד_באג"
       ]
     },
     {
@@ -1266,8 +1254,9 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-05-08",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-05-09",
@@ -1286,13 +1275,7 @@
       "original": true,
       "mediaId": "metaai-05-09",
       "available": true,
-      "covers": [
-        "drive_בטן_זוגות",
-        "drive_בטן_זוגות_2",
-        "בטן_זוגות",
-        "בטן_זוגות_2",
-        "זוגות_בטן"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-05-10",
@@ -1352,12 +1335,7 @@
       "original": true,
       "mediaId": "metaai-05-g02",
       "available": true,
-      "covers": [
-        "drive_בטן_עם_כדור",
-        "בטן_עם_כדור",
-        "drive_בטן_כדור_כדורסל",
-        "בטן_כדור_כדורסל"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-05-g03",
@@ -1376,13 +1354,7 @@
       "original": true,
       "mediaId": "metaai-05-g03",
       "available": true,
-      "covers": [
-        "drive_בטן_גומיות",
-        "בטן_גומיות",
-        "drive_גומיות_בטן",
-        "drive_גומיות_בטן_2",
-        "גומיות_בטן"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e04-03",
@@ -1420,9 +1392,7 @@
       "original": true,
       "mediaId": "metaai-e04-04",
       "available": true,
-      "covers": [
-        "glute_bridge"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e04-05",
@@ -1497,8 +1467,9 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-e04-09",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-e04-10",
@@ -1516,8 +1487,9 @@
       "group": "05 ליבה ובטן",
       "original": true,
       "mediaId": "metaai-e04-10",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-e04-11",
@@ -1538,8 +1510,7 @@
       "mediaId": "metaai-e04-11",
       "available": true,
       "covers": [
-        "russian_twist",
-        "drive_טוויסט_רוסי_עם_כדורסל"
+        "russian_twist"
       ]
     },
     {
@@ -1722,8 +1693,7 @@
       "mediaId": "metaai-06-07",
       "available": true,
       "covers": [
-        "drive_עלייה_למדרגה_למתחילים",
-        "dumbbell_step_up"
+        "drive_עלייה_למדרגה_למתחילים"
       ]
     },
     {
@@ -1743,10 +1713,7 @@
       "original": true,
       "mediaId": "metaai-06-08",
       "available": true,
-      "covers": [
-        "drive_מדרגות",
-        "step_up"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-07-01",
@@ -1788,8 +1755,7 @@
       "mediaId": "metaai-07-02",
       "available": true,
       "covers": [
-        "yt_burpee",
-        "yt_kids_burpees"
+        "yt_burpee"
       ]
     },
     {
@@ -1833,8 +1799,7 @@
       "mediaId": "metaai-07-04",
       "available": true,
       "covers": [
-        "yt_pull_up",
-        "yt_kids_pull_ups"
+        "yt_pull_up"
       ]
     },
     {
@@ -1854,13 +1819,7 @@
       "original": true,
       "mediaId": "metaai-07-05",
       "available": true,
-      "covers": [
-        "drive_בטן_זוגות",
-        "drive_בטן_זוגות_2",
-        "בטן_זוגות",
-        "בטן_זוגות_2",
-        "זוגות_בטן"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-07-06",
@@ -1878,8 +1837,9 @@
       "group": "07 מעגלים ו-HIIT",
       "original": true,
       "mediaId": "metaai-07-06",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-07-07",
@@ -2020,8 +1980,7 @@
       "mediaId": "metaai-07-hiit-04",
       "available": true,
       "covers": [
-        "jump_squat",
-        "drive_סקוואט_קפיצה_עם_משקולות"
+        "jump_squat"
       ]
     },
     {
@@ -2063,8 +2022,7 @@
       "mediaId": "metaai-07-hiit-06",
       "available": true,
       "covers": [
-        "yt_pull_up",
-        "yt_kids_pull_ups"
+        "yt_pull_up"
       ]
     },
     {
@@ -2106,8 +2064,7 @@
       "mediaId": "metaai-07-hiit-08",
       "available": true,
       "covers": [
-        "drive_גובלט_סקוואט_עם_קטלבל",
-        "yt_goblet_squat"
+        "drive_גובלט_סקוואט_עם_קטלבל"
       ]
     },
     {
@@ -2145,8 +2102,9 @@
       "group": "07 מעגלים ו-HIIT",
       "original": true,
       "mediaId": "metaai-07-hiit-10",
-      "available": true,
-      "covers": []
+      "available": false,
+      "covers": [],
+      "withheld": "mismatch"
     },
     {
       "id": "metaai-e04-01",
@@ -2203,9 +2161,7 @@
       "original": true,
       "mediaId": "metaai-e04-08",
       "available": true,
-      "covers": [
-        "ig-DdthU1EtHnN"
-      ]
+      "covers": []
     },
     {
       "id": "metaai-e04-12",

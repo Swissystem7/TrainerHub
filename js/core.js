@@ -3232,24 +3232,10 @@
 		return isPlayable(e);
 	}
 
+	// Only an explicit covers[] link may substitute a clip. A shared Hebrew
+	// title is not enough: a different variation must keep its own placeholder.
 	function bestMedia(entry) {
-		if (!entry) return null;
-		if (resolvePlayId(entry) || directFileOk(entry)) return entry;
-		var he = foldHe(entry.he);
-		if (!he) return entry;
-		var keys = Object.keys(catalog);
-		var i, hosted;
-		for (i = 0; i < keys.length; i++) {
-			hosted = catalog[keys[i]];
-			if (
-				hosted &&
-				hosted.available !== false &&
-				(hosted.original || hosted.source === "metaai") &&
-				foldHe(hosted.he) === he
-			)
-				return hosted;
-		}
-		return entry;
+		return entry || null;
 	}
 
 	function formatClock(sec) {

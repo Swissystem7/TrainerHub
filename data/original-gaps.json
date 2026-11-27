@@ -1,17 +1,357 @@
 {
   "generated": "2026-11-27",
-  "note": "Exercises that still have no Meta AI original. placeholder entries render \"הסרטון יעלה בקרוב\" and keep their ids. ownedWithoutMetaAi already play a TrainerHub-owned file and were excluded from THIRD_PARTY_GAPS.md. gapCrossCheck compares that markdown by exact Hebrew name.",
+  "note": "Exercises that still have no Meta AI original after visual QA. placeholder entries render \"הסרטון יעלה בקרוב\". Mismatch clips are withheld and are not in the catalog. unmapped lists catalog ids detached from an original because the movement or equipment did not match.",
   "counts": {
-    "originals": 107,
-    "catalogIdsCovered": 83,
-    "placeholder": 562,
-    "ownedWithoutMetaAi": 60,
+    "originalsPublished": 101,
+    "originalsWithheld": 6,
+    "catalogIdsCovered": 50,
+    "libraryCardsPlayingOriginal": 44,
+    "placeholder": 581,
+    "ownedWithoutMetaAi": 65,
+    "unmappedCatalogIds": 33,
     "gapsFileRows": 593,
     "gapsStillPlaceholderByName": 536,
     "gapsNowOriginalByName": 0,
     "gapsOwnedByName": 0,
     "gapsNotFoundByExactName": 57
   },
+  "withheld": [
+    {
+      "code": "E01-06",
+      "id": "metaai-e01-06",
+      "he": "מתיחת כתף לרוחב הגוף",
+      "reason": "MISMATCH"
+    },
+    {
+      "code": "05-08",
+      "id": "metaai-05-08",
+      "he": "אימון בטן 3 דקות",
+      "reason": "MISMATCH"
+    },
+    {
+      "code": "E04-09",
+      "id": "metaai-e04-09",
+      "he": "ליבה של מתאבק",
+      "reason": "MISMATCH"
+    },
+    {
+      "code": "E04-10",
+      "id": "metaai-e04-10",
+      "he": "אלכסונים עם משקולת",
+      "reason": "MISMATCH"
+    },
+    {
+      "code": "07-06",
+      "id": "metaai-07-06",
+      "he": "ריצת זיגזג בין קונוסים",
+      "reason": "MISMATCH"
+    },
+    {
+      "code": "07-HIIT-10",
+      "id": "metaai-07-hiit-10",
+      "he": "ריצת שאטל בין קונוסים",
+      "reason": "MISMATCH"
+    }
+  ],
+  "unmapped": [
+    {
+      "catalogId": "yt_military_press",
+      "exercise": "לחיצה צבאית מעל הראש (Military Press)",
+      "clipId": "metaai-e01-01",
+      "code": "E01-01",
+      "clip": "לחיצת כתפיים",
+      "reason": "Dumbbell overhead press; military press is a barbell variation.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "yt_cable_face_pull",
+      "exercise": "פייס פול בכבל",
+      "clipId": "metaai-e01-05",
+      "code": "E01-05",
+      "clip": "משיכת פנים",
+      "reason": "No source reel to confirm the face pull against the cable-face-pull id.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "dumbbell_bench",
+      "exercise": "לחיצת חזה משקולות",
+      "clipId": "metaai-e02-11",
+      "code": "E02-11",
+      "clip": "לחיצת חזה",
+      "reason": "Bench press clip; the dumbbell-bench id is a different implement.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "yt_rdl_db",
+      "exercise": "דדליפט רומני עם משקולות",
+      "clipId": "metaai-e03-01",
+      "code": "E03-01",
+      "clip": "דדליפט רומני",
+      "reason": "Barbell Romanian deadlift; the catalog row is with dumbbells.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_חתירת_מוט_בכפיפה",
+      "exercise": "חתירת מוט בכפיפה",
+      "clipId": "metaai-e03-02",
+      "code": "E03-02",
+      "clip": "חתירה בהטיה",
+      "reason": "Generic bent-over row; this id is specifically a barbell row.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_חתירת_קטלבל_בכפיפה",
+      "exercise": "חתירת קטלבל בכפיפה",
+      "clipId": "metaai-e03-02",
+      "code": "E03-02",
+      "clip": "חתירה בהטיה",
+      "reason": "Generic bent-over row; this id is specifically a kettlebell row.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "superman",
+      "exercise": "גב תחתון",
+      "clipId": "metaai-e03-05",
+      "code": "E03-05",
+      "clip": "סופרמן",
+      "reason": "Superman; the catalog row is titled lower back, not this drill.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_דיפס_על_ספסל_לילדים",
+      "exercise": "דיפס על ספסל לילדים",
+      "clipId": "metaai-04-13",
+      "code": "04-13",
+      "clip": "דיפס על ספסל",
+      "reason": "Adult bench dip; the catalog row is the kids variation.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_דד_באג_עם_משקולות",
+      "exercise": "דד באג עם משקולות",
+      "clipId": "metaai-05-06",
+      "code": "05-06",
+      "clip": "דד באג",
+      "reason": "Unweighted dead bug; the catalog row adds dumbbells.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_בטן_זוגות",
+      "exercise": "בטן זוגות",
+      "clipId": "metaai-05-09",
+      "code": "05-09",
+      "clip": "בטן בזוגות",
+      "reason": "Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_בטן_זוגות_2",
+      "exercise": "בטן זוגות",
+      "clipId": "metaai-05-09",
+      "code": "05-09",
+      "clip": "בטן בזוגות",
+      "reason": "Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "בטן_זוגות",
+      "exercise": "בטן זוגות",
+      "clipId": "metaai-05-09",
+      "code": "05-09",
+      "clip": "בטן בזוגות",
+      "reason": "Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "בטן_זוגות_2",
+      "exercise": "בטן זוגות",
+      "clipId": "metaai-05-09",
+      "code": "05-09",
+      "clip": "בטן בזוגות",
+      "reason": "Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "זוגות_בטן",
+      "exercise": "זוגות בטן",
+      "clipId": "metaai-05-09",
+      "code": "05-09",
+      "clip": "בטן בזוגות",
+      "reason": "Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_בטן_עם_כדור",
+      "exercise": "בטן עם כדור",
+      "clipId": "metaai-05-g02",
+      "code": "05-G02",
+      "clip": "בטן עם כדור",
+      "reason": "Stability-ball crunch, not medicine-ball or basketball abs.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "בטן_עם_כדור",
+      "exercise": "בטן עם כדור",
+      "clipId": "metaai-05-g02",
+      "code": "05-G02",
+      "clip": "בטן עם כדור",
+      "reason": "Stability-ball crunch, not medicine-ball or basketball abs.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_בטן_כדור_כדורסל",
+      "exercise": "בטן כדור כדורסל",
+      "clipId": "metaai-05-g02",
+      "code": "05-G02",
+      "clip": "בטן עם כדור",
+      "reason": "Stability-ball crunch, not medicine-ball or basketball abs.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "בטן_כדור_כדורסל",
+      "exercise": "בטן כדור כדורסל",
+      "clipId": "metaai-05-g02",
+      "code": "05-G02",
+      "clip": "בטן עם כדור",
+      "reason": "Stability-ball crunch, not medicine-ball or basketball abs.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_בטן_גומיות",
+      "exercise": "בטן גומיות",
+      "clipId": "metaai-05-g03",
+      "code": "05-G03",
+      "clip": "בטן עם גומיות",
+      "reason": "Floor band crunch, not the stability-ball band core rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "בטן_גומיות",
+      "exercise": "בטן גומיות",
+      "clipId": "metaai-05-g03",
+      "code": "05-G03",
+      "clip": "בטן עם גומיות",
+      "reason": "Floor band crunch, not the stability-ball band core rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_גומיות_בטן",
+      "exercise": "גומיות בטן",
+      "clipId": "metaai-05-g03",
+      "code": "05-G03",
+      "clip": "בטן עם גומיות",
+      "reason": "Floor band crunch, not the stability-ball band core rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_גומיות_בטן_2",
+      "exercise": "גומיות בטן",
+      "clipId": "metaai-05-g03",
+      "code": "05-G03",
+      "clip": "בטן עם גומיות",
+      "reason": "Floor band crunch, not the stability-ball band core rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "גומיות_בטן",
+      "exercise": "גומיות בטן",
+      "clipId": "metaai-05-g03",
+      "code": "05-G03",
+      "clip": "בטן עם גומיות",
+      "reason": "Floor band crunch, not the stability-ball band core rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "glute_bridge",
+      "exercise": "גשר ישבן",
+      "clipId": "metaai-e04-04",
+      "code": "E04-04",
+      "clip": "גשר אגן",
+      "reason": "No source reel to confirm the glute bridge against the catalog id.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_טוויסט_רוסי_עם_כדורסל",
+      "exercise": "טוויסט רוסי עם כדורסל",
+      "clipId": "metaai-e04-11",
+      "code": "E04-11",
+      "clip": "רוסי טוויסט",
+      "reason": "Russian twist with a weight; this id uses a basketball.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "dumbbell_step_up",
+      "exercise": "עליית מדרגה עם משקולות",
+      "clipId": "metaai-06-07",
+      "code": "06-07",
+      "clip": "עלייה למדרגה למתחילים",
+      "reason": "Beginner step-up; the catalog row is a dumbbell step-up.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_מדרגות",
+      "exercise": "מדרגות",
+      "clipId": "metaai-06-08",
+      "code": "06-08",
+      "clip": "מדרגות",
+      "reason": "Staircase climbing, not the step-box / step-up rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "step_up",
+      "exercise": "מדרגות",
+      "clipId": "metaai-06-08",
+      "code": "06-08",
+      "clip": "מדרגות",
+      "reason": "Staircase climbing, not the step-box / step-up rows.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "yt_kids_burpees",
+      "exercise": "ברפי לילדים",
+      "clipId": "metaai-07-02",
+      "code": "07-02",
+      "clip": "ברפי HIIT קלאסי",
+      "reason": "Adult burpee; the catalog row is the kids variation.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "yt_kids_pull_ups",
+      "exercise": "עליות מתח לילדים",
+      "clipId": "metaai-07-04",
+      "code": "07-04",
+      "clip": "מתח במעגל קבוצתי",
+      "reason": "Adult pull-up; the catalog row is the kids variation.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "drive_סקוואט_קפיצה_עם_משקולות",
+      "exercise": "סקוואט קפיצה עם משקולות",
+      "clipId": "metaai-07-hiit-04",
+      "code": "07-HIIT-04",
+      "clip": "סקוואט קפיצה",
+      "reason": "Bodyweight jump squat; the catalog row uses dumbbells.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "yt_goblet_squat",
+      "exercise": "סקוואט גביע עם משקולת",
+      "clipId": "metaai-07-hiit-08",
+      "code": "07-HIIT-08",
+      "clip": "סקוואט גובלט עם קטלבל",
+      "reason": "Kettlebell goblet squat; the catalog row is a dumbbell goblet squat.",
+      "stillPlaysOriginal": false
+    },
+    {
+      "catalogId": "ig-DdthU1EtHnN",
+      "exercise": "ig-DdthU1EtHnN",
+      "clipId": "metaai-e04-08",
+      "code": "E04-08",
+      "clip": "טפיחות לימפטיות",
+      "reason": "No catalog name for this reel id, so it is not the same drill.",
+      "stillPlaysOriginal": false
+    }
+  ],
   "placeholder": [
     {
       "id": "עבודה_עם_יד_אחת",
@@ -28,8 +368,36 @@
       "level": "beginner"
     },
     {
+      "id": "בטן_גומיות",
+      "he": "בטן גומיות",
+      "source": "youtube",
+      "folder": "",
+      "level": "beginner"
+    },
+    {
+      "id": "בטן_זוגות_2",
+      "he": "בטן זוגות",
+      "source": "youtube",
+      "folder": "",
+      "level": "beginner"
+    },
+    {
+      "id": "בטן_עם_כדור",
+      "he": "בטן עם כדור",
+      "source": "youtube",
+      "folder": "",
+      "level": "beginner"
+    },
+    {
       "id": "יציאה_מהמקום_2",
       "he": "יציאה מהמקום",
+      "source": "youtube",
+      "folder": "",
+      "level": "beginner"
+    },
+    {
+      "id": "step_up",
+      "he": "מדרגות",
       "source": "youtube",
       "folder": "",
       "level": "beginner"
@@ -595,6 +963,13 @@
       "level": "beginner"
     },
     {
+      "id": "drive_דיפס_על_ספסל_לילדים",
+      "he": "דיפס על ספסל לילדים",
+      "source": "drive",
+      "folder": "ידיים",
+      "level": "beginner"
+    },
+    {
       "id": "drive_סקוואט_בולגרי_עם_גומייה",
       "he": "סקוואט בולגרי עם גומייה",
       "source": "drive",
@@ -994,6 +1369,20 @@
       "level": "advanced"
     },
     {
+      "id": "drive_דד_באג_עם_משקולות",
+      "he": "דד באג עם משקולות",
+      "source": "drive",
+      "folder": "בטן",
+      "level": "beginner"
+    },
+    {
+      "id": "drive_סקוואט_קפיצה_עם_משקולות",
+      "he": "סקוואט קפיצה עם משקולות",
+      "source": "drive",
+      "folder": "רגליים",
+      "level": "advanced"
+    },
+    {
       "id": "drive_סקאל_קראשר_עם_משקולות_על_ספסל",
       "he": "סקאל קראשר עם משקולות על ספסל",
       "source": "drive",
@@ -1069,6 +1458,13 @@
       "source": "drive",
       "folder": "גב",
       "level": "advanced"
+    },
+    {
+      "id": "drive_חתירת_מוט_בכפיפה",
+      "he": "חתירת מוט בכפיפה",
+      "source": "drive",
+      "folder": "גב",
+      "level": "beginner"
     },
     {
       "id": "drive_דדליפט_עם_מוט_אולימפי",
@@ -1223,6 +1619,13 @@
       "source": "drive",
       "folder": "גב",
       "level": "advanced"
+    },
+    {
+      "id": "drive_חתירת_קטלבל_בכפיפה",
+      "he": "חתירת קטלבל בכפיפה",
+      "source": "drive",
+      "folder": "גב",
+      "level": "beginner"
     },
     {
       "id": "drive_חתירה_בכפיפה_עם_קטלבל_ביד_אחת",
@@ -2464,6 +2867,13 @@
       "level": "beginner"
     },
     {
+      "id": "drive_טוויסט_רוסי_עם_כדורסל",
+      "he": "טוויסט רוסי עם כדורסל",
+      "source": "drive",
+      "folder": "בטן",
+      "level": "beginner"
+    },
+    {
       "id": "drive_העברת_כדורסל_בין_הרגליים_בישיבה",
       "he": "העברת כדורסל בין הרגליים בישיבה",
       "source": "drive",
@@ -3108,6 +3518,20 @@
       "level": "beginner"
     },
     {
+      "id": "yt_goblet_squat",
+      "he": "סקוואט גביע עם משקולת",
+      "source": "youtube",
+      "folder": "רגליים",
+      "level": "intermediate"
+    },
+    {
+      "id": "yt_rdl_db",
+      "he": "דדליפט רומני עם משקולות",
+      "source": "youtube",
+      "folder": "רגליים",
+      "level": "intermediate"
+    },
+    {
       "id": "yt_quad_stretch",
       "he": "מתיחת ארבע-ראשי בעמידה",
       "source": "youtube",
@@ -3269,6 +3693,20 @@
       "level": "advanced"
     },
     {
+      "id": "yt_military_press",
+      "he": "לחיצה צבאית מעל הראש (Military Press)",
+      "source": "youtube",
+      "folder": "כתפיים",
+      "level": "intermediate"
+    },
+    {
+      "id": "yt_cable_face_pull",
+      "he": "פייס פול בכבל",
+      "source": "youtube",
+      "folder": "כתפיים",
+      "level": "intermediate"
+    },
+    {
       "id": "squat",
       "he": "סקוואט",
       "source": "youtube",
@@ -3278,6 +3716,13 @@
     {
       "id": "lunges",
       "he": "מכרעים",
+      "source": "youtube",
+      "folder": "רגליים",
+      "level": "beginner"
+    },
+    {
+      "id": "glute_bridge",
+      "he": "גשר ישבן",
       "source": "youtube",
       "folder": "רגליים",
       "level": "beginner"
@@ -3323,6 +3768,13 @@
       "source": "youtube",
       "folder": "חזה",
       "level": "beginner"
+    },
+    {
+      "id": "dumbbell_bench",
+      "he": "לחיצת חזה משקולות",
+      "source": "youtube",
+      "folder": "חזה",
+      "level": "intermediate"
     },
     {
       "id": "dumbbell_fly",
@@ -3371,6 +3823,13 @@
       "he": "הרמת רגליים",
       "source": "youtube",
       "folder": "בטן",
+      "level": "beginner"
+    },
+    {
+      "id": "dumbbell_step_up",
+      "he": "עליית מדרגה עם משקולות",
+      "source": "youtube",
+      "folder": "רגליים",
       "level": "beginner"
     },
     {
@@ -3857,6 +4316,13 @@
       "level": "advanced"
     },
     {
+      "id": "yt_kids_pull_ups",
+      "he": "עליות מתח לילדים",
+      "source": "youtube",
+      "folder": "גב",
+      "level": "beginner"
+    },
+    {
       "id": "yt_partner_assisted_pull_ups",
       "he": "מתח בעזרת בן זוג",
       "source": "youtube",
@@ -3890,6 +4356,13 @@
       "source": "youtube",
       "folder": "חזה",
       "level": "advanced"
+    },
+    {
+      "id": "yt_kids_burpees",
+      "he": "ברפי לילדים",
+      "source": "youtube",
+      "folder": "קרדיו",
+      "level": "intermediate"
     },
     {
       "id": "yt_archer_pull_ups",
@@ -3974,6 +4447,18 @@
       "folder": ""
     },
     {
+      "id": "בטן_זוגות",
+      "he": "בטן זוגות",
+      "source": "onedrive",
+      "folder": ""
+    },
+    {
+      "id": "בטן_כדור_כדורסל",
+      "he": "בטן כדור כדורסל",
+      "source": "onedrive",
+      "folder": ""
+    },
+    {
       "id": "בטן_סט",
       "he": "בטן סט",
       "source": "onedrive",
@@ -4010,6 +4495,12 @@
       "folder": ""
     },
     {
+      "id": "superman",
+      "he": "גב תחתון",
+      "source": "onedrive",
+      "folder": ""
+    },
+    {
       "id": "כתפיים_וגב",
       "he": "כתפיים וגב",
       "source": "onedrive",
@@ -4030,6 +4521,12 @@
     {
       "id": "גומיות_ארבע_ראשי",
       "he": "גומיות ארבע ראשי",
+      "source": "onedrive",
+      "folder": ""
+    },
+    {
+      "id": "גומיות_בטן",
+      "he": "גומיות בטן",
       "source": "onedrive",
       "folder": ""
     },
@@ -4078,6 +4575,12 @@
     {
       "id": "crunches_2",
       "he": "בטן",
+      "source": "onedrive",
+      "folder": ""
+    },
+    {
+      "id": "זוגות_בטן",
+      "he": "זוגות בטן",
       "source": "onedrive",
       "folder": ""
     },
@@ -4310,2687 +4813,2327 @@
       "folder": ""
     }
   ],
+  "nameDifferences": [
+    {
+      "id": "drive_שכיבות_סמיכה_בטכניקה_נכונה",
+      "exercise": "שכיבות סמיכה בטכניקה נכונה",
+      "originalId": "metaai-04-10-3",
+      "original": "שלב 3 שכיבות מלאות מהרצפה"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_עם_הפעלת_חזה",
+      "exercise": "שכיבות סמיכה עם הפעלת חזה",
+      "originalId": "metaai-04-10-3",
+      "original": "שלב 3 שכיבות מלאות מהרצפה"
+    },
+    {
+      "id": "drive_מתח_מושלם_-_טכניקה",
+      "exercise": "מתח מושלם - טכניקה",
+      "originalId": "metaai-04-01",
+      "original": "מתח מושלם טכניקה"
+    },
+    {
+      "id": "drive_חתירה_ביד_אחת_עם_משקולת",
+      "exercise": "חתירה ביד אחת עם משקולת",
+      "originalId": "metaai-e03-03",
+      "original": "חתירה יד אחת"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פייק_-_מיקום_ידיים",
+      "exercise": "שכיבות סמיכה פייק - מיקום ידיים",
+      "originalId": "metaai-04-12",
+      "original": "שכיבות פייק"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_פייק_-_הדרכה_מונפשת",
+      "exercise": "שכיבות סמיכה פייק - הדרכה מונפשת",
+      "originalId": "metaai-04-12",
+      "original": "שכיבות פייק"
+    },
+    {
+      "id": "drive_דיפס_על_ספסל_-_הדרכה_מונפשת",
+      "exercise": "דיפס על ספסל - הדרכה מונפשת",
+      "originalId": "metaai-04-13",
+      "original": "דיפס על ספסל"
+    },
+    {
+      "id": "drive_סקוואט_אחורי_עם_מוט_-_טכניקה",
+      "exercise": "סקוואט אחורי עם מוט - טכניקה",
+      "originalId": "metaai-06-01",
+      "original": "סקוואט אחורי עם מוט"
+    },
+    {
+      "id": "drive_פלאנק_על_האמות_-_טכניקה",
+      "exercise": "פלאנק על האמות - טכניקה",
+      "originalId": "metaai-05-01",
+      "original": "פלאנק על האמות"
+    },
+    {
+      "id": "drive_דדליפט_רומני_על_רגל_אחת_עם_משקולות",
+      "exercise": "דדליפט רומני על רגל אחת עם משקולות",
+      "originalId": "metaai-06-06",
+      "original": "דדליפט רומני רגל אחת"
+    },
+    {
+      "id": "drive_חתירה_כבדה_ביד_אחת_עם_משקולת",
+      "exercise": "חתירה כבדה ביד אחת עם משקולת",
+      "originalId": "metaai-e03-03",
+      "original": "חתירה יד אחת"
+    },
+    {
+      "id": "drive_סקוואט_בולגרי_עם_משקולות_כבדות",
+      "exercise": "סקוואט בולגרי עם משקולות כבדות",
+      "originalId": "metaai-06-04",
+      "original": "בולגרי כבד"
+    },
+    {
+      "id": "drive_גובלט_סקוואט_עם_קטלבל",
+      "exercise": "גובלט סקוואט עם קטלבל",
+      "originalId": "metaai-07-hiit-08",
+      "original": "סקוואט גובלט עם קטלבל"
+    },
+    {
+      "id": "drive_שכיבות_סמיכה_על_קיר",
+      "exercise": "שכיבות סמיכה על קיר",
+      "originalId": "metaai-04-10-1",
+      "original": "שלב 1 שכיבות מהקיר"
+    },
+    {
+      "id": "yt_cat_cow",
+      "exercise": "חתול-פרה לניידות עמוד שדרה",
+      "originalId": "metaai-e03-13",
+      "original": "חתול פרה"
+    },
+    {
+      "id": "yt_lateral_raise",
+      "exercise": "הרמות צד עם משקולות",
+      "originalId": "metaai-e01-02",
+      "original": "הרחקת כתף"
+    },
+    {
+      "id": "yt_high_knees",
+      "exercise": "ברכיים גבוהות",
+      "originalId": "metaai-07-01",
+      "original": "אינטרוול ברך גבוהה במקום"
+    },
+    {
+      "id": "yt_walking_lunge",
+      "exercise": "לאנג'ים בהליכה",
+      "originalId": "metaai-06-05",
+      "original": "לאנגים בהליכה עם מוט"
+    },
+    {
+      "id": "yt_burpee",
+      "exercise": "ברפי",
+      "originalId": "metaai-07-02",
+      "original": "ברפי HIIT קלאסי"
+    },
+    {
+      "id": "yt_jumping_jacks",
+      "exercise": "ג'מפינג ג'קס",
+      "originalId": "metaai-07-hiit-01",
+      "original": "גאמפינג גקס"
+    },
+    {
+      "id": "yt_db_shoulder_press",
+      "exercise": "לחיצת כתפיים עם משקולות",
+      "originalId": "metaai-e01-01",
+      "original": "לחיצת כתפיים"
+    },
+    {
+      "id": "yt_pike_push_up",
+      "exercise": "שכיבת סמיכה בפייק (Pike Push-Up)",
+      "originalId": "metaai-04-12",
+      "original": "שכיבות פייק"
+    },
+    {
+      "id": "yt_rear_delt_fly",
+      "exercise": "הרמת דלתא אחורית עם משקולות",
+      "originalId": "metaai-e03-12",
+      "original": "פרפר הפוך"
+    },
+    {
+      "id": "bodyweight_squat",
+      "exercise": "סקוואט משקל גוף",
+      "originalId": "metaai-07-hiit-05",
+      "original": "סקוואט במשקל גוף"
+    },
+    {
+      "id": "push_up",
+      "exercise": "שכיבות סמיכה",
+      "originalId": "metaai-04-08",
+      "original": "שכיבות סמיכה טכניקה נכונה"
+    },
+    {
+      "id": "russian_twist",
+      "exercise": "טוויסט רוסי",
+      "originalId": "metaai-e04-11",
+      "original": "רוסי טוויסט"
+    },
+    {
+      "id": "front_raise",
+      "exercise": "הרמה קדמית",
+      "originalId": "metaai-e01-03",
+      "original": "הרמת כתף קדמית"
+    },
+    {
+      "id": "knee_push_up",
+      "exercise": "שכיבות סמיכה על ברכיים",
+      "originalId": "metaai-e02-06",
+      "original": "שכיבת סמיכה על ברכיים"
+    },
+    {
+      "id": "yt_band_assisted_pull_up",
+      "exercise": "מתח בסיוע גומייה",
+      "originalId": "metaai-04-02",
+      "original": "מתח עם גומייה"
+    }
+  ],
   "gapCrossCheck": {
     "stillPlaceholder": [
       {
         "code": "01-G01",
-        "he": "ארנולד פרס עם משקולות",
-        "section": "כתפיים (70)"
+        "he": "ארנולד פרס עם משקולות"
       },
       {
         "code": "01-G02",
-        "he": "גומייה קטנה לפלג גוף עליון",
-        "section": "כתפיים (70)"
+        "he": "גומייה קטנה לפלג גוף עליון"
       },
       {
         "code": "01-G03",
-        "he": "הטחת כדור כוח מעל הראש",
-        "section": "כתפיים (70)"
+        "he": "הטחת כדור כוח מעל הראש"
       },
       {
         "code": "01-G04",
-        "he": "הליכה בעמידת ידיים על סולם קואורדינציה",
-        "section": "כתפיים (70)"
+        "he": "הליכה בעמידת ידיים על סולם קואורדינציה"
       },
       {
         "code": "01-G05",
-        "he": "הליכה על הידיים",
-        "section": "כתפיים (70)"
+        "he": "הליכה על הידיים"
       },
       {
         "code": "01-G06",
-        "he": "הליכה על קיר",
-        "section": "כתפיים (70)"
+        "he": "הליכה על קיר"
       },
       {
         "code": "01-G07",
-        "he": "הליכת עמידת ידיים לאורך סולם",
-        "section": "כתפיים (70)"
+        "he": "הליכת עמידת ידיים לאורך סולם"
       },
       {
         "code": "01-G08",
-        "he": "הליכת פלאנק לרוחב סולם קואורדינציה",
-        "section": "כתפיים (70)"
+        "he": "הליכת פלאנק לרוחב סולם קואורדינציה"
       },
       {
         "code": "01-G09",
-        "he": "הליכת קיר לעמידת ידיים",
-        "section": "כתפיים (70)"
+        "he": "הליכת קיר לעמידת ידיים"
       },
       {
         "code": "01-G10",
-        "he": "הרחקה צידית ארצ׳ר עם גומייה",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית ארצ׳ר עם גומייה"
       },
       {
         "code": "01-G11",
-        "he": "הרחקה צידית בכבל ביד אחת",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית בכבל ביד אחת"
       },
       {
         "code": "01-G12",
-        "he": "הרחקה צידית בכבל בעמידה ביד אחת",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית בכבל בעמידה ביד אחת"
       },
       {
         "code": "01-G13",
-        "he": "הרחקה צידית בכבל נמוך ביד אחת",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית בכבל נמוך ביד אחת"
       },
       {
         "code": "01-G14",
-        "he": "הרחקה צידית - סט מורחב עם משקולות וגומייה",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית - סט מורחב עם משקולות וגומייה"
       },
       {
         "code": "01-G15",
-        "he": "הרחקה צידית עם גומייה וקטלבל",
-        "section": "כתפיים (70)"
+        "he": "הרחקה צידית עם גומייה וקטלבל"
       },
       {
         "code": "01-G16",
-        "he": "הרמות Y בכבל על ספסל משופע",
-        "section": "כתפיים (70)"
+        "he": "הרמות Y בכבל על ספסל משופע"
       },
       {
         "code": "01-G17",
-        "he": "הרמות ידיים בשכיבה מעל קונוסים",
-        "section": "כתפיים (70)"
+        "he": "הרמות ידיים בשכיבה מעל קונוסים"
       },
       {
         "code": "01-G18",
-        "he": "הרמת V עם גומייה",
-        "section": "כתפיים (70)"
+        "he": "הרמת V עם גומייה"
       },
       {
         "code": "01-G19",
-        "he": "ווינדמיל קטלבל",
-        "section": "כתפיים (70)"
+        "he": "ווינדמיל קטלבל"
       },
       {
         "code": "01-G20",
-        "he": "זחילת דוב בירידה במדרגות",
-        "section": "כתפיים (70)"
+        "he": "זחילת דוב בירידה במדרגות"
       },
       {
         "code": "01-G21",
-        "he": "זחילת דוב במעלה מדרגות",
-        "section": "כתפיים (70)"
+        "he": "זחילת דוב במעלה מדרגות"
       },
       {
         "code": "01-G22",
-        "he": "זחילת דוב מהירה עם נגיעות בקונוסים",
-        "section": "כתפיים (70)"
+        "he": "זחילת דוב מהירה עם נגיעות בקונוסים"
       },
       {
         "code": "01-G23",
-        "he": "זריקות חוץ לקיר עם כדורגל",
-        "section": "כתפיים (70)"
+        "he": "זריקות חוץ לקיר עם כדורגל"
       },
       {
         "code": "01-G24",
-        "he": "זריקות כדור טניס לקיר מעל הראש",
-        "section": "כתפיים (70)"
+        "he": "זריקות כדור טניס לקיר מעל הראש"
       },
       {
         "code": "01-G25",
-        "he": "זריקות כדור כוח מעל הראש",
-        "section": "כתפיים (70)"
+        "he": "זריקות כדור כוח מעל הראש"
       },
       {
         "code": "01-G26",
-        "he": "זריקת חוץ בכדורגל",
-        "section": "כתפיים (70)"
+        "he": "זריקת חוץ בכדורגל"
       },
       {
         "code": "01-G27",
-        "he": "זריקת חוץ לקיר עם כדורגל",
-        "section": "כתפיים (70)"
+        "he": "זריקת חוץ לקיר עם כדורגל"
       },
       {
         "code": "01-G28",
-        "he": "זריקת כדור טניס לדלת ותפיסה מעל הראש",
-        "section": "כתפיים (70)"
+        "he": "זריקת כדור טניס לדלת ותפיסה מעל הראש"
       },
       {
         "code": "01-G29",
-        "he": "חיזוק כתפיים עם גומייה וקונוסים",
-        "section": "כתפיים (70)"
+        "he": "חיזוק כתפיים עם גומייה וקונוסים"
       },
       {
         "code": "01-G30",
-        "he": "חתירה אנכית",
-        "section": "כתפיים (70)"
+        "he": "חתירה אנכית"
       },
       {
         "code": "01-G31",
-        "he": "לחיצה קובנית",
-        "section": "כתפיים (70)"
+        "he": "לחיצה קובנית"
       },
       {
         "code": "01-G32",
-        "he": "לחיצת Z עם משקולות",
-        "section": "כתפיים (70)"
+        "he": "לחיצת Z עם משקולות"
       },
       {
         "code": "01-G33",
-        "he": "לחיצת כתף בחצי כריעה עם גומייה ומשקולת",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתף בחצי כריעה עם גומייה ומשקולת"
       },
       {
         "code": "01-G34",
-        "he": "לחיצת כתפיים בישיבה עם גומייה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים בישיבה עם גומייה"
       },
       {
         "code": "01-G35",
-        "he": "לחיצת כתפיים בישיבה עם משקולות",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים בישיבה עם משקולות"
       },
       {
         "code": "01-G36",
-        "he": "לחיצת כתפיים במכונה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים במכונה"
       },
       {
         "code": "01-G37",
-        "he": "לחיצת כתפיים בעמידה עם גומייה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים בעמידה עם גומייה"
       },
       {
         "code": "01-G38",
-        "he": "לחיצת כתפיים עם גומייה בחצי כריעה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים עם גומייה בחצי כריעה"
       },
       {
         "code": "01-G39",
-        "he": "לחיצת כתפיים עם מוט באחיזה רחבה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים עם מוט באחיזה רחבה"
       },
       {
         "code": "01-G40",
-        "he": "לחיצת כתפיים עם מוט בעמידה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת כתפיים עם מוט בעמידה"
       },
       {
         "code": "01-G41",
-        "he": "לחיצת קטלבל",
-        "section": "כתפיים (70)"
+        "he": "לחיצת קטלבל"
       },
       {
         "code": "01-G42",
-        "he": "לחיצת קטלבל מעל הראש בישיבה על הרצפה",
-        "section": "כתפיים (70)"
+        "he": "לחיצת קטלבל מעל הראש בישיבה על הרצפה"
       },
       {
         "code": "01-G43",
-        "he": "מלאכי קיר",
-        "section": "כתפיים (70)"
+        "he": "מלאכי קיר"
       },
       {
         "code": "01-G44",
-        "he": "מסירות סנאפ ביד אחת עם כדורסל לקיר",
-        "section": "כתפיים (70)"
+        "he": "מסירות סנאפ ביד אחת עם כדורסל לקיר"
       },
       {
         "code": "01-G45",
-        "he": "משיכת גומייה לצדדים",
-        "section": "כתפיים (70)"
+        "he": "משיכת גומייה לצדדים"
       },
       {
         "code": "01-G46",
-        "he": "סיבוב חישוק בגובה החזה",
-        "section": "כתפיים (70)"
+        "he": "סיבוב חישוק בגובה החזה"
       },
       {
         "code": "01-G47",
-        "he": "סיבוב חישוקים על הזרועות",
-        "section": "כתפיים (70)"
+        "he": "סיבוב חישוקים על הזרועות"
       },
       {
         "code": "01-G48",
-        "he": "סנאץ' קטלבל",
-        "section": "כתפיים (70)"
+        "he": "סנאץ' קטלבל"
       },
       {
         "code": "01-G49",
-        "he": "סקין דה קאט בתלייה על מוט",
-        "section": "כתפיים (70)"
+        "he": "סקין דה קאט בתלייה על מוט"
       },
       {
         "code": "01-G50",
-        "he": "סקין דה קאט כפול על מוט מתח",
-        "section": "כתפיים (70)"
+        "he": "סקין דה קאט כפול על מוט מתח"
       },
       {
         "code": "01-G51",
-        "he": "סקין דה קאט מלא על מוט מתח",
-        "section": "כתפיים (70)"
+        "he": "סקין דה קאט מלא על מוט מתח"
       },
       {
         "code": "01-G52",
-        "he": "סקין דה קאט על מוט מתח",
-        "section": "כתפיים (70)"
+        "he": "סקין דה קאט על מוט מתח"
       },
       {
         "code": "01-G53",
-        "he": "סקין דה קאט על מוט מתח בחוץ",
-        "section": "כתפיים (70)"
+        "he": "סקין דה קאט על מוט מתח בחוץ"
       },
       {
         "code": "01-G54",
-        "he": "עמידת ידיים לקיר",
-        "section": "כתפיים (70)"
+        "he": "עמידת ידיים לקיר"
       },
       {
         "code": "01-G55",
-        "he": "פוש פרס על לוח איזון",
-        "section": "כתפיים (70)"
+        "he": "פוש פרס על לוח איזון"
       },
       {
         "code": "01-G56",
-        "he": "פוש פרס עם מוט",
-        "section": "כתפיים (70)"
+        "he": "פוש פרס עם מוט"
       },
       {
         "code": "01-G57",
-        "he": "פייס פול עם גומייה",
-        "section": "כתפיים (70)"
+        "he": "פייס פול עם גומייה"
       },
       {
         "code": "01-G58",
-        "he": "פלאנק גבוה עם הערמת קונוסים",
-        "section": "כתפיים (70)"
+        "he": "פלאנק גבוה עם הערמת קונוסים"
       },
       {
         "code": "01-G59",
-        "he": "פלאנק והעברת כדור בין חישוקים",
-        "section": "כתפיים (70)"
+        "he": "פלאנק והעברת כדור בין חישוקים"
       },
       {
         "code": "01-G60",
-        "he": "פלאנק אמות עם נגיעות לסירוגין בכדורגל",
-        "section": "כתפיים (70)"
+        "he": "פלאנק אמות עם נגיעות לסירוגין בכדורגל"
       },
       {
         "code": "01-G61",
-        "he": "פלאנק עם גלגול כדורגל מיד ליד",
-        "section": "כתפיים (70)"
+        "he": "פלאנק עם גלגול כדורגל מיד ליד"
       },
       {
         "code": "01-G62",
-        "he": "פרפר הפוך משקל גוף",
-        "section": "כתפיים (70)"
+        "he": "פרפר הפוך משקל גוף"
       },
       {
         "code": "01-G63",
-        "he": "קימה טורקית (Turkish Get-Up)",
-        "section": "כתפיים (70)"
+        "he": "קימה טורקית (Turkish Get-Up)"
       },
       {
         "code": "01-G64",
-        "he": "שכיבות סמיכה בעמידת ידיים מול קיר",
-        "section": "כתפיים (70)"
+        "he": "שכיבות סמיכה בעמידת ידיים מול קיר"
       },
       {
         "code": "01-G65",
-        "he": "שכיבות סמיכה עם הזזת קונוסים מצד לצד",
-        "section": "כתפיים (70)"
+        "he": "שכיבות סמיכה עם הזזת קונוסים מצד לצד"
       },
       {
         "code": "01-G66",
-        "he": "שכיבות סמיכה עם יד אחת על כדורסל",
-        "section": "כתפיים (70)"
+        "he": "שכיבות סמיכה עם יד אחת על כדורסל"
       },
       {
         "code": "01-G67",
-        "he": "שכיבות סמיכה פייק עם רגליים מוגבהות",
-        "section": "כתפיים (70)"
+        "he": "שכיבות סמיכה פייק עם רגליים מוגבהות"
       },
       {
         "code": "01-G68",
-        "he": "פייק פוש אפ עם רגליים על כדור פיזיו",
-        "section": "כתפיים (70)"
+        "he": "פייק פוש אפ עם רגליים על כדור פיזיו"
       },
       {
         "code": "01-G69",
-        "he": "שכיבות סמיכה פייק עם רגליים על המדרגות",
-        "section": "כתפיים (70)"
+        "he": "שכיבות סמיכה פייק עם רגליים על המדרגות"
       },
       {
         "code": "01-G70",
-        "he": "תלייה אקטיבית על מוט מתח",
-        "section": "כתפיים (70)"
+        "he": "תלייה אקטיבית על מוט מתח"
       },
       {
         "code": "02-G01",
-        "he": "אתגר שכיבות סמיכה ביד אחת בזוג",
-        "section": "חזה (92)"
+        "he": "אתגר שכיבות סמיכה ביד אחת בזוג"
       },
       {
         "code": "02-G02",
-        "he": "גלגול כדור טניס בין הידיים בפלאנק",
-        "section": "חזה (92)"
+        "he": "גלגול כדור טניס בין הידיים בפלאנק"
       },
       {
         "code": "02-G03",
-        "he": "דיפס על מוט ישר",
-        "section": "חזה (92)"
+        "he": "דיפס על מוט ישר"
       },
       {
         "code": "02-G04",
-        "he": "התקדמות שכיבות סמיכה ב־4 שלבים",
-        "section": "חזה (92)"
+        "he": "התקדמות שכיבות סמיכה ב־4 שלבים"
       },
       {
         "code": "02-G05",
-        "he": "זוגות אימון כדור כוח",
-        "section": "חזה (92)"
+        "he": "זוגות אימון כדור כוח"
       },
       {
         "code": "02-G06",
-        "he": "לחיצה בשיפוע",
-        "section": "חזה (92)"
+        "he": "לחיצה בשיפוע"
       },
       {
         "code": "02-G07",
-        "he": "לחיצה בשיפוע משקולות",
-        "section": "חזה (92)"
+        "he": "לחיצה בשיפוע משקולות"
       },
       {
         "code": "02-G08",
-        "he": "לחיצת חזה באחיזה צמודה עם משקולות",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה באחיזה צמודה עם משקולות"
       },
       {
         "code": "02-G09",
-        "he": "לחיצת חזה ביד אחת עם משקולת",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה ביד אחת עם משקולת"
       },
       {
         "code": "02-G10",
-        "he": "לחיצת חזה בכבל ביד אחת בכריעה",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה בכבל ביד אחת בכריעה"
       },
       {
         "code": "02-G11",
-        "he": "לחיצת חזה במכונה",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה במכונה"
       },
       {
         "code": "02-G12",
-        "he": "לחיצת חזה במכונה ביד אחת",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה במכונה ביד אחת"
       },
       {
         "code": "02-G13",
-        "he": "לחיצת חזה במכונה בישיבה",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה במכונה בישיבה"
       },
       {
         "code": "02-G16",
-        "he": "לחיצת חזה עליון במכונה ביד אחת",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה עליון במכונה ביד אחת"
       },
       {
         "code": "02-G17",
-        "he": "לחיצת מוט בספסל בשיפוע חיובי",
-        "section": "חזה (92)"
+        "he": "לחיצת מוט בספסל בשיפוע חיובי"
       },
       {
         "code": "02-G18",
-        "he": "לחיצת מוט בשיפוע חיובי כבדה",
-        "section": "חזה (92)"
+        "he": "לחיצת מוט בשיפוע חיובי כבדה"
       },
       {
         "code": "02-G19",
-        "he": "לחיצת מוט בשיפוע עם שומר",
-        "section": "חזה (92)"
+        "he": "לחיצת מוט בשיפוע עם שומר"
       },
       {
         "code": "02-G20",
-        "he": "לחיצת סקוויז עם משקולות על ספסל",
-        "section": "חזה (92)"
+        "he": "לחיצת סקוויז עם משקולות על ספסל"
       },
       {
         "code": "02-G21",
-        "he": "לחיצת קטלבל בשכיבה על הרצפה",
-        "section": "חזה (92)"
+        "he": "לחיצת קטלבל בשכיבה על הרצפה"
       },
       {
         "code": "02-G22",
-        "he": "לחיצת קטלבל הפוך ביד אחת בשכיבה",
-        "section": "חזה (92)"
+        "he": "לחיצת קטלבל הפוך ביד אחת בשכיבה"
       },
       {
         "code": "02-G23",
-        "he": "לחיצת רצפה ביד אחת עם קטלבל",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה ביד אחת עם קטלבל"
       },
       {
         "code": "02-G24",
-        "he": "לחיצת רצפה כבדה עם מוט",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה כבדה עם מוט"
       },
       {
         "code": "02-G25",
-        "he": "לחיצת רצפה עם מוט",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה עם מוט"
       },
       {
         "code": "02-G26",
-        "he": "לחיצת רצפה עם מוט במתקן",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה עם מוט במתקן"
       },
       {
         "code": "02-G27",
-        "he": "לחיצת רצפה עם קטלבל",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה עם קטלבל"
       },
       {
         "code": "02-G28",
-        "he": "לחיצת רצפה עם קטלבל הפוך",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה עם קטלבל הפוך"
       },
       {
         "code": "02-G29",
-        "he": "לחיצת רצפה עם קטלבל הפוך ביד אחת",
-        "section": "חזה (92)"
+        "he": "לחיצת רצפה עם קטלבל הפוך ביד אחת"
       },
       {
         "code": "02-G30",
-        "he": "לחיצת שיפוע ביד אחת עם משקולת",
-        "section": "חזה (92)"
+        "he": "לחיצת שיפוע ביד אחת עם משקולת"
       },
       {
         "code": "02-G31",
-        "he": "מאסל אפ ממוט נמוך",
-        "section": "חזה (92)"
+        "he": "מאסל אפ ממוט נמוך"
       },
       {
         "code": "02-G32",
-        "he": "מסירות חזה עם כדורסל לקיר",
-        "section": "חזה (92)"
+        "he": "מסירות חזה עם כדורסל לקיר"
       },
       {
         "code": "02-G33",
-        "he": "מסירות כדורגל לקיר בשתי ידיים",
-        "section": "חזה (92)"
+        "he": "מסירות כדורגל לקיר בשתי ידיים"
       },
       {
         "code": "02-G34",
-        "he": "מסירת חזה עם כדור כוח לקיר בכריעה",
-        "section": "חזה (92)"
+        "he": "מסירת חזה עם כדור כוח לקיר בכריעה"
       },
       {
         "code": "02-G35",
-        "he": "עבודה עם יד אחת",
-        "section": "חזה (92)"
+        "he": "עבודה עם יד אחת"
       },
       {
         "code": "02-G36",
-        "he": "פלאנק עם העברת כדור טניס ושכיבות סמיכה",
-        "section": "חזה (92)"
+        "he": "פלאנק עם העברת כדור טניס ושכיבות סמיכה"
       },
       {
         "code": "02-G37",
-        "he": "פרפר בכבלים בישיבה",
-        "section": "חזה (92)"
+        "he": "פרפר בכבלים בישיבה"
       },
       {
         "code": "02-G38",
-        "he": "פרפר במכונת פק דק",
-        "section": "חזה (92)"
+        "he": "פרפר במכונת פק דק"
       },
       {
         "code": "02-G39",
-        "he": "פרפר חזה עם גומייה",
-        "section": "חזה (92)"
+        "he": "פרפר חזה עם גומייה"
       },
       {
         "code": "02-G40",
-        "he": "פרפר משקולות",
-        "section": "חזה (92)"
+        "he": "פרפר משקולות"
       },
       {
         "code": "02-G41",
-        "he": "פרפר עם משקולות על הרצפה",
-        "section": "חזה (92)"
+        "he": "פרפר עם משקולות על הרצפה"
       },
       {
         "code": "02-G42",
-        "he": "קרוסאובר בכבל בכריעה",
-        "section": "חזה (92)"
+        "he": "קרוסאובר בכבל בכריעה"
       },
       {
         "code": "02-G43",
-        "he": "קרוסאובר בכבלים בהטיה קדימה",
-        "section": "חזה (92)"
+        "he": "קרוסאובר בכבלים בהטיה קדימה"
       },
       {
         "code": "02-G44",
-        "he": "קרוסאובר בכבלים בעמידה",
-        "section": "חזה (92)"
+        "he": "קרוסאובר בכבלים בעמידה"
       },
       {
         "code": "02-G45",
-        "he": "שחרור חזה עם כדור טניס",
-        "section": "חזה (92)"
+        "he": "שחרור חזה עם כדור טניס"
       },
       {
         "code": "02-G46",
-        "he": "שכיבות רחבות",
-        "section": "חזה (92)"
+        "he": "שכיבות רחבות"
       },
       {
         "code": "02-G47",
-        "he": "שכיבות שיפוע",
-        "section": "חזה (92)"
+        "he": "שכיבות שיפוע"
       },
       {
         "code": "02-G48",
-        "he": "שכיבות סמיכה בהתקדמות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בהתקדמות"
       },
       {
         "code": "02-G49",
-        "he": "שכיבות סמיכה בהתקדמות לאורך סולם",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בהתקדמות לאורך סולם"
       },
       {
         "code": "02-G50",
-        "he": "שכיבות סמיכה בירידה על מדרגות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בירידה על מדרגות"
       },
       {
         "code": "02-G51",
-        "he": "שכיבות סמיכה בשיפוע על מדרגות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בשיפוע על מדרגות"
       },
       {
         "code": "02-G52",
-        "he": "שכיבות סמיכה בשיפוע על מוט",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בשיפוע על מוט"
       },
       {
         "code": "02-G53",
-        "he": "שכיבות סמיכה בשיפוע על מוט נמוך",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בשיפוע על מוט נמוך"
       },
       {
         "code": "02-G54",
-        "he": "שכיבות סמיכה בשיפוע עם ידיים על המדרגות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בשיפוע עם ידיים על המדרגות"
       },
       {
         "code": "02-G55",
-        "he": "שכיבות סמיכה בשיפוע שלילי בעלייה במדרגות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בשיפוע שלילי בעלייה במדרגות"
       },
       {
         "code": "02-G56",
-        "he": "שכיבות סמיכה בתזוזה לאורך סולם קואורדינציה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה בתזוזה לאורך סולם קואורדינציה"
       },
       {
         "code": "02-G57",
-        "he": "שכיבות סמיכה והעברת קונוס לבוסו",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה והעברת קונוס לבוסו"
       },
       {
         "code": "02-G59",
-        "he": "שכיבות סמיכה יהלום",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה יהלום"
       },
       {
         "code": "02-G60",
-        "he": "שכיבות סמיכה לאורך סולם הקואורדינציה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה לאורך סולם הקואורדינציה"
       },
       {
         "code": "02-G61",
-        "he": "שכיבות סמיכה - מיקומי ידיים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה - מיקומי ידיים"
       },
       {
         "code": "02-G62",
-        "he": "שכיבות סמיכה מתחלפות על כדור כוח",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה מתחלפות על כדור כוח"
       },
       {
         "code": "02-G63",
-        "he": "שכיבות סמיכה מתפרצות לרוחב סולם קואורדינציה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה מתפרצות לרוחב סולם קואורדינציה"
       },
       {
         "code": "02-G64",
-        "he": "שכיבות סמיכה מתפרצות עם גומייה על הגב",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה מתפרצות עם גומייה על הגב"
       },
       {
         "code": "02-G66",
-        "he": "שכיבות סמיכה על הברכיים - 3 וריאציות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על הברכיים - 3 וריאציות"
       },
       {
         "code": "02-G68",
-        "he": "שכיבות סמיכה על ידיות עם רגליים על כדור פיזיו",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על ידיות עם רגליים על כדור פיזיו"
       },
       {
         "code": "02-G69",
-        "he": "שכיבות סמיכה על כדורגל - 3 רמות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על כדורגל - 3 רמות"
       },
       {
         "code": "02-G70",
-        "he": "שכיבות סמיכה על כדורסלים בהדרגה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על כדורסלים בהדרגה"
       },
       {
         "code": "02-G72",
-        "he": "שכיבות סמיכה עם גומייה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם גומייה"
       },
       {
         "code": "02-G73",
-        "he": "שכיבות סמיכה עם גומייה על מקבילונים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם גומייה על מקבילונים"
       },
       {
         "code": "02-G74",
-        "he": "שכיבות סמיכה עם הזזת כדורגל",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם הזזת כדורגל"
       },
       {
         "code": "02-G75",
-        "he": "שכיבות סמיכה עם העברת כדורגל מצד לצד",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם העברת כדורגל מצד לצד"
       },
       {
         "code": "02-G76",
-        "he": "שכיבות סמיכה עם יד על כדורגל",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם יד על כדורגל"
       },
       {
         "code": "02-G77",
-        "he": "שכיבות סמיכה עם ידיים ורגליים על כדורי טניס",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם ידיים ורגליים על כדורי טניס"
       },
       {
         "code": "02-G78",
-        "he": "שכיבות סמיכה עם ידיים על הסולם",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם ידיים על הסולם"
       },
       {
         "code": "02-G79",
-        "he": "שכיבות סמיכה עם ידיים על ספסל וחישוק מסתובב",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם ידיים על ספסל וחישוק מסתובב"
       },
       {
         "code": "02-G80",
-        "he": "שכיבות סמיכה עם ידיים על שני כדורסלים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם ידיים על שני כדורסלים"
       },
       {
         "code": "02-G81",
-        "he": "שכיבות סמיכה עם כדורגל על הגב",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם כדורגל על הגב"
       },
       {
         "code": "02-G82",
-        "he": "שכיבות סמיכה עם נגיעה בקונוסים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם נגיעה בקונוסים"
       },
       {
         "code": "02-G83",
-        "he": "שכיבות סמיכה עם ניתוק ידיים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם ניתוק ידיים"
       },
       {
         "code": "02-G84",
-        "he": "שכיבות סמיכה עם קונוסים על הגב",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם קונוסים על הגב"
       },
       {
         "code": "02-G85",
-        "he": "שכיבות סמיכה עם רגליים מוגבהות וחישוק מסתובב",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם רגליים מוגבהות וחישוק מסתובב"
       },
       {
         "code": "02-G86",
-        "he": "שכיבות סמיכה עם רגליים על כדור פיזיו",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם רגליים על כדור פיזיו"
       },
       {
         "code": "02-G87",
-        "he": "שכיבות סמיכה עם רגליים על הקיר",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה עם רגליים על הקיר"
       },
       {
         "code": "02-G88",
-        "he": "שכיבות סמיכה פליומטריות עם גומייה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה פליומטריות עם גומייה"
       },
       {
         "code": "02-G89",
-        "he": "שכיבות סמיכה פנימה והחוצה לאורך הסולם",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה פנימה והחוצה לאורך הסולם"
       },
       {
         "code": "02-G90",
-        "he": "שכיבות סמיכה של ילד קטן",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה של ילד קטן"
       },
       {
         "code": "02-G91",
-        "he": "שכיבות סמיכה של ילדה",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה של ילדה"
       },
       {
         "code": "02-G92",
-        "he": "שכיבות סמיכה של שני ילדים",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה של שני ילדים"
       },
       {
         "code": "03-G02",
-        "he": "דדליפט עם מוט אולימפי",
-        "section": "גב (71)"
+        "he": "דדליפט עם מוט אולימפי"
       },
       {
         "code": "03-G03",
-        "he": "דדליפט רגל אחת עם הרמת קונוסים",
-        "section": "גב (71)"
+        "he": "דדליפט רגל אחת עם הרמת קונוסים"
       },
       {
         "code": "03-G04",
-        "he": "דדליפט רומני ברגל אחת עם הרמת קונוס",
-        "section": "גב (71)"
+        "he": "דדליפט רומני ברגל אחת עם הרמת קונוס"
       },
       {
         "code": "03-G05",
-        "he": "החלקות ידיים על הקיר",
-        "section": "גב (71)"
+        "he": "החלקות ידיים על הקיר"
       },
       {
         "code": "03-G06",
-        "he": "היפר הפוך על ספסל עם חישוק סביב הרגליים",
-        "section": "גב (71)"
+        "he": "היפר הפוך על ספסל עם חישוק סביב הרגליים"
       },
       {
         "code": "03-G07",
-        "he": "היפראקסטנציה הפוכה על כדור פיזיו",
-        "section": "גב (71)"
+        "he": "היפראקסטנציה הפוכה על כדור פיזיו"
       },
       {
         "code": "03-G08",
-        "he": "היפראקסטנציה הפוכה על כדור פיזיו עם כתוביות",
-        "section": "גב (71)"
+        "he": "היפראקסטנציה הפוכה על כדור פיזיו עם כתוביות"
       },
       {
         "code": "03-G09",
-        "he": "הרמות T בשכיבה על הבטן עם כדורי טניס",
-        "section": "גב (71)"
+        "he": "הרמות T בשכיבה על הבטן עם כדורי טניס"
       },
       {
         "code": "03-G10",
-        "he": "הרמות רגליים בשכיבה על ספסל עם חישוק אדום",
-        "section": "גב (71)"
+        "he": "הרמות רגליים בשכיבה על ספסל עם חישוק אדום"
       },
       {
         "code": "03-G11",
-        "he": "הרמת רגליים לאחור בשכיבה על כדור פיזיו",
-        "section": "גב (71)"
+        "he": "הרמת רגליים לאחור בשכיבה על כדור פיזיו"
       },
       {
         "code": "03-G12",
-        "he": "זוגות אימון גומייה לכל הגוף",
-        "section": "גב (71)"
+        "he": "זוגות אימון גומייה לכל הגוף"
       },
       {
         "code": "03-G13",
-        "he": "זחילת דוב בין חישוקים במעגל",
-        "section": "גב (71)"
+        "he": "זחילת דוב בין חישוקים במעגל"
       },
       {
         "code": "03-G14",
-        "he": "זחילת דוב לאורך סולם קואורדינציה",
-        "section": "גב (71)"
+        "he": "זחילת דוב לאורך סולם קואורדינציה"
       },
       {
         "code": "03-G15",
-        "he": "זחילת דוב לצד לאורך סולם",
-        "section": "גב (71)"
+        "he": "זחילת דוב לצד לאורך סולם"
       },
       {
         "code": "03-G16",
-        "he": "זחילת דוב מחישוק לחישוק",
-        "section": "גב (71)"
+        "he": "זחילת דוב מחישוק לחישוק"
       },
       {
         "code": "03-G17",
-        "he": "זחילת דוב על פני חישוקים",
-        "section": "גב (71)"
+        "he": "זחילת דוב על פני חישוקים"
       },
       {
         "code": "03-G18",
-        "he": "זחילת דוב צידית בסולם הקואורדינציה",
-        "section": "גב (71)"
+        "he": "זחילת דוב צידית בסולם הקואורדינציה"
       },
       {
         "code": "03-G19",
-        "he": "זחילת דוב קדימה בסולם",
-        "section": "גב (71)"
+        "he": "זחילת דוב קדימה בסולם"
       },
       {
         "code": "03-G20",
-        "he": "זחילת דוב קדימה בסולם הקואורדינציה",
-        "section": "גב (71)"
+        "he": "זחילת דוב קדימה בסולם הקואורדינציה"
       },
       {
         "code": "03-G21",
-        "he": "זחילת דוב קדימה ואחורה בסולם עם שכיבת סמיכה",
-        "section": "גב (71)"
+        "he": "זחילת דוב קדימה ואחורה בסולם עם שכיבת סמיכה"
       },
       {
         "code": "03-G23",
-        "he": "חתירה ביד אחת בכבל בעמידה",
-        "section": "גב (71)"
+        "he": "חתירה ביד אחת בכבל בעמידה"
       },
       {
         "code": "03-G24",
-        "he": "חתירה ביד אחת עם גומייה",
-        "section": "גב (71)"
+        "he": "חתירה ביד אחת עם גומייה"
       },
       {
         "code": "03-G25",
-        "he": "חתירה ביד אחת עם גומייה בעמידת מכרע",
-        "section": "גב (71)"
+        "he": "חתירה ביד אחת עם גומייה בעמידת מכרע"
       },
       {
         "code": "03-G26",
-        "he": "חתירה בכבל ביד אחת בכריעה",
-        "section": "גב (71)"
+        "he": "חתירה בכבל ביד אחת בכריעה"
       },
       {
         "code": "03-G27",
-        "he": "חתירה בכפיפה עם קטלבל ביד אחת",
-        "section": "גב (71)"
+        "he": "חתירה בכפיפה עם קטלבל ביד אחת"
       },
       {
         "code": "03-G28",
-        "he": "חתירה הפוכה מתחת לשולחן עם רגליים על כיסא",
-        "section": "גב (71)"
+        "he": "חתירה הפוכה מתחת לשולחן עם רגליים על כיסא"
       },
       {
         "code": "03-G29",
-        "he": "חתירה הפוכה של ילד על מוט",
-        "section": "גב (71)"
+        "he": "חתירה הפוכה של ילד על מוט"
       },
       {
         "code": "03-G30",
-        "he": "חתירה הפוכה של ילד על מוט נמוך",
-        "section": "גב (71)"
+        "he": "חתירה הפוכה של ילד על מוט נמוך"
       },
       {
         "code": "03-G31",
-        "he": "חתירה כפולה ביד אחת עם גומייה",
-        "section": "גב (71)"
+        "he": "חתירה כפולה ביד אחת עם גומייה"
       },
       {
         "code": "03-G32",
-        "he": "חתירה מתחת לשולחן עם רגליים על הרצפה",
-        "section": "גב (71)"
+        "he": "חתירה מתחת לשולחן עם רגליים על הרצפה"
       },
       {
         "code": "03-G33",
-        "he": "חתירה נתמכת חזה עם משקולות",
-        "section": "גב (71)"
+        "he": "חתירה נתמכת חזה עם משקולות"
       },
       {
         "code": "03-G34",
-        "he": "חתירה עם גומייה בעמידת מכרע",
-        "section": "גב (71)"
+        "he": "חתירה עם גומייה בעמידת מכרע"
       },
       {
         "code": "03-G36",
-        "he": "חתירה עם מגבת סביב עמוד",
-        "section": "גב (71)"
+        "he": "חתירה עם מגבת סביב עמוד"
       },
       {
         "code": "03-G37",
-        "he": "חתירת גורילה עם קטלבלס",
-        "section": "גב (71)"
+        "he": "חתירת גורילה עם קטלבלס"
       },
       {
         "code": "03-G38",
-        "he": "חתירת גורילה עם שני קטלבלס",
-        "section": "גב (71)"
+        "he": "חתירת גורילה עם שני קטלבלס"
       },
       {
         "code": "03-G39",
-        "he": "חתירת כלב ים עם משקולות עבות",
-        "section": "גב (71)"
+        "he": "חתירת כלב ים עם משקולות עבות"
       },
       {
         "code": "03-G40",
-        "he": "חתירת כלב ים עם משקולות על ספסל גבוה",
-        "section": "גב (71)"
+        "he": "חתירת כלב ים עם משקולות על ספסל גבוה"
       },
       {
         "code": "03-G41",
-        "he": "חתירת מוט מהרצפה",
-        "section": "גב (71)"
+        "he": "חתירת מוט מהרצפה"
       },
       {
         "code": "03-G42",
-        "he": "חתירת מוט נתמכת בספסל",
-        "section": "גב (71)"
+        "he": "חתירת מוט נתמכת בספסל"
       },
       {
         "code": "03-G43",
-        "he": "חתירת משקולת",
-        "section": "גב (71)"
+        "he": "חתירת משקולת"
       },
       {
         "code": "03-G44",
-        "he": "חתירת פנדליי עם מוט",
-        "section": "גב (71)"
+        "he": "חתירת פנדליי עם מוט"
       },
       {
         "code": "03-G45",
-        "he": "מלאך שלג הפוך בשכיבה עם כדורי טניס",
-        "section": "גב (71)"
+        "he": "מלאך שלג הפוך בשכיבה עם כדורי טניס"
       },
       {
         "code": "03-G46",
-        "he": "מלאכי קיר בעמידה",
-        "section": "גב (71)"
+        "he": "מלאכי קיר בעמידה"
       },
       {
         "code": "03-G47",
-        "he": "משיכות סופרמן בשכיבה עם משקולות",
-        "section": "גב (71)"
+        "he": "משיכות סופרמן בשכיבה עם משקולות"
       },
       {
         "code": "03-G48",
-        "he": "משיכת מגבת בשכיבה על הבטן",
-        "section": "גב (71)"
+        "he": "משיכת מגבת בשכיבה על הבטן"
       },
       {
         "code": "03-G49",
-        "he": "משיכת מגבת על הרצפה בשכיבה על הבטן",
-        "section": "גב (71)"
+        "he": "משיכת מגבת על הרצפה בשכיבה על הבטן"
       },
       {
         "code": "03-G50",
-        "he": "משיכת שכמות בתלייה והתקדמות למתח",
-        "section": "גב (71)"
+        "he": "משיכת שכמות בתלייה והתקדמות למתח"
       },
       {
         "code": "03-G51",
-        "he": "מתח אוסטרלי / חתירה הפוכה",
-        "section": "גב (71)"
+        "he": "מתח אוסטרלי / חתירה הפוכה"
       },
       {
         "code": "03-G52",
-        "he": "מתח ביד אחת (התקדמויות)",
-        "section": "גב (71)"
+        "he": "מתח ביד אחת (התקדמויות)"
       },
       {
         "code": "03-G53",
-        "he": "מתח בעזרת בן זוג",
-        "section": "גב (71)"
+        "he": "מתח בעזרת בן זוג"
       },
       {
         "code": "03-G54",
-        "he": "מתח סנטר (Chin-up)",
-        "section": "גב (71)"
+        "he": "מתח סנטר (Chin-up)"
       },
       {
         "code": "03-G55",
-        "he": "מתח עם כדורי טניס",
-        "section": "גב (71)"
+        "he": "מתח עם כדורי טניס"
       },
       {
         "code": "03-G56",
-        "he": "מתח עם משקל נוסף",
-        "section": "גב (71)"
+        "he": "מתח עם משקל נוסף"
       },
       {
         "code": "03-G57",
-        "he": "מתח קשת",
-        "section": "גב (71)"
+        "he": "מתח קשת"
       },
       {
         "code": "03-G58",
-        "he": "סופרמן - החזקה",
-        "section": "גב (71)"
+        "he": "סופרמן - החזקה"
       },
       {
         "code": "03-G59",
-        "he": "סופרמן עם העברת כדור",
-        "section": "גב (71)"
+        "he": "סופרמן עם העברת כדור"
       },
       {
         "code": "03-G60",
-        "he": "עליות מתח באחיזת כדורי טניס",
-        "section": "גב (71)"
+        "he": "עליות מתח באחיזת כדורי טניס"
       },
       {
         "code": "03-G61",
-        "he": "עליות מתח עם כדורי טניס בידיים",
-        "section": "גב (71)"
+        "he": "עליות מתח עם כדורי טניס בידיים"
       },
       {
         "code": "03-G62",
-        "he": "עליות מתח עם כדורי טניס תלויים",
-        "section": "גב (71)"
+        "he": "עליות מתח עם כדורי טניס תלויים"
       },
       {
         "code": "03-G63",
-        "he": "עליות מתח רצופות של ילד בבית",
-        "section": "גב (71)"
+        "he": "עליות מתח רצופות של ילד בבית"
       },
       {
         "code": "03-G64",
-        "he": "פולאובר בכבל בזרועות ישרות",
-        "section": "גב (71)"
+        "he": "פולאובר בכבל בזרועות ישרות"
       },
       {
         "code": "03-G65",
-        "he": "פולי עליון",
-        "section": "גב (71)"
+        "he": "פולי עליון"
       },
       {
         "code": "03-G66",
-        "he": "פולי עליון בכבל בישיבה",
-        "section": "גב (71)"
+        "he": "פולי עליון בכבל בישיבה"
       },
       {
         "code": "03-G67",
-        "he": "פולי עליון במכונת פלטות",
-        "section": "גב (71)"
+        "he": "פולי עליון במכונת פלטות"
       },
       {
         "code": "03-G68",
-        "he": "פשיטת גב על כדור פיזיו",
-        "section": "גב (71)"
+        "he": "פשיטת גב על כדור פיזיו"
       },
       {
         "code": "03-G69",
-        "he": "פשיטת גב על כדור פיזיו מברכיים",
-        "section": "גב (71)"
+        "he": "פשיטת גב על כדור פיזיו מברכיים"
       },
       {
         "code": "03-G70",
-        "he": "קלין קטלבל",
-        "section": "גב (71)"
+        "he": "קלין קטלבל"
       },
       {
         "code": "04-G01",
-        "he": "ג'יי-אם פרס במכונת סמית'",
-        "section": "ידיים (131)"
+        "he": "ג'יי-אם פרס במכונת סמית'"
       },
       {
         "code": "04-G02",
-        "he": "ג'יי-אם פרס עם מוט על ספסל",
-        "section": "ידיים (131)"
+        "he": "ג'יי-אם פרס עם מוט על ספסל"
       },
       {
         "code": "04-G03",
-        "he": "דיפס במקבילים עם רגליים על כדור פיזיו",
-        "section": "ידיים (131)"
+        "he": "דיפס במקבילים עם רגליים על כדור פיזיו"
       },
       {
         "code": "04-G04",
-        "he": "דיפס בסיוע גומייה על מקבילים",
-        "section": "ידיים (131)"
+        "he": "דיפס בסיוע גומייה על מקבילים"
       },
       {
         "code": "04-G05",
-        "he": "דיפס בעלייה במדרגות",
-        "section": "ידיים (131)"
+        "he": "דיפס בעלייה במדרגות"
       },
       {
         "code": "04-G06",
-        "he": "דיפס על מדרגות",
-        "section": "ידיים (131)"
+        "he": "דיפס על מדרגות"
       },
       {
         "code": "04-G07",
-        "he": "דיפס על מוט ישר עם משקל",
-        "section": "ידיים (131)"
+        "he": "דיפס על מוט ישר עם משקל"
       },
       {
         "code": "04-G08",
-        "he": "דיפס על מוט נמוך",
-        "section": "ידיים (131)"
+        "he": "דיפס על מוט נמוך"
       },
       {
         "code": "04-G09",
-        "he": "דיפס עם עקבים על כדור פיזיו",
-        "section": "ידיים (131)"
+        "he": "דיפס עם עקבים על כדור פיזיו"
       },
       {
         "code": "04-G10",
-        "he": "דיפס קוריאני על מוט",
-        "section": "ידיים (131)"
+        "he": "דיפס קוריאני על מוט"
       },
       {
         "code": "04-G11",
-        "he": "הליכת סרטן עם רגליים בתוך הסולם",
-        "section": "ידיים (131)"
+        "he": "הליכת סרטן עם רגליים בתוך הסולם"
       },
       {
         "code": "04-G12",
-        "he": "העברת כדורסל מעל הראש מצד לצד",
-        "section": "ידיים (131)"
+        "he": "העברת כדורסל מעל הראש מצד לצד"
       },
       {
         "code": "04-G13",
-        "he": "הרמת כדור כוח כבד בכפיפה אל החזה",
-        "section": "ידיים (131)"
+        "he": "הרמת כדור כוח כבד בכפיפה אל החזה"
       },
       {
         "code": "04-G14",
-        "he": "הרמת כדור כוח מהחזה אל מאחורי הראש",
-        "section": "ידיים (131)"
+        "he": "הרמת כדור כוח מהחזה אל מאחורי הראש"
       },
       {
         "code": "04-G15",
-        "he": "התקדמות שכיבות סמיכה יהלום",
-        "section": "ידיים (131)"
+        "he": "התקדמות שכיבות סמיכה יהלום"
       },
       {
         "code": "04-G16",
-        "he": "זריקות כדורסל לקיר מעל הראש ביד אחת",
-        "section": "ידיים (131)"
+        "he": "זריקות כדורסל לקיר מעל הראש ביד אחת"
       },
       {
         "code": "04-G17",
-        "he": "ירידה איטית במתח סנטר",
-        "section": "ידיים (131)"
+        "he": "ירידה איטית במתח סנטר"
       },
       {
         "code": "04-G18",
-        "he": "כדרור בשני כדורסלים",
-        "section": "ידיים (131)"
+        "he": "כדרור בשני כדורסלים"
       },
       {
         "code": "04-G19",
-        "he": "כדרור גבוה-נמוך בשני כדורסלים",
-        "section": "ידיים (131)"
+        "he": "כדרור גבוה-נמוך בשני כדורסלים"
       },
       {
         "code": "04-G20",
-        "he": "כדרור חזק במקום",
-        "section": "ידיים (131)"
+        "he": "כדרור חזק במקום"
       },
       {
         "code": "04-G21",
-        "he": "כדרור חזק גבוה במקום בכדורסל",
-        "section": "ידיים (131)"
+        "he": "כדרור חזק גבוה במקום בכדורסל"
       },
       {
         "code": "04-G22",
-        "he": "כדרור כפול בשני כדורסל לילדים",
-        "section": "ידיים (131)"
+        "he": "כדרור כפול בשני כדורסל לילדים"
       },
       {
         "code": "04-G23",
-        "he": "כדרור פאונד חזק בהליכה",
-        "section": "ידיים (131)"
+        "he": "כדרור פאונד חזק בהליכה"
       },
       {
         "code": "04-G24",
-        "he": "כפיפה באחיזה צמודה עם גומייה",
-        "section": "ידיים (131)"
+        "he": "כפיפה באחיזה צמודה עם גומייה"
       },
       {
         "code": "04-G25",
-        "he": "כפיפה במשקוף",
-        "section": "ידיים (131)"
+        "he": "כפיפה במשקוף"
       },
       {
         "code": "04-G26",
-        "he": "כפיפה עם גומייה מאחורי הגוף",
-        "section": "ידיים (131)"
+        "he": "כפיפה עם גומייה מאחורי הגוף"
       },
       {
         "code": "04-G27",
-        "he": "כפיפות מוט 21 בחצאי טווח",
-        "section": "ידיים (131)"
+        "he": "כפיפות מוט 21 בחצאי טווח"
       },
       {
         "code": "04-G28",
-        "he": "כפיפות מרפקים 21 עם מוט",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים 21 עם מוט"
       },
       {
         "code": "04-G29",
-        "he": "כפיפות מרפקים לסירוגין ליד סולם זריזות",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים לסירוגין ליד סולם זריזות"
       },
       {
         "code": "04-G30",
-        "he": "כפיפות מרפקים עם כדור סלאם",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים עם כדור סלאם"
       },
       {
         "code": "04-G31",
-        "he": "כפיפות מרפקים עם משקולות בעמידה על סולם זריזות",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים עם משקולות בעמידה על סולם זריזות"
       },
       {
         "code": "04-G32",
-        "he": "כפיפות מרפקים עם משקולות תוך כדי חישוק",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים עם משקולות תוך כדי חישוק"
       },
       {
         "code": "04-G33",
-        "he": "כפיפות מרפקים עם משקולות תוך סיבוב חישוק במותן",
-        "section": "ידיים (131)"
+        "he": "כפיפות מרפקים עם משקולות תוך סיבוב חישוק במותן"
       },
       {
         "code": "04-G34",
-        "he": "כפיפות פטיש לרוחב הגוף תוך כדי חישוק",
-        "section": "ידיים (131)"
+        "he": "כפיפות פטיש לרוחב הגוף תוך כדי חישוק"
       },
       {
         "code": "04-G35",
-        "he": "כפיפות פליקן לדו־ראשי",
-        "section": "ידיים (131)"
+        "he": "כפיפות פליקן לדו־ראשי"
       },
       {
         "code": "04-G36",
-        "he": "כפיפת באייזיאן בכבל ביד אחת",
-        "section": "ידיים (131)"
+        "he": "כפיפת באייזיאן בכבל ביד אחת"
       },
       {
         "code": "04-G37",
-        "he": "כפיפת באייזיאן בכבל מאחורי הגוף",
-        "section": "ידיים (131)"
+        "he": "כפיפת באייזיאן בכבל מאחורי הגוף"
       },
       {
         "code": "04-G38",
-        "he": "כפיפת באייזיאן עם הגב למכונת פריצ'ר",
-        "section": "ידיים (131)"
+        "he": "כפיפת באייזיאן עם הגב למכונת פריצ'ר"
       },
       {
         "code": "04-G39",
-        "he": "כפיפת בייסאן בכבל (Bayesian Curl)",
-        "section": "ידיים (131)"
+        "he": "כפיפת בייסאן בכבל (Bayesian Curl)"
       },
       {
         "code": "04-G40",
-        "he": "כפיפת מרפק באייזיאן בכבל",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפק באייזיאן בכבל"
       },
       {
         "code": "04-G41",
-        "he": "כפיפת מרפק ביד אחת בהטיה קדימה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפק ביד אחת בהטיה קדימה"
       },
       {
         "code": "04-G42",
-        "he": "כפיפת מרפק ביד אחת נשענת על כדור פיזיו",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפק ביד אחת נשענת על כדור פיזיו"
       },
       {
         "code": "04-G43",
-        "he": "כפיפת מרפק עם גומייה בעמידה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפק עם גומייה בעמידה"
       },
       {
         "code": "04-G44",
-        "he": "כפיפת מרפקים בהטיה לאחור על הקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בהטיה לאחור על הקיר"
       },
       {
         "code": "04-G45",
-        "he": "כפיפת מרפקים בזוגות",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בזוגות"
       },
       {
         "code": "04-G46",
-        "he": "כפיפת מרפקים בישיבה על כדור פיזיו",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בישיבה על כדור פיזיו"
       },
       {
         "code": "04-G47",
-        "he": "כפיפת מרפקים בכבל בכריעה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בכבל בכריעה"
       },
       {
         "code": "04-G48",
-        "he": "כפיפת מרפקים בכבל בעמידה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בכבל בעמידה"
       },
       {
         "code": "04-G49",
-        "he": "כפיפת מרפקים בכבל תחתון בישיבה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בכבל תחתון בישיבה"
       },
       {
         "code": "04-G50",
-        "he": "כפיפת מרפקים במוט בזוגות לסירוגין",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים במוט בזוגות לסירוגין"
       },
       {
         "code": "04-G51",
-        "he": "כפיפת מרפקים במכונת כומר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים במכונת כומר"
       },
       {
         "code": "04-G52",
-        "he": "כפיפת מרפקים במשקל קל ובשליטה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים במשקל קל ובשליטה"
       },
       {
         "code": "04-G53",
-        "he": "כפיפת מרפקים בשיפוע",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים בשיפוע"
       },
       {
         "code": "04-G54",
-        "he": "כפיפת מרפקים נשענת על כדור פיזיו עם משקולות",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים נשענת על כדור פיזיו עם משקולות"
       },
       {
         "code": "04-G55",
-        "he": "כפיפת מרפקים על ספסל כומר (Preacher)",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים על ספסל כומר (Preacher)"
       },
       {
         "code": "04-G56",
-        "he": "כפיפת מרפקים עם בקבוקי מים לילדים",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם בקבוקי מים לילדים"
       },
       {
         "code": "04-G57",
-        "he": "כפיפת מרפקים עם גב לקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם גב לקיר"
       },
       {
         "code": "04-G58",
-        "he": "כפיפת מרפקים עם גומייה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם גומייה"
       },
       {
         "code": "04-G59",
-        "he": "כפיפת מרפקים עם גומייה בגב לקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם גומייה בגב לקיר"
       },
       {
         "code": "04-G60",
-        "he": "כפיפת מרפקים עם גומיית התנגדות",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם גומיית התנגדות"
       },
       {
         "code": "04-G61",
-        "he": "כפיפת מרפקים עם זריקת כדור כוח",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם זריקת כדור כוח"
       },
       {
         "code": "04-G62",
-        "he": "כפיפת מרפקים עם מוט",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם מוט"
       },
       {
         "code": "04-G63",
-        "he": "כפיפת מרפקים עם מוט EZ וגב לקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם מוט EZ וגב לקיר"
       },
       {
         "code": "04-G64",
-        "he": "כפיפת מרפקים עם מוט בעמידה",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם מוט בעמידה"
       },
       {
         "code": "04-G65",
-        "he": "כפיפת מרפקים עם מוט וגב לקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם מוט וגב לקיר"
       },
       {
         "code": "04-G66",
-        "he": "כפיפת מרפקים עם קטלבל",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם קטלבל"
       },
       {
         "code": "04-G67",
-        "he": "כפיפת מרפקים עם קטלבל הפוך",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים עם קטלבל הפוך"
       },
       {
         "code": "04-G68",
-        "he": "כפיפת מרפקים קפדנית עם מוט צמוד לקיר",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים קפדנית עם מוט צמוד לקיר"
       },
       {
         "code": "04-G69",
-        "he": "כפיפת מרפקים של ילד עם משקולת על ספסל",
-        "section": "ידיים (131)"
+        "he": "כפיפת מרפקים של ילד עם משקולת על ספסל"
       },
       {
         "code": "04-G70",
-        "he": "כפיפת משקל גוף",
-        "section": "ידיים (131)"
+        "he": "כפיפת משקל גוף"
       },
       {
         "code": "04-G71",
-        "he": "כפיפת עכביש עם משקולות",
-        "section": "ידיים (131)"
+        "he": "כפיפת עכביש עם משקולות"
       },
       {
         "code": "04-G72",
-        "he": "כפיפת פטיש לסירוגין",
-        "section": "ידיים (131)"
+        "he": "כפיפת פטיש לסירוגין"
       },
       {
         "code": "04-G73",
-        "he": "כפיפת ריכוז",
-        "section": "ידיים (131)"
+        "he": "כפיפת ריכוז"
       },
       {
         "code": "04-G74",
-        "he": "כפיפת ריכוז ביד אחת עם גומייה",
-        "section": "ידיים (131)"
+        "he": "כפיפת ריכוז ביד אחת עם גומייה"
       },
       {
         "code": "04-G75",
-        "he": "לחיצות כדור טניס בישיבה על ספסל",
-        "section": "ידיים (131)"
+        "he": "לחיצות כדור טניס בישיבה על ספסל"
       },
       {
         "code": "04-G76",
-        "he": "לחיצת חזה באחיזה צמודה עם מוט",
-        "section": "ידיים (131)"
+        "he": "לחיצת חזה באחיזה צמודה עם מוט"
       },
       {
         "code": "04-G77",
-        "he": "לחיצת טרייספס בכבל",
-        "section": "ידיים (131)"
+        "he": "לחיצת טרייספס בכבל"
       },
       {
         "code": "04-G78",
-        "he": "מסירות כדורסל לקיר",
-        "section": "ידיים (131)"
+        "he": "מסירות כדורסל לקיר"
       },
       {
         "code": "04-G79",
-        "he": "מקבילים",
-        "section": "ידיים (131)"
+        "he": "מקבילים"
       },
       {
         "code": "04-G80",
-        "he": "מקבילים בישיבה על הרצפה לילדים",
-        "section": "ידיים (131)"
+        "he": "מקבילים בישיבה על הרצפה לילדים"
       },
       {
         "code": "04-G81",
-        "he": "מקבילים נמוכים עם עזרת רגליים",
-        "section": "ידיים (131)"
+        "he": "מקבילים נמוכים עם עזרת רגליים"
       },
       {
         "code": "04-G82",
-        "he": "מתח סנטר עם משקל",
-        "section": "ידיים (131)"
+        "he": "מתח סנטר עם משקל"
       },
       {
         "code": "04-G83",
-        "he": "סחיטת כדור טניס לחיזוק האמה",
-        "section": "ידיים (131)"
+        "he": "סחיטת כדור טניס לחיזוק האמה"
       },
       {
         "code": "04-G84",
-        "he": "סיבוב Z של חישוק על הזרוע",
-        "section": "ידיים (131)"
+        "he": "סיבוב Z של חישוק על הזרוע"
       },
       {
         "code": "04-G85",
-        "he": "סיבוב חישוק על האמה",
-        "section": "ידיים (131)"
+        "he": "סיבוב חישוק על האמה"
       },
       {
         "code": "04-G86",
-        "he": "סיבוב חישוק על היד בעמידה",
-        "section": "ידיים (131)"
+        "he": "סיבוב חישוק על היד בעמידה"
       },
       {
         "code": "04-G87",
-        "he": "ספיידר קירל",
-        "section": "ידיים (131)"
+        "he": "ספיידר קירל"
       },
       {
         "code": "04-G88",
-        "he": "סקאל קראשר עם מוט",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם מוט"
       },
       {
         "code": "04-G89",
-        "he": "סקאל קראשר עם משקולות בשכיבה",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם משקולות בשכיבה"
       },
       {
         "code": "04-G90",
-        "he": "סקאל קראשר עם משקולות על ספסל",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם משקולות על ספסל"
       },
       {
         "code": "04-G91",
-        "he": "סקאל קראשר עם קטלבל בשיפוע",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם קטלבל בשיפוע"
       },
       {
         "code": "04-G92",
-        "he": "סקאל קראשר עם קטלבלס על ספסל",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם קטלבלס על ספסל"
       },
       {
         "code": "04-G93",
-        "he": "סקאל קראשר עם קטלבל על ספסל במתקן",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשר עם קטלבל על ספסל במתקן"
       },
       {
         "code": "04-G94",
-        "he": "סקאל קראשרס במשקל גוף",
-        "section": "ידיים (131)"
+        "he": "סקאל קראשרס במשקל גוף"
       },
       {
         "code": "04-G95",
-        "he": "סקאל קרשרס עם משקולות",
-        "section": "ידיים (131)"
+        "he": "סקאל קרשרס עם משקולות"
       },
       {
         "code": "04-G96",
-        "he": "עליות סנטר בסיוע גומייה של ילדה",
-        "section": "ידיים (131)"
+        "he": "עליות סנטר בסיוע גומייה של ילדה"
       },
       {
         "code": "04-G97",
-        "he": "עליות סנטר שליליות",
-        "section": "ידיים (131)"
+        "he": "עליות סנטר שליליות"
       },
       {
         "code": "04-G98",
-        "he": "פטישים לסירוגין עם משקולות",
-        "section": "ידיים (131)"
+        "he": "פטישים לסירוגין עם משקולות"
       },
       {
         "code": "04-G99",
-        "he": "פטישים עם משקולות",
-        "section": "ידיים (131)"
+        "he": "פטישים עם משקולות"
       },
       {
         "code": "04-G100",
-        "he": "פשיטה סופית עם גומייה (TTE)",
-        "section": "ידיים (131)"
+        "he": "פשיטה סופית עם גומייה (TTE)"
       },
       {
         "code": "04-G101",
-        "he": "פשיטת מרפק ביד אחת בכבל",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפק ביד אחת בכבל"
       },
       {
         "code": "04-G102",
-        "he": "פשיטת מרפק לאחור עם מיני גומייה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפק לאחור עם מיני גומייה"
       },
       {
         "code": "04-G103",
-        "he": "פשיטת מרפק מעל הראש עם משקולת",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפק מעל הראש עם משקולת"
       },
       {
         "code": "04-G104",
-        "he": "פשיטת מרפקים בעמידת ידיים על הקיר",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים בעמידת ידיים על הקיר"
       },
       {
         "code": "04-G105",
-        "he": "פשיטת מרפקים בשיפוע עם גומייה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים בשיפוע עם גומייה"
       },
       {
         "code": "04-G106",
-        "he": "פשיטת מרפקים בשכיבה עם משקולות",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים בשכיבה עם משקולות"
       },
       {
         "code": "04-G107",
-        "he": "פשיטת מרפקים מעל הראש בכבל ביד אחת",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש בכבל ביד אחת"
       },
       {
         "code": "04-G108",
-        "he": "פשיטת מרפקים מעל הראש בכבל בעמידה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש בכבל בעמידה"
       },
       {
         "code": "04-G109",
-        "he": "פשיטת מרפקים מעל הראש בכבל עם גב למכונה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש בכבל עם גב למכונה"
       },
       {
         "code": "04-G110",
-        "he": "פשיטת מרפקים מעל הראש בשתי ידיים תוך כדי חישוק",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש בשתי ידיים תוך כדי חישוק"
       },
       {
         "code": "04-G111",
-        "he": "פשיטת מרפקים מעל הראש עם כדור",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם כדור"
       },
       {
         "code": "04-G112",
-        "he": "פשיטת מרפקים מעל הראש עם כדור כוח וצעד צידי",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם כדור כוח וצעד צידי"
       },
       {
         "code": "04-G113",
-        "he": "פשיטת מרפקים מעל הראש עם משקולות תוך כדי חישוק",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם משקולות תוך כדי חישוק"
       },
       {
         "code": "04-G114",
-        "he": "פשיטת מרפקים מעל הראש עם משקולת בחישוק בסלון",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם משקולת בחישוק בסלון"
       },
       {
         "code": "04-G115",
-        "he": "פשיטת מרפקים מעל הראש עם משקולת וחישוק משוקלל",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם משקולת וחישוק משוקלל"
       },
       {
         "code": "04-G116",
-        "he": "פשיטת מרפקים מעל הראש עם קטלבל בישיבה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם קטלבל בישיבה"
       },
       {
         "code": "04-G117",
-        "he": "פשיטת מרפקים מעל הראש עם קטלבל בעמידה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם קטלבל בעמידה"
       },
       {
         "code": "04-G118",
-        "he": "פשיטת מרפקים מעל הראש עם שתי משקולות תוך כדי חישוק",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים מעל הראש עם שתי משקולות תוך כדי חישוק"
       },
       {
         "code": "04-G119",
-        "he": "פשיטת מרפקים עם גומייה",
-        "section": "ידיים (131)"
+        "he": "פשיטת מרפקים עם גומייה"
       },
       {
         "code": "04-G120",
-        "he": "קיקבק טרייספס עם משקולת",
-        "section": "ידיים (131)"
+        "he": "קיקבק טרייספס עם משקולת"
       },
       {
         "code": "04-G121",
-        "he": "שכיבת סמיכה ביד אחת",
-        "section": "ידיים (131)"
+        "he": "שכיבת סמיכה ביד אחת"
       },
       {
         "code": "04-G122",
-        "he": "שכיבות סמיכה בעמידת ידיים צמודה לקיר",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה בעמידת ידיים צמודה לקיר"
       },
       {
         "code": "04-G123",
-        "he": "שכיבות סמיכה טייגר בנד",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה טייגר בנד"
       },
       {
         "code": "04-G124",
-        "he": "שכיבות סמיכה על קצות האצבעות על כדורי טניס",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה על קצות האצבעות על כדורי טניס"
       },
       {
         "code": "04-G125",
-        "he": "שכיבות סמיכה עם ידיים בתוך חישוקים",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה עם ידיים בתוך חישוקים"
       },
       {
         "code": "04-G126",
-        "he": "שכיבות סמיכה צמודות בקיר",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה צמודות בקיר"
       },
       {
         "code": "04-G127",
-        "he": "שכיבות סמיכה צמודות על כדור כוח",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה צמודות על כדור כוח"
       },
       {
         "code": "04-G128",
-        "he": "שכיבות סמיכה צמודות על כדורסל",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה צמודות על כדורסל"
       },
       {
         "code": "04-G129",
-        "he": "שכיבות סמיכה צמודות עם הידיים על כדורסל",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה צמודות עם הידיים על כדורסל"
       },
       {
         "code": "04-G130",
-        "he": "שכיבות סמיכה צמודות עם נגיעה בכדור טניס",
-        "section": "ידיים (131)"
+        "he": "שכיבות סמיכה צמודות עם נגיעה בכדור טניס"
       },
       {
         "code": "04-G131",
-        "he": "תנועת זריקת חוץ עם כדורגל מעל הראש",
-        "section": "ידיים (131)"
+        "he": "תנועת זריקת חוץ עם כדורגל מעל הראש"
       },
       {
         "code": "05-G05",
-        "he": "L-sit",
-        "section": "ליבה ובטן (97)"
+        "he": "L-sit"
       },
       {
         "code": "05-G06",
-        "he": "V-אפ עם העברת כדורגל",
-        "section": "ליבה ובטן (97)"
+        "he": "V-אפ עם העברת כדורגל"
       },
       {
         "code": "05-G07",
-        "he": "אולר יד לרגל נגדית",
-        "section": "ליבה ובטן (97)"
+        "he": "אולר יד לרגל נגדית"
       },
       {
         "code": "05-G14",
-        "he": "אימון מדרגות בזוגות",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון מדרגות בזוגות"
       },
       {
         "code": "05-G16",
-        "he": "אתגר הרמת רגליים בתלייה ממוט דלת",
-        "section": "ליבה ובטן (97)"
+        "he": "אתגר הרמת רגליים בתלייה ממוט דלת"
       },
       {
         "code": "05-G19",
-        "he": "אתגר פלאנק משפחתי לילדים ולזוגות",
-        "section": "ליבה ובטן (97)"
+        "he": "אתגר פלאנק משפחתי לילדים ולזוגות"
       },
       {
         "code": "05-G20",
-        "he": "בהונות למוט",
-        "section": "ליבה ובטן (97)"
+        "he": "בהונות למוט"
       },
       {
         "code": "05-G23",
-        "he": "דד באג עם גומייה מעוגנת",
-        "section": "ליבה ובטן (97)"
+        "he": "דד באג עם גומייה מעוגנת"
       },
       {
         "code": "05-G24",
-        "he": "דד באג עם מיני גומייה",
-        "section": "ליבה ובטן (97)"
+        "he": "דד באג עם מיני גומייה"
       },
       {
         "code": "05-G25",
-        "he": "הולה הופ במותניים ליד חלון",
-        "section": "ליבה ובטן (97)"
+        "he": "הולה הופ במותניים ליד חלון"
       },
       {
         "code": "05-G26",
-        "he": "הולה הופ סביב המותניים",
-        "section": "ליבה ובטן (97)"
+        "he": "הולה הופ סביב המותניים"
       },
       {
         "code": "05-G28",
-        "he": "הילה עם קטלבל סביב הראש",
-        "section": "ליבה ובטן (97)"
+        "he": "הילה עם קטלבל סביב הראש"
       },
       {
         "code": "05-G29",
-        "he": "הליכת פלאנק לצד לאורך סולם",
-        "section": "ליבה ובטן (97)"
+        "he": "הליכת פלאנק לצד לאורך סולם"
       },
       {
         "code": "05-G30",
-        "he": "הליכת פלאנק צידית בסולם עם משקולת",
-        "section": "ליבה ובטן (97)"
+        "he": "הליכת פלאנק צידית בסולם עם משקולת"
       },
       {
         "code": "05-G31",
-        "he": "הליכת קיר עם הסבר",
-        "section": "ליבה ובטן (97)"
+        "he": "הליכת קיר עם הסבר"
       },
       {
         "code": "05-G32",
-        "he": "העברת כדור טניס מתחת לרגליים בישיבת V",
-        "section": "ליבה ובטן (97)"
+        "he": "העברת כדור טניס מתחת לרגליים בישיבת V"
       },
       {
         "code": "05-G33",
-        "he": "העברת כדורסל בין הרגליים בישיבה",
-        "section": "ליבה ובטן (97)"
+        "he": "העברת כדורסל בין הרגליים בישיבה"
       },
       {
         "code": "05-G34",
-        "he": "הרמות ברכיים בישיבת קיר עם גומייה",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמות ברכיים בישיבת קיר עם גומייה"
       },
       {
         "code": "05-G35",
-        "he": "הרמות ברכיים בתלייה על מוט",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמות ברכיים בתלייה על מוט"
       },
       {
         "code": "05-G36",
-        "he": "הרמות ברכיים בתלייה על מוט מתח",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמות ברכיים בתלייה על מוט מתח"
       },
       {
         "code": "05-G37",
-        "he": "הרמות ברכיים בתלייה עם כדור טניס בין הברכיים",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמות ברכיים בתלייה עם כדור טניס בין הברכיים"
       },
       {
         "code": "05-G39",
-        "he": "הרמת ברכיים בתלייה",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמת ברכיים בתלייה"
       },
       {
         "code": "05-G40",
-        "he": "הרמת רגליים",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמת רגליים"
       },
       {
         "code": "05-G41",
-        "he": "הרמת רגליים בתלייה",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמת רגליים בתלייה"
       },
       {
         "code": "05-G42",
-        "he": "הרמת רגליים בתלייה עם הטיית אגן",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמת רגליים בתלייה עם הטיית אגן"
       },
       {
         "code": "05-G43",
-        "he": "ווינדמיל עם משקולת מעל הראש",
-        "section": "ליבה ובטן (97)"
+        "he": "ווינדמיל עם משקולת מעל הראש"
       },
       {
         "code": "05-G44",
-        "he": "זחילת דוב בסולם קואורדינציה",
-        "section": "ליבה ובטן (97)"
+        "he": "זחילת דוב בסולם קואורדינציה"
       },
       {
         "code": "05-G45",
-        "he": "זחילת דוב לאחור במעלה מדרגות",
-        "section": "ליבה ובטן (97)"
+        "he": "זחילת דוב לאחור במעלה מדרגות"
       },
       {
         "code": "05-G46",
-        "he": "זחילת דוב מוגבהת בסולם קואורדינציה",
-        "section": "ליבה ובטן (97)"
+        "he": "זחילת דוב מוגבהת בסולם קואורדינציה"
       },
       {
         "code": "05-G48",
-        "he": "חטיבת עץ בכבל",
-        "section": "ליבה ובטן (97)"
+        "he": "חטיבת עץ בכבל"
       },
       {
         "code": "05-G49",
-        "he": "חטיבת עץ בכבל בצעד צד",
-        "section": "ליבה ובטן (97)"
+        "he": "חטיבת עץ בכבל בצעד צד"
       },
       {
         "code": "05-G50",
-        "he": "חטיבת עץ בכבל מלמעלה למטה",
-        "section": "ליבה ובטן (97)"
+        "he": "חטיבת עץ בכבל מלמעלה למטה"
       },
       {
         "code": "05-G51",
-        "he": "חטיבת עץ עם גומייה בחצי כריעה",
-        "section": "ליבה ובטן (97)"
+        "he": "חטיבת עץ עם גומייה בחצי כריעה"
       },
       {
         "code": "05-G52",
-        "he": "חטיבת עצים בכבל (וודצ'ופ)",
-        "section": "ליבה ובטן (97)"
+        "he": "חטיבת עצים בכבל (וודצ'ופ)"
       },
       {
         "code": "05-G54",
-        "he": "חישוק משוקלל סביב המותניים בעמידה",
-        "section": "ליבה ובטן (97)"
+        "he": "חישוק משוקלל סביב המותניים בעמידה"
       },
       {
         "code": "05-G55",
-        "he": "חתירת רנגייד מתקדמת",
-        "section": "ליבה ובטן (97)"
+        "he": "חתירת רנגייד מתקדמת"
       },
       {
         "code": "05-G56",
-        "he": "חתירת רנגייד עם משקולות כבדות",
-        "section": "ליבה ובטן (97)"
+        "he": "חתירת רנגייד עם משקולות כבדות"
       },
       {
         "code": "05-G57",
-        "he": "כפיפת V בישיבה",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפת V בישיבה"
       },
       {
         "code": "05-G60",
-        "he": "כפיפות בטן בכבל בכריעה",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן בכבל בכריעה"
       },
       {
         "code": "05-G61",
-        "he": "כפיפות בטן בכבל בכריעה מול מכונה",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן בכבל בכריעה מול מכונה"
       },
       {
         "code": "05-G62",
-        "he": "כפיפות בטן בכבל על הברכיים",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן בכבל על הברכיים"
       },
       {
         "code": "05-G63",
-        "he": "כפיפות בטן במכונת GHD",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן במכונת GHD"
       },
       {
         "code": "05-G64",
-        "he": "כפיפות בטן עם זריקת חוץ בכדורגל",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן עם זריקת חוץ בכדורגל"
       },
       {
         "code": "05-G65",
-        "he": "לאנדמיין 180",
-        "section": "ליבה ובטן (97)"
+        "he": "לאנדמיין 180"
       },
       {
         "code": "05-G67",
-        "he": "מגבי שמשה בתלייה על מוט",
-        "section": "ליבה ובטן (97)"
+        "he": "מגבי שמשה בתלייה על מוט"
       },
       {
         "code": "05-G68",
-        "he": "מטפס הרים מוצלב",
-        "section": "ליבה ובטן (97)"
+        "he": "מטפס הרים מוצלב"
       },
       {
         "code": "05-G69",
-        "he": "מטפס הרים עם ידיים על מדרגה",
-        "section": "ליבה ובטן (97)"
+        "he": "מטפס הרים עם ידיים על מדרגה"
       },
       {
         "code": "05-G70",
-        "he": "מטפס הרים של ילדה",
-        "section": "ליבה ובטן (97)"
+        "he": "מטפס הרים של ילדה"
       },
       {
         "code": "05-G72",
-        "he": "סיבוב חישוק משוקלל סביב המותניים",
-        "section": "ליבה ובטן (97)"
+        "he": "סיבוב חישוק משוקלל סביב המותניים"
       },
       {
         "code": "05-G73",
-        "he": "סיבוב חישוק סביב המותניים",
-        "section": "ליבה ובטן (97)"
+        "he": "סיבוב חישוק סביב המותניים"
       },
       {
         "code": "05-G74",
-        "he": "סיבובי לנדמיין",
-        "section": "ליבה ובטן (97)"
+        "he": "סיבובי לנדמיין"
       },
       {
         "code": "05-G75",
-        "he": "סקוואט סומו עם חישוק סביב המותניים",
-        "section": "ליבה ובטן (97)"
+        "he": "סקוואט סומו עם חישוק סביב המותניים"
       },
       {
         "code": "05-G76",
-        "he": "סקוואט עם חישוק משוקלל",
-        "section": "ליבה ובטן (97)"
+        "he": "סקוואט עם חישוק משוקלל"
       },
       {
         "code": "05-G77",
-        "he": "ערבוב סיר על כדור פיזיו",
-        "section": "ליבה ובטן (97)"
+        "he": "ערבוב סיר על כדור פיזיו"
       },
       {
         "code": "05-G78",
-        "he": "פייק על כדור פיזיו",
-        "section": "ליבה ובטן (97)"
+        "he": "פייק על כדור פיזיו"
       },
       {
         "code": "05-G79",
-        "he": "פייק עם רגליים על כדור פיזיו",
-        "section": "ליבה ובטן (97)"
+        "he": "פייק עם רגליים על כדור פיזיו"
       },
       {
         "code": "05-G80",
-        "he": "פלאנק ברך לחזה",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק ברך לחזה"
       },
       {
         "code": "05-G82",
-        "he": "פלאנק בשיפוע על המדרגות עם טפיחות כתפיים וברך לאף",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק בשיפוע על המדרגות עם טפיחות כתפיים וברך לאף"
       },
       {
         "code": "05-G84",
-        "he": "פלאנק אמות עם הזזת קונוסים",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק אמות עם הזזת קונוסים"
       },
       {
         "code": "05-G85",
-        "he": "פלאנק על כדור",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק על כדור"
       },
       {
         "code": "05-G88",
-        "he": "פלאנק עם העברת כדור טניס",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם העברת כדור טניס"
       },
       {
         "code": "05-G89",
-        "he": "פלאנק עם העברת כדור טניס בין הידיים",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם העברת כדור טניס בין הידיים"
       },
       {
         "code": "05-G90",
-        "he": "פלאנק עם נגיעות בקונוסים ורגליים על בוסו",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם נגיעות בקונוסים ורגליים על בוסו"
       },
       {
         "code": "05-G91",
-        "he": "פלאנק עם רגליים על הקיר",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם רגליים על הקיר"
       },
       {
         "code": "05-G92",
-        "he": "פלאנק עם תפיסת כדורסל מתחלפת",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם תפיסת כדורסל מתחלפת"
       },
       {
         "code": "05-G94",
-        "he": "קימה טורקית כבדה עם קטלבל",
-        "section": "ליבה ובטן (97)"
+        "he": "קימה טורקית כבדה עם קטלבל"
       },
       {
         "code": "05-G95",
-        "he": "רוטציית לאנדמיין",
-        "section": "ליבה ובטן (97)"
+        "he": "רוטציית לאנדמיין"
       },
       {
         "code": "05-G96",
-        "he": "רוטציית לאנדמיין בטווח מורחב",
-        "section": "ליבה ובטן (97)"
+        "he": "רוטציית לאנדמיין בטווח מורחב"
       },
       {
         "code": "05-G97",
-        "he": "רולאאוט עם מוט מעמידה",
-        "section": "ליבה ובטן (97)"
+        "he": "רולאאוט עם מוט מעמידה"
       },
       {
         "code": "06-G02",
-        "he": "דדליפט",
-        "section": "רגליים וישבן (69)"
+        "he": "דדליפט"
       },
       {
         "code": "06-G03",
-        "he": "דדליפט עם קטלבל בבית",
-        "section": "רגליים וישבן (69)"
+        "he": "דדליפט עם קטלבל בבית"
       },
       {
         "code": "06-G04",
-        "he": "דדליפט רומני רגל אחת עם גומייה",
-        "section": "רגליים וישבן (69)"
+        "he": "דדליפט רומני רגל אחת עם גומייה"
       },
       {
         "code": "06-G05",
-        "he": "האק סקוואט במכונה",
-        "section": "רגליים וישבן (69)"
+        "he": "האק סקוואט במכונה"
       },
       {
         "code": "06-G06",
-        "he": "האק סקוואט במכונת פלטות",
-        "section": "רגליים וישבן (69)"
+        "he": "האק סקוואט במכונת פלטות"
       },
       {
         "code": "06-G07",
-        "he": "החזקת ישיבה על קיר",
-        "section": "רגליים וישבן (69)"
+        "he": "החזקת ישיבה על קיר"
       },
       {
         "code": "06-G08",
-        "he": "היפ טראסט עם מוט",
-        "section": "רגליים וישבן (69)"
+        "he": "היפ טראסט עם מוט"
       },
       {
         "code": "06-G09",
-        "he": "היפ תרסט",
-        "section": "רגליים וישבן (69)"
+        "he": "היפ תרסט"
       },
       {
         "code": "06-G10",
-        "he": "זריקת כדור טניס לקיר ותפיסה בסקוואט",
-        "section": "רגליים וישבן (69)"
+        "he": "זריקת כדור טניס לקיר ותפיסה בסקוואט"
       },
       {
         "code": "06-G11",
-        "he": "ילדים וזוגות: אימון קטלבל משפחתי קל",
-        "section": "רגליים וישבן (69)"
+        "he": "ילדים וזוגות: אימון קטלבל משפחתי קל"
       },
       {
         "code": "06-G12",
-        "he": "ישיבה על קיר",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבה על קיר"
       },
       {
         "code": "06-G13",
-        "he": "ישיבה על קיר עם הרמת ברך לסירוגין",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבה על קיר עם הרמת ברך לסירוגין"
       },
       {
         "code": "06-G14",
-        "he": "ישיבה על קיר עם מלאכי קיר",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבה על קיר עם מלאכי קיר"
       },
       {
         "code": "06-G15",
-        "he": "ישיבה על קיר עם משקולת",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבה על קיר עם משקולת"
       },
       {
         "code": "06-G16",
-        "he": "ישיבה על קיר עם פתיחת ברכיים בגומייה",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבה על קיר עם פתיחת ברכיים בגומייה"
       },
       {
         "code": "06-G17",
-        "he": "ישיבת קיר עם כדרור כדורסל",
-        "section": "רגליים וישבן (69)"
+        "he": "ישיבת קיר עם כדרור כדורסל"
       },
       {
         "code": "06-G18",
-        "he": "מכרע הצידה",
-        "section": "רגליים וישבן (69)"
+        "he": "מכרע הצידה"
       },
       {
         "code": "06-G19",
-        "he": "לאנג׳ זומבי בהליכה",
-        "section": "רגליים וישבן (69)"
+        "he": "לאנג׳ זומבי בהליכה"
       },
       {
         "code": "06-G20",
-        "he": "מכרע משקולות",
-        "section": "רגליים וישבן (69)"
+        "he": "מכרע משקולות"
       },
       {
         "code": "06-G21",
-        "he": "לאנג' עם זריקת כדור טניס לקיר ותפיסה",
-        "section": "רגליים וישבן (69)"
+        "he": "לאנג' עם זריקת כדור טניס לקיר ותפיסה"
       },
       {
         "code": "06-G22",
-        "he": "לאנג׳ עם לחיצה מעל הראש",
-        "section": "רגליים וישבן (69)"
+        "he": "לאנג׳ עם לחיצה מעל הראש"
       },
       {
         "code": "06-G23",
-        "he": "לאנג׳ קפיצה עם תפיסת כדור טניס",
-        "section": "רגליים וישבן (69)"
+        "he": "לאנג׳ קפיצה עם תפיסת כדור טניס"
       },
       {
         "code": "06-G24",
-        "he": "מכרעים",
-        "section": "רגליים וישבן (69)"
+        "he": "מכרעים"
       },
       {
         "code": "06-G25",
-        "he": "לאנג'ים בהליכה עם מוט על הגב",
-        "section": "רגליים וישבן (69)"
+        "he": "לאנג'ים בהליכה עם מוט על הגב"
       },
       {
         "code": "06-G26",
-        "he": "לחיצת רגליים",
-        "section": "רגליים וישבן (69)"
+        "he": "לחיצת רגליים"
       },
       {
         "code": "06-G27",
-        "he": "לחיצת רגליים במכונה",
-        "section": "רגליים וישבן (69)"
+        "he": "לחיצת רגליים במכונה"
       },
       {
         "code": "06-G28",
-        "he": "לחיצת רגליים ברגל אחת במכונה",
-        "section": "רגליים וישבן (69)"
+        "he": "לחיצת רגליים ברגל אחת במכונה"
       },
       {
         "code": "06-G29",
-        "he": "לחיצת רגליים חד-רגלית במכונת לחיצה משופעת",
-        "section": "רגליים וישבן (69)"
+        "he": "לחיצת רגליים חד-רגלית במכונת לחיצה משופעת"
       },
       {
         "code": "06-G32",
-        "he": "מתיחת ארבע-ראשי בעמידה",
-        "section": "רגליים וישבן (69)"
+        "he": "מתיחת ארבע-ראשי בעמידה"
       },
       {
         "code": "06-G33",
-        "he": "נורדיק",
-        "section": "רגליים וישבן (69)"
+        "he": "נורדיק"
       },
       {
         "code": "06-G34",
-        "he": "סווינג קטלבל עם גומייה",
-        "section": "רגליים וישבן (69)"
+        "he": "סווינג קטלבל עם גומייה"
       },
       {
         "code": "06-G35",
-        "he": "סקוואט",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט"
       },
       {
         "code": "06-G36",
-        "he": "סקוואט בולגרי עם גומייה",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט בולגרי עם גומייה"
       },
       {
         "code": "06-G37",
-        "he": "סקוואט במכונת האק",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט במכונת האק"
       },
       {
         "code": "06-G38",
-        "he": "סקוואט למשען כיסא",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט למשען כיסא"
       },
       {
         "code": "06-G39",
-        "he": "סקוואט מוט עם גומיות",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט מוט עם גומיות"
       },
       {
         "code": "06-G40",
-        "he": "סקוואט מפוצל עם רגל קדמית מוגבהת",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט מפוצל עם רגל קדמית מוגבהת"
       },
       {
         "code": "06-G41",
-        "he": "סקוואט סומו עם קטלבל לילדים",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט סומו עם קטלבל לילדים"
       },
       {
         "code": "06-G42",
-        "he": "סקוואט על רגל אחת של ילד",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט על רגל אחת של ילד"
       },
       {
         "code": "06-G43",
-        "he": "סקוואט עם הקפצת כדור טניס ותפיסה",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט עם הקפצת כדור טניס ותפיסה"
       },
       {
         "code": "06-G44",
-        "he": "סקוואט עם חישוק מוחזק קדימה",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט עם חישוק מוחזק קדימה"
       },
       {
         "code": "06-G45",
-        "he": "סקוואט עם מוט ריק",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט עם מוט ריק"
       },
       {
         "code": "06-G47",
-        "he": "סקוואט קדמי עם קטלבל",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט קדמי עם קטלבל"
       },
       {
         "code": "06-G48",
-        "he": "סקוואט קפיצה בסולם קואורדינציה לילדה",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט קפיצה בסולם קואורדינציה לילדה"
       },
       {
         "code": "06-G49",
-        "he": "סקוואט קפיצה עם גומייה סביב המותן",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט קפיצה עם גומייה סביב המותן"
       },
       {
         "code": "06-G50",
-        "he": "סקוואט רגל אחת - 3 רמות",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט רגל אחת - 3 רמות"
       },
       {
         "code": "06-G51",
-        "he": "סקוואט שרימפ",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט שרימפ"
       },
       {
         "code": "06-G52",
-        "he": "עליות שוק",
-        "section": "רגליים וישבן (69)"
+        "he": "עליות שוק"
       },
       {
         "code": "06-G53",
-        "he": "עלייה למדרגה עם הנעת ברך",
-        "section": "רגליים וישבן (69)"
+        "he": "עלייה למדרגה עם הנעת ברך"
       },
       {
         "code": "06-G54",
-        "he": "פאוור קלין (הנפת מוט לכתפיים)",
-        "section": "רגליים וישבן (69)"
+        "he": "פאוור קלין (הנפת מוט לכתפיים)"
       },
       {
         "code": "06-G55",
-        "he": "פיסטול סקוואט",
-        "section": "רגליים וישבן (69)"
+        "he": "פיסטול סקוואט"
       },
       {
         "code": "06-G56",
-        "he": "פיסטול סקוואט באחיזה במוט",
-        "section": "רגליים וישבן (69)"
+        "he": "פיסטול סקוואט באחיזה במוט"
       },
       {
         "code": "06-G57",
-        "he": "פיסטול סקוואט של ילדה",
-        "section": "רגליים וישבן (69)"
+        "he": "פיסטול סקוואט של ילדה"
       },
       {
         "code": "06-G58",
-        "he": "פרונט סקוואט עם מוט",
-        "section": "רגליים וישבן (69)"
+        "he": "פרונט סקוואט עם מוט"
       },
       {
         "code": "06-G59",
-        "he": "פשיטת ברכיים במכונה",
-        "section": "רגליים וישבן (69)"
+        "he": "פשיטת ברכיים במכונה"
       },
       {
         "code": "06-G60",
-        "he": "קפיצה לתוך חישוקים וסקוואט",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצה לתוך חישוקים וסקוואט"
       },
       {
         "code": "06-G61",
-        "he": "קפיצות בשתי רגליים בין חישוקים",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות בשתי רגליים בין חישוקים"
       },
       {
         "code": "06-G62",
-        "he": "קפיצות מדרגות לילדים",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות מדרגות לילדים"
       },
       {
         "code": "06-G63",
-        "he": "קפיצות מעל קונוס בחוף",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות מעל קונוס בחוף"
       },
       {
         "code": "06-G64",
-        "he": "קפיצות סקוואט מואצות עם גומייה",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות סקוואט מואצות עם גומייה"
       },
       {
         "code": "06-G65",
-        "he": "קפיצות סקוואט עם כדורסל",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות סקוואט עם כדורסל"
       },
       {
         "code": "06-G66",
-        "he": "קפיצות צד מעל קונוסים",
-        "section": "רגליים וישבן (69)"
+        "he": "קפיצות צד מעל קונוסים"
       },
       {
         "code": "07-G01",
-        "he": "5 תרגילי זריזות מאתגרים עם קונוסים",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "5 תרגילי זריזות מאתגרים עם קונוסים"
       },
       {
         "code": "07-G04",
-        "he": "אדמה בוערת",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "אדמה בוערת"
       },
       {
         "code": "07-G05",
-        "he": "אימון כושר על מדרגות",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "אימון כושר על מדרגות"
       },
       {
         "code": "07-G06",
-        "he": "אימון פליאומטרי במדרגות לכוח מתפרץ",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "אימון פליאומטרי במדרגות לכוח מתפרץ"
       },
       {
         "code": "07-G07",
-        "he": "זוגות: החזרת הגשה בטניס לזמן תגובה",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "זוגות: החזרת הגשה בטניס לזמן תגובה"
       },
       {
         "code": "07-G11",
-        "he": "זריזות כדורגל ב-4 קונוסים עם גומיות רגליים",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "זריזות כדורגל ב-4 קונוסים עם גומיות רגליים"
       },
       {
         "code": "07-G12",
-        "he": "חישוק: אימון קרדיו",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "חישוק: אימון קרדיו"
       },
       {
         "code": "07-G13",
-        "he": "כדורסל: הטעיית זריקה, סיומת וריבאונד",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "כדורסל: הטעיית זריקה, סיומת וריבאונד"
       },
       {
         "code": "07-G14",
-        "he": "מטפסי הרים",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "מטפסי הרים"
       },
       {
         "code": "07-G15",
-        "he": "מסירות כדורסל בין 4 קונוסים עם בן זוג מוסר",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "מסירות כדורסל בין 4 קונוסים עם בן זוג מוסר"
       },
       {
         "code": "07-G16",
-        "he": "ניתור לאדמה וגלגול",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ניתור לאדמה וגלגול"
       },
       {
         "code": "07-G17",
-        "he": "ניתורים בכריעת ברך",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ניתורים בכריעת ברך"
       },
       {
         "code": "07-G18",
-        "he": "ניתורים במקום עם ברכיים לחזה",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ניתורים במקום עם ברכיים לחזה"
       },
       {
         "code": "07-G19",
-        "he": "ניתורים על ארגז",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ניתורים על ארגז"
       },
       {
         "code": "07-G21",
-        "he": "סולם זריזות: 30 תרגילים עד רמה מתקדמת",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "סולם זריזות: 30 תרגילים עד רמה מתקדמת"
       },
       {
         "code": "07-G22",
-        "he": "סולם זריזות עם מסירות וסיומת בכדורגל",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "סולם זריזות עם מסירות וסיומת בכדורגל"
       },
       {
         "code": "07-G23",
-        "he": "ספרינט בעלייה",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ספרינט בעלייה"
       },
       {
         "code": "07-G24",
-        "he": "ספרינט בעלייה עם שינוי כיוון",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ספרינט בעלייה עם שינוי כיוון"
       },
       {
         "code": "07-G26",
-        "he": "קפיצה בחבל",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "קפיצה בחבל"
       },
       {
         "code": "07-G28",
-        "he": "רונדו יהלום: מסירות כדורגל קבוצתיות",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "רונדו יהלום: מסירות כדורגל קבוצתיות"
       },
       {
         "code": "07-G29",
-        "he": "ריצת 3000 מ׳",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ריצת 3000 מ׳"
       },
       {
         "code": "07-G30",
-        "he": "ריצת הסעה 5-10-5",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "ריצת הסעה 5-10-5"
       },
       {
         "code": "07-G31",
-        "he": "תרגיל זריזות עם קונוסים",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "תרגיל זריזות עם קונוסים"
       },
       {
         "code": "08-G01",
-        "he": "מתיחת המסטרינג דינמית בלאנג'",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת המסטרינג דינמית בלאנג'"
       },
       {
         "code": "08-G02",
-        "he": "מתיחת חזה במשקוף הדלת",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת חזה במשקוף הדלת"
       },
       {
         "code": "08-G03",
-        "he": "מתיחת חזה בפתח דלת",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת חזה בפתח דלת"
       },
       {
         "code": "08-G04",
-        "he": "מתיחת כופפי ירך בברך",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת כופפי ירך בברך"
       },
       {
         "code": "08-G05",
-        "he": "מתיחת כתף",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת כתף"
       },
       {
         "code": "08-G06",
-        "he": "מתיחת מיתר",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת מיתר"
       },
       {
         "code": "08-G07",
-        "he": "מתיחת צוואר - משיכת סנטר לחזה",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת צוואר - משיכת סנטר לחזה"
       },
       {
         "code": "08-G08",
-        "he": "מתיחת תאומים",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "מתיחת תאומים"
       },
       {
         "code": "08-G09",
-        "he": "שחרור כופפי ירך בעמידה על מדרגה",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "שחרור כופפי ירך בעמידה על מדרגה"
       },
       {
         "code": "08-G10",
-        "he": "תנוחת הילד",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "תנוחת הילד"
       },
       {
         "code": "08-G11",
-        "he": "תנוחת יונה",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "תנוחת יונה"
       },
       {
         "code": "09-G01",
-        "he": "זוגות מסירות כדורגל",
-        "section": "חימום (17)"
+        "he": "זוגות מסירות כדורגל"
       },
       {
         "code": "09-G02",
-        "he": "זוגות: תפיסת כדור טניס נופל (תגובה)",
-        "section": "חימום (17)"
+        "he": "זוגות: תפיסת כדור טניס נופל (תגובה)"
       },
       {
         "code": "09-G03",
-        "he": "ילדים וזוגות: תפיסת כדור טניס לקואורדינציה",
-        "section": "חימום (17)"
+        "he": "ילדים וזוגות: תפיסת כדור טניס לקואורדינציה"
       },
       {
         "code": "09-G04",
-        "he": "ילדים כדרור כדורגל למתחילים",
-        "section": "חימום (17)"
+        "he": "ילדים כדרור כדורגל למתחילים"
       },
       {
         "code": "09-G05",
-        "he": "ילדים מסירות כדורסל בזוגות ובקבוצה",
-        "section": "חימום (17)"
+        "he": "ילדים מסירות כדורסל בזוגות ובקבוצה"
       },
       {
         "code": "09-G06",
-        "he": "ילדים משחק ג'קפוט: זריקה ותפיסה בכדור",
-        "section": "חימום (17)"
+        "he": "ילדים משחק ג'קפוט: זריקה ותפיסה בכדור"
       },
       {
         "code": "09-G07",
-        "he": "כדרור כדורגל בזיגזג בין קונוסים",
-        "section": "חימום (17)"
+        "he": "כדרור כדורגל בזיגזג בין קונוסים"
       },
       {
         "code": "09-G08",
-        "he": "כדרור שמינייה בכדורסל",
-        "section": "חימום (17)"
+        "he": "כדרור שמינייה בכדורסל"
       },
       {
         "code": "09-G09",
-        "he": "מרוץ שליחים קבוצתי עם קונוסים",
-        "section": "חימום (17)"
+        "he": "מרוץ שליחים קבוצתי עם קונוסים"
       },
       {
         "code": "09-G10",
-        "he": "מרוץ שליחים - תרגול העברת מקל",
-        "section": "חימום (17)"
+        "he": "מרוץ שליחים - תרגול העברת מקל"
       },
       {
         "code": "09-G11",
-        "he": "נדנודי רגלים לניידות ירך",
-        "section": "חימום (17)"
+        "he": "נדנודי רגלים לניידות ירך"
       },
       {
         "code": "09-G12",
-        "he": "סיבובי גו",
-        "section": "חימום (17)"
+        "he": "סיבובי גו"
       },
       {
         "code": "09-G13",
-        "he": "סיבובי ידיים",
-        "section": "חימום (17)"
+        "he": "סיבובי ידיים"
       },
       {
         "code": "09-G14",
-        "he": "סיבובי ירך בעמידה",
-        "section": "חימום (17)"
+        "he": "סיבובי ירך בעמידה"
       },
       {
         "code": "09-G15",
-        "he": "תופסת בזוגות לחימום",
-        "section": "חימום (17)"
+        "he": "תופסת בזוגות לחימום"
       },
       {
         "code": "09-G16",
-        "he": "תופסת קבוצתית - חציית המגרש",
-        "section": "חימום (17)"
+        "he": "תופסת קבוצתית - חציית המגרש"
       },
       {
         "code": "09-G17",
-        "he": "תרגיל זריזות בסולם קואורדינציה",
-        "section": "חימום (17)"
+        "he": "תרגיל זריזות בסולם קואורדינציה"
       }
     ],
     "nowOriginal": [],
@@ -6998,288 +7141,231 @@
     "notFoundByExactName": [
       {
         "code": "02-G14",
-        "he": "לחיצת חזה בשכיבה עם גומייה ומוט",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה בשכיבה עם גומייה ומוט"
       },
       {
         "code": "02-G15",
-        "he": "לחיצת חזה בשכיבה עם גומייה ומוט עץ (מקל מטאטא) –…",
-        "section": "חזה (92)"
+        "he": "לחיצת חזה בשכיבה עם גומייה ומוט עץ (מקל מטאטא) –…"
       },
       {
         "code": "02-G58",
-        "he": "שכיבות סמיכה זוגיות – אחד בפלאנק מעל השני",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה זוגיות – אחד בפלאנק מעל השני"
       },
       {
         "code": "02-G65",
-        "he": "שכיבות סמיכה, סקוואט ושכיבות סמיכה צרות",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה, סקוואט ושכיבות סמיכה צרות"
       },
       {
         "code": "02-G67",
-        "he": "שכיבות סמיכה על הברכיים – אתגר 100 ביום",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על הברכיים – אתגר 100 ביום"
       },
       {
         "code": "02-G71",
-        "he": "שכיבות סמיכה על ספסל עם חישוק מסתובב סביב פלג הגו…",
-        "section": "חזה (92)"
+        "he": "שכיבות סמיכה על ספסל עם חישוק מסתובב סביב פלג הגו…"
       },
       {
         "code": "03-G01",
-        "he": "5 תרגילי מוביליטי וחיזוק לגב עליון בשכיבה על הבטן…",
-        "section": "גב (71)"
+        "he": "5 תרגילי מוביליטי וחיזוק לגב עליון בשכיבה על הבטן…"
       },
       {
         "code": "03-G22",
-        "he": "חיזוק שרירי גב עמוקים וישבן בעמידה מול קיר: כפיפת…",
-        "section": "גב (71)"
+        "he": "חיזוק שרירי גב עמוקים וישבן בעמידה מול קיר: כפיפת…"
       },
       {
         "code": "03-G35",
-        "he": "חתירה עם גומייה ומגבת",
-        "section": "גב (71)"
+        "he": "חתירה עם גומייה ומגבת"
       },
       {
         "code": "03-G71",
-        "he": "תרגילי יציבה על הרצפה: סופרמן עם ידיים, הרמות Y/T…",
-        "section": "גב (71)"
+        "he": "תרגילי יציבה על הרצפה: סופרמן עם ידיים, הרמות Y/T…"
       },
       {
         "code": "05-G04",
-        "he": "4 תרגילי בטן על ספסל: ברך לחזה ברגליים על הספסל,…",
-        "section": "ליבה ובטן (97)"
+        "he": "4 תרגילי בטן על ספסל: ברך לחזה ברגליים על הספסל,…"
       },
       {
         "code": "05-G08",
-        "he": "אימון אלכסונים: פלאנק אמות עם ברך למרפק והורדת יר…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון אלכסונים: פלאנק אמות עם ברך למרפק והורדת יר…"
       },
       {
         "code": "05-G09",
-        "he": "אימון בטן בבית: פלאנק עם סיבוב, הרמת רגליים בישיב…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון בטן בבית: פלאנק עם סיבוב, הרמת רגליים בישיב…"
       },
       {
         "code": "05-G10",
-        "he": "אימון בטן למתחילים: מתיחה בישיבה, כפיפות בטן ורגל…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון בטן למתחילים: מתיחה בישיבה, כפיפות בטן ורגל…"
       },
       {
         "code": "05-G11",
-        "he": "אימון בטן עם כרית: הרמת כרית ברגליים, וי-סיט וסיב…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון בטן עם כרית: הרמת כרית ברגליים, וי-סיט וסיב…"
       },
       {
         "code": "05-G12",
-        "he": "אימון בטן צדדית: פלאנק צד עם ברך למרפק וכפיפה צדד…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון בטן צדדית: פלאנק צד עם ברך למרפק וכפיפה צדד…"
       },
       {
         "code": "05-G13",
-        "he": "אימון הבטן של רונאלדו: וי-אפ, כפיפות בטן והרמת רג…",
-        "section": "ליבה ובטן (97)"
+        "he": "אימון הבטן של רונאלדו: וי-אפ, כפיפות בטן והרמת רג…"
       },
       {
         "code": "05-G15",
-        "he": "אתגר בטן דקה לשיר We Will Rock You – כפיפות והרמו…",
-        "section": "ליבה ובטן (97)"
+        "he": "אתגר בטן דקה לשיר We Will Rock You – כפיפות והרמו…"
       },
       {
         "code": "05-G17",
-        "he": "אתגר זוגי עם הילדים: פלאנק מול פלאנק ומסירת כדור…",
-        "section": "ליבה ובטן (97)"
+        "he": "אתגר זוגי עם הילדים: פלאנק מול פלאנק ומסירת כדור…"
       },
       {
         "code": "05-G18",
-        "he": "אתגר פלאנק לילדים: זריקת כדור טניס/לימון ותפיסה ב…",
-        "section": "ליבה ובטן (97)"
+        "he": "אתגר פלאנק לילדים: זריקת כדור טניס/לימון ותפיסה ב…"
       },
       {
         "code": "05-G21",
-        "he": "בר-פלאנק עם נגיעה בקיר יד אחרי יד",
-        "section": "ליבה ובטן (97)"
+        "he": "בר-פלאנק עם נגיעה בקיר יד אחרי יד"
       },
       {
         "code": "05-G22",
-        "he": "בר-פלאנק עם תמיכה בקיר",
-        "section": "ליבה ובטן (97)"
+        "he": "בר-פלאנק עם תמיכה בקיר"
       },
       {
         "code": "05-G27",
-        "he": "הוקי פונקציונלי: דחיפת דיסק ביד בפלאנק/דוב סביב ק…",
-        "section": "ליבה ובטן (97)"
+        "he": "הוקי פונקציונלי: דחיפת דיסק ביד בפלאנק/דוב סביב ק…"
       },
       {
         "code": "05-G38",
-        "he": "הרמת ברך בעמידה עם גומייה מיני סביב כפות הרגליים,…",
-        "section": "ליבה ובטן (97)"
+        "he": "הרמת ברך בעמידה עם גומייה מיני סביב כפות הרגליים,…"
       },
       {
         "code": "05-G47",
-        "he": "זחילת דוב עם העברת כדור טניס – כמה שיותר ב-10 שני…",
-        "section": "ליבה ובטן (97)"
+        "he": "זחילת דוב עם העברת כדור טניס – כמה שיותר ב-10 שני…"
       },
       {
         "code": "05-G53",
-        "he": "חימום פלג גוף עליון: נגיעת רגליים בתנוחת דוב זוגית",
-        "section": "ליבה ובטן (97)"
+        "he": "חימום פלג גוף עליון: נגיעת רגליים בתנוחת דוב זוגית"
       },
       {
         "code": "05-G58",
-        "he": "כפיפות בטן בישיבה: ברכיים לחזה בהישענות על הידיים",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן בישיבה: ברכיים לחזה בהישענות על הידיים"
       },
       {
         "code": "05-G59",
-        "he": "כפיפות בטן בישיבה: הרמת ברכיים לחזה ועליות בטן",
-        "section": "ליבה ובטן (97)"
+        "he": "כפיפות בטן בישיבה: הרמת ברכיים לחזה ועליות בטן"
       },
       {
         "code": "05-G66",
-        "he": "ליבה בעזרת קיר: Leg Lowers, כפיפות בטן וסיבובים ל…",
-        "section": "ליבה ובטן (97)"
+        "he": "ליבה בעזרת קיר: Leg Lowers, כפיפות בטן וסיבובים ל…"
       },
       {
         "code": "05-G71",
-        "he": "משחק לילדים: מרימים כדורים ברגליים מהגב ומכניסים…",
-        "section": "ליבה ובטן (97)"
+        "he": "משחק לילדים: מרימים כדורים ברגליים מהגב ומכניסים…"
       },
       {
         "code": "05-G81",
-        "he": "פלאנק בשורה עם העברת כדורי טניס לילדים",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק בשורה עם העברת כדורי טניס לילדים"
       },
       {
         "code": "05-G83",
-        "he": "פלאנק אמות דינמי: ברכיים לחזה לסירוגין",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק אמות דינמי: ברכיים לחזה לסירוגין"
       },
       {
         "code": "05-G86",
-        "he": "פלאנק עם ברך לחזה, פלאנק סטטי ופלאנק עם הושטת רגל…",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם ברך לחזה, פלאנק סטטי ופלאנק עם הושטת רגל…"
       },
       {
         "code": "05-G87",
-        "he": "פלאנק עם גלגול כדור לשותף – מאמן וילדים (בסיס של…",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק עם גלגול כדור לשותף – מאמן וילדים (בסיס של…"
       },
       {
         "code": "05-G93",
-        "he": "פלאנק פייק עם קירוב ברכיים",
-        "section": "ליבה ובטן (97)"
+        "he": "פלאנק פייק עם קירוב ברכיים"
       },
       {
         "code": "05-G98",
-        "he": "תרגילי בטן עם גומייה: הרמת רגליים בשכיבה ובישיבה…",
-        "section": "ליבה ובטן (97)"
+        "he": "תרגילי בטן עם גומייה: הרמת רגליים בשכיבה ובישיבה…"
       },
       {
         "code": "05-G99",
-        "he": "תרגילי בטן עם כדור רפואי: ברכיים לחזה, טוויסט רוס…",
-        "section": "ליבה ובטן (97)"
+        "he": "תרגילי בטן עם כדור רפואי: ברכיים לחזה, טוויסט רוס…"
       },
       {
         "code": "05-G100",
-        "he": "תרגילי בטן עם כדור רפואי: וי-אפ, כפיפות עם כדור מ…",
-        "section": "ליבה ובטן (97)"
+        "he": "תרגילי בטן עם כדור רפואי: וי-אפ, כפיפות עם כדור מ…"
       },
       {
         "code": "06-G01",
-        "he": "איזון על רגל אחת על מדרגה והעברת קונוסים מהרצפה",
-        "section": "רגליים וישבן (69)"
+        "he": "איזון על רגל אחת על מדרגה והעברת קונוסים מהרצפה"
       },
       {
         "code": "06-G30",
-        "he": "מסלול שיווי משקל לפעוטות: קפיצה בתוך חישוקים ובעי…",
-        "section": "רגליים וישבן (69)"
+        "he": "מסלול שיווי משקל לפעוטות: קפיצה בתוך חישוקים ובעי…"
       },
       {
         "code": "06-G31",
-        "he": "משחק תחרות לפני אימון: קפיצה לרוחק וספרינט לחטוף…",
-        "section": "רגליים וישבן (69)"
+        "he": "משחק תחרות לפני אימון: קפיצה לרוחק וספרינט לחטוף…"
       },
       {
         "code": "06-G46",
-        "he": "סקוואט עמוק עם ידיים מאחורי הראש + הרמת ברך גבוהה",
-        "section": "רגליים וישבן (69)"
+        "he": "סקוואט עמוק עם ידיים מאחורי הראש + הרמת ברך גבוהה"
       },
       {
         "code": "06-G67",
-        "he": "רגליים מהירות (קוויק פיט): קפיצות קטנות על בוסו ו…",
-        "section": "רגליים וישבן (69)"
+        "he": "רגליים מהירות (קוויק פיט): קפיצות קטנות על בוסו ו…"
       },
       {
         "code": "06-G68",
-        "he": "תנועות צד בין קונוסים וספרינט לסיום (כדורסל)",
-        "section": "רגליים וישבן (69)"
+        "he": "תנועות צד בין קונוסים וספרינט לסיום (כדורסל)"
       },
       {
         "code": "06-G69",
-        "he": "תרגיל תגובה בזוגות: לפי הצבע שנקרא – אחד בורח והש…",
-        "section": "רגליים וישבן (69)"
+        "he": "תרגיל תגובה בזוגות: לפי הצבע שנקרא – אחד בורח והש…"
       },
       {
         "code": "07-G02",
-        "he": "8 תרגילים בחוץ",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "8 תרגילים בחוץ"
       },
       {
         "code": "07-G03",
-        "he": "8 תרגילים עם גומייה סגולה",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "8 תרגילים עם גומייה סגולה"
       },
       {
         "code": "07-G08",
-        "he": "זחילת דוב לפלאנק",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "זחילת דוב לפלאנק"
       },
       {
         "code": "07-G09",
-        "he": "זחילת דוב עם כדור רפואי",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "זחילת דוב עם כדור רפואי"
       },
       {
         "code": "07-G10",
-        "he": "זחילת דוב עם כדור רפואי MOTIVE 14LB",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "זחילת דוב עם כדור רפואי MOTIVE 14LB"
       },
       {
         "code": "07-G20",
-        "he": "סדרת HIIT ג'אמפינג ג'קס, ברך גבוהה, מטפס הרים וסק…",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "סדרת HIIT ג'אמפינג ג'קס, ברך גבוהה, מטפס הרים וסק…"
       },
       {
         "code": "07-G25",
-        "he": "סקוואט עמוק, הליכה עם כדור, פלאנק בשורה",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "סקוואט עמוק, הליכה עם כדור, פלאנק בשורה"
       },
       {
         "code": "07-G27",
-        "he": "קפיצה בחבל אחרי פציעת שוק",
-        "section": "מעגלים, קרדיו ו-HIIT (31)"
+        "he": "קפיצה בחבל אחרי פציעת שוק"
       },
       {
         "code": "E04-13",
-        "he": "שיקום ברך 2 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "שיקום ברך 2 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet"
       },
       {
         "code": "E04-14",
-        "he": "שיקום ברך 3 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "שיקום ברך 3 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet"
       },
       {
         "code": "E04-15",
-        "he": "שיקום ברך 4 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet",
-        "section": "מוביליטי ושיקום (14)"
+        "he": "שיקום ברך 4 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet"
       },
       {
         "code": "10-G01",
-        "he": "תרגיל קואורדינציה לילדים: זריקה ותפיסה של כדור קט…",
-        "section": "אחר (1)"
+        "he": "תרגיל קואורדינציה לילדים: זריקה ותפיסה של כדור קט…"
       }
     ]
   }

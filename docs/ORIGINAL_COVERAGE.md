@@ -1,61 +1,75 @@
 # Original clip coverage
 
-Updated 27 Nov 2026. The app plays only TrainerHub-owned video: the 107 Meta AI demos, and OneDrive clips whose file is on the `trainerhub-media-v1` release and is not an Instagram or YouTube source. Instagram reels, YouTube embeds, and other third-party URLs stay in the catalog JSON as reference (`thirdParty` / `reference`) and are not rendered or linked.
+Updated 27 Nov 2026 after visual QA (71 match, 23 partial, 6 mismatch, 7 no source). The app plays a Meta AI clip on an existing catalog id only when that clip is the same movement. A different variation or piece of equipment stays a standalone exercise. Instagram, YouTube, and other third-party media stay in the catalog as reference and render **הסרטון יעלה בקרוב**.
 
 ## Counts
 
 | | |
 |---|---:|
-| Meta AI originals in `videos/originals-catalog.json` | 107 |
-| Match ids that play an original (`matches` in originals.json) | 83 |
-| Exercises on the “הסרטון יעלה בקרוב” placeholder | 562 |
-| TrainerHub-owned clips with no Meta AI original | 60 |
-| Library cards whose own player is that original | 68 |
+| Meta AI originals published | 101 |
+| Mismatch clips withheld (not shown, files removed from the public media tag) | 6 |
+| Existing catalog ids that play an original | 50 |
+| Library cards whose player is that original | 44 |
+| Catalog ids unmapped back to the placeholder | 33 |
+| Exercises on the placeholder | 581 |
+| TrainerHub-owned clips with no Meta AI original | 65 |
+| Covered ids whose Hebrew title still differs, same movement | 29 |
 
-Playback URLs are `https://swissystem7.github.io/TrainerHub-media/<folder>/<id>.mp4`, then `https://cdn.jsdelivr.net/gh/Swissystem7/TrainerHub-media@v2/<folder>/<id>.mp4`. GitHub Pages serves the media repo default branch, so the originals play from jsDelivr until that branch is merged. The files are in Swissystem7/TrainerHub-media at those paths (tag `v2`).
+Playback is `https://swissystem7.github.io/TrainerHub-media/<folder>/<id>.mp4`, then jsDelivr `@v3`. Pages serves the media repo default branch. `@v3` omits the six mismatch files.
 
-Saved workouts keep their exercise ids. A covered id plays the original clip; the id itself is unchanged.
+## Withheld (mismatch)
 
-## Cross-check against THIRD_PARTY_GAPS
+These clips are not catalog exercises and are not in `videos/media-manifest.json`. They will be regenerated.
 
-The attached gaps list has **593** deduped rows (it excluded inspiration items, compilations, the drinking challenge, and clips that already had a TrainerHub-owned file). Matching is by exact Hebrew name after folding quotes and dashes.
+- `E01-06` «מתיחת כתף לרוחב הגוף» (`metaai-e01-06`)
+- `05-08` «אימון בטן 3 דקות» (`metaai-05-08`)
+- `E04-09` «ליבה של מתאבק» (`metaai-e04-09`)
+- `E04-10` «אלכסונים עם משקולת» (`metaai-e04-10`)
+- `07-06` «ריצת זיגזג בין קונוסים» (`metaai-07-06`)
+- `07-HIIT-10` «ריצת שאטל בין קונוסים» (`metaai-07-hiit-10`)
 
-| Gaps list | |
-|---|---:|
-| Still only a placeholder under that exact name | 536 |
-| Exact name now has a Meta AI original | 0 |
-| Exact name is a TrainerHub-owned clip | 0 |
-| Exact name not found in the catalog | 57 |
+## Unmapped back to the placeholder
 
-The machine-readable list of every catalog exercise still lacking an original is `data/original-gaps.json` (`placeholder`, plus `ownedWithoutMetaAi` for owned clips the gaps file did not count). Names in the gaps file that are not an exact catalog title — shortened with an ellipsis, or a knee-rehab row that was never given a catalog id — are under `gapCrossCheck.notFoundByExactName`.
+The original remains its own exercise, except the withheld mismatches. The catalog id no longer plays that clip. Of these 33 ids, 19 show the placeholder, 5 already have a separate TrainerHub-owned file and play that file (`superman`, `בטן_זוגות`, `זוגות_בטן`, `בטן_כדור_כדורסל`, `גומיות_בטן`), and 9 are not a live library card.
 
-Placeholder counts by folder:
+- `yt_military_press` «לחיצה צבאית מעל הראש (Military Press)» was `E01-01` «לחיצת כתפיים». Dumbbell overhead press; military press is a barbell variation.
+- `yt_cable_face_pull` «פייס פול בכבל» was `E01-05` «משיכת פנים». No source reel to confirm the face pull against the cable-face-pull id.
+- `dumbbell_bench` «לחיצת חזה משקולות» was `E02-11` «לחיצת חזה». Bench press clip; the dumbbell-bench id is a different implement.
+- `yt_rdl_db` «דדליפט רומני עם משקולות» was `E03-01` «דדליפט רומני». Barbell Romanian deadlift; the catalog row is with dumbbells.
+- `drive_חתירת_מוט_בכפיפה` «חתירת מוט בכפיפה» was `E03-02` «חתירה בהטיה». Generic bent-over row; this id is specifically a barbell row.
+- `drive_חתירת_קטלבל_בכפיפה` «חתירת קטלבל בכפיפה» was `E03-02` «חתירה בהטיה». Generic bent-over row; this id is specifically a kettlebell row.
+- `superman` «גב תחתון» was `E03-05` «סופרמן». Superman; the catalog row is titled lower back, not this drill.
+- `drive_דיפס_על_ספסל_לילדים` «דיפס על ספסל לילדים» was `04-13` «דיפס על ספסל». Adult bench dip; the catalog row is the kids variation.
+- `drive_דד_באג_עם_משקולות` «דד באג עם משקולות» was `05-06` «דד באג». Unweighted dead bug; the catalog row adds dumbbells.
+- `drive_בטן_זוגות` «בטן זוגות» was `05-09` «בטן בזוגות». Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.
+- `drive_בטן_זוגות_2` «בטן זוגות» was `05-09` «בטן בזוגות». Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.
+- `בטן_זוגות` «בטן זוגות» was `05-09` «בטן בזוגות». Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.
+- `בטן_זוגות_2` «בטן זוגות» was `05-09` «בטן בזוגות». Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.
+- `זוגות_בטן` «זוגות בטן» was `05-09` «בטן בזוגות». Partner sit-ups with a high-five, not the partner-abs / partner-plank rows.
+- `drive_בטן_עם_כדור` «בטן עם כדור» was `05-G02` «בטן עם כדור». Stability-ball crunch, not medicine-ball or basketball abs.
+- `בטן_עם_כדור` «בטן עם כדור» was `05-G02` «בטן עם כדור». Stability-ball crunch, not medicine-ball or basketball abs.
+- `drive_בטן_כדור_כדורסל` «בטן כדור כדורסל» was `05-G02` «בטן עם כדור». Stability-ball crunch, not medicine-ball or basketball abs.
+- `בטן_כדור_כדורסל` «בטן כדור כדורסל» was `05-G02` «בטן עם כדור». Stability-ball crunch, not medicine-ball or basketball abs.
+- `drive_בטן_גומיות` «בטן גומיות» was `05-G03` «בטן עם גומיות». Floor band crunch, not the stability-ball band core rows.
+- `בטן_גומיות` «בטן גומיות» was `05-G03` «בטן עם גומיות». Floor band crunch, not the stability-ball band core rows.
+- `drive_גומיות_בטן` «גומיות בטן» was `05-G03` «בטן עם גומיות». Floor band crunch, not the stability-ball band core rows.
+- `drive_גומיות_בטן_2` «גומיות בטן» was `05-G03` «בטן עם גומיות». Floor band crunch, not the stability-ball band core rows.
+- `גומיות_בטן` «גומיות בטן» was `05-G03` «בטן עם גומיות». Floor band crunch, not the stability-ball band core rows.
+- `glute_bridge` «גשר ישבן» was `E04-04` «גשר אגן». No source reel to confirm the glute bridge against the catalog id.
+- `drive_טוויסט_רוסי_עם_כדורסל` «טוויסט רוסי עם כדורסל» was `E04-11` «רוסי טוויסט». Russian twist with a weight; this id uses a basketball.
+- `dumbbell_step_up` «עליית מדרגה עם משקולות» was `06-07` «עלייה למדרגה למתחילים». Beginner step-up; the catalog row is a dumbbell step-up.
+- `drive_מדרגות` «מדרגות» was `06-08` «מדרגות». Staircase climbing, not the step-box / step-up rows.
+- `step_up` «מדרגות» was `06-08` «מדרגות». Staircase climbing, not the step-box / step-up rows.
+- `yt_kids_burpees` «ברפי לילדים» was `07-02` «ברפי HIIT קלאסי». Adult burpee; the catalog row is the kids variation.
+- `yt_kids_pull_ups` «עליות מתח לילדים» was `07-04` «מתח במעגל קבוצתי». Adult pull-up; the catalog row is the kids variation.
+- `drive_סקוואט_קפיצה_עם_משקולות` «סקוואט קפיצה עם משקולות» was `07-HIIT-04` «סקוואט קפיצה». Bodyweight jump squat; the catalog row uses dumbbells.
+- `yt_goblet_squat` «סקוואט גביע עם משקולת» was `07-HIIT-08` «סקוואט גובלט עם קטלבל». Kettlebell goblet squat; the catalog row is a dumbbell goblet squat.
+- `ig-DdthU1EtHnN` «ig-DdthU1EtHnN» was `E04-08` «טפיחות לימפטיות». No catalog name for this reel id, so it is not the same drill.
 
-- ידיים: 107
-- חזה: 93
-- בטן: 73
-- כתפיים: 72
-- גב: 69
-- רגליים: 63
-- קרדיו: 23
-- חימום: 17
-- יד קדמית: 17
-- יד אחורית: 13
-- מתיחות וגמישות: 11
-- ללא תיקייה: 3
-- גוף מלא HIIT: 1
+## Kept despite a different Hebrew title
 
-## Name differences on covered ids
+Same movement. Wording, a technique suffix, or a translation differs.
 
-These existing exercises play an original whose Hebrew title is not the same string. The id is unchanged. The closest original among every clip that listed the id was chosen.
-
-- `בטן_גומיות` «בטן גומיות» plays `metaai-05-g03` «בטן עם גומיות»
-- `בטן_זוגות` «בטן זוגות» plays `metaai-05-09` «בטן בזוגות»
-- `בטן_זוגות_2` «בטן זוגות» plays `metaai-05-09` «בטן בזוגות»
-- `בטן_כדור_כדורסל` «בטן כדור כדורסל» plays `metaai-05-g02` «בטן עם כדור»
-- `superman` «גב תחתון» plays `metaai-e03-05` «סופרמן»
-- `גומיות_בטן` «גומיות בטן» plays `metaai-05-g03` «בטן עם גומיות»
-- `זוגות_בטן` «זוגות בטן» plays `metaai-05-09` «בטן בזוגות»
 - `drive_שכיבות_סמיכה_בטכניקה_נכונה` «שכיבות סמיכה בטכניקה נכונה» plays `metaai-04-10-3` «שלב 3 שכיבות מלאות מהרצפה»
 - `drive_שכיבות_סמיכה_עם_הפעלת_חזה` «שכיבות סמיכה עם הפעלת חזה» plays `metaai-04-10-3` «שלב 3 שכיבות מלאות מהרצפה»
 - `drive_מתח_מושלם_-_טכניקה` «מתח מושלם - טכניקה» plays `metaai-04-01` «מתח מושלם טכניקה»
@@ -66,33 +80,55 @@ These existing exercises play an original whose Hebrew title is not the same str
 - `drive_סקוואט_אחורי_עם_מוט_-_טכניקה` «סקוואט אחורי עם מוט - טכניקה» plays `metaai-06-01` «סקוואט אחורי עם מוט»
 - `drive_פלאנק_על_האמות_-_טכניקה` «פלאנק על האמות - טכניקה» plays `metaai-05-01` «פלאנק על האמות»
 - `drive_דדליפט_רומני_על_רגל_אחת_עם_משקולות` «דדליפט רומני על רגל אחת עם משקולות» plays `metaai-06-06` «דדליפט רומני רגל אחת»
-- `drive_דיפס_על_ספסל_לילדים` «דיפס על ספסל לילדים» plays `metaai-04-13` «דיפס על ספסל»
 - `drive_חתירה_כבדה_ביד_אחת_עם_משקולת` «חתירה כבדה ביד אחת עם משקולת» plays `metaai-e03-03` «חתירה יד אחת»
-- `drive_דד_באג_עם_משקולות` «דד באג עם משקולות» plays `metaai-05-06` «דד באג»
 - `drive_סקוואט_בולגרי_עם_משקולות_כבדות` «סקוואט בולגרי עם משקולות כבדות» plays `metaai-06-04` «בולגרי כבד»
-- `drive_סקוואט_קפיצה_עם_משקולות` «סקוואט קפיצה עם משקולות» plays `metaai-07-hiit-04` «סקוואט קפיצה»
-- `drive_חתירת_מוט_בכפיפה` «חתירת מוט בכפיפה» plays `metaai-e03-02` «חתירה בהטיה»
-- `drive_חתירת_קטלבל_בכפיפה` «חתירת קטלבל בכפיפה» plays `metaai-e03-02` «חתירה בהטיה»
 - `drive_גובלט_סקוואט_עם_קטלבל` «גובלט סקוואט עם קטלבל» plays `metaai-07-hiit-08` «סקוואט גובלט עם קטלבל»
 - `drive_שכיבות_סמיכה_על_קיר` «שכיבות סמיכה על קיר» plays `metaai-04-10-1` «שלב 1 שכיבות מהקיר»
-- `drive_טוויסט_רוסי_עם_כדורסל` «טוויסט רוסי עם כדורסל» plays `metaai-e04-11` «רוסי טוויסט»
 - `yt_cat_cow` «חתול-פרה לניידות עמוד שדרה» plays `metaai-e03-13` «חתול פרה»
 - `yt_lateral_raise` «הרמות צד עם משקולות» plays `metaai-e01-02` «הרחקת כתף»
 - `yt_high_knees` «ברכיים גבוהות» plays `metaai-07-01` «אינטרוול ברך גבוהה במקום»
-- `yt_goblet_squat` «סקוואט גביע עם משקולת» plays `metaai-07-hiit-08` «סקוואט גובלט עם קטלבל»
-- `yt_rdl_db` «דדליפט רומני עם משקולות» plays `metaai-e03-01` «דדליפט רומני»
 - `yt_walking_lunge` «לאנג'ים בהליכה» plays `metaai-06-05` «לאנגים בהליכה עם מוט»
 - `yt_burpee` «ברפי» plays `metaai-07-02` «ברפי HIIT קלאסי»
 - `yt_jumping_jacks` «ג'מפינג ג'קס» plays `metaai-07-hiit-01` «גאמפינג גקס»
-- `yt_military_press` «לחיצה צבאית מעל הראש (Military Press)» plays `metaai-e01-01` «לחיצת כתפיים»
 - `yt_db_shoulder_press` «לחיצת כתפיים עם משקולות» plays `metaai-e01-01` «לחיצת כתפיים»
 - `yt_pike_push_up` «שכיבת סמיכה בפייק (Pike Push-Up)» plays `metaai-04-12` «שכיבות פייק»
 - `yt_rear_delt_fly` «הרמת דלתא אחורית עם משקולות» plays `metaai-e03-12` «פרפר הפוך»
-- `yt_cable_face_pull` «פייס פול בכבל» plays `metaai-e01-05` «משיכת פנים»
-Fifteen other match ids are not their own library card (the catalog row was unavailable or dropped as a duplicate file, or the id is the reel `ig-DdthU1EtHnN`). Opening that id in a workout still plays the original.
+- `bodyweight_squat` «סקוואט משקל גוף» plays `metaai-07-hiit-05` «סקוואט במשקל גוף»
+- `push_up` «שכיבות סמיכה» plays `metaai-04-08` «שכיבות סמיכה טכניקה נכונה»
+- `russian_twist` «טוויסט רוסי» plays `metaai-e04-11` «רוסי טוויסט»
+- `front_raise` «הרמה קדמית» plays `metaai-e01-03` «הרמת כתף קדמית»
+- `knee_push_up` «שכיבות סמיכה על ברכיים» plays `metaai-e02-06` «שכיבת סמיכה על ברכיים»
+- `yt_band_assisted_pull_up` «מתח בסיוע גומייה» plays `metaai-04-02` «מתח עם גומייה»
 
-## Knee-rehab rows called out in the gaps file
+## Cross-check against THIRD_PARTY_GAPS
 
-- `E04-13` שיקום ברך 2 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet — no catalog id and no Meta AI file.
-- `E04-14` שיקום ברך 3 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet — no catalog id and no Meta AI file.
-- `E04-15` שיקום ברך 4 — שלב המשך (שם ספציפי לא צוין) — early Meta AI curriculum, no demo yet — no catalog id and no Meta AI file.
+The gaps list has **593** deduped names. Exact-title fold:
+
+| | |
+|---|---:|
+| Still a placeholder | 536 |
+| Exact name now has an original | 0 |
+| Exact name is a TrainerHub-owned clip | 0 |
+| Exact name not in the catalog | 57 |
+
+Machine-readable list: `data/original-gaps.json`.
+
+Placeholder counts by folder:
+
+- ידיים: 108
+- חזה: 94
+- בטן: 75
+- כתפיים: 74
+- גב: 72
+- רגליים: 68
+- קרדיו: 24
+- חימום: 17
+- יד קדמית: 17
+- יד אחורית: 13
+- מתיחות וגמישות: 11
+- ללא תיקייה: 7
+- גוף מלא HIIT: 1
+
+## Knee-rehab rows
+
+- `E04-13`, `E04-14`, `E04-15` have no catalog id and no Meta AI file.
