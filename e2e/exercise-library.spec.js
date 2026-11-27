@@ -49,13 +49,13 @@ test.describe('reel exercise library (exercises.html)', () => {
     await expect(plan.getByRole('button', { name: /^התחל אימון 1.* במצב אימון חי$/ })).toBeVisible();
   });
 
-  test('reel cards link out to Instagram without loading it', async ({ page, externalRequests }) => {
+  test('reel cards show a coming-soon placeholder and do not load Instagram', async ({ page, externalRequests }) => {
     await page.goto('/exercises.html');
-    const link = page.getByRole('region', { name: 'כרטיסי תרגילים' })
-      .getByRole('link', { name: 'צפייה בריל' }).first();
-    await expect(link).toHaveAttribute('href', /^https:\/\/www\.instagram\.com\/(reel|p)\//);
-    const allowedInstagramHosts = new Set(['instagram.com', 'www.instagram.com']);
-    expect(externalRequests.filter((h) => allowedInstagramHosts.has(h))).toEqual([]);
+    const card = page.getByRole('region', { name: 'כרטיסי תרגילים' }).getByRole('article').first();
+    await expect(card).toContainText('הסרטון יעלה בקרוב');
+    await expect(card.getByRole('link', { name: 'צפייה בריל' })).toHaveCount(0);
+    const blocked = new Set(['instagram.com', 'www.instagram.com', 'www.youtube.com', 'i.ytimg.com', 'drive.google.com']);
+    expect(externalRequests.filter((h) => blocked.has(h))).toEqual([]);
   });
 });
 test.describe.skip(() => {

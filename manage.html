@@ -204,11 +204,11 @@
     }
     hint.className = 'hint';
     if (proposed.source === 'link') {
-      hint.textContent = 'זוהה קישור חיצוני. יישמר כקישור שנפתח בחוץ — לא חיבור למאמנים ולא אינטגרציה.';
+      hint.textContent = 'זוהה קישור חיצוני. הוא נשמר לייחוס בלבד ולא מוצג באפליקציה.';
     } else if (proposed.source === 'drive') {
-      hint.textContent = 'זוהה קובץ דרייב. אחרי אישור הוא יתנגן כ־iframe מהקישור המשותף.';
+      hint.textContent = 'זוהה קובץ דרייב. הוא נשמר לייחוס בלבד ולא מוצג באפליקציה.';
     } else if (proposed.source === 'youtube') {
-      hint.textContent = 'זוהה סרטון יוטיוב. אין חיפוש ביוטיוב — רק הדבקת קישור לסרטון ספציפי.';
+      hint.textContent = 'זוהה סרטון יוטיוב. הוא נשמר לייחוס בלבד ולא מוצג באפליקציה.';
     } else {
       hint.textContent = 'לא זוהה מקור. אפשר לשמור שם בלבד, או להדביק קישור דרייב / יוטיוב / חיצוני.';
     }

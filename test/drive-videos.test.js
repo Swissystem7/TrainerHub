@@ -122,12 +122,8 @@ test('a Drive video becomes a sparse exercise and a lazy embed card', function (
   assert.equal(ex.source_url, 'https://drive.google.com/file/d/' + FILE + '/view');
 
   const html = THReels.exerciseCardHtml(Object.assign({}, ex, { _index: 3 }), esc);
-  // Load-on-click: the Drive thumbnail and a play button; the iframe comes on click.
-  assert.doesNotMatch(html, /<iframe/);
-  assert.match(html, new RegExp('data-th-frame="https://drive\\.google\\.com/file/d/' + FILE + '/preview"'));
-  assert.match(html, new RegExp('drive\\.google\\.com/thumbnail\\?id=' + FILE));
-  assert.match(html, new RegExp('href="https://drive\\.google\\.com/file/d/' + FILE + '/view"'));
-  assert.match(html, /פתיחה ב-Drive/);
+  assert.doesNotMatch(html, /<iframe|<video|drive\.google\.com|instagram\.com/);
+  assert.match(html, /הסרטון יעלה בקרוב/);
   assert.match(html, /פלאנק על מזרן/);
   assert.match(html, /ליבה/);
   assert.match(html, /data-add="drive-/);

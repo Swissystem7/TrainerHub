@@ -39,8 +39,8 @@ test('every reserves test and demo has a verified youtube id list', () => {
       youtubeId: row.youtubeId,
       available: true
     }, { className: 'ex-media' });
-    assert.match(markup, new RegExp('https://www.youtube.com/embed/' + row.youtubeId));
-    assert.doesNotMatch(markup, /<video/);
+    assert.match(markup, /הסרטון יעלה בקרוב/);
+    assert.doesNotMatch(markup, /youtube\.com|<iframe|<video/);
   });
 });
 

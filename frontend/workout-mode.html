@@ -1922,8 +1922,14 @@ function refreshStepMedia() {
   const step = steps[stepIdx];
   if (!step || step.type !== 'exercise') return;
   const slot = document.getElementById('exMediaSlot');
+  const clip = TH.findExercise(step);
+  // A deep link opened before the catalog arrived used the raw id as the title.
+  if (clip && clip.he && (step.name === step.id || step.name === clip.id) && clip.he !== step.name) {
+    step.name = clip.he;
+    const nameEl = document.querySelector('.exercise-name');
+    if (nameEl) nameEl.textContent = clip.he;
+  }
   if (slot) {
-    const clip = TH.findExercise(step);
     slot.innerHTML = clip ? TH.mediaMarkup(clip, { className: 'ex-media', eager: true }) : '';
   }
   const livePanel = document.getElementById('liveMediaPanel');

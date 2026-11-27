@@ -25,6 +25,10 @@
     if (/^vbscript\s*:/i.test(trimmed)) return false;
     if (/^file\s*:/i.test(trimmed)) return false;
 
+    if (/instagram\.com|youtube\.com|youtu\.be|ytimg\.com|facebook\.com|tiktok\.com|drive\.google\.com|googlevideo\.com/i.test(trimmed)) {
+      return false;
+    }
+
     if (/^https:\/\/[^\s"'<>]+$/i.test(trimmed)) return true;
 
     if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) return false;
@@ -110,6 +114,21 @@
     }
     if (!rawVideoUrl) {
       rawVideoUrl = exObj.videoUrl || exObj.video_url || exObj.source_url || exObj.preview_url || exObj.file || '';
+    }
+    // Prefer a TrainerHub-owned MP4. Drop Instagram, YouTube, and Drive links.
+    const host = typeof globalThis !== 'undefined' ? globalThis : null;
+    if (host && host.TH && typeof host.TH.findExercise === 'function' && typeof host.TH.mediaMarkup === 'function') {
+      try {
+        const entry = host.TH.findExercise({ id: targetId, name: targetName });
+        if (entry) {
+          const html = root.TH.mediaMarkup(entry, { className: 'ex-media', eager: true });
+          const owned = /src="(https:\/\/[^"]+\.mp4)/.exec(html || '');
+          if (owned) rawVideoUrl = owned[1];
+          else if (entry.original || entry.thirdParty || entry.source === 'metaai' || entry.source === 'youtube' || entry.source === 'drive' || entry.source === 'drive-reel') {
+            rawVideoUrl = '';
+          }
+        }
+      } catch (err) {}
     }
 
     let rawPoster = '';
@@ -218,7 +237,7 @@
     } else {
       videoBtn.disabled = true;
       videoBtn.setAttribute('aria-disabled', 'true');
-      videoBtn.textContent = 'סרטון לא זמין';
+      videoBtn.textContent = 'הסרטון יעלה בקרוב';
     }
     btnWrap.appendChild(videoBtn);
     container.appendChild(btnWrap);

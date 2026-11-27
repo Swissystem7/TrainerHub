@@ -77,8 +77,8 @@ test('1) איתור מדיה לפי מזהה', () => {
   // Verify resolution without prefix
   const driveResolved = LiveMediaPanel.resolveExerciseMedia('drive-file-abc12345', catalog);
   assert.equal(driveResolved.id, 'drive-file-abc12345');
-  assert.equal(driveResolved.hasVideo, true);
-  assert.equal(driveResolved.videoUrl, 'https://drive.google.com/file/d/drive-file-abc12345/view');
+  assert.equal(driveResolved.hasVideo, false);
+  assert.equal(driveResolved.videoUrl, null);
 });
 
 test('2) איתור לפי שם עברי', () => {
@@ -231,7 +231,7 @@ test('6) רינדור בטוח ללא XSS', () => {
     LiveMediaPanel.renderMediaPanel(noVideoContainer, { videoUrl: null, posterUrl: null, techniqueCues: [] });
     const noVideoBtn = noVideoContainer.children[1].children[0];
     assert.equal(noVideoBtn.disabled, true);
-    assert.equal(noVideoBtn.textContent, 'סרטון לא זמין');
+    assert.equal(noVideoBtn.textContent, 'הסרטון יעלה בקרוב');
   } finally {
     global.document = prevDoc;
   }

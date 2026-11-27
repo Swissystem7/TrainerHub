@@ -31,17 +31,15 @@ test('every library row with a GitHub release file carries a live Drive copy', f
   });
 });
 
-test('release rows render the Drive player, never a blocked release <video>', function () {
-  const rows = merged().filter(function (e) { return RELEASE.test(e.file); });
+test('release rows render the hosted MP4, never a Drive player or the blocked release file', function () {
+  TH.setMediaManifest(read('videos/media-manifest.json'));
+  const rows = merged().filter(function (e) { return RELEASE.test(e.file) && !e.thirdParty; });
+  assert.ok(rows.length >= 40, 'owned release rows: ' + rows.length);
   rows.forEach(function (e) {
-    const html = TH.mediaMarkup(e, { className: 'ex-media' });
-    assert.doesNotMatch(html, /<video/, e.id);
-    assert.doesNotMatch(html, /releases\/download/, e.id);
-    assert.ok(html.indexOf('data-th-frame="https://drive.google.com/file/d/' + e.drivePlayId + '/preview"') !== -1, e.id);
-    assert.match(html, /<button type="button" class="ex-media ex-media-facade"/);
-    const eager = TH.mediaMarkup(e, { className: 'ex-media', eager: true });
-    assert.ok(eager.indexOf('src="https://drive.google.com/file/d/' + e.drivePlayId + '/preview"') !== -1, e.id);
-    assert.match(eager, /<iframe class="ex-media"/);
+    const html = TH.mediaMarkup(e, { className: 'ex-media', eager: true });
+    assert.match(html, /<video/, e.id);
+    assert.doesNotMatch(html, /releases\/download|drive\.google\.com|<iframe/, e.id);
+    assert.ok(html.indexOf(e.drivePlayId + '.mp4') !== -1, e.id);
   });
 });
 

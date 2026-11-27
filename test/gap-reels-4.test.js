@@ -25,7 +25,7 @@ test('every new reel is a playable Drive row with a poster file and a Drive list
     const e = row(c);
     assert.ok(e, c);
     assert.ok(fs.existsSync(path.join(root, e.poster)), e.poster);
-    assert.equal(TH.playableKind(merged[e.id]), 'drive', e.id);
+    assert.equal(TH.playableKind(merged[e.id]), 'soon', e.id);
     assert.equal(TH.posterUrl(merged[e.id]), e.poster);
     const dv = driveVideos.find(function (v) { return v.fileId === e.driveId; });
     assert.ok(dv, c);

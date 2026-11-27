@@ -34,7 +34,9 @@ test('each Instagram reel is one playable hosted video with its Drive copy regis
     assert.equal(row.sourceUrl, 'https://www.instagram.com/reel/' + r.reel + '/');
     const hits = TH.catalogList().filter(function (e) { return e.he === r.he; });
     assert.equal(hits.length, 1, 'one library card for ' + r.he);
-    assert.equal(TH.playableKind(hits[0]), 'file');
+    assert.equal(TH.playableKind(hits[0]), 'soon');
+    assert.match(TH.mediaMarkup(hits[0], { className: 'ex-media' }), /הסרטון יעלה בקרוב/);
+    assert.doesNotMatch(TH.mediaMarkup(hits[0], { className: 'ex-media' }), /instagram\.com|drive\.google\.com|<iframe|<video/);
     const dv = driveVideos.filter(function (v) { return v.fileId === r.driveId; });
     assert.equal(dv.length, 1);
     assert.ok(dv[0].name.indexOf(r.he) === 0 && dv[0].name.endsWith(' - ' + r.reel + '.mp4'));

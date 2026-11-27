@@ -40,10 +40,10 @@ test('the seven catalog gaps now have a playable YouTube video', function () {
     assert.equal(entry.youtubeId, GAPS[id], id);
     assert.equal(entry.available, true, id);
     assert.equal(TH.isPlayable(entry), true, id + ' hasVideo');
-    assert.equal(TH.playableKind(entry), 'youtube', id);
+    assert.equal(TH.playableKind(entry), 'soon', id);
     const html = TH.mediaMarkup(entry, { className: 'ex-media' });
-    assert.match(html, new RegExp('https://www.youtube.com/embed/' + GAPS[id]));
-    assert.doesNotMatch(html, /<video/);
+    assert.match(html, /הסרטון יעלה בקרוב/);
+    assert.doesNotMatch(html, /youtube\.com|<iframe|<video/);
     const ids = mainIds(Engine.buildSession('אימון 20 דקות', [entry]));
     assert.ok(ids.indexOf(id) !== -1, id + ' left out of the session: ' + ids.join(','));
   });
